@@ -9,14 +9,16 @@ import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
@@ -24,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.theme.space
-import com.sweak.qralarm.ui.util.CurrentTime
 import com.sweak.qralarm.ui.util.Meridiem
 import com.sweak.qralarm.ui.util.TimeFormat
 import kotlinx.coroutines.launch
@@ -34,19 +36,11 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 @Composable
-fun HomeScreen() {
-    val currentTime = CurrentTime(LocalContext.current)
-
-    val uiState = remember {
-        mutableStateOf(
-            HomeUiState(
-                timeFormat = currentTime.timeFormat,
-                hour = currentTime.hour,
-                minute = currentTime.minute,
-                meridiem = currentTime.meridiem
-            )
-        )
-    }
+fun HomeScreen(
+    homeViewModel: HomeViewModel = viewModel()
+) {
+    homeViewModel.initializeUiState()
+    val uiState = remember { homeViewModel.homeUiState }
 
     val constraints = ConstraintSet {
         val menuButton = createRefFor("menuButton")
