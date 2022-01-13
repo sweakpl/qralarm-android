@@ -29,8 +29,8 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.theme.space
-import com.sweak.qralarm.ui.util.Meridiem
-import com.sweak.qralarm.ui.util.TimeFormat
+import com.sweak.qralarm.util.Meridiem
+import com.sweak.qralarm.util.TimeFormat
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt

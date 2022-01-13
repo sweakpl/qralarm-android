@@ -1,7 +1,7 @@
 package com.sweak.qralarm.ui.screens.home
 
-import com.sweak.qralarm.ui.util.Meridiem
-import com.sweak.qralarm.ui.util.TimeFormat
+import com.sweak.qralarm.util.Meridiem
+import com.sweak.qralarm.util.TimeFormat
 
 data class HomeUiState(
     var timeFormat: TimeFormat,

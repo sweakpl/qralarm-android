@@ -1,4 +1,4 @@
-package com.sweak.qralarm.ui.util
+package com.sweak.qralarm.util
 
 import android.content.Context
 import android.text.format.DateFormat

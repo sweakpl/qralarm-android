@@ -3,14 +3,11 @@ package com.sweak.qralarm.ui.screens.home
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.data.DataStoreManager
-import com.sweak.qralarm.ui.util.Meridiem
-import com.sweak.qralarm.ui.util.TimeFormat
+import com.sweak.qralarm.util.Meridiem
+import com.sweak.qralarm.util.TimeFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 

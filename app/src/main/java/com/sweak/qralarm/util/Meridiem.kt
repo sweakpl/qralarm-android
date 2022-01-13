@@ -1,4 +1,4 @@
-package com.sweak.qralarm.ui.util
+package com.sweak.qralarm.util
 
 enum class Meridiem(name: String) {
     AM("am"), PM("pm")
