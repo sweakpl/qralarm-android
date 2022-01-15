@@ -1,6 +1,5 @@
 package com.sweak.qralarm.ui.screens.home
 
-import android.util.Log
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -26,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Meridiem
@@ -37,9 +36,8 @@ import kotlin.math.roundToInt
 
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel()
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    homeViewModel.initializeUiState()
     val uiState = remember { homeViewModel.homeUiState }
 
     val constraints = ConstraintSet {
@@ -95,17 +93,7 @@ fun HomeScreen(
             text = "START",
             modifier = Modifier.layoutId("startStopAlarmButton"),
             onClick = {
-                Log.i(
-                    "HomeScreen",
-                    "Selected time is: " +
-                            "${uiState.value.hour}:${uiState.value.minute}" +
-                            if (uiState.value.timeFormat == TimeFormat.AMPM) {
-                                when (uiState.value.meridiem.ordinal) {
-                                    Meridiem.AM.ordinal -> " AM"
-                                    else -> " PM"
-                                }
-                            } else ""
-                )
+                homeViewModel.startAlarm()
             }
         )
     }

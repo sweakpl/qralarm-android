@@ -1,5 +1,6 @@
 package com.sweak.qralarm.ui.screens.home
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,19 +17,29 @@ class HomeViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
 
-    lateinit var homeUiState: MutableState<HomeUiState>
-
-    fun initializeUiState() {
-        runBlocking {
-            homeUiState = mutableStateOf(
-                HomeUiState(
-                    getTimeFormat(),
-                    dataStoreManager.getInt(DataStoreManager.ALARM_HOUR).first(),
-                    dataStoreManager.getInt(DataStoreManager.ALARM_MINUTE).first(),
-                    getMeridiem()
-                )
+    val homeUiState: MutableState<HomeUiState> = runBlocking {
+        mutableStateOf(
+            HomeUiState(
+                getTimeFormat(),
+                dataStoreManager.getInt(DataStoreManager.ALARM_HOUR).first(),
+                dataStoreManager.getInt(DataStoreManager.ALARM_MINUTE).first(),
+                getMeridiem()
             )
-        }
+        )
+    }
+
+    fun startAlarm() {
+        Log.i(
+            "HomeViewModel",
+            "Selected time is: " +
+                    "${homeUiState.value.hour}:${homeUiState.value.minute}" +
+                    if (homeUiState.value.timeFormat == TimeFormat.AMPM) {
+                        when (homeUiState.value.meridiem.ordinal) {
+                            Meridiem.AM.ordinal -> " AM"
+                            else -> " PM"
+                        }
+                    } else ""
+        )
     }
 
     private suspend fun getTimeFormat(): TimeFormat {
