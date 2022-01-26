@@ -90,10 +90,10 @@ fun HomeScreen(
         )
 
         StartStopAlarmButton(
-            text = "START",
             modifier = Modifier.layoutId("startStopAlarmButton"),
+            uiState = uiState,
             onClick = {
-                homeViewModel.startAlarm()
+                homeViewModel.startOrStopAlarm()
             }
         )
     }
@@ -199,9 +199,10 @@ fun NumberPicker(
     val coercedAnimatedOffset = animatedOffset.value % halvedNumbersColumnHeightPx
     val animatedStateValue = animatedStateValue(animatedOffset.value)
 
-    Column(
-        modifier = modifier
-            .wrapContentSize()
+    val newModifier = if (uiState.value.alarmSet) {
+        modifier
+    } else {
+        modifier
             .draggable(
                 orientation = Orientation.Vertical,
                 state = rememberDraggableState { delta ->
@@ -244,6 +245,11 @@ fun NumberPicker(
                     animatedOffset.snapTo(0f)
                 }
             )
+    }
+
+    Column(
+        modifier = newModifier
+            .wrapContentSize()
     ) {
         Box(
             modifier = Modifier
@@ -320,7 +326,7 @@ private suspend fun Animatable<Float, AnimationVector1D>.fling(
 @Composable
 fun StartStopAlarmButton(
     modifier: Modifier = Modifier,
-    text: String,
+    uiState: MutableState<HomeUiState>,
     onClick: () -> Unit = {}
 ) {
     Button(
@@ -331,7 +337,7 @@ fun StartStopAlarmButton(
         )
     ) {
         Text(
-            text = text,
+            text = if (uiState.value.alarmSet) "STOP" else "START",
             modifier = Modifier.padding(
                 MaterialTheme.space.medium,
                 MaterialTheme.space.small,

@@ -30,6 +30,7 @@ class QRAlarmApp : Application() {
                     putInt(DataStoreManager.ALARM_HOUR, currentTime.hour)
                     putInt(DataStoreManager.ALARM_MINUTE, currentTime.minute)
                     putString(DataStoreManager.ALARM_MERIDIEM, currentTime.meridiem.name)
+                    putBoolean(DataStoreManager.ALARM_SET, false)
                     putBoolean(DataStoreManager.FIRST_LAUNCH, false)
                 }
             }

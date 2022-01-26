@@ -7,5 +7,6 @@ data class HomeUiState(
     var timeFormat: TimeFormat,
     var hour: Int,
     var minute: Int,
-    var meridiem: Meridiem
+    var meridiem: Meridiem,
+    var alarmSet: Boolean
 )

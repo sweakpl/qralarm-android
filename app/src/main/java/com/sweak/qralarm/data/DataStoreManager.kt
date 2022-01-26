@@ -45,6 +45,7 @@ class DataStoreManager(private val context: Context) {
 
     companion object {
         val FIRST_LAUNCH = booleanPreferencesKey("firstLaunch")
+        val ALARM_SET = booleanPreferencesKey("alarmSet")
         val ALARM_HOUR = intPreferencesKey("alarmHour")
         val ALARM_MINUTE = intPreferencesKey("alarmMinute")
         val ALARM_TIME_FORMAT = stringPreferencesKey("alarmTimeFormat")
