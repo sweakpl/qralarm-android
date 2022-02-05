@@ -43,6 +43,10 @@ private fun parseMilitaryHourToAmPm(hour: Int): Triple<Int, String, String> {
         hour == 12 -> {
             newMeridiemString = Meridiem.PM.name
         }
+        hour == 0 -> {
+            newHour = 12
+            newMeridiemString = Meridiem.AM.name
+        }
         else -> {
             newMeridiemString = Meridiem.AM.name
         }
