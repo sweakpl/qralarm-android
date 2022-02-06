@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.alarm.QRAlarmService
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.util.Meridiem
 import com.sweak.qralarm.util.TimeFormat
@@ -36,10 +37,10 @@ class HomeViewModel @Inject constructor(
     fun startOrStopAlarm() {
         val alarmSet = homeUiState.value.alarmSet
 
-        if (alarmSet) {
-            qrAlarmManager.cancelAlarm()
+        if (!alarmSet) {
+            qrAlarmManager.setAlarm(getAlarmTimeInMillis(), QRAlarmService.ALARM_TYPE_NORMAL)
         } else {
-            qrAlarmManager.setAlarm(getAlarmTimeInMillis())
+            qrAlarmManager.cancelAlarm()
         }
 
         viewModelScope.launch {
@@ -71,7 +72,7 @@ class HomeViewModel @Inject constructor(
 
     private fun getAlarmTimeInMillis(): Long {
         val calendar = Calendar.getInstance().apply {
-            with (homeUiState.value) {
+            with(homeUiState.value) {
                 set(
                     if (timeFormat == TimeFormat.MILITARY) Calendar.HOUR_OF_DAY else Calendar.HOUR,
                     hour

@@ -3,6 +3,7 @@
     package="com.sweak.qralarm">
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name="QRAlarmApp"
@@ -15,6 +16,7 @@
         <activity
             android:name="com.sweak.qralarm.MainActivity"
             android:exported="true"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +28,12 @@
             android:name=".alarm.QRAlarmReceiver"
             android:enabled="true"
             android:exported="false" />
+
+        <service
+            android:name=".alarm.QRAlarmService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
 
     </application>
 

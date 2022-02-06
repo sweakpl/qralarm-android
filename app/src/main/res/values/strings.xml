@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">QRAlarm</string>
+    <string name="alarm_notification_channel_name">Firing alarms</string>
+    <string name="alarm_notification_channel_description">Play alarm sound, display a notification and pop up on screen</string>
+    <string name="alarm_notification_title">QRAlarm</string>
+    <string name="alarm_notification_text">Go and scan Your QR Code!</string>
 </resources>

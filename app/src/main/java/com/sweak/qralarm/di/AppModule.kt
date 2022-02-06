@@ -2,6 +2,7 @@ package com.sweak.qralarm.di
 
 import android.app.AlarmManager
 import android.app.Application
+import android.app.NotificationManager
 import android.app.Service
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
@@ -29,4 +30,9 @@ class AppModule {
     @Singleton
     fun provideAlarmManager(app: Application): AlarmManager =
         app.getSystemService(Service.ALARM_SERVICE) as AlarmManager
+
+    @Provides
+    @Singleton
+    fun provideNotificationManager(app: Application): NotificationManager =
+        app.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
 }
