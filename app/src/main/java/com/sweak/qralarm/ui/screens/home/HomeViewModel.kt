@@ -1,5 +1,6 @@
 package com.sweak.qralarm.ui.screens.home
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -38,7 +39,15 @@ class HomeViewModel @Inject constructor(
         val alarmSet = homeUiState.value.alarmSet
 
         if (!alarmSet) {
-            qrAlarmManager.setAlarm(getAlarmTimeInMillis(), QRAlarmService.ALARM_TYPE_NORMAL)
+            try {
+                qrAlarmManager.setAlarm(getAlarmTimeInMillis(), QRAlarmService.ALARM_TYPE_NORMAL)
+            } catch (exception: SecurityException) {
+                Log.i(
+                    "HomeViewModel",
+                    "App not allowed to schedule exact alarms - handle it!"
+                )
+                throw exception
+            }
         } else {
             qrAlarmManager.cancelAlarm()
         }

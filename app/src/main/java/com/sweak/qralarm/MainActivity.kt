@@ -5,9 +5,13 @@ import android.text.format.DateFormat
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeScreen
 import com.sweak.qralarm.ui.theme.QRAlarmTheme
@@ -15,6 +19,7 @@ import com.sweak.qralarm.util.Screen
 import com.sweak.qralarm.util.swapTimeFormats
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
@@ -24,10 +29,14 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var dataStoreManager: DataStoreManager
 
+    @Inject
+    lateinit var qrAlarmManager: QRAlarmManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         convertTimeFormatIfNeeded()
+        checkIfAlarmSet()
 
         setContent {
             QRAlarmTheme {
@@ -80,6 +89,22 @@ class MainActivity : ComponentActivity() {
                     DataStoreManager.ALARM_MERIDIEM,
                     newMeridiemString
                 )
+            }
+        }
+    }
+
+    private fun checkIfAlarmSet() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                if (qrAlarmManager.canScheduleExactAlarms()) {
+                    dataStoreManager.putBoolean(
+                        DataStoreManager.ALARM_SET,
+                        qrAlarmManager.isAlarmSet()
+                    )
+                } else {
+                    qrAlarmManager.cancelAlarm()
+                    dataStoreManager.putBoolean(DataStoreManager.ALARM_SET, false)
+                }
             }
         }
     }
