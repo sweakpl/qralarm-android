@@ -102,7 +102,7 @@ class MainActivity : ComponentActivity() {
                         qrAlarmManager.isAlarmSet()
                     )
                 } else {
-                    qrAlarmManager.cancelAlarm()
+                    qrAlarmManager.removeAlarmPendingIntent()
                     dataStoreManager.putBoolean(DataStoreManager.ALARM_SET, false)
                 }
             }

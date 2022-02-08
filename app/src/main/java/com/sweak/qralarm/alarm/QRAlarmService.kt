@@ -7,7 +7,10 @@ import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.media.RingtoneManager
 import android.os.*
+import android.util.Log
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import com.sweak.qralarm.MainActivity
@@ -15,6 +18,7 @@ import com.sweak.qralarm.QRAlarmApp
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.theme.Jacarta
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -25,6 +29,9 @@ class QRAlarmService : Service() {
 
     @Inject
     lateinit var vibrator: Vibrator
+
+    @Inject
+    lateinit var mediaPlayer: MediaPlayer
 
     private var serviceLooper: Looper? = null
     private var serviceHandler: ServiceHandler? = null
@@ -91,17 +98,14 @@ class QRAlarmService : Service() {
 
     private fun startVibratingAndPlayingAlarmSound() {
         startVibrating()
+        startPlayingAlarmSound()
     }
 
     private fun startVibrating() {
         val vibrationAudioAttributes = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_ALARM)
-            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-            .apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    setHapticChannelsMuted(false)
-                }
-            }.build()
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val vibrationEffect = VibrationEffect.createWaveform(
@@ -113,6 +117,24 @@ class QRAlarmService : Service() {
             vibrator.vibrate(vibrationEffect, vibrationAudioAttributes)
         } else {
             vibrator.vibrate(longArrayOf(0, 1000, 1000), 0, vibrationAudioAttributes)
+        }
+    }
+
+    private fun startPlayingAlarmSound() {
+        mediaPlayer.apply {
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build()
+            )
+            setDataSource(
+                applicationContext,
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+            )
+            isLooping = true
+            prepare()
+            start()
         }
     }
 
@@ -150,6 +172,12 @@ class QRAlarmService : Service() {
 
     private fun stopVibratingAndPlayingSound() {
         vibrator.cancel()
+
+        try {
+            mediaPlayer.stop()
+        } catch (exception: IllegalStateException) {
+            Log.i("QRAlarmService", "mediaPlayer was not initialized! Cannot stop it...")
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null

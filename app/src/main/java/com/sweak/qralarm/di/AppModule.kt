@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.Application
 import android.app.NotificationManager
 import android.app.Service
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Vibrator
 import android.os.VibratorManager
@@ -48,4 +49,8 @@ class AppModule {
         } else {
             app.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator
         }
+
+    @Provides
+    @Singleton
+    fun provideMediaPlayer(): MediaPlayer = MediaPlayer()
 }

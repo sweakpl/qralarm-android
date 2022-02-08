@@ -46,7 +46,10 @@ class QRAlarmManager @Inject constructor(
 
     fun cancelAlarm() {
         app.stopService(Intent(app.applicationContext, QRAlarmService::class.java))
+        removeAlarmPendingIntent()
+    }
 
+    fun removeAlarmPendingIntent() {
         val alarmPendingIntent = PendingIntent.getBroadcast(
             app.applicationContext,
             ALARM_PENDING_INTENT_REQUEST_CODE,
