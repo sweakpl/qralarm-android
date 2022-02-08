@@ -1,13 +1,12 @@
 package com.sweak.qralarm.alarm
 
-import android.Manifest
 import android.app.AlarmManager
 import android.app.Application
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
-import androidx.core.content.PermissionChecker
 import com.sweak.qralarm.MainActivity
+import java.util.*
 import javax.inject.Inject
 
 class QRAlarmManager @Inject constructor(
@@ -77,16 +76,39 @@ class QRAlarmManager @Inject constructor(
                     else 0
         ) != null
 
-    fun canScheduleExactAlarms(): Boolean =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-            PermissionChecker.checkSelfPermission(
+    fun canScheduleExactAlarms(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val testingPermissionAlarmPendingIntent = PendingIntent.getBroadcast(
                 app.applicationContext,
-                Manifest.permission.SCHEDULE_EXACT_ALARM
-            ) == PermissionChecker.PERMISSION_GRANTED
-        else true
+                TESTING_PERMISSION_ALARM_INTENT_REQUEST_CODE,
+                Intent(app.applicationContext, QRAlarmReceiver::class.java),
+                PendingIntent.FLAG_IMMUTABLE
+            )
+
+            try {
+                alarmManager.setAlarmClock(
+                    AlarmManager.AlarmClockInfo(
+                        Calendar.getInstance().timeInMillis + 10000,
+                        null
+                    ),
+                    testingPermissionAlarmPendingIntent
+                )
+            } catch (exception: SecurityException) {
+                return false
+            }
+
+            alarmManager.cancel(testingPermissionAlarmPendingIntent)
+            testingPermissionAlarmPendingIntent.cancel()
+
+            return true
+        } else {
+            return true
+        }
+    }
 
     companion object {
         const val ALARM_PENDING_INTENT_REQUEST_CODE = 100
         const val ALARM_INFO_PENDING_INTENT_REQUEST_CODE = 101
+        const val TESTING_PERMISSION_ALARM_INTENT_REQUEST_CODE = 102
     }
 }
