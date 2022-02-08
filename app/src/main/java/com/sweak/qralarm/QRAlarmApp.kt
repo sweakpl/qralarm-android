@@ -58,7 +58,6 @@ class QRAlarmApp : Application() {
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 enableLights(true)
-                enableVibration(true)
                 setSound(null, null)
                 description = getString(R.string.alarm_notification_channel_description)
                 lightColor = Jacarta.toArgb()

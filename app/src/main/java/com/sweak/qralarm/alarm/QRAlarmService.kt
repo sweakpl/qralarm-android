@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.media.AudioAttributes
 import android.os.*
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
@@ -21,6 +22,9 @@ class QRAlarmService : Service() {
 
     @Inject
     lateinit var notificationManager: NotificationManager
+
+    @Inject
+    lateinit var vibrator: Vibrator
 
     private var serviceLooper: Looper? = null
     private var serviceHandler: ServiceHandler? = null
@@ -52,6 +56,8 @@ class QRAlarmService : Service() {
                         )
                     }
                 }
+
+                startVibratingAndPlayingAlarmSound()
             }
         }
     }
@@ -78,9 +84,35 @@ class QRAlarmService : Service() {
             setContentTitle(getString(R.string.alarm_notification_title))
             setContentText(getString(R.string.alarm_notification_text))
             setSmallIcon(R.drawable.ic_launcher_foreground)
-            setVibrate(longArrayOf(0, 1000, 1000))
             setContentIntent(alarmNotificationPendingIntent)
             return build()
+        }
+    }
+
+    private fun startVibratingAndPlayingAlarmSound() {
+        startVibrating()
+    }
+
+    private fun startVibrating() {
+        val vibrationAudioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_ALARM)
+            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+            .apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    setHapticChannelsMuted(false)
+                }
+            }.build()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val vibrationEffect = VibrationEffect.createWaveform(
+                longArrayOf(1000, 1000),
+                intArrayOf(255, 0),
+                0
+            )
+
+            vibrator.vibrate(vibrationEffect, vibrationAudioAttributes)
+        } else {
+            vibrator.vibrate(longArrayOf(0, 1000, 1000), 0, vibrationAudioAttributes)
         }
     }
 
@@ -107,11 +139,17 @@ class QRAlarmService : Service() {
     }
 
     override fun onDestroy() {
+        stopVibratingAndPlayingSound()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             stopForeground(true)
         } else {
             notificationManager.cancel(ALARM_NOTIFICATION_ID)
         }
+    }
+
+    private fun stopVibratingAndPlayingSound() {
+        vibrator.cancel()
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
