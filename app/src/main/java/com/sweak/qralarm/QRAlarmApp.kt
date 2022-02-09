@@ -4,13 +4,15 @@ import android.app.Application
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.text.format.DateFormat
 import androidx.compose.ui.graphics.toArgb
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
-import com.sweak.qralarm.util.CurrentTime
+import com.sweak.qralarm.util.TimeFormat
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import java.util.*
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -35,14 +37,15 @@ class QRAlarmApp : Application() {
         }
 
         if (firstLaunch) {
-            val currentTime = CurrentTime(this)
+            val timeInMillis = Calendar.getInstance().timeInMillis
+            val timeFormat =
+                if (DateFormat.is24HourFormat(this)) TimeFormat.MILITARY.name
+                else TimeFormat.AMPM.name
 
             runBlocking {
                 dataStoreManager.apply {
-                    putString(DataStoreManager.ALARM_TIME_FORMAT, currentTime.timeFormat.name)
-                    putInt(DataStoreManager.ALARM_HOUR, currentTime.hour)
-                    putInt(DataStoreManager.ALARM_MINUTE, currentTime.minute)
-                    putString(DataStoreManager.ALARM_MERIDIEM, currentTime.meridiem.name)
+                    putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, timeInMillis)
+                    putString(DataStoreManager.ALARM_TIME_FORMAT, timeFormat)
                     putBoolean(DataStoreManager.ALARM_SET, false)
                     putBoolean(DataStoreManager.FIRST_LAUNCH, false)
                 }

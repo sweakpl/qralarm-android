@@ -22,7 +22,7 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    suspend fun putInt(key: Preferences.Key<Int>, value: Int) {
+    suspend fun putLong(key: Preferences.Key<Long>, value: Long) {
         context.dataStore.edit { preferences ->
             preferences[key] = value
         }
@@ -38,7 +38,7 @@ class DataStoreManager(private val context: Context) {
             preferences[key] ?: "null"
         }
 
-    fun getInt(key: Preferences.Key<Int>) =
+    fun getLong(key: Preferences.Key<Long>) =
         context.dataStore.data.map { preferences ->
             preferences[key] ?: 0
         }
@@ -46,9 +46,7 @@ class DataStoreManager(private val context: Context) {
     companion object {
         val FIRST_LAUNCH = booleanPreferencesKey("firstLaunch")
         val ALARM_SET = booleanPreferencesKey("alarmSet")
-        val ALARM_HOUR = intPreferencesKey("alarmHour")
-        val ALARM_MINUTE = intPreferencesKey("alarmMinute")
+        val ALARM_TIME_IN_MILLIS = longPreferencesKey("alarmTimeInMillis")
         val ALARM_TIME_FORMAT = stringPreferencesKey("alarmTimeFormat")
-        val ALARM_MERIDIEM = stringPreferencesKey("alarmMeridiem")
     }
 }

@@ -13,7 +13,10 @@ class QRAlarmReceiver : BroadcastReceiver() {
         intent?.apply {
             alarmServiceIntent.putExtra(
                 QRAlarmService.ALARM_TYPE_KEY,
-                getIntExtra(QRAlarmService.ALARM_TYPE_KEY, 202)
+                getIntExtra(
+                    QRAlarmService.ALARM_TYPE_KEY,
+                    QRAlarmService.ALARM_TYPE_NONE
+                )
             )
         }
 

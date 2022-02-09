@@ -24,12 +24,16 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val homeUiState: MutableState<HomeUiState> = runBlocking {
+        val alarmTimeInMillis =
+            dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
+        val timeFormat = getTimeFormat()
+
         mutableStateOf(
             HomeUiState(
-                getTimeFormat(),
-                dataStoreManager.getInt(DataStoreManager.ALARM_HOUR).first(),
-                dataStoreManager.getInt(DataStoreManager.ALARM_MINUTE).first(),
-                getMeridiem(),
+                timeFormat,
+                getAlarmHour(alarmTimeInMillis, timeFormat),
+                getAlarmMinute(alarmTimeInMillis),
+                getMeridiem(alarmTimeInMillis),
                 dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first()
             )
         )
@@ -57,12 +61,7 @@ class HomeViewModel @Inject constructor(
                 putBoolean(DataStoreManager.ALARM_SET, !alarmSet)
                 homeUiState.value = homeUiState.value.copy(alarmSet = !alarmSet)
 
-                putInt(DataStoreManager.ALARM_HOUR, homeUiState.value.hour)
-                putInt(DataStoreManager.ALARM_MINUTE, homeUiState.value.minute)
-
-                if (getString(DataStoreManager.ALARM_TIME_FORMAT).first() == TimeFormat.AMPM.name) {
-                    putString(DataStoreManager.ALARM_MERIDIEM, homeUiState.value.meridiem.name)
-                }
+                putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, getAlarmTimeInMillis())
             }
         }
     }
@@ -73,10 +72,32 @@ class HomeViewModel @Inject constructor(
         return if (timeFormat == TimeFormat.AMPM.name) TimeFormat.AMPM else TimeFormat.MILITARY
     }
 
-    private suspend fun getMeridiem(): Meridiem {
-        val meridiem = dataStoreManager.getString(DataStoreManager.ALARM_MERIDIEM).first()
+    private fun getAlarmHour(alarmTimeInMillis: Long, timeFormat: TimeFormat): Int {
+        val alarmCalendar = Calendar.getInstance().apply {
+            timeInMillis = alarmTimeInMillis
+        }
 
-        return if (meridiem == Meridiem.PM.name) Meridiem.PM else Meridiem.AM
+        return if (timeFormat == TimeFormat.MILITARY) {
+            alarmCalendar.get(Calendar.HOUR_OF_DAY)
+        } else {
+            alarmCalendar.get(Calendar.HOUR).apply {
+                return if (this == 0) 12 else this
+            }
+        }
+    }
+
+    private fun getAlarmMinute(alarmTimeInMillis: Long): Int {
+        Calendar.getInstance().apply {
+            timeInMillis = alarmTimeInMillis
+            return get(Calendar.MINUTE)
+        }
+    }
+
+    private fun getMeridiem(alarmTimeInMillis: Long): Meridiem {
+        Calendar.getInstance().apply {
+            timeInMillis = alarmTimeInMillis
+            return if (get(Calendar.AM_PM) == Calendar.AM) Meridiem.AM else Meridiem.PM
+        }
     }
 
     private fun getAlarmTimeInMillis(): Long {
@@ -84,11 +105,19 @@ class HomeViewModel @Inject constructor(
             with(homeUiState.value) {
                 set(
                     if (timeFormat == TimeFormat.MILITARY) Calendar.HOUR_OF_DAY else Calendar.HOUR,
-                    hour
+                    when {
+                        timeFormat == TimeFormat.MILITARY -> hour
+                        hour == 12 -> 0
+                        else -> hour
+                    }
                 )
                 set(Calendar.MINUTE, minute)
                 set(Calendar.SECOND, 0)
                 set(Calendar.MILLISECOND, 0)
+
+                if (timeFormat == TimeFormat.AMPM) {
+                    set(Calendar.AM_PM, if (meridiem == Meridiem.AM) Calendar.AM else Calendar.PM)
+                }
             }
         }
 

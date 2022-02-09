@@ -18,7 +18,6 @@ import com.sweak.qralarm.QRAlarmApp
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.theme.Jacarta
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.IllegalStateException
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -122,6 +121,7 @@ class QRAlarmService : Service() {
 
     private fun startPlayingAlarmSound() {
         mediaPlayer.apply {
+            reset()
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ALARM)
@@ -176,20 +176,21 @@ class QRAlarmService : Service() {
         try {
             mediaPlayer.stop()
         } catch (exception: IllegalStateException) {
-            Log.i("QRAlarmService", "mediaPlayer was not initialized! Cannot stop it...")
+            Log.e("QRAlarmService", "mediaPlayer was not initialized! Cannot stop it...")
         }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     companion object {
+        const val HANDLER_THREAD_NAME = "QRAlarmHandlerThread"
         const val FOREGROUND_SERVICE_ID = 300
         const val ALARM_NOTIFICATION_ID = 300
         const val ALARM_NOTIFICATION_REQUEST_CODE = 400
-        const val HANDLER_THREAD_NAME = "QRAlarmHandlerThread"
 
         const val ALARM_TYPE_KEY = "alarmTypeKey"
         const val ALARM_TYPE_NORMAL = 200
         const val ALARM_TYPE_SNOOZE = 201
+        const val ALARM_TYPE_NONE = 202
     }
 }
