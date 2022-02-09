@@ -15,16 +15,22 @@ val amikoFamily = FontFamily(
 )
 
 val Typography = Typography(
+    h1 = TextStyle(
+        fontFamily = amikoFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 22.sp,
+        color = White
+    ),
     body1 = TextStyle(
         fontFamily = amikoFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
+        fontSize = 14.sp,
         color = White
     ),
     button = TextStyle(
         fontFamily = amikoFamily,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 26.sp,
+        fontSize = 20.sp,
         color = White
     )
 )

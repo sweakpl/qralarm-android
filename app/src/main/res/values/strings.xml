@@ -4,4 +4,10 @@
     <string name="alarm_notification_channel_description">Play alarm sound, display a notification and pop up on screen</string>
     <string name="alarm_notification_title">QRAlarm</string>
     <string name="alarm_notification_text">Go and scan Your QR Code!</string>
+    <string name="stop">STOP</string>
+    <string name="start">START</string>
+    <string name="alarm_permission_required_title">Special app access required</string>
+    <string name="alarm_permission_required_message"><![CDATA[QRAlarm needs an “Alarms & reminders” special app access to schedule alarms that can be fired at exact times. The access is revoked and thus must be granted via system settings.]]></string>
+    <string name="later">Later</string>
+    <string name="settings">Settings</string>
 </resources>

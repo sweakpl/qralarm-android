@@ -1,5 +1,8 @@
 package com.sweak.qralarm.ui.screens.home
 
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -18,8 +21,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,6 +32,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sweak.qralarm.R
+import com.sweak.qralarm.ui.screens.shared.components.AlarmPermissionDialog
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Meridiem
 import com.sweak.qralarm.util.TimeFormat
@@ -97,6 +103,18 @@ fun HomeScreen(
             }
         )
     }
+    val context = LocalContext.current
+
+    AlarmPermissionDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                context.startActivity(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+            }
+            uiState.value = uiState.value.copy(showPermissionDialog = false)
+        },
+        onNegativeClick = { uiState.value = uiState.value.copy(showPermissionDialog = false) }
+    )
 }
 
 @Composable
@@ -334,7 +352,8 @@ fun StartStopAlarmButton(
         )
     ) {
         Text(
-            text = if (uiState.value.alarmSet) "STOP" else "START",
+            text = stringResource(if (uiState.value.alarmSet) R.string.stop else R.string.start),
+            fontSize = 26.sp,
             modifier = Modifier.padding(
                 MaterialTheme.space.medium,
                 MaterialTheme.space.small,

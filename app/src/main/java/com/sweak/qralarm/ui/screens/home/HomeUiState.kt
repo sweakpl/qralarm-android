@@ -8,5 +8,6 @@ data class HomeUiState(
     var hour: Int,
     var minute: Int,
     var meridiem: Meridiem,
-    var alarmSet: Boolean
+    var alarmSet: Boolean,
+    var showPermissionDialog: Boolean
 )
