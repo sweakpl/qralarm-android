@@ -256,25 +256,37 @@ fun NumberPicker(
                 .align(Alignment.CenterHorizontally)
                 .offset { IntOffset(x = 0, y = coercedAnimatedOffset.roundToInt()) }
         ) {
-            PickerLabel(
+            Text(
                 text = label(animatedStateValue - 1),
+                fontSize = 64.sp,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(y = -halvedNumbersColumnHeight)
                     .alpha(coercedAnimatedOffset / halvedNumbersColumnHeightPx)
+                    .pointerInput(Unit) {
+                        detectTapGestures { }
+                    }
             )
-            PickerLabel(
+            Text(
                 text = label(animatedStateValue),
-                modifier = Modifier
+                fontSize = 63.8.sp,
+                modifier = modifier
                     .align(Alignment.Center)
                     .alpha(1 - abs(coercedAnimatedOffset) / halvedNumbersColumnHeightPx)
+                    .pointerInput(Unit) {
+                        detectTapGestures { }
+                    }
             )
-            PickerLabel(
+            Text(
                 text = label(animatedStateValue + 1),
+                fontSize = 64.sp,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(y = halvedNumbersColumnHeight)
                     .alpha(-coercedAnimatedOffset / halvedNumbersColumnHeightPx)
+                    .pointerInput(Unit) {
+                        detectTapGestures { }
+                    }
             )
         }
     }
@@ -282,21 +294,6 @@ fun NumberPicker(
 
 enum class PickerResponsibility {
     HOUR, MINUTE, MERIDIEM
-}
-
-@Composable
-private fun PickerLabel(
-    text: String,
-    modifier: Modifier
-) {
-    Text(
-        text = text,
-        fontSize = 64.sp,
-        modifier = modifier
-            .pointerInput(Unit) {
-                detectTapGestures { }
-            }
-    )
 }
 
 private suspend fun Animatable<Float, AnimationVector1D>.fling(
