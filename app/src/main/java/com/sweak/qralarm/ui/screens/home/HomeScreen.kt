@@ -1,6 +1,8 @@
 package com.sweak.qralarm.ui.screens.home
 
+import android.Manifest
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.compose.animation.core.*
@@ -31,8 +33,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.AlarmPermissionDialog
+import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionDialog
+import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionRevokedDialog
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Meridiem
 import com.sweak.qralarm.util.TimeFormat
@@ -40,11 +46,13 @@ import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+@ExperimentalPermissionsApi
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState = remember { homeViewModel.homeUiState }
+    val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
 
     val constraints = ConstraintSet {
         val menuButton = createRefFor("menuButton")
@@ -99,12 +107,36 @@ fun HomeScreen(
             modifier = Modifier.layoutId("startStopAlarmButton"),
             uiState = uiState,
             onClick = {
-                homeViewModel.startOrStopAlarm()
+                homeViewModel.startOrStopAlarm(cameraPermissionState)
             }
         )
     }
 
     val context = LocalContext.current
+
+    CameraPermissionDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            cameraPermissionState.launchPermissionRequest()
+            uiState.value = uiState.value.copy(showCameraPermissionDialog = false)
+        },
+        onNegativeClick = { uiState.value = uiState.value.copy(showCameraPermissionDialog = false) }
+    )
+
+    CameraPermissionRevokedDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            context.startActivity(
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.parse("package:${context.packageName}")
+                }
+            )
+            uiState.value = uiState.value.copy(showCameraPermissionRevokedDialog = false)
+        },
+        onNegativeClick = {
+            uiState.value = uiState.value.copy(showCameraPermissionRevokedDialog = false)
+        }
+    )
 
     AlarmPermissionDialog(
         uiState = uiState,

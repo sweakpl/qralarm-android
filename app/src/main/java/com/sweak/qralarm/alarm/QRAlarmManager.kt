@@ -5,10 +5,12 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
 import java.util.*
 import javax.inject.Inject
 
+@ExperimentalPermissionsApi
 class QRAlarmManager @Inject constructor(
     private val alarmManager: AlarmManager,
     private val app: Application

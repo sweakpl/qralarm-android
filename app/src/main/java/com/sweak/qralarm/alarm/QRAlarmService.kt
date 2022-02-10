@@ -13,6 +13,7 @@ import android.os.*
 import android.util.Log
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
 import com.sweak.qralarm.QRAlarmApp
 import com.sweak.qralarm.R
@@ -20,6 +21,7 @@ import com.sweak.qralarm.ui.theme.Jacarta
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@ExperimentalPermissionsApi
 @AndroidEntryPoint
 class QRAlarmService : Service() {
 

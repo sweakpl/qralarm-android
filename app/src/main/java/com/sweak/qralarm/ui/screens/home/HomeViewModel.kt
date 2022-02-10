@@ -4,6 +4,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.QRAlarmService
 import com.sweak.qralarm.data.DataStoreManager
@@ -16,6 +18,7 @@ import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
 
+@ExperimentalPermissionsApi
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
@@ -41,7 +44,22 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun startOrStopAlarm() {
+    fun startOrStopAlarm(cameraPermissionState: PermissionState) {
+        if (!cameraPermissionState.hasPermission) {
+            when {
+                !cameraPermissionState.permissionRequested ||
+                        cameraPermissionState.shouldShowRationale -> {
+                    homeUiState.value = homeUiState.value.copy(showCameraPermissionDialog = true)
+                    return
+                }
+                !cameraPermissionState.shouldShowRationale -> {
+                    homeUiState.value =
+                        homeUiState.value.copy(showCameraPermissionRevokedDialog = true)
+                    return
+                }
+            }
+        }
+
         val alarmSet = homeUiState.value.alarmSet
 
         if (!alarmSet) {

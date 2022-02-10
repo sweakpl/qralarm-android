@@ -85,4 +85,7 @@ dependencies {
 
     // ZXing
     implementation 'com.google.zxing:core:3.3.3'
+
+    // Permission handling
+    implementation "com.google.accompanist:accompanist-permissions:0.21.1-beta"
 }

@@ -8,6 +8,7 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Vibrator
 import android.os.VibratorManager
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import dagger.Module
@@ -25,6 +26,7 @@ class AppModule {
     fun provideDataStoreManager(app: Application): DataStoreManager =
         DataStoreManager(app)
 
+    @ExperimentalPermissionsApi
     @Provides
     @Singleton
     fun provideQrAlarmManager(alarmManager: AlarmManager, app: Application): QRAlarmManager =
