@@ -103,6 +103,7 @@ fun HomeScreen(
             }
         )
     }
+
     val context = LocalContext.current
 
     AlarmPermissionDialog(
@@ -111,9 +112,9 @@ fun HomeScreen(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 context.startActivity(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
             }
-            uiState.value = uiState.value.copy(showPermissionDialog = false)
+            uiState.value = uiState.value.copy(showAlarmPermissionDialog = false)
         },
-        onNegativeClick = { uiState.value = uiState.value.copy(showPermissionDialog = false) }
+        onNegativeClick = { uiState.value = uiState.value.copy(showAlarmPermissionDialog = false) }
     )
 }
 
