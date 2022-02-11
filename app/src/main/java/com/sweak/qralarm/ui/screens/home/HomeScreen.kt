@@ -117,8 +117,15 @@ fun HomeScreen(
     CameraPermissionDialog(
         uiState = uiState,
         onPositiveClick = {
-            cameraPermissionState.launchPermissionRequest()
-            uiState.value = uiState.value.copy(showCameraPermissionDialog = false)
+            if (!cameraPermissionState.shouldShowRationale) {
+                uiState.value = uiState.value.copy(
+                    showCameraPermissionDialog = false,
+                    showCameraPermissionRevokedDialog = true
+                )
+            } else {
+                cameraPermissionState.launchPermissionRequest()
+                uiState.value = uiState.value.copy(showCameraPermissionDialog = false)
+            }
         },
         onNegativeClick = { uiState.value = uiState.value.copy(showCameraPermissionDialog = false) }
     )
