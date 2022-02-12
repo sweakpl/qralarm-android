@@ -186,7 +186,7 @@ fun TimePicker(
             responsibility = PickerResponsibility.HOUR,
             range = when (uiState.value.timeFormat) {
                 TimeFormat.MILITARY -> 0..23
-                TimeFormat.AMPM -> 0..12
+                TimeFormat.AMPM -> 1..12
             },
             label = { if (it in 0..9) "0$it" else it.toString() }
         )

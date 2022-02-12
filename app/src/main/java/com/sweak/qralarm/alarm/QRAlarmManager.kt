@@ -7,7 +7,7 @@ import android.content.Intent
 import android.os.Build
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
-import java.util.*
+import com.sweak.qralarm.util.currentTimeInMillis
 import javax.inject.Inject
 
 @ExperimentalPermissionsApi
@@ -90,7 +90,7 @@ class QRAlarmManager @Inject constructor(
             try {
                 alarmManager.setAlarmClock(
                     AlarmManager.AlarmClockInfo(
-                        Calendar.getInstance().timeInMillis + 10000,
+                        currentTimeInMillis() + 10000,
                         null
                     ),
                     testingPermissionAlarmPendingIntent

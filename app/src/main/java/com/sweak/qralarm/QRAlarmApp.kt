@@ -9,10 +9,10 @@ import androidx.compose.ui.graphics.toArgb
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
 import com.sweak.qralarm.util.TimeFormat
+import com.sweak.qralarm.util.currentTimeInMillis
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import java.util.*
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -37,7 +37,7 @@ class QRAlarmApp : Application() {
         }
 
         if (firstLaunch) {
-            val timeInMillis = Calendar.getInstance().timeInMillis
+            val timeInMillis = currentTimeInMillis()
             val timeFormat =
                 if (DateFormat.is24HourFormat(this)) TimeFormat.MILITARY.name
                 else TimeFormat.AMPM.name
