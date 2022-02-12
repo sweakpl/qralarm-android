@@ -33,7 +33,7 @@ class HomeViewModel @Inject constructor(
                 timeFormat,
                 getAlarmHour(alarmTimeInMillis, timeFormat),
                 getAlarmMinute(alarmTimeInMillis),
-                getMeridiem(alarmTimeInMillis),
+                getAlarmMeridiem(alarmTimeInMillis),
                 dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first(),
                 showAlarmPermissionDialog = false,
                 showCameraPermissionDialog = false,

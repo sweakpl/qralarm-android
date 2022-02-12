@@ -42,9 +42,7 @@ android {
         kotlinCompilerExtensionVersion compose_version
     }
     packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
+        resources.excludes.add("META-INF/*")
     }
 }
 
@@ -55,15 +53,18 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
 
     // Jetpack Compose
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation "androidx.compose.ui:ui:1.2.0-alpha03"
+    implementation "androidx.compose.material:material:1.1.0"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.1.0"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0"
     implementation 'androidx.activity:activity-compose:1.4.0'
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter'
+    androidTestImplementation 'org.testng:testng:6.9.6'
+    debugImplementation "androidx.compose.ui:ui-tooling:1.1.0"
 
     // Coroutines
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
 
     // Preferences DataStore
     implementation 'androidx.datastore:datastore-preferences:1.0.0'
@@ -88,4 +89,9 @@ dependencies {
 
     // Permission handling
     implementation "com.google.accompanist:accompanist-permissions:0.21.1-beta"
+
+    // Tests
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    androidTestImplementation 'androidx.test:runner:1.4.1-alpha03'
 }

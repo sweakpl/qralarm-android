@@ -87,7 +87,7 @@ fun getAlarmHour(alarmTimeInMillis: Long, timeFormat: TimeFormat): Int {
             }
         }
     } else {
-        val alarmCalendar = Calendar.getInstance().apply {
+        val alarmCalendar = Calendar.getInstance(TimeZone.getDefault()).apply {
             timeInMillis = alarmTimeInMillis
         }
 
@@ -105,20 +105,20 @@ fun getAlarmMinute(alarmTimeInMillis: Long): Int {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         return Instant.ofEpochMilli(alarmTimeInMillis).atZone(ZoneId.systemDefault()).minute
     } else {
-        Calendar.getInstance().apply {
+        Calendar.getInstance(TimeZone.getDefault()).apply {
             timeInMillis = alarmTimeInMillis
             return get(Calendar.MINUTE)
         }
     }
 }
 
-fun getMeridiem(alarmTimeInMillis: Long): Meridiem {
+fun getAlarmMeridiem(alarmTimeInMillis: Long): Meridiem {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         Instant.ofEpochMilli(alarmTimeInMillis).atZone(ZoneId.systemDefault()).hour.also {
             return if (it in 0..11) Meridiem.AM else Meridiem.PM
         }
     } else {
-        Calendar.getInstance().apply {
+        Calendar.getInstance(TimeZone.getDefault()).apply {
             timeInMillis = alarmTimeInMillis
             return if (get(Calendar.AM_PM) == Calendar.AM) Meridiem.AM else Meridiem.PM
         }
