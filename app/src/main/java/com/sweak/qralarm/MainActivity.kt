@@ -15,6 +15,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeScreen
+import com.sweak.qralarm.ui.screens.scanner.ScannerScreen
 import com.sweak.qralarm.ui.theme.QRAlarmTheme
 import com.sweak.qralarm.util.Screen
 import com.sweak.qralarm.util.TimeFormat
@@ -51,7 +52,10 @@ class MainActivity : ComponentActivity() {
         val navController = rememberNavController()
         NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
             composable(route = Screen.HomeScreen.route) {
-                HomeScreen()
+                HomeScreen(navController = navController)
+            }
+            composable(route = Screen.ScannerScreen.route) {
+                ScannerScreen()
             }
         }
     }

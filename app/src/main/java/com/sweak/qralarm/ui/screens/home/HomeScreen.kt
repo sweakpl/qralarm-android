@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
@@ -41,6 +42,7 @@ import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionDialog
 import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionRevokedDialog
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Meridiem
+import com.sweak.qralarm.util.Screen
 import com.sweak.qralarm.util.TimeFormat
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -49,6 +51,7 @@ import kotlin.math.roundToInt
 @ExperimentalPermissionsApi
 @Composable
 fun HomeScreen(
+    navController: NavHostController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState = remember { homeViewModel.homeUiState }
@@ -93,6 +96,7 @@ fun HomeScreen(
             )
     ) {
         MenuButton(
+            navController = navController,
             modifier = Modifier
                 .layoutId("menuButton")
                 .padding(MaterialTheme.space.medium)
@@ -158,9 +162,9 @@ fun HomeScreen(
 }
 
 @Composable
-fun MenuButton(modifier: Modifier = Modifier) {
+fun MenuButton(navController: NavHostController, modifier: Modifier = Modifier) {
     IconButton(
-        onClick = {},
+        onClick = { navController.navigate(Screen.ScannerScreen.route) },
         modifier = modifier
     ) {
         Icon(

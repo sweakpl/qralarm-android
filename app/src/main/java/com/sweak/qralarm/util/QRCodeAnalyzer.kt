@@ -40,7 +40,11 @@ class QRCodeAnalyzer(
 
             try {
                 val decodingResult = MultiFormatReader().apply {
-                    setHints(mapOf(DecodeHintType.POSSIBLE_FORMATS to BarcodeFormat.QR_CODE))
+                    setHints(
+                        mapOf(
+                            DecodeHintType.POSSIBLE_FORMATS to arrayListOf(BarcodeFormat.QR_CODE)
+                        )
+                    )
                 }.decode(binaryImageBitmap)
                 onQRCodeScanned(decodingResult.text)
             } catch (exception: NotFoundException) {
