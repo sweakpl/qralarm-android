@@ -1,70 +1,52 @@
 package com.sweak.qralarm.ui.screens.scanner
 
 import android.util.Log
-import android.util.Size
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
-import com.sweak.qralarm.util.QRCodeAnalyzer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import com.budiyev.android.codescanner.*
+import com.google.zxing.BarcodeFormat
 
 @Composable
 fun ScannerScreen() {
-    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+    lateinit var codeScanner: CodeScanner
 
-    val code = remember { mutableStateOf("") }
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_PAUSE) {
+                codeScanner.releaseResources()
+            } else if (event == Lifecycle.Event.ON_RESUME) {
+                codeScanner.startPreview()
+            }
+        }
 
-    val cameraProviderFuture = remember {
-        ProcessCameraProvider.getInstance(context)
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 
     AndroidView(
-        modifier = Modifier.fillMaxSize(),
-        factory = { factoryContext ->
-            val previewView = PreviewView(factoryContext)
-            val preview = Preview.Builder().build()
-            val selector = CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                .build()
+        factory = { context ->
+            val codeScannerView = CodeScannerView(context)
 
-            preview.setSurfaceProvider(previewView.surfaceProvider)
-
-            val imageAnalysis = ImageAnalysis.Builder()
-                .setTargetResolution(Size(previewView.width, previewView.height))
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build().apply {
-                    setAnalyzer(
-                        ContextCompat.getMainExecutor(factoryContext),
-                        QRCodeAnalyzer { result ->
-                            code.value = result
-                            Log.i("HomeScreen", "Code is: $result")
-                        }
-                    )
+            codeScanner = CodeScanner(context, codeScannerView).apply {
+                formats = listOf(BarcodeFormat.QR_CODE)
+                scanMode = ScanMode.CONTINUOUS
+                isTouchFocusEnabled = true
+                decodeCallback = DecodeCallback { result ->
+                    Log.i("ScannerScreen", "Code is: ${result.text}")
                 }
-
-            try {
-                cameraProviderFuture.get().bindToLifecycle(
-                    lifecycleOwner,
-                    selector,
-                    preview,
-                    imageAnalysis
-                )
-            } catch (exception: Exception) {
-                exception.printStackTrace()
+                errorCallback = ErrorCallback.SUPPRESS
+                startPreview()
             }
 
-            previewView
+            codeScannerView
         }
     )
 }
