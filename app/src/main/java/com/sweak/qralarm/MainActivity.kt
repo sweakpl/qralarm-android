@@ -5,11 +5,14 @@ import android.text.format.DateFormat
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
@@ -50,12 +53,26 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun ScreenContent() {
         val navController = rememberNavController()
-        NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
-            composable(route = Screen.HomeScreen.route) {
-                HomeScreen(navController = navController)
-            }
-            composable(route = Screen.ScannerScreen.route) {
-                ScannerScreen()
+        NavHost(navController = navController, startDestination = Screen.AlarmFlow.route) {
+            navigation(startDestination = Screen.HomeScreen.route, route = Screen.AlarmFlow.route) {
+                composable(route = Screen.HomeScreen.route) {
+                    val parentEntry = remember {
+                        navController.getBackStackEntry(Screen.AlarmFlow.route)
+                    }
+                    HomeScreen(
+                        navController = navController,
+                        alarmViewModel = hiltViewModel(parentEntry)
+                    )
+                }
+                composable(route = Screen.ScannerScreen.route) {
+                    val parentEntry = remember {
+                        navController.getBackStackEntry(Screen.AlarmFlow.route)
+                    }
+                    ScannerScreen(
+                        navController = navController,
+                        alarmViewModel = hiltViewModel(parentEntry)
+                    )
+                }
             }
         }
     }
