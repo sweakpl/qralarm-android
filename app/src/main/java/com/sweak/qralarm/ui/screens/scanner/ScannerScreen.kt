@@ -2,6 +2,7 @@ package com.sweak.qralarm.ui.screens.scanner
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
@@ -12,6 +13,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
 import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
+import com.sweak.qralarm.ui.theme.BlueZodiac
+import com.sweak.qralarm.ui.theme.ButterflyBush
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,7 +46,12 @@ fun ScannerScreen(
 
     AndroidView(
         factory = { context ->
-            val codeScannerView = CodeScannerView(context)
+            val codeScannerView = CodeScannerView(context).apply {
+                maskColor = BlueZodiac.copy(alpha = 0.5F).toArgb()
+                frameColor = ButterflyBush.toArgb()
+                autoFocusButtonColor = ButterflyBush.toArgb()
+                flashButtonColor = ButterflyBush.toArgb()
+            }
 
             codeScanner = CodeScanner(context, codeScannerView).apply {
                 formats = listOf(BarcodeFormat.QR_CODE)
