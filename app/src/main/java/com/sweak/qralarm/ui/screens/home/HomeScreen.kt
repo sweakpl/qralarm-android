@@ -126,7 +126,7 @@ fun HomeScreen(
             }
         )
 
-        if (uiState.value.alarmServiceRunning) {
+        if (uiState.value.alarmServiceRunning && uiState.value.snoozeAvailable) {
             SnoozeButton(
                 onClick = { alarmViewModel.handleSnoozeButtonClick() },
                 modifier = Modifier

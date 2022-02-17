@@ -10,6 +10,7 @@ data class HomeUiState(
     var meridiem: Meridiem,
     var alarmSet: Boolean,
     var alarmServiceRunning: Boolean,
+    var snoozeAvailable: Boolean,
     var showAlarmPermissionDialog: Boolean,
     var showCameraPermissionDialog: Boolean,
     var showCameraPermissionRevokedDialog: Boolean

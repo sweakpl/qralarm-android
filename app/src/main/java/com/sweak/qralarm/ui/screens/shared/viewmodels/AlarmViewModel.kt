@@ -39,6 +39,7 @@ class AlarmViewModel @Inject constructor(
                 getAlarmMeridiem(alarmTimeInMillis),
                 dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first(),
                 dataStoreManager.getBoolean(DataStoreManager.ALARM_SERVICE_RUNNING).first(),
+                snoozeAvailable = false,
                 showAlarmPermissionDialog = false,
                 showCameraPermissionDialog = false,
                 showCameraPermissionRevokedDialog = false
@@ -50,6 +51,11 @@ class AlarmViewModel @Inject constructor(
         viewModelScope.launch {
             dataStoreManager.getBoolean(DataStoreManager.ALARM_SERVICE_RUNNING).collect {
                 homeUiState.value = homeUiState.value.copy(alarmServiceRunning = it)
+            }
+        }
+        viewModelScope.launch {
+            dataStoreManager.getInt(DataStoreManager.SNOOZE_AVAILABLE_COUNT).collect {
+                homeUiState.value = homeUiState.value.copy(snoozeAvailable = it > 0)
             }
         }
     }
@@ -101,6 +107,11 @@ class AlarmViewModel @Inject constructor(
                                 homeUiState.value.meridiem
                             )
                         )
+
+                        putInt(
+                            DataStoreManager.SNOOZE_AVAILABLE_COUNT,
+                            getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
+                        )
                     }
                 }
             } catch (exception: SecurityException) {
@@ -133,49 +144,50 @@ class AlarmViewModel @Inject constructor(
     }
 
     fun handleSnoozeButtonClick() {
-        if (homeUiState.value.alarmServiceRunning) {
-            qrAlarmManager.cancelAlarm()
+        qrAlarmManager.cancelAlarm()
 
-            try {
-                val snoozeAlarmTimeInMillis = getSnoozeAlarmTimeInMillis(1)
+        try {
+            val snoozeAlarmTimeInMillis = getSnoozeAlarmTimeInMillis(1)
 
-                qrAlarmManager.setAlarm(
-                    snoozeAlarmTimeInMillis,
-                    QRAlarmService.ALARM_TYPE_SNOOZE
-                )
+            qrAlarmManager.setAlarm(
+                snoozeAlarmTimeInMillis,
+                QRAlarmService.ALARM_TYPE_SNOOZE
+            )
 
-                viewModelScope.launch {
-                    dataStoreManager.apply {
-                        putBoolean(DataStoreManager.ALARM_SET, true)
-                        homeUiState.value = homeUiState.value.copy(alarmSet = true)
+            viewModelScope.launch {
+                dataStoreManager.apply {
+                    putBoolean(DataStoreManager.ALARM_SET, true)
+                    homeUiState.value = homeUiState.value.copy(alarmSet = true)
 
-                        val alarmHour = getAlarmHour(
-                            snoozeAlarmTimeInMillis,
-                            homeUiState.value.timeFormat
+                    val alarmHour = getAlarmHour(
+                        snoozeAlarmTimeInMillis,
+                        homeUiState.value.timeFormat
+                    )
+                    val alarmMinute = getAlarmMinute(snoozeAlarmTimeInMillis)
+                    val alarmMeridiem = getAlarmMeridiem(snoozeAlarmTimeInMillis)
+
+                    putLong(
+                        DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS,
+                        getAlarmTimeInMillis(
+                            alarmHour,
+                            alarmMinute,
+                            homeUiState.value.timeFormat,
+                            alarmMeridiem
                         )
-                        val alarmMinute = getAlarmMinute(snoozeAlarmTimeInMillis)
-                        val alarmMeridiem = getAlarmMeridiem(snoozeAlarmTimeInMillis)
+                    )
 
-                        putLong(
-                            DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS,
-                            getAlarmTimeInMillis(
-                                alarmHour,
-                                alarmMinute,
-                                homeUiState.value.timeFormat,
-                                alarmMeridiem
-                            )
-                        )
+                    homeUiState.value = homeUiState.value.copy(
+                        hour = alarmHour,
+                        minute = alarmMinute,
+                        meridiem = alarmMeridiem
+                    )
 
-                        homeUiState.value = homeUiState.value.copy(
-                            hour = alarmHour,
-                            minute = alarmMinute,
-                            meridiem = alarmMeridiem
-                        )
-                    }
+                    val availableSnoozes = getInt(DataStoreManager.SNOOZE_AVAILABLE_COUNT).first()
+                    putInt(DataStoreManager.SNOOZE_AVAILABLE_COUNT, availableSnoozes - 1)
                 }
-            } catch (exception: SecurityException) {
-                homeUiState.value = homeUiState.value.copy(showAlarmPermissionDialog = true)
             }
+        } catch (exception: SecurityException) {
+            homeUiState.value = homeUiState.value.copy(showAlarmPermissionDialog = true)
         }
     }
 
