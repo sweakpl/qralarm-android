@@ -27,8 +27,25 @@ class QRAlarmApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        setAlarmLifecyclePreferencesIfFirstLaunch()
         setAlarmTimeToCurrentTimeIfFirstLaunch()
         createNotificationChannelVersionRequires()
+    }
+
+    private fun setAlarmLifecyclePreferencesIfFirstLaunch() {
+        val firstLaunch = runBlocking {
+            dataStoreManager.getBoolean(DataStoreManager.FIRST_LAUNCH).first()
+        }
+
+        if (firstLaunch) {
+            runBlocking {
+                dataStoreManager.apply {
+                    putBoolean(DataStoreManager.ALARM_SET, false)
+                    putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
+                    putBoolean(DataStoreManager.FIRST_LAUNCH, false)
+                }
+            }
+        }
     }
 
     private fun setAlarmTimeToCurrentTimeIfFirstLaunch() {
@@ -46,7 +63,6 @@ class QRAlarmApp : Application() {
                 dataStoreManager.apply {
                     putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, timeInMillis)
                     putString(DataStoreManager.ALARM_TIME_FORMAT, timeFormat)
-                    putBoolean(DataStoreManager.ALARM_SET, false)
                     putBoolean(DataStoreManager.FIRST_LAUNCH, false)
                 }
             }

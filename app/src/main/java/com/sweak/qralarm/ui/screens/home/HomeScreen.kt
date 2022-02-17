@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
@@ -60,10 +61,17 @@ fun HomeScreen(
         val menuButton = createRefFor("menuButton")
         val timePicker = createRefFor("timePicker")
         val startStopAlarmButton = createRefFor("startStopAlarmButton")
+        val snoozeButton = createRefFor("snoozeButton")
 
         constrain(startStopAlarmButton) {
             top.linkTo(timePicker.bottom)
             bottom.linkTo(parent.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+
+        constrain(snoozeButton) {
+            top.linkTo(startStopAlarmButton.bottom)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }
@@ -94,11 +102,13 @@ fun HomeScreen(
                 )
             )
     ) {
-        MenuButton(
-            modifier = Modifier
-                .layoutId("menuButton")
-                .padding(MaterialTheme.space.medium)
-        )
+        if (!uiState.value.alarmSet) {
+            MenuButton(
+                modifier = Modifier
+                    .layoutId("menuButton")
+                    .padding(MaterialTheme.space.medium)
+            )
+        }
 
         TimePicker(
             modifier = Modifier.layoutId("timePicker"),
@@ -115,6 +125,15 @@ fun HomeScreen(
                 )
             }
         )
+
+        if (uiState.value.alarmServiceRunning) {
+            SnoozeButton(
+                onClick = { alarmViewModel.handleSnoozeButtonClick() },
+                modifier = Modifier
+                    .layoutId("snoozeButton")
+                    .padding(0.dp, MaterialTheme.space.medium, 0.dp, 0.dp)
+            )
+        }
     }
 
     val context = LocalContext.current
@@ -399,6 +418,32 @@ fun StartStopAlarmButton(
         Text(
             text = stringResource(if (uiState.value.alarmSet) R.string.stop else R.string.start),
             fontSize = 26.sp,
+            modifier = Modifier.padding(
+                MaterialTheme.space.medium,
+                MaterialTheme.space.small,
+                MaterialTheme.space.medium,
+                MaterialTheme.space.extraSmall
+            )
+        )
+    }
+}
+
+@Composable
+fun SnoozeButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color.Transparent
+        )
+    ) {
+        Text(
+            text = stringResource(id = R.string.snooze),
+            fontSize = 20.sp,
             modifier = Modifier.padding(
                 MaterialTheme.space.medium,
                 MaterialTheme.space.small,

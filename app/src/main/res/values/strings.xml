@@ -3,7 +3,7 @@
     <string name="alarm_notification_channel_name">Firing alarms</string>
     <string name="alarm_notification_channel_description">Play alarm sound, display a notification and pop up on screen</string>
     <string name="alarm_notification_title">QRAlarm</string>
-    <string name="alarm_notification_text">Go and scan Your QR Code!</string>
+    <string name="alarm_notification_text_normal">Go and scan Your QR Code!</string>
     <string name="stop">STOP</string>
     <string name="start">START</string>
     <string name="alarm_permission_required_title">Special app access required</string>
@@ -14,4 +14,6 @@
     <string name="camera_permission_required_message">QRAlarm needs access to Your phone’s camera in order to scan for QR Codes to disable alarms. Without this permission the app can not work properly.</string>
     <string name="allow">Allow</string>
     <string name="camera_permission_revoked_message">Camera permission has been permanently revoked. Without it QRAlarm can not work properly. In order to fix it, go to settings and allow QRAlarm to use phone’s camera.</string>
+    <string name="snooze">SNOOZE</string>
+    <string name="alarm_notification_text_snooze">Snooze over! Go and scan Your QR Code!</string>
 </resources>

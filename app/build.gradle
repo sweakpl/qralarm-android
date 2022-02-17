@@ -69,9 +69,6 @@ dependencies {
     // Preferences DataStore
     implementation 'androidx.datastore:datastore-preferences:1.0.0'
 
-    // KTX for viewModels()
-    implementation 'androidx.activity:activity-ktx:1.4.0'
-
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:2.38.1"
     kapt "com.google.dagger:hilt-android-compiler:2.37"

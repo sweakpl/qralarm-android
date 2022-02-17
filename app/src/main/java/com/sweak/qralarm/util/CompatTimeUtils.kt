@@ -35,7 +35,7 @@ fun getAlarmTimeInMillis(hour: Int, minute: Int, timeFormat: TimeFormat, meridie
         zonedDateTime = zonedDateTime.withSecond(0)
         zonedDateTime = zonedDateTime.withNano(0)
 
-        if (zonedDateTime <= ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault())) {
+        if (zonedDateTime.toInstant().toEpochMilli() <= currentTimeInMillis()) {
             zonedDateTime = zonedDateTime.plusDays(1)
         }
 
@@ -62,7 +62,34 @@ fun getAlarmTimeInMillis(hour: Int, minute: Int, timeFormat: TimeFormat, meridie
             }
         }
 
-        if (calendar.timeInMillis <= Calendar.getInstance(TimeZone.getDefault()).timeInMillis) {
+        if (calendar.timeInMillis <= currentTimeInMillis()) {
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
+        }
+
+        return calendar.timeInMillis
+    }
+}
+
+fun getSnoozeAlarmTimeInMillis(snoozeDurationInMinutes: Int): Long {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        var zonedDateTime = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault())
+        zonedDateTime = zonedDateTime.plusMinutes(snoozeDurationInMinutes.toLong())
+        zonedDateTime = zonedDateTime.withSecond(0)
+        zonedDateTime = zonedDateTime.withNano(0)
+
+        if (zonedDateTime.toInstant().toEpochMilli() <= currentTimeInMillis()) {
+            zonedDateTime = zonedDateTime.plusDays(1)
+        }
+
+        return zonedDateTime.toInstant().toEpochMilli()
+    } else {
+        val calendar = Calendar.getInstance(TimeZone.getDefault()).apply {
+            add(Calendar.MINUTE, snoozeDurationInMinutes)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+
+        if (calendar.timeInMillis <= currentTimeInMillis()) {
             calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1)
         }
 

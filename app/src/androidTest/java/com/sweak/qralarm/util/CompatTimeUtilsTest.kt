@@ -272,7 +272,61 @@ class CompatTimeUtilsTest {
         assertEquals(expectedAlarmMinute, actualAlarmMinute)
     }
 
-    // Below tests are ran under timezone: UTC+1h
+    @Test
+    fun returnsCorrectTwoMinuteSnoozeAlarmTimeInMillis() {
+        // given
+        val currentTimeInMillis = currentTimeInMillis()
+        val executionTimeOffsetInMillis = 10
+        val snoozeTimeInMinutes = 2
+
+        // when
+        val snoozeAlarmTimeInMillis = getSnoozeAlarmTimeInMillis(snoozeTimeInMinutes)
+
+        // then
+        assertTrue(snoozeAlarmTimeInMillis > currentTimeInMillis)
+        assertTrue(
+            snoozeAlarmTimeInMillis - currentTimeInMillis <
+                    snoozeAlarmTimeInMillis * 60 * 1000 + executionTimeOffsetInMillis
+        )
+    }
+
+    @Test
+    fun returnsCorrectFiveMinuteSnoozeAlarmTimeInMillis() {
+        // given
+        val currentTimeInMillis = currentTimeInMillis()
+        val executionTimeOffsetInMillis = 10
+        val snoozeTimeInMinutes = 5
+
+        // when
+        val snoozeAlarmTimeInMillis = getSnoozeAlarmTimeInMillis(snoozeTimeInMinutes)
+
+        // then
+        assertTrue(snoozeAlarmTimeInMillis > currentTimeInMillis)
+        assertTrue(
+            snoozeAlarmTimeInMillis - currentTimeInMillis <
+                    snoozeAlarmTimeInMillis * 60 * 1000 + executionTimeOffsetInMillis
+        )
+    }
+
+    @Test
+    fun returnsCorrectTenMinuteSnoozeAlarmTimeInMillis() {
+        // given
+        val currentTimeInMillis = currentTimeInMillis()
+        val executionTimeOffsetInMillis = 10
+        val snoozeTimeInMinutes = 10
+
+        // when
+        val snoozeAlarmTimeInMillis = getSnoozeAlarmTimeInMillis(snoozeTimeInMinutes)
+
+        // then
+        assertTrue(snoozeAlarmTimeInMillis > currentTimeInMillis)
+        assertTrue(
+            snoozeAlarmTimeInMillis - currentTimeInMillis <
+                    snoozeAlarmTimeInMillis * 60 * 1000 + executionTimeOffsetInMillis
+        )
+    }
+
+    // Below tests have to be ran under timezone UTC+1h in order for them to be passed
 
     @Test
     fun returnCorrectAlarmHourMinuteAndMeridiemFor00_00() {

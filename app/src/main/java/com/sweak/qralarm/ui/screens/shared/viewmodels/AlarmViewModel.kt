@@ -13,6 +13,7 @@ import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeUiState
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -37,11 +38,20 @@ class AlarmViewModel @Inject constructor(
                 getAlarmMinute(alarmTimeInMillis),
                 getAlarmMeridiem(alarmTimeInMillis),
                 dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first(),
+                dataStoreManager.getBoolean(DataStoreManager.ALARM_SERVICE_RUNNING).first(),
                 showAlarmPermissionDialog = false,
                 showCameraPermissionDialog = false,
                 showCameraPermissionRevokedDialog = false
             )
         )
+    }
+
+    init {
+        viewModelScope.launch {
+            dataStoreManager.getBoolean(DataStoreManager.ALARM_SERVICE_RUNNING).collect {
+                homeUiState.value = homeUiState.value.copy(alarmServiceRunning = it)
+            }
+        }
     }
 
     fun handleStartOrStopButtonClick(
@@ -108,7 +118,63 @@ class AlarmViewModel @Inject constructor(
         viewModelScope.launch {
             dataStoreManager.apply {
                 putBoolean(DataStoreManager.ALARM_SET, false)
-                homeUiState.value = homeUiState.value.copy(alarmSet = false)
+
+                val originalAlarmTimeInMillis =
+                    getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
+
+                homeUiState.value = homeUiState.value.copy(
+                    alarmSet = false,
+                    hour = getAlarmHour(originalAlarmTimeInMillis, homeUiState.value.timeFormat),
+                    minute = getAlarmMinute(originalAlarmTimeInMillis),
+                    meridiem = getAlarmMeridiem(originalAlarmTimeInMillis)
+                )
+            }
+        }
+    }
+
+    fun handleSnoozeButtonClick() {
+        if (homeUiState.value.alarmServiceRunning) {
+            qrAlarmManager.cancelAlarm()
+
+            try {
+                val snoozeAlarmTimeInMillis = getSnoozeAlarmTimeInMillis(1)
+
+                qrAlarmManager.setAlarm(
+                    snoozeAlarmTimeInMillis,
+                    QRAlarmService.ALARM_TYPE_SNOOZE
+                )
+
+                viewModelScope.launch {
+                    dataStoreManager.apply {
+                        putBoolean(DataStoreManager.ALARM_SET, true)
+                        homeUiState.value = homeUiState.value.copy(alarmSet = true)
+
+                        val alarmHour = getAlarmHour(
+                            snoozeAlarmTimeInMillis,
+                            homeUiState.value.timeFormat
+                        )
+                        val alarmMinute = getAlarmMinute(snoozeAlarmTimeInMillis)
+                        val alarmMeridiem = getAlarmMeridiem(snoozeAlarmTimeInMillis)
+
+                        putLong(
+                            DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS,
+                            getAlarmTimeInMillis(
+                                alarmHour,
+                                alarmMinute,
+                                homeUiState.value.timeFormat,
+                                alarmMeridiem
+                            )
+                        )
+
+                        homeUiState.value = homeUiState.value.copy(
+                            hour = alarmHour,
+                            minute = alarmMinute,
+                            meridiem = alarmMeridiem
+                        )
+                    }
+                }
+            } catch (exception: SecurityException) {
+                homeUiState.value = homeUiState.value.copy(showAlarmPermissionDialog = true)
             }
         }
     }

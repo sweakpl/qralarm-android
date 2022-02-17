@@ -17,8 +17,12 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
 import com.sweak.qralarm.QRAlarmApp
 import com.sweak.qralarm.R
+import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalPermissionsApi
@@ -27,6 +31,9 @@ class QRAlarmService : Service() {
 
     @Inject
     lateinit var notificationManager: NotificationManager
+
+    @Inject
+    lateinit var dataStoreManager: DataStoreManager
 
     @Inject
     lateinit var vibrator: Vibrator
@@ -47,20 +54,20 @@ class QRAlarmService : Service() {
                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
                         startForeground(
                             FOREGROUND_SERVICE_ID,
-                            createAlarmNotification(),
+                            createAlarmNotification(message.arg2),
                             ServiceInfo.FOREGROUND_SERVICE_TYPE_MANIFEST
                         )
                     }
                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
                         startForeground(
                             FOREGROUND_SERVICE_ID,
-                            createAlarmNotification()
+                            createAlarmNotification(message.arg2)
                         )
                     }
                     else -> {
                         notificationManager.notify(
                             ALARM_NOTIFICATION_ID,
-                            createAlarmNotification()
+                            createAlarmNotification(message.arg2)
                         )
                     }
                 }
@@ -70,7 +77,7 @@ class QRAlarmService : Service() {
         }
     }
 
-    private fun createAlarmNotification(): Notification {
+    private fun createAlarmNotification(alarmType: Int): Notification {
         val alarmNotificationPendingIntent = PendingIntent.getActivity(
             applicationContext,
             ALARM_NOTIFICATION_REQUEST_CODE,
@@ -90,7 +97,12 @@ class QRAlarmService : Service() {
             setOngoing(true)
             setColorized(true)
             setContentTitle(getString(R.string.alarm_notification_title))
-            setContentText(getString(R.string.alarm_notification_text))
+            setContentText(
+                if (alarmType == ALARM_TYPE_NORMAL)
+                    getString(R.string.alarm_notification_text_normal)
+                else
+                    getString(R.string.alarm_notification_text_snooze)
+            )
             setSmallIcon(R.drawable.ic_launcher_foreground)
             setContentIntent(alarmNotificationPendingIntent)
             return build()
@@ -143,6 +155,10 @@ class QRAlarmService : Service() {
     override fun onCreate() {
         super.onCreate()
 
+        CoroutineScope(Dispatchers.IO).launch {
+            dataStoreManager.putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, true)
+        }
+
         HandlerThread(HANDLER_THREAD_NAME, Process.THREAD_PRIORITY_URGENT_AUDIO).apply {
             start()
             serviceLooper = looper
@@ -163,6 +179,10 @@ class QRAlarmService : Service() {
     }
 
     override fun onDestroy() {
+        CoroutineScope(Dispatchers.IO).launch {
+            dataStoreManager.putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
+        }
+
         stopVibratingAndPlayingSound()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
