@@ -16,4 +16,6 @@
     <string name="camera_permission_revoked_message">Camera permission has been permanently revoked. Without it QRAlarm can not work properly. In order to fix it, go to settings and allow QRAlarm to use phone’s camera.</string>
     <string name="snooze">SNOOZE</string>
     <string name="alarm_notification_text_snooze">Snooze over! Go and scan Your QR Code!</string>
+    <string name="alarm_at">Alarm set at:</string>
+    <string name="set_alarm">Set alarm time:</string>
 </resources>

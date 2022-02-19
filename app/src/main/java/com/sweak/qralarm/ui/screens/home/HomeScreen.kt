@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,6 +42,7 @@ import com.sweak.qralarm.ui.screens.shared.components.AlarmPermissionDialog
 import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionDialog
 import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionRevokedDialog
 import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
+import com.sweak.qralarm.ui.theme.amikoFamily
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Meridiem
 import com.sweak.qralarm.util.TimeFormat
@@ -59,9 +61,28 @@ fun HomeScreen(
 
     val constraints = ConstraintSet {
         val menuButton = createRefFor("menuButton")
+        val alarmAtText = createRefFor("alarmAtText")
         val timePicker = createRefFor("timePicker")
         val startStopAlarmButton = createRefFor("startStopAlarmButton")
         val snoozeButton = createRefFor("snoozeButton")
+
+        constrain(menuButton) {
+            top.linkTo(parent.top)
+            end.linkTo(parent.end)
+        }
+
+        constrain(alarmAtText) {
+            bottom.linkTo(timePicker.top)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+
+        constrain(timePicker) {
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
 
         constrain(startStopAlarmButton) {
             top.linkTo(timePicker.bottom)
@@ -72,18 +93,6 @@ fun HomeScreen(
 
         constrain(snoozeButton) {
             top.linkTo(startStopAlarmButton.bottom)
-            start.linkTo(parent.start)
-            end.linkTo(parent.end)
-        }
-
-        constrain(menuButton) {
-            top.linkTo(parent.top)
-            end.linkTo(parent.end)
-        }
-
-        constrain(timePicker) {
-            top.linkTo(parent.top)
-            bottom.linkTo(parent.bottom)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
         }
@@ -109,6 +118,16 @@ fun HomeScreen(
                     .padding(MaterialTheme.space.medium)
             )
         }
+
+        Text(
+            text = if (uiState.value.alarmSet) stringResource(R.string.alarm_at) else stringResource(R.string.set_alarm),
+            modifier = Modifier
+                .layoutId("alarmAtText")
+                .padding(0.dp, 0.dp, 0.dp, 56.dp),
+            fontSize = 32.sp,
+            fontFamily = amikoFamily,
+            fontWeight = FontWeight.SemiBold
+        )
 
         TimePicker(
             modifier = Modifier.layoutId("timePicker"),
