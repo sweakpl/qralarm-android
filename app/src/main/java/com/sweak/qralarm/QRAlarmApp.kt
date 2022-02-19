@@ -27,50 +27,45 @@ class QRAlarmApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        setAlarmLifecyclePreferencesIfFirstLaunch()
-        setAlarmTimePreferencesIfFirstLaunch()
-        createNotificationChannelVersionRequires()
+        setUpPreferencesIfFirstLaunch()
+        createNotificationChannelIfVersionRequires()
     }
 
-    private fun setAlarmLifecyclePreferencesIfFirstLaunch() {
+    private fun setUpPreferencesIfFirstLaunch() {
         val firstLaunch = runBlocking {
             dataStoreManager.getBoolean(DataStoreManager.FIRST_LAUNCH).first()
         }
 
         if (firstLaunch) {
             runBlocking {
-                dataStoreManager.apply {
-                    putBoolean(DataStoreManager.ALARM_SET, false)
-                    putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
-                    putBoolean(DataStoreManager.FIRST_LAUNCH, false)
-                }
+                setDefaultAlarmLifecyclePreferences()
+                setDefaultAlarmTimePreferences()
+                dataStoreManager.putBoolean(DataStoreManager.FIRST_LAUNCH, false)
             }
         }
     }
 
-    private fun setAlarmTimePreferencesIfFirstLaunch() {
-        val firstLaunch = runBlocking {
-            dataStoreManager.getBoolean(DataStoreManager.FIRST_LAUNCH).first()
-        }
-
-        if (firstLaunch) {
-            val timeInMillis = currentTimeInMillis()
-            val timeFormat =
-                if (DateFormat.is24HourFormat(this)) TimeFormat.MILITARY.name
-                else TimeFormat.AMPM.name
-
-            runBlocking {
-                dataStoreManager.apply {
-                    putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, timeInMillis)
-                    putString(DataStoreManager.ALARM_TIME_FORMAT, timeFormat)
-                    putInt(DataStoreManager.SNOOZE_MAX_COUNT, 3)
-                    putBoolean(DataStoreManager.FIRST_LAUNCH, false)
-                }
-            }
+    private suspend fun setDefaultAlarmLifecyclePreferences() {
+        dataStoreManager.apply {
+            putBoolean(DataStoreManager.ALARM_SET, false)
+            putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
         }
     }
 
-    private fun createNotificationChannelVersionRequires() {
+    private suspend fun setDefaultAlarmTimePreferences() {
+        val timeInMillis = currentTimeInMillis()
+        val timeFormat =
+            if (DateFormat.is24HourFormat(this)) TimeFormat.MILITARY.name
+            else TimeFormat.AMPM.name
+
+        dataStoreManager.apply {
+            putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, timeInMillis)
+            putString(DataStoreManager.ALARM_TIME_FORMAT, timeFormat)
+            putInt(DataStoreManager.SNOOZE_MAX_COUNT, 3)
+        }
+    }
+
+    private fun createNotificationChannelIfVersionRequires() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val alarmNotificationChannel = NotificationChannel(
                 ALARM_NOTIFICATION_CHANNEL_ID,
