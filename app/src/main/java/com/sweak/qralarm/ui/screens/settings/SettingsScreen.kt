@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,17 +28,11 @@ import com.sweak.qralarm.ui.theme.space
 
 @Composable
 fun SettingsScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    settingsViewModel: SettingsViewModel
 ) {
+    val uiState = remember { settingsViewModel.settingsUiState }
     val scrollState = rememberScrollState()
-
-    val snoozeDurations = listOf("10", "5", "3", "2")
-    val snoozeDurationsDropdownMenuExpanded = remember { mutableStateOf(false) }
-    val selectedSnoozeDurationIndex = remember { mutableStateOf(0) }
-
-    val snoozeCounts = listOf("3", "2", "1", "0")
-    val snoozeCountsDropdownMenuExpanded = remember { mutableStateOf(false) }
-    val selectedSnoozeCountIndex = remember { mutableStateOf(0) }
 
     val constraints = ConstraintSet {
         val backButton = createRefFor("backButton")
@@ -100,7 +93,7 @@ fun SettingsScreen(
                 .layoutId("settingsText"),
             style = MaterialTheme.typography.h1
         )
-        
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -130,18 +123,25 @@ fun SettingsScreen(
                     modifier = Modifier
                         .height(40.dp)
                         .width(80.dp),
-                    menuItems = snoozeDurations,
-                    menuExpandedState = snoozeDurationsDropdownMenuExpanded.value,
-                    selectedIndex = selectedSnoozeDurationIndex.value,
-                    updateMenuExpandedStatus = { snoozeDurationsDropdownMenuExpanded.value = true },
-                    onDismissMenuView = { snoozeDurationsDropdownMenuExpanded.value = false },
+                    menuItems = uiState.value.availableSnoozeDurations,
+                    menuExpandedState = uiState.value.snoozeDurationsDropdownMenuExpanded,
+                    selectedIndex = uiState.value.selectedSnoozeDurationIndex,
+                    updateMenuExpandedStatus = {
+                        uiState.value =
+                            uiState.value.copy(snoozeDurationsDropdownMenuExpanded = true)
+                    },
+                    onDismissMenuView = {
+                        uiState.value =
+                            uiState.value.copy(snoozeDurationsDropdownMenuExpanded = false)
+                    },
                     onMenuItemClick = { index ->
-                        selectedSnoozeDurationIndex.value = index
-                        snoozeDurationsDropdownMenuExpanded.value = false
+                        settingsViewModel.updateSnoozeDurationSelection(index)
+                        uiState.value =
+                            uiState.value.copy(snoozeDurationsDropdownMenuExpanded = false)
                     }
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
             Row(
@@ -162,14 +162,21 @@ fun SettingsScreen(
                     modifier = Modifier
                         .height(40.dp)
                         .width(80.dp),
-                    menuItems = snoozeCounts,
-                    menuExpandedState = snoozeCountsDropdownMenuExpanded.value,
-                    selectedIndex = selectedSnoozeCountIndex.value,
-                    updateMenuExpandedStatus = { snoozeCountsDropdownMenuExpanded.value = true },
-                    onDismissMenuView = { snoozeCountsDropdownMenuExpanded.value = false },
+                    menuItems = uiState.value.availableSnoozeMaxCounts,
+                    menuExpandedState = uiState.value.snoozeMaxCountsDropdownMenuExpanded,
+                    selectedIndex = uiState.value.selectedSnoozeMaxCountIndex,
+                    updateMenuExpandedStatus = {
+                        uiState.value =
+                            uiState.value.copy(snoozeMaxCountsDropdownMenuExpanded = true)
+                    },
+                    onDismissMenuView = {
+                        uiState.value =
+                            uiState.value.copy(snoozeMaxCountsDropdownMenuExpanded = false)
+                    },
                     onMenuItemClick = { index ->
-                        selectedSnoozeCountIndex.value = index
-                        snoozeCountsDropdownMenuExpanded.value = false
+                        settingsViewModel.updateSnoozeMaxCountSelection(index)
+                        uiState.value =
+                            uiState.value.copy(snoozeMaxCountsDropdownMenuExpanded = false)
                     }
                 )
             }

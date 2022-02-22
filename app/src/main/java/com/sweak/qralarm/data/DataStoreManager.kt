@@ -63,5 +63,6 @@ class DataStoreManager(private val context: Context) {
         val ALARM_TIME_FORMAT = stringPreferencesKey("alarmTimeFormat")
         val SNOOZE_MAX_COUNT = intPreferencesKey("snoozeMaxCount")
         val SNOOZE_AVAILABLE_COUNT = intPreferencesKey("snoozeAvailableCount")
+        val SNOOZE_DURATION_MINUTES = intPreferencesKey("snoozeDurationMinutes")
     }
 }

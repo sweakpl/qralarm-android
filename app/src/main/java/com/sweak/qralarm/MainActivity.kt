@@ -76,7 +76,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
             composable(route = Screen.MenuScreen.route) {
-                SettingsScreen(navController = navController)
+                SettingsScreen(
+                    navController = navController,
+                    settingsViewModel = hiltViewModel()
+                )
             }
         }
     }
