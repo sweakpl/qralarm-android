@@ -18,6 +18,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeScreen
+import com.sweak.qralarm.ui.screens.settings.SettingsScreen
 import com.sweak.qralarm.ui.screens.scanner.ScannerScreen
 import com.sweak.qralarm.ui.theme.QRAlarmTheme
 import com.sweak.qralarm.util.Screen
@@ -73,6 +74,9 @@ class MainActivity : ComponentActivity() {
                         alarmViewModel = hiltViewModel(parentEntry)
                     )
                 }
+            }
+            composable(route = Screen.MenuScreen.route) {
+                SettingsScreen(navController = navController)
             }
         }
     }

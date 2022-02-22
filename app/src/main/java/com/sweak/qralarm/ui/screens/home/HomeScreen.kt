@@ -45,6 +45,7 @@ import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
 import com.sweak.qralarm.ui.theme.amikoFamily
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Meridiem
+import com.sweak.qralarm.util.Screen
 import com.sweak.qralarm.util.TimeFormat
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -115,12 +116,15 @@ fun HomeScreen(
             MenuButton(
                 modifier = Modifier
                     .layoutId("menuButton")
-                    .padding(MaterialTheme.space.medium)
+                    .padding(MaterialTheme.space.medium),
+                navController = navController
             )
         }
 
         Text(
-            text = if (uiState.value.alarmSet) stringResource(R.string.alarm_at) else stringResource(R.string.set_alarm),
+            text = if (uiState.value.alarmSet) stringResource(R.string.alarm_at) else stringResource(
+                R.string.set_alarm
+            ),
             modifier = Modifier
                 .layoutId("alarmAtText")
                 .padding(0.dp, 0.dp, 0.dp, 56.dp),
@@ -194,9 +198,14 @@ fun HomeScreen(
 }
 
 @Composable
-fun MenuButton(modifier: Modifier = Modifier) {
+fun MenuButton(
+    modifier: Modifier = Modifier,
+    navController: NavHostController
+) {
     IconButton(
-        onClick = { },
+        onClick = {
+            navController.navigate(Screen.MenuScreen.route)
+        },
         modifier = modifier
     ) {
         Icon(

@@ -18,6 +18,12 @@ val Typography = Typography(
     h1 = TextStyle(
         fontFamily = amikoFamily,
         fontWeight = FontWeight.Bold,
+        fontSize = 32.sp,
+        color = White
+    ),
+    h2 = TextStyle(
+        fontFamily = amikoFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         color = White
     ),

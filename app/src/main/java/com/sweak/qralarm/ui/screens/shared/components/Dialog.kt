@@ -49,7 +49,7 @@ fun Dialog(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.h1,
+                style = MaterialTheme.typography.h2,
                 modifier = Modifier.padding(
                     MaterialTheme.space.medium,
                     MaterialTheme.space.medium,
