@@ -11,6 +11,7 @@ import android.os.VibratorManager
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
+import com.sweak.qralarm.util.ResourceProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +32,11 @@ class AppModule {
     @Singleton
     fun provideQrAlarmManager(alarmManager: AlarmManager, app: Application): QRAlarmManager =
         QRAlarmManager(alarmManager, app)
+
+    @Provides
+    @Singleton
+    fun provideResourceProvider(app: Application) =
+        ResourceProvider(app.applicationContext)
 
     @Provides
     @Singleton

@@ -8,10 +8,7 @@ import android.text.format.DateFormat
 import androidx.compose.ui.graphics.toArgb
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
-import com.sweak.qralarm.util.SNOOZE_MAX_COUNT_3
-import com.sweak.qralarm.util.SNOOZE_DURATION_10_MINUTES
-import com.sweak.qralarm.util.TimeFormat
-import com.sweak.qralarm.util.currentTimeInMillis
+import com.sweak.qralarm.util.*
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -65,6 +62,7 @@ class QRAlarmApp : Application() {
             putInt(DataStoreManager.ALARM_TIME_FORMAT, timeFormat)
             putInt(DataStoreManager.SNOOZE_MAX_COUNT, SNOOZE_MAX_COUNT_3)
             putInt(DataStoreManager.SNOOZE_DURATION_MINUTES, SNOOZE_DURATION_10_MINUTES)
+            putInt(DataStoreManager.ALARM_SOUND, AlarmSound.DEFAULT_SYSTEM.ordinal)
         }
     }
 

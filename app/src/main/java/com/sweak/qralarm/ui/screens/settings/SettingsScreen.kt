@@ -105,6 +105,41 @@ fun SettingsScreen(
                 .layoutId("settingsColumn"),
             verticalArrangement = Arrangement.Top
         ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .padding(bottom = MaterialTheme.space.medium),
+                    text = stringResource(R.string.alarm_sound),
+                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                )
+
+                ComboBox(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp),
+                    menuItems = uiState.value.availableAlarmSounds,
+                    menuExpandedState = uiState.value.alarmSoundsDropdownMenuExpanded,
+                    selectedIndex = uiState.value.selectedAlarmSoundIndex,
+                    updateMenuExpandedStatus = {
+                        uiState.value = uiState.value.copy(alarmSoundsDropdownMenuExpanded = true)
+                    },
+                    onDismissMenuView = {
+                        uiState.value = uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                    },
+                    onMenuItemClick = { index ->
+                        settingsViewModel.updateAlarmSoundSelection(index)
+                        uiState.value = uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),

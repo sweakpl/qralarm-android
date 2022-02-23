@@ -9,6 +9,7 @@ import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.*
 import android.util.Log
 import androidx.compose.ui.graphics.toArgb
@@ -19,10 +20,13 @@ import com.sweak.qralarm.QRAlarmApp
 import com.sweak.qralarm.R
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
+import com.sweak.qralarm.util.AlarmSound
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @ExperimentalPermissionsApi
@@ -144,11 +148,29 @@ class QRAlarmService : Service() {
             )
             setDataSource(
                 applicationContext,
-                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+                getPreferredAlarmSoundUri()
             )
             isLooping = true
             prepare()
             start()
+        }
+    }
+
+    private fun getPreferredAlarmSoundUri(): Uri {
+        val alarmSoundOrdinal = runBlocking {
+            dataStoreManager.getInt(DataStoreManager.ALARM_SOUND).first()
+        }
+
+        return AlarmSound.fromInt(alarmSoundOrdinal).let {
+            if (it == null) {
+                return@let RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+            } else {
+                if (it == AlarmSound.DEFAULT_SYSTEM) {
+                    return@let RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+                } else {
+                    Uri.parse("android.resource://" + packageName + "/" + it.resourceId)
+                }
+            }
         }
     }
 
