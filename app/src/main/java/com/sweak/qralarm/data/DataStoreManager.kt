@@ -16,12 +16,6 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    suspend fun putString(key: Preferences.Key<String>, value: String) {
-        context.dataStore.edit { preferences ->
-            preferences[key] = value
-        }
-    }
-
     suspend fun putLong(key: Preferences.Key<Long>, value: Long) {
         context.dataStore.edit { preferences ->
             preferences[key] = value
@@ -37,11 +31,6 @@ class DataStoreManager(private val context: Context) {
     fun getBoolean(key: Preferences.Key<Boolean>) =
         context.dataStore.data.map { preferences ->
             preferences[key] ?: true
-        }
-
-    fun getString(key: Preferences.Key<String>) =
-        context.dataStore.data.map { preferences ->
-            preferences[key] ?: "null"
         }
 
     fun getLong(key: Preferences.Key<Long>) =
@@ -60,7 +49,7 @@ class DataStoreManager(private val context: Context) {
         val ALARM_SERVICE_RUNNING = booleanPreferencesKey("alarmServiceRunning")
         val ALARM_TIME_IN_MILLIS = longPreferencesKey("alarmTimeInMillis")
         val SNOOZE_ALARM_TIME_IN_MILLIS = longPreferencesKey("snoozeAlarmTimeInMillis")
-        val ALARM_TIME_FORMAT = stringPreferencesKey("alarmTimeFormat")
+        val ALARM_TIME_FORMAT = intPreferencesKey("alarmTimeFormat")
         val SNOOZE_MAX_COUNT = intPreferencesKey("snoozeMaxCount")
         val SNOOZE_AVAILABLE_COUNT = intPreferencesKey("snoozeAvailableCount")
         val SNOOZE_DURATION_MINUTES = intPreferencesKey("snoozeDurationMinutes")

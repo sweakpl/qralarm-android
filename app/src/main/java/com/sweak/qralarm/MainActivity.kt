@@ -86,10 +86,10 @@ class MainActivity : ComponentActivity() {
 
     private fun switchTimeFormatIfNeeded() {
         runBlocking {
-            dataStoreManager.putString(
+            dataStoreManager.putInt(
                 DataStoreManager.ALARM_TIME_FORMAT,
-                if (DateFormat.is24HourFormat(this@MainActivity)) TimeFormat.MILITARY.name
-                else TimeFormat.AMPM.name
+                if (DateFormat.is24HourFormat(this@MainActivity)) TimeFormat.MILITARY.ordinal
+                else TimeFormat.AMPM.ordinal
             )
         }
     }

@@ -57,12 +57,12 @@ class QRAlarmApp : Application() {
     private suspend fun setDefaultAlarmTimePreferences() {
         val timeInMillis = currentTimeInMillis()
         val timeFormat =
-            if (DateFormat.is24HourFormat(this)) TimeFormat.MILITARY.name
-            else TimeFormat.AMPM.name
+            if (DateFormat.is24HourFormat(this)) TimeFormat.MILITARY.ordinal
+            else TimeFormat.AMPM.ordinal
 
         dataStoreManager.apply {
             putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, timeInMillis)
-            putString(DataStoreManager.ALARM_TIME_FORMAT, timeFormat)
+            putInt(DataStoreManager.ALARM_TIME_FORMAT, timeFormat)
             putInt(DataStoreManager.SNOOZE_MAX_COUNT, SNOOZE_MAX_COUNT_3)
             putInt(DataStoreManager.SNOOZE_DURATION_MINUTES, SNOOZE_DURATION_10_MINUTES)
         }

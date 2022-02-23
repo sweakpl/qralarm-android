@@ -195,8 +195,8 @@ class AlarmViewModel @Inject constructor(
     }
 
     private suspend fun getTimeFormat(): TimeFormat {
-        val timeFormat = dataStoreManager.getString(DataStoreManager.ALARM_TIME_FORMAT).first()
+        val timeFormat = dataStoreManager.getInt(DataStoreManager.ALARM_TIME_FORMAT).first()
 
-        return if (timeFormat == TimeFormat.AMPM.name) TimeFormat.AMPM else TimeFormat.MILITARY
+        return TimeFormat.fromInt(timeFormat) ?: TimeFormat.MILITARY
     }
 }

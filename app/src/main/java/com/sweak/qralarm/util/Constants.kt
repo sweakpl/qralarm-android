@@ -1,5 +1,17 @@
 package com.sweak.qralarm.util
 
+enum class TimeFormat {
+    MILITARY, AMPM;
+
+    companion object {
+        fun fromInt(ordinal: Int) = values().firstOrNull { it.ordinal == ordinal }
+    }
+}
+
+enum class Meridiem {
+    AM, PM
+}
+
 const val SNOOZE_DURATION_10_MINUTES = 10
 const val SNOOZE_DURATION_5_MINUTES = 5
 const val SNOOZE_DURATION_3_MINUTES = 3
