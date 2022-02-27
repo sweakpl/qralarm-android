@@ -1,17 +1,29 @@
 package com.sweak.qralarm.ui.screens.settings
 
+import android.content.ContentValues
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Build
+import android.provider.MediaStore
+import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.sweak.qralarm.R
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.IOException
 import javax.inject.Inject
 
+@ExperimentalPermissionsApi
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
@@ -81,6 +93,80 @@ class SettingsViewModel @Inject constructor(
                 DataStoreManager.SNOOZE_MAX_COUNT,
                 newSelectedSnoozeMaxCount
             )
+        }
+    }
+
+    fun handleDefaultCodeDownloadButton(
+        context: Context,
+        storagePermissionState: PermissionState
+    ) {
+        val minSdk29 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+        val storageWritePermissionGranted = storagePermissionState.hasPermission || minSdk29
+
+        if (!storageWritePermissionGranted) {
+            when {
+                !storagePermissionState.permissionRequested ||
+                        storagePermissionState.shouldShowRationale -> {
+                    settingsUiState.value =
+                        settingsUiState.value.copy(showStoragePermissionDialog = true)
+                    return
+                }
+                !storagePermissionState.shouldShowRationale -> {
+                    settingsUiState.value =
+                        settingsUiState.value.copy(showStoragePermissionRevokedDialog = true)
+                    return
+                }
+            }
+        }
+
+        val qrCodeImageBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.qr_code)
+
+        val imageCollection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        } else {
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        }
+
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.TITLE, "QRAlarmCode.jpg")
+            put(MediaStore.Images.Media.DISPLAY_NAME, "QRAlarmCode.jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.WIDTH, qrCodeImageBitmap.width)
+            put(MediaStore.Images.Media.HEIGHT, qrCodeImageBitmap.height)
+            put(MediaStore.Images.Media.DATE_TAKEN, currentTimeInMillis())
+            put(MediaStore.Images.Media.DATE_ADDED, currentTimeInMillis())
+        }
+
+        try {
+            with(context.contentResolver) {
+                insert(imageCollection, contentValues)?.also { uri ->
+                    openOutputStream(uri).use { outputStream ->
+                        if (
+                            !qrCodeImageBitmap.compress(
+                                Bitmap.CompressFormat.JPEG,
+                                95,
+                                outputStream
+                            )
+                        ) {
+                            throw IOException("Couldn't save the QRCode Bitmap file!")
+                        }
+                    }
+                } ?: throw IOException("Couldn't create a MediaStore entry!")
+            }
+
+            Toast.makeText(
+                context,
+                resourceProvider.getString(R.string.saved_default_qrcode),
+                Toast.LENGTH_LONG
+            ).show()
+        } catch (e: IOException) {
+            e.printStackTrace()
+
+            Toast.makeText(
+                context,
+                resourceProvider.getString(R.string.not_saved_default_qrcode),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 }

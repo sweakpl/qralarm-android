@@ -13,5 +13,7 @@ data class SettingsUiState(
     val snoozeDurationsDropdownMenuExpanded: Boolean = false,
     val availableSnoozeMaxCounts: List<Int> = AVAILABLE_SNOOZE_MAX_COUNTS,
     val selectedSnoozeMaxCountIndex: Int,
-    val snoozeMaxCountsDropdownMenuExpanded: Boolean = false
+    val snoozeMaxCountsDropdownMenuExpanded: Boolean = false,
+    val showStoragePermissionDialog: Boolean = false,
+    val showStoragePermissionRevokedDialog: Boolean = false
 )

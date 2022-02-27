@@ -1,5 +1,8 @@
 package com.sweak.qralarm.ui.screens.settings
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,16 +27,26 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
+import com.sweak.qralarm.ui.screens.shared.components.StoragePermissionDialog
+import com.sweak.qralarm.ui.screens.shared.components.StoragePermissionRevokedDialog
 import com.sweak.qralarm.ui.theme.space
 
+@ExperimentalPermissionsApi
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
     settingsViewModel: SettingsViewModel
 ) {
     val uiState = remember { settingsViewModel.settingsUiState }
+    val storagePermissionState = rememberPermissionState(
+        permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
     val scrollState = rememberScrollState()
+
+    val context = LocalContext.current
 
     val constraints = ConstraintSet {
         val backButton = createRefFor("backButton")
@@ -215,8 +229,68 @@ fun SettingsScreen(
                     }
                 )
             }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(end = MaterialTheme.space.large)
+                        .weight(1f),
+                    text = stringResource(R.string.save_default_qrcode),
+                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                )
+
+                IconButton(
+                    onClick = {
+                        settingsViewModel.handleDefaultCodeDownloadButton(
+                            context,
+                            storagePermissionState
+                        )
+                    },
+                    modifier = Modifier
+                        .padding(end = MaterialTheme.space.medium)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_download),
+                        contentDescription = "Menu button",
+                        tint = MaterialTheme.colors.secondary
+                    )
+                }
+            }
         }
     }
+
+    StoragePermissionDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            storagePermissionState.launchPermissionRequest()
+            uiState.value = uiState.value.copy(showStoragePermissionDialog = false)
+        },
+        onNegativeClick = {
+            uiState.value = uiState.value.copy(showStoragePermissionDialog = false)
+        }
+    )
+
+    StoragePermissionRevokedDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            context.startActivity(
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.parse("package:${context.packageName}")
+                }
+            )
+            uiState.value = uiState.value.copy(showStoragePermissionRevokedDialog = false)
+        },
+        onNegativeClick = {
+            uiState.value = uiState.value.copy(showStoragePermissionRevokedDialog = false)
+        }
+    )
 }
 
 @Composable
