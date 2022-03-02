@@ -10,17 +10,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeScreen
-import com.sweak.qralarm.ui.screens.settings.SettingsScreen
 import com.sweak.qralarm.ui.screens.scanner.ScannerScreen
+import com.sweak.qralarm.ui.screens.settings.SettingsScreen
 import com.sweak.qralarm.ui.theme.QRAlarmTheme
+import com.sweak.qralarm.util.KEY_SCANNER_MODE
+import com.sweak.qralarm.util.SCAN_MODE_DISMISS_ALARM
 import com.sweak.qralarm.util.Screen
 import com.sweak.qralarm.util.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,21 +69,35 @@ class MainActivity : ComponentActivity() {
                         alarmViewModel = hiltViewModel(parentEntry)
                     )
                 }
-                composable(route = Screen.ScannerScreen.route) {
+                composable(
+                    route = Screen.ScannerScreen.route + "/{$KEY_SCANNER_MODE}",
+                    arguments = listOf(
+                        navArgument(KEY_SCANNER_MODE) {
+                            type = NavType.StringType
+                            defaultValue = SCAN_MODE_DISMISS_ALARM
+                            nullable = false
+                        }
+                    )
+                ) {
                     val parentEntry = remember {
                         navController.getBackStackEntry(Screen.AlarmFlow.route)
                     }
                     ScannerScreen(
                         navController = navController,
-                        alarmViewModel = hiltViewModel(parentEntry)
+                        alarmViewModel = hiltViewModel(parentEntry),
+                        settingsViewModel = hiltViewModel(parentEntry),
+                        scannerMode = it.arguments?.getString(KEY_SCANNER_MODE)
                     )
                 }
-            }
-            composable(route = Screen.MenuScreen.route) {
-                SettingsScreen(
-                    navController = navController,
-                    settingsViewModel = hiltViewModel()
-                )
+                composable(route = Screen.MenuScreen.route) {
+                    val parentEntry = remember {
+                        navController.getBackStackEntry(Screen.AlarmFlow.route)
+                    }
+                    SettingsScreen(
+                        navController = navController,
+                        settingsViewModel = hiltViewModel(parentEntry)
+                    )
+                }
             }
         }
     }

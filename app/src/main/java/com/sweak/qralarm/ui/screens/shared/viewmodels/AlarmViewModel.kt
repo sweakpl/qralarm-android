@@ -119,7 +119,7 @@ class AlarmViewModel @Inject constructor(
                 return
             }
         } else {
-            navController.navigate(Screen.ScannerScreen.route)
+            navController.navigate(Screen.ScannerScreen.withArguments(SCAN_MODE_DISMISS_ALARM))
         }
     }
 
@@ -198,5 +198,11 @@ class AlarmViewModel @Inject constructor(
         val timeFormat = dataStoreManager.getInt(DataStoreManager.ALARM_TIME_FORMAT).first()
 
         return TimeFormat.fromInt(timeFormat) ?: TimeFormat.MILITARY
+    }
+
+    fun getDismissCode(): String {
+        return runBlocking {
+            dataStoreManager.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
+        }
     }
 }

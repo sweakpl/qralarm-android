@@ -57,3 +57,7 @@ val AVAILABLE_SNOOZE_MAX_COUNTS = listOf(
     SNOOZE_MAX_COUNT_1,
     SNOOZE_MAX_COUNT_0
 )
+
+const val KEY_SCANNER_MODE = "scannerMode"
+const val SCAN_MODE_DISMISS_ALARM = "scanModeDismissAlarm"
+const val SCAN_MODE_SET_CUSTOM_CODE = "scanModeSetCustomCode"

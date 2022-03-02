@@ -45,7 +45,8 @@ class SettingsViewModel @Inject constructor(
                     ),
                     selectedSnoozeMaxCountIndex = AVAILABLE_SNOOZE_MAX_COUNTS.indexOf(
                         it.getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
-                    )
+                    ),
+                    dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
                 )
             )
         }
@@ -167,6 +168,16 @@ class SettingsViewModel @Inject constructor(
                 resourceProvider.getString(R.string.not_saved_default_qrcode),
                 Toast.LENGTH_LONG
             ).show()
+        }
+    }
+
+    fun setCustomQRCode(code: String) {
+        viewModelScope.launch {
+            dataStoreManager.putString(DataStoreManager.DISMISS_ALARM_CODE, code)
+            settingsUiState.value = settingsUiState.value.copy(
+                showDismissCodeAddedDialog = true,
+                dismissAlarmCode = code
+            )
         }
     }
 }

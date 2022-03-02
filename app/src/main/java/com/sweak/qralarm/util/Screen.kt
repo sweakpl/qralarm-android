@@ -5,4 +5,13 @@ sealed class Screen(val route: String) {
     object HomeScreen : Screen("home_screen")
     object ScannerScreen : Screen("scanner_screen")
     object MenuScreen : Screen("settings_screen")
+
+    fun withArguments(vararg arguments: String): String {
+        return buildString {
+            append(route)
+            arguments.forEach { argument ->
+                append("/$argument")
+            }
+        }
+    }
 }

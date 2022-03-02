@@ -30,9 +30,12 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
+import com.sweak.qralarm.ui.screens.shared.components.DismissCodeAddedDialog
 import com.sweak.qralarm.ui.screens.shared.components.StoragePermissionDialog
 import com.sweak.qralarm.ui.screens.shared.components.StoragePermissionRevokedDialog
 import com.sweak.qralarm.ui.theme.space
+import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
+import com.sweak.qralarm.util.Screen
 
 @ExperimentalPermissionsApi
 @Composable
@@ -263,6 +266,41 @@ fun SettingsScreen(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(end = MaterialTheme.space.large)
+                        .weight(1f),
+                    text = stringResource(R.string.scan_custom_code),
+                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                )
+
+                IconButton(
+                    onClick = {
+                        navController.navigate(
+                            Screen.ScannerScreen.withArguments(SCAN_MODE_SET_CUSTOM_CODE)
+                        )
+                    },
+                    modifier = Modifier
+                        .padding(end = MaterialTheme.space.medium)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_scan),
+                        contentDescription = "Scan button",
+                        tint = MaterialTheme.colors.secondary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
         }
     }
 
@@ -289,6 +327,17 @@ fun SettingsScreen(
         },
         onNegativeClick = {
             uiState.value = uiState.value.copy(showStoragePermissionRevokedDialog = false)
+        }
+    )
+
+    DismissCodeAddedDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            uiState.value = uiState.value.copy(showDismissCodeAddedDialog = false)
+        },
+        onNegativeClick = {
+            navController.navigate(Screen.ScannerScreen.withArguments(SCAN_MODE_SET_CUSTOM_CODE))
+            uiState.value = uiState.value.copy(showDismissCodeAddedDialog = false)
         }
     )
 }

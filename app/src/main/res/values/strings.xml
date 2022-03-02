@@ -30,5 +30,11 @@
     <string name="storage_permission_required_message">QRAlarm needs access to Your phone’s storage in order to download a default QR Code that after being scanned will turn off alarms.</string>
     <string name="storage_permission_revoked_message">Storage permission has been permanently revoked. Without it QRAlarm can not download a default QR Code that after being scanned will turn off alarms. In order to fix it, go to settings and allow QRAlarm to use phone’s storage.</string>
     <string name="saved_default_qrcode">Downloaded default QR Code!</string>
-    <string name="not_saved_default_qrcode">Failed to download the default QR Code...</string>
+    <string name="not_saved_default_qrcode">Failed to download the default QR Code…</string>
+    <string name="added_new_dismiss_code">Added new alarm dismiss code: %1$s</string>
+    <string name="scan_custom_code">Scan custom QR Code</string>
+    <string name="it_is_ok">It\'s OK</string>
+    <string name="again">Again</string>
+    <string name="new_code_added_title">New code added</string>
+    <string name="new_code_added_message">The code “%1$s” has been set as the new dismiss code for the alarm. You can try scanning again for the code if the scan result is not what You wanted.</string>
 </resources>

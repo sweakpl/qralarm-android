@@ -12,9 +12,12 @@ import com.budiyev.android.codescanner.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
+import com.sweak.qralarm.ui.screens.settings.SettingsViewModel
 import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
 import com.sweak.qralarm.ui.theme.BlueZodiac
 import com.sweak.qralarm.ui.theme.ButterflyBush
+import com.sweak.qralarm.util.SCAN_MODE_DISMISS_ALARM
+import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +26,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun ScannerScreen(
     navController: NavHostController,
-    alarmViewModel: AlarmViewModel
+    alarmViewModel: AlarmViewModel,
+    settingsViewModel: SettingsViewModel,
+    scannerMode: String?
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     lateinit var codeScanner: CodeScanner
@@ -58,7 +63,13 @@ fun ScannerScreen(
                 scanMode = ScanMode.CONTINUOUS
                 isTouchFocusEnabled = true
                 decodeCallback = DecodeCallback { result ->
-                    handleDecodeResult(result, navController, alarmViewModel)
+                    handleDecodeResult(
+                        result,
+                        scannerMode,
+                        navController,
+                        alarmViewModel,
+                        settingsViewModel
+                    )
                 }
                 errorCallback = ErrorCallback.SUPPRESS
                 startPreview()
@@ -72,11 +83,20 @@ fun ScannerScreen(
 @ExperimentalPermissionsApi
 fun handleDecodeResult(
     result: Result,
+    scannerMode: String?,
     navController: NavHostController,
-    alarmViewModel: AlarmViewModel
+    alarmViewModel: AlarmViewModel,
+    settingsViewModel: SettingsViewModel
 ) {
-    if (result.text == "StopAlarm") {
-        alarmViewModel.stopAlarm()
+    if (scannerMode == SCAN_MODE_DISMISS_ALARM) {
+        if (result.text == alarmViewModel.getDismissCode()) {
+            alarmViewModel.stopAlarm()
+            CoroutineScope(Dispatchers.Main).launch {
+                navController.popBackStack()
+            }
+        }
+    } else if (scannerMode == SCAN_MODE_SET_CUSTOM_CODE) {
+        settingsViewModel.setCustomQRCode(result.text)
         CoroutineScope(Dispatchers.Main).launch {
             navController.popBackStack()
         }
