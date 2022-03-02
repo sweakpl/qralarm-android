@@ -7,7 +7,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.home.HomeUiState
 
 @Composable
-fun CameraPermissionRevokedDialog(
+fun CameraPermissionSetAlarmRevokedDialog(
     uiState: MutableState<HomeUiState>,
     onPositiveClick: () -> Unit,
     onNegativeClick: () -> Unit
@@ -20,7 +20,7 @@ fun CameraPermissionRevokedDialog(
             onPositiveClick = onPositiveClick,
             onNegativeClick = onNegativeClick,
             title = stringResource(R.string.camera_permission_required_title),
-            message = stringResource(R.string.camera_permission_revoked_message),
+            message = stringResource(R.string.camera_permission_set_alarm_revoked_message),
             positiveButtonText = stringResource(R.string.settings),
             negativeButtonText = stringResource(R.string.later)
         )

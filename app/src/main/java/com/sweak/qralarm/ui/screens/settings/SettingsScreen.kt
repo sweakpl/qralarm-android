@@ -30,9 +30,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
-import com.sweak.qralarm.ui.screens.shared.components.DismissCodeAddedDialog
-import com.sweak.qralarm.ui.screens.shared.components.StoragePermissionDialog
-import com.sweak.qralarm.ui.screens.shared.components.StoragePermissionRevokedDialog
+import com.sweak.qralarm.ui.screens.shared.components.*
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
 import com.sweak.qralarm.util.Screen
@@ -46,6 +44,9 @@ fun SettingsScreen(
     val uiState = remember { settingsViewModel.settingsUiState }
     val storagePermissionState = rememberPermissionState(
         permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+    val cameraPermissionState = rememberPermissionState(
+        permission = android.Manifest.permission.CAMERA
     )
     val scrollState = rememberScrollState()
 
@@ -158,8 +159,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -197,8 +197,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -236,8 +235,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -270,8 +268,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -285,8 +282,9 @@ fun SettingsScreen(
 
                 IconButton(
                     onClick = {
-                        navController.navigate(
-                            Screen.ScannerScreen.withArguments(SCAN_MODE_SET_CUSTOM_CODE)
+                        settingsViewModel.handleScanCustomDismissCodeButton(
+                            navController,
+                            cameraPermissionState
                         )
                     },
                     modifier = Modifier
@@ -299,6 +297,17 @@ fun SettingsScreen(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(
+                    R.string.current_dismiss_code,
+                    uiState.value.dismissAlarmCode
+                ),
+                style = MaterialTheme.typography.body1
+            )
 
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
         }
@@ -338,6 +347,30 @@ fun SettingsScreen(
         onNegativeClick = {
             navController.navigate(Screen.ScannerScreen.withArguments(SCAN_MODE_SET_CUSTOM_CODE))
             uiState.value = uiState.value.copy(showDismissCodeAddedDialog = false)
+        }
+    )
+
+    CameraPermissionAddCodeDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            cameraPermissionState.launchPermissionRequest()
+            uiState.value = uiState.value.copy(showCameraPermissionDialog = false)
+        },
+        onNegativeClick = { uiState.value = uiState.value.copy(showCameraPermissionDialog = false) }
+    )
+
+    CameraPermissionAddCodeRevokedDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            context.startActivity(
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.parse("package:${context.packageName}")
+                }
+            )
+            uiState.value = uiState.value.copy(showCameraPermissionRevokedDialog = false)
+        },
+        onNegativeClick = {
+            uiState.value = uiState.value.copy(showCameraPermissionRevokedDialog = false)
         }
     )
 }

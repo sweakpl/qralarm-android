@@ -39,8 +39,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.AlarmPermissionDialog
-import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionDialog
-import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionRevokedDialog
+import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionSetAlarmDialog
+import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionSetAlarmRevokedDialog
 import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
 import com.sweak.qralarm.ui.theme.amikoFamily
 import com.sweak.qralarm.ui.theme.space
@@ -161,7 +161,7 @@ fun HomeScreen(
 
     val context = LocalContext.current
 
-    CameraPermissionDialog(
+    CameraPermissionSetAlarmDialog(
         uiState = uiState,
         onPositiveClick = {
             cameraPermissionState.launchPermissionRequest()
@@ -170,7 +170,7 @@ fun HomeScreen(
         onNegativeClick = { uiState.value = uiState.value.copy(showCameraPermissionDialog = false) }
     )
 
-    CameraPermissionRevokedDialog(
+    CameraPermissionSetAlarmRevokedDialog(
         uiState = uiState,
         onPositiveClick = {
             context.startActivity(

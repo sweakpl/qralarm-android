@@ -16,6 +16,8 @@ data class SettingsUiState(
     val snoozeMaxCountsDropdownMenuExpanded: Boolean = false,
     val showStoragePermissionDialog: Boolean = false,
     val showStoragePermissionRevokedDialog: Boolean = false,
-    val showDismissCodeAddedDialog: Boolean = false,
-    val dismissAlarmCode: String
+    val dismissAlarmCode: String,
+    val showCameraPermissionDialog: Boolean = false,
+    val showCameraPermissionRevokedDialog: Boolean = false,
+    val showDismissCodeAddedDialog: Boolean = false
 )

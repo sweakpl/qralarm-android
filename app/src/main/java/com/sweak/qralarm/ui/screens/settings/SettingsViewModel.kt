@@ -11,6 +11,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.sweak.qralarm.R
@@ -179,5 +180,30 @@ class SettingsViewModel @Inject constructor(
                 dismissAlarmCode = code
             )
         }
+    }
+
+    fun handleScanCustomDismissCodeButton(
+        navController: NavHostController,
+        cameraPermissionState: PermissionState
+    ) {
+        if (!cameraPermissionState.hasPermission) {
+            when {
+                !cameraPermissionState.permissionRequested ||
+                        cameraPermissionState.shouldShowRationale -> {
+                    settingsUiState.value =
+                        settingsUiState.value.copy(showCameraPermissionDialog = true)
+                    return
+                }
+                !cameraPermissionState.shouldShowRationale -> {
+                    settingsUiState.value =
+                        settingsUiState.value.copy(showCameraPermissionRevokedDialog = true)
+                    return
+                }
+            }
+        }
+
+        navController.navigate(
+            Screen.ScannerScreen.withArguments(SCAN_MODE_SET_CUSTOM_CODE)
+        )
     }
 }

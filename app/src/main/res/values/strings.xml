@@ -11,9 +11,11 @@
     <string name="later">Later</string>
     <string name="settings">Settings</string>
     <string name="camera_permission_required_title">Camera permission required</string>
-    <string name="camera_permission_required_message">QRAlarm needs access to Your phone’s camera in order to scan for QR Codes to disable alarms. Without this permission the app can not work properly.</string>
+    <string name="camera_permission_set_alarm_required_message">QRAlarm needs access to Your phone’s camera in order to scan for QR Codes to disable alarms. Without this permission the app can not work properly.</string>
+    <string name="camera_permission_add_code_required_message">QRAlarm needs access to Your phone’s camera in order to scan for QR Codes containing a new dismiss code.</string>
     <string name="allow">Allow</string>
-    <string name="camera_permission_revoked_message">Camera permission has been permanently revoked. Without it QRAlarm can not work properly. In order to fix it, go to settings and allow QRAlarm to use phone’s camera.</string>
+    <string name="camera_permission_set_alarm_revoked_message">Camera permission has been permanently revoked. Without it QRAlarm can not work properly. In order to fix it, go to settings and allow QRAlarm to use phone’s camera.</string>
+    <string name="camera_permission_add_code_revoked_message">Camera permission has been permanently revoked. Without it You can not set a new dismiss alarm and dismiss alarms. Go to settings and allow QRAlarm to use phone’s camera.</string>
     <string name="snooze">SNOOZE</string>
     <string name="alarm_notification_text_snooze">Snooze over! Go and scan Your QR Code!</string>
     <string name="alarm_at">Alarm set at:</string>
@@ -37,4 +39,5 @@
     <string name="again">Again</string>
     <string name="new_code_added_title">New code added</string>
     <string name="new_code_added_message">The code “%1$s” has been set as the new dismiss code for the alarm. You can try scanning again for the code if the scan result is not what You wanted.</string>
+    <string name="current_dismiss_code">Current dismiss code: \"%1$s\"</string>
 </resources>

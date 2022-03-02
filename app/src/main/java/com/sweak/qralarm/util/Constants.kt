@@ -61,3 +61,5 @@ val AVAILABLE_SNOOZE_MAX_COUNTS = listOf(
 const val KEY_SCANNER_MODE = "scannerMode"
 const val SCAN_MODE_DISMISS_ALARM = "scanModeDismissAlarm"
 const val SCAN_MODE_SET_CUSTOM_CODE = "scanModeSetCustomCode"
+
+const val DEFAULT_DISMISS_ALARM_CODE = "StopAlarm"
