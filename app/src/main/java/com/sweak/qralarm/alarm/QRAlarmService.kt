@@ -107,7 +107,7 @@ class QRAlarmService : Service() {
                 else
                     getString(R.string.alarm_notification_text_snooze)
             )
-            setSmallIcon(R.drawable.ic_launcher_foreground)
+            setSmallIcon(R.drawable.ic_notification_icon)
             setContentIntent(alarmNotificationPendingIntent)
             return build()
         }
