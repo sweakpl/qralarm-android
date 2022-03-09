@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">QRAlarm</string>
     <string name="alarm_notification_channel_name">Firing alarms</string>
     <string name="alarm_notification_channel_description">Play alarm sound, display a notification and pop up on screen</string>
@@ -40,4 +40,6 @@
     <string name="new_code_added_title">New code added</string>
     <string name="new_code_added_message">The code “%1$s” has been set as the new dismiss code for the alarm. You can try scanning again for the code if the scan result is not what You wanted.</string>
     <string name="current_dismiss_code">Current dismiss code: \"%1$s\"</string>
+    <string name="cancel" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="alarm_set">Alarm set</string>
 </resources>

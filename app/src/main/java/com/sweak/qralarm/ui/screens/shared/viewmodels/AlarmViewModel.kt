@@ -1,5 +1,8 @@
 package com.sweak.qralarm.ui.screens.shared.viewmodels
 
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -7,12 +10,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
+import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.QRAlarmService
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeUiState
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -23,7 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AlarmViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
-    private val qrAlarmManager: QRAlarmManager
+    private val qrAlarmManager: QRAlarmManager,
+    private val resourceProvider: ResourceProvider
 ) : ViewModel() {
 
     val homeUiState: MutableState<HomeUiState> = runBlocking {
@@ -42,7 +49,8 @@ class AlarmViewModel @Inject constructor(
                 snoozeAvailable = false,
                 showAlarmPermissionDialog = false,
                 showCameraPermissionDialog = false,
-                showCameraPermissionRevokedDialog = false
+                showCameraPermissionRevokedDialog = false,
+                snackbarHostState = SnackbarHostState()
             )
         )
     }
@@ -62,7 +70,8 @@ class AlarmViewModel @Inject constructor(
 
     fun handleStartOrStopButtonClick(
         navController: NavHostController,
-        cameraPermissionState: PermissionState
+        cameraPermissionState: PermissionState,
+        composableScope: CoroutineScope
     ) {
         if (!cameraPermissionState.hasPermission) {
             when {
@@ -112,6 +121,21 @@ class AlarmViewModel @Inject constructor(
                             DataStoreManager.SNOOZE_AVAILABLE_COUNT,
                             getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
                         )
+                    }
+                }
+
+                composableScope.launch {
+                    val snackbarResult = homeUiState.value.snackbarHostState.showSnackbar(
+                        message = resourceProvider.getString(R.string.alarm_set),
+                        actionLabel = resourceProvider.getString(R.string.cancel),
+                        duration = SnackbarDuration.Long
+                    )
+                    when (snackbarResult) {
+                        SnackbarResult.ActionPerformed -> {
+                            delay(500)
+                            stopAlarm()
+                        }
+                        SnackbarResult.Dismissed -> {}
                     }
                 }
             } catch (exception: SecurityException) {

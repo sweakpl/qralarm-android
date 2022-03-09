@@ -42,6 +42,7 @@ import com.sweak.qralarm.ui.screens.shared.components.AlarmPermissionDialog
 import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionSetAlarmDialog
 import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionSetAlarmRevokedDialog
 import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
+import com.sweak.qralarm.ui.theme.Victoria
 import com.sweak.qralarm.ui.theme.amikoFamily
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Meridiem
@@ -59,6 +60,7 @@ fun HomeScreen(
 ) {
     val uiState = remember { alarmViewModel.homeUiState }
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
+    val composableScope = rememberCoroutineScope()
 
     val constraints = ConstraintSet {
         val menuButton = createRefFor("menuButton")
@@ -144,7 +146,8 @@ fun HomeScreen(
             onClick = {
                 alarmViewModel.handleStartOrStopButtonClick(
                     navController,
-                    cameraPermissionState
+                    cameraPermissionState,
+                    composableScope
                 )
             }
         )
@@ -195,6 +198,8 @@ fun HomeScreen(
         },
         onNegativeClick = { uiState.value = uiState.value.copy(showAlarmPermissionDialog = false) }
     )
+
+    AlarmSetSnackbar(snackbarHostState = uiState.value.snackbarHostState)
 }
 
 @Composable
@@ -471,6 +476,50 @@ fun SnoozeButton(
                 MaterialTheme.space.medium,
                 MaterialTheme.space.extraSmall
             )
+        )
+    }
+}
+
+@Composable
+fun AlarmSetSnackbar(
+    snackbarHostState: SnackbarHostState
+) {
+    ConstraintLayout(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        val snackbar = createRef()
+
+        SnackbarHost(
+            modifier = Modifier
+                .constrainAs(snackbar) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+                .padding(MaterialTheme.space.medium),
+            hostState = snackbarHostState,
+            snackbar = {
+                Snackbar(
+                    action = {
+                        TextButton(
+                            onClick = { snackbarHostState.currentSnackbarData?.performAction() }
+                        ) {
+                            Text(
+                                text = snackbarHostState.currentSnackbarData?.actionLabel
+                                    ?: stringResource(R.string.cancel),
+                            )
+                        }
+                    },
+                    shape = MaterialTheme.shapes.medium,
+                    backgroundColor = Victoria
+                ) {
+                    Text(
+                        text = snackbarHostState.currentSnackbarData?.message
+                            ?: stringResource(R.string.alarm_set),
+                        style = MaterialTheme.typography.h2
+                    )
+                }
+            }
         )
     }
 }
