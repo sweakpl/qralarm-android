@@ -1,7 +1,9 @@
 package com.sweak.qralarm
 
+import android.os.Build
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
@@ -23,10 +25,7 @@ import com.sweak.qralarm.ui.screens.home.HomeScreen
 import com.sweak.qralarm.ui.screens.scanner.ScannerScreen
 import com.sweak.qralarm.ui.screens.settings.SettingsScreen
 import com.sweak.qralarm.ui.theme.QRAlarmTheme
-import com.sweak.qralarm.util.KEY_SCANNER_MODE
-import com.sweak.qralarm.util.SCAN_MODE_DISMISS_ALARM
-import com.sweak.qralarm.util.Screen
-import com.sweak.qralarm.util.TimeFormat
+import com.sweak.qralarm.util.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -45,18 +44,34 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        makeWindowShowOnLockScreen()
         switchTimeFormatIfNeeded()
         checkIfAlarmSet()
 
+        val isLockScreenActivity =
+            intent.getBooleanExtra(LOCK_SCREEN_VISIBILITY_FLAG, false)
+
         setContent {
             QRAlarmTheme {
-                ScreenContent()
+                ScreenContent(isLockScreenActivity)
+            }
+        }
+    }
+
+    private fun makeWindowShowOnLockScreen() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        } else {
+            window.apply {
+                addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+                addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
             }
         }
     }
 
     @Composable
-    fun ScreenContent() {
+    fun ScreenContent(isLockScreenActivity: Boolean) {
         val navController = rememberNavController()
         NavHost(navController = navController, startDestination = Screen.AlarmFlow.route) {
             navigation(startDestination = Screen.HomeScreen.route, route = Screen.AlarmFlow.route) {
@@ -66,7 +81,10 @@ class MainActivity : ComponentActivity() {
                     }
                     HomeScreen(
                         navController = navController,
-                        alarmViewModel = hiltViewModel(parentEntry)
+                        alarmViewModel = hiltViewModel(parentEntry),
+                        finishableActionSideEffect = {
+                            if (isLockScreenActivity) finish() else { /* no-op */ }
+                        }
                     )
                 }
                 composable(
@@ -86,7 +104,10 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         alarmViewModel = hiltViewModel(parentEntry),
                         settingsViewModel = hiltViewModel(parentEntry),
-                        scannerMode = it.arguments?.getString(KEY_SCANNER_MODE)
+                        scannerMode = it.arguments?.getString(KEY_SCANNER_MODE),
+                        finishableActionSideEffect = {
+                            if (isLockScreenActivity) finish() else { /* no-op */ }
+                        }
                     )
                 }
                 composable(route = Screen.MenuScreen.route) {

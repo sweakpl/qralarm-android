@@ -21,6 +21,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
 import com.sweak.qralarm.util.AlarmSound
+import com.sweak.qralarm.util.LOCK_SCREEN_VISIBILITY_FLAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -92,6 +93,18 @@ class QRAlarmService : Service() {
                     else 0
         )
 
+        val alarmFullScreenPendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            ALARM_FULL_SCREEN_REQUEST_CODE,
+            Intent(applicationContext, MainActivity::class.java).apply {
+                putExtra(LOCK_SCREEN_VISIBILITY_FLAG, true)
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT or
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        PendingIntent.FLAG_IMMUTABLE
+                    else 0
+        )
+
         NotificationCompat.Builder(
             applicationContext,
             QRAlarmApp.ALARM_NOTIFICATION_CHANNEL_ID
@@ -109,6 +122,7 @@ class QRAlarmService : Service() {
             )
             setSmallIcon(R.drawable.ic_notification_icon)
             setContentIntent(alarmNotificationPendingIntent)
+            setFullScreenIntent(alarmFullScreenPendingIntent, true)
             return build()
         }
     }
@@ -231,6 +245,7 @@ class QRAlarmService : Service() {
         const val FOREGROUND_SERVICE_ID = 300
         const val ALARM_NOTIFICATION_ID = 300
         const val ALARM_NOTIFICATION_REQUEST_CODE = 400
+        const val ALARM_FULL_SCREEN_REQUEST_CODE = 500
 
         const val ALARM_TYPE_KEY = "alarmTypeKey"
         const val ALARM_TYPE_NORMAL = 200

@@ -167,7 +167,9 @@ class AlarmViewModel @Inject constructor(
         }
     }
 
-    fun handleSnoozeButtonClick() {
+    fun handleSnoozeButtonClick(
+        snoozeSideEffect: () -> Unit
+    ) {
         qrAlarmManager.cancelAlarm()
 
         viewModelScope.launch {
@@ -215,6 +217,8 @@ class AlarmViewModel @Inject constructor(
                 val availableSnoozes = getInt(DataStoreManager.SNOOZE_AVAILABLE_COUNT).first()
                 putInt(DataStoreManager.SNOOZE_AVAILABLE_COUNT, availableSnoozes - 1)
             }
+
+            snoozeSideEffect()
         }
     }
 

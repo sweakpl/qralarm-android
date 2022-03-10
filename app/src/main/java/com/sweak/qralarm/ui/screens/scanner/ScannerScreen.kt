@@ -28,7 +28,8 @@ fun ScannerScreen(
     navController: NavHostController,
     alarmViewModel: AlarmViewModel,
     settingsViewModel: SettingsViewModel,
-    scannerMode: String?
+    scannerMode: String?,
+    finishableActionSideEffect: () -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     lateinit var codeScanner: CodeScanner
@@ -64,11 +65,12 @@ fun ScannerScreen(
                 isTouchFocusEnabled = true
                 decodeCallback = DecodeCallback { result ->
                     handleDecodeResult(
-                        result,
-                        scannerMode,
-                        navController,
-                        alarmViewModel,
-                        settingsViewModel
+                        result = result,
+                        scannerMode = scannerMode,
+                        navController = navController,
+                        alarmViewModel = alarmViewModel,
+                        settingsViewModel = settingsViewModel,
+                        cancelAlarmSideEffect = finishableActionSideEffect
                     )
                 }
                 errorCallback = ErrorCallback.SUPPRESS
@@ -86,12 +88,14 @@ fun handleDecodeResult(
     scannerMode: String?,
     navController: NavHostController,
     alarmViewModel: AlarmViewModel,
-    settingsViewModel: SettingsViewModel
+    settingsViewModel: SettingsViewModel,
+    cancelAlarmSideEffect: () -> Unit
 ) {
     if (scannerMode == SCAN_MODE_DISMISS_ALARM) {
         if (result.text == alarmViewModel.getDismissCode()) {
             alarmViewModel.stopAlarm()
             CoroutineScope(Dispatchers.Main).launch {
+                cancelAlarmSideEffect()
                 navController.popBackStack()
             }
         }

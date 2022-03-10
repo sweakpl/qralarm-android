@@ -62,4 +62,6 @@ const val KEY_SCANNER_MODE = "scannerMode"
 const val SCAN_MODE_DISMISS_ALARM = "scanModeDismissAlarm"
 const val SCAN_MODE_SET_CUSTOM_CODE = "scanModeSetCustomCode"
 
+const val LOCK_SCREEN_VISIBILITY_FLAG = "lockScreenVisibilityFlag"
+
 const val DEFAULT_DISMISS_ALARM_CODE = "StopAlarm"

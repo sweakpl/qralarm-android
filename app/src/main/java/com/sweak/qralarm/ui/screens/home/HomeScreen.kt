@@ -56,7 +56,8 @@ import kotlin.math.roundToInt
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    alarmViewModel: AlarmViewModel
+    alarmViewModel: AlarmViewModel,
+    finishableActionSideEffect: () -> Unit
 ) {
     val uiState = remember { alarmViewModel.homeUiState }
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
@@ -154,7 +155,7 @@ fun HomeScreen(
 
         if (uiState.value.alarmServiceRunning && uiState.value.snoozeAvailable) {
             SnoozeButton(
-                onClick = { alarmViewModel.handleSnoozeButtonClick() },
+                onClick = { alarmViewModel.handleSnoozeButtonClick(finishableActionSideEffect) },
                 modifier = Modifier
                     .layoutId("snoozeButton")
                     .padding(0.dp, MaterialTheme.space.medium, 0.dp, 0.dp)
