@@ -44,12 +44,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        makeWindowShowOnLockScreen()
+        val isLockScreenActivity =
+            intent.getBooleanExtra(LOCK_SCREEN_VISIBILITY_FLAG, false)
+
+        if (isLockScreenActivity) {
+            makeWindowShowOnLockScreen()
+        }
+
         switchTimeFormatIfNeeded()
         checkIfAlarmSet()
 
-        val isLockScreenActivity =
-            intent.getBooleanExtra(LOCK_SCREEN_VISIBILITY_FLAG, false)
 
         setContent {
             QRAlarmTheme {
