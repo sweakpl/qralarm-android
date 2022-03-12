@@ -3,7 +3,9 @@ package com.sweak.qralarm.alarm
 import android.app.AlarmManager
 import android.app.Application
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
@@ -13,6 +15,7 @@ import javax.inject.Inject
 @ExperimentalPermissionsApi
 class QRAlarmManager @Inject constructor(
     private val alarmManager: AlarmManager,
+    private val packageManager: PackageManager,
     private val app: Application
 ) {
     fun setAlarm(alarmTimeInMillis: Long, alarmType: Int) {
@@ -43,11 +46,23 @@ class QRAlarmManager @Inject constructor(
             AlarmManager.AlarmClockInfo(alarmTimeInMillis, alarmInfoPendingIntent),
             alarmPendingIntent
         )
+
+        packageManager.setComponentEnabledSetting(
+            ComponentName(app, BootReceiver::class.java),
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+        )
     }
 
     fun cancelAlarm() {
         app.stopService(Intent(app.applicationContext, QRAlarmService::class.java))
         removeAlarmPendingIntent()
+
+        packageManager.setComponentEnabledSetting(
+            ComponentName(app, BootReceiver::class.java),
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
     }
 
     fun removeAlarmPendingIntent() {

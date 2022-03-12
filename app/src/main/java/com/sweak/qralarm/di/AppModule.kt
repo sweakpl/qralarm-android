@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.Application
 import android.app.NotificationManager
 import android.app.Service
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Vibrator
@@ -30,8 +31,12 @@ class AppModule {
     @ExperimentalPermissionsApi
     @Provides
     @Singleton
-    fun provideQrAlarmManager(alarmManager: AlarmManager, app: Application): QRAlarmManager =
-        QRAlarmManager(alarmManager, app)
+    fun provideQrAlarmManager(
+        alarmManager: AlarmManager,
+        packageManager: PackageManager,
+        app: Application
+    ): QRAlarmManager =
+        QRAlarmManager(alarmManager, packageManager, app)
 
     @Provides
     @Singleton
@@ -61,4 +66,8 @@ class AppModule {
     @Provides
     @Singleton
     fun provideMediaPlayer(): MediaPlayer = MediaPlayer()
+
+    @Provides
+    @Singleton
+    fun providePackageManager(app: Application): PackageManager = app.packageManager
 }
