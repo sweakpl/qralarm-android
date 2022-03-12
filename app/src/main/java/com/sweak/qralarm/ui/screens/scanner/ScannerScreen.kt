@@ -95,7 +95,7 @@ fun handleDecodeResult(
         if (result.text == alarmViewModel.getDismissCode()) {
             alarmViewModel.stopAlarm()
             CoroutineScope(Dispatchers.Main).launch {
-                cancelAlarmSideEffect()
+                cancelAlarmSideEffect.invoke()
                 navController.popBackStack()
             }
         }

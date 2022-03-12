@@ -35,7 +35,11 @@ class AlarmViewModel @Inject constructor(
 
     val homeUiState: MutableState<HomeUiState> = runBlocking {
         val alarmTimeInMillis =
-            dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
+            if (dataStoreManager.getBoolean(DataStoreManager.ALARM_SNOOZED).first()) {
+                dataStoreManager.getLong(DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS).first()
+            } else {
+                dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
+            }
         val timeFormat = getTimeFormat()
 
         mutableStateOf(
@@ -105,6 +109,7 @@ class AlarmViewModel @Inject constructor(
                 viewModelScope.launch {
                     dataStoreManager.apply {
                         putBoolean(DataStoreManager.ALARM_SET, true)
+                        putBoolean(DataStoreManager.ALARM_SNOOZED, false)
                         homeUiState.value = homeUiState.value.copy(alarmSet = true)
 
                         putLong(
@@ -153,6 +158,7 @@ class AlarmViewModel @Inject constructor(
         viewModelScope.launch {
             dataStoreManager.apply {
                 putBoolean(DataStoreManager.ALARM_SET, false)
+                putBoolean(DataStoreManager.ALARM_SNOOZED, false)
 
                 val originalAlarmTimeInMillis =
                     getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
@@ -189,6 +195,7 @@ class AlarmViewModel @Inject constructor(
                 }
 
                 putBoolean(DataStoreManager.ALARM_SET, true)
+                putBoolean(DataStoreManager.ALARM_SNOOZED, true)
                 homeUiState.value = homeUiState.value.copy(alarmSet = true)
 
                 val alarmHour = getAlarmHour(
@@ -218,7 +225,7 @@ class AlarmViewModel @Inject constructor(
                 putInt(DataStoreManager.SNOOZE_AVAILABLE_COUNT, availableSnoozes - 1)
             }
 
-            snoozeSideEffect()
+            snoozeSideEffect.invoke()
         }
     }
 
