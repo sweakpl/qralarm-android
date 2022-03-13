@@ -23,7 +23,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -53,15 +54,15 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
 
     // Jetpack Compose
-    implementation "androidx.compose.ui:ui:1.2.0-alpha03"
-    implementation "androidx.compose.material:material:1.1.0"
-    implementation "androidx.compose.ui:ui-tooling-preview:1.1.0"
+    implementation "androidx.compose.ui:ui:1.2.0-alpha05"
+    implementation "androidx.compose.material:material:1.1.1"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.1.1"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0"
     implementation 'androidx.activity:activity-compose:1.4.0'
     androidTestImplementation 'org.junit.jupiter:junit-jupiter'
     androidTestImplementation 'org.junit.jupiter:junit-jupiter'
-    androidTestImplementation 'org.testng:testng:6.9.6'
-    debugImplementation "androidx.compose.ui:ui-tooling:1.1.0"
+    androidTestImplementation 'org.testng:testng:7.4.0'
+    debugImplementation "androidx.compose.ui:ui-tooling:1.1.1"
 
     // Coroutines
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
@@ -85,5 +86,5 @@ dependencies {
     // Tests
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
-    androidTestImplementation 'androidx.test:runner:1.4.1-alpha03'
+    androidTestImplementation 'androidx.test:runner:1.5.0-alpha01'
 }

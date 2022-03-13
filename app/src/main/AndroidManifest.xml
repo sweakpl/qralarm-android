@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sweak.qralarm">
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -24,7 +25,10 @@
             android:name="com.sweak.qralarm.MainActivity"
             android:exported="true"
             android:launchMode="singleInstance"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:showForAllUsers="true"
+            android:showWhenLocked="true"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:targetApi="o_mr1">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
