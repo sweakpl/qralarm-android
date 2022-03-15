@@ -21,6 +21,7 @@ import androidx.navigation.navArgument
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
+import com.sweak.qralarm.ui.screens.guide.GuideScreen
 import com.sweak.qralarm.ui.screens.home.HomeScreen
 import com.sweak.qralarm.ui.screens.scanner.ScannerScreen
 import com.sweak.qralarm.ui.screens.settings.SettingsScreen
@@ -123,6 +124,9 @@ class MainActivity : ComponentActivity() {
                         settingsViewModel = hiltViewModel(parentEntry)
                     )
                 }
+            }
+            composable(route = Screen.GuideScreen.route) {
+                GuideScreen(navController = navController)
             }
         }
     }

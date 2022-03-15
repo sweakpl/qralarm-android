@@ -95,7 +95,7 @@ fun SettingsScreen(
                     start = MaterialTheme.space.medium,
                     top = MaterialTheme.space.large - MaterialTheme.space.extraSmall
                 )
-                .layoutId("menuButton"),
+                .layoutId("backButton"),
             navController = navController
         )
 
@@ -300,6 +300,36 @@ fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(end = MaterialTheme.space.large)
+                        .weight(1f),
+                    text = stringResource(R.string.qralarm_guide),
+                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                )
+
+                IconButton(
+                    onClick = {
+                        navController.navigate(Screen.GuideScreen.route)
+                    },
+                    modifier = Modifier
+                        .padding(end = MaterialTheme.space.medium)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_guide),
+                        contentDescription = "Guide button",
+                        tint = MaterialTheme.colors.secondary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(
@@ -373,23 +403,6 @@ fun SettingsScreen(
             uiState.value = uiState.value.copy(showCameraPermissionRevokedDialog = false)
         }
     )
-}
-
-@Composable
-fun BackButton(
-    modifier: Modifier = Modifier,
-    navController: NavHostController
-) {
-    IconButton(
-        onClick = { navController.popBackStack() },
-        modifier = modifier
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_back_arrow),
-            contentDescription = "Back button",
-            tint = MaterialTheme.colors.secondary
-        )
-    }
 }
 
 @Composable

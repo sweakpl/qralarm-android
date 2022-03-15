@@ -42,4 +42,6 @@
     <string name="current_dismiss_code">Current dismiss code: \"%1$s\"</string>
     <string name="cancel" tools:ignore="ButtonCase">CANCEL</string>
     <string name="alarm_set">Alarm set</string>
+    <string name="qralarm_guide">QRAlarm Guide</string>
+    <string name="guide">Guide</string>
 </resources>
