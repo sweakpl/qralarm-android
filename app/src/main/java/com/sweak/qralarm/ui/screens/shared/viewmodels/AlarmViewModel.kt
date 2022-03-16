@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.sweak.qralarm.R
@@ -17,14 +18,12 @@ import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeUiState
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
+@InternalCoroutinesApi
+@ExperimentalPagerApi
 @ExperimentalPermissionsApi
 @HiltViewModel
 class AlarmViewModel @Inject constructor(

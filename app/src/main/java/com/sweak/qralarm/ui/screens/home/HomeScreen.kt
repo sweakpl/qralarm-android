@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.navigation.NavHostController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
@@ -48,10 +49,13 @@ import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Meridiem
 import com.sweak.qralarm.util.Screen
 import com.sweak.qralarm.util.TimeFormat
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+@ExperimentalPagerApi
+@InternalCoroutinesApi
 @ExperimentalPermissionsApi
 @Composable
 fun HomeScreen(

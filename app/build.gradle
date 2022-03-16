@@ -83,6 +83,9 @@ dependencies {
     // Permission handling
     implementation "com.google.accompanist:accompanist-permissions:0.21.1-beta"
 
+    // Pager
+    implementation 'com.google.accompanist:accompanist-pager:0.24.1-alpha'
+
     // Tests
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'

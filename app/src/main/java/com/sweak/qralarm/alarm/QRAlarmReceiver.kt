@@ -4,8 +4,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
+@ExperimentalPagerApi
 @ExperimentalPermissionsApi
 class QRAlarmReceiver : BroadcastReceiver() {
 

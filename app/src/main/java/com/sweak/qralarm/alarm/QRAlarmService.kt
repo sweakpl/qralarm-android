@@ -14,6 +14,7 @@ import android.os.*
 import android.util.Log
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
 import com.sweak.qralarm.QRAlarmApp
@@ -23,13 +24,12 @@ import com.sweak.qralarm.ui.theme.Jacarta
 import com.sweak.qralarm.util.AlarmSound
 import com.sweak.qralarm.util.LOCK_SCREEN_VISIBILITY_FLAG
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
+@ExperimentalPagerApi
+@InternalCoroutinesApi
 @ExperimentalPermissionsApi
 @AndroidEntryPoint
 class QRAlarmService : Service() {

@@ -73,6 +73,7 @@ fun SettingsScreen(
             start.linkTo(parent.start)
             end.linkTo(parent.end)
             bottom.linkTo(parent.bottom)
+            height = Dimension.fillToConstraints
         }
     }
 
@@ -114,11 +115,7 @@ fun SettingsScreen(
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    MaterialTheme.space.large,
-                    MaterialTheme.space.extraLarge
-                )
+                .padding(horizontal = MaterialTheme.space.large)
                 .verticalScroll(scrollState)
                 .layoutId("settingsColumn"),
             verticalArrangement = Arrangement.Top
@@ -259,7 +256,7 @@ fun SettingsScreen(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_download),
-                        contentDescription = "Menu button",
+                        contentDescription = "Download button",
                         tint = MaterialTheme.colors.secondary
                     )
                 }

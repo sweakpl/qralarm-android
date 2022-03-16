@@ -1,32 +1,61 @@
 package com.sweak.qralarm.ui.screens.guide
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.BackButton
 import com.sweak.qralarm.ui.theme.space
+import com.sweak.qralarm.util.Screen
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.launch
 
+@InternalCoroutinesApi
+@ExperimentalPagerApi
 @Composable
 fun GuideScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    isFirstLaunch: () -> Boolean,
+    closeGuideCallback: () -> Unit
 ) {
+    val previousButtonVisible = remember { mutableStateOf(false) }
+    val pagerState = rememberPagerState()
+    val composableScope = rememberCoroutineScope()
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect(FlowCollector { page ->
+            if (page == 0) {
+                previousButtonVisible.value = false
+            } else if (page == 1) {
+                previousButtonVisible.value = true
+            }
+        })
+    }
+
     val constraints = ConstraintSet {
         val backButton = createRefFor("backButton")
         val guideText = createRefFor("guideText")
         val guidePages = createRefFor("guidePages")
+        val navigationButtons = createRefFor("navigationButtons")
 
         constrain(backButton) {
             top.linkTo(parent.top)
@@ -41,6 +70,13 @@ fun GuideScreen(
 
         constrain(guidePages) {
             top.linkTo(guideText.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+            bottom.linkTo(navigationButtons.top)
+            height = Dimension.fillToConstraints
+        }
+
+        constrain(navigationButtons) {
             start.linkTo(parent.start)
             end.linkTo(parent.end)
             bottom.linkTo(parent.bottom)
@@ -60,15 +96,17 @@ fun GuideScreen(
                 )
             )
     ) {
-        BackButton(
-            modifier = Modifier
-                .padding(
-                    start = MaterialTheme.space.medium,
-                    top = MaterialTheme.space.large - MaterialTheme.space.extraSmall
-                )
-                .layoutId("backButton"),
-            navController = navController
-        )
+        if (!isFirstLaunch()) {
+            BackButton(
+                modifier = Modifier
+                    .padding(
+                        start = MaterialTheme.space.medium,
+                        top = MaterialTheme.space.large - MaterialTheme.space.extraSmall
+                    )
+                    .layoutId("backButton"),
+                navController = navController
+            )
+        }
 
         Text(
             text = stringResource(R.string.guide),
@@ -83,17 +121,84 @@ fun GuideScreen(
             style = MaterialTheme.typography.h1
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    MaterialTheme.space.large,
-                    MaterialTheme.space.extraLarge
-                )
-                .layoutId("guidePages"),
-            verticalArrangement = Arrangement.Top
-        ) {
+        HorizontalPager(
+            modifier = Modifier.layoutId("guidePages"),
+            state = pagerState,
+            count = 2
+        ) { page ->
+            if (page == 0) {
+                GuidePageQRCode()
+            } else if (page == 1) {
+                GuidePageBackgroundWork()
+            }
+        }
 
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .layoutId("navigationButtons"),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = {
+                    if (pagerState.currentPage == 1) {
+                        composableScope.launch {
+                            pagerState.animateScrollToPage(0)
+                        }
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Transparent
+                ),
+                elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
+                modifier = Modifier
+                    .padding(
+                        start = MaterialTheme.space.large,
+                        bottom = MaterialTheme.space.large,
+                        top = MaterialTheme.space.large
+                    )
+                    .alpha(if (previousButtonVisible.value) 1f else 0f)
+            ) {
+                Text(
+                    text = stringResource(R.string.previous),
+                    modifier = Modifier.padding(MaterialTheme.space.extraSmall)
+                )
+            }
+
+            Button(
+                onClick = {
+                    if (pagerState.currentPage == 0) {
+                        composableScope.launch {
+                            pagerState.animateScrollToPage(1)
+                        }
+                    } else if (pagerState.currentPage == 1) {
+                        if (isFirstLaunch()) {
+                            closeGuideCallback()
+                            navController.navigate(Screen.HomeScreen.route) {
+                                popUpTo(Screen.GuideScreen.route) {
+                                    inclusive = true
+                                }
+                            }
+                        } else {
+                            navController.popBackStack()
+                        }
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = MaterialTheme.colors.primary
+                ),
+                modifier = Modifier
+                    .padding(
+                        end = MaterialTheme.space.large,
+                        bottom = MaterialTheme.space.large,
+                        top = MaterialTheme.space.large
+                    )
+            ) {
+                Text(
+                    text = stringResource(R.string.next),
+                    modifier = Modifier.padding(MaterialTheme.space.extraSmall)
+                )
+            }
         }
     }
 }

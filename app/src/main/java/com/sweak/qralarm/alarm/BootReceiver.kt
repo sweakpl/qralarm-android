@@ -3,14 +3,18 @@ package com.sweak.qralarm.alarm
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.util.currentTimeInMillis
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
+@InternalCoroutinesApi
+@ExperimentalPagerApi
 @ExperimentalPermissionsApi
 @AndroidEntryPoint
 class BootReceiver : BroadcastReceiver() {

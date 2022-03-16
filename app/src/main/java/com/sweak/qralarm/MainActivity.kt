@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
@@ -28,10 +29,14 @@ import com.sweak.qralarm.ui.screens.settings.SettingsScreen
 import com.sweak.qralarm.ui.theme.QRAlarmTheme
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
+@InternalCoroutinesApi
+@ExperimentalPagerApi
 @ExperimentalPermissionsApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -55,7 +60,6 @@ class MainActivity : ComponentActivity() {
         switchTimeFormatIfNeeded()
         checkIfAlarmSet()
 
-
         setContent {
             QRAlarmTheme {
                 ScreenContent(isLockScreenActivity)
@@ -78,8 +82,19 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun ScreenContent(isLockScreenActivity: Boolean) {
         val navController = rememberNavController()
+        val isFirstLaunch = runBlocking {
+            dataStoreManager.getBoolean(DataStoreManager.FIRST_LAUNCH).first()
+        }
+
         NavHost(navController = navController, startDestination = Screen.AlarmFlow.route) {
-            navigation(startDestination = Screen.HomeScreen.route, route = Screen.AlarmFlow.route) {
+            navigation(
+                startDestination = if (isFirstLaunch) {
+                    Screen.GuideScreen.route
+                } else {
+                    Screen.HomeScreen.route
+                },
+                route = Screen.AlarmFlow.route
+            ) {
                 composable(route = Screen.HomeScreen.route) {
                     val parentEntry = remember {
                         navController.getBackStackEntry(Screen.AlarmFlow.route)
@@ -124,9 +139,23 @@ class MainActivity : ComponentActivity() {
                         settingsViewModel = hiltViewModel(parentEntry)
                     )
                 }
-            }
-            composable(route = Screen.GuideScreen.route) {
-                GuideScreen(navController = navController)
+                composable(
+                    route = Screen.GuideScreen.route,
+                ) {
+                    GuideScreen(
+                        navController = navController,
+                        isFirstLaunch = {
+                            runBlocking {
+                                dataStoreManager.getBoolean(DataStoreManager.FIRST_LAUNCH).first()
+                            }
+                        },
+                        closeGuideCallback = {
+                            lifecycleScope.launch {
+                                dataStoreManager.putBoolean(DataStoreManager.FIRST_LAUNCH, false)
+                            }
+                        }
+                    )
+                }
             }
         }
     }

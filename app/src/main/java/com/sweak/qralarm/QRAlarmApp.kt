@@ -39,7 +39,6 @@ class QRAlarmApp : Application() {
             runBlocking {
                 setDefaultAlarmLifecyclePreferences()
                 setDefaultAlarmTimePreferences()
-                dataStoreManager.putBoolean(DataStoreManager.FIRST_LAUNCH, false)
             }
         }
     }

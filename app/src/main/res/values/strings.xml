@@ -44,4 +44,13 @@
     <string name="alarm_set">Alarm set</string>
     <string name="qralarm_guide">QRAlarm Guide</string>
     <string name="guide">Guide</string>
+    <string name="get_your_qrcode">Get Your QR Code</string>
+    <string name="download_or_scan_code_description">QRAlarm lets You set alarms that can be turned off by scanning a QR Code. This can not be just any QR Code! Before You set up Your first alarm, You should Download a default Code Image from the Settings. In case You already have Your own QR Code then scan it - QR Alarm will remember it for You and will use it to cancel Your alarms!</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="important">IMPORTANT!</string>
+    <string name="fix_background_work">Fix background work</string>
+    <string name="background_work_description">Unfortunately many smartphone manufacturers prefer longer battery life (even if barely noticeable) over properly working applications! Samsung, OnePlus, Huawei, Xiaomi and many others tend to be killing applications while they are working in the background. QRAlarm can also suffer this problem! Many smartphone manufacturers kill the app completely along with the alarm that was set via the QRAlarm application. In order to fix this issue, please, go to dontkillmyapp.com and follow the instructions for Your smartphone - this should help mitigate the “optimizations” carried out by Your operating system.</string>
+    <string name="dontkillmyapp_short">dontkillmyapp.com</string>
+    <string name="dontkillmyapp_verbose">https://dontkillmyapp.com/</string>
 </resources>

@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavHostController
 import com.budiyev.android.codescanner.*
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
@@ -20,8 +21,11 @@ import com.sweak.qralarm.util.SCAN_MODE_DISMISS_ALARM
 import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
+@ExperimentalPagerApi
+@InternalCoroutinesApi
 @ExperimentalPermissionsApi
 @Composable
 fun ScannerScreen(
@@ -82,6 +86,8 @@ fun ScannerScreen(
     )
 }
 
+@ExperimentalPagerApi
+@InternalCoroutinesApi
 @ExperimentalPermissionsApi
 fun handleDecodeResult(
     result: Result,
