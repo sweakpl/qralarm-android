@@ -31,6 +31,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.*
+import com.sweak.qralarm.ui.theme.Kimberly
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
 import com.sweak.qralarm.util.Screen
@@ -172,6 +173,8 @@ fun SettingsScreen(
                     modifier = Modifier
                         .height(40.dp)
                         .width(80.dp),
+                    enabled = uiState.value.availableSnoozeMaxCounts
+                            [uiState.value.selectedSnoozeMaxCountIndex] != 0,
                     menuItems = uiState.value.availableSnoozeDurations,
                     menuExpandedState = uiState.value.snoozeDurationsDropdownMenuExpanded,
                     selectedIndex = uiState.value.selectedSnoozeDurationIndex,
@@ -405,6 +408,7 @@ fun SettingsScreen(
 @Composable
 fun ComboBox(
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     menuItems: List<Any>,
     menuExpandedState: Boolean,
     selectedIndex: Int,
@@ -415,12 +419,16 @@ fun ComboBox(
     Box(
         modifier = modifier
             .background(
-                color = MaterialTheme.colors.secondary,
+                color = if (enabled) MaterialTheme.colors.secondary else Kimberly,
                 shape = RoundedCornerShape(4.dp)
             )
-            .clickable(
-                onClick = updateMenuExpandedStatus
-            )
+            .run {
+                if (enabled) {
+                    clickable(onClick = updateMenuExpandedStatus)
+                } else {
+                    this
+                }
+            }
     ) {
         val constraints = ConstraintSet {
             val selectionLabel = createRefFor("selectionLabel")

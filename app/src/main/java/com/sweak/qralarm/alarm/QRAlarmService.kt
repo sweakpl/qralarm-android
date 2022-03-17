@@ -98,6 +98,7 @@ class QRAlarmService : Service() {
             ALARM_FULL_SCREEN_REQUEST_CODE,
             Intent(applicationContext, MainActivity::class.java).apply {
                 putExtra(LOCK_SCREEN_VISIBILITY_FLAG, true)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             },
             PendingIntent.FLAG_UPDATE_CURRENT or
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
