@@ -151,10 +151,10 @@ class AlarmViewModel @Inject constructor(
         }
     }
 
-    fun stopAlarm() {
+    fun stopAlarm(): Job {
         qrAlarmManager.cancelAlarm()
 
-        viewModelScope.launch {
+        val stopAlarmJob = viewModelScope.launch {
             dataStoreManager.apply {
                 putBoolean(DataStoreManager.ALARM_SET, false)
                 putBoolean(DataStoreManager.ALARM_SNOOZED, false)
@@ -170,6 +170,8 @@ class AlarmViewModel @Inject constructor(
                 )
             }
         }
+
+        return stopAlarmJob
     }
 
     fun handleSnoozeButtonClick(

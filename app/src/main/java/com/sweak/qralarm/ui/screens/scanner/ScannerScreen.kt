@@ -99,8 +99,10 @@ fun handleDecodeResult(
 ) {
     if (scannerMode == SCAN_MODE_DISMISS_ALARM) {
         if (result.text == alarmViewModel.getDismissCode()) {
-            alarmViewModel.stopAlarm()
+            val stopAlarmJob = alarmViewModel.stopAlarm()
+
             CoroutineScope(Dispatchers.Main).launch {
+                stopAlarmJob.join()
                 cancelAlarmSideEffect.invoke()
                 navController.popBackStack()
             }
