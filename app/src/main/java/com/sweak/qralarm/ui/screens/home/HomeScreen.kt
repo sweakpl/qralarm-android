@@ -1,6 +1,7 @@
 package com.sweak.qralarm.ui.screens.home
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -61,7 +62,8 @@ import kotlin.math.roundToInt
 fun HomeScreen(
     navController: NavHostController,
     alarmViewModel: AlarmViewModel,
-    finishableActionSideEffect: () -> Unit
+    finishableActionSideEffect: () -> Unit,
+    context: Context = LocalContext.current
 ) {
     val uiState = remember { alarmViewModel.homeUiState }
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
@@ -166,8 +168,6 @@ fun HomeScreen(
             )
         }
     }
-
-    val context = LocalContext.current
 
     CameraPermissionSetAlarmDialog(
         uiState = uiState,

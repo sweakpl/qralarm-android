@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import com.budiyev.android.codescanner.*
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -33,9 +34,9 @@ fun ScannerScreen(
     alarmViewModel: AlarmViewModel,
     settingsViewModel: SettingsViewModel,
     scannerMode: String?,
-    finishableActionSideEffect: () -> Unit
+    finishableActionSideEffect: () -> Unit,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
     lateinit var codeScanner: CodeScanner
 
     DisposableEffect(lifecycleOwner) {

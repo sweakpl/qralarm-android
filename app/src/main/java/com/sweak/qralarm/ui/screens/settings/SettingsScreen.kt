@@ -1,5 +1,6 @@
 package com.sweak.qralarm.ui.screens.settings
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
@@ -11,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +20,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -40,7 +46,9 @@ import com.sweak.qralarm.util.Screen
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
-    settingsViewModel: SettingsViewModel
+    settingsViewModel: SettingsViewModel,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    context: Context = LocalContext.current
 ) {
     val uiState = remember { settingsViewModel.settingsUiState }
     val storagePermissionState = rememberPermissionState(
@@ -51,7 +59,18 @@ fun SettingsScreen(
     )
     val scrollState = rememberScrollState()
 
-    val context = LocalContext.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_PAUSE) {
+                settingsViewModel.stopMediaPlayer()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 
     val constraints = ConstraintSet {
         val backButton = createRefFor("backButton")
@@ -134,24 +153,53 @@ fun SettingsScreen(
                     style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
                 )
 
-                ComboBox(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(40.dp),
-                    menuItems = uiState.value.availableAlarmSounds,
-                    menuExpandedState = uiState.value.alarmSoundsDropdownMenuExpanded,
-                    selectedIndex = uiState.value.selectedAlarmSoundIndex,
-                    updateMenuExpandedStatus = {
-                        uiState.value = uiState.value.copy(alarmSoundsDropdownMenuExpanded = true)
-                    },
-                    onDismissMenuView = {
-                        uiState.value = uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
-                    },
-                    onMenuItemClick = { index ->
-                        settingsViewModel.updateAlarmSoundSelection(index)
-                        uiState.value = uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                        .wrapContentHeight(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ComboBox(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(40.dp)
+                            .padding(end = MaterialTheme.space.medium),
+                        menuItems = uiState.value.availableAlarmSounds,
+                        menuExpandedState = uiState.value.alarmSoundsDropdownMenuExpanded,
+                        selectedIndex = uiState.value.selectedAlarmSoundIndex,
+                        updateMenuExpandedStatus = {
+                            uiState.value =
+                                uiState.value.copy(alarmSoundsDropdownMenuExpanded = true)
+                        },
+                        onDismissMenuView = {
+                            uiState.value =
+                                uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                        },
+                        onMenuItemClick = { index ->
+                            settingsViewModel.updateAlarmSoundSelection(index)
+                            uiState.value =
+                                uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                        }
+                    )
+
+                    IconButton(
+                        onClick = {
+                            settingsViewModel.playOrStopAlarmPreview(context)
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(
+                                id = if (uiState.value.alarmPreviewPlaying) {
+                                    R.drawable.ic_stop
+                                } else {
+                                    R.drawable.ic_play
+                                }
+                            ),
+                            contentDescription = "Play/Stop button",
+                            tint = MaterialTheme.colors.secondary
+                        )
                     }
-                )
+                }
             }
 
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))

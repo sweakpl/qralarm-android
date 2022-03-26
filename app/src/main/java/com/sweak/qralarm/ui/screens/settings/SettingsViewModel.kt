@@ -4,8 +4,13 @@ import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +33,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val mediaPlayer: MediaPlayer
 ) : ViewModel() {
 
     val settingsUiState: MutableState<SettingsUiState> = runBlocking {
@@ -50,6 +56,48 @@ class SettingsViewModel @Inject constructor(
                     dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
                 )
             )
+        }
+    }
+
+    fun playOrStopAlarmPreview(context: Context) {
+        if (!settingsUiState.value.alarmPreviewPlaying) {
+            mediaPlayer.apply {
+                reset()
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build()
+                )
+                setDataSource(
+                    context,
+                    getPreferredAlarmSoundUri(context.packageName)
+                )
+                isLooping = false
+                setOnCompletionListener {
+                    stopMediaPlayer()
+                }
+                prepare()
+                start()
+            }
+
+            settingsUiState.value = settingsUiState.value.copy(alarmPreviewPlaying = true)
+        } else {
+            stopMediaPlayer()
+        }
+    }
+
+    private fun getPreferredAlarmSoundUri(packageName: String): Uri {
+        return AlarmSound.fromInt(settingsUiState.value.selectedAlarmSoundIndex).let {
+            if (it == null) {
+                return@let RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+            } else {
+                if (it == AlarmSound.DEFAULT_SYSTEM) {
+                    return@let RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+                } else {
+                    Uri.parse("android.resource://" + packageName + "/" + it.resourceId)
+                }
+            }
         }
     }
 
@@ -205,5 +253,17 @@ class SettingsViewModel @Inject constructor(
         navController.navigate(
             Screen.ScannerScreen.withArguments(SCAN_MODE_SET_CUSTOM_CODE)
         )
+    }
+
+    fun stopMediaPlayer() {
+        try {
+            if (mediaPlayer.isPlaying) {
+                mediaPlayer.stop()
+            }
+        } catch (exception: IllegalStateException) {
+            Log.e("SettingsViewModel", "mediaPlayer was not initialized! Cannot stop it...")
+        }
+
+        settingsUiState.value = settingsUiState.value.copy(alarmPreviewPlaying = false)
     }
 }
