@@ -84,8 +84,4 @@ class QRAlarmApp : Application() {
             notificationManager.createNotificationChannel(alarmNotificationChannel)
         }
     }
-
-    companion object {
-        const val ALARM_NOTIFICATION_CHANNEL_ID = "QRAlarmNotificationChannelId"
-    }
 }

@@ -13,7 +13,6 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.QRAlarmManager
-import com.sweak.qralarm.alarm.QRAlarmService
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeUiState
 import com.sweak.qralarm.util.*
@@ -102,7 +101,7 @@ class AlarmViewModel @Inject constructor(
                         homeUiState.value.timeFormat,
                         homeUiState.value.meridiem
                     ),
-                    QRAlarmService.ALARM_TYPE_NORMAL
+                    ALARM_TYPE_NORMAL
                 )
 
                 viewModelScope.launch {
@@ -188,7 +187,7 @@ class AlarmViewModel @Inject constructor(
                 try {
                     qrAlarmManager.setAlarm(
                         snoozeAlarmTimeInMillis,
-                        QRAlarmService.ALARM_TYPE_SNOOZE
+                        ALARM_TYPE_SNOOZE
                     )
                 } catch (exception: SecurityException) {
                     homeUiState.value = homeUiState.value.copy(showAlarmPermissionDialog = true)

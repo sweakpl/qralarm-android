@@ -27,11 +27,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-    @Provides
-    @Singleton
-    fun provideDataStoreManager(app: Application): DataStoreManager =
-        DataStoreManager(app)
-
     @ExperimentalPermissionsApi
     @Provides
     @Singleton
@@ -44,18 +39,31 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideResourceProvider(app: Application) =
-        ResourceProvider(app.applicationContext)
-
-    @Provides
-    @Singleton
     fun provideAlarmManager(app: Application): AlarmManager =
         app.getSystemService(Service.ALARM_SERVICE) as AlarmManager
 
     @Provides
     @Singleton
+    fun providePackageManager(app: Application): PackageManager = app.packageManager
+
+    @Provides
+    @Singleton
+    fun provideDataStoreManager(app: Application): DataStoreManager =
+        DataStoreManager(app)
+
+    @Provides
+    @Singleton
+    fun provideResourceProvider(app: Application) =
+        ResourceProvider(app.applicationContext)
+
+    @Provides
+    @Singleton
     fun provideNotificationManager(app: Application): NotificationManager =
         app.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
+
+    @Provides
+    @Singleton
+    fun provideMediaPlayer(): MediaPlayer = MediaPlayer()
 
     @Provides
     @Singleton
@@ -66,12 +74,4 @@ class AppModule {
         } else {
             app.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator
         }
-
-    @Provides
-    @Singleton
-    fun provideMediaPlayer(): MediaPlayer = MediaPlayer()
-
-    @Provides
-    @Singleton
-    fun providePackageManager(app: Application): PackageManager = app.packageManager
 }

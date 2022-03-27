@@ -17,12 +17,10 @@ import androidx.core.app.NotificationCompat
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
-import com.sweak.qralarm.QRAlarmApp
 import com.sweak.qralarm.R
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
-import com.sweak.qralarm.util.AlarmSound
-import com.sweak.qralarm.util.LOCK_SCREEN_VISIBILITY_FLAG
+import com.sweak.qralarm.util.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
@@ -108,7 +106,7 @@ class QRAlarmService : Service() {
 
         NotificationCompat.Builder(
             applicationContext,
-            QRAlarmApp.ALARM_NOTIFICATION_CHANNEL_ID
+            ALARM_NOTIFICATION_CHANNEL_ID
         ).apply {
             color = Jacarta.toArgb()
             priority = NotificationCompat.PRIORITY_HIGH
@@ -207,7 +205,7 @@ class QRAlarmService : Service() {
         serviceHandler?.obtainMessage()?.also { message ->
             message.arg1 = startId
             message.arg2 =
-                intent?.getIntExtra(ALARM_TYPE_KEY, ALARM_TYPE_NORMAL) ?: ALARM_TYPE_NORMAL
+                intent?.getIntExtra(KEY_ALARM_TYPE, ALARM_TYPE_NORMAL) ?: ALARM_TYPE_NORMAL
 
             serviceHandler?.sendMessage(message)
         }
@@ -240,17 +238,4 @@ class QRAlarmService : Service() {
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
-
-    companion object {
-        const val HANDLER_THREAD_NAME = "QRAlarmHandlerThread"
-        const val FOREGROUND_SERVICE_ID = 300
-        const val ALARM_NOTIFICATION_ID = 300
-        const val ALARM_NOTIFICATION_REQUEST_CODE = 400
-        const val ALARM_FULL_SCREEN_REQUEST_CODE = 500
-
-        const val ALARM_TYPE_KEY = "alarmTypeKey"
-        const val ALARM_TYPE_NORMAL = 200
-        const val ALARM_TYPE_SNOOZE = 201
-        const val ALARM_TYPE_NONE = 202
-    }
 }

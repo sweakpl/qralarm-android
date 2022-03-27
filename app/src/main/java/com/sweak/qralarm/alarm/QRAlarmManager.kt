@@ -10,7 +10,7 @@ import android.os.Build
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
-import com.sweak.qralarm.util.currentTimeInMillis
+import com.sweak.qralarm.util.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
@@ -29,7 +29,7 @@ class QRAlarmManager @Inject constructor(
                 else 0
 
         val alarmIntent = Intent(app.applicationContext, QRAlarmReceiver::class.java).apply {
-            putExtra(QRAlarmService.ALARM_TYPE_KEY, alarmType)
+            putExtra(KEY_ALARM_TYPE, alarmType)
         }
 
         val alarmPendingIntent = PendingIntent.getBroadcast(
@@ -125,11 +125,5 @@ class QRAlarmManager @Inject constructor(
         } else {
             return true
         }
-    }
-
-    companion object {
-        const val ALARM_PENDING_INTENT_REQUEST_CODE = 100
-        const val ALARM_INFO_PENDING_INTENT_REQUEST_CODE = 101
-        const val TESTING_PERMISSION_ALARM_INTENT_REQUEST_CODE = 102
     }
 }

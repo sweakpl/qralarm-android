@@ -6,6 +6,8 @@ import android.content.Intent
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.data.DataStoreManager
+import com.sweak.qralarm.util.ALARM_TYPE_NORMAL
+import com.sweak.qralarm.util.ALARM_TYPE_SNOOZE
 import com.sweak.qralarm.util.currentTimeInMillis
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -49,9 +51,9 @@ class BootReceiver : BroadcastReceiver() {
                 }
 
                 val alarmType = if (isSnoozeAlarmSet) {
-                    QRAlarmService.ALARM_TYPE_NORMAL
+                    ALARM_TYPE_NORMAL
                 } else {
-                    QRAlarmService.ALARM_TYPE_SNOOZE
+                    ALARM_TYPE_SNOOZE
                 }
 
                 if (currentTimeInMillis() < alarmTimeInMillis) {

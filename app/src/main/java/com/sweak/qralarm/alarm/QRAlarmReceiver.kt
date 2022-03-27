@@ -6,6 +6,8 @@ import android.content.Intent
 import android.os.Build
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.sweak.qralarm.util.ALARM_TYPE_NONE
+import com.sweak.qralarm.util.KEY_ALARM_TYPE
 import kotlinx.coroutines.InternalCoroutinesApi
 
 @InternalCoroutinesApi
@@ -18,10 +20,10 @@ class QRAlarmReceiver : BroadcastReceiver() {
 
         intent?.apply {
             alarmServiceIntent.putExtra(
-                QRAlarmService.ALARM_TYPE_KEY,
+                KEY_ALARM_TYPE,
                 getIntExtra(
-                    QRAlarmService.ALARM_TYPE_KEY,
-                    QRAlarmService.ALARM_TYPE_NONE
+                    KEY_ALARM_TYPE,
+                    ALARM_TYPE_NONE
                 )
             )
         }
