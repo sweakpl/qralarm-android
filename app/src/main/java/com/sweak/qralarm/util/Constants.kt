@@ -17,7 +17,6 @@ enum class Meridiem {
 }
 
 enum class AlarmSound(@RawRes val resourceId: Int, @StringRes val nameResourceId: Int) {
-    DEFAULT_SYSTEM(0, R.string.default_system),
     GENTLE_GUITAR(R.raw.gentle_guitar, R.string.gentle_guitar),
     ALARM_CLOCK(R.raw.alarm_clock, R.string.alarm_clock),
     AIR_HORN(R.raw.air_horn, R.string.air_horn);
@@ -28,7 +27,6 @@ enum class AlarmSound(@RawRes val resourceId: Int, @StringRes val nameResourceId
 }
 
 val AVAILABLE_ALARM_SOUNDS = listOf(
-    AlarmSound.DEFAULT_SYSTEM,
     AlarmSound.GENTLE_GUITAR,
     AlarmSound.ALARM_CLOCK,
     AlarmSound.AIR_HORN,

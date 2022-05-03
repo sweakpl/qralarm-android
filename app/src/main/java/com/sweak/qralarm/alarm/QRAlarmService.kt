@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.media.RingtoneManager
 import android.net.Uri
 import android.os.*
 import android.util.Log
@@ -175,15 +174,12 @@ class QRAlarmService : Service() {
         }
 
         return AlarmSound.fromInt(alarmSoundOrdinal).let {
-            if (it == null) {
-                return@let RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-            } else {
-                if (it == AlarmSound.DEFAULT_SYSTEM) {
-                    return@let RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-                } else {
-                    Uri.parse("android.resource://" + packageName + "/" + it.resourceId)
-                }
-            }
+                Uri.parse(
+                    "android.resource://"
+                            + packageName
+                            + "/"
+                            + (it?.resourceId ?: AlarmSound.GENTLE_GUITAR.resourceId)
+                )
         }
     }
 

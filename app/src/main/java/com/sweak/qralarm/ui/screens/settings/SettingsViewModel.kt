@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -89,15 +88,12 @@ class SettingsViewModel @Inject constructor(
 
     private fun getPreferredAlarmSoundUri(packageName: String): Uri {
         return AlarmSound.fromInt(settingsUiState.value.selectedAlarmSoundIndex).let {
-            if (it == null) {
-                return@let RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-            } else {
-                if (it == AlarmSound.DEFAULT_SYSTEM) {
-                    return@let RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-                } else {
-                    Uri.parse("android.resource://" + packageName + "/" + it.resourceId)
-                }
-            }
+            Uri.parse(
+                "android.resource://"
+                        + packageName
+                        + "/"
+                        + (it?.resourceId ?: AlarmSound.GENTLE_GUITAR.resourceId)
+            )
         }
     }
 

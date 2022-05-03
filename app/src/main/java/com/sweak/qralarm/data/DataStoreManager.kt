@@ -55,6 +55,8 @@ class DataStoreManager(private val context: Context) {
         }
 
     companion object {
+        val SYSTEM_ALARM_REMOVAL_UPDATE_REQUIRED =
+            booleanPreferencesKey("systemAlarmRemovalUpdateRequired")
         val FIRST_LAUNCH = booleanPreferencesKey("firstLaunch")
         val ALARM_SET = booleanPreferencesKey("alarmSet")
         val ALARM_SERVICE_RUNNING = booleanPreferencesKey("alarmServiceRunning")
