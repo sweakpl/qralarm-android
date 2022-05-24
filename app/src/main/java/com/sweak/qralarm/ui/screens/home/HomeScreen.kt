@@ -276,7 +276,7 @@ fun NumberPicker(
     modifier: Modifier = Modifier,
     uiState: MutableState<HomeUiState>,
     responsibility: PickerResponsibility,
-    range: IntRange? = null,
+    range: IntRange,
     label: (Int) -> String = { it.toString() }
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -287,26 +287,60 @@ fun NumberPicker(
         with(LocalDensity.current) { halvedNumbersColumnHeight.toPx() }
 
     val animatedOffset = remember { Animatable(0f) }.apply {
-        if (range != null) {
-            val value = when (responsibility) {
-                PickerResponsibility.HOUR -> uiState.value.hour
-                PickerResponsibility.MINUTE -> uiState.value.minute
-                PickerResponsibility.MERIDIEM -> uiState.value.meridiem.ordinal
+        updateBounds(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY)
+    }
+
+    fun adjustLowerOffsetValueToRange(initialValue: Int, offsetValue: Int, range: IntRange): Int {
+        var newValue = initialValue
+
+        for (i in initialValue downTo offsetValue) {
+            if (i == offsetValue) {
+                return newValue
             }
-            updateBounds(
-                (-(range.last - value) * halvedNumbersColumnHeightPx),
-                (-(range.first - value) * halvedNumbersColumnHeightPx)
-            )
+
+            if (newValue - 1 < range.first) {
+                newValue = range.last
+            } else {
+                newValue -= 1
+            }
         }
+
+        return newValue
+    }
+
+    fun adjustHigherOffsetValueToRange(initialValue: Int, offsetValue: Int, range: IntRange): Int {
+        var newValue = initialValue
+
+        for (i in initialValue..offsetValue) {
+            if (i == offsetValue) {
+                return newValue
+            }
+
+            if (newValue + 1 > range.last) {
+                newValue = range.first
+            } else {
+                newValue += 1
+            }
+        }
+
+        return newValue
     }
 
     fun animatedStateValue(offset: Float): Int {
-        val value = when (responsibility) {
+        val initialValue = when (responsibility) {
             PickerResponsibility.HOUR -> uiState.value.hour
             PickerResponsibility.MINUTE -> uiState.value.minute
             PickerResponsibility.MERIDIEM -> uiState.value.meridiem.ordinal
         }
-        return value - (offset / halvedNumbersColumnHeightPx).toInt()
+        val offsetValue = initialValue - (offset / halvedNumbersColumnHeightPx).toInt()
+
+        return when {
+            offsetValue < range.first ->
+                adjustLowerOffsetValueToRange(initialValue, offsetValue, range)
+            offsetValue > range.last ->
+                adjustHigherOffsetValueToRange(initialValue, offsetValue, range)
+            else -> offsetValue
+        }
     }
 
     val coercedAnimatedOffset = animatedOffset.value % halvedNumbersColumnHeightPx
@@ -370,7 +404,9 @@ fun NumberPicker(
                 .offset { IntOffset(x = 0, y = coercedAnimatedOffset.roundToInt()) }
         ) {
             Text(
-                text = label(animatedStateValue - 1),
+                text = label(
+                    if (animatedStateValue - 1 < range.first) range.last else animatedStateValue - 1
+                ),
                 fontSize = 64.sp,
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -391,7 +427,9 @@ fun NumberPicker(
                     }
             )
             Text(
-                text = label(animatedStateValue + 1),
+                text = label(
+                    if (animatedStateValue + 1 > range.last) range.first else animatedStateValue + 1
+                ),
                 fontSize = 64.sp,
                 modifier = Modifier
                     .align(Alignment.Center)
