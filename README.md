@@ -4,10 +4,12 @@
 *QRAlarm* is an Android alarm clock application that does not only wake You up, but also makes You get up to disable the alarm by scanning the QR Code.
 
 ## Screenshots
-<img src="./screenshots/HomeScreen.jpg" width="196" height="416"/>
-<img src="./screenshots/SettingsScreen.jpg" width="196" height="416"/>
-<img src="./screenshots/ScannerScreen.jpg" width="196" height="416"/>
-<img src="./screenshots/GuideScreen.jpg" width="196" height="416"/>
+<p>
+	<img src="./screenshots/HomeScreen.jpg" width="196" height="416"/>
+	<img src="./screenshots/SettingsScreen.jpg" width="196" height="416"/>
+	<img src="./screenshots/ScannerScreen.jpg" width="196" height="416"/>
+	<img src="./screenshots/GuideScreen.jpg" width="196" height="416"/>
+</p>
 
 ## Setup
 * Download [qralarm-android-signed.apk](https://github.com/sweakpl/qralarm-android/releases),
