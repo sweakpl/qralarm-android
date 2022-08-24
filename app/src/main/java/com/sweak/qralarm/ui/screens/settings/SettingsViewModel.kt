@@ -28,6 +28,7 @@ import kotlinx.coroutines.runBlocking
 import java.io.IOException
 import javax.inject.Inject
 
+
 @ExperimentalPermissionsApi
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
@@ -52,7 +53,8 @@ class SettingsViewModel @Inject constructor(
                     selectedSnoozeMaxCountIndex = AVAILABLE_SNOOZE_MAX_COUNTS.indexOf(
                         it.getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
                     ),
-                    dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
+                    dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first(),
+                    customAlarmURI = it.getString(DataStoreManager.USER_ALARM_SOUND_URI).first(),
                 )
             )
         }
@@ -261,5 +263,20 @@ class SettingsViewModel @Inject constructor(
         }
 
         settingsUiState.value = settingsUiState.value.copy(alarmPreviewPlaying = false)
+    }
+
+    fun updateCustomAlarmURI(uri: Uri?) {
+        if (uri != null) {
+            viewModelScope.launch {
+                dataStoreManager.putString(DataStoreManager.USER_ALARM_SOUND_URI, uri.toString())
+            }
+        } else {
+            viewModelScope.launch {
+                dataStoreManager.putInt(
+                    DataStoreManager.ALARM_SOUND,
+                    AlarmSound.GENTLE_GUITAR.ordinal
+                )
+            }
+        }
     }
 }

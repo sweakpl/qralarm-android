@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -39,8 +41,11 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.*
 import com.sweak.qralarm.ui.theme.Kimberly
 import com.sweak.qralarm.ui.theme.space
+import com.sweak.qralarm.util.AVAILABLE_ALARM_SOUNDS
+import com.sweak.qralarm.util.AlarmSound
 import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
 import com.sweak.qralarm.util.Screen
+
 
 @ExperimentalPermissionsApi
 @Composable
@@ -58,6 +63,11 @@ fun SettingsScreen(
         permission = android.Manifest.permission.CAMERA
     )
     val scrollState = rememberScrollState()
+
+    val soundLauncherPicker = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+        result -> settingsViewModel.updateCustomAlarmURI(result.data?.data)
+        uiState.value = uiState.value.copy(customAlarmURI = result.data?.data?.toString() ?: "No custom URL")
+    }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -168,17 +178,23 @@ fun SettingsScreen(
                         menuExpandedState = uiState.value.alarmSoundsDropdownMenuExpanded,
                         selectedIndex = uiState.value.selectedAlarmSoundIndex,
                         updateMenuExpandedStatus = {
-                            uiState.value =
-                                uiState.value.copy(alarmSoundsDropdownMenuExpanded = true)
+                            uiState.value = uiState.value.copy(alarmSoundsDropdownMenuExpanded = true)
                         },
                         onDismissMenuView = {
-                            uiState.value =
-                                uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                            uiState.value = uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
                         },
-                        onMenuItemClick = { index ->
-                            settingsViewModel.updateAlarmSoundSelection(index)
-                            uiState.value =
-                                uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                        onMenuItemClick = {
+                            index -> settingsViewModel.updateAlarmSoundSelection(index)
+                            uiState.value = uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+
+                            val newSelectedAlarmSound = AVAILABLE_ALARM_SOUNDS[index]
+                            if (newSelectedAlarmSound == AlarmSound.USER_FILE) {
+                                val intent = Intent()
+                                    .setAction(Intent.ACTION_GET_CONTENT)
+                                    .setType("audio/*")
+                                    .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                                soundLauncherPicker.launch(intent)
+                            }
                         }
                     )
 
@@ -384,6 +400,14 @@ fun SettingsScreen(
                     R.string.current_dismiss_code,
                     uiState.value.dismissAlarmCode
                 ),
+                style = MaterialTheme.typography.body1
+            )
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = uiState.value.customAlarmURI,
                 style = MaterialTheme.typography.body1
             )
 

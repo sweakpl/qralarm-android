@@ -173,14 +173,17 @@ class QRAlarmService : Service() {
             dataStoreManager.getInt(DataStoreManager.ALARM_SOUND).first()
         }
 
-        return AlarmSound.fromInt(alarmSoundOrdinal).let {
-                Uri.parse(
-                    "android.resource://"
-                            + packageName
-                            + "/"
-                            + (it?.resourceId ?: AlarmSound.GENTLE_GUITAR.resourceId)
-                )
+        val selection = AlarmSound.fromInt(alarmSoundOrdinal) ?: AlarmSound.GENTLE_GUITAR
+        val uri = if (selection == AlarmSound.USER_FILE) {
+            val customFile = runBlocking {
+                dataStoreManager.getString(DataStoreManager.USER_ALARM_SOUND_URI).first()
+            }
+            Uri.parse(customFile)
+        } else {
+            Uri.parse("android.resource://" + packageName + "/" + selection.resourceId)
         }
+
+        return uri
     }
 
     override fun onCreate() {

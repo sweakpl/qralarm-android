@@ -20,5 +20,6 @@ data class SettingsUiState(
     val dismissAlarmCode: String,
     val showCameraPermissionDialog: Boolean = false,
     val showCameraPermissionRevokedDialog: Boolean = false,
-    val showDismissCodeAddedDialog: Boolean = false
+    val showDismissCodeAddedDialog: Boolean = false,
+    val customAlarmURI: String,
 )
