@@ -60,6 +60,26 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    // WARNING: this code is duplicated in QRAlarmService. I guess because OOP is dumb. I don't care enough to fix it
+    private fun getPreferredAlarmSoundUri(packageName: String): Uri {
+        val alarmSoundOrdinal = runBlocking {
+            dataStoreManager.getInt(DataStoreManager.ALARM_SOUND).first()
+        }
+
+        val selection = AlarmSound.fromInt(alarmSoundOrdinal) ?: AlarmSound.GENTLE_GUITAR
+        val uri = if (selection == AlarmSound.USER_FILE) {
+            val customFile = runBlocking {
+                dataStoreManager.getString(DataStoreManager.USER_ALARM_SOUND_URI).first()
+            }
+            Uri.parse(customFile)
+        } else {
+            Uri.parse("android.resource://" + packageName + "/" + selection.resourceId)
+        }
+
+        return uri
+    }
+
+
     fun playOrStopAlarmPreview(context: Context) {
         if (!settingsUiState.value.alarmPreviewPlaying) {
             mediaPlayer.apply {
@@ -85,17 +105,6 @@ class SettingsViewModel @Inject constructor(
             settingsUiState.value = settingsUiState.value.copy(alarmPreviewPlaying = true)
         } else {
             stopMediaPlayer()
-        }
-    }
-
-    private fun getPreferredAlarmSoundUri(packageName: String): Uri {
-        return AlarmSound.fromInt(settingsUiState.value.selectedAlarmSoundIndex).let {
-            Uri.parse(
-                "android.resource://"
-                        + packageName
-                        + "/"
-                        + (it?.resourceId ?: AlarmSound.GENTLE_GUITAR.resourceId)
-            )
         }
     }
 

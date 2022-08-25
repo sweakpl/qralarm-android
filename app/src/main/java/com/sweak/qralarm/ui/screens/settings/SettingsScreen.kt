@@ -410,7 +410,12 @@ fun SettingsScreen(
                 text = uiState.value.customAlarmURI,
                 style = MaterialTheme.typography.body1
             )
-
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = uiState.value.selectedAlarmSoundIndex.toString(),
+                style = MaterialTheme.typography.body1
+            )
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
         }
     }

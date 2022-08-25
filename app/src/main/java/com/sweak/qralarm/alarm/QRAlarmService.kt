@@ -168,6 +168,7 @@ class QRAlarmService : Service() {
         }
     }
 
+    // WARNING: this code is duplicated in SettingsViewModel. I guess because OOP is dumb. I don't care enough to fix it
     private fun getPreferredAlarmSoundUri(): Uri {
         val alarmSoundOrdinal = runBlocking {
             dataStoreManager.getInt(DataStoreManager.ALARM_SOUND).first()
