@@ -75,6 +75,7 @@ fun SettingsScreen(
             settingsViewModel.updateCustomAlarmURI(localURI.toString())
             uiState.value = uiState.value.copy(customAlarmURI = localURI.toString())
         } else {
+            Toast.makeText(context, "Failed to select that file, falling back to default", Toast.LENGTH_LONG)
             settingsViewModel.updateAlarmSoundSelection(0)
             uiState.value = uiState.value.copy(selectedAlarmSoundIndex = 0)
         }
@@ -419,7 +420,7 @@ fun SettingsScreen(
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = if (uiState.value.selectedAlarmSoundIndex != AVAILABLE_ALARM_SOUNDS.indexOf(AlarmSound.USER_FILE)) {""} else {"Custom alarm is selected (" + uiState.value.customAlarmURI + "). Warning: test playing it above to make sure it is valid. The app may crash, this is not a completely tested feature"},
+                text = if (uiState.value.selectedAlarmSoundIndex != AVAILABLE_ALARM_SOUNDS.indexOf(AlarmSound.USER_FILE)) {""} else {"Custom alarm is selected. Warning: test playing it above to make sure it will work. The app may crash, this is not a well-tested feature"},
                 style = MaterialTheme.typography.body1
             )
         }
