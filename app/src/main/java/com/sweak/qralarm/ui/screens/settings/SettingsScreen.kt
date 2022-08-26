@@ -407,16 +407,9 @@ fun SettingsScreen(
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = uiState.value.customAlarmURI,
+                text = if (uiState.value.selectedAlarmSoundIndex != AVAILABLE_ALARM_SOUNDS.indexOf(AlarmSound.USER_FILE)) {""} else {"Custom alarm is selected (" + uiState.value.customAlarmURI + "). Warning: test playing it above to make sure it is valid. The app may crash, this is not a completely tested feature"},
                 style = MaterialTheme.typography.body1
             )
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = uiState.value.selectedAlarmSoundIndex.toString(),
-                style = MaterialTheme.typography.body1
-            )
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
         }
     }
 
