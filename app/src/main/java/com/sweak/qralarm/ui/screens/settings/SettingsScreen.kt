@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -46,7 +47,6 @@ import com.sweak.qralarm.util.AlarmSound
 import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
 import com.sweak.qralarm.util.Screen
 
-
 @ExperimentalPermissionsApi
 @Composable
 fun SettingsScreen(
@@ -66,8 +66,18 @@ fun SettingsScreen(
 
     val soundLauncherPicker = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
         result ->
-        settingsViewModel.updateCustomAlarmURI(result.data?.data)
-        uiState.value = uiState.value.copy(customAlarmURI = result.data?.data?.toString() ?: "No custom URL")
+        var localURI: Uri? = null
+        if (result.data != null && result.data!!.data != null && result.data!!.data!!.path != null) {
+            localURI = duplicateURIContentToLocalStorage(result.data!!.data!!, context)
+        }
+        if (localURI != null) {
+            Toast.makeText(context, "Path is: ${localURI.path}", Toast.LENGTH_LONG).show()
+            settingsViewModel.updateCustomAlarmURI(localURI.toString())
+            uiState.value = uiState.value.copy(customAlarmURI = localURI.toString())
+        } else {
+            settingsViewModel.updateAlarmSoundSelection(0)
+            uiState.value = uiState.value.copy(selectedAlarmSoundIndex = 0)
+        }
     }
 
     DisposableEffect(lifecycleOwner) {

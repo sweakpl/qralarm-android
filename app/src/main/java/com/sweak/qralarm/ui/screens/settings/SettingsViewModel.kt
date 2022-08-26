@@ -25,7 +25,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.io.IOException
+import java.io.*
 import javax.inject.Inject
 
 
@@ -73,7 +73,7 @@ class SettingsViewModel @Inject constructor(
             }
             Uri.parse(customFile)
         } else {
-            Uri.parse("android.resource://" + packageName + "/" + selection.resourceId)
+            Uri.parse("android.resource://$packageName/${selection.resourceId}")
         }
 
         return uri
@@ -274,18 +274,38 @@ class SettingsViewModel @Inject constructor(
         settingsUiState.value = settingsUiState.value.copy(alarmPreviewPlaying = false)
     }
 
-    fun updateCustomAlarmURI(uri: Uri?) {
-        if (uri != null) {
-            viewModelScope.launch {
-                dataStoreManager.putString(DataStoreManager.USER_ALARM_SOUND_URI, uri.toString())
-            }
-        } else {
-            viewModelScope.launch {
-                dataStoreManager.putInt(
-                    DataStoreManager.ALARM_SOUND,
-                    AlarmSound.GENTLE_GUITAR.ordinal
-                )
+    fun updateCustomAlarmURI(path: String) {
+        viewModelScope.launch {
+            dataStoreManager.putString(DataStoreManager.USER_ALARM_SOUND_URI, path)
+        }
+    }
+}
+
+@Throws(IOException::class)
+fun duplicateURIContentToLocalStorage(uri: Uri, context: Context): Uri? {
+    try {
+        val fileName = "user_defined_alarm"
+        val file = File(context.filesDir, fileName)
+        file.createNewFile()
+        FileOutputStream(file).use { outputStream ->
+            context.contentResolver.openInputStream(uri).use { inputStream ->
+                if (inputStream == null) throw IOException()
+                copyStream(inputStream, outputStream)
+                outputStream.flush()
             }
         }
+        return Uri.fromFile(file)
+    } catch (e: IOException) {
+        Toast.makeText(context, e.message ?: "Unknown error saving alarm file", Toast.LENGTH_LONG).show()
+        return null
+    }
+}
+
+@Throws(IOException::class)
+fun copyStream(`in`: InputStream, out: OutputStream) {
+    val buffer = ByteArray(1024)
+    var read: Int
+    while (`in`.read(buffer).also { read = it } != -1) {
+        out.write(buffer, 0, read)
     }
 }
