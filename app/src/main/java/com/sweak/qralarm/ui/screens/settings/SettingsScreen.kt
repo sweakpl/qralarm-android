@@ -75,7 +75,7 @@ fun SettingsScreen(
             settingsViewModel.updateCustomAlarmURI(localURI.toString())
             uiState.value = uiState.value.copy(customAlarmURI = localURI.toString())
         } else {
-            Toast.makeText(context, "Failed to select that file, falling back to default", Toast.LENGTH_LONG)
+            Toast.makeText(context, "Failed to select that file, falling back to default", Toast.LENGTH_LONG).show()
             settingsViewModel.updateAlarmSoundSelection(0)
             uiState.value = uiState.value.copy(selectedAlarmSoundIndex = 0)
         }
