@@ -207,9 +207,9 @@ fun SettingsScreen(
                                         while (cursor.moveToNext()) {
                                             // Use an ID column from the projection to get // a URI representing the media item itself.
                                             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
-
-                                            settingsViewModel.updateCustomAlarmURI(result.data?.data)
-                                            uiState.value = uiState.value.copy(customAlarmURI = result.data?.data?.toString() ?: "No custom URL")
+                                            val uri = ???
+                                            settingsViewModel.updateCustomAlarmURI(uri)
+                                            uiState.value = uiState.value.copy(customAlarmURI = uri.toString() ?: "No custom URL")
                                         }
                                     }
                                 } else {
