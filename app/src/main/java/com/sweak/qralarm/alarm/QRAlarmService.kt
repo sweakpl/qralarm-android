@@ -181,7 +181,7 @@ class QRAlarmService : Service() {
             }
             Uri.parse(customFile)
         } else {
-            Uri.parse("android.resource://" + packageName + "/" + selection.resourceId)
+            Uri.parse("android.resource://$packageName/${selection.resourceId}")
         }
 
         return uri
