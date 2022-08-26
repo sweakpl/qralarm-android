@@ -3,7 +3,10 @@ package com.sweak.qralarm.ui.screens.settings
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -65,7 +68,8 @@ fun SettingsScreen(
     val scrollState = rememberScrollState()
 
     val soundLauncherPicker = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-        result -> settingsViewModel.updateCustomAlarmURI(result.data?.data)
+        result ->
+        settingsViewModel.updateCustomAlarmURI(result.data?.data)
         uiState.value = uiState.value.copy(customAlarmURI = result.data?.data?.toString() ?: "No custom URL")
     }
 
@@ -189,11 +193,28 @@ fun SettingsScreen(
 
                             val newSelectedAlarmSound = AVAILABLE_ALARM_SOUNDS[index]
                             if (newSelectedAlarmSound == AlarmSound.USER_FILE) {
-                                val intent = Intent()
-                                    .setAction(Intent.ACTION_GET_CONTENT)
-                                    .setType("audio/*")
-                                    .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
-                                soundLauncherPicker.launch(intent)
+//                                val intent = Intent()
+//                                    .setAction(Intent.ACTION_GET_CONTENT)
+//                                    .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+//                                soundLauncherPicker.launch(intent)
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    context.contentResolver.query(
+                                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                                        null,
+                                        null,
+                                        null,
+                                    )?.use { cursor ->
+                                        while (cursor.moveToNext()) {
+                                            // Use an ID column from the projection to get // a URI representing the media item itself.
+                                            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+
+                                            settingsViewModel.updateCustomAlarmURI(result.data?.data)
+                                            uiState.value = uiState.value.copy(customAlarmURI = result.data?.data?.toString() ?: "No custom URL")
+                                        }
+                                    }
+                                } else {
+                                    Toast.makeText(context, "Custom Files are only supported on Android O and up", 0).show()
+                                }
                             }
                         }
                     )
