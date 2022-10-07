@@ -25,7 +25,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.io.IOException
+import java.io.*
 import javax.inject.Inject
 
 @ExperimentalPermissionsApi
@@ -68,10 +68,14 @@ class SettingsViewModel @Inject constructor(
                         .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                         .build()
                 )
-                setDataSource(
-                    context,
-                    getPreferredAlarmSoundUri(context.packageName)
-                )
+                try {
+                    setDataSource(
+                        context,
+                        getPreferredAlarmSoundUri(context.packageName)
+                    )
+                } catch (ioException: IOException) {
+                    return@apply
+                }
                 isLooping = false
                 setOnCompletionListener {
                     stopMediaPlayer()
@@ -87,13 +91,21 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun getPreferredAlarmSoundUri(packageName: String): Uri {
-        return AlarmSound.fromInt(settingsUiState.value.selectedAlarmSoundIndex).let {
-            Uri.parse(
-                "android.resource://"
-                        + packageName
-                        + "/"
-                        + (it?.resourceId ?: AlarmSound.GENTLE_GUITAR.resourceId)
-            )
+        return if (settingsUiState.value.selectedAlarmSoundIndex == AlarmSound.LOCAL_SOUND.ordinal) {
+            runBlocking {
+                Uri.parse(
+                    dataStoreManager.getString(DataStoreManager.LOCAL_ALARM_SOUND_URI).first()
+                )
+            }
+        } else {
+            AlarmSound.fromInt(settingsUiState.value.selectedAlarmSoundIndex).let {
+                Uri.parse(
+                    "android.resource://"
+                            + packageName
+                            + "/"
+                            + (it?.resourceId ?: AlarmSound.GENTLE_GUITAR.resourceId)
+                )
+            }
         }
     }
 
@@ -110,6 +122,77 @@ class SettingsViewModel @Inject constructor(
                 newSelectedAlarmSound.ordinal
             )
         }
+    }
+
+    fun updateLocalAlarmSoundSelection(uri: Uri?, context: Context) {
+        uri?.let {
+            viewModelScope.launch {
+                val savedLocalAlarmSoundUri = try {
+                    copyUriContentToLocalStorage(uri, context)
+                } catch (ioException: IOException) {
+                    Toast.makeText(
+                        context,
+                        resourceProvider.getString(R.string.not_saved_local_sound),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@launch
+                }
+
+                dataStoreManager.apply {
+                    putString(
+                        DataStoreManager.LOCAL_ALARM_SOUND_URI,
+                        savedLocalAlarmSoundUri.toString()
+                    )
+                    putInt(
+                        DataStoreManager.ALARM_SOUND,
+                        AlarmSound.LOCAL_SOUND.ordinal
+                    )
+                }
+
+                settingsUiState.value = settingsUiState.value.copy(
+                    selectedAlarmSoundIndex = AlarmSound.LOCAL_SOUND.ordinal
+                )
+
+                Toast.makeText(
+                    context,
+                    resourceProvider.getString(R.string.saved_local_sound),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun copyUriContentToLocalStorage(uri: Uri, context: Context): Uri {
+        val fileName = "qralarm_user_selected_alarm_sound"
+        val file = File(context.filesDir, fileName)
+
+        file.createNewFile()
+
+        FileOutputStream(file).use { outputStream ->
+            context.contentResolver.openInputStream(uri).use { inputStream ->
+                if (inputStream == null) {
+                    throw IOException()
+                }
+
+                copyStream(inputStream, outputStream)
+                outputStream.flush()
+            }
+        }
+
+        return Uri.fromFile(file)
+    }
+
+    private fun copyStream(inputStream: InputStream, outputStream: OutputStream) {
+        val buffer = ByteArray(1024)
+        var read: Int
+
+        while (inputStream.read(buffer).also { read = it } != -1) {
+            outputStream.write(buffer, 0, read)
+        }
+    }
+
+    fun isLocalSoundAlarmChosen(index: Int): Boolean {
+        return AVAILABLE_ALARM_SOUNDS[index].ordinal == AlarmSound.LOCAL_SOUND.ordinal
     }
 
     fun updateSnoozeDurationSelection(newIndex: Int) {

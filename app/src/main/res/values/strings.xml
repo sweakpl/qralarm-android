@@ -52,4 +52,7 @@
     <string name="background_work_description">Unfortunately many smartphone manufacturers prefer longer battery life (even if barely noticeable) over properly working applications! Samsung, OnePlus, Huawei, Xiaomi and many others tend to be killing applications while they are working in the background. QRAlarm can also suffer this problem! Many smartphone manufacturers kill the app completely along with the alarm that was set via the QRAlarm application. In order to fix this issue, please, go to dontkillmyapp.com and follow the instructions for Your smartphone - this should help mitigate the “optimizations” carried out by Your operating system.</string>
     <string name="dontkillmyapp_short">dontkillmyapp.com</string>
     <string name="dontkillmyapp_verbose">https://dontkillmyapp.com/</string>
+    <string name="local_sound">Local sound</string>
+    <string name="not_saved_local_sound">Alarm sound couldn\'t be saved.</string>
+    <string name="saved_local_sound">Selected alarm sound has been saved!</string>
 </resources>
