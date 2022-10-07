@@ -1,0 +1,1 @@
+QRAlarm is an Android alarm clock application that does not only wake You up, but also makes You get up to disable the alarm by scanning the QR Code.
