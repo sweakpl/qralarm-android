@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -58,6 +60,17 @@ fun SettingsScreen(
         permission = android.Manifest.permission.CAMERA
     )
     val scrollState = rememberScrollState()
+
+    val audioPickerLauncher = rememberLauncherForActivityResult(
+        contract = object : ActivityResultContracts.GetContent() {
+            override fun createIntent(context: Context, input: String): Intent {
+                return super.createIntent(context, input).apply {
+                    putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                }
+            }
+        },
+        onResult = { uri -> settingsViewModel.updateLocalAlarmSoundSelection(uri, context) }
+    )
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -176,7 +189,11 @@ fun SettingsScreen(
                                 uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
                         },
                         onMenuItemClick = { index ->
-                            settingsViewModel.updateAlarmSoundSelection(index)
+                            if (settingsViewModel.isLocalSoundAlarmChosen(index)) {
+                                audioPickerLauncher.launch("audio/*")
+                            } else {
+                                settingsViewModel.updateAlarmSoundSelection(index)
+                            }
                             uiState.value =
                                 uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
                         }

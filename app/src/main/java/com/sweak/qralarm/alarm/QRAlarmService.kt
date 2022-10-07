@@ -23,6 +23,7 @@ import com.sweak.qralarm.util.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import java.io.IOException
 import javax.inject.Inject
 
 @ExperimentalPagerApi
@@ -158,10 +159,15 @@ class QRAlarmService : Service() {
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build()
             )
-            setDataSource(
-                applicationContext,
-                getPreferredAlarmSoundUri()
-            )
+            try {
+                setDataSource(
+                    applicationContext,
+                    getPreferredAlarmSoundUri()
+                )
+            } catch (ioException: IOException) {
+                release()
+                return@apply
+            }
             isLooping = true
             prepare()
             start()
@@ -173,13 +179,21 @@ class QRAlarmService : Service() {
             dataStoreManager.getInt(DataStoreManager.ALARM_SOUND).first()
         }
 
-        return AlarmSound.fromInt(alarmSoundOrdinal).let {
+        return if (alarmSoundOrdinal == AlarmSound.LOCAL_SOUND.ordinal) {
+            runBlocking {
+                Uri.parse(
+                    dataStoreManager.getString(DataStoreManager.LOCAL_ALARM_SOUND_URI).first()
+                )
+            }
+        } else {
+            AlarmSound.fromInt(alarmSoundOrdinal).let {
                 Uri.parse(
                     "android.resource://"
                             + packageName
                             + "/"
                             + (it?.resourceId ?: AlarmSound.GENTLE_GUITAR.resourceId)
                 )
+            }
         }
     }
 

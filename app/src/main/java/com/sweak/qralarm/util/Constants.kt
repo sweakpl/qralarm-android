@@ -19,7 +19,8 @@ enum class Meridiem {
 enum class AlarmSound(@RawRes val resourceId: Int, @StringRes val nameResourceId: Int) {
     GENTLE_GUITAR(R.raw.gentle_guitar, R.string.gentle_guitar),
     ALARM_CLOCK(R.raw.alarm_clock, R.string.alarm_clock),
-    AIR_HORN(R.raw.air_horn, R.string.air_horn);
+    AIR_HORN(R.raw.air_horn, R.string.air_horn),
+    LOCAL_SOUND(-1, R.string.local_sound);
 
     companion object {
         fun fromInt(ordinal: Int) = values().firstOrNull { it.ordinal == ordinal }
@@ -30,6 +31,7 @@ val AVAILABLE_ALARM_SOUNDS = listOf(
     AlarmSound.GENTLE_GUITAR,
     AlarmSound.ALARM_CLOCK,
     AlarmSound.AIR_HORN,
+    AlarmSound.LOCAL_SOUND
 )
 
 const val SNOOZE_DURATION_10_MINUTES = 10
