@@ -177,7 +177,9 @@ fun SettingsScreen(
                             .weight(1f)
                             .height(40.dp)
                             .padding(end = MaterialTheme.space.medium),
-                        menuItems = uiState.value.availableAlarmSounds,
+                        menuItems = uiState.value.availableAlarmSounds.map {
+                            stringResource(it.nameResourceId)
+                        },
                         menuExpandedState = uiState.value.alarmSoundsDropdownMenuExpanded,
                         selectedIndex = uiState.value.selectedAlarmSoundIndex,
                         updateMenuExpandedStatus = {
@@ -239,7 +241,7 @@ fun SettingsScreen(
                         .height(40.dp)
                         .width(80.dp),
                     enabled = uiState.value.availableSnoozeMaxCounts
-                            [uiState.value.selectedSnoozeMaxCountIndex] != 0,
+                            [uiState.value.selectedSnoozeMaxCountIndex].count != 0,
                     menuItems = uiState.value.availableSnoozeDurations,
                     menuExpandedState = uiState.value.snoozeDurationsDropdownMenuExpanded,
                     selectedIndex = uiState.value.selectedSnoozeDurationIndex,

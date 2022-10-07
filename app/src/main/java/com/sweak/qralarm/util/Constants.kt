@@ -27,36 +27,35 @@ enum class AlarmSound(@RawRes val resourceId: Int, @StringRes val nameResourceId
     }
 }
 
-val AVAILABLE_ALARM_SOUNDS = listOf(
-    AlarmSound.GENTLE_GUITAR,
-    AlarmSound.ALARM_CLOCK,
-    AlarmSound.AIR_HORN,
-    AlarmSound.LOCAL_SOUND
-)
+enum class SnoozeDuration(val lengthMinutes: Int) {
+    SNOOZE_DURATION_10_MINUTES(10),
+    SNOOZE_DURATION_5_MINUTES(5),
+    SNOOZE_DURATION_3_MINUTES(3),
+    SNOOZE_DURATION_2_MINUTES(2);
 
-const val SNOOZE_DURATION_10_MINUTES = 10
-const val SNOOZE_DURATION_5_MINUTES = 5
-const val SNOOZE_DURATION_3_MINUTES = 3
-const val SNOOZE_DURATION_2_MINUTES = 2
+    companion object {
+        fun fromInt(lengthMinutes: Int) = values().firstOrNull { it.lengthMinutes == lengthMinutes }
+    }
 
-val AVAILABLE_SNOOZE_DURATIONS = listOf(
-    SNOOZE_DURATION_10_MINUTES,
-    SNOOZE_DURATION_5_MINUTES,
-    SNOOZE_DURATION_3_MINUTES,
-    SNOOZE_DURATION_2_MINUTES
-)
+    override fun toString(): String {
+        return lengthMinutes.toString()
+    }
+}
 
-const val SNOOZE_MAX_COUNT_3 = 3
-const val SNOOZE_MAX_COUNT_2 = 2
-const val SNOOZE_MAX_COUNT_1 = 1
-const val SNOOZE_MAX_COUNT_0 = 0
+enum class SnoozeMaxCount(val count: Int) {
+    SNOOZE_MAX_COUNT_3(3),
+    SNOOZE_MAX_COUNT_2(2),
+    SNOOZE_MAX_COUNT_1(1),
+    SNOOZE_MAX_COUNT_0(0);
 
-val AVAILABLE_SNOOZE_MAX_COUNTS = listOf(
-    SNOOZE_MAX_COUNT_3,
-    SNOOZE_MAX_COUNT_2,
-    SNOOZE_MAX_COUNT_1,
-    SNOOZE_MAX_COUNT_0
-)
+    companion object {
+        fun fromInt(count: Int) = values().firstOrNull { it.count == count }
+    }
+
+    override fun toString(): String {
+        return count.toString()
+    }
+}
 
 const val KEY_SCANNER_MODE = "scannerMode"
 const val SCAN_MODE_DISMISS_ALARM = "scanModeDismissAlarm"

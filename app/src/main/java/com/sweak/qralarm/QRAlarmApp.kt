@@ -62,8 +62,11 @@ class QRAlarmApp : Application() {
         dataStoreManager.apply {
             putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, timeInMillis)
             putInt(DataStoreManager.ALARM_TIME_FORMAT, timeFormat)
-            putInt(DataStoreManager.SNOOZE_MAX_COUNT, SNOOZE_MAX_COUNT_3)
-            putInt(DataStoreManager.SNOOZE_DURATION_MINUTES, SNOOZE_DURATION_10_MINUTES)
+            putInt(DataStoreManager.SNOOZE_MAX_COUNT, SnoozeMaxCount.SNOOZE_MAX_COUNT_3.count)
+            putInt(
+                DataStoreManager.SNOOZE_DURATION_MINUTES,
+                SnoozeDuration.SNOOZE_DURATION_10_MINUTES.lengthMinutes
+            )
             putInt(DataStoreManager.ALARM_SOUND, AlarmSound.GENTLE_GUITAR.ordinal)
         }
     }

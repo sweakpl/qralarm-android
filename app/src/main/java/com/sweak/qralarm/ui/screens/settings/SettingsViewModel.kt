@@ -40,17 +40,16 @@ class SettingsViewModel @Inject constructor(
         dataStoreManager.let {
             mutableStateOf(
                 SettingsUiState(
-                    availableAlarmSounds = AVAILABLE_ALARM_SOUNDS.map { alarmSound ->
-                        resourceProvider.getString(alarmSound.nameResourceId)
-                    },
-                    selectedAlarmSoundIndex = AVAILABLE_ALARM_SOUNDS.indexOf(
+                    selectedAlarmSoundIndex = AlarmSound.values().indexOf(
                         AlarmSound.fromInt(it.getInt(DataStoreManager.ALARM_SOUND).first())
                     ),
-                    selectedSnoozeDurationIndex = AVAILABLE_SNOOZE_DURATIONS.indexOf(
-                        it.getInt(DataStoreManager.SNOOZE_DURATION_MINUTES).first()
+                    selectedSnoozeDurationIndex = SnoozeDuration.values().indexOf(
+                        SnoozeDuration.fromInt(
+                            it.getInt(DataStoreManager.SNOOZE_DURATION_MINUTES).first()
+                        )
                     ),
-                    selectedSnoozeMaxCountIndex = AVAILABLE_SNOOZE_MAX_COUNTS.indexOf(
-                        it.getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
+                    selectedSnoozeMaxCountIndex = SnoozeMaxCount.values().indexOf(
+                        SnoozeMaxCount.fromInt(it.getInt(DataStoreManager.SNOOZE_MAX_COUNT).first())
                     ),
                     dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
                 )
@@ -110,7 +109,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun updateAlarmSoundSelection(newIndex: Int) {
-        val newSelectedAlarmSound = AVAILABLE_ALARM_SOUNDS[newIndex]
+        val newSelectedAlarmSound = AlarmSound.values()[newIndex]
 
         settingsUiState.value = settingsUiState.value.copy(
             selectedAlarmSoundIndex = newIndex
@@ -192,11 +191,11 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun isLocalSoundAlarmChosen(index: Int): Boolean {
-        return AVAILABLE_ALARM_SOUNDS[index].ordinal == AlarmSound.LOCAL_SOUND.ordinal
+        return AlarmSound.values()[index].ordinal == AlarmSound.LOCAL_SOUND.ordinal
     }
 
     fun updateSnoozeDurationSelection(newIndex: Int) {
-        val newSelectedSnoozeDuration = AVAILABLE_SNOOZE_DURATIONS[newIndex]
+        val newSelectedSnoozeDuration = SnoozeDuration.values()[newIndex].lengthMinutes
 
         settingsUiState.value = settingsUiState.value.copy(
             selectedSnoozeDurationIndex = newIndex
@@ -211,7 +210,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun updateSnoozeMaxCountSelection(newIndex: Int) {
-        val newSelectedSnoozeMaxCount = AVAILABLE_SNOOZE_MAX_COUNTS[newIndex]
+        val newSelectedSnoozeMaxCount = SnoozeMaxCount.values()[newIndex].count
 
         settingsUiState.value = settingsUiState.value.copy(
             selectedSnoozeMaxCountIndex = newIndex

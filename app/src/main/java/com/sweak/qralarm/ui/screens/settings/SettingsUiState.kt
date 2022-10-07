@@ -1,18 +1,16 @@
 package com.sweak.qralarm.ui.screens.settings
 
-import com.sweak.qralarm.util.AVAILABLE_ALARM_SOUNDS
-import com.sweak.qralarm.util.AVAILABLE_SNOOZE_DURATIONS
-import com.sweak.qralarm.util.AVAILABLE_SNOOZE_MAX_COUNTS
+import com.sweak.qralarm.util.*
 
 data class SettingsUiState(
-    val availableAlarmSounds: List<String> = AVAILABLE_ALARM_SOUNDS.map { it.toString() },
+    val availableAlarmSounds: List<AlarmSound> = AlarmSound.values().toList(),
     val selectedAlarmSoundIndex: Int,
     val alarmPreviewPlaying: Boolean = false,
     val alarmSoundsDropdownMenuExpanded: Boolean = false,
-    val availableSnoozeDurations: List<Int> = AVAILABLE_SNOOZE_DURATIONS,
+    val availableSnoozeDurations: List<SnoozeDuration> = SnoozeDuration.values().toList(),
     val selectedSnoozeDurationIndex: Int,
     val snoozeDurationsDropdownMenuExpanded: Boolean = false,
-    val availableSnoozeMaxCounts: List<Int> = AVAILABLE_SNOOZE_MAX_COUNTS,
+    val availableSnoozeMaxCounts: List<SnoozeMaxCount> = SnoozeMaxCount.values().toList(),
     val selectedSnoozeMaxCountIndex: Int,
     val snoozeMaxCountsDropdownMenuExpanded: Boolean = false,
     val showStoragePermissionDialog: Boolean = false,
