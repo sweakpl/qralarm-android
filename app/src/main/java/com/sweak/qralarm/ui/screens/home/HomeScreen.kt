@@ -67,9 +67,7 @@ fun HomeScreen(
     val uiState = remember { alarmViewModel.homeUiState }
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
     val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        rememberPermissionState(
-            permission = Manifest.permission.POST_NOTIFICATIONS
-        )
+        rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
     } else {
         object : PermissionState {
             override val hasPermission: Boolean get() = true
