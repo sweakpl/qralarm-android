@@ -201,7 +201,10 @@ class QRAlarmService : Service() {
         super.onCreate()
 
         CoroutineScope(Dispatchers.IO).launch {
-            dataStoreManager.putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, true)
+            dataStoreManager.apply {
+                putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, true)
+                putBoolean(DataStoreManager.ALARM_SERVICE_PROPERLY_CLOSED, false)
+            }
         }
 
         HandlerThread(HANDLER_THREAD_NAME, Process.THREAD_PRIORITY_URGENT_AUDIO).apply {
@@ -225,12 +228,17 @@ class QRAlarmService : Service() {
 
     override fun onDestroy() {
         CoroutineScope(Dispatchers.IO).launch {
-            dataStoreManager.putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
+            dataStoreManager.apply {
+                putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
+                putBoolean(DataStoreManager.ALARM_SERVICE_PROPERLY_CLOSED, true)
+            }
         }
 
         stopVibratingAndPlayingSound()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             stopForeground(true)
         } else {
             notificationManager.cancel(ALARM_NOTIFICATION_ID)

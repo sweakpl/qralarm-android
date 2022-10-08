@@ -60,6 +60,7 @@ class DataStoreManager(private val context: Context) {
         val FIRST_LAUNCH = booleanPreferencesKey("firstLaunch")
         val ALARM_SET = booleanPreferencesKey("alarmSet")
         val ALARM_SERVICE_RUNNING = booleanPreferencesKey("alarmServiceRunning")
+        val ALARM_SERVICE_PROPERLY_CLOSED = booleanPreferencesKey("alarmServiceProperlyClosed")
         val ALARM_TIME_IN_MILLIS = longPreferencesKey("alarmTimeInMillis")
         val SNOOZE_ALARM_TIME_IN_MILLIS = longPreferencesKey("snoozeAlarmTimeInMillis")
         val ALARM_SNOOZED = booleanPreferencesKey("alarmSnoozed")

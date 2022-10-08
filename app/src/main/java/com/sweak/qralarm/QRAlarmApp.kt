@@ -6,14 +6,21 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.text.format.DateFormat
 import androidx.compose.ui.graphics.toArgb
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
+@ExperimentalPermissionsApi
+@InternalCoroutinesApi
+@ExperimentalPagerApi
 @HiltAndroidApp
 class QRAlarmApp : Application() {
 
@@ -23,12 +30,16 @@ class QRAlarmApp : Application() {
     @Inject
     lateinit var notificationManager: NotificationManager
 
+    @Inject
+    lateinit var qrAlarmManager: QRAlarmManager
+
     override fun onCreate() {
         super.onCreate()
 
         setUpPreferencesIfFirstLaunch()
         applySystemAlarmRemovalUpdateIfRequired()
         createNotificationChannelIfVersionRequires()
+        applyCorrectionsIfAlarmServiceWasNotProperlyFinished()
     }
 
     private fun setUpPreferencesIfFirstLaunch() {
@@ -113,6 +124,20 @@ class QRAlarmApp : Application() {
             }
 
             notificationManager.createNotificationChannel(alarmNotificationChannel)
+        }
+    }
+
+    private fun applyCorrectionsIfAlarmServiceWasNotProperlyFinished() {
+        runBlocking {
+            dataStoreManager.apply {
+                if (!getBoolean(DataStoreManager.ALARM_SERVICE_PROPERLY_CLOSED).first()) {
+                    qrAlarmManager.removeAlarmPendingIntent()
+                    putBoolean(DataStoreManager.ALARM_SET, false)
+                    putBoolean(DataStoreManager.ALARM_SNOOZED, false)
+                    putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
+                    putBoolean(DataStoreManager.ALARM_SERVICE_PROPERLY_CLOSED, true)
+                }
+            }
         }
     }
 }
