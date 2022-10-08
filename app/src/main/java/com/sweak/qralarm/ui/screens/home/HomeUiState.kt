@@ -15,5 +15,7 @@ data class HomeUiState(
     var showAlarmPermissionDialog: Boolean,
     var showCameraPermissionDialog: Boolean,
     var showCameraPermissionRevokedDialog: Boolean,
+    var showNotificationsPermissionDialog: Boolean,
+    var showNotificationsPermissionRevokedDialog: Boolean,
     var snackbarHostState: SnackbarHostState
 )

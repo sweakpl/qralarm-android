@@ -38,11 +38,10 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
-import com.sweak.qralarm.ui.screens.shared.components.AlarmPermissionDialog
-import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionSetAlarmDialog
-import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionSetAlarmRevokedDialog
+import com.sweak.qralarm.ui.screens.shared.components.*
 import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
 import com.sweak.qralarm.ui.theme.Victoria
 import com.sweak.qralarm.ui.theme.amikoFamily
@@ -67,6 +66,19 @@ fun HomeScreen(
 ) {
     val uiState = remember { alarmViewModel.homeUiState }
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
+    val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        rememberPermissionState(
+            permission = Manifest.permission.POST_NOTIFICATIONS
+        )
+    } else {
+        object : PermissionState {
+            override val hasPermission: Boolean get() = true
+            override val permission: String get() = "android.permission.POST_NOTIFICATIONS"
+            override val permissionRequested: Boolean get() = true
+            override val shouldShowRationale: Boolean get() = false
+            override fun launchPermissionRequest() { /* no-op */ }
+        }
+    }
     val composableScope = rememberCoroutineScope()
 
     val constraints = ConstraintSet {
@@ -154,6 +166,7 @@ fun HomeScreen(
                 alarmViewModel.handleStartOrStopButtonClick(
                     navController,
                     cameraPermissionState,
+                    notificationsPermissionState,
                     composableScope
                 )
             }
@@ -190,6 +203,32 @@ fun HomeScreen(
         },
         onNegativeClick = {
             uiState.value = uiState.value.copy(showCameraPermissionRevokedDialog = false)
+        }
+    )
+
+    NotificationsPermissionDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            notificationsPermissionState.launchPermissionRequest()
+            uiState.value = uiState.value.copy(showNotificationsPermissionDialog = false)
+        },
+        onNegativeClick = {
+            uiState.value = uiState.value.copy(showNotificationsPermissionDialog = false)
+        }
+    )
+
+    NotificationsPermissionRevokedDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            context.startActivity(
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.parse("package:${context.packageName}")
+                }
+            )
+            uiState.value = uiState.value.copy(showNotificationsPermissionRevokedDialog = false)
+        },
+        onNegativeClick = {
+            uiState.value = uiState.value.copy(showNotificationsPermissionRevokedDialog = false)
         }
     )
 

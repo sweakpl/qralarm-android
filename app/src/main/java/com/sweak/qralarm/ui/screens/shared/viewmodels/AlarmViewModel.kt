@@ -52,6 +52,8 @@ class AlarmViewModel @Inject constructor(
                 showAlarmPermissionDialog = false,
                 showCameraPermissionDialog = false,
                 showCameraPermissionRevokedDialog = false,
+                showNotificationsPermissionDialog = false,
+                showNotificationsPermissionRevokedDialog = false,
                 snackbarHostState = SnackbarHostState()
             )
         )
@@ -73,6 +75,7 @@ class AlarmViewModel @Inject constructor(
     fun handleStartOrStopButtonClick(
         navController: NavHostController,
         cameraPermissionState: PermissionState,
+        notificationsPermissionState: PermissionState,
         composableScope: CoroutineScope
     ) {
         if (!cameraPermissionState.hasPermission) {
@@ -85,6 +88,23 @@ class AlarmViewModel @Inject constructor(
                 !cameraPermissionState.shouldShowRationale -> {
                     homeUiState.value =
                         homeUiState.value.copy(showCameraPermissionRevokedDialog = true)
+                    return
+                }
+            }
+        }
+
+        if (!notificationsPermissionState.hasPermission) {
+            when {
+                !notificationsPermissionState.permissionRequested ||
+                        notificationsPermissionState.shouldShowRationale -> {
+                    homeUiState.value = homeUiState.value.copy(
+                        showNotificationsPermissionDialog = true
+                    )
+                    return
+                }
+                !notificationsPermissionState.shouldShowRationale -> {
+                    homeUiState.value =
+                        homeUiState.value.copy(showNotificationsPermissionRevokedDialog = true)
                     return
                 }
             }

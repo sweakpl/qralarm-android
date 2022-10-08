@@ -55,4 +55,7 @@
     <string name="local_sound">Local sound</string>
     <string name="not_saved_local_sound">Alarm sound couldn\'t be saved.</string>
     <string name="saved_local_sound">Selected alarm sound has been saved!</string>
+    <string name="notifications_permission_required_title">Notifications permission required</string>
+    <string name="notifications_permission_required_message">QRAlarm needs the permission to post notifications when the alarm goes off. Without it the alarm will not be accompanied by the notification.</string>
+    <string name="notifications_permission_revoked_message">Notifications permission has been permanently revoked. Without it the alarm is not accompanied by the notification. Go to settings and allow QRAlarm to post notifications.</string>
 </resources>
