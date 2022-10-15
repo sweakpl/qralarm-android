@@ -96,7 +96,7 @@ class MainActivity : ComponentActivity() {
                 route = Screen.AlarmFlow.route
             ) {
                 composable(route = Screen.HomeScreen.route) {
-                    val parentEntry = remember {
+                    val parentEntry = remember(it) {
                         navController.getBackStackEntry(Screen.AlarmFlow.route)
                     }
                     HomeScreen(
@@ -117,7 +117,7 @@ class MainActivity : ComponentActivity() {
                         }
                     )
                 ) {
-                    val parentEntry = remember {
+                    val parentEntry = remember(it) {
                         navController.getBackStackEntry(Screen.AlarmFlow.route)
                     }
                     ScannerScreen(
@@ -131,7 +131,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
                 composable(route = Screen.MenuScreen.route) {
-                    val parentEntry = remember {
+                    val parentEntry = remember(it) {
                         navController.getBackStackEntry(Screen.AlarmFlow.route)
                     }
                     SettingsScreen(
