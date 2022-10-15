@@ -310,6 +310,51 @@ fun SettingsScreen(
                     modifier = Modifier
                         .padding(end = MaterialTheme.space.large)
                         .weight(1f),
+                    text = stringResource(R.string.gentle_wakeup_in_seconds),
+                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                )
+
+                ComboBox(
+                    modifier = Modifier
+                        .height(40.dp)
+                        .width(80.dp),
+                    menuItems = uiState.value.availableGentleWakeupDurations,
+                    menuExpandedState =
+                    uiState.value.availableGentleWakeupDurationsDropdownMenuExpanded,
+                    selectedIndex = uiState.value.selectedGentleWakeupDurationIndex,
+                    updateMenuExpandedStatus = {
+                        uiState.value =
+                            uiState.value.copy(
+                                availableGentleWakeupDurationsDropdownMenuExpanded = true
+                            )
+                    },
+                    onDismissMenuView = {
+                        uiState.value =
+                            uiState.value.copy(
+                                availableGentleWakeupDurationsDropdownMenuExpanded = false
+                            )
+                    },
+                    onMenuItemClick = { index ->
+                        settingsViewModel.updateGentleWakeupDurationSelection(index)
+                        uiState.value =
+                            uiState.value.copy(
+                                availableGentleWakeupDurationsDropdownMenuExpanded = false
+                            )
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(end = MaterialTheme.space.large)
+                        .weight(1f),
                     text = stringResource(R.string.save_default_qrcode),
                     style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
                 )

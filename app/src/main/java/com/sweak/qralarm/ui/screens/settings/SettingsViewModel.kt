@@ -50,6 +50,11 @@ class SettingsViewModel @Inject constructor(
                     selectedSnoozeMaxCountIndex = SnoozeMaxCount.values().indexOf(
                         SnoozeMaxCount.fromInt(it.getInt(DataStoreManager.SNOOZE_MAX_COUNT).first())
                     ),
+                    selectedGentleWakeupDurationIndex = GentleWakeupDuration.values().indexOf(
+                        GentleWakeupDuration.fromInt(
+                            it.getInt(DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS).first()
+                        )
+                    ),
                     dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
                 )
             )
@@ -219,6 +224,21 @@ class SettingsViewModel @Inject constructor(
             dataStoreManager.putInt(
                 DataStoreManager.SNOOZE_MAX_COUNT,
                 newSelectedSnoozeMaxCount
+            )
+        }
+    }
+
+    fun updateGentleWakeupDurationSelection(newIndex: Int) {
+        val newSelectedGentleWakeupDuration = GentleWakeupDuration.values()[newIndex].lengthSeconds
+
+        settingsUiState.value = settingsUiState.value.copy(
+            selectedGentleWakeupDurationIndex = newIndex
+        )
+
+        viewModelScope.launch {
+            dataStoreManager.putInt(
+                DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS,
+                newSelectedGentleWakeupDuration
             )
         }
     }

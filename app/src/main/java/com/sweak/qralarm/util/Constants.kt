@@ -33,12 +33,12 @@ enum class SnoozeDuration(val lengthMinutes: Int) {
     SNOOZE_DURATION_3_MINUTES(3),
     SNOOZE_DURATION_2_MINUTES(2);
 
-    companion object {
-        fun fromInt(lengthMinutes: Int) = values().firstOrNull { it.lengthMinutes == lengthMinutes }
-    }
-
     override fun toString(): String {
         return lengthMinutes.toString()
+    }
+
+    companion object {
+        fun fromInt(lengthMinutes: Int) = values().firstOrNull { it.lengthMinutes == lengthMinutes }
     }
 }
 
@@ -48,12 +48,29 @@ enum class SnoozeMaxCount(val count: Int) {
     SNOOZE_MAX_COUNT_1(1),
     SNOOZE_MAX_COUNT_0(0);
 
+    override fun toString(): String {
+        return count.toString()
+    }
+
     companion object {
         fun fromInt(count: Int) = values().firstOrNull { it.count == count }
     }
+}
+
+enum class GentleWakeupDuration(val lengthSeconds: Int) {
+    GENTLE_WAKEUP_DURATION_60_SECONDS(60),
+    GENTLE_WAKEUP_DURATION_30_SECONDS(30),
+    GENTLE_WAKEUP_DURATION_10_SECONDS(10),
+    GENTLE_WAKEUP_DURATION_0_SECONDS(0);
+
+    fun inMillis(): Long = (lengthSeconds * 1000).toLong()
 
     override fun toString(): String {
-        return count.toString()
+        return lengthSeconds.toString()
+    }
+
+    companion object {
+        fun fromInt(lengthSeconds: Int) = values().firstOrNull { it.lengthSeconds == lengthSeconds }
     }
 }
 

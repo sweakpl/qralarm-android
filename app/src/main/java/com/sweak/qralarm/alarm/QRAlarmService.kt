@@ -1,5 +1,6 @@
 package com.sweak.qralarm.alarm
 
+import android.animation.ValueAnimator
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -11,6 +12,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.*
 import android.util.Log
+import android.view.animation.LinearInterpolator
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -24,7 +26,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import java.io.IOException
+import java.util.*
 import javax.inject.Inject
+import kotlin.concurrent.timerTask
 
 @ExperimentalPagerApi
 @InternalCoroutinesApi
@@ -46,6 +50,9 @@ class QRAlarmService : Service() {
 
     private var serviceLooper: Looper? = null
     private var serviceHandler: ServiceHandler? = null
+
+    private lateinit var vibrationTask: TimerTask
+    private lateinit var alarmVolumeAnimator: ValueAnimator
 
     private inner class ServiceHandler(looper: Looper) : Handler(looper) {
 
@@ -75,7 +82,13 @@ class QRAlarmService : Service() {
                     }
                 }
 
-                startVibratingAndPlayingAlarmSound()
+                val gentleWakeupDelaySeconds = runBlocking {
+                    dataStoreManager.getInt(DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS).first()
+                }
+
+                startVibratingAndPlayingAlarmSound(
+                    GentleWakeupDuration.fromInt(gentleWakeupDelaySeconds)
+                )
             }
         }
     }
@@ -126,32 +139,42 @@ class QRAlarmService : Service() {
         }
     }
 
-    private fun startVibratingAndPlayingAlarmSound() {
-        startVibrating()
-        startPlayingAlarmSound()
+    private fun startVibratingAndPlayingAlarmSound(gentleWakeupDuration: GentleWakeupDuration?) {
+        startVibrating(gentleWakeupDuration)
+        startPlayingAlarmSound(gentleWakeupDuration)
     }
 
-    private fun startVibrating() {
-        val vibrationAudioAttributes = AudioAttributes.Builder()
-            .setUsage(AudioAttributes.USAGE_ALARM)
-            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            .build()
+    private fun startVibrating(gentleWakeupDuration: GentleWakeupDuration?) {
+        vibrationTask = timerTask {
+            val vibrationAudioAttributes = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrationEffect = VibrationEffect.createWaveform(
-                longArrayOf(1000, 1000),
-                intArrayOf(255, 0),
-                0
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val vibrationEffect = VibrationEffect.createWaveform(
+                    longArrayOf(1000, 1000),
+                    intArrayOf(255, 0),
+                    0
+                )
 
-            vibrator.vibrate(vibrationEffect, vibrationAudioAttributes)
+                vibrator.vibrate(vibrationEffect, vibrationAudioAttributes)
+            } else {
+                vibrator.vibrate(longArrayOf(0, 1000, 1000), 0, vibrationAudioAttributes)
+            }
+        }
+
+        if (gentleWakeupDuration != null &&
+            gentleWakeupDuration != GentleWakeupDuration.GENTLE_WAKEUP_DURATION_0_SECONDS
+        ) {
+            Timer().schedule(vibrationTask, gentleWakeupDuration.inMillis())
         } else {
-            vibrator.vibrate(longArrayOf(0, 1000, 1000), 0, vibrationAudioAttributes)
+            vibrationTask.run()
         }
     }
 
-    private fun startPlayingAlarmSound() {
-        mediaPlayer.apply {
+    private fun startPlayingAlarmSound(gentleWakeupDuration: GentleWakeupDuration?) {
+        val mediaPlayer = mediaPlayer.apply {
             reset()
             setAudioAttributes(
                 AudioAttributes.Builder()
@@ -170,8 +193,22 @@ class QRAlarmService : Service() {
             }
             isLooping = true
             prepare()
-            start()
         }
+
+        if (gentleWakeupDuration != null &&
+            gentleWakeupDuration != GentleWakeupDuration.GENTLE_WAKEUP_DURATION_0_SECONDS
+        ) {
+            alarmVolumeAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+                duration = gentleWakeupDuration.inMillis()
+                interpolator = LinearInterpolator()
+                addUpdateListener {
+                    mediaPlayer.setVolume(it.animatedValue as Float, it.animatedValue as Float)
+                }
+                start()
+            }
+        }
+
+        mediaPlayer.start()
     }
 
     private fun getPreferredAlarmSoundUri(): Uri {
@@ -246,6 +283,9 @@ class QRAlarmService : Service() {
     }
 
     private fun stopVibratingAndPlayingSound() {
+        if (::vibrationTask.isInitialized) vibrationTask.cancel()
+        if (::alarmVolumeAnimator.isInitialized) alarmVolumeAnimator.end()
+
         vibrator.cancel()
 
         try {

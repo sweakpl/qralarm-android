@@ -13,6 +13,10 @@ data class SettingsUiState(
     val availableSnoozeMaxCounts: List<SnoozeMaxCount> = SnoozeMaxCount.values().toList(),
     val selectedSnoozeMaxCountIndex: Int,
     val snoozeMaxCountsDropdownMenuExpanded: Boolean = false,
+    val availableGentleWakeupDurations: List<GentleWakeupDuration> =
+        GentleWakeupDuration.values().toList(),
+    val selectedGentleWakeupDurationIndex: Int,
+    val availableGentleWakeupDurationsDropdownMenuExpanded: Boolean = false,
     val showStoragePermissionDialog: Boolean = false,
     val showStoragePermissionRevokedDialog: Boolean = false,
     val dismissAlarmCode: String,
