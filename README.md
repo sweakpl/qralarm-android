@@ -5,10 +5,10 @@
 
 ## Screenshots
 <p>
-	<img src="./screenshots/HomeScreen.jpg" width="196" height="416"/>
-	<img src="./screenshots/SettingsScreen.jpg" width="196" height="416"/>
-	<img src="./screenshots/ScannerScreen.jpg" width="196" height="416"/>
-	<img src="./screenshots/GuideScreen.jpg" width="196" height="416"/>
+	<img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/HomeScreen.jpg" width="196" height="416"/>
+	<img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/SettingsScreen.jpg" width="196" height="416"/>
+	<img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/ScannerScreen.jpg" width="196" height="416"/>
+	<img src="./fastlane/metadata/android/en-US/images/phoneScreenshots/GuideScreen.jpg" width="196" height="416"/>
 </p>
 
 ## Setup
