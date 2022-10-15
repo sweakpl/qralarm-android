@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -131,11 +132,12 @@ fun HomeScreen(
                 )
             )
     ) {
-        if (!uiState.value.alarmSet) {
+        AnimatedVisibility(
+            visible = !uiState.value.alarmSet,
+            modifier = Modifier.layoutId("menuButton")
+        ) {
             MenuButton(
-                modifier = Modifier
-                    .layoutId("menuButton")
-                    .padding(MaterialTheme.space.medium),
+                modifier = Modifier.padding(MaterialTheme.space.medium),
                 navController = navController
             )
         }
@@ -170,12 +172,13 @@ fun HomeScreen(
             }
         )
 
-        if (uiState.value.alarmServiceRunning && uiState.value.snoozeAvailable) {
+        AnimatedVisibility(
+            visible = uiState.value.alarmServiceRunning && uiState.value.snoozeAvailable,
+            modifier = Modifier.layoutId("snoozeButton")
+        ) {
             SnoozeButton(
                 onClick = { alarmViewModel.handleSnoozeButtonClick(finishableActionSideEffect) },
-                modifier = Modifier
-                    .layoutId("snoozeButton")
-                    .padding(0.dp, MaterialTheme.space.medium, 0.dp, 0.dp)
+                modifier = Modifier.padding(0.dp, MaterialTheme.space.medium, 0.dp, 0.dp)
             )
         }
     }
