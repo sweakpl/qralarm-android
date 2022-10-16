@@ -37,7 +37,6 @@ class QRAlarmApp : Application() {
         super.onCreate()
 
         setUpPreferencesIfFirstLaunch()
-        applySystemAlarmRemovalUpdateIfRequired()
         createNotificationChannelIfVersionRequires()
         applyCorrectionsIfAlarmServiceWasNotProperlyFinished()
     }
@@ -51,6 +50,7 @@ class QRAlarmApp : Application() {
             runBlocking {
                 setDefaultAlarmLifecyclePreferences()
                 setDefaultAlarmTimePreferences()
+                setDefaultAlarmSoundPreferences()
             }
         }
     }
@@ -58,8 +58,8 @@ class QRAlarmApp : Application() {
     private suspend fun setDefaultAlarmLifecyclePreferences() {
         dataStoreManager.apply {
             putBoolean(DataStoreManager.ALARM_SET, false)
-            putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
             putBoolean(DataStoreManager.ALARM_SNOOZED, false)
+            putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
             putString(DataStoreManager.DISMISS_ALARM_CODE, DEFAULT_DISMISS_ALARM_CODE)
         }
     }
@@ -78,34 +78,16 @@ class QRAlarmApp : Application() {
                 DataStoreManager.SNOOZE_DURATION_MINUTES,
                 SnoozeDuration.SNOOZE_DURATION_10_MINUTES.lengthMinutes
             )
-            putInt(DataStoreManager.ALARM_SOUND, AlarmSound.GENTLE_GUITAR.ordinal)
         }
     }
 
-    private fun applySystemAlarmRemovalUpdateIfRequired() {
-        val systemAlarmRemovalUpdateRequired = runBlocking {
-            dataStoreManager.getBoolean(
-                DataStoreManager.SYSTEM_ALARM_REMOVAL_UPDATE_REQUIRED
-            ).first()
-        }
-
-        if (systemAlarmRemovalUpdateRequired) {
-            runBlocking {
-                dataStoreManager.apply {
-                    /* Update 1.0.1 removes DEFAULT_SYSTEM alarm which had selection integer = 0.
-                     * This forces the app to shift the preference selection integer:
-                     * If it was 0, it stays 0. If it was anything but 0 it has 1 subtracted from it
-                     * This way, the old selection integers are mapped to new selection integers.
-                     * If the user had DEFAULT_SYSTEM selected they will have GENTLE_GUITAR now */
-                    val previousAlarmPreferenceInt = getInt(DataStoreManager.ALARM_SOUND).first()
-                    val newAlarmPreferenceInt = previousAlarmPreferenceInt.let {
-                        if (it != 0) it - 1 else 0
-                    }
-
-                    putInt(DataStoreManager.ALARM_SOUND, newAlarmPreferenceInt)
-                    putBoolean(DataStoreManager.SYSTEM_ALARM_REMOVAL_UPDATE_REQUIRED, false)
-                }
-            }
+    private suspend fun setDefaultAlarmSoundPreferences() {
+        dataStoreManager.apply {
+            putInt(DataStoreManager.ALARM_SOUND, AlarmSound.GENTLE_GUITAR.ordinal)
+            putInt(
+                DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS,
+                GentleWakeupDuration.GENTLE_WAKEUP_DURATION_0_SECONDS.lengthSeconds
+            )
         }
     }
 

@@ -105,11 +105,11 @@ fun getAlarmHour(alarmTimeInMillis: Long, timeFormat: TimeFormat): Int {
         if (timeFormat == TimeFormat.MILITARY) {
             return alarmZonedDateTime.hour
         } else {
-            return alarmZonedDateTime.hour.apply {
-                when {
-                    this == 0 -> return 12
-                    this <= 12 -> return this
-                    this > 12 -> return this - 12
+            alarmZonedDateTime.hour.apply {
+                return when {
+                    this == 0 -> 12
+                    this <= 12 -> this
+                    else -> this - 12
                 }
             }
         }

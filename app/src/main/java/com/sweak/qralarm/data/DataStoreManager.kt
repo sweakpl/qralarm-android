@@ -55,22 +55,23 @@ class DataStoreManager(private val context: Context) {
         }
 
     companion object {
-        val SYSTEM_ALARM_REMOVAL_UPDATE_REQUIRED =
-            booleanPreferencesKey("systemAlarmRemovalUpdateRequired")
         val FIRST_LAUNCH = booleanPreferencesKey("firstLaunch")
+
         val ALARM_SET = booleanPreferencesKey("alarmSet")
+        val ALARM_SNOOZED = booleanPreferencesKey("alarmSnoozed")
         val ALARM_SERVICE_RUNNING = booleanPreferencesKey("alarmServiceRunning")
         val ALARM_SERVICE_PROPERLY_CLOSED = booleanPreferencesKey("alarmServiceProperlyClosed")
+        val DISMISS_ALARM_CODE = stringPreferencesKey("dismissAlarmCode")
+
+        val ALARM_TIME_FORMAT = intPreferencesKey("alarmTimeFormat")
         val ALARM_TIME_IN_MILLIS = longPreferencesKey("alarmTimeInMillis")
         val SNOOZE_ALARM_TIME_IN_MILLIS = longPreferencesKey("snoozeAlarmTimeInMillis")
-        val ALARM_SNOOZED = booleanPreferencesKey("alarmSnoozed")
-        val ALARM_TIME_FORMAT = intPreferencesKey("alarmTimeFormat")
+        
+        val ALARM_SOUND = intPreferencesKey("alarmSound")
+        val LOCAL_ALARM_SOUND_URI = stringPreferencesKey("localAlarmSoundUri")
         val SNOOZE_MAX_COUNT = intPreferencesKey("snoozeMaxCount")
         val SNOOZE_AVAILABLE_COUNT = intPreferencesKey("snoozeAvailableCount")
         val SNOOZE_DURATION_MINUTES = intPreferencesKey("snoozeDurationMinutes")
-        val ALARM_SOUND = intPreferencesKey("alarmSound")
-        val LOCAL_ALARM_SOUND_URI = stringPreferencesKey("localAlarmSoundUri")
         val GENTLE_WAKEUP_DURATION_SECONDS = intPreferencesKey("gentleWakeupDurationSeconds")
-        val DISMISS_ALARM_CODE = stringPreferencesKey("dismissAlarmCode")
     }
 }
