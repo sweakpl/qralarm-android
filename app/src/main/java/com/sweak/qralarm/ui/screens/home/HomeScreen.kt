@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -144,11 +145,17 @@ fun HomeScreen(
 
         Text(
             text = if (uiState.value.alarmSet) stringResource(R.string.alarm_at) else stringResource(
-                R.string.set_alarm
+                R.string.drag_to_set_alarm
             ),
             modifier = Modifier
                 .layoutId("alarmAtText")
-                .padding(0.dp, 0.dp, 0.dp, 56.dp),
+                .padding(
+                    MaterialTheme.space.medium,
+                    0.dp,
+                    MaterialTheme.space.medium,
+                    56.dp
+                ),
+            textAlign = TextAlign.Center,
             fontSize = 32.sp,
             fontFamily = amikoFamily,
             fontWeight = FontWeight.SemiBold
