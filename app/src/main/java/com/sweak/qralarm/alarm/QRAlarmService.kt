@@ -146,9 +146,24 @@ class QRAlarmService : Service() {
 
     private fun startVibrating(gentleWakeupDuration: GentleWakeupDuration?) {
         vibrationTask = timerTask {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val vibrationAttributes = VibrationAttributes.Builder()
+                    .setUsage(VibrationAttributes.USAGE_ALARM)
+                    .build()
+
+                val vibrationEffect = VibrationEffect.createWaveform(
+                    longArrayOf(1000, 1000),
+                    intArrayOf(255, 0),
+                    0
+                )
+
+                vibrator.vibrate(vibrationEffect, vibrationAttributes)
+
+                return@timerTask
+            }
+
             val vibrationAudioAttributes = AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_ALARM)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .build()
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
