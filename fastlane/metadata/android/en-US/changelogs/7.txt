@@ -1,0 +1,1 @@
+* The text on the main screen is now more informative and tells the user how to change the alarm time.
