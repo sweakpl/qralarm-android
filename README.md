@@ -17,6 +17,8 @@
 * Go to the `Downloads` folder on the Android device,
 * Tap the file and install - the app doesn't require any special permissions.
 
+or download it from [F-Droid](https://f-droid.org/packages/com.sweak.qralarm/).
+
 ## Attribution
 
 #### Sounds attribution
