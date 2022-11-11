@@ -1,3 +1,4 @@
+
 <p align="center">
    <img src="./fastlane/metadata/android/en-US/images/icon.png" width="192" height="192"/>
 </p>
@@ -7,6 +8,7 @@
 *QRAlarm* is an Android alarm clock application that does not only wake You up, but also makes You get up to disable the alarm by scanning the QR Code.
 
 <p align="center">
+   <a href="https://play.google.com/store/apps/details?id=com.sweak.qralarm"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Get it on Google Play" height=80/></a>
    <a href="https://f-droid.org/packages/com.sweak.qralarm/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-en.svg" alt="Get it on F-Droid" height=80/></a>
    <a href="https://apt.izzysoft.de/fdroid/index/apk/com.sweak.qralarm/"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height=80/></a>
 </p>
