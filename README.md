@@ -1,4 +1,3 @@
-
 <p align="center">
    <img src="./fastlane/metadata/android/en-US/images/icon.png" width="192" height="192"/>
 </p>
@@ -27,7 +26,7 @@
 * Go to the `Downloads` folder on the Android device,
 * Tap the file and install - the app doesn't require any special permissions,
 
-or download it from [F-Droid](https://f-droid.org/packages/com.sweak.qralarm/) or [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/com.sweak.qralarm/).
+or get it on [Google Play](https://play.google.com/store/apps/details?id=com.sweak.qralarm), [F-Droid](https://f-droid.org/packages/com.sweak.qralarm/) or [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/com.sweak.qralarm/).
 
 ## Attribution
 
