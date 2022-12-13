@@ -65,7 +65,7 @@ fun ScannerScreen(
             }
 
             codeScanner = CodeScanner(context, codeScannerView).apply {
-                formats = listOf(BarcodeFormat.QR_CODE)
+                formats = CodeScanner.ALL_FORMATS
                 scanMode = ScanMode.CONTINUOUS
                 isTouchFocusEnabled = true
                 decodeCallback = DecodeCallback { result ->
