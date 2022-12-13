@@ -333,6 +333,40 @@ fun NumberPicker(
     val halvedNumbersColumnHeightPx =
         with(LocalDensity.current) { halvedNumbersColumnHeight.toPx() }
 
+    val minuteSpeedMultiplier = 4.0f;
+
+    // changing these makes things awkward right now and i'm not sure why, so i've set these to 1 to let things be
+    // it's possible the "fling" logic is buggy?
+    val minuteFlingVelocityMultiplier = 1f;
+    val minuteFlingFrictionMultiplier = 1f;
+
+    fun getHeightPx() : Float
+    {
+        return when(responsibility) {
+            PickerResponsibility.HOUR -> halvedNumbersColumnHeightPx
+            PickerResponsibility.MINUTE -> halvedNumbersColumnHeightPx / minuteSpeedMultiplier
+            PickerResponsibility.MERIDIEM -> halvedNumbersColumnHeightPx
+        }
+    }
+
+    fun getFlingVelocity(velocity: Float): Float {
+        return when(responsibility)
+        {
+            PickerResponsibility.HOUR -> velocity
+            PickerResponsibility.MINUTE -> velocity * minuteFlingVelocityMultiplier
+            PickerResponsibility.MERIDIEM -> velocity
+        }
+    }
+
+    fun getFlingFriction(friction: Float): Float {
+        return when(responsibility)
+        {
+            PickerResponsibility.HOUR -> friction
+            PickerResponsibility.MINUTE -> friction * minuteFlingFrictionMultiplier
+            PickerResponsibility.MERIDIEM -> friction
+        }
+    }
+
     val animatedOffset = remember { Animatable(0f) }.apply {
         updateBounds(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY)
     }
@@ -379,7 +413,7 @@ fun NumberPicker(
             PickerResponsibility.MINUTE -> uiState.value.minute
             PickerResponsibility.MERIDIEM -> uiState.value.meridiem.ordinal
         }
-        val offsetValue = initialValue - (offset / halvedNumbersColumnHeightPx).toInt()
+        val offsetValue = initialValue - (offset / getHeightPx()).toInt()
 
         return when {
             offsetValue < range.first ->
@@ -390,7 +424,7 @@ fun NumberPicker(
         }
     }
 
-    val coercedAnimatedOffset = animatedOffset.value % halvedNumbersColumnHeightPx
+    val coercedAnimatedOffset = animatedOffset.value % getHeightPx()
     val animatedStateValue = animatedStateValue(animatedOffset.value)
 
     val newModifier = if (uiState.value.alarmSet) {
@@ -405,21 +439,24 @@ fun NumberPicker(
                     }
                 },
                 onDragStopped = { velocity ->
+                    val actualVelocity = getFlingVelocity(velocity);
+                    val friction = getFlingFriction(20f);
                     val endValue = animatedOffset.fling(
-                        initialVelocity = velocity,
-                        animationSpec = exponentialDecay(frictionMultiplier = 20f),
+                        initialVelocity = actualVelocity,
+                        animationSpec = exponentialDecay(frictionMultiplier = friction),
                         adjustTarget = { target ->
-                            val coercedTarget = target % halvedNumbersColumnHeightPx
+                            val height = getHeightPx();
+                            val coercedTarget = target % height
                             val coercedAnchors = listOf(
-                                -halvedNumbersColumnHeightPx,
+                                -height,
                                 0f,
-                                halvedNumbersColumnHeightPx
+                                height
                             )
                             val coercedPoint = coercedAnchors.minByOrNull {
                                 abs(it - coercedTarget)
                             }!!
-                            val base = halvedNumbersColumnHeightPx *
-                                    (target / halvedNumbersColumnHeightPx).toInt()
+                            val base = height *
+                                    (target / height).toInt()
                             coercedPoint + base
                         }
                     ).endState.value
