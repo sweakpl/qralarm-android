@@ -74,7 +74,8 @@ class DataStoreManager(private val context: Context) {
         val SNOOZE_DURATION_MINUTES = intPreferencesKey("snoozeDurationMinutes")
         val GENTLE_WAKEUP_DURATION_SECONDS = intPreferencesKey("gentleWakeupDurationSeconds")
 
-        val EASY_DISMISS_BEFORE_ALARM = booleanPreferencesKey("easyDismissBeforeAlarm")
         val ALARM_ALARMING = booleanPreferencesKey("alarmIsExecuting")
+        val REQUIRE_SCAN_ALWAYS = booleanPreferencesKey("requireScanAlways")
+        val ACCEPT_ANY_BARCODE = booleanPreferencesKey("useQRCodesOnly")
     }
 }

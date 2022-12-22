@@ -14,6 +14,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
+import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.settings.SettingsViewModel
 import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
 import com.sweak.qralarm.ui.theme.BlueZodiac
@@ -33,6 +34,7 @@ fun ScannerScreen(
     navController: NavHostController,
     alarmViewModel: AlarmViewModel,
     settingsViewModel: SettingsViewModel,
+    acceptAnyBarcode: Boolean,
     scannerMode: String?,
     finishableActionSideEffect: () -> Unit,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
@@ -65,7 +67,10 @@ fun ScannerScreen(
             }
 
             codeScanner = CodeScanner(context, codeScannerView).apply {
-                formats = CodeScanner.ALL_FORMATS
+                formats = when(acceptAnyBarcode) {
+                    true -> CodeScanner.ALL_FORMATS
+                    false -> listOf(BarcodeFormat.QR_CODE)
+                }
                 scanMode = ScanMode.CONTINUOUS
                 isTouchFocusEnabled = true
                 decodeCallback = DecodeCallback { result ->

@@ -166,13 +166,16 @@ class AlarmViewModel @Inject constructor(
             }
         } else {
             var alarming = false
-            var easyDismiss = false
+            var requireScanAlways = false
             runBlocking {
                 alarming = dataStoreManager.getBoolean(DataStoreManager.ALARM_ALARMING).first()
-                easyDismiss = dataStoreManager.getBoolean(DataStoreManager.EASY_DISMISS_BEFORE_ALARM).first()
+                requireScanAlways = dataStoreManager.getBoolean(DataStoreManager.REQUIRE_SCAN_ALWAYS).first()
             }
 
-            if (easyDismiss && !alarming) {
+            // if the alarm is not currently going off and the user's settings agree not to scan
+            // when the alarm is not going off, then just stop the alarm without scanning
+            val stopWithoutScan = !requireScanAlways && !alarming;
+            if (stopWithoutScan) {
                 stopAlarm()
                 return
             }

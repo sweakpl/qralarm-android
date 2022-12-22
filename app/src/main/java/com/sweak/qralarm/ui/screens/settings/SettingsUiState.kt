@@ -23,5 +23,6 @@ data class SettingsUiState(
     val showCameraPermissionDialog: Boolean = false,
     val showCameraPermissionRevokedDialog: Boolean = false,
     val showDismissCodeAddedDialog: Boolean = false,
-    val easyDismissWithoutAlarm: Boolean = false
+    val requireScanAlways: Boolean = false,
+    val acceptAnyBarcode: Boolean = true
 )

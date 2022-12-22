@@ -56,7 +56,8 @@ class SettingsViewModel @Inject constructor(
                         )
                     ),
                     dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first(),
-                    easyDismissWithoutAlarm = it.getBoolean(DataStoreManager.EASY_DISMISS_BEFORE_ALARM).first()
+                    requireScanAlways = it.getBoolean(DataStoreManager.REQUIRE_SCAN_ALWAYS).first(),
+                    acceptAnyBarcode = it.getBoolean(DataStoreManager.ACCEPT_ANY_BARCODE).first()
                 )
             )
         }
@@ -244,19 +245,34 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun handleDismissWithoutCodeBeforeAlarm(easyMode: Boolean)
+    fun handleRequireScanAlways(alwaysRequired: Boolean)
     {
         viewModelScope.launch {
             dataStoreManager.apply {
                 putBoolean(
-                    DataStoreManager.EASY_DISMISS_BEFORE_ALARM,
-                    easyMode
+                    DataStoreManager.REQUIRE_SCAN_ALWAYS,
+                    alwaysRequired
                 )
             }
         }
 
         settingsUiState.value = settingsUiState.value.copy(
-            easyDismissWithoutAlarm = easyMode
+            requireScanAlways = alwaysRequired
+        )
+    }
+    fun handleAcceptAnyBarcode(acceptAnyBarcode: Boolean)
+    {
+        viewModelScope.launch {
+            dataStoreManager.apply {
+                putBoolean(
+                    DataStoreManager.ACCEPT_ANY_BARCODE,
+                    acceptAnyBarcode
+                )
+            }
+        }
+
+        settingsUiState.value = settingsUiState.value.copy(
+            acceptAnyBarcode = acceptAnyBarcode
         )
     }
 

@@ -120,10 +120,15 @@ class MainActivity : ComponentActivity() {
                     val parentEntry = remember(it) {
                         navController.getBackStackEntry(Screen.AlarmFlow.route)
                     }
+                    var acceptAnyBarcode = false
+                    runBlocking {
+                        acceptAnyBarcode = dataStoreManager.getBoolean(DataStoreManager.ACCEPT_ANY_BARCODE).first();
+                    }
                     ScannerScreen(
                         navController = navController,
                         alarmViewModel = hiltViewModel(parentEntry),
                         settingsViewModel = hiltViewModel(parentEntry),
+                        acceptAnyBarcode,
                         scannerMode = it.arguments?.getString(KEY_SCANNER_MODE),
                         finishableActionSideEffect = {
                             if (isLockScreenActivity) finish() else { /* no-op */ }

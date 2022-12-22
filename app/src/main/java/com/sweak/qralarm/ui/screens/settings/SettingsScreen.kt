@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.util.Log;
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -346,28 +347,19 @@ fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.large)
-                        .weight(1f),
-                    text = stringResource(R.string.dismiss_without_code_before_alarm),
-                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
-                )
+            CheckboxEntry(
+                textId = R.string.require_scan_before_alarm,
+                onChange = settingsViewModel::handleRequireScanAlways,
+                determineIfChecked = { uiState.value.requireScanAlways }
+            )
 
-                Checkbox(
-                    onCheckedChange = {
-                        settingsViewModel.handleDismissWithoutCodeBeforeAlarm(it)
-                    },
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
-                    checked = uiState.value.easyDismissWithoutAlarm
-                )
-            }
-
+            CheckboxEntry(
+                textId = R.string.accept_any_barcode,
+                onChange = settingsViewModel::handleAcceptAnyBarcode,
+                determineIfChecked = { uiState.value.acceptAnyBarcode }
+            )
 
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
@@ -639,5 +631,31 @@ fun ComboBox(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun CheckboxEntry(textId: Int, determineIfChecked: () -> Boolean, onChange: (input: Boolean) -> Any)
+{
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(end = MaterialTheme.space.large)
+                .weight(1f),
+            text = stringResource(textId),
+            style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+        )
+
+        Checkbox(
+            onCheckedChange = {
+                onChange(it)
+            },
+
+            checked = determineIfChecked()
+        )
     }
 }

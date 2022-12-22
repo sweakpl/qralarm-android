@@ -51,7 +51,15 @@ class QRAlarmApp : Application() {
                 setDefaultAlarmLifecyclePreferences()
                 setDefaultAlarmTimePreferences()
                 setDefaultAlarmSoundPreferences()
+                setDefaultUsabilityPreferences()
             }
+        }
+    }
+
+    private suspend fun setDefaultUsabilityPreferences() {
+        dataStoreManager.apply {
+            putBoolean(DataStoreManager.REQUIRE_SCAN_ALWAYS, false)
+            putBoolean(DataStoreManager.ACCEPT_ANY_BARCODE, false)
         }
     }
 
@@ -62,7 +70,6 @@ class QRAlarmApp : Application() {
             putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
             putString(DataStoreManager.DISMISS_ALARM_CODE, DEFAULT_DISMISS_ALARM_CODE)
             putBoolean(DataStoreManager.ALARM_ALARMING, false)
-            putBoolean(DataStoreManager.EASY_DISMISS_BEFORE_ALARM, true)
         }
     }
 
