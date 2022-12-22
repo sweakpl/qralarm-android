@@ -280,7 +280,7 @@ class AlarmViewModel @Inject constructor(
     private fun getMinuteSpeed(fastMode : Boolean) : Float
     {
         return when (fastMode) {
-            true -> 4f
+            true -> 3.2f
             false -> 1f
         }
     }
