@@ -73,5 +73,6 @@ class DataStoreManager(private val context: Context) {
         val SNOOZE_AVAILABLE_COUNT = intPreferencesKey("snoozeAvailableCount")
         val SNOOZE_DURATION_MINUTES = intPreferencesKey("snoozeDurationMinutes")
         val GENTLE_WAKEUP_DURATION_SECONDS = intPreferencesKey("gentleWakeupDurationSeconds")
+        val ACCEPT_ANY_CODE_TYPE = booleanPreferencesKey("acceptAnyCodeType")
     }
 }

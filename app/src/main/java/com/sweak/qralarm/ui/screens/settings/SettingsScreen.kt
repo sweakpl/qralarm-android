@@ -346,6 +346,22 @@ fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
+            CheckboxEntry(
+                textId = R.string.require_scan_before_alarm,
+                onChange = settingsViewModel::handleRequireScanAlways,
+                determineIfChecked = { uiState.value.requireScanAlways }
+            )
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
+            CheckboxEntry(
+                textId = R.string.accept_any_barcode,
+                onChange = settingsViewModel::handleAcceptAnyBarcode,
+                determineIfChecked = { uiState.value.acceptAnyBarcode }
+            )
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -614,5 +630,31 @@ fun ComboBox(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun CheckboxEntry(textId: Int, determineIfChecked: () -> Boolean, onChange: (input: Boolean) -> Any)
+{
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(end = MaterialTheme.space.large)
+                .weight(1f),
+            text = stringResource(textId),
+            style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+        )
+
+        Checkbox(
+            onCheckedChange = {
+                onChange(it)
+            },
+
+            checked = determineIfChecked()
+        )
     }
 }

@@ -55,7 +55,8 @@ class SettingsViewModel @Inject constructor(
                             it.getInt(DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS).first()
                         )
                     ),
-                    dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
+                    dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first(),
+                    acceptAnyBarcode = it.getBoolean(DataStoreManager.ACCEPT_ANY_BARCODE).first()
                 )
             )
         }
@@ -241,6 +242,22 @@ class SettingsViewModel @Inject constructor(
                 newSelectedGentleWakeupDuration
             )
         }
+    }
+
+    fun handleAcceptAnyBarcode(acceptAnyBarcode: Boolean)
+    {
+        viewModelScope.launch {
+            dataStoreManager.apply {
+                putBoolean(
+                    DataStoreManager.ACCEPT_ANY_CODE_TYPE,
+                    acceptAnyBarcode
+                )
+            }
+        }
+
+        settingsUiState.value = settingsUiState.value.copy(
+            acceptAnyBarcode = acceptAnyBarcode
+        )
     }
 
     fun handleDefaultCodeDownloadButton(

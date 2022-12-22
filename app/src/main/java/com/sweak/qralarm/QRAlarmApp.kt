@@ -51,8 +51,13 @@ class QRAlarmApp : Application() {
                 setDefaultAlarmLifecyclePreferences()
                 setDefaultAlarmTimePreferences()
                 setDefaultAlarmSoundPreferences()
+                setDefaultUsabilityPreferences()
             }
         }
+    }
+
+    private suspend fun setDefaultUsabilityPreferences() {
+        dataStoreManager.putBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE, false)
     }
 
     private suspend fun setDefaultAlarmLifecyclePreferences() {
