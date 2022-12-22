@@ -60,6 +60,7 @@ class QRAlarmApp : Application() {
         dataStoreManager.apply {
             putBoolean(DataStoreManager.REQUIRE_SCAN_ALWAYS, false)
             putBoolean(DataStoreManager.ACCEPT_ANY_BARCODE, false)
+            putBoolean(DataStoreManager.FAST_MINUTES_CONTROL, false)
         }
     }
 

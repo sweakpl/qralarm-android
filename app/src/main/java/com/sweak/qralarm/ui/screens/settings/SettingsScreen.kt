@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.util.Log;
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -359,6 +358,14 @@ fun SettingsScreen(
                 textId = R.string.accept_any_barcode,
                 onChange = settingsViewModel::handleAcceptAnyBarcode,
                 determineIfChecked = { uiState.value.acceptAnyBarcode }
+            )
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
+            CheckboxEntry(
+                textId = R.string.fast_minutes_control,
+                onChange = settingsViewModel::handleFastMinutesControl,
+                determineIfChecked = { uiState.value.fastMinutesControl }
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))

@@ -24,6 +24,7 @@
     <string name="number_of_snoozes">Max number of snoozes</string>
     <string name="require_scan_before_alarm">Require scan to cancel alarm before it goes off</string>
     <string name="accept_any_barcode">Accept any barcode</string>
+    <string name="fast_minutes_control">Fast minutes UI Control (Restart to take effect)</string>
     <string name="alarm_sound">Alarm sound</string>
     <string name="default_system">Default system</string>
     <string name="gentle_guitar">Gentle guitar</string>

@@ -53,7 +53,8 @@ class AlarmViewModel @Inject constructor(
                 showCameraPermissionRevokedDialog = false,
                 showNotificationsPermissionDialog = false,
                 showNotificationsPermissionRevokedDialog = false,
-                snackbarHostState = SnackbarHostState()
+                snackbarHostState = SnackbarHostState(),
+                getMinuteSpeed(dataStoreManager.getBoolean(DataStoreManager.FAST_MINUTES_CONTROL).first()),
             )
         )
     }
@@ -273,6 +274,14 @@ class AlarmViewModel @Inject constructor(
     fun getDismissCode(): String {
         return runBlocking {
             dataStoreManager.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
+        }
+    }
+
+    private fun getMinuteSpeed(fastMode : Boolean) : Float
+    {
+        return when (fastMode) {
+            true -> 4f
+            false -> 1f
         }
     }
 }

@@ -333,7 +333,7 @@ fun NumberPicker(
     val halvedNumbersColumnHeightPx =
         with(LocalDensity.current) { halvedNumbersColumnHeight.toPx() }
 
-    val minuteSpeedMultiplier = 4.0f;
+    val minuteSpeedMultiplier = uiState.value.minutesSpeed
 
     // changing these makes things awkward right now and i'm not sure why, so i've set these to 1 to let things be
     // it's possible the "fling" logic is buggy?

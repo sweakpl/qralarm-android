@@ -77,5 +77,6 @@ class DataStoreManager(private val context: Context) {
         val ALARM_ALARMING = booleanPreferencesKey("alarmIsExecuting")
         val REQUIRE_SCAN_ALWAYS = booleanPreferencesKey("requireScanAlways")
         val ACCEPT_ANY_BARCODE = booleanPreferencesKey("useQRCodesOnly")
+        val FAST_MINUTES_CONTROL = booleanPreferencesKey("fastMinutesControl")
     }
 }
