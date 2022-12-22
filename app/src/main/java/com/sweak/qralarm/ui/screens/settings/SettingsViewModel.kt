@@ -55,7 +55,8 @@ class SettingsViewModel @Inject constructor(
                             it.getInt(DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS).first()
                         )
                     ),
-                    dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
+                    dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first(),
+                    easyDismissWithoutAlarm = it.getBoolean(DataStoreManager.EASY_DISMISS_BEFORE_ALARM).first()
                 )
             )
         }
@@ -241,6 +242,22 @@ class SettingsViewModel @Inject constructor(
                 newSelectedGentleWakeupDuration
             )
         }
+    }
+
+    fun handleDismissWithoutCodeBeforeAlarm(easyMode: Boolean)
+    {
+        viewModelScope.launch {
+            dataStoreManager.apply {
+                putBoolean(
+                    DataStoreManager.EASY_DISMISS_BEFORE_ALARM,
+                    easyMode
+                )
+            }
+        }
+
+        settingsUiState.value = settingsUiState.value.copy(
+            easyDismissWithoutAlarm = easyMode
+        )
     }
 
     fun handleDefaultCodeDownloadButton(

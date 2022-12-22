@@ -61,6 +61,8 @@ class QRAlarmApp : Application() {
             putBoolean(DataStoreManager.ALARM_SNOOZED, false)
             putBoolean(DataStoreManager.ALARM_SERVICE_RUNNING, false)
             putString(DataStoreManager.DISMISS_ALARM_CODE, DEFAULT_DISMISS_ALARM_CODE)
+            putBoolean(DataStoreManager.ALARM_ALARMING, false)
+            putBoolean(DataStoreManager.EASY_DISMISS_BEFORE_ALARM, true)
         }
     }
 

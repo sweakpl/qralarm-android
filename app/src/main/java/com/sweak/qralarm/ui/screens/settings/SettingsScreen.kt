@@ -355,6 +355,31 @@ fun SettingsScreen(
                     modifier = Modifier
                         .padding(end = MaterialTheme.space.large)
                         .weight(1f),
+                    text = stringResource(R.string.dismiss_without_code_before_alarm),
+                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                )
+
+                Checkbox(
+                    onCheckedChange = {
+                        settingsViewModel.handleDismissWithoutCodeBeforeAlarm(it)
+                    },
+
+                    checked = uiState.value.easyDismissWithoutAlarm
+                )
+            }
+
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(end = MaterialTheme.space.large)
+                        .weight(1f),
                     text = stringResource(R.string.save_default_qrcode),
                     style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
                 )

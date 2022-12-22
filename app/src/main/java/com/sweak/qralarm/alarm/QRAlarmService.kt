@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.animation.LinearInterpolator
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.viewModelScope
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
@@ -84,11 +85,20 @@ class QRAlarmService : Service() {
 
                 val gentleWakeupDelaySeconds = runBlocking {
                     dataStoreManager.getInt(DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS).first()
+
                 }
 
                 startVibratingAndPlayingAlarmSound(
                     GentleWakeupDuration.fromInt(gentleWakeupDelaySeconds)
                 )
+
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    dataStoreManager.apply {
+                        putBoolean(DataStoreManager.ALARM_ALARMING, true)
+                    }
+                }
+
             }
         }
     }

@@ -165,6 +165,18 @@ class AlarmViewModel @Inject constructor(
                 return
             }
         } else {
+            var alarming = false
+            var easyDismiss = false
+            runBlocking {
+                alarming = dataStoreManager.getBoolean(DataStoreManager.ALARM_ALARMING).first()
+                easyDismiss = dataStoreManager.getBoolean(DataStoreManager.EASY_DISMISS_BEFORE_ALARM).first()
+            }
+
+            if (easyDismiss && !alarming) {
+                stopAlarm()
+                return
+            }
+
             navController.navigate(Screen.ScannerScreen.withArguments(SCAN_MODE_DISMISS_ALARM))
         }
     }
@@ -176,6 +188,7 @@ class AlarmViewModel @Inject constructor(
             dataStoreManager.apply {
                 putBoolean(DataStoreManager.ALARM_SET, false)
                 putBoolean(DataStoreManager.ALARM_SNOOZED, false)
+                putBoolean(DataStoreManager.ALARM_ALARMING, false)
 
                 val originalAlarmTimeInMillis =
                     getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
