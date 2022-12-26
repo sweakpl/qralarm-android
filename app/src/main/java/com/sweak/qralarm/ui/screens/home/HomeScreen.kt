@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -339,13 +340,12 @@ fun NumberPicker(
     // it's possible the "fling" logic is buggy?
     val minuteFlingVelocityMultiplier = 1f;
     val minuteFlingFrictionMultiplier = 1f;
-
-    fun getHeightPx() : Float
-    {
-        return when(responsibility) {
-            PickerResponsibility.HOUR -> halvedNumbersColumnHeightPx
-            PickerResponsibility.MINUTE -> halvedNumbersColumnHeightPx / minuteSpeedMultiplier
-            PickerResponsibility.MERIDIEM -> halvedNumbersColumnHeightPx
+    
+    fun getSpeed(): Float {
+        return when (responsibility) {
+            PickerResponsibility.HOUR -> 1f
+            PickerResponsibility.MINUTE -> minuteSpeedMultiplier
+            PickerResponsibility.MERIDIEM -> 1f
         }
     }
 
@@ -413,7 +413,9 @@ fun NumberPicker(
             PickerResponsibility.MINUTE -> uiState.value.minute
             PickerResponsibility.MERIDIEM -> uiState.value.meridiem.ordinal
         }
-        val offsetValue = initialValue - (offset / getHeightPx()).toInt()
+
+        val offsetDivisor = halvedNumbersColumnHeightPx / getSpeed()
+        val offsetValue = initialValue - (offset / offsetDivisor).toInt()
 
         return when {
             offsetValue < range.first ->
@@ -424,7 +426,6 @@ fun NumberPicker(
         }
     }
 
-    val coercedAnimatedOffset = animatedOffset.value % getHeightPx()
     val animatedStateValue = animatedStateValue(animatedOffset.value)
 
     val newModifier = if (uiState.value.alarmSet) {
@@ -445,7 +446,7 @@ fun NumberPicker(
                         initialVelocity = actualVelocity,
                         animationSpec = exponentialDecay(frictionMultiplier = friction),
                         adjustTarget = { target ->
-                            val height = getHeightPx();
+                            val height = halvedNumbersColumnHeightPx//getHeightPx();
                             val coercedTarget = target % height
                             val coercedAnchors = listOf(
                                 -height,
@@ -478,6 +479,9 @@ fun NumberPicker(
             )
     }
 
+    val coercedAnimatedOffset = (animatedOffset.value * getSpeed()) % halvedNumbersColumnHeightPx
+    val alpha = coercedAnimatedOffset / halvedNumbersColumnHeightPx;
+
     Column(
         modifier = newModifier
             .wrapContentSize()
@@ -495,7 +499,7 @@ fun NumberPicker(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(y = -halvedNumbersColumnHeight)
-                    .alpha(coercedAnimatedOffset / halvedNumbersColumnHeightPx)
+                    .alpha(alpha)
                     .pointerInput(Unit) {
                         detectTapGestures { }
                     }
@@ -505,7 +509,7 @@ fun NumberPicker(
                 fontSize = 63.8.sp,
                 modifier = modifier
                     .align(Alignment.Center)
-                    .alpha(1 - abs(coercedAnimatedOffset) / halvedNumbersColumnHeightPx)
+                    .alpha(1 - abs(alpha))
                     .pointerInput(Unit) {
                         detectTapGestures { }
                     }
@@ -518,7 +522,7 @@ fun NumberPicker(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .offset(y = halvedNumbersColumnHeight)
-                    .alpha(-coercedAnimatedOffset / halvedNumbersColumnHeightPx)
+                    .alpha(-alpha)
                     .pointerInput(Unit) {
                         detectTapGestures { }
                     }
