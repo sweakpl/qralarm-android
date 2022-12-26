@@ -291,7 +291,7 @@ fun TimeUntilAlarm(
                     56.dp
                 ),
             textAlign = TextAlign.Center,
-            fontSize = 12.sp,
+            fontSize = 16.sp,
             fontFamily = amikoFamily,
             fontWeight = FontWeight.Light
         )
