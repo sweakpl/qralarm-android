@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -446,18 +445,17 @@ fun NumberPicker(
                         initialVelocity = actualVelocity,
                         animationSpec = exponentialDecay(frictionMultiplier = friction),
                         adjustTarget = { target ->
-                            val height = halvedNumbersColumnHeightPx//getHeightPx();
-                            val coercedTarget = target % height
+                            val coercedTarget = target % halvedNumbersColumnHeightPx
                             val coercedAnchors = listOf(
-                                -height,
+                                -halvedNumbersColumnHeightPx,
                                 0f,
-                                height
+                                halvedNumbersColumnHeightPx
                             )
                             val coercedPoint = coercedAnchors.minByOrNull {
                                 abs(it - coercedTarget)
                             }!!
-                            val base = height *
-                                    (target / height).toInt()
+                            val base = halvedNumbersColumnHeightPx *
+                                    (target / halvedNumbersColumnHeightPx).toInt()
                             coercedPoint + base
                         }
                     ).endState.value
