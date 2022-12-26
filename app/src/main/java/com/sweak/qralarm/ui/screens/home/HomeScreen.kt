@@ -15,10 +15,7 @@ import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -48,9 +45,7 @@ import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
 import com.sweak.qralarm.ui.theme.Victoria
 import com.sweak.qralarm.ui.theme.amikoFamily
 import com.sweak.qralarm.ui.theme.space
-import com.sweak.qralarm.util.Meridiem
-import com.sweak.qralarm.util.Screen
-import com.sweak.qralarm.util.TimeFormat
+import com.sweak.qralarm.util.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -67,6 +62,7 @@ fun HomeScreen(
     context: Context = LocalContext.current
 ) {
     val uiState = remember { alarmViewModel.homeUiState }
+    val timeState = remember { alarmViewModel.timeState }
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
     val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
@@ -87,9 +83,17 @@ fun HomeScreen(
         val timePicker = createRefFor("timePicker")
         val startStopAlarmButton = createRefFor("startStopAlarmButton")
         val snoozeButton = createRefFor("snoozeButton")
+        val timeUntilAlarmText = createRefFor("timeUntilAlarmText")
 
         constrain(menuButton) {
             top.linkTo(parent.top)
+            end.linkTo(parent.end)
+        }
+
+        constrain(timeUntilAlarmText)
+        {
+            bottom.linkTo(alarmAtText.top)
+            start.linkTo(parent.start)
             end.linkTo(parent.end)
         }
 
@@ -143,6 +147,8 @@ fun HomeScreen(
             )
         }
 
+
+
         Text(
             text = if (uiState.value.alarmSet) stringResource(R.string.alarm_at) else stringResource(
                 R.string.drag_to_set_alarm
@@ -163,7 +169,14 @@ fun HomeScreen(
 
         TimePicker(
             modifier = Modifier.layoutId("timePicker"),
-            uiState = uiState
+            uiState = uiState,
+            timeState = timeState
+        )
+
+        TimeUntilAlarm(
+            modifier = Modifier.layoutId("timeUntilAlarmText"),
+            time = timeState,
+            text = stringResource(R.string.time_until_alarm)
         )
 
         StartStopAlarmButton(
@@ -252,6 +265,57 @@ fun HomeScreen(
     )
 
     AlarmSetSnackbar(snackbarHostState = uiState.value.snackbarHostState)
+
+}
+
+@Composable
+fun TimeUntilAlarm(
+    modifier: Modifier = Modifier,
+    time: MutableState<AlarmTimeUiState>,
+    text: String
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    )
+    {
+        Text(
+            text = getTimeUntilAlarm(time.value, text),
+            modifier = Modifier
+                .layoutId("timeUntilAlarmText")
+                .padding(
+                    MaterialTheme.space.medium,
+                    0.dp,
+                    MaterialTheme.space.medium,
+                    56.dp
+                ),
+            textAlign = TextAlign.Center,
+            fontSize = 12.sp,
+            fontFamily = amikoFamily,
+            fontWeight = FontWeight.Light
+        )
+    }
+}
+
+fun getTimeUntilAlarm(timeState: AlarmTimeUiState, text: String): String {
+    val timeNow = currentTimeInMillis()
+    val alarmTimeMillis = getAlarmTimeInMillis(
+        timeState.hour,
+        timeState.minute,
+        timeState.timeFormat,
+        timeState.meridiem
+    )
+
+    val minutesDivisor = 1000 * 60
+    val hoursDivisor = minutesDivisor * 60
+
+
+    val diff = alarmTimeMillis - timeNow
+    val hoursUntil = diff / hoursDivisor
+    val minutesUntil = diff / minutesDivisor % 60
+
+    return String.format(text, hoursUntil, minutesUntil)
 }
 
 @Composable
@@ -276,7 +340,8 @@ fun MenuButton(
 @Composable
 fun TimePicker(
     modifier: Modifier = Modifier,
-    uiState: MutableState<HomeUiState>
+    uiState: MutableState<HomeUiState>,
+    timeState: MutableState<AlarmTimeUiState>
 ) {
     Row(
         modifier = modifier,
@@ -285,8 +350,9 @@ fun TimePicker(
     ) {
         NumberPicker(
             uiState = uiState,
+            timeState = timeState,
             responsibility = PickerResponsibility.HOUR,
-            range = when (uiState.value.timeFormat) {
+            range = when (timeState.value.timeFormat) {
                 TimeFormat.MILITARY -> 0..23
                 TimeFormat.AMPM -> 1..12
             },
@@ -298,13 +364,15 @@ fun TimePicker(
         )
         NumberPicker(
             uiState = uiState,
+            timeState = timeState,
             responsibility = PickerResponsibility.MINUTE,
             range = 0..59,
             label = { if (it in 0..9) "0$it" else it.toString() }
         )
-        if (uiState.value.timeFormat == TimeFormat.AMPM) {
+        if (timeState.value.timeFormat == TimeFormat.AMPM) {
             NumberPicker(
                 uiState = uiState,
+                timeState = timeState,
                 responsibility = PickerResponsibility.MERIDIEM,
                 range = 0..1,
                 label = {
@@ -322,6 +390,7 @@ fun TimePicker(
 fun NumberPicker(
     modifier: Modifier = Modifier,
     uiState: MutableState<HomeUiState>,
+    timeState: MutableState<AlarmTimeUiState>,
     responsibility: PickerResponsibility,
     range: IntRange,
     label: (Int) -> String = { it.toString() }
@@ -337,8 +406,8 @@ fun NumberPicker(
 
     // changing these makes things awkward right now and i'm not sure why, so i've set these to 1 to let things be
     // it's possible the "fling" logic is buggy?
-    val minuteFlingVelocityMultiplier = 1f;
-    val minuteFlingFrictionMultiplier = 1f;
+    val minuteFlingVelocityMultiplier = 1f
+    val minuteFlingFrictionMultiplier = 1f
     
     fun getSpeed(): Float {
         return when (responsibility) {
@@ -408,13 +477,12 @@ fun NumberPicker(
 
     fun animatedStateValue(offset: Float): Int {
         val initialValue = when (responsibility) {
-            PickerResponsibility.HOUR -> uiState.value.hour
-            PickerResponsibility.MINUTE -> uiState.value.minute
-            PickerResponsibility.MERIDIEM -> uiState.value.meridiem.ordinal
+            PickerResponsibility.HOUR -> timeState.value.hour
+            PickerResponsibility.MINUTE -> timeState.value.minute
+            PickerResponsibility.MERIDIEM -> timeState.value.meridiem.ordinal
         }
 
-        val offsetDivisor = halvedNumbersColumnHeightPx / getSpeed()
-        val offsetValue = initialValue - (offset / offsetDivisor).toInt()
+        val offsetValue = initialValue - (offset / halvedNumbersColumnHeightPx).toInt()
 
         return when {
             offsetValue < range.first ->
@@ -435,12 +503,12 @@ fun NumberPicker(
                 orientation = Orientation.Vertical,
                 state = rememberDraggableState { delta ->
                     coroutineScope.launch {
-                        animatedOffset.snapTo(animatedOffset.value + delta)
+                        animatedOffset.snapTo(animatedOffset.value+ delta * getSpeed() )
                     }
                 },
                 onDragStopped = { velocity ->
-                    val actualVelocity = getFlingVelocity(velocity);
-                    val friction = getFlingFriction(20f);
+                    val actualVelocity = getFlingVelocity(velocity)
+                    val friction = getFlingFriction(20f)
                     val endValue = animatedOffset.fling(
                         initialVelocity = actualVelocity,
                         animationSpec = exponentialDecay(frictionMultiplier = friction),
@@ -461,24 +529,28 @@ fun NumberPicker(
                     ).endState.value
 
                     when (responsibility) {
-                        PickerResponsibility.HOUR -> uiState.value.hour =
-                            animatedStateValue(endValue)
-                        PickerResponsibility.MINUTE -> uiState.value.minute =
-                            animatedStateValue(endValue)
-                        PickerResponsibility.MERIDIEM -> uiState.value.meridiem =
-                            when (animatedStateValue(endValue)) {
-                                0 -> Meridiem.AM
-                                else -> Meridiem.PM
-                            }
+                        PickerResponsibility.HOUR ->
+                            timeState.value = timeState.value.copy(hour = animatedStateValue(endValue))
+                        PickerResponsibility.MINUTE ->
+                            timeState.value = timeState.value.copy(minute = animatedStateValue(endValue))
+                        PickerResponsibility.MERIDIEM ->
+                            timeState.value = timeState.value.copy(
+                                meridiem =
+                                when (animatedStateValue(endValue)) {
+                                    0 -> Meridiem.AM
+                                    else -> Meridiem.PM
+                                }
+                            )
                     }
 
                     animatedOffset.snapTo(0f)
+
                 }
             )
     }
 
-    val coercedAnimatedOffset = (animatedOffset.value * getSpeed()) % halvedNumbersColumnHeightPx
-    val alpha = coercedAnimatedOffset / halvedNumbersColumnHeightPx;
+    val coercedAnimatedOffset = (animatedOffset.value) % halvedNumbersColumnHeightPx
+    val alpha = coercedAnimatedOffset / halvedNumbersColumnHeightPx
 
     Column(
         modifier = newModifier

@@ -1,6 +1,7 @@
 package com.sweak.qralarm.util
 
 import android.os.Build
+import com.sweak.qralarm.ui.screens.home.AlarmTimeUiState
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -15,6 +16,21 @@ fun currentTimeInMillis(): Long {
     } else {
         Calendar.getInstance(TimeZone.getDefault()).timeInMillis
     }
+}
+
+fun currentTimeInMinutes(): Int
+{
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault())
+            .minute
+    } else {
+        Calendar.getInstance(TimeZone.getDefault()).get(Calendar.MINUTE)
+    }
+}
+
+fun getAlarmTimeInMillis(time: AlarmTimeUiState): Long
+{
+    return getAlarmTimeInMillis(time.hour, time.minute, time.timeFormat, time.meridiem)
 }
 
 fun getAlarmTimeInMillis(hour: Int, minute: Int, timeFormat: TimeFormat, meridiem: Meridiem): Long {

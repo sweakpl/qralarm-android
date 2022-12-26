@@ -1,5 +1,7 @@
 package com.sweak.qralarm.ui.screens.shared.viewmodels
 
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
@@ -14,6 +16,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeUiState
+import com.sweak.qralarm.ui.screens.home.AlarmTimeUiState
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -31,20 +34,9 @@ class AlarmViewModel @Inject constructor(
 ) : ViewModel() {
 
     val homeUiState: MutableState<HomeUiState> = runBlocking {
-        val alarmTimeInMillis =
-            if (dataStoreManager.getBoolean(DataStoreManager.ALARM_SNOOZED).first()) {
-                dataStoreManager.getLong(DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS).first()
-            } else {
-                dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
-            }
-        val timeFormat = getTimeFormat()
 
         mutableStateOf(
             HomeUiState(
-                timeFormat,
-                getAlarmHour(alarmTimeInMillis, timeFormat),
-                getAlarmMinute(alarmTimeInMillis),
-                getAlarmMeridiem(alarmTimeInMillis),
                 dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first(),
                 dataStoreManager.getBoolean(DataStoreManager.ALARM_SERVICE_RUNNING).first(),
                 snoozeAvailable = false,
@@ -55,6 +47,25 @@ class AlarmViewModel @Inject constructor(
                 showNotificationsPermissionRevokedDialog = false,
                 snackbarHostState = SnackbarHostState(),
                 getMinuteSpeed(dataStoreManager.getBoolean(DataStoreManager.FAST_MINUTES_CONTROL).first()),
+            )
+        )
+    }
+
+    val timeState: MutableState<AlarmTimeUiState> = runBlocking {
+        val alarmTimeInMillis =
+            if (dataStoreManager.getBoolean(DataStoreManager.ALARM_SNOOZED).first()) {
+                dataStoreManager.getLong(DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS).first()
+            } else {
+                dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
+            }
+        val timeFormat = getTimeFormat()
+        mutableStateOf(
+            AlarmTimeUiState(
+                timeFormat,
+                getAlarmHour(alarmTimeInMillis, timeFormat),
+                getAlarmMinute(alarmTimeInMillis),
+                getAlarmMeridiem(alarmTimeInMillis),
+                currentTimeInMinutes()
             )
         )
     }
@@ -70,6 +81,21 @@ class AlarmViewModel @Inject constructor(
                 homeUiState.value = homeUiState.value.copy(snoozeAvailable = it > 0)
             }
         }
+
+        val timeTilAlarmUpdater = Handler(Looper.getMainLooper())
+        timeTilAlarmUpdater.post(object : java.lang.Runnable {
+            override fun run() {
+                // for when application is left open without touching the time UI
+                // check to update the time state's current minute every 10 seconds
+                val currentMinute = currentTimeInMinutes();
+                if(timeState.value.currentMinute != currentMinute) {
+                    timeState.value = timeState.value.copy(
+                        currentMinute = currentMinute
+                    )
+                }
+                timeTilAlarmUpdater.postDelayed(this, 10000)
+            }
+        })
     }
 
     fun handleStartOrStopButtonClick(
@@ -115,12 +141,7 @@ class AlarmViewModel @Inject constructor(
         if (!alarmSet) {
             try {
                 qrAlarmManager.setAlarm(
-                    getAlarmTimeInMillis(
-                        homeUiState.value.hour,
-                        homeUiState.value.minute,
-                        homeUiState.value.timeFormat,
-                        homeUiState.value.meridiem
-                    ),
+                    getAlarmTimeInMillis(timeState.value),
                     ALARM_TYPE_NORMAL
                 )
 
@@ -132,12 +153,7 @@ class AlarmViewModel @Inject constructor(
 
                         putLong(
                             DataStoreManager.ALARM_TIME_IN_MILLIS,
-                            getAlarmTimeInMillis(
-                                homeUiState.value.hour,
-                                homeUiState.value.minute,
-                                homeUiState.value.timeFormat,
-                                homeUiState.value.meridiem
-                            )
+                            getAlarmTimeInMillis(timeState.value)
                         )
 
                         putInt(
@@ -198,8 +214,11 @@ class AlarmViewModel @Inject constructor(
                     getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
 
                 homeUiState.value = homeUiState.value.copy(
-                    alarmSet = false,
-                    hour = getAlarmHour(originalAlarmTimeInMillis, homeUiState.value.timeFormat),
+                    alarmSet = false
+                )
+
+                timeState.value = timeState.value.copy(
+                    hour = getAlarmHour(originalAlarmTimeInMillis, timeState.value.timeFormat),
                     minute = getAlarmMinute(originalAlarmTimeInMillis),
                     meridiem = getAlarmMeridiem(originalAlarmTimeInMillis)
                 )
@@ -236,22 +255,17 @@ class AlarmViewModel @Inject constructor(
 
                 val alarmHour = getAlarmHour(
                     snoozeAlarmTimeInMillis,
-                    homeUiState.value.timeFormat
+                    timeState.value.timeFormat
                 )
                 val alarmMinute = getAlarmMinute(snoozeAlarmTimeInMillis)
                 val alarmMeridiem = getAlarmMeridiem(snoozeAlarmTimeInMillis)
 
                 putLong(
                     DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS,
-                    getAlarmTimeInMillis(
-                        alarmHour,
-                        alarmMinute,
-                        homeUiState.value.timeFormat,
-                        alarmMeridiem
-                    )
+                    getAlarmTimeInMillis(timeState.value)
                 )
 
-                homeUiState.value = homeUiState.value.copy(
+                timeState.value = timeState.value.copy(
                     hour = alarmHour,
                     minute = alarmMinute,
                     meridiem = alarmMeridiem
@@ -280,7 +294,7 @@ class AlarmViewModel @Inject constructor(
     private fun getMinuteSpeed(fastMode : Boolean) : Float
     {
         return when (fastMode) {
-            true -> 3.2f
+            true -> 4f
             false -> 1f
         }
     }
