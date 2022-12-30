@@ -9,6 +9,7 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Vibrator
 import android.os.VibratorManager
+import androidx.compose.material.ExperimentalMaterialApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
@@ -21,6 +22,7 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Singleton
 
+@ExperimentalMaterialApi
 @InternalCoroutinesApi
 @ExperimentalPagerApi
 @Module

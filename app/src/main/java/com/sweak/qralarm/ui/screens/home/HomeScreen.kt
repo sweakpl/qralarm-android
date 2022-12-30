@@ -56,6 +56,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @InternalCoroutinesApi
 @ExperimentalPermissionsApi

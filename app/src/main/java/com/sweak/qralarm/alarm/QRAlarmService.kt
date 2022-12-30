@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.*
 import android.util.Log
 import android.view.animation.LinearInterpolator
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -30,6 +31,7 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.timerTask
 
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @InternalCoroutinesApi
 @ExperimentalPermissionsApi

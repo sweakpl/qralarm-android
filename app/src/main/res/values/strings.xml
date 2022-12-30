@@ -60,4 +60,8 @@
     <string name="notifications_permission_required_message">QRAlarm needs the permission to post notifications when the alarm goes off. Without it the alarm will not be accompanied by the notification.</string>
     <string name="notifications_permission_revoked_message">Notifications permission has been permanently revoked. Without it the alarm is not accompanied by the notification. Go to settings and allow QRAlarm to post notifications.</string>
     <string name="gentle_wakeup_in_seconds">Gentle wake up in seconds</string>
+    <string name="disabling_barcodes_title">Disabling Barcodes</string>
+    <string name="disabling_barcodes_message">You are trying to disable Barcodes support. If Your dismiss code is tied to a previously scanned Barcode You won\'t be able to dismiss future alarms! Are You sure You want to proceed?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.sweak.qralarm.ui.screens.scanner
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.toArgb
@@ -25,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @InternalCoroutinesApi
 @ExperimentalPermissionsApi
@@ -90,6 +92,7 @@ fun ScannerScreen(
     )
 }
 
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @InternalCoroutinesApi
 @ExperimentalPermissionsApi

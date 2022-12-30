@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.compose.material.ExperimentalMaterialApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
@@ -14,6 +15,7 @@ import com.sweak.qralarm.util.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @InternalCoroutinesApi
 @ExperimentalPermissionsApi

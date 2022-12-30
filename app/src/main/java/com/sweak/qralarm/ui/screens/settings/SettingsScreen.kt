@@ -365,7 +365,7 @@ fun SettingsScreen(
                 CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                     Switch(
                         checked = uiState.value.acceptAnyCodeType,
-                        onCheckedChange = settingsViewModel::handleAcceptAnyBarcode,
+                        onCheckedChange = settingsViewModel::handleAcceptBarcodesSwitch,
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = MaterialTheme.colors.secondary,
                             uncheckedThumbColor = MaterialTheme.colors.onPrimary,
@@ -553,6 +553,17 @@ fun SettingsScreen(
         },
         onNegativeClick = {
             uiState.value = uiState.value.copy(showCameraPermissionRevokedDialog = false)
+        }
+    )
+
+    DisablingBarcodesSupportDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            settingsViewModel.disableBarcodesSupport()
+            uiState.value = uiState.value.copy(showDisablingBarcodesSupportDialog = false)
+        },
+        onNegativeClick = {
+            uiState.value = uiState.value.copy(showDisablingBarcodesSupportDialog = false)
         }
     )
 }

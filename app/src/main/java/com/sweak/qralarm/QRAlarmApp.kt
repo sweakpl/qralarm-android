@@ -5,6 +5,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.text.format.DateFormat
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.graphics.toArgb
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
+@ExperimentalMaterialApi
 @ExperimentalPermissionsApi
 @InternalCoroutinesApi
 @ExperimentalPagerApi

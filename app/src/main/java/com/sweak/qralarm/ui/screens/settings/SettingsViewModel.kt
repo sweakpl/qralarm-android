@@ -244,20 +244,27 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun handleAcceptAnyBarcode(acceptAnyBarcode: Boolean)
-    {
-        viewModelScope.launch {
-            dataStoreManager.apply {
-                putBoolean(
-                    DataStoreManager.ACCEPT_ANY_CODE_TYPE,
-                    acceptAnyBarcode
-                )
-            }
+    fun handleAcceptBarcodesSwitch(acceptBarcodes: Boolean) {
+        if (!acceptBarcodes) {
+            settingsUiState.value = settingsUiState.value.copy(
+                showDisablingBarcodesSupportDialog = true
+            )
+            return
         }
 
-        settingsUiState.value = settingsUiState.value.copy(
-            acceptAnyCodeType = acceptAnyBarcode
-        )
+        settingsUiState.value = settingsUiState.value.copy(acceptAnyCodeType = true)
+
+        viewModelScope.launch {
+            dataStoreManager.putBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE, true)
+        }
+    }
+
+    fun disableBarcodesSupport() {
+        settingsUiState.value = settingsUiState.value.copy(acceptAnyCodeType = false)
+
+        viewModelScope.launch {
+            dataStoreManager.putBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE, false)
+        }
     }
 
     fun handleDefaultCodeDownloadButton(

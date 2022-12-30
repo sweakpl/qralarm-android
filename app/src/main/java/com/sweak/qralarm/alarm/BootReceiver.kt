@@ -3,6 +3,7 @@ package com.sweak.qralarm.alarm
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import androidx.compose.material.ExperimentalMaterialApi
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.data.DataStoreManager
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
+@ExperimentalMaterialApi
 @InternalCoroutinesApi
 @ExperimentalPagerApi
 @ExperimentalPermissionsApi
