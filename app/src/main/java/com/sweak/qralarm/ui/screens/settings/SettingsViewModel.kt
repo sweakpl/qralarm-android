@@ -56,7 +56,7 @@ class SettingsViewModel @Inject constructor(
                         )
                     ),
                     dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first(),
-                    acceptAnyBarcode = it.getBoolean(DataStoreManager.ACCEPT_ANY_BARCODE).first()
+                    acceptAnyCodeType = it.getBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE).first()
                 )
             )
         }
@@ -256,7 +256,7 @@ class SettingsViewModel @Inject constructor(
         }
 
         settingsUiState.value = settingsUiState.value.copy(
-            acceptAnyBarcode = acceptAnyBarcode
+            acceptAnyCodeType = acceptAnyBarcode
         )
     }
 

@@ -22,7 +22,7 @@
     <string name="drag_to_set_alarm">Drag to set alarm time:</string>
     <string name="snooze_duration">Snooze duration in minutes</string>
     <string name="number_of_snoozes">Max number of snoozes</string>
-    <string name="accept_any_barcode">Accept any barcode</string>
+    <string name="accept_any_code_type">Accept both QR and Barcodes</string>
     <string name="alarm_sound">Alarm sound</string>
     <string name="default_system">Default system</string>
     <string name="gentle_guitar">Gentle guitar</string>
