@@ -14,10 +14,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
@@ -44,6 +46,7 @@ import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
 import com.sweak.qralarm.util.Screen
 
+@ExperimentalMaterialApi
 @ExperimentalPermissionsApi
 @Composable
 fun SettingsScreen(
@@ -355,14 +358,30 @@ fun SettingsScreen(
                     modifier = Modifier
                         .padding(end = MaterialTheme.space.large)
                         .weight(1f),
-                    text = stringResource(R.string.accept_any_code_type),
+                    text = stringResource(R.string.accept_qr_and_bar_codes),
                     style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
                 )
 
-                Checkbox(
-                    onCheckedChange = settingsViewModel::handleAcceptAnyBarcode,
-                    checked = uiState.value.acceptAnyCodeType
-                )
+                CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+                    Switch(
+                        checked = uiState.value.acceptAnyCodeType,
+                        onCheckedChange = settingsViewModel::handleAcceptAnyBarcode,
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colors.secondary,
+                            uncheckedThumbColor = MaterialTheme.colors.onPrimary,
+                            checkedTrackColor = MaterialTheme.colors.secondary,
+                            uncheckedTrackColor = MaterialTheme.colors.onPrimary,
+                            checkedTrackAlpha = 0.5f,
+                            uncheckedTrackAlpha = 0.5f
+                        ),
+                        modifier = Modifier
+                            .padding(
+                                horizontal = 20.dp,
+                                vertical = MaterialTheme.space.medium
+                            )
+                            .scale(1.5f)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))

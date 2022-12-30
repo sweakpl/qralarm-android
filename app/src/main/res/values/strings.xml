@@ -22,7 +22,7 @@
     <string name="drag_to_set_alarm">Drag to set alarm time:</string>
     <string name="snooze_duration">Snooze duration in minutes</string>
     <string name="number_of_snoozes">Max number of snoozes</string>
-    <string name="accept_any_code_type">Accept both QR and Barcodes</string>
+    <string name="accept_qr_and_bar_codes">Accept both QR and Barcodes</string>
     <string name="alarm_sound">Alarm sound</string>
     <string name="default_system">Default system</string>
     <string name="gentle_guitar">Gentle guitar</string>
@@ -34,7 +34,7 @@
     <string name="storage_permission_revoked_message">Storage permission has been permanently revoked. Without it QRAlarm can not download a default QR Code that after being scanned will turn off alarms. In order to fix it, go to settings and allow QRAlarm to use phone’s storage.</string>
     <string name="saved_default_qrcode">Downloaded default QR Code!</string>
     <string name="not_saved_default_qrcode">Failed to download the default QR Code…</string>
-    <string name="scan_custom_code">Scan custom QR Code</string>
+    <string name="scan_custom_code">Scan custom code</string>
     <string name="it_is_ok">It\'s OK</string>
     <string name="again">Again</string>
     <string name="new_code_added_title">New code added</string>
@@ -45,7 +45,7 @@
     <string name="qralarm_guide">QRAlarm Guide</string>
     <string name="guide">Guide</string>
     <string name="get_your_qrcode">Get Your QR Code</string>
-    <string name="download_or_scan_code_description">QRAlarm lets You set alarms that can be turned off by scanning a QR Code. This can not be just any QR Code! Before You set up Your first alarm, You should Download a default Code Image from the Settings. In case You already have Your own QR Code then scan it - QR Alarm will remember it for You and will use it to cancel Your alarms!</string>
+    <string name="download_or_scan_code_description">QRAlarm lets You set alarms that can be turned off by scanning a QR Code. This can not be just any QR Code! Before You set up Your first alarm, You should Download a default Code Image from the Settings. In case You already have Your own QR Code then scan it - QR Alarm will remember it for You and will use it to cancel Your alarms! Note, that You can also enable the Barcodes support in the Settings.</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="important">IMPORTANT!</string>
