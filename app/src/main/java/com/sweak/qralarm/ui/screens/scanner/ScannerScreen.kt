@@ -21,6 +21,7 @@ import com.sweak.qralarm.ui.theme.BlueZodiac
 import com.sweak.qralarm.ui.theme.ButterflyBush
 import com.sweak.qralarm.util.SCAN_MODE_DISMISS_ALARM
 import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
+import com.sweak.qralarm.util.Screen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -111,13 +112,13 @@ fun handleDecodeResult(
             CoroutineScope(Dispatchers.Main).launch {
                 stopAlarmJob.join()
                 cancelAlarmSideEffect.invoke()
-                navController.popBackStack()
+                navController.popBackStack(Screen.HomeScreen.route, false)
             }
         }
     } else if (scannerMode == SCAN_MODE_SET_CUSTOM_CODE) {
         settingsViewModel.setCustomQRCode(result.text)
         CoroutineScope(Dispatchers.Main).launch {
-            navController.popBackStack()
+            navController.popBackStack(Screen.MenuScreen.route, false)
         }
     }
 }
