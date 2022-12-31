@@ -151,3 +151,32 @@ fun getAlarmMeridiem(alarmTimeInMillis: Long): Meridiem {
         }
     }
 }
+
+fun getHoursAndMinutesUntilTimePair(timeInMillis: Long): Pair<Int, Int> =
+    getHoursAndMinutesUntilTimePairFromTime(currentTimeInMillis(), timeInMillis)
+
+fun getHoursAndMinutesUntilTimePairFromTime(fromTime: Long, untilTime: Long): Pair<Int, Int> {
+    val hours: Int
+    val minutes: Int
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val diffDateTime =
+            Instant.ofEpochMilli(untilTime - fromTime).atZone(ZoneId.of("UTC+00:00"))
+
+        hours = diffDateTime.hour
+        minutes = diffDateTime.minute
+    } else {
+        val diffCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+00:00")).apply {
+            timeInMillis = untilTime - fromTime
+        }
+
+        hours = diffCalendar.get(Calendar.HOUR_OF_DAY)
+        minutes = diffCalendar.get(Calendar.MINUTE)
+    }
+
+    return if (hours == 0 && minutes == 0) {
+        Pair(0, 1)
+    } else {
+        Pair(hours, minutes)
+    }
+}

@@ -1,7 +1,6 @@
 package com.sweak.qralarm.ui.screens.shared.viewmodels
 
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.MutableState
@@ -10,8 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.permissions.*
-import com.sweak.qralarm.R
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeUiState
@@ -28,8 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AlarmViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
-    private val qrAlarmManager: QRAlarmManager,
-    private val resourceProvider: ResourceProvider
+    private val qrAlarmManager: QRAlarmManager
 ) : ViewModel() {
 
     val homeUiState: MutableState<HomeUiState> = runBlocking {
@@ -77,7 +75,8 @@ class AlarmViewModel @Inject constructor(
         navController: NavHostController,
         cameraPermissionState: PermissionState,
         notificationsPermissionState: PermissionState,
-        composableScope: CoroutineScope
+        composableScope: CoroutineScope,
+        snackbarInitializer: suspend (Pair<Int, Int>) -> SnackbarResult
     ) {
         if (!cameraPermissionState.hasPermission) {
             when {
@@ -125,21 +124,20 @@ class AlarmViewModel @Inject constructor(
                     ALARM_TYPE_NORMAL
                 )
 
+                val alarmTimeInMillis = getAlarmTimeInMillis(
+                    homeUiState.value.hour,
+                    homeUiState.value.minute,
+                    homeUiState.value.timeFormat,
+                    homeUiState.value.meridiem
+                )
+
                 viewModelScope.launch {
                     dataStoreManager.apply {
                         putBoolean(DataStoreManager.ALARM_SET, true)
                         putBoolean(DataStoreManager.ALARM_SNOOZED, false)
                         homeUiState.value = homeUiState.value.copy(alarmSet = true)
 
-                        putLong(
-                            DataStoreManager.ALARM_TIME_IN_MILLIS,
-                            getAlarmTimeInMillis(
-                                homeUiState.value.hour,
-                                homeUiState.value.minute,
-                                homeUiState.value.timeFormat,
-                                homeUiState.value.meridiem
-                            )
-                        )
+                        putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, alarmTimeInMillis)
 
                         putInt(
                             DataStoreManager.SNOOZE_AVAILABLE_COUNT,
@@ -149,17 +147,16 @@ class AlarmViewModel @Inject constructor(
                 }
 
                 composableScope.launch {
-                    val snackbarResult = homeUiState.value.snackbarHostState.showSnackbar(
-                        message = resourceProvider.getString(R.string.alarm_set),
-                        actionLabel = resourceProvider.getString(R.string.cancel),
-                        duration = SnackbarDuration.Long
+                    val snackbarResult = snackbarInitializer(
+                        getHoursAndMinutesUntilAlarmPair(alarmTimeInMillis)
                     )
+
                     when (snackbarResult) {
                         SnackbarResult.ActionPerformed -> {
                             delay(500)
                             stopAlarm()
                         }
-                        SnackbarResult.Dismissed -> {}
+                        SnackbarResult.Dismissed -> { /* no-op */ }
                     }
                 }
             } catch (exception: SecurityException) {
@@ -256,9 +253,11 @@ class AlarmViewModel @Inject constructor(
         return TimeFormat.fromInt(timeFormat) ?: TimeFormat.MILITARY
     }
 
-    fun getDismissCode(): String {
-        return runBlocking {
+    fun getDismissCode(): String =
+        runBlocking {
             dataStoreManager.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
         }
-    }
+
+    fun getHoursAndMinutesUntilAlarmPair(alarmTimeInMillis: Long): Pair<Int, Int> =
+        getHoursAndMinutesUntilTimePair(alarmTimeInMillis)
 }

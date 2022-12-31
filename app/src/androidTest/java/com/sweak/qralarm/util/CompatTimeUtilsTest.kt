@@ -329,7 +329,7 @@ class CompatTimeUtilsTest {
     // Below tests have to be ran under timezone UTC+1h in order for them to be passed
 
     @Test
-    fun returnCorrectAlarmHourMinuteAndMeridiemFor00_00() {
+    fun returnsCorrectAlarmHourMinuteAndMeridiemFor00_00() {
         // given
         val timeInMillis = 1644620400000
         val expectedHour = 0
@@ -348,7 +348,7 @@ class CompatTimeUtilsTest {
     }
 
     @Test
-    fun returnCorrectAlarmHourMinuteAndMeridiemFor06_50() {
+    fun returnsCorrectAlarmHourMinuteAndMeridiemFor06_50() {
         // given
         val timeInMillis = 1644645000000
         val expectedHour = 6
@@ -367,7 +367,7 @@ class CompatTimeUtilsTest {
     }
 
     @Test
-    fun returnCorrectAlarmHourMinuteAndMeridiemFor12_00() {
+    fun returnsCorrectAlarmHourMinuteAndMeridiemFor12_00() {
         // given
         val timeInMillis = 1644663600000
         val expectedHour = 12
@@ -386,7 +386,7 @@ class CompatTimeUtilsTest {
     }
 
     @Test
-    fun returnCorrectAlarmHourMinuteAndMeridiemFor17_10() {
+    fun returnsCorrectAlarmHourMinuteAndMeridiemFor17_10() {
         // given
         val timeInMillis = 1644682200000
         val expectedHour = 17
@@ -405,7 +405,7 @@ class CompatTimeUtilsTest {
     }
 
     @Test
-    fun returnCorrectAlarmHourMinuteAndMeridiemFor23_59() {
+    fun returnsCorrectAlarmHourMinuteAndMeridiemFor23_59() {
         // given
         val timeInMillis = 1644706740000
         val expectedHour = 23
@@ -421,6 +421,132 @@ class CompatTimeUtilsTest {
         assertEquals(expectedHour, actualHour)
         assertEquals(expectedMinute, actualMinute)
         assertEquals(expectedMeridiem, actualMeridiem)
+    }
+
+    @Test
+    fun returns0HoursAnd1MinuteForAlarmStartingInLessThan1Minute() {
+        // given
+        val currentTime = 1672486170000
+        val alarmTime = 1672486200000
+        val expectedHours = 0
+        val expectedMinutes = 1
+
+        // when
+        val hoursAndMinutesPair = getHoursAndMinutesUntilTimePairFromTime(currentTime, alarmTime)
+        val actualHours = hoursAndMinutesPair.first
+        val actualMinutes = hoursAndMinutesPair.second
+
+        // then
+        assertEquals(expectedHours, actualHours)
+        assertEquals(expectedMinutes, actualMinutes)
+    }
+
+    @Test
+    fun returns0HoursAnd1MinuteForAlarmStartingInBetween2MinutesAnd1Minute() {
+        // given
+        val currentTime = 1672486110000
+        val alarmTime = 1672486200000
+        val expectedHours = 0
+        val expectedMinutes = 1
+
+        // when
+        val hoursAndMinutesPair = getHoursAndMinutesUntilTimePairFromTime(currentTime, alarmTime)
+        val actualHours = hoursAndMinutesPair.first
+        val actualMinutes = hoursAndMinutesPair.second
+
+        // then
+        assertEquals(expectedHours, actualHours)
+        assertEquals(expectedMinutes, actualMinutes)
+    }
+
+    @Test
+    fun returns0HoursAnd59MinutesForAlarmStartingInBetween59MinutesAnd1Hour() {
+        // given
+        val currentTime = 1672486230000
+        val alarmTime = 1672489800000
+        val expectedHours = 0
+        val expectedMinutes = 59
+
+        // when
+        val hoursAndMinutesPair = getHoursAndMinutesUntilTimePairFromTime(currentTime, alarmTime)
+        val actualHours = hoursAndMinutesPair.first
+        val actualMinutes = hoursAndMinutesPair.second
+
+        // then
+        assertEquals(expectedHours, actualHours)
+        assertEquals(expectedMinutes, actualMinutes)
+    }
+
+    @Test
+    fun returns1HourAnd0MinutesForAlarmStartingInBetween1HourAnd1HourAnd1Minute() {
+        // given
+        val currentTime = 1672486170000
+        val alarmTime = 1672489800000
+        val expectedHours = 1
+        val expectedMinutes = 0
+
+        // when
+        val hoursAndMinutesPair = getHoursAndMinutesUntilTimePairFromTime(currentTime, alarmTime)
+        val actualHours = hoursAndMinutesPair.first
+        val actualMinutes = hoursAndMinutesPair.second
+
+        // then
+        assertEquals(expectedHours, actualHours)
+        assertEquals(expectedMinutes, actualMinutes)
+    }
+
+    @Test
+    fun returns7HoursAnd43MinutesForAlarmStartingInBetween7HoursAnd43MinutesAnd7HoursAnd44Minutes() {
+        // given
+        val currentTime = 1672438590000
+        val alarmTime = 1672466400000
+        val expectedHours = 7
+        val expectedMinutes = 43
+
+        // when
+        val hoursAndMinutesPair = getHoursAndMinutesUntilTimePairFromTime(currentTime, alarmTime)
+        val actualHours = hoursAndMinutesPair.first
+        val actualMinutes = hoursAndMinutesPair.second
+
+        // then
+        assertEquals(expectedHours, actualHours)
+        assertEquals(expectedMinutes, actualMinutes)
+    }
+
+    @Test
+    fun returns12HoursAnd17MinutesForAlarmStartingInBetween12HoursAnd17MinutesAnd12HoursAnd18Minutes() {
+        // given
+        val currentTime = 1672429350000
+        val alarmTime = 1672473600000
+        val expectedHours = 12
+        val expectedMinutes = 17
+
+        // when
+        val hoursAndMinutesPair = getHoursAndMinutesUntilTimePairFromTime(currentTime, alarmTime)
+        val actualHours = hoursAndMinutesPair.first
+        val actualMinutes = hoursAndMinutesPair.second
+
+        // then
+        assertEquals(expectedHours, actualHours)
+        assertEquals(expectedMinutes, actualMinutes)
+    }
+
+    @Test
+    fun returns23HoursAnd59MinutesForAlarmStartingInNotMoreThan1MinuteLessThan24Hours() {
+        // given
+        val currentTime = 1672408830000
+        val alarmTime = 1672495200000
+        val expectedHours = 23
+        val expectedMinutes = 59
+
+        // when
+        val hoursAndMinutesPair = getHoursAndMinutesUntilTimePairFromTime(currentTime, alarmTime)
+        val actualHours = hoursAndMinutesPair.first
+        val actualMinutes = hoursAndMinutesPair.second
+
+        // then
+        assertEquals(expectedHours, actualHours)
+        assertEquals(expectedMinutes, actualMinutes)
     }
 
     private fun getTestAlarmMinute(alarmTimeInMillis: Long): Int =

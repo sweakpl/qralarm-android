@@ -77,7 +77,8 @@ fun HomeScreen(
             override val permission: String get() = "android.permission.POST_NOTIFICATIONS"
             override val permissionRequested: Boolean get() = true
             override val shouldShowRationale: Boolean get() = false
-            override fun launchPermissionRequest() { /* no-op */ }
+            override fun launchPermissionRequest() { /* no-op */
+            }
         }
     }
     val composableScope = rememberCoroutineScope()
@@ -169,16 +170,31 @@ fun HomeScreen(
 
         StartStopAlarmButton(
             modifier = Modifier.layoutId("startStopAlarmButton"),
-            uiState = uiState,
-            onClick = {
-                alarmViewModel.handleStartOrStopButtonClick(
-                    navController,
-                    cameraPermissionState,
-                    notificationsPermissionState,
-                    composableScope
+            uiState = uiState
+        ) {
+            alarmViewModel.handleStartOrStopButtonClick(
+                navController,
+                cameraPermissionState,
+                notificationsPermissionState,
+                composableScope
+            ) { hoursAndMinutesUntilAlarmPair ->
+                uiState.value.snackbarHostState.showSnackbar(
+                    message = if (hoursAndMinutesUntilAlarmPair.first > 0)
+                        context.getString(
+                            R.string.time_left_hours_minutes,
+                            hoursAndMinutesUntilAlarmPair.first,
+                            hoursAndMinutesUntilAlarmPair.second
+                        )
+                    else
+                        context.getString(
+                            R.string.time_left_minutes,
+                            hoursAndMinutesUntilAlarmPair.second
+                        ),
+                    actionLabel = context.getString(R.string.cancel),
+                    duration = SnackbarDuration.Long
                 )
             }
-        )
+        }
 
         AnimatedVisibility(
             visible = uiState.value.alarmServiceRunning && uiState.value.snoozeAvailable,
@@ -252,7 +268,9 @@ fun HomeScreen(
         onNegativeClick = { uiState.value = uiState.value.copy(showAlarmPermissionDialog = false) }
     )
 
-    AlarmSetSnackbar(snackbarHostState = uiState.value.snackbarHostState)
+    AlarmSetSnackbar(
+        snackbarHostState = uiState.value.snackbarHostState
+    )
 }
 
 @Composable
@@ -604,11 +622,20 @@ fun AlarmSetSnackbar(
                     shape = MaterialTheme.shapes.medium,
                     backgroundColor = Victoria
                 ) {
-                    Text(
-                        text = snackbarHostState.currentSnackbarData?.message
-                            ?: stringResource(R.string.alarm_set),
-                        style = MaterialTheme.typography.h2
-                    )
+                    Column {
+                        Text(
+                            text = stringResource(R.string.alarm_set),
+                            style = MaterialTheme.typography.h2
+                        )
+
+                        snackbarHostState.currentSnackbarData?.message?.let {
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.body1,
+                                modifier = Modifier.padding(top = MaterialTheme.space.small)
+                            )
+                        }
+                    }
                 }
             }
         )

@@ -64,4 +64,6 @@
     <string name="disabling_barcodes_message">You are trying to disable Barcodes support. If Your dismiss code is tied to a previously scanned Barcode You won\'t be able to dismiss future alarms! Are You sure You want to proceed?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="time_left_hours_minutes">Time left: %1$dh %2$dmin</string>
+    <string name="time_left_minutes">Time left: %1$dmin</string>
 </resources>
