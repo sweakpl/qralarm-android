@@ -231,13 +231,23 @@ fun SettingsScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                Column(
                     modifier = Modifier
-                        .padding(end = MaterialTheme.space.large)
-                        .weight(1f),
-                    text = stringResource(R.string.snooze_duration),
-                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
-                )
+                        .padding(end = MaterialTheme.space.medium)
+                        .weight(1f)
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.snooze_duration_setting_title),
+                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                    )
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.snooze_duration_setting_description),
+                        style = MaterialTheme.typography.body1
+                    )
+                }
 
                 ComboBox(
                     modifier = Modifier
@@ -264,20 +274,30 @@ fun SettingsScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                Column(
                     modifier = Modifier
-                        .padding(end = MaterialTheme.space.large)
-                        .weight(1f),
-                    text = stringResource(R.string.number_of_snoozes),
-                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
-                )
+                        .padding(end = MaterialTheme.space.medium)
+                        .weight(1f)
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.snooze_number_setting_title),
+                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                    )
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.snooze_number_setting_description),
+                        style = MaterialTheme.typography.body1
+                    )
+                }
 
                 ComboBox(
                     modifier = Modifier
@@ -302,20 +322,30 @@ fun SettingsScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                Column(
                     modifier = Modifier
-                        .padding(end = MaterialTheme.space.large)
-                        .weight(1f),
-                    text = stringResource(R.string.gentle_wakeup_in_seconds),
-                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
-                )
+                        .padding(end = MaterialTheme.space.medium)
+                        .weight(1f)
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.gentle_wakeup_setting_title),
+                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                    )
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.snooze_duration_setting_description),
+                        style = MaterialTheme.typography.body1
+                    )
+                }
 
                 ComboBox(
                     modifier = Modifier
@@ -347,20 +377,30 @@ fun SettingsScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                Column(
                     modifier = Modifier
-                        .padding(end = MaterialTheme.space.large)
-                        .weight(1f),
-                    text = stringResource(R.string.accept_qr_and_bar_codes),
-                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
-                )
+                        .padding(end = MaterialTheme.space.medium)
+                        .weight(1f)
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.accept_all_codes_setting_title),
+                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                    )
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.accept_all_codes_setting_description),
+                        style = MaterialTheme.typography.body1
+                    )
+                }
 
                 CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                     Switch(
@@ -384,20 +424,30 @@ fun SettingsScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                Column(
                     modifier = Modifier
-                        .padding(end = MaterialTheme.space.large)
-                        .weight(1f),
-                    text = stringResource(R.string.save_default_qrcode),
-                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
-                )
+                        .padding(end = MaterialTheme.space.medium)
+                        .weight(1f)
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.download_code_title),
+                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                    )
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.download_code_description),
+                        style = MaterialTheme.typography.body1
+                    )
+                }
 
                 IconButton(
                     onClick = {
@@ -417,20 +467,30 @@ fun SettingsScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                Column(
                     modifier = Modifier
-                        .padding(end = MaterialTheme.space.large)
-                        .weight(1f),
-                    text = stringResource(R.string.scan_custom_code),
-                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
-                )
+                        .padding(end = MaterialTheme.space.medium)
+                        .weight(1f)
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.scan_new_code_title),
+                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                    )
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.scan_new_code_description),
+                        style = MaterialTheme.typography.body1
+                    )
+                }
 
                 IconButton(
                     onClick = {
@@ -450,20 +510,30 @@ fun SettingsScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
+                Column(
                     modifier = Modifier
-                        .padding(end = MaterialTheme.space.large)
-                        .weight(1f),
-                    text = stringResource(R.string.qralarm_guide),
-                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
-                )
+                        .padding(end = MaterialTheme.space.medium)
+                        .weight(1f)
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.qralarm_guide_title),
+                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                    )
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.qralarm_guide_description),
+                        style = MaterialTheme.typography.body1
+                    )
+                }
 
                 IconButton(
                     onClick = {

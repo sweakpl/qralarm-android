@@ -280,7 +280,7 @@ fun MenuButton(
 ) {
     IconButton(
         onClick = {
-            navController.navigate(Screen.MenuScreen.route)
+            navController.navigate(Screen.SettingsScreen.route)
         },
         modifier = modifier
     ) {

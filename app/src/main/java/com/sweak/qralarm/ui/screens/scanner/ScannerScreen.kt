@@ -118,7 +118,7 @@ fun handleDecodeResult(
     } else if (scannerMode == SCAN_MODE_SET_CUSTOM_CODE) {
         settingsViewModel.setCustomQRCode(result.text)
         CoroutineScope(Dispatchers.Main).launch {
-            navController.popBackStack(Screen.MenuScreen.route, false)
+            navController.popBackStack(Screen.SettingsScreen.route, false)
         }
     }
 }

@@ -138,7 +138,7 @@ class MainActivity : ComponentActivity() {
                         }
                     )
                 }
-                composable(route = Screen.MenuScreen.route) {
+                composable(route = Screen.SettingsScreen.route) {
                     val parentEntry = remember(it) {
                         navController.getBackStackEntry(Screen.AlarmFlow.route)
                     }
