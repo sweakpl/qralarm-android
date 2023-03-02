@@ -77,8 +77,7 @@ fun HomeScreen(
             override val permission: String get() = "android.permission.POST_NOTIFICATIONS"
             override val permissionRequested: Boolean get() = true
             override val shouldShowRationale: Boolean get() = false
-            override fun launchPermissionRequest() { /* no-op */
-            }
+            override fun launchPermissionRequest() { /* no-op */ }
         }
     }
     val composableScope = rememberCoroutineScope()

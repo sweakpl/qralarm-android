@@ -342,7 +342,7 @@ fun SettingsScreen(
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.snooze_duration_setting_description),
+                        text = stringResource(R.string.gentle_wakeup_setting_description),
                         style = MaterialTheme.typography.body1
                     )
                 }

@@ -30,16 +30,29 @@ class QRAlarmManager @Inject constructor(
                     PendingIntent.FLAG_IMMUTABLE
                 else 0
 
-        val alarmIntent = Intent(app.applicationContext, QRAlarmReceiver::class.java).apply {
+        val alarmIntent = Intent(app.applicationContext, QRAlarmService::class.java).apply {
             putExtra(KEY_ALARM_TYPE, alarmType)
         }
 
-        val alarmPendingIntent = PendingIntent.getBroadcast(
-            app.applicationContext,
-            ALARM_PENDING_INTENT_REQUEST_CODE,
-            alarmIntent,
-            intentFlags
-        )
+        val alarmPendingIntent =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                PendingIntent.getForegroundService(
+                    app.applicationContext,
+                    ALARM_PENDING_INTENT_REQUEST_CODE,
+                    alarmIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+            } else {
+                PendingIntent.getService(
+                    app.applicationContext,
+                    ALARM_PENDING_INTENT_REQUEST_CODE,
+                    alarmIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                                PendingIntent.FLAG_IMMUTABLE
+                            else 0
+                )
+            }
 
         val alarmInfoPendingIntent = PendingIntent.getActivity(
             app.applicationContext,
@@ -72,15 +85,25 @@ class QRAlarmManager @Inject constructor(
     }
 
     fun removeAlarmPendingIntent() {
-        val alarmPendingIntent = PendingIntent.getBroadcast(
-            app.applicationContext,
-            ALARM_PENDING_INTENT_REQUEST_CODE,
-            Intent(app.applicationContext, QRAlarmReceiver::class.java),
-            PendingIntent.FLAG_NO_CREATE or
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        PendingIntent.FLAG_IMMUTABLE
-                    else 0
-        )
+        val alarmPendingIntent =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                PendingIntent.getForegroundService(
+                    app.applicationContext,
+                    ALARM_PENDING_INTENT_REQUEST_CODE,
+                    Intent(app.applicationContext, QRAlarmService::class.java),
+                    PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+                )
+            } else {
+                PendingIntent.getService(
+                    app.applicationContext,
+                    ALARM_PENDING_INTENT_REQUEST_CODE,
+                    Intent(app.applicationContext, QRAlarmService::class.java),
+                    PendingIntent.FLAG_NO_CREATE or
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                                PendingIntent.FLAG_IMMUTABLE
+                            else 0
+                )
+            }
 
         if (alarmPendingIntent != null) {
             alarmManager.cancel(alarmPendingIntent)
@@ -89,22 +112,31 @@ class QRAlarmManager @Inject constructor(
     }
 
     fun isAlarmSet(): Boolean =
-        PendingIntent.getBroadcast(
-            app.applicationContext,
-            ALARM_PENDING_INTENT_REQUEST_CODE,
-            Intent(app.applicationContext, QRAlarmReceiver::class.java),
-            PendingIntent.FLAG_NO_CREATE or
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        PendingIntent.FLAG_IMMUTABLE
-                    else 0
-        ) != null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            PendingIntent.getForegroundService(
+                app.applicationContext,
+                ALARM_PENDING_INTENT_REQUEST_CODE,
+                Intent(app.applicationContext, QRAlarmService::class.java),
+                PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getService(
+                app.applicationContext,
+                ALARM_PENDING_INTENT_REQUEST_CODE,
+                Intent(app.applicationContext, QRAlarmService::class.java),
+                PendingIntent.FLAG_NO_CREATE or
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                            PendingIntent.FLAG_IMMUTABLE
+                        else 0
+            )
+        } != null
 
     fun canScheduleExactAlarms(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val testingPermissionAlarmPendingIntent = PendingIntent.getBroadcast(
+            val testingPermissionAlarmPendingIntent = PendingIntent.getForegroundService(
                 app.applicationContext,
                 TESTING_PERMISSION_ALARM_INTENT_REQUEST_CODE,
-                Intent(app.applicationContext, QRAlarmReceiver::class.java),
+                Intent(app.applicationContext, QRAlarmService::class.java),
                 PendingIntent.FLAG_IMMUTABLE
             )
 

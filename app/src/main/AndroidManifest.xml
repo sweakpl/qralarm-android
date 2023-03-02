@@ -36,11 +36,6 @@
         </activity>
 
         <receiver
-            android:name=".alarm.QRAlarmReceiver"
-            android:enabled="true"
-            android:exported="false" />
-
-        <receiver
             android:name=".alarm.BootReceiver"
             android:enabled="false"
             android:exported="false">

@@ -258,6 +258,6 @@ class AlarmViewModel @Inject constructor(
             dataStoreManager.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
         }
 
-    fun getHoursAndMinutesUntilAlarmPair(alarmTimeInMillis: Long): Pair<Int, Int> =
+    private fun getHoursAndMinutesUntilAlarmPair(alarmTimeInMillis: Long): Pair<Int, Int> =
         getHoursAndMinutesUntilTimePair(alarmTimeInMillis)
 }
