@@ -9,9 +9,6 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Vibrator
 import android.os.VibratorManager
-import androidx.compose.material.ExperimentalMaterialApi
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.util.ResourceProvider
@@ -19,18 +16,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Singleton
 
-@ExperimentalMaterialApi
-@InternalCoroutinesApi
-@ExperimentalPagerApi
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-    @ExperimentalPermissionsApi
-    @Provides
+        @Provides
     @Singleton
     fun provideQrAlarmManager(
         alarmManager: AlarmManager,

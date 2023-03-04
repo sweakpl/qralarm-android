@@ -6,7 +6,6 @@ import android.text.format.DateFormat
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -19,8 +18,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.guide.GuideScreen
@@ -30,16 +27,11 @@ import com.sweak.qralarm.ui.screens.settings.SettingsScreen
 import com.sweak.qralarm.ui.theme.QRAlarmTheme
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-@ExperimentalMaterialApi
-@InternalCoroutinesApi
-@ExperimentalPagerApi
-@ExperimentalPermissionsApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 

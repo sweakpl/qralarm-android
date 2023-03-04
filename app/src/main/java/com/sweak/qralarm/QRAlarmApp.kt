@@ -5,24 +5,16 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.text.format.DateFormat
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.graphics.toArgb
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-@ExperimentalMaterialApi
-@ExperimentalPermissionsApi
-@InternalCoroutinesApi
-@ExperimentalPagerApi
 @HiltAndroidApp
 class QRAlarmApp : Application() {
 

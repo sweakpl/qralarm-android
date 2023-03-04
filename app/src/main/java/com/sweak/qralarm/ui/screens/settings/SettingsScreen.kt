@@ -46,8 +46,7 @@ import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
 import com.sweak.qralarm.util.Screen
 
-@ExperimentalMaterialApi
-@ExperimentalPermissionsApi
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun SettingsScreen(
     navController: NavHostController,

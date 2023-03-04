@@ -25,12 +25,9 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.BackButton
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Screen
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 
-@InternalCoroutinesApi
-@ExperimentalPagerApi
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun GuideScreen(
     navController: NavHostController,
@@ -42,13 +39,13 @@ fun GuideScreen(
     val composableScope = rememberCoroutineScope()
 
     LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect(FlowCollector { page ->
+        snapshotFlow { pagerState.currentPage }.collect { page ->
             if (page == 0) {
                 previousButtonVisible.value = false
             } else if (page == 1) {
                 previousButtonVisible.value = true
             }
-        })
+        }
     }
 
     val constraints = ConstraintSet {

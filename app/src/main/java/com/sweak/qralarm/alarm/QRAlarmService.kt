@@ -13,28 +13,24 @@ import android.net.Uri
 import android.os.*
 import android.util.Log
 import android.view.animation.LinearInterpolator
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.sweak.qralarm.MainActivity
 import com.sweak.qralarm.R
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.timerTask
 
-@ExperimentalMaterialApi
-@ExperimentalPagerApi
-@InternalCoroutinesApi
-@ExperimentalPermissionsApi
 @AndroidEntryPoint
 class QRAlarmService : Service() {
 

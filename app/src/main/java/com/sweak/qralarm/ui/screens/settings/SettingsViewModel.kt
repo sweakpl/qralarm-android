@@ -27,7 +27,6 @@ import kotlinx.coroutines.runBlocking
 import java.io.*
 import javax.inject.Inject
 
-@ExperimentalPermissionsApi
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
@@ -267,6 +266,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalPermissionsApi::class)
     fun handleDefaultCodeDownloadButton(
         context: Context,
         storagePermissionState: PermissionState
@@ -351,6 +351,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalPermissionsApi::class)
     fun handleScanCustomDismissCodeButton(
         navController: NavHostController,
         cameraPermissionState: PermissionState

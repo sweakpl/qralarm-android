@@ -1,6 +1,5 @@
 package com.sweak.qralarm.ui.screens.shared.viewmodels
 
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.MutableState
@@ -8,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.sweak.qralarm.alarm.QRAlarmManager
@@ -20,10 +18,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-@ExperimentalMaterialApi
-@InternalCoroutinesApi
-@ExperimentalPagerApi
-@ExperimentalPermissionsApi
 @HiltViewModel
 class AlarmViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
@@ -71,6 +65,7 @@ class AlarmViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalPermissionsApi::class)
     fun handleStartOrStopButtonClick(
         navController: NavHostController,
         cameraPermissionState: PermissionState,
