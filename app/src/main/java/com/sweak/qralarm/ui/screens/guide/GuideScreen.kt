@@ -1,12 +1,16 @@
 package com.sweak.qralarm.ui.screens.guide
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
@@ -18,16 +22,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.BackButton
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Screen
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GuideScreen(
     navController: NavHostController,
@@ -119,9 +120,10 @@ fun GuideScreen(
         )
 
         HorizontalPager(
-            modifier = Modifier.layoutId("guidePages"),
+            pageCount = 2,
             state = pagerState,
-            count = 2
+            verticalAlignment = Alignment.Top,
+            modifier = Modifier.layoutId("guidePages")
         ) { page ->
             if (page == 0) {
                 GuidePageQRCode()

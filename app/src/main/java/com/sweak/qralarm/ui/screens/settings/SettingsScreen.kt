@@ -401,7 +401,7 @@ fun SettingsScreen(
                     )
                 }
 
-                CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
                     Switch(
                         checked = uiState.value.acceptAnyCodeType,
                         onCheckedChange = settingsViewModel::handleAcceptBarcodesSwitch,
