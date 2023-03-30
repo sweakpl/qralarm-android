@@ -390,6 +390,53 @@ fun SettingsScreen(
                 ) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.enable_vibrations_setting_title),
+                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                    )
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.enable_vibrations_setting_description),
+                        style = MaterialTheme.typography.body1
+                    )
+                }
+
+                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                    Switch(
+                        checked = uiState.value.vibrationsEnabled,
+                        onCheckedChange = settingsViewModel::handleEnableVibrationsSwitch,
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colors.secondary,
+                            uncheckedThumbColor = MaterialTheme.colors.onPrimary,
+                            checkedTrackColor = MaterialTheme.colors.secondary,
+                            uncheckedTrackColor = MaterialTheme.colors.onPrimary,
+                            checkedTrackAlpha = 0.5f,
+                            uncheckedTrackAlpha = 0.5f
+                        ),
+                        modifier = Modifier
+                            .padding(
+                                horizontal = 20.dp,
+                                vertical = MaterialTheme.space.medium
+                            )
+                            .scale(1.5f)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(end = MaterialTheme.space.medium)
+                        .weight(1f)
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.accept_all_codes_setting_title),
                         style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
                     )

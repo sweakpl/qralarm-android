@@ -73,4 +73,6 @@
     <string name="no">No</string>
     <string name="time_left_hours_minutes">Time left: %1$dh %2$dmin</string>
     <string name="time_left_minutes">Time left: %1$dmin</string>
+    <string name="enable_vibrations_setting_title">Enable vibrations</string>
+    <string name="enable_vibrations_setting_description">The alarm sound will be accompanied by vibrations</string>
 </resources>

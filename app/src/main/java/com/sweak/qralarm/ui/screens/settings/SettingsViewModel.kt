@@ -55,6 +55,7 @@ class SettingsViewModel @Inject constructor(
                         )
                     ),
                     dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first(),
+                    vibrationsEnabled = it.getBoolean(DataStoreManager.ENABLE_VIBRATIONS).first(),
                     acceptAnyCodeType = it.getBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE).first()
                 )
             )
@@ -240,6 +241,14 @@ class SettingsViewModel @Inject constructor(
                 DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS,
                 newSelectedGentleWakeupDuration
             )
+        }
+    }
+
+    fun handleEnableVibrationsSwitch(enableVibrations: Boolean) {
+        settingsUiState.value = settingsUiState.value.copy(vibrationsEnabled = enableVibrations)
+
+        viewModelScope.launch {
+            dataStoreManager.putBoolean(DataStoreManager.ENABLE_VIBRATIONS, enableVibrations)
         }
     }
 

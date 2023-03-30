@@ -138,7 +138,14 @@ class QRAlarmService : Service() {
     }
 
     private fun startVibratingAndPlayingAlarmSound(gentleWakeupDuration: GentleWakeupDuration?) {
-        startVibrating(gentleWakeupDuration)
+        val vibrationsEnabled = runBlocking {
+            dataStoreManager.getBoolean(DataStoreManager.ENABLE_VIBRATIONS).first()
+        }
+
+        if (vibrationsEnabled) {
+            startVibrating(gentleWakeupDuration)
+        }
+
         startPlayingAlarmSound(gentleWakeupDuration)
     }
 
