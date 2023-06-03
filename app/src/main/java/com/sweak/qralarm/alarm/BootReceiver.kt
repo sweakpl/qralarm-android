@@ -21,8 +21,16 @@ class BootReceiver : BroadcastReceiver() {
     @Inject
     lateinit var alarmManager: QRAlarmManager
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        if (intent?.action == "android.intent.action.BOOT_COMPLETED") {
+    private val intentActionsToFilter = listOf(
+        "android.intent.action.BOOT_COMPLETED",
+        "android.intent.action.ACTION_BOOT_COMPLETED",
+        "android.intent.action.REBOOT",
+        "android.intent.action.QUICKBOOT_POWERON",
+        "com.htc.intent.action.QUICKBOOT_POWERON"
+    )
+
+    override fun onReceive(context: Context, intent: Intent) {
+        if (intent.action in intentActionsToFilter) {
             val shouldSetAlarm = runBlocking {
                 dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first()
             }

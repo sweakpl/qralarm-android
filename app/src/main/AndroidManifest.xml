@@ -34,8 +34,8 @@
             android:showWhenLocked="true"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             tools:targetApi="o_mr1">
-            <intent-filter>
 
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -49,11 +49,17 @@
 
         <receiver
             android:name=".alarm.BootReceiver"
-            android:enabled="false"
-            android:exported="false">
+            android:enabled="true"
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.REBOOT" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
+
         </receiver>
 
         <service
