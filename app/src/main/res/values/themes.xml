@@ -2,7 +2,7 @@
 <resources>
     <style name="TimePickerStyle">
         <item name="android:textSize">60sp</item>
-        <item name="android:fontFamily">@font/amiko_bold</item>
+        <item name="android:fontFamily">@font/amiko_regular</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:colorControlNormal">@android:color/transparent</item>
