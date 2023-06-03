@@ -35,11 +35,11 @@ class AlarmViewModel @Inject constructor(
 
         mutableStateOf(
             HomeUiState(
-                timeFormat,
-                getAlarmHour(alarmTimeInMillis, timeFormat),
-                getAlarmMinute(alarmTimeInMillis),
-                getAlarmMeridiem(alarmTimeInMillis),
-                dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first(),
+                alarmTimeFormat = timeFormat,
+                alarmHourOfDay = getAlarmHourOfDay(alarmTimeInMillis),
+                alarmMinute = getAlarmMinute(alarmTimeInMillis),
+                alarmSet = dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first(),
+                alarmServiceRunning =
                 dataStoreManager.getBoolean(DataStoreManager.ALARM_SERVICE_RUNNING).first(),
                 snoozeAvailable = false,
                 showAlarmPermissionDialog = false,
@@ -111,19 +111,15 @@ class AlarmViewModel @Inject constructor(
             try {
                 qrAlarmManager.setAlarm(
                     getAlarmTimeInMillis(
-                        homeUiState.value.hour,
-                        homeUiState.value.minute,
-                        homeUiState.value.timeFormat,
-                        homeUiState.value.meridiem
+                        homeUiState.value.alarmHourOfDay,
+                        homeUiState.value.alarmMinute
                     ),
                     ALARM_TYPE_NORMAL
                 )
 
                 val alarmTimeInMillis = getAlarmTimeInMillis(
-                    homeUiState.value.hour,
-                    homeUiState.value.minute,
-                    homeUiState.value.timeFormat,
-                    homeUiState.value.meridiem
+                    homeUiState.value.alarmHourOfDay,
+                    homeUiState.value.alarmMinute
                 )
 
                 viewModelScope.launch {
@@ -143,7 +139,7 @@ class AlarmViewModel @Inject constructor(
 
                 composableScope.launch {
                     val snackbarResult = snackbarInitializer(
-                        getHoursAndMinutesUntilAlarmPair(alarmTimeInMillis)
+                        getHoursAndMinutesUntilTimePair(alarmTimeInMillis)
                     )
 
                     when (snackbarResult) {
@@ -176,9 +172,8 @@ class AlarmViewModel @Inject constructor(
 
                 homeUiState.value = homeUiState.value.copy(
                     alarmSet = false,
-                    hour = getAlarmHour(originalAlarmTimeInMillis, homeUiState.value.timeFormat),
-                    minute = getAlarmMinute(originalAlarmTimeInMillis),
-                    meridiem = getAlarmMeridiem(originalAlarmTimeInMillis)
+                    alarmHourOfDay = getAlarmHourOfDay(originalAlarmTimeInMillis),
+                    alarmMinute = getAlarmMinute(originalAlarmTimeInMillis)
                 )
             }
         }
@@ -198,10 +193,7 @@ class AlarmViewModel @Inject constructor(
                 )
 
                 try {
-                    qrAlarmManager.setAlarm(
-                        snoozeAlarmTimeInMillis,
-                        ALARM_TYPE_SNOOZE
-                    )
+                    qrAlarmManager.setAlarm(snoozeAlarmTimeInMillis, ALARM_TYPE_SNOOZE)
                 } catch (exception: SecurityException) {
                     homeUiState.value = homeUiState.value.copy(showAlarmPermissionDialog = true)
                     return@launch
@@ -211,27 +203,17 @@ class AlarmViewModel @Inject constructor(
                 putBoolean(DataStoreManager.ALARM_SNOOZED, true)
                 homeUiState.value = homeUiState.value.copy(alarmSet = true)
 
-                val alarmHour = getAlarmHour(
-                    snoozeAlarmTimeInMillis,
-                    homeUiState.value.timeFormat
-                )
+                val alarmHour = getAlarmHourOfDay(snoozeAlarmTimeInMillis)
                 val alarmMinute = getAlarmMinute(snoozeAlarmTimeInMillis)
-                val alarmMeridiem = getAlarmMeridiem(snoozeAlarmTimeInMillis)
 
                 putLong(
                     DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS,
-                    getAlarmTimeInMillis(
-                        alarmHour,
-                        alarmMinute,
-                        homeUiState.value.timeFormat,
-                        alarmMeridiem
-                    )
+                    getAlarmTimeInMillis(alarmHour, alarmMinute)
                 )
 
                 homeUiState.value = homeUiState.value.copy(
-                    hour = alarmHour,
-                    minute = alarmMinute,
-                    meridiem = alarmMeridiem
+                    alarmHourOfDay = alarmHour,
+                    alarmMinute = alarmMinute
                 )
 
                 val availableSnoozes = getInt(DataStoreManager.SNOOZE_AVAILABLE_COUNT).first()
@@ -252,7 +234,4 @@ class AlarmViewModel @Inject constructor(
         runBlocking {
             dataStoreManager.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
         }
-
-    private fun getHoursAndMinutesUntilAlarmPair(alarmTimeInMillis: Long): Pair<Int, Int> =
-        getHoursAndMinutesUntilTimePair(alarmTimeInMillis)
 }

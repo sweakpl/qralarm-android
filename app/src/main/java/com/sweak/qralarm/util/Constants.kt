@@ -12,10 +12,6 @@ enum class TimeFormat {
     }
 }
 
-enum class Meridiem {
-    AM, PM
-}
-
 enum class AlarmSound(@RawRes val resourceId: Int, @StringRes val nameResourceId: Int) {
     GENTLE_GUITAR(R.raw.gentle_guitar, R.string.gentle_guitar),
     ALARM_CLOCK(R.raw.alarm_clock, R.string.alarm_clock),

@@ -30,6 +30,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -59,7 +60,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
 
     // Jetpack Compose
-    implementation "androidx.compose.ui:ui:1.4.0" // 1.5.0-alpha01 caused time-picker flickering
+    implementation "androidx.compose.ui:ui:1.4.3"
     implementation "androidx.compose.material:material:1.4.3"
     implementation "androidx.compose.ui:ui-tooling-preview:1.4.3"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
@@ -85,6 +86,10 @@ dependencies {
     // Permission handling
     //noinspection GradleDependency
     implementation "com.google.accompanist:accompanist-permissions:0.24.1-alpha"
+
+    // API < 26 support for DateTime API
+    // noinspection GradleDependency
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.2'
 
     // Tests
     testImplementation 'junit:junit:4.13.2'
