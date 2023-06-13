@@ -94,7 +94,7 @@ fun handleDecodeResult(
     cancelAlarmSideEffect: () -> Unit
 ) {
     if (scannerMode == SCAN_MODE_DISMISS_ALARM) {
-        if (result.text == alarmViewModel.getDismissCode()) {
+        if (result.text in alarmViewModel.getDismissCodes()) {
             val stopAlarmJob = alarmViewModel.stopAlarm()
 
             CoroutineScope(Dispatchers.Main).launch {

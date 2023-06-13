@@ -230,8 +230,11 @@ class AlarmViewModel @Inject constructor(
         return TimeFormat.fromInt(timeFormat) ?: TimeFormat.MILITARY
     }
 
-    fun getDismissCode(): String =
-        runBlocking {
+    fun getDismissCodes(): List<String> {
+        val userSavedDismissCode = runBlocking {
             dataStoreManager.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
         }
+
+        return setOf(userSavedDismissCode, DEFAULT_DISMISS_ALARM_CODE).toList()
+    }
 }
