@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">QRAlarm</string>
     <string name="alarm_notification_channel_name">Firing alarms</string>
-    <string name="alarm_notification_channel_description">Play alarm sound, display a notification and pop up on screen</string>
+    <string name="alarm_notification_channel_description">Plays alarm sound, displays a notification and pops up on screen</string>
     <string name="alarm_notification_title">QRAlarm</string>
     <string name="alarm_notification_text_normal">Go and scan Your QR Code!</string>
     <string name="stop">STOP</string>
@@ -75,4 +75,8 @@
     <string name="time_left_minutes">Time left: %1$dmin</string>
     <string name="enable_vibrations_setting_title">Enable vibrations</string>
     <string name="enable_vibrations_setting_description">The alarm sound will be accompanied by vibrations</string>
+    <string name="alarm_set_indication_notification_channel_name">Notifying about alarms</string>
+    <string name="alarm_set_indication_notification_channel_description">Notifies about currently set alarm, hides in the notification drawer, does not make sound</string>
+    <string name="alarm_set_indication_notification_title">Alarm is set</string>
+    <string name="alarm_set_indication_notification_text">Alarm has been set for %1$s</string>
 </resources>

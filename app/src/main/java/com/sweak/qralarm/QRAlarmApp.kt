@@ -31,7 +31,7 @@ class QRAlarmApp : Application() {
         super.onCreate()
 
         setUpPreferencesIfFirstLaunch()
-        createNotificationChannelIfVersionRequires()
+        createNotificationChannelsIfVersionRequires()
         applyCorrectionsIfAlarmServiceWasNotProperlyFinished()
     }
 
@@ -90,7 +90,7 @@ class QRAlarmApp : Application() {
         }
     }
 
-    private fun createNotificationChannelIfVersionRequires() {
+    private fun createNotificationChannelsIfVersionRequires() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val alarmNotificationChannel = NotificationChannel(
                 ALARM_NOTIFICATION_CHANNEL_ID,
@@ -104,7 +104,18 @@ class QRAlarmApp : Application() {
                 lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             }
 
+            val alarmSetIndicationNotificationChannel = NotificationChannel(
+                ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID,
+                getString(R.string.alarm_set_indication_notification_channel_name),
+                NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                setSound(null, null)
+                description =
+                    getString(R.string.alarm_set_indication_notification_channel_description)
+            }
+
             notificationManager.createNotificationChannel(alarmNotificationChannel)
+            notificationManager.createNotificationChannel(alarmSetIndicationNotificationChannel)
         }
     }
 

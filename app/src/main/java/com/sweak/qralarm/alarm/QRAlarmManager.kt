@@ -2,17 +2,34 @@ package com.sweak.qralarm.alarm
 
 import android.app.AlarmManager
 import android.app.Application
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.text.format.DateFormat
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.app.NotificationCompat
 import com.sweak.qralarm.MainActivity
-import com.sweak.qralarm.util.*
+import com.sweak.qralarm.R
+import com.sweak.qralarm.ui.theme.Jacarta
+import com.sweak.qralarm.util.ALARM_INFO_PENDING_INTENT_REQUEST_CODE
+import com.sweak.qralarm.util.ALARM_PENDING_INTENT_REQUEST_CODE
+import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
+import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_ID
+import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_REQUEST_CODE
+import com.sweak.qralarm.util.KEY_ALARM_TYPE
+import com.sweak.qralarm.util.TESTING_PERMISSION_ALARM_INTENT_REQUEST_CODE
+import com.sweak.qralarm.util.TimeFormat
+import com.sweak.qralarm.util.currentTimeInMillis
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 
 class QRAlarmManager @Inject constructor(
     private val alarmManager: AlarmManager,
+    private val notificationManager: NotificationManager,
     private val packageManager: PackageManager,
     private val app: Application
 ) {
@@ -58,6 +75,8 @@ class QRAlarmManager @Inject constructor(
             alarmPendingIntent
         )
 
+        postAlarmSetIndicationNotification(alarmTimeInMillis)
+
         packageManager.setComponentEnabledSetting(
             ComponentName(app, BootReceiver::class.java),
             PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
@@ -65,8 +84,54 @@ class QRAlarmManager @Inject constructor(
         )
     }
 
+    private fun postAlarmSetIndicationNotification(alarmTimeInMillis: Long) {
+        val alarmSetIndicationPendingIntent = PendingIntent.getActivity(
+            app.applicationContext,
+            ALARM_SET_INDICATION_NOTIFICATION_REQUEST_CODE,
+            Intent(app.applicationContext, MainActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        PendingIntent.FLAG_IMMUTABLE
+                    else 0
+        )
+
+        val timeFormat =
+            if (DateFormat.is24HourFormat(app.applicationContext)) TimeFormat.MILITARY
+            else TimeFormat.AMPM
+
+        val alarmTimeLocalizedString = SimpleDateFormat(
+            if (timeFormat == TimeFormat.MILITARY) "HH:mm" else "hh:mm a",
+            Locale.getDefault()
+        ).format(alarmTimeInMillis)
+
+        val alarmSetIndicationNotification = NotificationCompat.Builder(
+            app.applicationContext,
+            ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
+        ).apply {
+            color = Jacarta.toArgb()
+            priority = NotificationCompat.PRIORITY_LOW
+            setOngoing(true)
+            setColorized(true)
+            setContentTitle(app.getString(R.string.alarm_set_indication_notification_title))
+            setContentText(
+                app.getString(
+                    R.string.alarm_set_indication_notification_text,
+                    alarmTimeLocalizedString
+                )
+            )
+            setSmallIcon(R.drawable.ic_notification_icon)
+            setContentIntent(alarmSetIndicationPendingIntent)
+        }.build()
+
+        notificationManager.notify(
+            ALARM_SET_INDICATION_NOTIFICATION_ID,
+            alarmSetIndicationNotification
+        )
+    }
+
     fun cancelAlarm() {
         app.stopService(Intent(app.applicationContext, QRAlarmService::class.java))
+        notificationManager.cancel(ALARM_SET_INDICATION_NOTIFICATION_ID)
         removeAlarmPendingIntent()
 
         packageManager.setComponentEnabledSetting(

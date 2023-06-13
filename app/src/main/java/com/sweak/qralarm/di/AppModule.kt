@@ -22,14 +22,15 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-        @Provides
+    @Provides
     @Singleton
     fun provideQrAlarmManager(
         alarmManager: AlarmManager,
+        notificationManager: NotificationManager,
         packageManager: PackageManager,
         app: Application
     ): QRAlarmManager =
-        QRAlarmManager(alarmManager, packageManager, app)
+        QRAlarmManager(alarmManager, notificationManager, packageManager, app)
 
     @Provides
     @Singleton
