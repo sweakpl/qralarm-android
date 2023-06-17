@@ -79,4 +79,8 @@
     <string name="alarm_set_indication_notification_channel_description">Notifies about currently set alarm, hides in the notification drawer, does not make sound</string>
     <string name="alarm_set_indication_notification_title">Alarm is set</string>
     <string name="alarm_set_indication_notification_text">Alarm has been set for %1$s</string>
+    <string name="do_you_have_code">Do You have the code?</string>
+    <string name="make_sure_you_have_code">Please make sure that You have visited Settings and either downloaded the default QRAlarm QR code (“Download code” option) or scanned Your own QR/Bar code (“Scan new code” option). If you don’t have a default or your own code ready to be scanned YOU CAN’T STOP THE ALARM!</string>
+    <string name="done">Done!</string>
+    <string name="yes_i_have_code">Yes - I have a valid QR/Bar code.</string>
 </resources>

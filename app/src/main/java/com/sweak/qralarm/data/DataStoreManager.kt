@@ -75,5 +75,6 @@ class DataStoreManager(private val context: Context) {
         val GENTLE_WAKEUP_DURATION_SECONDS = intPreferencesKey("gentleWakeupDurationSeconds")
         val ENABLE_VIBRATIONS = booleanPreferencesKey("enableVibrations")
         val ACCEPT_ANY_CODE_TYPE = booleanPreferencesKey("acceptAnyCodeType")
+        val SHOULD_REMIND_USER_TO_GET_CODE = booleanPreferencesKey("shouldRemindUserToGetCode")
     }
 }

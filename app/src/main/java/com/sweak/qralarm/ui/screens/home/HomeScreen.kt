@@ -247,9 +247,23 @@ fun HomeScreen(
         onNegativeClick = { uiState.value = uiState.value.copy(showAlarmPermissionDialog = false) }
     )
 
-    AlarmSetSnackbar(
-        snackbarHostState = uiState.value.snackbarHostState
-    )
+    if (uiState.value.showCodePossessionConfirmationDialog) {
+        CodePossessionConfirmationDialog(
+            onDoneClicked = {
+                alarmViewModel.confirmCodePossession()
+                uiState.value = uiState.value.copy(showCodePossessionConfirmationDialog = false)
+            },
+            onSettingsClicked = {
+                navController.navigate(Screen.SettingsScreen.route)
+                uiState.value = uiState.value.copy(showCodePossessionConfirmationDialog = false)
+            },
+            onDismissRequest = {
+                uiState.value = uiState.value.copy(showCodePossessionConfirmationDialog = false)
+            }
+        )
+    }
+
+    AlarmSetSnackbar(snackbarHostState = uiState.value.snackbarHostState)
 }
 
 @Composable

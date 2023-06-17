@@ -47,6 +47,7 @@ class AlarmViewModel @Inject constructor(
                 showCameraPermissionRevokedDialog = false,
                 showNotificationsPermissionDialog = false,
                 showNotificationsPermissionRevokedDialog = false,
+                showCodePossessionConfirmationDialog = false,
                 snackbarHostState = SnackbarHostState()
             )
         )
@@ -108,21 +109,26 @@ class AlarmViewModel @Inject constructor(
         val alarmSet = homeUiState.value.alarmSet
 
         if (!alarmSet) {
-            try {
-                qrAlarmManager.setAlarm(
-                    getAlarmTimeInMillis(
+            viewModelScope.launch {
+                val shouldRemindUserToGetCode = dataStoreManager
+                    .getBoolean(DataStoreManager.SHOULD_REMIND_USER_TO_GET_CODE)
+                    .first()
+
+                if (shouldRemindUserToGetCode) {
+                    homeUiState.value = homeUiState.value.copy(
+                        showCodePossessionConfirmationDialog = true
+                    )
+                    return@launch
+                }
+
+                try {
+                    val alarmTimeInMillis = getAlarmTimeInMillis(
                         homeUiState.value.alarmHourOfDay,
                         homeUiState.value.alarmMinute
-                    ),
-                    ALARM_TYPE_NORMAL
-                )
+                    )
 
-                val alarmTimeInMillis = getAlarmTimeInMillis(
-                    homeUiState.value.alarmHourOfDay,
-                    homeUiState.value.alarmMinute
-                )
+                    qrAlarmManager.setAlarm(alarmTimeInMillis, ALARM_TYPE_NORMAL)
 
-                viewModelScope.launch {
                     dataStoreManager.apply {
                         putBoolean(DataStoreManager.ALARM_SET, true)
                         putBoolean(DataStoreManager.ALARM_SNOOZED, false)
@@ -135,24 +141,25 @@ class AlarmViewModel @Inject constructor(
                             getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
                         )
                     }
-                }
 
-                composableScope.launch {
-                    val snackbarResult = snackbarInitializer(
-                        getHoursAndMinutesUntilTimePair(alarmTimeInMillis)
-                    )
+                    composableScope.launch {
+                        val snackbarResult = snackbarInitializer(
+                            getHoursAndMinutesUntilTimePair(alarmTimeInMillis)
+                        )
 
-                    when (snackbarResult) {
-                        SnackbarResult.ActionPerformed -> {
-                            delay(500)
-                            stopAlarm()
+                        when (snackbarResult) {
+                            SnackbarResult.ActionPerformed -> {
+                                delay(500)
+                                stopAlarm()
+                            }
+
+                            SnackbarResult.Dismissed -> { /* no-op */ }
                         }
-                        SnackbarResult.Dismissed -> { /* no-op */ }
                     }
+                } catch (exception: SecurityException) {
+                    homeUiState.value = homeUiState.value.copy(showAlarmPermissionDialog = true)
+                    return@launch
                 }
-            } catch (exception: SecurityException) {
-                homeUiState.value = homeUiState.value.copy(showAlarmPermissionDialog = true)
-                return
             }
         } else {
             navController.navigate(Screen.ScannerScreen.withArguments(SCAN_MODE_DISMISS_ALARM))
@@ -236,5 +243,9 @@ class AlarmViewModel @Inject constructor(
         }
 
         return setOf(userSavedDismissCode, DEFAULT_DISMISS_ALARM_CODE).toList()
+    }
+
+    fun confirmCodePossession() = viewModelScope.launch {
+        dataStoreManager.putBoolean(DataStoreManager.SHOULD_REMIND_USER_TO_GET_CODE, false)
     }
 }
