@@ -64,6 +64,12 @@ class AlarmViewModel @Inject constructor(
                 homeUiState.value = homeUiState.value.copy(snoozeAvailable = it > 0)
             }
         }
+        viewModelScope.launch {
+            dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).collect {
+                homeUiState.value = homeUiState.value.copy(alarmSet = it)
+                if (!it) homeUiState.value.snackbarHostState.currentSnackbarData?.dismiss()
+            }
+        }
     }
 
     @OptIn(ExperimentalPermissionsApi::class)
@@ -132,7 +138,6 @@ class AlarmViewModel @Inject constructor(
                     dataStoreManager.apply {
                         putBoolean(DataStoreManager.ALARM_SET, true)
                         putBoolean(DataStoreManager.ALARM_SNOOZED, false)
-                        homeUiState.value = homeUiState.value.copy(alarmSet = true)
 
                         putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, alarmTimeInMillis)
 
@@ -162,7 +167,26 @@ class AlarmViewModel @Inject constructor(
                 }
             }
         } else {
-            navController.navigate(Screen.ScannerScreen.withArguments(SCAN_MODE_DISMISS_ALARM))
+            viewModelScope.launch {
+                val alarmTimeInMillis =
+                    dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
+                val currentTimeInMillis = System.currentTimeMillis()
+
+                val isNoCodeAlarmCancellationAllowed = dataStoreManager.getBoolean(
+                    DataStoreManager.ALLOW_NO_CODE_ALARM_CANCEL
+                ).first()
+
+                // If stop request was at least an hour before the alarm - stop immediately...
+                if (isNoCodeAlarmCancellationAllowed &&
+                    alarmTimeInMillis - currentTimeInMillis > 3600000
+                ) {
+                    stopAlarm()
+                } else { // ... else start ScannerScreen to disable alarm by scanning the code.
+                    navController.navigate(
+                        Screen.ScannerScreen.withArguments(SCAN_MODE_DISMISS_ALARM)
+                    )
+                }
+            }
         }
     }
 
@@ -178,7 +202,6 @@ class AlarmViewModel @Inject constructor(
                     getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
 
                 homeUiState.value = homeUiState.value.copy(
-                    alarmSet = false,
                     alarmHourOfDay = getAlarmHourOfDay(originalAlarmTimeInMillis),
                     alarmMinute = getAlarmMinute(originalAlarmTimeInMillis)
                 )
@@ -208,7 +231,6 @@ class AlarmViewModel @Inject constructor(
 
                 putBoolean(DataStoreManager.ALARM_SET, true)
                 putBoolean(DataStoreManager.ALARM_SNOOZED, true)
-                homeUiState.value = homeUiState.value.copy(alarmSet = true)
 
                 val alarmHour = getAlarmHourOfDay(snoozeAlarmTimeInMillis)
                 val alarmMinute = getAlarmMinute(snoozeAlarmTimeInMillis)

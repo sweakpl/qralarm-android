@@ -56,6 +56,7 @@ class DataStoreManager(private val context: Context) {
 
     companion object {
         val FIRST_LAUNCH = booleanPreferencesKey("firstLaunch")
+        val SHOULD_REMIND_USER_TO_GET_CODE = booleanPreferencesKey("shouldRemindUserToGetCode")
 
         val ALARM_SET = booleanPreferencesKey("alarmSet")
         val ALARM_SNOOZED = booleanPreferencesKey("alarmSnoozed")
@@ -75,6 +76,6 @@ class DataStoreManager(private val context: Context) {
         val GENTLE_WAKEUP_DURATION_SECONDS = intPreferencesKey("gentleWakeupDurationSeconds")
         val ENABLE_VIBRATIONS = booleanPreferencesKey("enableVibrations")
         val ACCEPT_ANY_CODE_TYPE = booleanPreferencesKey("acceptAnyCodeType")
-        val SHOULD_REMIND_USER_TO_GET_CODE = booleanPreferencesKey("shouldRemindUserToGetCode")
+        val ALLOW_NO_CODE_ALARM_CANCEL = booleanPreferencesKey("allowNoCodeAlarmCancel")
     }
 }

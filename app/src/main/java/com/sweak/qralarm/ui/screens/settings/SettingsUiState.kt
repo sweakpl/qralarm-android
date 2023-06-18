@@ -25,5 +25,6 @@ data class SettingsUiState(
     val showDismissCodeAddedDialog: Boolean = false,
     val vibrationsEnabled: Boolean,
     val acceptAnyCodeType: Boolean,
-    val showDisablingBarcodesSupportDialog: Boolean = false
+    val showDisablingBarcodesSupportDialog: Boolean = false,
+    val noCodeCancelEnabled: Boolean
 )

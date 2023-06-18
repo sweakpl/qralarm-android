@@ -56,7 +56,9 @@ class SettingsViewModel @Inject constructor(
                     ),
                     dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first(),
                     vibrationsEnabled = it.getBoolean(DataStoreManager.ENABLE_VIBRATIONS).first(),
-                    acceptAnyCodeType = it.getBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE).first()
+                    acceptAnyCodeType = it.getBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE).first(),
+                    noCodeCancelEnabled =
+                    it.getBoolean(DataStoreManager.ALLOW_NO_CODE_ALARM_CANCEL).first()
                 )
             )
         }
@@ -272,6 +274,18 @@ class SettingsViewModel @Inject constructor(
 
         viewModelScope.launch {
             dataStoreManager.putBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE, false)
+        }
+    }
+
+    fun handleNoCodeCancelSwitch(noCodeCancelEnabled: Boolean) {
+        settingsUiState.value =
+            settingsUiState.value.copy(noCodeCancelEnabled = noCodeCancelEnabled)
+
+        viewModelScope.launch {
+            dataStoreManager.putBoolean(
+                DataStoreManager.ALLOW_NO_CODE_ALARM_CANCEL,
+                noCodeCancelEnabled
+            )
         }
     }
 

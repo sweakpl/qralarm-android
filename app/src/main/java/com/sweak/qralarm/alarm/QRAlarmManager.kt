@@ -19,6 +19,7 @@ import com.sweak.qralarm.util.ALARM_PENDING_INTENT_REQUEST_CODE
 import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_ID
 import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_REQUEST_CODE
+import com.sweak.qralarm.util.CANCEL_ALARM_ACTION_REQUEST_CODE
 import com.sweak.qralarm.util.KEY_ALARM_TYPE
 import com.sweak.qralarm.util.TESTING_PERMISSION_ALARM_INTENT_REQUEST_CODE
 import com.sweak.qralarm.util.TimeFormat
@@ -104,6 +105,15 @@ class QRAlarmManager @Inject constructor(
             Locale.getDefault()
         ).format(alarmTimeInMillis)
 
+        val cancelAlarmActionPendingIntent = PendingIntent.getBroadcast(
+            app.applicationContext,
+            CANCEL_ALARM_ACTION_REQUEST_CODE,
+            Intent(app.applicationContext, CancelAlarmReceiver::class.java),
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                PendingIntent.FLAG_IMMUTABLE
+            else 0
+        )
+
         val alarmSetIndicationNotification = NotificationCompat.Builder(
             app.applicationContext,
             ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
@@ -121,6 +131,11 @@ class QRAlarmManager @Inject constructor(
             )
             setSmallIcon(R.drawable.ic_notification_icon)
             setContentIntent(alarmSetIndicationPendingIntent)
+            addAction(
+                R.drawable.ic_notification_icon,
+                app.getString(R.string.cancel_alarm),
+                cancelAlarmActionPendingIntent
+            )
         }.build()
 
         notificationManager.notify(

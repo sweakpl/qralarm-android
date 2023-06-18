@@ -83,4 +83,7 @@
     <string name="make_sure_you_have_code">Please make sure that You have visited Settings and either downloaded the default QRAlarm QR code (“Download code” option) or scanned Your own QR/Bar code (“Scan new code” option). If you don’t have a default or your own code ready to be scanned YOU CAN’T STOP THE ALARM!</string>
     <string name="done">Done!</string>
     <string name="yes_i_have_code">Yes - I have a valid QR/Bar code.</string>
+    <string name="cancel_alarm">Cancel the alarm</string>
+    <string name="no_code_cancel_setting_title">No-code cancel</string>
+    <string name="no_code_cancel_setting_description">Cancel alarm without code if it is in more than 1 hour</string>
 </resources>
