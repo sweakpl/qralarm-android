@@ -24,6 +24,8 @@ class BootReceiver : BroadcastReceiver() {
     private val intentActionsToFilter = listOf(
         "android.intent.action.BOOT_COMPLETED",
         "android.intent.action.ACTION_BOOT_COMPLETED",
+        "android.intent.action.LOCKED_BOOT_COMPLETED",
+        "android.intent.action.ACTION_LOCKED_BOOT_COMPLETED",
         "android.intent.action.REBOOT",
         "android.intent.action.QUICKBOOT_POWERON",
         "com.htc.intent.action.QUICKBOOT_POWERON"
