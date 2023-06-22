@@ -6,8 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import android.view.LayoutInflater
-import android.widget.TimePicker
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -293,9 +291,7 @@ fun TimePicker(
     AndroidView(
         modifier = modifier,
         factory = {
-            (LayoutInflater.from(it).inflate(R.layout.time_picker, null) as TimePicker).apply {
-                descendantFocusability = TimePicker.FOCUS_BLOCK_DESCENDANTS
-
+            QRAlarmTimePicker(it).apply {
                 // Right after composing the TimePicker the internal TimePicker(View) calls the
                 // timeChangedListener with the current time which breaks the uiState - we have to
                 // prevent the uiState update after this initial timeChangedListener call:
@@ -313,15 +309,8 @@ fun TimePicker(
         },
         update = {
             it.setIs24HourView(uiState.value.alarmTimeFormat == TimeFormat.MILITARY)
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                it.hour = uiState.value.alarmHourOfDay
-                it.minute = uiState.value.alarmMinute
-            } else {
-                it.currentHour = uiState.value.alarmHourOfDay
-                it.currentMinute = uiState.value.alarmMinute
-            }
-
+            it.setHour(uiState.value.alarmHourOfDay)
+            it.setMinute(uiState.value.alarmMinute)
             it.isEnabled = !uiState.value.alarmSet
         }
     )
