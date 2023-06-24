@@ -1,4 +1,0 @@
-* Added support for Barcodes - it can be enabled in the settings,
-* Time left until alarm is now shown after setting the alarm,
-* Improved the readability of the settings entries - now they have descriptions,
-* Bug fixes.

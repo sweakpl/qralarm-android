@@ -132,9 +132,14 @@ class QRAlarmManager @Inject constructor(
             setSmallIcon(R.drawable.ic_notification_icon)
             setContentIntent(alarmSetIndicationPendingIntent)
             addAction(
-                R.drawable.ic_notification_icon,
-                app.getString(R.string.cancel_alarm),
-                cancelAlarmActionPendingIntent
+                NotificationCompat.Action
+                    .Builder(
+                        R.drawable.ic_notification_icon,
+                        app.getString(R.string.cancel_alarm),
+                        cancelAlarmActionPendingIntent
+                    )
+                    .setAuthenticationRequired(true)
+                    .build()
             )
         }.build()
 

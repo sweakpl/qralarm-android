@@ -9,6 +9,8 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.TimePicker
 import android.widget.TimePicker.OnTimeChangedListener
+import androidx.core.view.marginBottom
+import androidx.core.view.marginTop
 import androidx.core.view.updateMargins
 import com.sweak.qralarm.R
 import com.sweak.qralarm.databinding.QralarmTimePickerBinding
@@ -88,9 +90,13 @@ class QRAlarmTimePicker @JvmOverloads constructor(
             marginAnimator?.end()
 
             marginAnimator = if (enabled) {
-                ValueAnimator.ofFloat(-74f, 0f)
+                if (marginTop != 0 || marginBottom != 0)
+                    ValueAnimator.ofFloat(-74f, 0f)
+                else return
             } else {
-                ValueAnimator.ofFloat(0f, -74f)
+                if (marginTop != -74 || marginBottom != -74)
+                    ValueAnimator.ofFloat(0f, -74f)
+                else return
             }
 
             marginAnimator?.apply {
