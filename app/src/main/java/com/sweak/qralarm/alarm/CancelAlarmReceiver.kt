@@ -4,7 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.sweak.qralarm.MainActivity
+import android.widget.Toast
+import com.sweak.qralarm.R
 import com.sweak.qralarm.data.DataStoreManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -34,8 +35,12 @@ class CancelAlarmReceiver : BroadcastReceiver() {
             qrAlarmManager.cancelAlarm()
 
             dataStoreManager.putBoolean(DataStoreManager.ALARM_SET, false)
-        } else { // ... else start MainActivity to manually disable alarm by scanning the code.
-            context.startActivity(Intent(context, MainActivity::class.java))
+        } else { // ... else tell the user to manually disable the alarm
+            Toast.makeText(
+                context,
+                context.getString(R.string.alarm_in_less_than_1h_cancel_by_scanning),
+                Toast.LENGTH_LONG
+            ).show()
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 context.sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
