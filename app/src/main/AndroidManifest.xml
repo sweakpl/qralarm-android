@@ -36,7 +36,7 @@
             android:launchMode="singleInstance"
             android:showForAllUsers="true"
             android:showWhenLocked="true"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/QRAlarmTheme"
             tools:targetApi="o_mr1">
 
             <intent-filter>

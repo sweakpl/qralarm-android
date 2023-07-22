@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="QRAlarmTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:statusBarColor">#FF38285C</item>
+        <!-- Fix for https://issuetracker.google.com/issues/233251826 -->
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">shortEdges</item>
+    </style>
+
     <style name="TimePickerStyle">
         <item name="android:textSize">60sp</item>
         <item name="android:fontFamily">@font/amiko_regular</item>
@@ -7,4 +14,5 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:colorControlNormal">@android:color/transparent</item>
     </style>
+
 </resources>

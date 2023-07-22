@@ -42,6 +42,9 @@ class MainActivity : ComponentActivity() {
     lateinit var qrAlarmManager: QRAlarmManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Fix for https://issuetracker.google.com/issues/37095334
+        window.decorView
+
         super.onCreate(savedInstanceState)
 
         val isLockScreenActivity =
