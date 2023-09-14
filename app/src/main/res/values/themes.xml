@@ -8,7 +8,9 @@
     </style>
 
     <style name="TimePickerStyle">
-        <item name="android:textSize">60sp</item>
+        <!-- Using dp instead of sp for the TimePicker due to this bug:
+        https://github.com/sweakpl/qralarm-android/issues/28 -->
+        <item name="android:textSize" tools:ignore="SpUsage">52dp</item>
         <item name="android:fontFamily">@font/amiko_regular</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
