@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.sweak.qralarm"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 15
         versionName "1.5.3"
 

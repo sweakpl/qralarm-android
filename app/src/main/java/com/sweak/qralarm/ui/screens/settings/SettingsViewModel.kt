@@ -334,17 +334,15 @@ class SettingsViewModel @Inject constructor(
         try {
             with(context.contentResolver) {
                 insert(imageCollection, contentValues)?.also { uri ->
-                    openOutputStream(uri).use { outputStream ->
+                    openOutputStream(uri)?.use { outputStream ->
                         if (
                             !qrCodeImageBitmap.compress(
                                 Bitmap.CompressFormat.JPEG,
                                 95,
                                 outputStream
                             )
-                        ) {
-                            throw IOException("Couldn't save the QRCode Bitmap file!")
-                        }
-                    }
+                        ) throw IOException("Couldn't save the QRCode Bitmap file!")
+                    } ?: throw IOException("OutputStream provider recently crashed!")
                 } ?: throw IOException("Couldn't create a MediaStore entry!")
             }
 
