@@ -36,7 +36,7 @@ fun GuideScreen(
     closeGuideCallback: () -> Unit
 ) {
     val previousButtonVisible = remember { mutableStateOf(false) }
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { 2 })
     val composableScope = rememberCoroutineScope()
 
     LaunchedEffect(pagerState) {
@@ -120,7 +120,6 @@ fun GuideScreen(
         )
 
         HorizontalPager(
-            pageCount = 2,
             state = pagerState,
             verticalAlignment = Alignment.Top,
             modifier = Modifier.layoutId("guidePages")
