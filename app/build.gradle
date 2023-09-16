@@ -1,9 +1,8 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -77,7 +76,7 @@ dependencies {
 
     // Dagger Hilt
     implementation 'com.google.dagger:hilt-android:2.48'
-    kapt 'com.google.dagger:hilt-android-compiler:2.48'
+    ksp 'com.google.dagger:hilt-android-compiler:2.48'
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     // Code scanner
@@ -89,7 +88,7 @@ dependencies {
 
     // API < 26 support for DateTime API
     // noinspection GradleDependency
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.2'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
 
     // Tests
     testImplementation 'junit:junit:4.13.2'
