@@ -153,7 +153,7 @@ fun HomeScreen(
                 navController,
                 cameraPermissionState,
                 notificationsPermissionState,
-                composableScope
+                composableScope,
             ) { hoursAndMinutesUntilAlarmPair ->
                 uiState.value.snackbarHostState.showSnackbar(
                     message = if (hoursAndMinutesUntilAlarmPair.first > 0)
@@ -238,11 +238,34 @@ fun HomeScreen(
         uiState = uiState,
         onPositiveClick = {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                context.startActivity(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+                context.startActivity(
+                    Intent().apply {
+                        action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                        data = Uri.parse("package:${context.packageName}")
+                    }
+                )
             }
             uiState.value = uiState.value.copy(showAlarmPermissionDialog = false)
         },
         onNegativeClick = { uiState.value = uiState.value.copy(showAlarmPermissionDialog = false) }
+    )
+
+    FullScreenIntentPermissionDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                context.startActivity(
+                    Intent().apply {
+                        action = Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT
+                        data = Uri.parse("package:${context.packageName}")
+                    }
+                )
+            }
+            uiState.value = uiState.value.copy(showFullScreenIntentPermissionDialog = false)
+        },
+        onNegativeClick = {
+            uiState.value = uiState.value.copy(showFullScreenIntentPermissionDialog = false)
+        }
     )
 
     if (uiState.value.showCodePossessionConfirmationDialog) {

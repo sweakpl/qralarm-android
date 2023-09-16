@@ -7,7 +7,7 @@
     <string name="stop">STOP</string>
     <string name="start">START</string>
     <string name="alarm_permission_required_title">Special app access required</string>
-    <string name="alarm_permission_required_message"><![CDATA[QRAlarm needs an “Alarms & reminders” special app access to schedule alarms that can be fired at exact times. The access is revoked and thus must be granted via system settings.]]></string>
+    <string name="alarm_permission_required_message">QRAlarm needs an \"Alarms &amp; reminders\" special app access to schedule alarms that can be fired at exact times. The access is revoked and thus must be granted via system settings.</string>
     <string name="later">Later</string>
     <string name="settings">Settings</string>
     <string name="camera_permission_required_title">Camera permission required</string>
@@ -87,4 +87,6 @@
     <string name="no_code_cancel_setting_title">No-code cancel</string>
     <string name="no_code_cancel_setting_description">Cancel alarm without code if it is in more than 1 hour</string>
     <string name="alarm_in_less_than_1h_cancel_by_scanning">Alarm in less than 1 hour. Cancel by scanning the code!</string>
+    <string name="full_screen_intent_permission_required_title">Full screen notifications required</string>
+    <string name="full_screen_intent_permission_required_message">QRAlarm needs the permission to display full screen notifications on your lock screen when the alarm goes off. Please enable this functionality in the settings.</string>
 </resources>

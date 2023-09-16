@@ -16,5 +16,6 @@ data class HomeUiState(
     var showNotificationsPermissionDialog: Boolean,
     var showNotificationsPermissionRevokedDialog: Boolean,
     var showCodePossessionConfirmationDialog: Boolean,
+    var showFullScreenIntentPermissionDialog: Boolean,
     var snackbarHostState: SnackbarHostState
 )

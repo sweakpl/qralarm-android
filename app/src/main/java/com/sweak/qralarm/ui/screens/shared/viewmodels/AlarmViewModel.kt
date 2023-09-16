@@ -48,6 +48,7 @@ class AlarmViewModel @Inject constructor(
                 showNotificationsPermissionDialog = false,
                 showNotificationsPermissionRevokedDialog = false,
                 showCodePossessionConfirmationDialog = false,
+                showFullScreenIntentPermissionDialog = false,
                 snackbarHostState = SnackbarHostState()
             )
         )
@@ -110,6 +111,13 @@ class AlarmViewModel @Inject constructor(
                     return
                 }
             }
+        }
+
+        if (!qrAlarmManager.canUseFullScreenIntent()) {
+            homeUiState.value = homeUiState.value.copy(
+                showFullScreenIntentPermissionDialog = true
+            )
+            return
         }
 
         val alarmSet = homeUiState.value.alarmSet
