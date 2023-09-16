@@ -352,8 +352,12 @@ class SettingsViewModel @Inject constructor(
                 Toast.LENGTH_LONG
             ).show()
         } catch (e: IOException) {
-            e.printStackTrace()
-
+            Toast.makeText(
+                context,
+                resourceProvider.getString(R.string.not_saved_default_qrcode),
+                Toast.LENGTH_LONG
+            ).show()
+        } catch (e: IllegalStateException) {
             Toast.makeText(
                 context,
                 resourceProvider.getString(R.string.not_saved_default_qrcode),
