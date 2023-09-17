@@ -1,4 +1,0 @@
-* Now displaying an ongoing reminder notification if an alarm is set,
-* It is now possible to cancel the alarm without scanning the code (if the alarm is in more than 1 hour),
-* Before setting their first alarm users have to confirm whether they have a valid code to disable alarms,
-* User experience and performance improvements.
