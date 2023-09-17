@@ -69,9 +69,9 @@ class QRAlarmTimePicker @JvmOverloads constructor(
     }
 
     override fun setEnabled(enabled: Boolean) {
-        binding.timePicker.apply {
-            isEnabled = enabled
+        super.setEnabled(enabled)
 
+        binding.timePicker.apply {
             if (isFirstTimeUpdatingEnabledState) {
                 layoutParams = LayoutParams(
                     LayoutParams.MATCH_PARENT, dpToPx(212f).roundToInt()
@@ -83,11 +83,16 @@ class QRAlarmTimePicker @JvmOverloads constructor(
                 }
 
                 isFirstTimeUpdatingEnabledState = false
+                isEnabled = enabled
 
                 return
             }
 
             marginAnimator?.end()
+
+            if (isEnabled == enabled) return
+
+            isEnabled = enabled
 
             marginAnimator = if (enabled) {
                 if (marginTop != 0 || marginBottom != 0)

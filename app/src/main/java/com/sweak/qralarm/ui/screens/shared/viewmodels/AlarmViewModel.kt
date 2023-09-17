@@ -219,9 +219,7 @@ class AlarmViewModel @Inject constructor(
         return stopAlarmJob
     }
 
-    fun handleSnoozeButtonClick(
-        snoozeSideEffect: () -> Unit
-    ) {
+    fun handleSnoozeButtonClick(snoozeSideEffect: () -> Unit) {
         qrAlarmManager.cancelAlarm()
 
         viewModelScope.launch {
