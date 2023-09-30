@@ -118,7 +118,7 @@ fun HomeScreen(
             )
     ) {
         AnimatedVisibility(
-            visible = !uiState.value.alarmSet,
+            visible = !uiState.value.alarmSet && !uiState.value.alarmServiceRunning,
             modifier = Modifier.layoutId("menuButton")
         ) {
             MenuButton(
@@ -128,8 +128,9 @@ fun HomeScreen(
         }
 
         Text(
-            text = if (uiState.value.alarmSet) stringResource(R.string.alarm_at) else stringResource(
-                R.string.drag_to_set_alarm
+            text = stringResource(
+                if (uiState.value.alarmSet || uiState.value.alarmServiceRunning) R.string.alarm_at
+                else R.string.drag_to_set_alarm
             ),
             modifier = Modifier
                 .layoutId("alarmAtText")
@@ -334,7 +335,7 @@ fun TimePicker(
             it.setIs24HourView(uiState.value.alarmTimeFormat == TimeFormat.MILITARY)
             it.setHour(uiState.value.alarmHourOfDay)
             it.setMinute(uiState.value.alarmMinute)
-            it.isEnabled = !uiState.value.alarmSet
+            it.isEnabled = !uiState.value.alarmSet && !uiState.value.alarmServiceRunning
         }
     )
 }
@@ -353,7 +354,10 @@ fun StartStopAlarmButton(
         )
     ) {
         Text(
-            text = stringResource(if (uiState.value.alarmSet) R.string.stop else R.string.start),
+            text = stringResource(
+                if (uiState.value.alarmSet || uiState.value.alarmServiceRunning) R.string.stop
+                else R.string.start
+            ),
             fontSize = 26.sp,
             modifier = Modifier.padding(
                 MaterialTheme.space.medium,

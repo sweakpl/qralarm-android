@@ -121,8 +121,9 @@ class AlarmViewModel @Inject constructor(
         }
 
         val alarmSet = homeUiState.value.alarmSet
+        val alarmServiceRunning = homeUiState.value.alarmServiceRunning
 
-        if (!alarmSet) {
+        if (!alarmSet && !alarmServiceRunning) {
             viewModelScope.launch {
                 val shouldRemindUserToGetCode = dataStoreManager
                     .getBoolean(DataStoreManager.SHOULD_REMIND_USER_TO_GET_CODE)
