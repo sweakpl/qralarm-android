@@ -6,6 +6,7 @@ import android.text.format.DateFormat
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -82,6 +83,10 @@ class MainActivity : ComponentActivity() {
         val isFirstLaunch = runBlocking {
             dataStoreManager.getBoolean(DataStoreManager.FIRST_LAUNCH).first()
         }
+
+        // Fix for blank screen issue on Xiaomi devices:
+        // https://issuetracker.google.com/issues/227926002
+        ScaffoldDefaults.contentWindowInsets
 
         NavHost(navController = navController, startDestination = Screen.AlarmFlow.route) {
             navigation(
