@@ -4,6 +4,7 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
@@ -12,6 +13,7 @@ import com.google.accompanist.permissions.PermissionState
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.home.HomeUiState
+import com.sweak.qralarm.ui.screens.shared.navigateThrottled
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -79,6 +81,7 @@ class AlarmViewModel @Inject constructor(
         cameraPermissionState: PermissionState,
         notificationsPermissionState: PermissionState,
         composableScope: CoroutineScope,
+        lifecycleOwner: LifecycleOwner,
         snackbarInitializer: suspend (Pair<Int, Int>) -> SnackbarResult
     ) {
         if (!cameraPermissionState.hasPermission) {
@@ -191,8 +194,9 @@ class AlarmViewModel @Inject constructor(
                 ) {
                     stopAlarm()
                 } else { // ... else start ScannerScreen to disable alarm by scanning the code.
-                    navController.navigate(
-                        Screen.ScannerScreen.withArguments(SCAN_MODE_DISMISS_ALARM)
+                    navController.navigateThrottled(
+                        Screen.ScannerScreen.withArguments(SCAN_MODE_DISMISS_ALARM),
+                        lifecycleOwner
                     )
                 }
             }

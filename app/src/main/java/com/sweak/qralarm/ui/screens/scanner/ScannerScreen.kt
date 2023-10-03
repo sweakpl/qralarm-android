@@ -13,6 +13,7 @@ import com.budiyev.android.codescanner.*
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
 import com.sweak.qralarm.ui.screens.settings.SettingsViewModel
+import com.sweak.qralarm.ui.screens.shared.popBackStackThrottled
 import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
 import com.sweak.qralarm.ui.theme.BlueZodiac
 import com.sweak.qralarm.ui.theme.ButterflyBush
@@ -71,6 +72,7 @@ fun ScannerScreen(
                         result = result,
                         scannerMode = scannerMode,
                         navController = navController,
+                        lifecycleOwner = lifecycleOwner,
                         alarmViewModel = alarmViewModel,
                         settingsViewModel = settingsViewModel,
                         cancelAlarmSideEffect = finishableActionSideEffect
@@ -89,6 +91,7 @@ fun handleDecodeResult(
     result: Result,
     scannerMode: String?,
     navController: NavHostController,
+    lifecycleOwner: LifecycleOwner,
     alarmViewModel: AlarmViewModel,
     settingsViewModel: SettingsViewModel,
     cancelAlarmSideEffect: () -> Unit
@@ -100,13 +103,21 @@ fun handleDecodeResult(
             CoroutineScope(Dispatchers.Main).launch {
                 stopAlarmJob.join()
                 cancelAlarmSideEffect.invoke()
-                navController.popBackStack(Screen.HomeScreen.route, false)
+                navController.popBackStackThrottled(
+                    Screen.HomeScreen.route,
+                    false,
+                    lifecycleOwner
+                )
             }
         }
     } else if (scannerMode == SCAN_MODE_SET_CUSTOM_CODE) {
         settingsViewModel.setCustomQRCode(result.text)
         CoroutineScope(Dispatchers.Main).launch {
-            navController.popBackStack(Screen.SettingsScreen.route, false)
+            navController.popBackStackThrottled(
+                Screen.SettingsScreen.route,
+                false,
+                lifecycleOwner
+            )
         }
     }
 }

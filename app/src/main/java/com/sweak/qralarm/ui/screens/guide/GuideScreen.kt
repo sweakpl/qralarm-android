@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -24,6 +25,8 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.BackButton
+import com.sweak.qralarm.ui.screens.shared.navigateThrottled
+import com.sweak.qralarm.ui.screens.shared.popBackStackThrottled
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Screen
 import kotlinx.coroutines.launch
@@ -35,6 +38,8 @@ fun GuideScreen(
     isFirstLaunch: () -> Boolean,
     closeGuideCallback: () -> Unit
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     val previousButtonVisible = remember { mutableStateOf(false) }
     val pagerState = rememberPagerState(pageCount = { 2 })
     val composableScope = rememberCoroutineScope()
@@ -172,13 +177,16 @@ fun GuideScreen(
                     } else if (pagerState.currentPage == 1) {
                         if (isFirstLaunch()) {
                             closeGuideCallback()
-                            navController.navigate(Screen.HomeScreen.route) {
+                            navController.navigateThrottled(
+                                Screen.HomeScreen.route,
+                                lifecycleOwner
+                            ) {
                                 popUpTo(Screen.GuideScreen.route) {
                                     inclusive = true
                                 }
                             }
                         } else {
-                            navController.popBackStack()
+                            navController.popBackStackThrottled(lifecycleOwner)
                         }
                     }
                 },

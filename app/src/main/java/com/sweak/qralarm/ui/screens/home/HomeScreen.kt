@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +36,7 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.*
+import com.sweak.qralarm.ui.screens.shared.navigateThrottled
 import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
 import com.sweak.qralarm.ui.theme.Victoria
 import com.sweak.qralarm.ui.theme.amikoFamily
@@ -50,6 +52,8 @@ fun HomeScreen(
     finishableActionSideEffect: () -> Unit,
     context: Context = LocalContext.current
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     val uiState = remember { alarmViewModel.homeUiState }
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
     val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -155,6 +159,7 @@ fun HomeScreen(
                 cameraPermissionState,
                 notificationsPermissionState,
                 composableScope,
+                lifecycleOwner
             ) { hoursAndMinutesUntilAlarmPair ->
                 uiState.value.snackbarHostState.showSnackbar(
                     message = if (hoursAndMinutesUntilAlarmPair.first > 0)
@@ -276,7 +281,10 @@ fun HomeScreen(
                 uiState.value = uiState.value.copy(showCodePossessionConfirmationDialog = false)
             },
             onSettingsClicked = {
-                navController.navigate(Screen.SettingsScreen.route)
+                navController.navigateThrottled(
+                    Screen.SettingsScreen.route,
+                    lifecycleOwner
+                )
                 uiState.value = uiState.value.copy(showCodePossessionConfirmationDialog = false)
             },
             onDismissRequest = {
@@ -293,9 +301,11 @@ fun MenuButton(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     IconButton(
         onClick = {
-            navController.navigate(Screen.SettingsScreen.route)
+            navController.navigateThrottled(Screen.SettingsScreen.route, lifecycleOwner)
         },
         modifier = modifier
     ) {

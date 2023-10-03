@@ -41,6 +41,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.*
+import com.sweak.qralarm.ui.screens.shared.navigateThrottled
 import com.sweak.qralarm.ui.theme.Kimberly
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
@@ -589,7 +590,8 @@ fun SettingsScreen(
                     onClick = {
                         settingsViewModel.handleScanCustomDismissCodeButton(
                             navController,
-                            cameraPermissionState
+                            cameraPermissionState,
+                            lifecycleOwner
                         )
                     },
                     modifier = Modifier
@@ -630,7 +632,10 @@ fun SettingsScreen(
 
                 IconButton(
                     onClick = {
-                        navController.navigate(Screen.GuideScreen.route)
+                        navController.navigateThrottled(
+                            Screen.GuideScreen.route,
+                            lifecycleOwner
+                        )
                     },
                     modifier = Modifier
                         .padding(end = MaterialTheme.space.medium)
@@ -690,7 +695,10 @@ fun SettingsScreen(
             uiState.value = uiState.value.copy(showDismissCodeAddedDialog = false)
         },
         onNegativeClick = {
-            navController.navigate(Screen.ScannerScreen.withArguments(SCAN_MODE_SET_CUSTOM_CODE))
+            navController.navigateThrottled(
+                Screen.ScannerScreen.withArguments(SCAN_MODE_SET_CUSTOM_CODE),
+                lifecycleOwner
+            )
             uiState.value = uiState.value.copy(showDismissCodeAddedDialog = false)
         }
     )
