@@ -24,6 +24,8 @@ enum class AlarmSound(@RawRes val resourceId: Int, @StringRes val nameResourceId
 }
 
 enum class SnoozeDuration(val lengthMinutes: Int) {
+    SNOOZE_DURATION_20_MINUTES(20),
+    SNOOZE_DURATION_15_MINUTES(15),
     SNOOZE_DURATION_10_MINUTES(10),
     SNOOZE_DURATION_5_MINUTES(5),
     SNOOZE_DURATION_3_MINUTES(3),
