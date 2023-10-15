@@ -1,0 +1,3 @@
+* Added options for 15 and 20 minutes snooze,
+* Performance improvements and bug fixes,
+* Updated UI design.
