@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -47,7 +47,7 @@ import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
 import com.sweak.qralarm.util.Screen
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
@@ -120,8 +120,8 @@ fun SettingsScreen(
             .background(
                 Brush.verticalGradient(
                     listOf(
-                        MaterialTheme.colors.primary,
-                        MaterialTheme.colors.primaryVariant
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.secondary
                     )
                 )
             )
@@ -146,7 +146,7 @@ fun SettingsScreen(
                     MaterialTheme.space.large
                 )
                 .layoutId("settingsText"),
-            style = MaterialTheme.typography.h1
+            style = MaterialTheme.typography.displayLarge
         )
 
         Column(
@@ -166,7 +166,9 @@ fun SettingsScreen(
                         .wrapContentWidth()
                         .padding(bottom = MaterialTheme.space.medium),
                     text = stringResource(R.string.alarm_sound),
-                    style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                    style = MaterialTheme.typography.displayMedium.copy(
+                        fontWeight = FontWeight.Normal
+                    )
                 )
 
                 Row(
@@ -218,7 +220,7 @@ fun SettingsScreen(
                                 }
                             ),
                             contentDescription = "Play/Stop button",
-                            tint = MaterialTheme.colors.secondary
+                            tint = MaterialTheme.colorScheme.tertiary
                         )
                     }
                 }
@@ -239,13 +241,15 @@ fun SettingsScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.snooze_duration_setting_title),
-                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                        style = MaterialTheme.typography.displayMedium.copy(
+                            fontWeight = FontWeight.Normal
+                        )
                     )
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.snooze_duration_setting_description),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 
@@ -289,13 +293,15 @@ fun SettingsScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.snooze_number_setting_title),
-                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                        style = MaterialTheme.typography.displayMedium.copy(
+                            fontWeight = FontWeight.Normal
+                        )
                     )
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.snooze_number_setting_description),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 
@@ -337,13 +343,15 @@ fun SettingsScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.gentle_wakeup_setting_title),
-                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                        style = MaterialTheme.typography.displayMedium.copy(
+                            fontWeight = FontWeight.Normal
+                        )
                     )
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.gentle_wakeup_setting_description),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 
@@ -392,13 +400,15 @@ fun SettingsScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.enable_vibrations_setting_title),
-                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                        style = MaterialTheme.typography.displayMedium.copy(
+                            fontWeight = FontWeight.Normal
+                        )
                     )
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.enable_vibrations_setting_description),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 
@@ -407,12 +417,12 @@ fun SettingsScreen(
                         checked = uiState.value.vibrationsEnabled,
                         onCheckedChange = settingsViewModel::handleEnableVibrationsSwitch,
                         colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colors.secondary,
-                            uncheckedThumbColor = MaterialTheme.colors.onPrimary,
-                            checkedTrackColor = MaterialTheme.colors.secondary,
-                            uncheckedTrackColor = MaterialTheme.colors.onPrimary,
-                            checkedTrackAlpha = 0.5f,
-                            uncheckedTrackAlpha = 0.5f
+                            checkedThumbColor = MaterialTheme.colorScheme.tertiary,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                            checkedTrackColor =
+                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
+                            uncheckedTrackColor =
+                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
                         ),
                         modifier = Modifier
                             .padding(
@@ -439,13 +449,15 @@ fun SettingsScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.accept_all_codes_setting_title),
-                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                        style = MaterialTheme.typography.displayMedium.copy(
+                            fontWeight = FontWeight.Normal
+                        )
                     )
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.accept_all_codes_setting_description),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 
@@ -454,12 +466,12 @@ fun SettingsScreen(
                         checked = uiState.value.acceptAnyCodeType,
                         onCheckedChange = settingsViewModel::handleAcceptBarcodesSwitch,
                         colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colors.secondary,
-                            uncheckedThumbColor = MaterialTheme.colors.onPrimary,
-                            checkedTrackColor = MaterialTheme.colors.secondary,
-                            uncheckedTrackColor = MaterialTheme.colors.onPrimary,
-                            checkedTrackAlpha = 0.5f,
-                            uncheckedTrackAlpha = 0.5f
+                            checkedThumbColor = MaterialTheme.colorScheme.tertiary,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                            checkedTrackColor =
+                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
+                            uncheckedTrackColor =
+                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
                         ),
                         modifier = Modifier
                             .padding(
@@ -486,13 +498,15 @@ fun SettingsScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.no_code_cancel_setting_title),
-                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                        style = MaterialTheme.typography.displayMedium.copy(
+                            fontWeight = FontWeight.Normal
+                        )
                     )
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.no_code_cancel_setting_description),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 
@@ -501,12 +515,12 @@ fun SettingsScreen(
                         checked = uiState.value.noCodeCancelEnabled,
                         onCheckedChange = settingsViewModel::handleNoCodeCancelSwitch,
                         colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colors.secondary,
-                            uncheckedThumbColor = MaterialTheme.colors.onPrimary,
-                            checkedTrackColor = MaterialTheme.colors.secondary,
-                            uncheckedTrackColor = MaterialTheme.colors.onPrimary,
-                            checkedTrackAlpha = 0.5f,
-                            uncheckedTrackAlpha = 0.5f
+                            checkedThumbColor = MaterialTheme.colorScheme.tertiary,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                            checkedTrackColor =
+                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
+                            uncheckedTrackColor =
+                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
                         ),
                         modifier = Modifier
                             .padding(
@@ -533,13 +547,13 @@ fun SettingsScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.download_code_title),
-                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                        style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Normal)
                     )
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.download_code_description),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 
@@ -556,7 +570,8 @@ fun SettingsScreen(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_download),
                         contentDescription = "Download button",
-                        tint = MaterialTheme.colors.secondary
+                        tint = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier.padding(6.dp)
                     )
                 }
             }
@@ -576,13 +591,15 @@ fun SettingsScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.scan_new_code_title),
-                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                        style = MaterialTheme.typography.displayMedium.copy(
+                            fontWeight = FontWeight.Normal
+                        )
                     )
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.scan_new_code_description),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 
@@ -600,7 +617,8 @@ fun SettingsScreen(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_scan),
                         contentDescription = "Scan button",
-                        tint = MaterialTheme.colors.secondary
+                        tint = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier.padding(6.dp)
                     )
                 }
             }
@@ -620,13 +638,15 @@ fun SettingsScreen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.qralarm_guide_title),
-                        style = MaterialTheme.typography.h2.copy(fontWeight = FontWeight.Normal)
+                        style = MaterialTheme.typography.displayMedium.copy(
+                            fontWeight = FontWeight.Normal
+                        )
                     )
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.qralarm_guide_description),
-                        style = MaterialTheme.typography.body1
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 }
 
@@ -643,7 +663,8 @@ fun SettingsScreen(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_guide),
                         contentDescription = "Guide button",
-                        tint = MaterialTheme.colors.secondary
+                        tint = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier.padding(6.dp)
                     )
                 }
             }
@@ -656,7 +677,7 @@ fun SettingsScreen(
                     R.string.current_dismiss_code,
                     uiState.value.dismissAlarmCode
                 ),
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.bodyLarge
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
@@ -753,7 +774,7 @@ fun ComboBox(
     Box(
         modifier = modifier
             .background(
-                color = if (enabled) MaterialTheme.colors.secondary else Kimberly,
+                color = if (enabled) MaterialTheme.colorScheme.tertiary else Kimberly,
                 shape = RoundedCornerShape(4.dp)
             )
             .run {
@@ -797,7 +818,7 @@ fun ComboBox(
                     )
                     .wrapContentHeight(),
                 text = menuItems[selectedIndex].toString(),
-                style = MaterialTheme.typography.h2
+                style = MaterialTheme.typography.displayMedium
             )
 
             Icon(
@@ -820,19 +841,20 @@ fun ComboBox(
                 modifier = Modifier
                     .wrapContentWidth()
                     .background(
-                        color = MaterialTheme.colors.secondary,
+                        color = MaterialTheme.colorScheme.tertiary,
                         shape = RoundedCornerShape(4.dp)
                     )
             ) {
                 menuItems.forEachIndexed { index, content ->
                     DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = content.toString(),
+                                style = MaterialTheme.typography.displayMedium
+                            )
+                        },
                         onClick = { onMenuItemClick(index) }
-                    ) {
-                        Text(
-                            text = content.toString(),
-                            style = MaterialTheme.typography.h2
-                        )
-                    }
+                    )
                 }
             }
         }

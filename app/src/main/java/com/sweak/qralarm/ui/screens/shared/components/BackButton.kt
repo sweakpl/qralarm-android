@@ -1,8 +1,8 @@
 package com.sweak.qralarm.ui.screens.shared.components
 
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -25,7 +25,7 @@ fun BackButton(
         Icon(
             painter = painterResource(id = R.drawable.ic_back_arrow),
             contentDescription = "Back button",
-            tint = MaterialTheme.colors.secondary
+            tint = MaterialTheme.colorScheme.tertiary
         )
     }
 }

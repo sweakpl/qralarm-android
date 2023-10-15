@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +35,7 @@ fun GuidePageBackgroundWork() {
                 .padding(horizontal = MaterialTheme.space.large)
                 .wrapContentWidth(),
             text = stringResource(R.string.important),
-            style = MaterialTheme.typography.h2
+            style = MaterialTheme.typography.displayMedium
         )
 
         Text(
@@ -43,7 +43,7 @@ fun GuidePageBackgroundWork() {
                 .padding(top = MaterialTheme.space.large)
                 .wrapContentWidth(),
             text = stringResource(R.string.fix_background_work),
-            style = MaterialTheme.typography.h2
+            style = MaterialTheme.typography.displayMedium
         )
 
         Icon(
@@ -52,7 +52,7 @@ fun GuidePageBackgroundWork() {
                 .wrapContentWidth(),
             painter = painterResource(id = R.drawable.ic_fix),
             contentDescription = "Fix icon",
-            tint = MaterialTheme.colors.secondary
+            tint = MaterialTheme.colorScheme.tertiary
         )
 
         BackgroundWorkText(
@@ -87,7 +87,7 @@ fun BackgroundWorkText(
                 .firstOrNull()
                 ?.let { uriHandler.openUri(link) }
         },
-        style = MaterialTheme.typography.body1
+        style = MaterialTheme.typography.bodyLarge
     )
 }
 

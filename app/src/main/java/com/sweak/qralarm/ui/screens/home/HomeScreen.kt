@@ -10,14 +10,13 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -38,7 +37,6 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.shared.components.*
 import com.sweak.qralarm.ui.screens.shared.navigateThrottled
 import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
-import com.sweak.qralarm.ui.theme.Victoria
 import com.sweak.qralarm.ui.theme.amikoFamily
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Screen
@@ -115,8 +113,8 @@ fun HomeScreen(
             .background(
                 Brush.verticalGradient(
                     listOf(
-                        MaterialTheme.colors.primary,
-                        MaterialTheme.colors.primaryVariant
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.secondary
                     )
                 )
             )
@@ -312,7 +310,7 @@ fun MenuButton(
         Icon(
             painter = painterResource(id = R.drawable.ic_menu),
             contentDescription = "Menu button",
-            tint = MaterialTheme.colors.secondary
+            tint = MaterialTheme.colorScheme.tertiary
         )
     }
 }
@@ -360,7 +358,7 @@ fun StartStopAlarmButton(
         onClick = onClick,
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.secondary
+            containerColor = MaterialTheme.colorScheme.tertiary
         )
     ) {
         Text(
@@ -384,13 +382,9 @@ fun SnoozeButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-    Button(
+    TextButton(
         onClick = onClick,
-        modifier = modifier,
-        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.Transparent
-        )
+        modifier = modifier
     ) {
         Text(
             text = stringResource(id = R.string.snooze),
@@ -430,24 +424,24 @@ fun AlarmSetSnackbar(
                             onClick = { snackbarHostState.currentSnackbarData?.performAction() }
                         ) {
                             Text(
-                                text = snackbarHostState.currentSnackbarData?.actionLabel
+                                text = snackbarHostState.currentSnackbarData?.visuals?.actionLabel
                                     ?: stringResource(R.string.cancel),
                             )
                         }
                     },
                     shape = MaterialTheme.shapes.medium,
-                    backgroundColor = Victoria
+                    containerColor = MaterialTheme.colorScheme.tertiary
                 ) {
                     Column {
                         Text(
                             text = stringResource(R.string.alarm_set),
-                            style = MaterialTheme.typography.h2
+                            style = MaterialTheme.typography.displayMedium
                         )
 
-                        snackbarHostState.currentSnackbarData?.message?.let {
+                        snackbarHostState.currentSnackbarData?.visuals?.message?.let {
                             Text(
                                 text = it,
-                                style = MaterialTheme.typography.body1,
+                                style = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.padding(top = MaterialTheme.space.small)
                             )
                         }

@@ -1,18 +1,21 @@
 package com.sweak.qralarm.ui.screens.shared.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.sweak.qralarm.ui.theme.space
@@ -41,15 +44,15 @@ fun Dialog(
                 .background(
                     Brush.verticalGradient(
                         listOf(
-                            MaterialTheme.colors.secondary,
-                            MaterialTheme.colors.secondaryVariant
+                            MaterialTheme.colorScheme.tertiary,
+                            MaterialTheme.colorScheme.primary
                         )
                     )
                 )
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.displayMedium,
                 modifier = Modifier.padding(
                     MaterialTheme.space.medium,
                     MaterialTheme.space.medium,
@@ -70,12 +73,8 @@ fun Dialog(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Button(
+                TextButton(
                     onClick = onNegativeClick,
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color.Transparent
-                    ),
-                    elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
                     modifier = Modifier
                         .weight(1f)
                         .padding(
@@ -93,7 +92,7 @@ fun Dialog(
                 Button(
                     onClick = onPositiveClick,
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colors.primary
+                        containerColor = MaterialTheme.colorScheme.secondary
                     ),
                     modifier = Modifier
                         .weight(1f)

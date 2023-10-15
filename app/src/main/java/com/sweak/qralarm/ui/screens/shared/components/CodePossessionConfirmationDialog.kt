@@ -7,12 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
@@ -49,15 +49,15 @@ fun CodePossessionConfirmationDialog(
                 .background(
                     Brush.verticalGradient(
                         listOf(
-                            MaterialTheme.colors.secondary,
-                            MaterialTheme.colors.secondaryVariant
+                            MaterialTheme.colorScheme.tertiary,
+                            MaterialTheme.colorScheme.primary
                         )
                     )
                 )
         ) {
             Text(
                 text = stringResource(R.string.do_you_have_code),
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.displayMedium,
                 modifier = Modifier.padding(MaterialTheme.space.medium)
             )
 
@@ -74,8 +74,8 @@ fun CodePossessionConfirmationDialog(
                     checked = isCodePossessionCheckboxChecked.value,
                     onCheckedChange = { isCodePossessionCheckboxChecked.value = it },
                     colors = CheckboxDefaults.colors(
-                        checkedColor = MaterialTheme.colors.primary,
-                        uncheckedColor = MaterialTheme.colors.primary
+                        checkedColor = MaterialTheme.colorScheme.primary,
+                        uncheckedColor = MaterialTheme.colorScheme.primary
                     ),
                     modifier = Modifier.size(24.dp)
                 )
@@ -96,12 +96,8 @@ fun CodePossessionConfirmationDialog(
                         bottom = MaterialTheme.space.medium,
                     )
             ) {
-                Button(
+                TextButton(
                     onClick = onSettingsClicked,
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color.Transparent
-                    ),
-                    elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = MaterialTheme.space.small)
@@ -116,8 +112,9 @@ fun CodePossessionConfirmationDialog(
                     onClick = onDoneClicked,
                     enabled = isCodePossessionCheckboxChecked.value,
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colors.primary,
-                        disabledBackgroundColor = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f)
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        disabledContainerColor =
+                        MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
                     ),
                     modifier = Modifier
                         .weight(1f)

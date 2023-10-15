@@ -1,6 +1,6 @@
 package com.sweak.qralarm.ui.screens.home
 
-import androidx.compose.material.SnackbarHostState
+import androidx.compose.material3.SnackbarHostState
 import com.sweak.qralarm.util.TimeFormat
 
 data class HomeUiState(

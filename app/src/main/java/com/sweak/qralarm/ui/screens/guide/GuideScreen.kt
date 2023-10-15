@@ -5,20 +5,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
@@ -93,8 +91,8 @@ fun GuideScreen(
             .background(
                 Brush.verticalGradient(
                     listOf(
-                        MaterialTheme.colors.primary,
-                        MaterialTheme.colors.primaryVariant
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.secondary
                     )
                 )
             )
@@ -121,7 +119,7 @@ fun GuideScreen(
                     MaterialTheme.space.large
                 )
                 .layoutId("guideText"),
-            style = MaterialTheme.typography.h1
+            style = MaterialTheme.typography.displayLarge
         )
 
         HorizontalPager(
@@ -142,7 +140,7 @@ fun GuideScreen(
                 .layoutId("navigationButtons"),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Button(
+            TextButton(
                 onClick = {
                     if (pagerState.currentPage == 1) {
                         composableScope.launch {
@@ -150,10 +148,6 @@ fun GuideScreen(
                         }
                     }
                 },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.Transparent
-                ),
-                elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
                 modifier = Modifier
                     .padding(
                         start = MaterialTheme.space.large,
@@ -190,9 +184,6 @@ fun GuideScreen(
                         }
                     }
                 },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = MaterialTheme.colors.primary
-                ),
                 modifier = Modifier
                     .padding(
                         end = MaterialTheme.space.large,
