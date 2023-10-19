@@ -53,18 +53,21 @@ class BootAndUpdateReceiver : BroadcastReceiver() {
                     ).first()
                 }
 
-                if (!isAlarmSet) {
-                    val alarmType = if (isSnoozeAlarmSet) {
-                        ALARM_TYPE_NORMAL
-                    } else {
-                        ALARM_TYPE_SNOOZE
-                    }
-
-                    if (currentTimeInMillis() < alarmTimeInMillis) {
-                        alarmManager.setAlarm(alarmTimeInMillis, alarmType)
-                    }
+                val alarmType = if (isSnoozeAlarmSet) {
+                    ALARM_TYPE_NORMAL
                 } else {
-                    alarmManager.postAlarmSetIndicationNotification(alarmTimeInMillis)
+                    ALARM_TYPE_SNOOZE
+                }
+
+                if (currentTimeInMillis() < alarmTimeInMillis) {
+                    if (!isAlarmSet) {
+                        alarmManager.setAlarm(alarmTimeInMillis, alarmType)
+                    } else {
+                        alarmManager.postAlarmSetIndicationNotification(
+                            alarmTimeInMillis,
+                            alarmType
+                        )
+                    }
                 }
             }
         }

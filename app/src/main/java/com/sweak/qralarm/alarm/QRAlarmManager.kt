@@ -19,6 +19,7 @@ import com.sweak.qralarm.util.ALARM_PENDING_INTENT_REQUEST_CODE
 import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_ID
 import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_REQUEST_CODE
+import com.sweak.qralarm.util.ALARM_TYPE_NORMAL
 import com.sweak.qralarm.util.CANCEL_ALARM_ACTION_REQUEST_CODE
 import com.sweak.qralarm.util.KEY_ALARM_TYPE
 import com.sweak.qralarm.util.TESTING_PERMISSION_ALARM_INTENT_REQUEST_CODE
@@ -76,7 +77,7 @@ class QRAlarmManager @Inject constructor(
             alarmPendingIntent
         )
 
-        postAlarmSetIndicationNotification(alarmTimeInMillis)
+        postAlarmSetIndicationNotification(alarmTimeInMillis, alarmType)
 
         packageManager.setComponentEnabledSetting(
             ComponentName(app, BootAndUpdateReceiver::class.java),
@@ -85,7 +86,7 @@ class QRAlarmManager @Inject constructor(
         )
     }
 
-    fun postAlarmSetIndicationNotification(alarmTimeInMillis: Long) {
+    fun postAlarmSetIndicationNotification(alarmTimeInMillis: Long, alarmType: Int) {
         val alarmSetIndicationPendingIntent = PendingIntent.getActivity(
             app.applicationContext,
             ALARM_SET_INDICATION_NOTIFICATION_REQUEST_CODE,
@@ -131,16 +132,18 @@ class QRAlarmManager @Inject constructor(
             )
             setSmallIcon(R.drawable.ic_notification_icon)
             setContentIntent(alarmSetIndicationPendingIntent)
-            addAction(
-                NotificationCompat.Action
-                    .Builder(
-                        R.drawable.ic_notification_icon,
-                        app.getString(R.string.cancel_alarm),
-                        cancelAlarmActionPendingIntent
-                    )
-                    .setAuthenticationRequired(true)
-                    .build()
-            )
+            if (alarmType == ALARM_TYPE_NORMAL) {
+                addAction(
+                    NotificationCompat.Action
+                        .Builder(
+                            R.drawable.ic_notification_icon,
+                            app.getString(R.string.cancel_alarm),
+                            cancelAlarmActionPendingIntent
+                        )
+                        .setAuthenticationRequired(true)
+                        .build()
+                )
+            }
         }.build()
 
         notificationManager.notify(
