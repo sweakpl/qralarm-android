@@ -13,7 +13,7 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BootReceiver : BroadcastReceiver() {
+class BootAndUpdateReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager
@@ -26,7 +26,8 @@ class BootReceiver : BroadcastReceiver() {
         "android.intent.action.ACTION_BOOT_COMPLETED",
         "android.intent.action.REBOOT",
         "android.intent.action.QUICKBOOT_POWERON",
-        "com.htc.intent.action.QUICKBOOT_POWERON"
+        "com.htc.intent.action.QUICKBOOT_POWERON",
+        "android.intent.action.MY_PACKAGE_REPLACED"
     )
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -37,7 +38,7 @@ class BootReceiver : BroadcastReceiver() {
 
             val isAlarmSet = alarmManager.isAlarmSet()
 
-            if (shouldSetAlarm && !isAlarmSet) {
+            if (shouldSetAlarm) {
                 val isSnoozeAlarmSet = runBlocking {
                     dataStoreManager.getBoolean(DataStoreManager.ALARM_SNOOZED).first()
                 }
@@ -52,14 +53,18 @@ class BootReceiver : BroadcastReceiver() {
                     ).first()
                 }
 
-                val alarmType = if (isSnoozeAlarmSet) {
-                    ALARM_TYPE_NORMAL
-                } else {
-                    ALARM_TYPE_SNOOZE
-                }
+                if (!isAlarmSet) {
+                    val alarmType = if (isSnoozeAlarmSet) {
+                        ALARM_TYPE_NORMAL
+                    } else {
+                        ALARM_TYPE_SNOOZE
+                    }
 
-                if (currentTimeInMillis() < alarmTimeInMillis) {
-                    alarmManager.setAlarm(alarmTimeInMillis, alarmType)
+                    if (currentTimeInMillis() < alarmTimeInMillis) {
+                        alarmManager.setAlarm(alarmTimeInMillis, alarmType)
+                    }
+                } else {
+                    alarmManager.postAlarmSetIndicationNotification(alarmTimeInMillis)
                 }
             }
         }

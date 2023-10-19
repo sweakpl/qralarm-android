@@ -79,13 +79,13 @@ class QRAlarmManager @Inject constructor(
         postAlarmSetIndicationNotification(alarmTimeInMillis)
 
         packageManager.setComponentEnabledSetting(
-            ComponentName(app, BootReceiver::class.java),
+            ComponentName(app, BootAndUpdateReceiver::class.java),
             PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
             PackageManager.DONT_KILL_APP
         )
     }
 
-    private fun postAlarmSetIndicationNotification(alarmTimeInMillis: Long) {
+    fun postAlarmSetIndicationNotification(alarmTimeInMillis: Long) {
         val alarmSetIndicationPendingIntent = PendingIntent.getActivity(
             app.applicationContext,
             ALARM_SET_INDICATION_NOTIFICATION_REQUEST_CODE,
@@ -155,7 +155,7 @@ class QRAlarmManager @Inject constructor(
         removeAlarmPendingIntent()
 
         packageManager.setComponentEnabledSetting(
-            ComponentName(app, BootReceiver::class.java),
+            ComponentName(app, BootAndUpdateReceiver::class.java),
             PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
             PackageManager.DONT_KILL_APP
         )
