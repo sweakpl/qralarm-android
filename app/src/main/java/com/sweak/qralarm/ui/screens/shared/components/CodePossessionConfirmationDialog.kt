@@ -22,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.theme.space
@@ -35,7 +37,7 @@ fun CodePossessionConfirmationDialog(
 ) {
     val isCodePossessionCheckboxChecked = remember { mutableStateOf(false) }
 
-    androidx.compose.ui.window.Dialog(
+    Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
             dismissOnBackPress = true,
@@ -104,6 +106,8 @@ fun CodePossessionConfirmationDialog(
                 ) {
                     Text(
                         text = stringResource(R.string.settings),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.padding(MaterialTheme.space.extraSmall)
                     )
                 }
@@ -122,6 +126,8 @@ fun CodePossessionConfirmationDialog(
                 ) {
                     Text(
                         text = stringResource(R.string.done),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.padding(MaterialTheme.space.extraSmall)
                     )
                 }

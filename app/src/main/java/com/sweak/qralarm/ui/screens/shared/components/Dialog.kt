@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.sweak.qralarm.ui.theme.space
@@ -86,6 +87,8 @@ fun Dialog(
                 ) {
                     Text(
                         text = negativeButtonText,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.padding(MaterialTheme.space.extraSmall)
                     )
                 }
@@ -105,6 +108,8 @@ fun Dialog(
                 ) {
                     Text(
                         text = positiveButtonText,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.padding(MaterialTheme.space.extraSmall)
                     )
                 }
