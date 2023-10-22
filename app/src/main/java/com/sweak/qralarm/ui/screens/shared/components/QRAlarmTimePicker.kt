@@ -52,19 +52,13 @@ class QRAlarmTimePicker @JvmOverloads constructor(
         binding.timePicker.setIs24HourView(is24HourView)
     }
 
-    fun setHour(hour: Int) {
+    fun setTime(hour: Int, minute: Int) = binding.timePicker.apply {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.timePicker.hour = hour
+            this.hour = hour
+            this.minute = minute
         } else {
-            binding.timePicker.currentHour = hour
-        }
-    }
-
-    fun setMinute(minute: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.timePicker.minute = minute
-        } else {
-            binding.timePicker.currentMinute = minute
+            this.currentHour = hour
+            this.currentMinute = minute
         }
     }
 

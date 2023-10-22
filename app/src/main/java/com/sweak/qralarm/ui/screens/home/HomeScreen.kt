@@ -340,10 +340,11 @@ fun TimePicker(
             }
         },
         update = {
-            it.setIs24HourView(uiState.value.alarmTimeFormat == TimeFormat.MILITARY)
-            it.setHour(uiState.value.alarmHourOfDay)
-            it.setMinute(uiState.value.alarmMinute)
-            it.isEnabled = !uiState.value.alarmSet && !uiState.value.alarmServiceRunning
+            with(uiState.value) {
+                it.setIs24HourView(alarmTimeFormat == TimeFormat.MILITARY)
+                it.setTime(alarmHourOfDay, alarmMinute)
+                it.isEnabled = !alarmSet && !alarmServiceRunning
+            }
         }
     )
 }
