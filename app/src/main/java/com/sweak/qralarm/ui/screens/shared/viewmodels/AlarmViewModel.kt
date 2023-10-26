@@ -69,7 +69,19 @@ class AlarmViewModel @Inject constructor(
         }
         viewModelScope.launch {
             dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).collect {
-                homeUiState.value = homeUiState.value.copy(alarmSet = it)
+                homeUiState.value = if (!it) {
+                    val originalAlarmTimeInMillis =
+                        dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
+
+                    homeUiState.value.copy(
+                        alarmSet = false,
+                        alarmHourOfDay = getAlarmHourOfDay(originalAlarmTimeInMillis),
+                        alarmMinute = getAlarmMinute(originalAlarmTimeInMillis)
+                    )
+                } else {
+                    homeUiState.value.copy(alarmSet = true)
+                }
+
                 if (!it) homeUiState.value.snackbarHostState.currentSnackbarData?.dismiss()
             }
         }

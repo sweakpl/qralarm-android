@@ -76,7 +76,7 @@
     <string name="enable_vibrations_setting_title">Enable vibrations</string>
     <string name="enable_vibrations_setting_description">The alarm sound will be accompanied by vibrations</string>
     <string name="alarm_set_indication_notification_channel_name">Notifying about alarms</string>
-    <string name="alarm_set_indication_notification_channel_description">Notifies about currently set alarm, hides in the notification drawer, does not make sound</string>
+    <string name="alarm_set_indication_notification_channel_description">Notifies about currently set alarm or missed alarms, hides in the notification drawer, does not make sound</string>
     <string name="alarm_set_indication_notification_title">Alarm is set</string>
     <string name="alarm_set_indication_notification_text">Alarm has been set for %1$s</string>
     <string name="do_you_have_code">Do You have the code?</string>
@@ -89,4 +89,6 @@
     <string name="alarm_in_less_than_1h_cancel_by_scanning">Alarm in less than 1 hour. Cancel by scanning the code!</string>
     <string name="full_screen_intent_permission_required_title">Full screen notifications required</string>
     <string name="full_screen_intent_permission_required_message">QRAlarm needs the permission to display full screen notifications on your lock screen when the alarm goes off. Please enable this functionality in the settings.</string>
+    <string name="alarm_missed_notification_title">Alarm missed!</string>
+    <string name="alarm_missed_notification_text">Your previously set alarm was missed likely due to time change on your phone</string>
 </resources>
