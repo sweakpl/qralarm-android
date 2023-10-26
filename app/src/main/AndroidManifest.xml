@@ -24,7 +24,7 @@
         tools:ignore="ProtectedPermissions" />
 
     <application
-        android:name="QRAlarmApp"
+        android:name=".QRAlarmApp"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="false"
@@ -35,7 +35,7 @@
         tools:targetApi="34">
 
         <activity
-            android:name="com.sweak.qralarm.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:showForAllUsers="true"
@@ -67,6 +67,18 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+
+        </receiver>
+
+        <receiver
+            android:name=".alarm.TimePreferencesChangeReceiver"
+            android:enabled="true"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
             </intent-filter>
 
         </receiver>
