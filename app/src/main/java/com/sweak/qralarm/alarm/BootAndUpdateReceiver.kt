@@ -10,6 +10,7 @@ import com.sweak.qralarm.util.currentTimeInMillis
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import java.time.ZoneId
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,27 +32,22 @@ class BootAndUpdateReceiver : BroadcastReceiver() {
     )
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action in intentActionsToFilter) {
-            val shouldSetAlarm = runBlocking {
-                dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first()
-            }
+        if (intent.action in intentActionsToFilter) runBlocking {
+            val shouldSetAlarm = dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first()
 
             val isAlarmSet = alarmManager.isAlarmSet()
 
             if (shouldSetAlarm) {
-                val isSnoozeAlarmSet = runBlocking {
+                val isSnoozeAlarmSet =
                     dataStoreManager.getBoolean(DataStoreManager.ALARM_SNOOZED).first()
-                }
 
-                val alarmTimeInMillis = runBlocking {
-                    dataStoreManager.getLong(
-                        if (isSnoozeAlarmSet) {
-                            DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS
-                        } else {
-                            DataStoreManager.ALARM_TIME_IN_MILLIS
-                        }
-                    ).first()
-                }
+                val alarmTimeInMillis = dataStoreManager.getLong(
+                    if (isSnoozeAlarmSet) {
+                        DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS
+                    } else {
+                        DataStoreManager.ALARM_TIME_IN_MILLIS
+                    }
+                ).first()
 
                 val alarmType = if (isSnoozeAlarmSet) ALARM_TYPE_SNOOZE else ALARM_TYPE_NORMAL
 
@@ -64,6 +60,9 @@ class BootAndUpdateReceiver : BroadcastReceiver() {
                             alarmType
                         )
                     }
+
+                    val alarmTimeZoneId = ZoneId.systemDefault().id
+                    dataStoreManager.putString(DataStoreManager.ALARM_TIME_ZONE_ID, alarmTimeZoneId)
                 }
             }
         }

@@ -18,6 +18,7 @@ import com.sweak.qralarm.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
@@ -156,6 +157,7 @@ class AlarmViewModel @Inject constructor(
                         homeUiState.value.alarmHourOfDay,
                         homeUiState.value.alarmMinute
                     )
+                    val alarmTimeZoneId = ZoneId.systemDefault().id
 
                     qrAlarmManager.setAlarm(alarmTimeInMillis, ALARM_TYPE_NORMAL)
 
@@ -164,6 +166,7 @@ class AlarmViewModel @Inject constructor(
                         putBoolean(DataStoreManager.ALARM_SNOOZED, false)
 
                         putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, alarmTimeInMillis)
+                        putString(DataStoreManager.ALARM_TIME_ZONE_ID, alarmTimeZoneId)
 
                         putInt(
                             DataStoreManager.SNOOZE_AVAILABLE_COUNT,
@@ -257,11 +260,13 @@ class AlarmViewModel @Inject constructor(
 
                 val alarmHour = getAlarmHourOfDay(snoozeAlarmTimeInMillis)
                 val alarmMinute = getAlarmMinute(snoozeAlarmTimeInMillis)
+                val alarmTimeZoneId = ZoneId.systemDefault().id
 
                 putLong(
                     DataStoreManager.SNOOZE_ALARM_TIME_IN_MILLIS,
                     getAlarmTimeInMillis(alarmHour, alarmMinute)
                 )
+                putString(DataStoreManager.ALARM_TIME_ZONE_ID, alarmTimeZoneId)
 
                 homeUiState.value = homeUiState.value.copy(
                     alarmHourOfDay = alarmHour,

@@ -67,6 +67,7 @@ class DataStoreManager(private val context: Context) {
         val ALARM_TIME_FORMAT = intPreferencesKey("alarmTimeFormat")
         val ALARM_TIME_IN_MILLIS = longPreferencesKey("alarmTimeInMillis")
         val SNOOZE_ALARM_TIME_IN_MILLIS = longPreferencesKey("snoozeAlarmTimeInMillis")
+        val ALARM_TIME_ZONE_ID = stringPreferencesKey("alarmTimeZoneId")
         
         val ALARM_SOUND = intPreferencesKey("alarmSound")
         val LOCAL_ALARM_SOUND_URI = stringPreferencesKey("localAlarmSoundUri")
