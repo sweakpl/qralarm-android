@@ -31,28 +31,28 @@ class QRAlarmApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        setUpPreferencesIfFirstLaunch()
+        setUpPreferences()
         createNotificationChannelsIfVersionRequires()
         applyCorrectionsIfAlarmServiceWasNotProperlyFinished()
     }
 
-    private fun setUpPreferencesIfFirstLaunch() {
-        val firstLaunch = runBlocking {
-            dataStoreManager.getBoolean(DataStoreManager.FIRST_LAUNCH).first()
-        }
+    private fun setUpPreferences() = runBlocking {
+        // Always update the timezone
+        dataStoreManager.putString(DataStoreManager.ALARM_TIME_ZONE_ID, ZoneId.systemDefault().id)
+
+        val firstLaunch = dataStoreManager.getBoolean(DataStoreManager.FIRST_LAUNCH).first()
 
         if (firstLaunch) {
-            runBlocking {
-                setDefaultAlarmLifecyclePreferences()
-                setDefaultAlarmTimePreferences()
-                setDefaultAlarmSoundPreferences()
-                setDefaultUsabilityPreferences()
-            }
+            setDefaultAlarmLifecyclePreferences()
+            setDefaultAlarmTimePreferences()
+            setDefaultAlarmSoundPreferences()
+            setDefaultUsabilityPreferences()
         }
     }
 
     private suspend fun setDefaultUsabilityPreferences() {
         dataStoreManager.putBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE, false)
+        dataStoreManager.putBoolean(DataStoreManager.ALLOW_NO_CODE_ALARM_CANCEL, true)
     }
 
     private suspend fun setDefaultAlarmLifecyclePreferences() {
@@ -69,12 +69,10 @@ class QRAlarmApp : Application() {
         val timeFormat =
             if (DateFormat.is24HourFormat(this)) TimeFormat.MILITARY.ordinal
             else TimeFormat.AMPM.ordinal
-        val alarmTimeZoneId = ZoneId.systemDefault().id
 
         dataStoreManager.apply {
             putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, timeInMillis)
             putInt(DataStoreManager.ALARM_TIME_FORMAT, timeFormat)
-            putString(DataStoreManager.ALARM_TIME_ZONE_ID, alarmTimeZoneId)
             putInt(DataStoreManager.SNOOZE_MAX_COUNT, SnoozeMaxCount.SNOOZE_MAX_COUNT_3.count)
             putInt(
                 DataStoreManager.SNOOZE_DURATION_MINUTES,
