@@ -25,11 +25,11 @@ import com.sweak.qralarm.ui.theme.space
 fun Dialog(
     onDismissRequest: () -> Unit,
     onPositiveClick: () -> Unit,
-    onNegativeClick: () -> Unit,
+    onNegativeClick: (() -> Unit)? = null,
     title: String,
     message: String,
     positiveButtonText: String,
-    negativeButtonText: String
+    negativeButtonText: String? = null
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -74,23 +74,24 @@ fun Dialog(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                TextButton(
-                    onClick = onNegativeClick,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(
-                            MaterialTheme.space.medium,
-                            MaterialTheme.space.small,
-                            MaterialTheme.space.small,
-                            MaterialTheme.space.medium
+                if (negativeButtonText != null) {
+                    TextButton(
+                        onClick = onNegativeClick ?: { /* no-op */ },
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(
+                                start = MaterialTheme.space.medium,
+                                top = MaterialTheme.space.small,
+                                bottom = MaterialTheme.space.medium
+                            )
+                    ) {
+                        Text(
+                            text = negativeButtonText,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(MaterialTheme.space.extraSmall)
                         )
-                ) {
-                    Text(
-                        text = negativeButtonText,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(MaterialTheme.space.extraSmall)
-                    )
+                    }
                 }
                 Button(
                     onClick = onPositiveClick,
@@ -100,10 +101,10 @@ fun Dialog(
                     modifier = Modifier
                         .weight(1f)
                         .padding(
-                            MaterialTheme.space.small,
-                            MaterialTheme.space.small,
-                            MaterialTheme.space.medium,
-                            MaterialTheme.space.medium
+                            start = MaterialTheme.space.medium,
+                            top = MaterialTheme.space.small,
+                            end = MaterialTheme.space.medium,
+                            bottom = MaterialTheme.space.medium
                         )
                 ) {
                     Text(

@@ -91,4 +91,6 @@
     <string name="full_screen_intent_permission_required_message">QRAlarm needs the permission to display full screen notifications on your lock screen when the alarm goes off. Please enable this functionality in the settings.</string>
     <string name="alarm_missed_notification_title">Alarm missed!</string>
     <string name="alarm_missed_notification_text">Your previously set alarm was missed likely due to time change on your phone</string>
+    <string name="browser_not_found">Web browser not found</string>
+    <string name="browser_not_found_description">QRAlarm could not find the web browser application to open the link. If you believe the browser is installed - please, open the link manually.</string>
 </resources>
