@@ -8,13 +8,17 @@ import com.sweak.qralarm.util.ALARM_TYPE_NORMAL
 import com.sweak.qralarm.util.ALARM_TYPE_SNOOZE
 import com.sweak.qralarm.util.currentTimeInMillis
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import java.time.ZoneId
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class BootAndUpdateReceiver : BroadcastReceiver() {
+
+    private val receiverScope = CoroutineScope(Dispatchers.IO)
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager
@@ -32,7 +36,7 @@ class BootAndUpdateReceiver : BroadcastReceiver() {
     )
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action in intentActionsToFilter) runBlocking {
+        if (intent.action in intentActionsToFilter) receiverScope.launch {
             val shouldSetAlarm = dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first()
 
             val isAlarmSet = alarmManager.isAlarmSet()

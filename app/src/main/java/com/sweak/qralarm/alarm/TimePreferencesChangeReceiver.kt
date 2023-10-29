@@ -18,8 +18,10 @@ import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.util.ALARM_TYPE_NORMAL
 import com.sweak.qralarm.util.currentTimeInMillis
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import java.time.DateTimeException
 import java.time.Instant
 import java.time.ZoneId
@@ -28,6 +30,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class TimePreferencesChangeReceiver : BroadcastReceiver() {
+
+    private val receiverScope = CoroutineScope(Dispatchers.IO)
 
     @Inject
     lateinit var dataStoreManager: DataStoreManager
@@ -45,7 +49,7 @@ class TimePreferencesChangeReceiver : BroadcastReceiver() {
     )
 
     override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action in intentActionsToFilter) runBlocking {
+        if (intent.action in intentActionsToFilter) receiverScope.launch {
             val isNormalAlarmSet = dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first()
             val isSnoozeAlarmSet = dataStoreManager.getBoolean(DataStoreManager.ALARM_SNOOZED).first()
             val isAlarmSetInternal = qrAlarmManager.isAlarmSet()
@@ -72,11 +76,11 @@ class TimePreferencesChangeReceiver : BroadcastReceiver() {
 
                 val newZoneId = getZoneIdOf(newZoneIdString)
                 val oldZoneId = getZoneIdOf(oldZoneIdString)
-                if (newZoneId == null || oldZoneId == null) return@runBlocking
+                if (newZoneId == null || oldZoneId == null) return@launch
 
                 val alarmSecondsOffset = getAlarmSecondsOffsetForTimezones(oldZoneId, newZoneId)
                 // If the time zone change didn't change time, leave the alarm as is:
-                if (alarmSecondsOffset == 0) return@runBlocking
+                if (alarmSecondsOffset == 0) return@launch
 
                 val oldAlarmTimInMillis =
                     dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
@@ -105,7 +109,7 @@ class TimePreferencesChangeReceiver : BroadcastReceiver() {
                 // is cancelled. If the alarm is still in the future it is left as is.
 
                 // If there is no alarm set then just abort:
-                if (!isAlarmSetInternal) return@runBlocking
+                if (!isAlarmSetInternal) return@launch
 
                 if (isNormalAlarmSet && !isSnoozeAlarmSet) {
                     val alarmTimeInMillis = dataStoreManager.getLong(
