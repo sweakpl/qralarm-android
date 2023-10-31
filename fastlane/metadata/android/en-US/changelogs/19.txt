@@ -1,3 +1,0 @@
-* Performance improvements,
-* UI improvements,
-* Bug fixes.
