@@ -38,9 +38,11 @@
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:showForAllUsers="true"
             android:showWhenLocked="true"
             android:theme="@style/QRAlarmTheme"
+            tools:ignore="LockedOrientationActivity"
             tools:targetApi="o_mr1">
 
             <intent-filter>
