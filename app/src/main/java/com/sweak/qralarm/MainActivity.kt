@@ -55,8 +55,13 @@ class MainActivity : ComponentActivity() {
             makeWindowShowOnLockScreen()
         }
 
-        switchTimeFormatIfNeeded()
-        checkIfAlarmSet()
+        // We're checking if savedInstanceState is null to prevent multiple onCreate() calls
+        // probably due to launching a runBlocking code. More information here:
+        // https://stackoverflow.com/a/22224038/14037302
+        if (savedInstanceState == null) {
+            switchTimeFormatIfNeeded()
+            checkIfAlarmSet()
+        }
 
         setContent {
             QRAlarmTheme {
