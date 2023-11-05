@@ -57,6 +57,12 @@ class AlarmViewModel @Inject constructor(
         )
     }
 
+    // This flag is used to prevent the changing of user-set alarm time to the one stored in
+    // DataStoreManager due to updating the SHOULD_REMIND_USER_TO_GET_CODE field which causes an
+    // additional and redundant broadcast of the ALARM_SET value in a FlowCollector. This is an
+    // issue internal to the DataStoreManager and not the DataStore framework itself.
+    private var shouldNotUpdateAlarmStateAfterCodePossessionConfirmation = false
+
     init {
         viewModelScope.launch {
             dataStoreManager.getBoolean(DataStoreManager.ALARM_SERVICE_RUNNING).collect {
@@ -70,6 +76,11 @@ class AlarmViewModel @Inject constructor(
         }
         viewModelScope.launch {
             dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).collect {
+                if (shouldNotUpdateAlarmStateAfterCodePossessionConfirmation) {
+                    shouldNotUpdateAlarmStateAfterCodePossessionConfirmation = false
+                    return@collect
+                }
+
                 homeUiState.value = if (!it) {
                     val originalAlarmTimeInMillis =
                         dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
@@ -296,6 +307,7 @@ class AlarmViewModel @Inject constructor(
     }
 
     fun confirmCodePossession() = viewModelScope.launch {
+        shouldNotUpdateAlarmStateAfterCodePossessionConfirmation = true
         dataStoreManager.putBoolean(DataStoreManager.SHOULD_REMIND_USER_TO_GET_CODE, false)
     }
 }
