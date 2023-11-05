@@ -82,7 +82,7 @@ class SettingsViewModel @Inject constructor(
                         getPreferredAlarmSoundUri(context.packageName)
                     )
                 } catch (ioException: IOException) {
-                    return@apply
+                    return
                 }
                 isLooping = false
                 setOnCompletionListener {
@@ -416,5 +416,14 @@ class SettingsViewModel @Inject constructor(
         }
 
         settingsUiState.value = settingsUiState.value.copy(alarmPreviewPlaying = false)
+    }
+
+    override fun onCleared() {
+        mediaPlayer.apply {
+            reset()
+            release()
+        }
+
+        super.onCleared()
     }
 }

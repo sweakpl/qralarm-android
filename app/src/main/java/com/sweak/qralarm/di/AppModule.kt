@@ -57,7 +57,6 @@ class AppModule {
         app.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
 
     @Provides
-    @Singleton
     fun provideMediaPlayer(): MediaPlayer = MediaPlayer()
 
     @Provides

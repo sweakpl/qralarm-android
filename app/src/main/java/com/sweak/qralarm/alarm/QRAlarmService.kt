@@ -10,7 +10,16 @@ import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.IBinder
+import android.os.Looper
+import android.os.Message
+import android.os.Process
+import android.os.VibrationAttributes
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
 import android.view.animation.LinearInterpolator
 import androidx.compose.ui.graphics.toArgb
@@ -19,7 +28,18 @@ import com.sweak.qralarm.MainActivity
 import com.sweak.qralarm.R
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
-import com.sweak.qralarm.util.*
+import com.sweak.qralarm.util.ALARM_FULL_SCREEN_REQUEST_CODE
+import com.sweak.qralarm.util.ALARM_NOTIFICATION_CHANNEL_ID
+import com.sweak.qralarm.util.ALARM_NOTIFICATION_ID
+import com.sweak.qralarm.util.ALARM_NOTIFICATION_REQUEST_CODE
+import com.sweak.qralarm.util.ALARM_TYPE_NORMAL
+import com.sweak.qralarm.util.ALARM_TYPE_SNOOZE
+import com.sweak.qralarm.util.AlarmSound
+import com.sweak.qralarm.util.FOREGROUND_SERVICE_ID
+import com.sweak.qralarm.util.GentleWakeupDuration
+import com.sweak.qralarm.util.HANDLER_THREAD_NAME
+import com.sweak.qralarm.util.KEY_ALARM_TYPE
+import com.sweak.qralarm.util.LOCK_SCREEN_VISIBILITY_FLAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +47,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
-import java.util.*
+import java.util.Timer
+import java.util.TimerTask
 import javax.inject.Inject
 import kotlin.concurrent.timerTask
 
@@ -194,7 +215,7 @@ class QRAlarmService : Service() {
     }
 
     private fun startPlayingAlarmSound(gentleWakeupDuration: GentleWakeupDuration?) {
-        val mediaPlayer = mediaPlayer.apply {
+        mediaPlayer.apply {
             reset()
             setAudioAttributes(
                 AudioAttributes.Builder()
@@ -208,8 +229,7 @@ class QRAlarmService : Service() {
                     getPreferredAlarmSoundUri()
                 )
             } catch (ioException: IOException) {
-                release()
-                return@apply
+                return
             }
             isLooping = true
             prepare()
@@ -293,6 +313,11 @@ class QRAlarmService : Service() {
 
         stopVibratingAndPlayingSound()
 
+        mediaPlayer.apply {
+            reset()
+            release()
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             stopForeground(STOP_FOREGROUND_REMOVE)
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -309,7 +334,9 @@ class QRAlarmService : Service() {
         vibrator.cancel()
 
         try {
-            mediaPlayer.stop()
+            if (mediaPlayer.isPlaying) {
+                mediaPlayer.stop()
+            }
         } catch (exception: IllegalStateException) {
             Log.e("QRAlarmService", "mediaPlayer was not initialized! Cannot stop it...")
         }
