@@ -242,7 +242,11 @@ class QRAlarmService : Service() {
                 duration = gentleWakeupDuration.inMillis()
                 interpolator = LinearInterpolator()
                 addUpdateListener {
-                    mediaPlayer.setVolume(it.animatedValue as Float, it.animatedValue as Float)
+                    try {
+                        mediaPlayer.setVolume(it.animatedValue as Float, it.animatedValue as Float)
+                    } catch (illegalStateException: IllegalStateException) {
+                        Log.e("QRAlarmService", "mediaPlayer was not initialized! Cannot set volume...")
+                    }
                 }
                 start()
             }
