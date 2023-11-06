@@ -1,0 +1,1 @@
+* Fix for rare crash when disabling alarm.
