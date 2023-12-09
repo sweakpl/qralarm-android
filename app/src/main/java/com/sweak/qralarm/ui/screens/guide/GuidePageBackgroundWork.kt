@@ -22,7 +22,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import com.sweak.qralarm.R
-import com.sweak.qralarm.ui.screens.shared.components.Dialog
+import com.sweak.qralarm.ui.screens.components.Dialog
 import com.sweak.qralarm.ui.theme.ButterflyBush
 import com.sweak.qralarm.ui.theme.space
 

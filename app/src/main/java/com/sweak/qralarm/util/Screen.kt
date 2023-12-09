@@ -1,7 +1,6 @@
 package com.sweak.qralarm.util
 
 sealed class Screen(val route: String) {
-    data object AlarmFlow : Screen("alarm_flow")
     data object HomeScreen : Screen("home_screen")
     data object ScannerScreen : Screen("scanner_screen")
     data object SettingsScreen : Screen("settings_screen")

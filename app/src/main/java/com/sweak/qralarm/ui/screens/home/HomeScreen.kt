@@ -45,16 +45,15 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
-import com.sweak.qralarm.ui.screens.shared.components.AlarmPermissionDialog
-import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionSetAlarmDialog
-import com.sweak.qralarm.ui.screens.shared.components.CameraPermissionSetAlarmRevokedDialog
-import com.sweak.qralarm.ui.screens.shared.components.CodePossessionConfirmationDialog
-import com.sweak.qralarm.ui.screens.shared.components.FullScreenIntentPermissionDialog
-import com.sweak.qralarm.ui.screens.shared.components.NotificationsPermissionDialog
-import com.sweak.qralarm.ui.screens.shared.components.NotificationsPermissionRevokedDialog
-import com.sweak.qralarm.ui.screens.shared.components.QRAlarmTimePicker
-import com.sweak.qralarm.ui.screens.shared.navigateThrottled
-import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
+import com.sweak.qralarm.ui.screens.components.AlarmPermissionDialog
+import com.sweak.qralarm.ui.screens.components.CameraPermissionSetAlarmDialog
+import com.sweak.qralarm.ui.screens.components.CameraPermissionSetAlarmRevokedDialog
+import com.sweak.qralarm.ui.screens.components.CodePossessionConfirmationDialog
+import com.sweak.qralarm.ui.screens.components.FullScreenIntentPermissionDialog
+import com.sweak.qralarm.ui.screens.components.NotificationsPermissionDialog
+import com.sweak.qralarm.ui.screens.components.NotificationsPermissionRevokedDialog
+import com.sweak.qralarm.ui.screens.components.QRAlarmTimePicker
+import com.sweak.qralarm.ui.screens.navigateThrottled
 import com.sweak.qralarm.ui.theme.amikoFamily
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Screen
@@ -64,13 +63,13 @@ import com.sweak.qralarm.util.TimeFormat
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    alarmViewModel: AlarmViewModel,
+    homeViewModel: HomeViewModel,
     finishableActionSideEffect: () -> Unit,
     context: Context = LocalContext.current
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    val uiState = remember { alarmViewModel.homeUiState }
+    val uiState = remember { homeViewModel.homeUiState }
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
     val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
@@ -170,7 +169,7 @@ fun HomeScreen(
             modifier = Modifier.layoutId("startStopAlarmButton"),
             uiState = uiState
         ) {
-            alarmViewModel.handleStartOrStopButtonClick(
+            homeViewModel.handleStartOrStopButtonClick(
                 navController,
                 cameraPermissionState,
                 notificationsPermissionState,
@@ -200,7 +199,7 @@ fun HomeScreen(
             modifier = Modifier.layoutId("snoozeButton")
         ) {
             SnoozeButton(
-                onClick = { alarmViewModel.handleSnoozeButtonClick(finishableActionSideEffect) },
+                onClick = { homeViewModel.handleSnoozeButtonClick(finishableActionSideEffect) },
                 modifier = Modifier.padding(0.dp, MaterialTheme.space.medium, 0.dp, 0.dp)
             )
         }
@@ -293,7 +292,7 @@ fun HomeScreen(
     if (uiState.value.showCodePossessionConfirmationDialog) {
         CodePossessionConfirmationDialog(
             onDoneClicked = {
-                alarmViewModel.confirmCodePossession()
+                homeViewModel.confirmCodePossession()
                 uiState.value = uiState.value.copy(showCodePossessionConfirmationDialog = false)
             },
             onSettingsClicked = {

@@ -1,4 +1,4 @@
-package com.sweak.qralarm.ui.screens.shared.components
+package com.sweak.qralarm.ui.screens.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

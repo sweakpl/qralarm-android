@@ -1,4 +1,4 @@
-package com.sweak.qralarm.ui.screens.shared
+package com.sweak.qralarm.ui.screens
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner

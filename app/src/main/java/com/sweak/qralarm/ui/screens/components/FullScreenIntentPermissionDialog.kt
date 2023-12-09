@@ -1,4 +1,4 @@
-package com.sweak.qralarm.ui.screens.shared.components
+package com.sweak.qralarm.ui.screens.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState

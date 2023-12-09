@@ -8,11 +8,32 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -40,11 +61,15 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
-import com.sweak.qralarm.ui.screens.shared.components.*
-import com.sweak.qralarm.ui.screens.shared.navigateThrottled
+import com.sweak.qralarm.ui.screens.components.BackButton
+import com.sweak.qralarm.ui.screens.components.CameraPermissionAddCodeDialog
+import com.sweak.qralarm.ui.screens.components.CameraPermissionAddCodeRevokedDialog
+import com.sweak.qralarm.ui.screens.components.DisablingBarcodesSupportDialog
+import com.sweak.qralarm.ui.screens.components.StoragePermissionDialog
+import com.sweak.qralarm.ui.screens.components.StoragePermissionRevokedDialog
+import com.sweak.qralarm.ui.screens.navigateThrottled
 import com.sweak.qralarm.ui.theme.Kimberly
 import com.sweak.qralarm.ui.theme.space
-import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
 import com.sweak.qralarm.util.Screen
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
@@ -707,20 +732,6 @@ fun SettingsScreen(
         },
         onNegativeClick = {
             uiState.value = uiState.value.copy(showStoragePermissionRevokedDialog = false)
-        }
-    )
-
-    DismissCodeAddedDialog(
-        uiState = uiState,
-        onPositiveClick = {
-            uiState.value = uiState.value.copy(showDismissCodeAddedDialog = false)
-        },
-        onNegativeClick = {
-            navController.navigateThrottled(
-                Screen.ScannerScreen.withArguments(SCAN_MODE_SET_CUSTOM_CODE),
-                lifecycleOwner
-            )
-            uiState.value = uiState.value.copy(showDismissCodeAddedDialog = false)
         }
     )
 

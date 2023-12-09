@@ -22,9 +22,9 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import com.sweak.qralarm.R
-import com.sweak.qralarm.ui.screens.shared.components.BackButton
-import com.sweak.qralarm.ui.screens.shared.navigateThrottled
-import com.sweak.qralarm.ui.screens.shared.popBackStackThrottled
+import com.sweak.qralarm.ui.screens.components.BackButton
+import com.sweak.qralarm.ui.screens.navigateThrottled
+import com.sweak.qralarm.ui.screens.popBackStackThrottled
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Screen
 import kotlinx.coroutines.launch

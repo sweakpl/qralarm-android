@@ -1,26 +1,26 @@
-package com.sweak.qralarm.ui.screens.shared.components
+package com.sweak.qralarm.ui.screens.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.res.stringResource
 import com.sweak.qralarm.R
-import com.sweak.qralarm.ui.screens.home.HomeUiState
+import com.sweak.qralarm.ui.screens.settings.SettingsUiState
 
 @Composable
-fun AlarmPermissionDialog(
-    uiState: MutableState<HomeUiState>,
+fun StoragePermissionRevokedDialog(
+    uiState: MutableState<SettingsUiState>,
     onPositiveClick: () -> Unit,
     onNegativeClick: () -> Unit
 ) {
-    if (uiState.value.showAlarmPermissionDialog) {
+    if (uiState.value.showStoragePermissionRevokedDialog) {
         Dialog(
             onDismissRequest = {
-                uiState.value = uiState.value.copy(showAlarmPermissionDialog = false)
+                uiState.value = uiState.value.copy(showStoragePermissionRevokedDialog = false)
             },
             onPositiveClick = onPositiveClick,
             onNegativeClick = onNegativeClick,
-            title = stringResource(R.string.alarm_permission_required_title),
-            message = stringResource(R.string.alarm_permission_required_message),
+            title = stringResource(R.string.storage_permission_required_title),
+            message = stringResource(R.string.storage_permission_revoked_message),
             positiveButtonText = stringResource(R.string.settings),
             negativeButtonText = stringResource(R.string.later)
         )

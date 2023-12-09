@@ -13,8 +13,7 @@ data class SettingsUiState(
     val availableSnoozeMaxCounts: List<SnoozeMaxCount> = SnoozeMaxCount.entries,
     val selectedSnoozeMaxCountIndex: Int,
     val snoozeMaxCountsDropdownMenuExpanded: Boolean = false,
-    val availableGentleWakeupDurations: List<GentleWakeupDuration> =
-        GentleWakeupDuration.entries,
+    val availableGentleWakeupDurations: List<GentleWakeupDuration> = GentleWakeupDuration.entries,
     val selectedGentleWakeupDurationIndex: Int,
     val availableGentleWakeupDurationsDropdownMenuExpanded: Boolean = false,
     val showStoragePermissionDialog: Boolean = false,
@@ -22,7 +21,6 @@ data class SettingsUiState(
     val dismissAlarmCode: String,
     val showCameraPermissionDialog: Boolean = false,
     val showCameraPermissionRevokedDialog: Boolean = false,
-    val showDismissCodeAddedDialog: Boolean = false,
     val vibrationsEnabled: Boolean,
     val acceptAnyCodeType: Boolean,
     val showDisablingBarcodesSupportDialog: Boolean = false,

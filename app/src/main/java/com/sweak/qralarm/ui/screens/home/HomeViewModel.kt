@@ -1,4 +1,4 @@
-package com.sweak.qralarm.ui.screens.shared.viewmodels
+package com.sweak.qralarm.ui.screens.home
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -12,8 +12,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
-import com.sweak.qralarm.ui.screens.home.HomeUiState
-import com.sweak.qralarm.ui.screens.shared.navigateThrottled
+import com.sweak.qralarm.ui.screens.navigateThrottled
 import com.sweak.qralarm.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -22,7 +21,7 @@ import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
-class AlarmViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val qrAlarmManager: QRAlarmManager
 ) : ViewModel() {
@@ -229,25 +228,20 @@ class AlarmViewModel @Inject constructor(
         }
     }
 
-    fun stopAlarm(): Job {
+    private fun stopAlarm() = viewModelScope.launch {
         qrAlarmManager.cancelAlarm()
 
-        val stopAlarmJob = viewModelScope.launch {
-            dataStoreManager.apply {
-                putBoolean(DataStoreManager.ALARM_SET, false)
-                putBoolean(DataStoreManager.ALARM_SNOOZED, false)
+        dataStoreManager.apply {
+            putBoolean(DataStoreManager.ALARM_SET, false)
+            putBoolean(DataStoreManager.ALARM_SNOOZED, false)
 
-                val originalAlarmTimeInMillis =
-                    getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
+            val originalAlarmTimeInMillis = getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
 
-                homeUiState.value = homeUiState.value.copy(
-                    alarmHourOfDay = getAlarmHourOfDay(originalAlarmTimeInMillis),
-                    alarmMinute = getAlarmMinute(originalAlarmTimeInMillis)
-                )
-            }
+            homeUiState.value = homeUiState.value.copy(
+                alarmHourOfDay = getAlarmHourOfDay(originalAlarmTimeInMillis),
+                alarmMinute = getAlarmMinute(originalAlarmTimeInMillis)
+            )
         }
-
-        return stopAlarmJob
     }
 
     fun handleSnoozeButtonClick(snoozeSideEffect: () -> Unit) {
@@ -296,14 +290,6 @@ class AlarmViewModel @Inject constructor(
         val timeFormat = dataStoreManager.getInt(DataStoreManager.ALARM_TIME_FORMAT).first()
 
         return TimeFormat.fromInt(timeFormat) ?: TimeFormat.MILITARY
-    }
-
-    fun getDismissCodes(): List<String> {
-        val userSavedDismissCode = runBlocking {
-            dataStoreManager.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
-        }
-
-        return setOf(userSavedDismissCode, DEFAULT_DISMISS_ALARM_CODE).toList()
     }
 
     fun confirmCodePossession() = viewModelScope.launch {

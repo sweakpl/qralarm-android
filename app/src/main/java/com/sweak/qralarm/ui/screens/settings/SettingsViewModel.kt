@@ -17,16 +17,28 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import com.google.accompanist.permissions.*
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
 import com.sweak.qralarm.R
 import com.sweak.qralarm.data.DataStoreManager
-import com.sweak.qralarm.ui.screens.shared.navigateThrottled
-import com.sweak.qralarm.util.*
+import com.sweak.qralarm.ui.screens.navigateThrottled
+import com.sweak.qralarm.util.AlarmSound
+import com.sweak.qralarm.util.GentleWakeupDuration
+import com.sweak.qralarm.util.ResourceProvider
+import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
+import com.sweak.qralarm.util.Screen
+import com.sweak.qralarm.util.SnoozeDuration
+import com.sweak.qralarm.util.SnoozeMaxCount
+import com.sweak.qralarm.util.currentTimeInMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.io.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,6 +75,14 @@ class SettingsViewModel @Inject constructor(
                     it.getBoolean(DataStoreManager.ALLOW_NO_CODE_ALARM_CANCEL).first()
                 )
             )
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            dataStoreManager.getString(DataStoreManager.DISMISS_ALARM_CODE).collect {
+                settingsUiState.value = settingsUiState.value.copy(dismissAlarmCode = it)
+            }
         }
     }
 
@@ -365,16 +385,6 @@ class SettingsViewModel @Inject constructor(
                 resourceProvider.getString(R.string.not_saved_default_qrcode),
                 Toast.LENGTH_LONG
             ).show()
-        }
-    }
-
-    fun setCustomQRCode(code: String) {
-        viewModelScope.launch {
-            dataStoreManager.putString(DataStoreManager.DISMISS_ALARM_CODE, code)
-            settingsUiState.value = settingsUiState.value.copy(
-                showDismissCodeAddedDialog = true,
-                dismissAlarmCode = code
-            )
         }
     }
 

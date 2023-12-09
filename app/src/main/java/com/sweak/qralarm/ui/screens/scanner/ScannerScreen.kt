@@ -2,6 +2,7 @@ package com.sweak.qralarm.ui.screens.scanner
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
@@ -9,31 +10,28 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
-import com.budiyev.android.codescanner.*
+import com.budiyev.android.codescanner.CodeScanner
+import com.budiyev.android.codescanner.CodeScannerView
+import com.budiyev.android.codescanner.DecodeCallback
+import com.budiyev.android.codescanner.ErrorCallback
+import com.budiyev.android.codescanner.ScanMode
 import com.google.zxing.BarcodeFormat
-import com.google.zxing.Result
-import com.sweak.qralarm.ui.screens.settings.SettingsViewModel
-import com.sweak.qralarm.ui.screens.shared.popBackStackThrottled
-import com.sweak.qralarm.ui.screens.shared.viewmodels.AlarmViewModel
+import com.sweak.qralarm.ui.screens.components.DismissCodeAddedDialog
+import com.sweak.qralarm.ui.screens.popBackStackThrottled
 import com.sweak.qralarm.ui.theme.BlueZodiac
 import com.sweak.qralarm.ui.theme.ButterflyBush
-import com.sweak.qralarm.util.SCAN_MODE_DISMISS_ALARM
-import com.sweak.qralarm.util.SCAN_MODE_SET_CUSTOM_CODE
-import com.sweak.qralarm.util.Screen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun ScannerScreen(
     navController: NavHostController,
-    alarmViewModel: AlarmViewModel,
-    settingsViewModel: SettingsViewModel,
+    scannerViewModel: ScannerViewModel,
     acceptAnyCodeType: Boolean,
     scannerMode: String?,
     finishableActionSideEffect: () -> Unit,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 ) {
+    val uiState = remember { scannerViewModel.scannerUiState }
+
     lateinit var codeScanner: CodeScanner
 
     DisposableEffect(lifecycleOwner) {
@@ -68,13 +66,11 @@ fun ScannerScreen(
                 scanMode = ScanMode.CONTINUOUS
                 isTouchFocusEnabled = true
                 decodeCallback = DecodeCallback { result ->
-                    handleDecodeResult(
+                    scannerViewModel.handleDecodeResult(
                         result = result,
                         scannerMode = scannerMode,
                         navController = navController,
                         lifecycleOwner = lifecycleOwner,
-                        alarmViewModel = alarmViewModel,
-                        settingsViewModel = settingsViewModel,
                         cancelAlarmSideEffect = finishableActionSideEffect
                     )
                 }
@@ -85,39 +81,18 @@ fun ScannerScreen(
             codeScannerView
         }
     )
-}
 
-fun handleDecodeResult(
-    result: Result,
-    scannerMode: String?,
-    navController: NavHostController,
-    lifecycleOwner: LifecycleOwner,
-    alarmViewModel: AlarmViewModel,
-    settingsViewModel: SettingsViewModel,
-    cancelAlarmSideEffect: () -> Unit
-) {
-    if (scannerMode == SCAN_MODE_DISMISS_ALARM) {
-        if (result.text in alarmViewModel.getDismissCodes()) {
-            val stopAlarmJob = alarmViewModel.stopAlarm()
-
-            CoroutineScope(Dispatchers.Main).launch {
-                stopAlarmJob.join()
-                cancelAlarmSideEffect.invoke()
-                navController.popBackStackThrottled(
-                    Screen.HomeScreen.route,
-                    false,
-                    lifecycleOwner
-                )
-            }
-        }
-    } else if (scannerMode == SCAN_MODE_SET_CUSTOM_CODE) {
-        settingsViewModel.setCustomQRCode(result.text)
-        CoroutineScope(Dispatchers.Main).launch {
-            navController.popBackStackThrottled(
-                Screen.SettingsScreen.route,
-                false,
-                lifecycleOwner
+    DismissCodeAddedDialog(
+        uiState = uiState,
+        onPositiveClick = {
+            uiState.value = uiState.value.copy(
+                showDismissCodeAddedDialog = false,
+                hasNewDismissCodeBeenAccepted = true
             )
+            navController.popBackStackThrottled(lifecycleOwner)
+        },
+        onNegativeClick = {
+            uiState.value = uiState.value.copy(showDismissCodeAddedDialog = false)
         }
-    }
+    )
 }

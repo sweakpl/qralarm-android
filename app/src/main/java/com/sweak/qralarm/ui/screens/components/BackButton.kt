@@ -1,4 +1,4 @@
-package com.sweak.qralarm.ui.screens.shared.components
+package com.sweak.qralarm.ui.screens.components
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import com.sweak.qralarm.R
-import com.sweak.qralarm.ui.screens.shared.popBackStackThrottled
+import com.sweak.qralarm.ui.screens.popBackStackThrottled
 
 @Composable
 fun BackButton(
