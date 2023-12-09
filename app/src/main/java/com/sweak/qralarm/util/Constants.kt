@@ -8,7 +8,7 @@ enum class TimeFormat {
     MILITARY, AMPM;
 
     companion object {
-        fun fromInt(ordinal: Int) = values().firstOrNull { it.ordinal == ordinal }
+        fun fromInt(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }
     }
 }
 
@@ -19,7 +19,7 @@ enum class AlarmSound(@RawRes val resourceId: Int, @StringRes val nameResourceId
     LOCAL_SOUND(-1, R.string.local_sound);
 
     companion object {
-        fun fromInt(ordinal: Int) = values().firstOrNull { it.ordinal == ordinal }
+        fun fromInt(ordinal: Int) = entries.firstOrNull { it.ordinal == ordinal }
     }
 }
 
@@ -36,7 +36,7 @@ enum class SnoozeDuration(val lengthMinutes: Int) {
     }
 
     companion object {
-        fun fromInt(lengthMinutes: Int) = values().firstOrNull { it.lengthMinutes == lengthMinutes }
+        fun fromInt(lengthMinutes: Int) = entries.firstOrNull { it.lengthMinutes == lengthMinutes }
     }
 }
 
@@ -51,7 +51,7 @@ enum class SnoozeMaxCount(val count: Int) {
     }
 
     companion object {
-        fun fromInt(count: Int) = values().firstOrNull { it.count == count }
+        fun fromInt(count: Int) = entries.firstOrNull { it.count == count }
     }
 }
 
@@ -68,7 +68,7 @@ enum class GentleWakeupDuration(val lengthSeconds: Int) {
     }
 
     companion object {
-        fun fromInt(lengthSeconds: Int) = values().firstOrNull { it.lengthSeconds == lengthSeconds }
+        fun fromInt(lengthSeconds: Int) = entries.firstOrNull { it.lengthSeconds == lengthSeconds }
     }
 }
 
@@ -99,7 +99,6 @@ const val ALARM_FULL_SCREEN_REQUEST_CODE = 500
 const val KEY_ALARM_TYPE = "alarmType"
 const val ALARM_TYPE_NORMAL = 200
 const val ALARM_TYPE_SNOOZE = 201
-const val ALARM_TYPE_NONE = 202
 
 const val ALARM_NOTIFICATION_CHANNEL_ID = "QRAlarmNotificationChannelId"
 const val ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID = "QRAlarmSetIndicationNotificationChannelId"

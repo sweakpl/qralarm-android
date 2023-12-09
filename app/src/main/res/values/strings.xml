@@ -29,7 +29,6 @@
     <string name="accept_all_codes_setting_title">Accept all codes</string>
     <string name="accept_all_codes_setting_description">The app will scan for both QR Codes and Barcodes</string>
     <string name="alarm_sound">Alarm sound</string>
-    <string name="default_system">Default system</string>
     <string name="gentle_guitar">Gentle guitar</string>
     <string name="alarm_clock">Alarm clock</string>
     <string name="air_horn">Air horn</string>

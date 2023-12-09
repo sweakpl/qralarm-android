@@ -40,18 +40,18 @@ class SettingsViewModel @Inject constructor(
         dataStoreManager.let {
             mutableStateOf(
                 SettingsUiState(
-                    selectedAlarmSoundIndex = AlarmSound.values().indexOf(
+                    selectedAlarmSoundIndex = AlarmSound.entries.indexOf(
                         AlarmSound.fromInt(it.getInt(DataStoreManager.ALARM_SOUND).first())
                     ),
-                    selectedSnoozeDurationIndex = SnoozeDuration.values().indexOf(
+                    selectedSnoozeDurationIndex = SnoozeDuration.entries.indexOf(
                         SnoozeDuration.fromInt(
                             it.getInt(DataStoreManager.SNOOZE_DURATION_MINUTES).first()
                         )
                     ),
-                    selectedSnoozeMaxCountIndex = SnoozeMaxCount.values().indexOf(
+                    selectedSnoozeMaxCountIndex = SnoozeMaxCount.entries.indexOf(
                         SnoozeMaxCount.fromInt(it.getInt(DataStoreManager.SNOOZE_MAX_COUNT).first())
                     ),
-                    selectedGentleWakeupDurationIndex = GentleWakeupDuration.values().indexOf(
+                    selectedGentleWakeupDurationIndex = GentleWakeupDuration.entries.indexOf(
                         GentleWakeupDuration.fromInt(
                             it.getInt(DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS).first()
                         )
@@ -118,7 +118,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun updateAlarmSoundSelection(newIndex: Int) {
-        val newSelectedAlarmSound = AlarmSound.values()[newIndex]
+        val newSelectedAlarmSound = AlarmSound.entries[newIndex]
 
         settingsUiState.value = settingsUiState.value.copy(
             selectedAlarmSoundIndex = newIndex
@@ -200,11 +200,11 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun isLocalSoundAlarmChosen(index: Int): Boolean {
-        return AlarmSound.values()[index].ordinal == AlarmSound.LOCAL_SOUND.ordinal
+        return AlarmSound.entries[index].ordinal == AlarmSound.LOCAL_SOUND.ordinal
     }
 
     fun updateSnoozeDurationSelection(newIndex: Int) {
-        val newSelectedSnoozeDuration = SnoozeDuration.values()[newIndex].lengthMinutes
+        val newSelectedSnoozeDuration = SnoozeDuration.entries[newIndex].lengthMinutes
 
         settingsUiState.value = settingsUiState.value.copy(
             selectedSnoozeDurationIndex = newIndex
@@ -219,7 +219,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun updateSnoozeMaxCountSelection(newIndex: Int) {
-        val newSelectedSnoozeMaxCount = SnoozeMaxCount.values()[newIndex].count
+        val newSelectedSnoozeMaxCount = SnoozeMaxCount.entries[newIndex].count
 
         settingsUiState.value = settingsUiState.value.copy(
             selectedSnoozeMaxCountIndex = newIndex
@@ -234,7 +234,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun updateGentleWakeupDurationSelection(newIndex: Int) {
-        val newSelectedGentleWakeupDuration = GentleWakeupDuration.values()[newIndex].lengthSeconds
+        val newSelectedGentleWakeupDuration = GentleWakeupDuration.entries[newIndex].lengthSeconds
 
         settingsUiState.value = settingsUiState.value.copy(
             selectedGentleWakeupDurationIndex = newIndex
