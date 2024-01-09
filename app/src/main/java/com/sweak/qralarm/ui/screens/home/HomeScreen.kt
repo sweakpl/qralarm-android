@@ -143,7 +143,9 @@ fun HomeScreen(
             MenuButton(
                 modifier = Modifier.padding(MaterialTheme.space.medium),
                 navController = navController
-            )
+            ) {
+                homeViewModel.shouldNotUpdateAlarmStateDataStoreManagerUpdate = true
+            }
         }
 
         Text(
@@ -296,6 +298,7 @@ fun HomeScreen(
                 uiState.value = uiState.value.copy(showCodePossessionConfirmationDialog = false)
             },
             onSettingsClicked = {
+                homeViewModel.shouldNotUpdateAlarmStateDataStoreManagerUpdate = true
                 navController.navigateThrottled(
                     Screen.SettingsScreen.route,
                     lifecycleOwner
@@ -314,12 +317,14 @@ fun HomeScreen(
 @Composable
 fun MenuButton(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    onClickSideEffect: () -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
     IconButton(
         onClick = {
+            onClickSideEffect()
             navController.navigateThrottled(Screen.SettingsScreen.route, lifecycleOwner)
         },
         modifier = modifier
