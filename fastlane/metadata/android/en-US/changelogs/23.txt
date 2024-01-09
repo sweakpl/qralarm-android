@@ -1,2 +1,0 @@
-* Fix for rare crash when launching the app,
-* Performance improvements.
