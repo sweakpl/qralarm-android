@@ -92,12 +92,14 @@ class QRAlarmService : Service() {
                             ServiceInfo.FOREGROUND_SERVICE_TYPE_MANIFEST
                         )
                     }
+
                     Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
                         startForeground(
                             FOREGROUND_SERVICE_ID,
                             createAlarmNotification(message.arg2)
                         )
                     }
+
                     else -> {
                         notificationManager.notify(
                             ALARM_NOTIFICATION_ID,
@@ -222,22 +224,25 @@ class QRAlarmService : Service() {
     private fun startPlayingAlarmSound(gentleWakeupDuration: GentleWakeupDuration?) {
         mediaPlayer.apply {
             reset()
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_ALARM)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build()
-            )
+
             try {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build()
+                )
                 setDataSource(
                     applicationContext,
                     getPreferredAlarmSoundUri()
                 )
+                isLooping = true
+                prepare()
+            } catch (illegalStateException: IllegalStateException) {
+                return
             } catch (ioException: IOException) {
                 return
             }
-            isLooping = true
-            prepare()
         }
 
         if (gentleWakeupDuration != null &&
@@ -250,7 +255,10 @@ class QRAlarmService : Service() {
                     try {
                         mediaPlayer.setVolume(it.animatedValue as Float, it.animatedValue as Float)
                     } catch (illegalStateException: IllegalStateException) {
-                        Log.e("QRAlarmService", "mediaPlayer was not initialized! Cannot set volume...")
+                        Log.e(
+                            "QRAlarmService",
+                            "mediaPlayer was not initialized! Cannot set volume..."
+                        )
                     }
                 }
                 start()
