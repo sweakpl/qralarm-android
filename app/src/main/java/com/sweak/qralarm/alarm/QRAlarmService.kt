@@ -39,6 +39,7 @@ import com.sweak.qralarm.util.FOREGROUND_SERVICE_ID
 import com.sweak.qralarm.util.GentleWakeupDuration
 import com.sweak.qralarm.util.HANDLER_THREAD_NAME
 import com.sweak.qralarm.util.KEY_ALARM_TYPE
+import com.sweak.qralarm.util.LOCAL_HANDLER_MESSAGE_IDENTIFIER
 import com.sweak.qralarm.util.LOCK_SCREEN_VISIBILITY_FLAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -76,6 +77,10 @@ class QRAlarmService : Service() {
     private inner class ServiceHandler(looper: Looper) : Handler(looper) {
 
         override fun handleMessage(message: Message) {
+            if (message.what != LOCAL_HANDLER_MESSAGE_IDENTIFIER) {
+                return
+            }
+
             if (message.arg2 !in arrayOf(ALARM_TYPE_NORMAL, ALARM_TYPE_SNOOZE)) {
                 stopSelf(message.arg1)
             } else {
@@ -296,7 +301,7 @@ class QRAlarmService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        serviceHandler?.obtainMessage()?.also { message ->
+        serviceHandler?.obtainMessage(LOCAL_HANDLER_MESSAGE_IDENTIFIER)?.also { message ->
             message.arg1 = startId
             message.arg2 =
                 intent?.getIntExtra(KEY_ALARM_TYPE, ALARM_TYPE_NORMAL) ?: ALARM_TYPE_NORMAL
