@@ -14,8 +14,8 @@
   <string name="camera_permission_set_alarm_required_message">QRAlarm, alarmları devre dışı bırakmak için QR Kodlarını taramak amacıyla telefonunuzun kamerasına erişime ihtiyaç duyar. Bu izin olmadan uygulama düzgün çalışamaz.</string>
   <string name="camera_permission_add_code_required_message">QRAlarm, yeni bir çıkış kodu içeren QR Kodlarını taramak için telefonunuzun kamerasına erişime ihtiyaç duyar.</string>
   <string name="allow">İzin ver</string>
-  <string name="camera_permission_set_alarm_revoked_message">Kamera izni kalıcı olarak iptal edildi. Onsuz QRAlarm düzgün çalışamaz. Düzeltmek için ayarlara gidin ve QRAlarm'ın telefonun kamerasını kullanmasına izin verin.</string>
-  <string name="camera_permission_add_code_revoked_message">Kamera izni kalıcı olarak iptal edildi. Bu olmadan yeni bir kapatma alarmı ayarlayamaz ve alarmları kapatamazsınız. Ayarlara gidin ve QRAlarm'ın telefonun kamerasını kullanmasına izin verin.</string>
+  <string name="camera_permission_set_alarm_revoked_message">Kamera izni kalıcı olarak iptal edildi. Onsuz QRAlarm düzgün çalışamaz. Düzeltmek için ayarlara gidin ve QRAlarm\'ın telefonun kamerasını kullanmasına izin verin.</string>
+  <string name="camera_permission_add_code_revoked_message">Kamera izni kalıcı olarak iptal edildi. Bu olmadan yeni bir kapatma alarmı ayarlayamaz ve alarmları kapatamazsınız. Ayarlara gidin ve QRAlarm\'ın telefonun kamerasını kullanmasına izin verin.</string>
   <string name="snooze">ERTELE</string>
   <string name="alarm_notification_text_snooze">Erteleme bitti! QR Kodunuzu tarayın!</string>
   <string name="alarm_at">Alarm ayarı:</string>
@@ -35,8 +35,8 @@
   <string name="download_code_title">Kodu indir</string>
   <string name="download_code_description">Varsayılan QR kodu resmini galeriye indirin</string>
   <string name="storage_permission_required_title">Depolama izni gerekli</string>
-  <string name="storage_permission_required_message">QRAlarm'ın, tarandıktan sonra alarmları kapatacak varsayılan bir QR Kodunu indirmek için telefonunuzun depolama alanına erişmesi gerekir.</string>
-  <string name="storage_permission_revoked_message">Depolama izni kalıcı olarak iptal edildi. Bu olmadan QRAlarm, tarandıktan sonra alarmları kapatacak varsayılan bir QR Kodu indiremez. Düzeltmek için ayarlara gidin ve QRAlarm'ın telefonun depolama alanını kullanmasına izin verin.</string>
+  <string name="storage_permission_required_message">QRAlarm\'ın, tarandıktan sonra alarmları kapatacak varsayılan bir QR Kodunu indirmek için telefonunuzun depolama alanına erişmesi gerekir.</string>
+  <string name="storage_permission_revoked_message">Depolama izni kalıcı olarak iptal edildi. Bu olmadan QRAlarm, tarandıktan sonra alarmları kapatacak varsayılan bir QR Kodu indiremez. Düzeltmek için ayarlara gidin ve QRAlarm\'ın telefonun depolama alanını kullanmasına izin verin.</string>
   <string name="saved_default_qrcode">Varsayılan QR Kodu indirildi!</string>
   <string name="not_saved_default_qrcode">Varsayılan QR Kodu indirilemedi…</string>
   <string name="scan_new_code_title">Yeni kod tara</string>
@@ -52,7 +52,7 @@
   <string name="qralarm_guide_description">Uygulamanın nasıl kullanılacağını ve stabilitesinin nasıl sağlanacağını kontrol edin</string>
   <string name="guide">Kılavuz</string>
   <string name="get_your_qrcode">QR Kodunuzu Alın</string>
-  <string name="download_or_scan_code_description">QRAlarm, bir QR Kodu tarayarak kapatılabilecek alarmları ayarlamanızı sağlar. Bu sadece herhangi bir QR Kodu olamaz! İlk alarmınızı kurmadan önce Ayarlar'dan varsayılan bir Kod Görüntüsü indirmelisiniz. Zaten kendi QR Kodunuz varsa, tarayın - QR Alarm sizin için hatırlayacak ve alarmlarınızı iptal etmek için kullanacaktır! Barkod desteğini Ayarlar'dan da etkinleştirebileceğinizi unutmayın.</string>
+  <string name="download_or_scan_code_description">QRAlarm, bir QR Kodu tarayarak kapatılabilecek alarmları ayarlamanızı sağlar. Bu sadece herhangi bir QR Kodu olamaz! İlk alarmınızı kurmadan önce Ayarlar\'dan varsayılan bir Kod Görüntüsü indirmelisiniz. Zaten kendi QR Kodunuz varsa, tarayın - QR Alarm sizin için hatırlayacak ve alarmlarınızı iptal etmek için kullanacaktır! Barkod desteğini Ayarlar\'dan da etkinleştirebileceğinizi unutmayın.</string>
   <string name="previous">Önceki</string>
   <string name="next">Sonraki</string>
   <string name="important">ÖNEMLİ!</string>
@@ -65,13 +65,13 @@
   <string name="saved_local_sound">Seçilen alarm sesi kaydedildi!</string>
   <string name="notifications_permission_required_title">Bildirim izni gerekli</string>
   <string name="notifications_permission_required_message">QRAlarm, alarm çaldığında bildirim göndermek için izne ihtiyaç duyar. Bu olmadan alarma bildirim eşlik etmeyecektir.</string>
-  <string name="notifications_permission_revoked_message">Bildirim izni kalıcı olarak iptal edildi. Bu olmadan alarma bildirim eşlik etmez. Ayarlara gidin ve QRAlarm'ın bildirim göndermesine izin verin.</string>
+  <string name="notifications_permission_revoked_message">Bildirim izni kalıcı olarak iptal edildi. Bu olmadan alarma bildirim eşlik etmez. Ayarlara gidin ve QRAlarm\'ın bildirim göndermesine izin verin.</string>
   <string name="disabling_barcodes_title">Barkodları Devre Dışı Bırakma</string>
   <string name="disabling_barcodes_message">Barkod desteğini devre dışı bırakmaya çalışıyorsunuz. İşten çıkarma kodunuz daha önce taranmış bir Barkoda bağlıysa, gelecekteki alarmları reddedemezsiniz! Devam etmek istediğinizden emin misiniz?</string>
   <string name="yes">Evet</string>
   <string name="no">Hayır</string>
-  <string name="time_left_hours_minutes">Kalan süre: %1 $ds %2 $ddk</string>
-  <string name="time_left_minutes">Kalan süre: %1 $ddk</string>
+  <string name="time_left_hours_minutes">Kalan süre: %1$ds %2$ddk</string>
+  <string name="time_left_minutes">Kalan süre: %1$ddk</string>
   <string name="enable_vibrations_setting_title">Titreşimleri etkinleştir</string>
   <string name="enable_vibrations_setting_description">Alarm sesine titreşimler eşlik edecektir</string>
   <string name="alarm_set_indication_notification_channel_name">Alarmları bildirme</string>
