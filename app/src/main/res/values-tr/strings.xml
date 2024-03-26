@@ -1,5 +1,4 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="app_name">QRAlarm</string>
   <string name="alarm_notification_channel_name">Ateşleme alarmları</string>
   <string name="alarm_notification_channel_description">Alarm sesini çalar, bir bildirim görüntüler ve ekranda açılır</string>
   <string name="alarm_notification_title">QRAlarm</string>
@@ -58,8 +57,6 @@
   <string name="important">ÖNEMLİ!</string>
   <string name="fix_background_work">Arka plan çalışmasını düzelt</string>
   <string name="background_work_description">Ne yazık ki birçok akıllı telefon üreticisi, düzgün çalışan uygulamalara göre daha uzun pil ömrünü (zar zor fark edilse bile) tercih ediyor! Samsung, OnePlus, Huawei, Xiaomi ve diğerleri, arka planda çalışırken uygulamaları öldürme eğilimindedir. QRAlarm da bu sorunu yaşayabilir! Birçok akıllı telefon üreticisi, QRAlarm uygulaması aracılığıyla ayarlanan alarmla birlikte uygulamayı tamamen kapatıyor. Bu sorunu çözmek için lütfen dontkillmyapp.com adresine gidin ve akıllı telefonunuzun talimatlarını izleyin. Bu, işletim sisteminiz tarafından gerçekleştirilen "optimizasyonları" azaltmaya yardımcı olacaktır.</string>
-  <string name="dontkillmyapp_short">dontkillmyapp.com</string>
-  <string name="dontkillmyapp_verbose">https://dontkillmyapp.com/</string>
   <string name="local_sound">Yerel ses</string>
   <string name="not_saved_local_sound">Alarm sesi kaydedilemedi.</string>
   <string name="saved_local_sound">Seçilen alarm sesi kaydedildi!</string>
@@ -70,8 +67,8 @@
   <string name="disabling_barcodes_message">Barkod desteğini devre dışı bırakmaya çalışıyorsunuz. İşten çıkarma kodunuz daha önce taranmış bir Barkoda bağlıysa, gelecekteki alarmları reddedemezsiniz! Devam etmek istediğinizden emin misiniz?</string>
   <string name="yes">Evet</string>
   <string name="no">Hayır</string>
-  <string name="time_left_hours_minutes">Kalan süre: %1$ds %2$ddk</string>
-  <string name="time_left_minutes">Kalan süre: %1$ddk</string>
+  <string name="time_left_hours_minutes">Kalan süre: %1$d s %2$d dk</string>
+  <string name="time_left_minutes">Kalan süre: %1$d dk</string>
   <string name="enable_vibrations_setting_title">Titreşimleri etkinleştir</string>
   <string name="enable_vibrations_setting_description">Alarm sesine titreşimler eşlik edecektir</string>
   <string name="alarm_set_indication_notification_channel_name">Alarmları bildirme</string>

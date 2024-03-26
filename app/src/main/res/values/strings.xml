@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">QRAlarm</string>
+    <string name="app_name" translatable="false">QRAlarm</string>
     <string name="alarm_notification_channel_name">Firing alarms</string>
     <string name="alarm_notification_channel_description">Plays alarm sound, displays a notification and pops up on screen</string>
     <string name="alarm_notification_title">QRAlarm</string>
@@ -15,7 +15,7 @@
     <string name="camera_permission_add_code_required_message">QRAlarm needs access to Your phone’s camera in order to scan for QR Codes containing a new dismiss code.</string>
     <string name="allow">Allow</string>
     <string name="camera_permission_set_alarm_revoked_message">Camera permission has been permanently revoked. Without it QRAlarm can not work properly. In order to fix it, go to settings and allow QRAlarm to use phone’s camera.</string>
-    <string name="camera_permission_add_code_revoked_message">Camera permission has been permanently revoked. Without it You can not set a new dismiss alarm and dismiss alarms. Go to settings and allow QRAlarm to use phone’s camera.</string>
+    <string name="camera_permission_add_code_revoked_message">Camera permission has been permanently revoked. Without it You can not set a new dismiss code and dismiss alarms. Go to settings and allow QRAlarm to use phone’s camera.</string>
     <string name="snooze">SNOOZE</string>
     <string name="alarm_notification_text_snooze">Snooze over! Go and scan Your QR Code!</string>
     <string name="alarm_at">Alarm set at:</string>
@@ -51,15 +51,15 @@
     <string name="qralarm_guide_title">QRAlarm Guide</string>
     <string name="qralarm_guide_description">Check how to use and ensure stability of  the application</string>
     <string name="guide">Guide</string>
-    <string name="get_your_qrcode">Get Your QR Code</string>
-    <string name="download_or_scan_code_description">QRAlarm lets You set alarms that can be turned off by scanning a QR Code. This can not be just any QR Code! Before You set up Your first alarm, You should Download a default Code Image from the Settings. In case You already have Your own QR Code then scan it - QR Alarm will remember it for You and will use it to cancel Your alarms! Note, that You can also enable the Barcodes support in the Settings.</string>
+    <string name="get_your_qrcode">Get your QR Code</string>
+    <string name="download_or_scan_code_description">QRAlarm lets you set alarms that can be turned off by scanning a QR Code. This can not be just any QR Code! Before you set up your first alarm, you should Download a default Code Image from the Settings. In case you already have your own QR Code then scan it - QRAlarm will remember it for you and will use it to cancel Your alarms! Note, that you can also enable the Barcodes support in the Settings.</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="important">IMPORTANT!</string>
     <string name="fix_background_work">Fix background work</string>
     <string name="background_work_description">Unfortunately many smartphone manufacturers prefer longer battery life (even if barely noticeable) over properly working applications! Samsung, OnePlus, Huawei, Xiaomi and many others tend to be killing applications while they are working in the background. QRAlarm can also suffer this problem! Many smartphone manufacturers kill the app completely along with the alarm that was set via the QRAlarm application. In order to fix this issue, please, go to dontkillmyapp.com and follow the instructions for Your smartphone - this should help mitigate the “optimizations” carried out by Your operating system.</string>
-    <string name="dontkillmyapp_short">dontkillmyapp.com</string>
-    <string name="dontkillmyapp_verbose">https://dontkillmyapp.com/</string>
+    <string name="dontkillmyapp_short" translatable="false">dontkillmyapp.com</string>
+    <string name="dontkillmyapp_verbose" translatable="false">https://dontkillmyapp.com/</string>
     <string name="local_sound">Local sound</string>
     <string name="not_saved_local_sound">Alarm sound couldn\'t be saved.</string>
     <string name="saved_local_sound">Selected alarm sound has been saved!</string>
@@ -70,8 +70,8 @@
     <string name="disabling_barcodes_message">You are trying to disable Barcodes support. If Your dismiss code is tied to a previously scanned Barcode You won\'t be able to dismiss future alarms! Are You sure You want to proceed?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="time_left_hours_minutes">Time left: %1$dh %2$dmin</string>
-    <string name="time_left_minutes">Time left: %1$dmin</string>
+    <string name="time_left_hours_minutes">Time left: %1$d h %2$d min</string>
+    <string name="time_left_minutes">Time left: %1$d min</string>
     <string name="enable_vibrations_setting_title">Enable vibrations</string>
     <string name="enable_vibrations_setting_description">The alarm sound will be accompanied by vibrations</string>
     <string name="alarm_set_indication_notification_channel_name">Notifying about alarms</string>
