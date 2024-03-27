@@ -80,8 +80,6 @@
   <string name="done">Bitti!</string>
   <string name="yes_i_have_code">Evet - Geçerli bir QR/Barkodum var.</string>
   <string name="cancel_alarm">Alarmı iptal et</string>
-  <string name="no_code_cancel_setting_title">Kodsuz iptal</string>
-  <string name="no_code_cancel_setting_description">1 saatten fazla sürerse alarmı kodsuz iptal edin</string>
   <string name="alarm_in_less_than_1h_cancel_by_scanning">1 saatten kısa sürede alarm. Kodu tarayarak iptal edin!</string>
   <string name="full_screen_intent_permission_required_title">Tam ekran bildirimleri gerekli</string>
   <string name="full_screen_intent_permission_required_message">QRAlarm, alarm çaldığında kilit ekranınızda tam ekran bildirimlerini görüntülemek için izne ihtiyaç duyar. Lütfen bu işlevi ayarlardan etkinleştirin.</string>

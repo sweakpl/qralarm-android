@@ -83,8 +83,6 @@
     <string name="done">Done!</string>
     <string name="yes_i_have_code">Yes - I have a valid QR/Bar code.</string>
     <string name="cancel_alarm">Cancel the alarm</string>
-    <string name="no_code_cancel_setting_title">No-code cancel</string>
-    <string name="no_code_cancel_setting_description">Cancel alarm without code if it is in more than 1 hour</string>
     <string name="alarm_in_less_than_1h_cancel_by_scanning">Alarm in less than 1 hour. Cancel by scanning the code!</string>
     <string name="full_screen_intent_permission_required_title">Full screen notifications required</string>
     <string name="full_screen_intent_permission_required_message">QRAlarm needs the permission to display full screen notifications on your lock screen when the alarm goes off. Please enable this functionality in the settings.</string>

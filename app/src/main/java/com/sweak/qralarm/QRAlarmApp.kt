@@ -52,7 +52,6 @@ class QRAlarmApp : Application() {
 
     private suspend fun setDefaultUsabilityPreferences() {
         dataStoreManager.putBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE, false)
-        dataStoreManager.putBoolean(DataStoreManager.ALLOW_NO_CODE_ALARM_CANCEL, true)
     }
 
     private suspend fun setDefaultAlarmLifecyclePreferences() {

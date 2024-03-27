@@ -81,8 +81,6 @@
     <string name="done">Gotowe!</string>
     <string name="yes_i_have_code">Tak - mam ważny kod QR/Bar.</string>
     <string name="cancel_alarm">Anuluj alarm</string>
-    <string name="no_code_cancel_setting_title">Anulowanie bez kodu</string>
-    <string name="no_code_cancel_setting_description">Anuluj alarm bez kodu, jeśli jest on za dłużej niż 1 godzinę</string>
     <string name="alarm_in_less_than_1h_cancel_by_scanning">Alarm za mniej niż 1 godzinę. Anuluj skanując kod!</string>
     <string name="full_screen_intent_permission_required_title">Wymagane powiadomienia pełnoekranowe</string>
     <string name="full_screen_intent_permission_required_message">QRAlarm potrzebuje uprawnień do wyświetlania pełnoekranowych powiadomień na ekranie blokady gdy alarm jest uruchamiany. Należy włączyć tę funkcję w ustawieniach.</string>

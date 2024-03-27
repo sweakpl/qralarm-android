@@ -210,14 +210,8 @@ class HomeViewModel @Inject constructor(
                     dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
                 val currentTimeInMillis = System.currentTimeMillis()
 
-                val isNoCodeAlarmCancellationAllowed = dataStoreManager.getBoolean(
-                    DataStoreManager.ALLOW_NO_CODE_ALARM_CANCEL
-                ).first()
-
                 // If stop request was at least an hour before the alarm - stop immediately...
-                if (isNoCodeAlarmCancellationAllowed &&
-                    alarmTimeInMillis - currentTimeInMillis > 3600000
-                ) {
+                if (alarmTimeInMillis - currentTimeInMillis > 3600000) {
                     stopAlarm()
                 } else { // ... else start ScannerScreen to disable alarm by scanning the code.
                     navController.navigateThrottled(

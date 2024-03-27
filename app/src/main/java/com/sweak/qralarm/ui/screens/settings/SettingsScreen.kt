@@ -522,55 +522,6 @@ fun SettingsScreen(
                 ) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.no_code_cancel_setting_title),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            fontWeight = FontWeight.Normal
-                        )
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.no_code_cancel_setting_description),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
-                    Switch(
-                        checked = uiState.value.noCodeCancelEnabled,
-                        onCheckedChange = settingsViewModel::handleNoCodeCancelSwitch,
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.tertiary,
-                            uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                            checkedTrackColor =
-                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
-                            uncheckedTrackColor =
-                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
-                        ),
-                        modifier = Modifier
-                            .padding(
-                                horizontal = 20.dp,
-                                vertical = MaterialTheme.space.medium
-                            )
-                            .scale(1.5f)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                        .weight(1f)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.download_code_title),
                         style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Normal)
                     )

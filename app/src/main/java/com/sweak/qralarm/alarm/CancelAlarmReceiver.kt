@@ -32,12 +32,8 @@ class CancelAlarmReceiver : BroadcastReceiver() {
                 dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
             val currentTimeInMillis = System.currentTimeMillis()
 
-            val isNoCodeAlarmCancellationAllowed = dataStoreManager.getBoolean(
-                DataStoreManager.ALLOW_NO_CODE_ALARM_CANCEL
-            ).first()
-
             // If cancellation request was at least an hour before the alarm - turn off immediately:
-            if (isNoCodeAlarmCancellationAllowed && alarmTimeInMillis - currentTimeInMillis > 3600000) {
+            if (alarmTimeInMillis - currentTimeInMillis > 3600000) {
                 qrAlarmManager.cancelAlarm()
 
                 dataStoreManager.putBoolean(DataStoreManager.ALARM_SET, false)
