@@ -27,6 +27,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
@@ -49,6 +50,8 @@ import com.sweak.qralarm.ui.screens.components.AlarmPermissionDialog
 import com.sweak.qralarm.ui.screens.components.CameraPermissionSetAlarmDialog
 import com.sweak.qralarm.ui.screens.components.CameraPermissionSetAlarmRevokedDialog
 import com.sweak.qralarm.ui.screens.components.CodePossessionConfirmationDialog
+import com.sweak.qralarm.ui.screens.components.DisableRepeatingAlarmsDialog
+import com.sweak.qralarm.ui.screens.components.EnableRepeatingAlarmsDialog
 import com.sweak.qralarm.ui.screens.components.FullScreenIntentPermissionDialog
 import com.sweak.qralarm.ui.screens.components.NotificationsPermissionDialog
 import com.sweak.qralarm.ui.screens.components.NotificationsPermissionRevokedDialog
@@ -89,6 +92,7 @@ fun HomeScreen(
         val alarmAtText = createRefFor("alarmAtText")
         val timePicker = createRefFor("timePicker")
         val startStopAlarmButton = createRefFor("startStopAlarmButton")
+        val repeatAlarmButton = createRefFor("repeatAlarmButton")
         val snoozeButton = createRefFor("snoozeButton")
 
         constrain(menuButton) {
@@ -113,6 +117,13 @@ fun HomeScreen(
             top.linkTo(timePicker.bottom)
             bottom.linkTo(parent.bottom)
             start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+
+        constrain(repeatAlarmButton) {
+            top.linkTo(timePicker.bottom)
+            bottom.linkTo(parent.bottom)
+            start.linkTo(startStopAlarmButton.end)
             end.linkTo(parent.end)
         }
 
@@ -190,8 +201,26 @@ fun HomeScreen(
                             R.string.time_left_minutes,
                             hoursAndMinutesUntilAlarmPair.second
                         ),
-                    actionLabel = context.getString(R.string.cancel),
+                    actionLabel = context.getString(R.string.cancel_capitals),
                     duration = SnackbarDuration.Long
+                )
+            }
+        }
+
+        AnimatedVisibility(
+            visible = !uiState.value.alarmSet && !uiState.value.alarmServiceRunning,
+            modifier = Modifier.layoutId("repeatAlarmButton")
+        ) {
+            IconButton(
+                onClick = { homeViewModel.handleRepeatAlarmClick() }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_repeat),
+                    tint = MaterialTheme.colorScheme.onSecondary,
+                    contentDescription = "Repeat icon",
+                    modifier = Modifier.alpha(
+                        if (uiState.value.isManualAlarmScheduling) 0.25f else 1f
+                    )
                 )
             }
         }
@@ -307,6 +336,32 @@ fun HomeScreen(
             },
             onDismissRequest = {
                 uiState.value = uiState.value.copy(showCodePossessionConfirmationDialog = false)
+            }
+        )
+    }
+
+    if (uiState.value.showEnableRepeatingAlarmsDialog) {
+        EnableRepeatingAlarmsDialog(
+            uiState = uiState,
+            onPositiveClick = {
+                homeViewModel.handleEnableDisableRepeatingAlarms(repeatingAlarmsEnabled = true)
+                uiState.value = uiState.value.copy(showEnableRepeatingAlarmsDialog = false)
+            },
+            onNegativeClick = {
+                uiState.value = uiState.value.copy(showEnableRepeatingAlarmsDialog = false)
+            }
+        )
+    }
+
+    if (uiState.value.showDisableRepeatingAlarmsDialog) {
+        DisableRepeatingAlarmsDialog(
+            uiState = uiState,
+            onPositiveClick = {
+                homeViewModel.handleEnableDisableRepeatingAlarms(repeatingAlarmsEnabled = false)
+                uiState.value = uiState.value.copy(showDisableRepeatingAlarmsDialog = false)
+            },
+            onNegativeClick = {
+                uiState.value = uiState.value.copy(showDisableRepeatingAlarmsDialog = false)
             }
         )
     }
@@ -448,7 +503,7 @@ fun AlarmSetSnackbar(
                         ) {
                             Text(
                                 text = snackbarHostState.currentSnackbarData?.visuals?.actionLabel
-                                    ?: stringResource(R.string.cancel),
+                                    ?: stringResource(R.string.cancel_capitals),
                             )
                         }
                     },

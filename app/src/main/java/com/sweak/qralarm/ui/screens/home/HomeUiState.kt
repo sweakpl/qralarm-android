@@ -10,6 +10,7 @@ data class HomeUiState(
     var alarmSet: Boolean,
     var alarmServiceRunning: Boolean,
     var snoozeAvailable: Boolean,
+    var isManualAlarmScheduling: Boolean,
     var showAlarmPermissionDialog: Boolean,
     var showCameraPermissionDialog: Boolean,
     var showCameraPermissionRevokedDialog: Boolean,
@@ -17,5 +18,7 @@ data class HomeUiState(
     var showNotificationsPermissionRevokedDialog: Boolean,
     var showCodePossessionConfirmationDialog: Boolean,
     var showFullScreenIntentPermissionDialog: Boolean,
+    var showEnableRepeatingAlarmsDialog: Boolean,
+    var showDisableRepeatingAlarmsDialog: Boolean,
     var snackbarHostState: SnackbarHostState
 )

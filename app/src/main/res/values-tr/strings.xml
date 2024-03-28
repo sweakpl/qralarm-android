@@ -45,7 +45,7 @@
   <string name="new_code_added_title">Yeni kod eklendi</string>
   <string name="new_code_added_message">Alarm için yeni çıkış kodu olarak "%1$s" kodu ayarlandı. Tarama sonucu istediğiniz gibi değilse kodu tekrar taramayı deneyebilirsiniz.</string>
   <string name="current_dismiss_code">Mevcut çıkış kodu: \"%1$s\"</string>
-  <string name="cancel" tools:ignore="ButtonCase">İPTAL</string>
+  <string name="cancel_capitals" tools:ignore="ButtonCase">İPTAL</string>
   <string name="alarm_set">Alarm ayarı</string>
   <string name="qralarm_guide_title">QRAlarm Kılavuzu</string>
   <string name="qralarm_guide_description">Uygulamanın nasıl kullanılacağını ve stabilitesinin nasıl sağlanacağını kontrol edin</string>
@@ -87,4 +87,11 @@
   <string name="alarm_missed_notification_text">Telefonunuzdaki zaman değişikliği nedeniyle daha önce ayarlanmış olan alarmınız kaçırıldı</string>
   <string name="browser_not_found">Web tarayıcısı bulunamadı</string>
   <string name="browser_not_found_description">QRAlarm, bağlantıyı açmak için web tarayıcı uygulamasını bulamadı. Tarayıcının yüklü olduğunu düşünüyorsanız lütfen bağlantıyı manuel olarak açın.</string>
+  <string name="enable_repeating_alarms_title">Tekrar eden alarmları etkinleştirin</string>
+  <string name="enable_repeating_alarms_message">Alarmı kapattığınızda, QRAlarm otomatik olarak bir sonraki gün için bir öncekiyle aynı saatte yeni bir alarm kuracaktır.\n\nNot: Eğer alarmı planlanan saatinden ÖNCE kapatırsanız, QRAlarm alarmı otomatik olarak KURMAYACAKTIR.</string>
+  <string name="enable">Etkinleştir</string>
+  <string name="cancel">İptal</string>
+  <string name="disable_repeating_alarms_title">Tekrar eden alarmları devre dışı bırakma</string>
+  <string name="disable_repeating_alarms_message">QRAlarm artık yeni alarmları otomatik olarak ayarlamayacaktır.</string>
+  <string name="disable">Kapat</string>
 </resources>

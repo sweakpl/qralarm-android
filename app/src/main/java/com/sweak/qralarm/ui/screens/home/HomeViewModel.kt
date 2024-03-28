@@ -44,6 +44,8 @@ class HomeViewModel @Inject constructor(
                 alarmServiceRunning =
                 dataStoreManager.getBoolean(DataStoreManager.ALARM_SERVICE_RUNNING).first(),
                 snoozeAvailable = false,
+                isManualAlarmScheduling =
+                dataStoreManager.getBoolean(DataStoreManager.MANUAL_ALARM_SCHEDULING).first(),
                 showAlarmPermissionDialog = false,
                 showCameraPermissionDialog = false,
                 showCameraPermissionRevokedDialog = false,
@@ -51,6 +53,8 @@ class HomeViewModel @Inject constructor(
                 showNotificationsPermissionRevokedDialog = false,
                 showCodePossessionConfirmationDialog = false,
                 showFullScreenIntentPermissionDialog = false,
+                showEnableRepeatingAlarmsDialog = false,
+                showDisableRepeatingAlarmsDialog = false,
                 snackbarHostState = SnackbarHostState()
             )
         )
@@ -291,4 +295,30 @@ class HomeViewModel @Inject constructor(
         shouldNotUpdateAlarmStateDataStoreManagerUpdate = true
         dataStoreManager.putBoolean(DataStoreManager.SHOULD_REMIND_USER_TO_GET_CODE, false)
     }
+
+    fun handleRepeatAlarmClick() = viewModelScope.launch {
+        val isManualAlarmScheduling = dataStoreManager.getBoolean(
+            DataStoreManager.MANUAL_ALARM_SCHEDULING
+        ).first()
+
+        if (isManualAlarmScheduling) {
+            homeUiState.value = homeUiState.value.copy(
+                showEnableRepeatingAlarmsDialog = true
+            )
+        } else {
+            homeUiState.value = homeUiState.value.copy(
+                showDisableRepeatingAlarmsDialog = true
+            )
+        }
+    }
+
+    fun handleEnableDisableRepeatingAlarms(repeatingAlarmsEnabled: Boolean) =
+        viewModelScope.launch {
+            dataStoreManager.putBoolean(
+                DataStoreManager.MANUAL_ALARM_SCHEDULING,
+                !repeatingAlarmsEnabled
+            )
+            homeUiState.value =
+                homeUiState.value.copy(isManualAlarmScheduling = !repeatingAlarmsEnabled)
+        }
 }

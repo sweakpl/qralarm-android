@@ -46,7 +46,7 @@
     <string name="new_code_added_title">New code added</string>
     <string name="new_code_added_message">The code “%1$s” has been set as the new dismiss code for the alarm. You can try scanning again for the code if the scan result is not what You wanted.</string>
     <string name="current_dismiss_code">Current dismiss code: \"%1$s\"</string>
-    <string name="cancel" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="cancel_capitals" tools:ignore="ButtonCase">CANCEL</string>
     <string name="alarm_set">Alarm set</string>
     <string name="qralarm_guide_title">QRAlarm Guide</string>
     <string name="qralarm_guide_description">Check how to use and ensure stability of  the application</string>
@@ -90,4 +90,11 @@
     <string name="alarm_missed_notification_text">Your previously set alarm was missed likely due to time change on your phone</string>
     <string name="browser_not_found">Web browser not found</string>
     <string name="browser_not_found_description">QRAlarm could not find the web browser application to open the link. If you believe the browser is installed - please, open the link manually.</string>
+    <string name="enable_repeating_alarms_title">Enable repeating alarms</string>
+    <string name="enable_repeating_alarms_message">When you dismiss the alarm QRAlarm will automatically set a new alarm for the next day with the same time as the previous one.\n\nNote: If you dismiss the alarm BEFORE its scheduled time, QRAlarm will NOT set the alarm automatically.</string>
+    <string name="enable">Enable</string>
+    <string name="cancel">Cancel</string>
+    <string name="disable_repeating_alarms_title">Disable repeating alarms</string>
+    <string name="disable_repeating_alarms_message">QRAlarm will no longer set new alarms automatically.</string>
+    <string name="disable">Disable</string>
 </resources>

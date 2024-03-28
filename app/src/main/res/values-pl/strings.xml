@@ -46,7 +46,7 @@
     <string name="new_code_added_title">Nowy kod dodany</string>
     <string name="new_code_added_message">Kod \"%1$s\" został ustawiony jako nowy kod wyłączający alarmy. Możesz spróbować ponownie zeskanować kod, jeśli wynik skanowania nie jest zgodny z oczekiwaniami.</string>
     <string name="current_dismiss_code">Aktualny kod wyłączający: \"%1$s\"</string>
-    <string name="cancel">ANULUJ</string>
+    <string name="cancel_capitals">ANULUJ</string>
     <string name="alarm_set">Alarm ustawiony</string>
     <string name="qralarm_guide_title">Przewodnik QRAlarm</string>
     <string name="qralarm_guide_description">Sprawdź, jak korzystać z aplikacji i zapewnić jej stabilność</string>
@@ -88,4 +88,11 @@
     <string name="alarm_missed_notification_text">Wcześniej ustawiony alarm został pominięty prawdopodobnie z powodu zmiany czasu w telefonie.</string>
     <string name="browser_not_found">Nie znaleziono przeglądarki internetowej</string>
     <string name="browser_not_found_description">QRAlarm nie mógł znaleźć aplikacji przeglądarki internetowej do otwarcia linku. Jeśli uważasz, że przeglądarka jest zainstalowana, otwórz link ręcznie.</string>
+    <string name="enable_repeating_alarms_title">Włącz powtarzające się alarmy</string>
+    <string name="enable_repeating_alarms_message">Po wyłączeniu alarmu QRAlarm automatycznie ustawi nowy alarm na następny dzień o tej samej godzinie, co poprzedni.\n\nUwaga: Jeśli wyłączysz alarm PRZED zaplanowanym czasem, QRAlarm NIE ustawi alarmu automatycznie.</string>
+    <string name="enable">Włącz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="disable_repeating_alarms_title">Wyłącz powtarzające się alarmy</string>
+    <string name="disable_repeating_alarms_message">QRAlarm nie będzie już automatycznie ustawiać nowych alarmów.</string>
+    <string name="disable">Wyłącz</string>
 </resources>
