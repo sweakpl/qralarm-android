@@ -24,6 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
@@ -76,6 +77,11 @@ class ScannerViewModel @Inject constructor(
     private fun stopAlarm() = viewModelScope.launch {
         qrAlarmManager.cancelAlarm()
 
+        dataStoreManager.apply {
+            putBoolean(DataStoreManager.ALARM_SET, false)
+            putBoolean(DataStoreManager.ALARM_SNOOZED, false)
+        }
+
         val isManualAlarmScheduling =
             dataStoreManager.getBoolean(DataStoreManager.MANUAL_ALARM_SCHEDULING).first()
         val alarmTime = dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
@@ -87,17 +93,21 @@ class ScannerViewModel @Inject constructor(
                 getAlarmHourOfDay(alarmTime),
                 getAlarmMinute(alarmTime)
             )
+            val alarmTimeZoneId = ZoneId.systemDefault().id
+
             qrAlarmManager.setAlarm(newAlarmTime, ALARM_TYPE_NORMAL)
 
             dataStoreManager.apply {
-                putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, newAlarmTime)
                 putBoolean(DataStoreManager.ALARM_SET, true)
                 putBoolean(DataStoreManager.ALARM_SNOOZED, false)
-            }
-        } else {
-            dataStoreManager.apply {
-                putBoolean(DataStoreManager.ALARM_SET, false)
-                putBoolean(DataStoreManager.ALARM_SNOOZED, false)
+
+                putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, newAlarmTime)
+                putString(DataStoreManager.ALARM_TIME_ZONE_ID, alarmTimeZoneId)
+
+                putInt(
+                    DataStoreManager.SNOOZE_AVAILABLE_COUNT,
+                    getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
+                )
             }
         }
     }
