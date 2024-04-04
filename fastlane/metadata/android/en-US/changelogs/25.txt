@@ -1,3 +1,0 @@
-* Added the functionality of repeating alarms,
-* The no-code cancel option is now enabled and non-alterable,
-* Added Polish and Turkish languages.
