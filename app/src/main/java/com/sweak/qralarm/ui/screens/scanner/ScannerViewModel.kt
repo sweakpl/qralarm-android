@@ -67,11 +67,15 @@ class ScannerViewModel @Inject constructor(
     }
 
     private fun getDismissCodes(): List<String> {
-        val userSavedDismissCode = runBlocking {
-            dataStoreManager.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
-        }
+        return try {
+            val userSavedDismissCode = runBlocking {
+                dataStoreManager.getString(DataStoreManager.DISMISS_ALARM_CODE).first()
+            }
 
-        return setOf(userSavedDismissCode, DEFAULT_DISMISS_ALARM_CODE).toList()
+            setOf(userSavedDismissCode, DEFAULT_DISMISS_ALARM_CODE).toList()
+        } catch (interruptedException: InterruptedException) {
+            emptyList()
+        }
     }
 
     private fun stopAlarm() = viewModelScope.launch {
