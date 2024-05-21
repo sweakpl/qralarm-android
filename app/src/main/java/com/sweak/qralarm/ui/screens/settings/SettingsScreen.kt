@@ -65,8 +65,6 @@ import com.sweak.qralarm.ui.screens.components.BackButton
 import com.sweak.qralarm.ui.screens.components.CameraPermissionAddCodeDialog
 import com.sweak.qralarm.ui.screens.components.CameraPermissionAddCodeRevokedDialog
 import com.sweak.qralarm.ui.screens.components.DisablingBarcodesSupportDialog
-import com.sweak.qralarm.ui.screens.components.StoragePermissionDialog
-import com.sweak.qralarm.ui.screens.components.StoragePermissionRevokedDialog
 import com.sweak.qralarm.ui.screens.navigateThrottled
 import com.sweak.qralarm.ui.theme.Kimberly
 import com.sweak.qralarm.ui.theme.space
@@ -81,9 +79,6 @@ fun SettingsScreen(
     context: Context = LocalContext.current
 ) {
     val uiState = remember { settingsViewModel.settingsUiState }
-    val storagePermissionState = rememberPermissionState(
-        permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
     val cameraPermissionState = rememberPermissionState(
         permission = android.Manifest.permission.CAMERA
     )
@@ -98,6 +93,11 @@ fun SettingsScreen(
             }
         },
         onResult = { uri -> settingsViewModel.updateLocalAlarmSoundSelection(uri, context) }
+    )
+
+    val saveDefaultCodeImageLauncher = rememberLauncherForActivityResult(
+        contract = object : ActivityResultContracts.CreateDocument("image/jpeg") {},
+        onResult = { uri -> settingsViewModel.saveDefaultCodeImage(uri, context)}
     )
 
     DisposableEffect(lifecycleOwner) {
@@ -535,10 +535,7 @@ fun SettingsScreen(
 
                 IconButton(
                     onClick = {
-                        settingsViewModel.handleDefaultCodeDownloadButton(
-                            context,
-                            storagePermissionState
-                        )
+                        saveDefaultCodeImageLauncher.launch("QRAlarmCode.jpg")
                     },
                     modifier = Modifier
                         .padding(end = MaterialTheme.space.medium)
@@ -659,32 +656,6 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(MaterialTheme.space.large))
         }
     }
-
-    StoragePermissionDialog(
-        uiState = uiState,
-        onPositiveClick = {
-            storagePermissionState.launchPermissionRequest()
-            uiState.value = uiState.value.copy(showStoragePermissionDialog = false)
-        },
-        onNegativeClick = {
-            uiState.value = uiState.value.copy(showStoragePermissionDialog = false)
-        }
-    )
-
-    StoragePermissionRevokedDialog(
-        uiState = uiState,
-        onPositiveClick = {
-            context.startActivity(
-                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    data = Uri.parse("package:${context.packageName}")
-                }
-            )
-            uiState.value = uiState.value.copy(showStoragePermissionRevokedDialog = false)
-        },
-        onNegativeClick = {
-            uiState.value = uiState.value.copy(showStoragePermissionRevokedDialog = false)
-        }
-    )
 
     CameraPermissionAddCodeDialog(
         uiState = uiState,

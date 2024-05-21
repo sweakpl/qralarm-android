@@ -34,9 +34,6 @@
     <string name="air_horn">Klakson</string>
     <string name="download_code_title">Pobierz kod</string>
     <string name="download_code_description">Pobierz domyślny obraz kodu QR do galerii</string>
-    <string name="storage_permission_required_title">Wymagany dostęp do pamięci</string>
-    <string name="storage_permission_required_message">QRAlarm potrzebuje dostępu do pamięci telefonu, aby pobrać domyślny kod QR, który po zeskanowaniu wyłączy alarmy.</string>
-    <string name="storage_permission_revoked_message">Dostęp do pamięciu został trwale odrzucony. Bez tego QRAlarm nie może pobrać domyślnego kodu QR, który po zeskanowaniu wyłączy alarmy. Aby to naprawić, przejdź do ustawień i zezwól QRAlarm na korzystanie z pamięci telefonu.</string>
     <string name="saved_default_qrcode">Pobrano domyślny kod QR!</string>
     <string name="not_saved_default_qrcode">Nie udało się pobrać domyślnego kodu QR…</string>
     <string name="scan_new_code_title">Zeskanuj nowy kod</string>

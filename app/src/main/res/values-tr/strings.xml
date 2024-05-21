@@ -33,9 +33,6 @@
   <string name="air_horn">Havalı korna</string>
   <string name="download_code_title">Kodu indir</string>
   <string name="download_code_description">Varsayılan QR kodu resmini galeriye indirin</string>
-  <string name="storage_permission_required_title">Depolama izni gerekli</string>
-  <string name="storage_permission_required_message">QRAlarm\'ın, tarandıktan sonra alarmları kapatacak varsayılan bir QR Kodunu indirmek için telefonunuzun depolama alanına erişmesi gerekir.</string>
-  <string name="storage_permission_revoked_message">Depolama izni kalıcı olarak iptal edildi. Bu olmadan QRAlarm, tarandıktan sonra alarmları kapatacak varsayılan bir QR Kodu indiremez. Düzeltmek için ayarlara gidin ve QRAlarm\'ın telefonun depolama alanını kullanmasına izin verin.</string>
   <string name="saved_default_qrcode">Varsayılan QR Kodu indirildi!</string>
   <string name="not_saved_default_qrcode">Varsayılan QR Kodu indirilemedi…</string>
   <string name="scan_new_code_title">Yeni kod tara</string>

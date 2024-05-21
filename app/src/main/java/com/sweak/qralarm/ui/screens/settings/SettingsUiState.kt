@@ -16,8 +16,6 @@ data class SettingsUiState(
     val availableGentleWakeupDurations: List<GentleWakeupDuration> = GentleWakeupDuration.entries,
     val selectedGentleWakeupDurationIndex: Int,
     val availableGentleWakeupDurationsDropdownMenuExpanded: Boolean = false,
-    val showStoragePermissionDialog: Boolean = false,
-    val showStoragePermissionRevokedDialog: Boolean = false,
     val dismissAlarmCode: String,
     val showCameraPermissionDialog: Boolean = false,
     val showCameraPermissionRevokedDialog: Boolean = false,
