@@ -151,6 +151,11 @@ class HomeViewModel @Inject constructor(
             return
         }
 
+        if (!qrAlarmManager.canScheduleExactAlarms()) {
+            homeUiState.value = homeUiState.value.copy(showAlarmPermissionDialog = true)
+            return
+        }
+
         val alarmSet = homeUiState.value.alarmSet
         val alarmServiceRunning = homeUiState.value.alarmServiceRunning
 
@@ -167,45 +172,39 @@ class HomeViewModel @Inject constructor(
                     return@launch
                 }
 
-                try {
-                    val alarmTimeInMillis = getAlarmTimeInMillis(
-                        homeUiState.value.alarmHourOfDay,
-                        homeUiState.value.alarmMinute
+                val alarmTimeInMillis = getAlarmTimeInMillis(
+                    homeUiState.value.alarmHourOfDay,
+                    homeUiState.value.alarmMinute
+                )
+                val alarmTimeZoneId = ZoneId.systemDefault().id
+
+                qrAlarmManager.setAlarm(alarmTimeInMillis, ALARM_TYPE_NORMAL)
+
+                dataStoreManager.apply {
+                    putBoolean(DataStoreManager.ALARM_SET, true)
+                    putBoolean(DataStoreManager.ALARM_SNOOZED, false)
+
+                    putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, alarmTimeInMillis)
+                    putString(DataStoreManager.ALARM_TIME_ZONE_ID, alarmTimeZoneId)
+
+                    putInt(
+                        DataStoreManager.SNOOZE_AVAILABLE_COUNT,
+                        getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
                     )
-                    val alarmTimeZoneId = ZoneId.systemDefault().id
+                }
 
-                    qrAlarmManager.setAlarm(alarmTimeInMillis, ALARM_TYPE_NORMAL)
+                composableScope.launch {
+                    val snackbarResult = snackbarInitializer(
+                        getHoursAndMinutesUntilTimePair(alarmTimeInMillis)
+                    )
 
-                    dataStoreManager.apply {
-                        putBoolean(DataStoreManager.ALARM_SET, true)
-                        putBoolean(DataStoreManager.ALARM_SNOOZED, false)
-
-                        putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, alarmTimeInMillis)
-                        putString(DataStoreManager.ALARM_TIME_ZONE_ID, alarmTimeZoneId)
-
-                        putInt(
-                            DataStoreManager.SNOOZE_AVAILABLE_COUNT,
-                            getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
-                        )
-                    }
-
-                    composableScope.launch {
-                        val snackbarResult = snackbarInitializer(
-                            getHoursAndMinutesUntilTimePair(alarmTimeInMillis)
-                        )
-
-                        when (snackbarResult) {
-                            SnackbarResult.ActionPerformed -> {
-                                delay(500)
-                                stopAlarm()
-                            }
-
-                            SnackbarResult.Dismissed -> { /* no-op */ }
+                    when (snackbarResult) {
+                        SnackbarResult.ActionPerformed -> {
+                            delay(500)
+                            stopAlarm()
                         }
+                        SnackbarResult.Dismissed -> { /* no-op */ }
                     }
-                } catch (exception: SecurityException) {
-                    homeUiState.value = homeUiState.value.copy(showAlarmPermissionDialog = true)
-                    return@launch
                 }
             }
         } else {
@@ -252,12 +251,12 @@ class HomeViewModel @Inject constructor(
                     getInt(DataStoreManager.SNOOZE_DURATION_MINUTES).first()
                 )
 
-                try {
-                    qrAlarmManager.setAlarm(snoozeAlarmTimeInMillis, ALARM_TYPE_SNOOZE)
-                } catch (exception: SecurityException) {
+                if (!qrAlarmManager.canScheduleExactAlarms()) {
                     homeUiState.value = homeUiState.value.copy(showAlarmPermissionDialog = true)
                     return@launch
                 }
+
+                qrAlarmManager.setAlarm(snoozeAlarmTimeInMillis, ALARM_TYPE_SNOOZE)
 
                 putBoolean(DataStoreManager.ALARM_SET, true)
                 putBoolean(DataStoreManager.ALARM_SNOOZED, true)

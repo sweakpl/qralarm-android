@@ -99,19 +99,21 @@ class ScannerViewModel @Inject constructor(
             )
             val alarmTimeZoneId = ZoneId.systemDefault().id
 
-            qrAlarmManager.setAlarm(newAlarmTime, ALARM_TYPE_NORMAL)
+            if (qrAlarmManager.canScheduleExactAlarms()) {
+                qrAlarmManager.setAlarm(newAlarmTime, ALARM_TYPE_NORMAL)
 
-            dataStoreManager.apply {
-                putBoolean(DataStoreManager.ALARM_SET, true)
-                putBoolean(DataStoreManager.ALARM_SNOOZED, false)
+                dataStoreManager.apply {
+                    putBoolean(DataStoreManager.ALARM_SET, true)
+                    putBoolean(DataStoreManager.ALARM_SNOOZED, false)
 
-                putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, newAlarmTime)
-                putString(DataStoreManager.ALARM_TIME_ZONE_ID, alarmTimeZoneId)
+                    putLong(DataStoreManager.ALARM_TIME_IN_MILLIS, newAlarmTime)
+                    putString(DataStoreManager.ALARM_TIME_ZONE_ID, alarmTimeZoneId)
 
-                putInt(
-                    DataStoreManager.SNOOZE_AVAILABLE_COUNT,
-                    getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
-                )
+                    putInt(
+                        DataStoreManager.SNOOZE_AVAILABLE_COUNT,
+                        getInt(DataStoreManager.SNOOZE_MAX_COUNT).first()
+                    )
+                }
             }
         }
     }

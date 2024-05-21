@@ -22,9 +22,7 @@ import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_REQUEST_CODE
 import com.sweak.qralarm.util.ALARM_TYPE_NORMAL
 import com.sweak.qralarm.util.CANCEL_ALARM_ACTION_REQUEST_CODE
 import com.sweak.qralarm.util.KEY_ALARM_TYPE
-import com.sweak.qralarm.util.TESTING_PERMISSION_ALARM_INTENT_REQUEST_CODE
 import com.sweak.qralarm.util.TimeFormat
-import com.sweak.qralarm.util.currentTimeInMillis
 import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
@@ -211,35 +209,14 @@ class QRAlarmManager @Inject constructor(
             )
         } != null
 
-    fun canScheduleExactAlarms(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val testingPermissionAlarmPendingIntent = PendingIntent.getForegroundService(
-                app.applicationContext,
-                TESTING_PERMISSION_ALARM_INTENT_REQUEST_CODE,
-                Intent(app.applicationContext, QRAlarmService::class.java),
-                PendingIntent.FLAG_IMMUTABLE
-            )
-
-            try {
-                alarmManager.setAlarmClock(
-                    AlarmManager.AlarmClockInfo(
-                        currentTimeInMillis() + 10000,
-                        null
-                    ),
-                    testingPermissionAlarmPendingIntent
-                )
-            } catch (exception: SecurityException) {
-                return false
-            }
-
-            alarmManager.cancel(testingPermissionAlarmPendingIntent)
-            testingPermissionAlarmPendingIntent.cancel()
-
-            return true
+    fun canScheduleExactAlarms(): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+            Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2
+        ) {
+            alarmManager.canScheduleExactAlarms()
         } else {
-            return true
+            true
         }
-    }
 
     fun canUseFullScreenIntent(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {

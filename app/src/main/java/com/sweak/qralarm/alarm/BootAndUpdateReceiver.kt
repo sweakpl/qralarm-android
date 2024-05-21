@@ -38,10 +38,17 @@ class BootAndUpdateReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action in intentActionsToFilter) receiverScope.launch {
             val shouldSetAlarm = dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).first()
-
             val isAlarmSet = alarmManager.isAlarmSet()
 
             if (shouldSetAlarm) {
+                if (!alarmManager.canScheduleExactAlarms()) {
+                    dataStoreManager.apply {
+                        putBoolean(DataStoreManager.ALARM_SET, false)
+                        putBoolean(DataStoreManager.ALARM_SNOOZED, false)
+                    }
+                    return@launch
+                }
+
                 val isSnoozeAlarmSet =
                     dataStoreManager.getBoolean(DataStoreManager.ALARM_SNOOZED).first()
 

@@ -96,6 +96,15 @@ class TimePreferencesChangeReceiver : BroadcastReceiver() {
                     } else {
                         // If the normal alarm is still in the future - reschedule it:
                         qrAlarmManager.cancelAlarm()
+
+                        if (!qrAlarmManager.canScheduleExactAlarms()) {
+                            dataStoreManager.apply {
+                                putBoolean(DataStoreManager.ALARM_SET, false)
+                                putBoolean(DataStoreManager.ALARM_SNOOZED, false)
+                            }
+                            return@launch
+                        }
+
                         qrAlarmManager.setAlarm(newAlarmTimeInMillis, ALARM_TYPE_NORMAL)
                     }
                 } else if (isSnoozeAlarmSet) {
