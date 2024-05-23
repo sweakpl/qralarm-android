@@ -66,7 +66,9 @@ class SettingsViewModel @Inject constructor(
                     ),
                     dismissAlarmCode = it.getString(DataStoreManager.DISMISS_ALARM_CODE).first(),
                     vibrationsEnabled = it.getBoolean(DataStoreManager.ENABLE_VIBRATIONS).first(),
-                    acceptAnyCodeType = it.getBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE).first()
+                    acceptAnyCodeType = it.getBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE).first(),
+                    temporaryMuteEnabled =
+                    !it.getBoolean(DataStoreManager.TEMPORARY_ALARM_MUTE_DISABLED).first()
                 )
             )
         }
@@ -290,6 +292,18 @@ class SettingsViewModel @Inject constructor(
 
         viewModelScope.launch {
             dataStoreManager.putBoolean(DataStoreManager.ACCEPT_ANY_CODE_TYPE, false)
+        }
+    }
+
+    fun handleEnableTemporaryMuteSwitch(enableTemporaryMute: Boolean) {
+        settingsUiState.value =
+            settingsUiState.value.copy(temporaryMuteEnabled = enableTemporaryMute)
+
+        viewModelScope.launch {
+            dataStoreManager.putBoolean(
+                DataStoreManager.TEMPORARY_ALARM_MUTE_DISABLED,
+                !enableTemporaryMute
+            )
         }
     }
 

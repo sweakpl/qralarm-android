@@ -91,4 +91,6 @@
   <string name="disable_repeating_alarms_title">Tekrar eden alarmları devre dışı bırakma</string>
   <string name="disable_repeating_alarms_message">QRAlarm artık yeni alarmları otomatik olarak ayarlamayacaktır.</string>
   <string name="disable">Kapat</string>
+  <string name="temporary_mute_setting_title">Geçici sessiz</string>
+  <string name="temporary_mute_setting_description">STOP düğmesine tıkladıktan sonra alarm 15 saniye süreyle susturulacaktır</string>
 </resources>

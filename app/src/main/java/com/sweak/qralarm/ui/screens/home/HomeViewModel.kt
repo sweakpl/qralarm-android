@@ -111,7 +111,7 @@ class HomeViewModel @Inject constructor(
         composableScope: CoroutineScope,
         lifecycleOwner: LifecycleOwner,
         snackbarInitializer: suspend (Pair<Int, Int>) -> SnackbarResult,
-        alarmSoundMuteHandler: () -> Unit
+        handleAlarmMute: () -> Unit
     ) {
         if (!cameraPermissionState.hasPermission) {
             when {
@@ -218,8 +218,13 @@ class HomeViewModel @Inject constructor(
                 if (alarmTimeInMillis - currentTimeInMillis > 3600000) {
                     stopAlarm()
                 } else { // ... else start ScannerScreen to disable alarm by scanning the code.
-                    // TODO: if (user enabled alarm muting)
-                    alarmSoundMuteHandler()
+                    val isTemporaryAlarmMuteDisabled = dataStoreManager.getBoolean(
+                        DataStoreManager.TEMPORARY_ALARM_MUTE_DISABLED
+                    ).first()
+
+                    if (!isTemporaryAlarmMuteDisabled) {
+                        handleAlarmMute()
+                    }
 
                     navController.navigateThrottled(
                         Screen.ScannerScreen.withArguments(SCAN_MODE_DISMISS_ALARM),

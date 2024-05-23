@@ -92,4 +92,6 @@
     <string name="disable_repeating_alarms_title">Wyłącz powtarzające się alarmy</string>
     <string name="disable_repeating_alarms_message">QRAlarm nie będzie już automatycznie ustawiać nowych alarmów.</string>
     <string name="disable">Wyłącz</string>
+    <string name="temporary_mute_setting_title">Tymczasowo wycisz</string>
+    <string name="temporary_mute_setting_description">Alarm będzie wyciszony na 15 sekund po kliknięciu STOP</string>
 </resources>

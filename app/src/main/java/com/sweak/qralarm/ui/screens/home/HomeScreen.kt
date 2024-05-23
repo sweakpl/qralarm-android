@@ -206,7 +206,7 @@ fun HomeScreen(
                         duration = SnackbarDuration.Long
                     )
                 },
-                alarmSoundMuteHandler = {
+                handleAlarmMute = {
                     context.sendBroadcast(
                         Intent(ACTION_TEMPORARY_ALARM_SOUND_MUTE).apply {
                             setPackage(context.packageName)

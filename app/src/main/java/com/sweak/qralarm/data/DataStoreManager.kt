@@ -78,5 +78,6 @@ class DataStoreManager(private val context: Context) {
         val ENABLE_VIBRATIONS = booleanPreferencesKey("enableVibrations")
         val ACCEPT_ANY_CODE_TYPE = booleanPreferencesKey("acceptAnyCodeType")
         val MANUAL_ALARM_SCHEDULING = booleanPreferencesKey("manualAlarmScheduling")
+        val TEMPORARY_ALARM_MUTE_DISABLED = booleanPreferencesKey("temporaryAlarmMuteDisabled")
     }
 }
