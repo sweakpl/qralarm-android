@@ -85,6 +85,8 @@
 
         <receiver android:name=".alarm.CancelAlarmReceiver" />
 
+        <receiver android:name=".alarm.PostUpcomingNotificationBroadcastReceiver" />
+
         <service
             android:name=".alarm.QRAlarmService"
             android:enabled="true"

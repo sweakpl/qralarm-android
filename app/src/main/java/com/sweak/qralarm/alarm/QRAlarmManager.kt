@@ -1,6 +1,7 @@
 package com.sweak.qralarm.alarm
 
 import android.app.AlarmManager
+import android.app.AlarmManager.RTC_WAKEUP
 import android.app.Application
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -22,7 +23,9 @@ import com.sweak.qralarm.util.ALARM_SET_INDICATION_NOTIFICATION_REQUEST_CODE
 import com.sweak.qralarm.util.ALARM_TYPE_NORMAL
 import com.sweak.qralarm.util.CANCEL_ALARM_ACTION_REQUEST_CODE
 import com.sweak.qralarm.util.KEY_ALARM_TYPE
+import com.sweak.qralarm.util.POST_UPCOMING_ALARM_NOTIFICATION_ACTION_REQUEST_CODE
 import com.sweak.qralarm.util.TimeFormat
+import com.sweak.qralarm.util.currentTimeInMillis
 import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
@@ -75,7 +78,28 @@ class QRAlarmManager @Inject constructor(
             alarmPendingIntent
         )
 
-        postAlarmSetIndicationNotification(alarmTimeInMillis, alarmType)
+        val currentTimeInMillis = currentTimeInMillis()
+        val twoHoursInMillis = 2 * 60 * 60 * 1000
+
+        if (alarmTimeInMillis - currentTimeInMillis <= twoHoursInMillis) {
+            postUpcomingAlarmIndicationNotification(alarmTimeInMillis, alarmType)
+        } else {
+            alarmManager.set(
+                RTC_WAKEUP,
+                alarmTimeInMillis - twoHoursInMillis,
+                PendingIntent.getBroadcast(
+                    app.applicationContext,
+                    POST_UPCOMING_ALARM_NOTIFICATION_ACTION_REQUEST_CODE,
+                    Intent(
+                        app.applicationContext,
+                        PostUpcomingNotificationBroadcastReceiver::class.java
+                    ),
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        PendingIntent.FLAG_IMMUTABLE
+                    else 0
+                )
+            )
+        }
 
         packageManager.setComponentEnabledSetting(
             ComponentName(app, BootAndUpdateReceiver::class.java),
@@ -84,7 +108,7 @@ class QRAlarmManager @Inject constructor(
         )
     }
 
-    fun postAlarmSetIndicationNotification(alarmTimeInMillis: Long, alarmType: Int) {
+    fun postUpcomingAlarmIndicationNotification(alarmTimeInMillis: Long, alarmType: Int) {
         val alarmSetIndicationPendingIntent = PendingIntent.getActivity(
             app.applicationContext,
             ALARM_SET_INDICATION_NOTIFICATION_REQUEST_CODE,
@@ -121,10 +145,10 @@ class QRAlarmManager @Inject constructor(
             priority = NotificationCompat.PRIORITY_LOW
             setOngoing(true)
             setColorized(true)
-            setContentTitle(app.getString(R.string.alarm_set_indication_notification_title))
+            setContentTitle(app.getString(R.string.upcoming_alarm_indication_notification_title))
             setContentText(
                 app.getString(
-                    R.string.alarm_set_indication_notification_text,
+                    R.string.upcoming_alarm_indication_notification_text,
                     alarmTimeLocalizedString
                 )
             )

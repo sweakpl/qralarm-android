@@ -59,17 +59,20 @@ class BootAndUpdateReceiver : BroadcastReceiver() {
                         DataStoreManager.ALARM_TIME_IN_MILLIS
                     }
                 ).first()
-
+                val currentTimeInMillis = currentTimeInMillis()
+                val twoHoursInMillis = 2 * 60 * 60 * 1000
                 val alarmType = if (isSnoozeAlarmSet) ALARM_TYPE_SNOOZE else ALARM_TYPE_NORMAL
 
-                if (currentTimeInMillis() < alarmTimeInMillis) {
+                if (currentTimeInMillis <= alarmTimeInMillis) {
                     if (!isAlarmSet) {
                         alarmManager.setAlarm(alarmTimeInMillis, alarmType)
                     } else {
-                        alarmManager.postAlarmSetIndicationNotification(
-                            alarmTimeInMillis,
-                            alarmType
-                        )
+                        if (alarmTimeInMillis - currentTimeInMillis <= twoHoursInMillis) {
+                            alarmManager.postUpcomingAlarmIndicationNotification(
+                                alarmTimeInMillis,
+                                alarmType
+                            )
+                        }
                     }
 
                     val alarmTimeZoneId = ZoneId.systemDefault().id

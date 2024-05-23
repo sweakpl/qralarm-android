@@ -71,8 +71,8 @@
     <string name="enable_vibrations_setting_description">Dźwiękowi alarmu towarzyszyć będą wibracje</string>
     <string name="alarm_set_indication_notification_channel_name">Powiadamianie o alarmach</string>
     <string name="alarm_set_indication_notification_channel_description">Powiadamia o ustawionym alarmie lub przeoczonych alarmach, schowany w szufladzie powiadomień, nie wydaje dźwięku.</string>
-    <string name="alarm_set_indication_notification_title">Alarm jest ustawiony</string>
-    <string name="alarm_set_indication_notification_text">Ustawiono alarm na %1$s</string>
+    <string name="upcoming_alarm_indication_notification_title">Nadchodzący alarm</string>
+    <string name="upcoming_alarm_indication_notification_text">Ustawiono alarm na %1$s</string>
     <string name="do_you_have_code">Czy posiadasz kod?</string>
     <string name="make_sure_you_have_code">Upewnij się, że odwiedziłeś Ustawienia i pobrałeś domyślny kod QR QRAlarm (opcja \"Pobierz kod\") lub zeskanowałeś własny kod QR/Kreskowy (opcja \"Zeskanuj nowy kod\"). Jeśli nie masz domyślnego lub własnego kodu gotowego do zeskanowania, NIE MOŻESZ WYŁĄCZYĆ ALARMU!</string>
     <string name="done">Gotowe!</string>

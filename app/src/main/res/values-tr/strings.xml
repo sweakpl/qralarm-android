@@ -70,8 +70,8 @@
   <string name="enable_vibrations_setting_description">Alarm sesine titreşimler eşlik edecektir</string>
   <string name="alarm_set_indication_notification_channel_name">Alarmları bildirme</string>
   <string name="alarm_set_indication_notification_channel_description">Halihazırda ayarlanmış alarmları veya kaçırılmış alarmları bildirir, bildirim çekmecesinde gizlenir, ses çıkarmaz</string>
-  <string name="alarm_set_indication_notification_title">Alarm ayarlandı</string>
-  <string name="alarm_set_indication_notification_text">%1$s için alarm ayarlandı</string>
+  <string name="upcoming_alarm_indication_notification_title">Yaklaşan alarm</string>
+  <string name="upcoming_alarm_indication_notification_text">%1$s için alarm ayarlandı</string>
   <string name="do_you_have_code">Kodun var mı?</string>
   <string name="make_sure_you_have_code">Lütfen Ayarları ziyaret ettiğinizden ve varsayılan QRAlarm QR kodunu indirdiğinizden (" Kodu indir "seçeneği) veya kendi QR/Barkodunuzu taradığınızdan (" Yeni kodu tara" seçeneği) emin olun. Taranmaya hazır bir varsayılan kodunuz veya kendi kodunuz yoksa ALARMI DURDURAMAZSINIZ!</string>
   <string name="done">Bitti!</string>
