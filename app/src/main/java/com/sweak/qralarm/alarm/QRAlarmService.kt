@@ -5,7 +5,10 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -24,10 +27,12 @@ import android.util.Log
 import android.view.animation.LinearInterpolator
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.sweak.qralarm.MainActivity
 import com.sweak.qralarm.R
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.theme.Jacarta
+import com.sweak.qralarm.util.ACTION_TEMPORARY_ALARM_SOUND_MUTE
 import com.sweak.qralarm.util.ALARM_FULL_SCREEN_REQUEST_CODE
 import com.sweak.qralarm.util.ALARM_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.util.ALARM_NOTIFICATION_ID
@@ -72,7 +77,30 @@ class QRAlarmService : Service() {
     private var serviceHandler: ServiceHandler? = null
 
     private lateinit var vibrationTask: TimerTask
+    private lateinit var alarmMuteTask: TimerTask
     private lateinit var alarmVolumeAnimator: ValueAnimator
+
+    private var hasAlarmBeenAlreadyMuted = false
+
+    private val alarmMuteBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (hasAlarmBeenAlreadyMuted) return
+            else hasAlarmBeenAlreadyMuted = true
+
+            stopVibratingAndPlayingSound()
+
+            alarmMuteTask = timerTask {
+                serviceHandler?.obtainMessage(LOCAL_HANDLER_MESSAGE_IDENTIFIER)?.also { message ->
+                    message.arg1 = 0
+                    message.arg2 =
+                        intent?.getIntExtra(KEY_ALARM_TYPE, ALARM_TYPE_NORMAL) ?: ALARM_TYPE_NORMAL
+
+                    serviceHandler?.sendMessage(message)
+                }
+            }
+            Timer().schedule(alarmMuteTask, 15000) // 15 seconds
+        }
+    }
 
     private inner class ServiceHandler(looper: Looper) : Handler(looper) {
 
@@ -108,13 +136,7 @@ class QRAlarmService : Service() {
                     }
                 }
 
-                val gentleWakeupDelaySeconds = runBlocking {
-                    dataStoreManager.getInt(DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS).first()
-                }
-
-                startVibratingAndPlayingAlarmSound(
-                    GentleWakeupDuration.fromInt(gentleWakeupDelaySeconds)
-                )
+                startVibratingAndPlayingAlarmSound()
             }
         }
     }
@@ -165,7 +187,13 @@ class QRAlarmService : Service() {
         }
     }
 
-    private fun startVibratingAndPlayingAlarmSound(gentleWakeupDuration: GentleWakeupDuration?) {
+    private fun startVibratingAndPlayingAlarmSound() {
+        val gentleWakeupDuration = runBlocking {
+            GentleWakeupDuration.fromInt(
+                dataStoreManager.getInt(DataStoreManager.GENTLE_WAKEUP_DURATION_SECONDS).first()
+            )
+        }
+
         val vibrationsEnabled = runBlocking {
             dataStoreManager.getBoolean(DataStoreManager.ENABLE_VIBRATIONS).first()
         }
@@ -306,6 +334,13 @@ class QRAlarmService : Service() {
             serviceLooper = looper
             serviceHandler = ServiceHandler(looper)
         }
+
+        ContextCompat.registerReceiver(
+            this,
+            alarmMuteBroadcastReceiver,
+            IntentFilter(ACTION_TEMPORARY_ALARM_SOUND_MUTE),
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        )
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -327,6 +362,9 @@ class QRAlarmService : Service() {
                 putBoolean(DataStoreManager.ALARM_SERVICE_PROPERLY_CLOSED, true)
             }
         }
+
+        if (::alarmMuteTask.isInitialized) alarmMuteTask.cancel()
+        unregisterReceiver(alarmMuteBroadcastReceiver)
 
         stopVibratingAndPlayingSound()
 

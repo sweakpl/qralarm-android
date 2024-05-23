@@ -59,6 +59,7 @@ import com.sweak.qralarm.ui.screens.components.QRAlarmTimePicker
 import com.sweak.qralarm.ui.screens.navigateThrottled
 import com.sweak.qralarm.ui.theme.amikoFamily
 import com.sweak.qralarm.ui.theme.space
+import com.sweak.qralarm.util.ACTION_TEMPORARY_ALARM_SOUND_MUTE
 import com.sweak.qralarm.util.Screen
 import com.sweak.qralarm.util.TimeFormat
 
@@ -187,24 +188,32 @@ fun HomeScreen(
                 cameraPermissionState,
                 notificationsPermissionState,
                 composableScope,
-                lifecycleOwner
-            ) { hoursAndMinutesUntilAlarmPair ->
-                uiState.value.snackbarHostState.showSnackbar(
-                    message = if (hoursAndMinutesUntilAlarmPair.first > 0)
-                        context.getString(
-                            R.string.time_left_hours_minutes,
-                            hoursAndMinutesUntilAlarmPair.first,
-                            hoursAndMinutesUntilAlarmPair.second
-                        )
-                    else
-                        context.getString(
-                            R.string.time_left_minutes,
-                            hoursAndMinutesUntilAlarmPair.second
-                        ),
-                    actionLabel = context.getString(R.string.cancel_capitals),
-                    duration = SnackbarDuration.Long
-                )
-            }
+                lifecycleOwner,
+                snackbarInitializer = { hoursAndMinutesUntilAlarmPair ->
+                    uiState.value.snackbarHostState.showSnackbar(
+                        message = if (hoursAndMinutesUntilAlarmPair.first > 0)
+                            context.getString(
+                                R.string.time_left_hours_minutes,
+                                hoursAndMinutesUntilAlarmPair.first,
+                                hoursAndMinutesUntilAlarmPair.second
+                            )
+                        else
+                            context.getString(
+                                R.string.time_left_minutes,
+                                hoursAndMinutesUntilAlarmPair.second
+                            ),
+                        actionLabel = context.getString(R.string.cancel_capitals),
+                        duration = SnackbarDuration.Long
+                    )
+                },
+                alarmSoundMuteHandler = {
+                    context.sendBroadcast(
+                        Intent(ACTION_TEMPORARY_ALARM_SOUND_MUTE).apply {
+                            setPackage(context.packageName)
+                        }
+                    )
+                }
+            )
         }
 
         AnimatedVisibility(
