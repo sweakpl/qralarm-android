@@ -79,7 +79,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.0'
 
     // Preferences DataStore
-    implementation 'androidx.datastore:datastore-preferences:1.1.1'
+    // Version 1.1.1 is causing the 'This App Bundle contains native code, and you've not uploaded
+    // debug symbols.' issue. For now the version 1.0.0 is used.
+    implementation 'androidx.datastore:datastore-preferences:1.0.0'
 
     // Dagger Hilt
     implementation 'com.google.dagger:hilt-android:2.51'
