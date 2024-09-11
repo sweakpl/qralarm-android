@@ -153,13 +153,17 @@ class SettingsViewModel @Inject constructor(
             viewModelScope.launch {
                 val savedLocalAlarmSoundUri = try {
                     copyUriContentToLocalStorage(uri, context)
-                } catch (ioException: IOException) {
-                    Toast.makeText(
-                        context,
-                        resourceProvider.getString(R.string.not_saved_local_sound),
-                        Toast.LENGTH_LONG
-                    ).show()
-                    return@launch
+                } catch (exception: Exception) {
+                    if (exception is IOException || exception is SecurityException) {
+                        Toast.makeText(
+                            context,
+                            resourceProvider.getString(R.string.not_saved_local_sound),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@launch
+                    } else {
+                        throw exception
+                    }
                 }
 
                 dataStoreManager.apply {
