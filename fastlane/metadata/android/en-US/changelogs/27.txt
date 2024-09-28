@@ -1,3 +1,0 @@
-* Added the functionality of muting the alarm for 15 seconds after clicking the STOP button - can be enabled in settings,
-* The 'Upcoming alarm' notification is now showing around 2 hours before the alarm is set to go off,
-* Performance and security improvements.
