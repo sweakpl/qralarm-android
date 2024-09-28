@@ -29,7 +29,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -45,7 +45,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -437,7 +437,7 @@ fun SettingsScreen(
                     )
                 }
 
-                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides false) {
                     Switch(
                         checked = uiState.value.vibrationsEnabled,
                         onCheckedChange = settingsViewModel::handleEnableVibrationsSwitch,
@@ -486,7 +486,7 @@ fun SettingsScreen(
                     )
                 }
 
-                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides false) {
                     Switch(
                         checked = uiState.value.acceptAnyCodeType,
                         onCheckedChange = settingsViewModel::handleAcceptBarcodesSwitch,
@@ -535,7 +535,7 @@ fun SettingsScreen(
                     )
                 }
 
-                CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
+                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides false) {
                     Switch(
                         checked = uiState.value.temporaryMuteEnabled,
                         onCheckedChange = settingsViewModel::handleEnableTemporaryMuteSwitch,
