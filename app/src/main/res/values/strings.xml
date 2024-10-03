@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">QRAlarm</string>
+    <string name="welcome_to_qralarm">Welcome to QRAlarm!</string>
+    <string name="wake_up_catchphrase">Wake UP!</string>
+    <string name="wake_up_catchphrase_description">Set your alarm like you always would and prepare to be woken up by QRAlarm the next morning.</string>
+    <string name="get_up_catchphrase">Get UP!</string>
+    <string name="get_up_catchphrase_description">QRAlarm will make sure you did not only wake up but also get up and on the way to disable the alarm.</string>
+    <string name="rise_up_catchphrase">Rise UP!</string>
+    <string name="rise_up_catchphrase_description">Scan the code, disable the alarm and say goodbye to oversleeping! Enjoy your mornings with QRAlarm!</string>
+    <string name="lets_go">Let\'s go!</string>
 </resources>

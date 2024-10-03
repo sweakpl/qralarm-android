@@ -15,9 +15,24 @@ val amikoFamily = FontFamily(
 )
 
 val Typography = Typography(
+    displayLarge = TextStyle(
+        fontFamily = amikoFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp
+    ),
+    displaySmall = TextStyle(
+        fontFamily = amikoFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 24.sp
+    ),
     bodyLarge = TextStyle(
         fontFamily = amikoFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
+    ),
+    labelLarge = TextStyle(
+        fontFamily = amikoFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp
     )
 )

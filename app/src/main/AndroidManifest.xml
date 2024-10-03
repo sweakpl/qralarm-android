@@ -13,9 +13,11 @@
         tools:targetApi="35">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".app.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.QRAlarm">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.QRAlarm"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
