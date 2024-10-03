@@ -2,96 +2,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-feature android:name="android.hardware.camera" />
-
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission
-        android:name="android.permission.SCHEDULE_EXACT_ALARM"
-        android:maxSdkVersion="32" />
-    <uses-permission
-        android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
-        android:maxSdkVersion="30"
-        tools:ignore="ProtectedPermissions" />
-
     <application
-        android:name=".QRAlarmApp"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        tools:targetApi="34">
+        android:theme="@style/Theme.QRAlarm"
+        tools:targetApi="35">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:showForAllUsers="true"
-            android:showWhenLocked="true"
-            android:theme="@style/QRAlarmTheme"
-            tools:ignore="LockedOrientationActivity"
-            tools:targetApi="o_mr1">
+            android:theme="@style/Theme.QRAlarm">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter>
-                <action android:name="android.intent.action.SHOW_ALARMS" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
         </activity>
-
-        <receiver
-            android:name=".alarm.BootAndUpdateReceiver"
-            android:enabled="true"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
-                <action android:name="android.intent.action.REBOOT" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
-            </intent-filter>
-
-        </receiver>
-
-        <receiver
-            android:name=".alarm.TimePreferencesChangeReceiver"
-            android:enabled="true"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.TIME_SET" />
-                <action android:name="android.intent.action.DATE_CHANGED" />
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-            </intent-filter>
-
-        </receiver>
-
-        <receiver android:name=".alarm.CancelAlarmReceiver" />
-
-        <receiver android:name=".alarm.PostUpcomingNotificationBroadcastReceiver" />
-
-        <service
-            android:name=".alarm.QRAlarmService"
-            android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="mediaPlayback" />
 
     </application>
 
