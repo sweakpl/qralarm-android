@@ -8,4 +8,6 @@
     <string name="rise_up_catchphrase">Rise UP!</string>
     <string name="rise_up_catchphrase_description">Scan the code, disable the alarm and say goodbye to oversleeping! Enjoy your mornings with QRAlarm!</string>
     <string name="lets_go">Let\'s go!</string>
+    <string name="home">Home</string>
+    <string name="alarms">Alarms</string>
 </resources>

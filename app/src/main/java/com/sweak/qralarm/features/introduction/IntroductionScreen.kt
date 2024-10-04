@@ -46,12 +46,20 @@ import com.sweak.qralarm.features.introduction.pages.IntroductionPage2
 import com.sweak.qralarm.features.introduction.pages.IntroductionPage3
 
 @Composable
-fun IntroductionScreen() {
-    IntroductionScreenContent()
+fun IntroductionScreen(onContinueClicked: () -> Unit) {
+    IntroductionScreenContent(
+        onEvent = { event ->
+            when (event) {
+                IntroductionScreenUserEvent.ContinueClicked -> onContinueClicked()
+            }
+        }
+    )
 }
 
 @Composable
-private fun IntroductionScreenContent() {
+private fun IntroductionScreenContent(
+    onEvent: (IntroductionScreenUserEvent) -> Unit
+) {
     Scaffold { paddingValues ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -150,7 +158,7 @@ private fun IntroductionScreenContent() {
                     )
             ) {
                 Button(
-                    onClick = { /* TODO */ },
+                    onClick = { onEvent(IntroductionScreenUserEvent.ContinueClicked) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiary
                     ),
@@ -167,6 +175,8 @@ private fun IntroductionScreenContent() {
 @Composable
 private fun IntroductionScreenPreview() {
     QRAlarmTheme {
-        IntroductionScreenContent()
+        IntroductionScreenContent(
+            onEvent = {}
+        )
     }
 }

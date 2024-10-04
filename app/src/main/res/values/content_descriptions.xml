@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="content_description_qralarm_icon">QRAlarm icon</string>
+    <string name="content_description_add_icon">Add (plus) icon</string>
+    <string name="content_description_menu_icon">Menu icon</string>
+
     <string name="content_description_wake_up_catchphrase_image">Image showing a friendly stick man lying in bed woken up.</string>
     <string name="content_description_get_up_catchphrase_image">Image showing a smiling stick man walking with their phone ringing.</string>
     <string name="content_description_rise_up_catchphrase_image">Image showing a happy stick man after they scanned the QR Code with their phone.</string>
