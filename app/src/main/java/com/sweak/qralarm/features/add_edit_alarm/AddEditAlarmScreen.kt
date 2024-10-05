@@ -50,7 +50,6 @@ import com.sweak.qralarm.features.add_edit_alarm.components.ChooseSnoozeConfigur
 import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRingtoneWrapper
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationWrapper
 import java.time.DayOfWeek
 
@@ -307,7 +306,7 @@ private fun AddEditAlarmScreenContent(
 
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(
-                                    text = getAlarmRingtoneString(state.alarmRingtoneWrapper),
+                                    text = getAlarmRingtoneString(state.alarmRingtone),
                                     style = MaterialTheme.typography.labelMedium,
                                     modifier = Modifier.padding(end = MaterialTheme.space.small)
                                 )
@@ -571,12 +570,20 @@ private fun AddEditAlarmScreenContent(
 
     if (state.isChooseAlarmRingtoneDialogVisible) {
         ChooseAlarmRingtoneDialogBottomSheet(
-            initialAlarmRingtoneWrapper = state.alarmRingtoneWrapper,
-            availableAlarmRingtones = state.availableAlarmRingtones,
-            onDismissRequest = { newAlarmRingtoneWrapper ->
+            initialAlarmRingtone = state.alarmRingtone,
+            availableAlarmRingtonesWithPlaybackState =
+            state.availableAlarmRingtonesWithPlaybackState,
+            onTogglePlaybackState = { toggledAlarmRingtone ->
+                onEvent(
+                    AddEditAlarmScreenUserEvent.ToggleAlarmRingtonePlayback(
+                        alarmRingtone = toggledAlarmRingtone
+                    )
+                )
+            },
+            onDismissRequest = { newAlarmRingtone ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmRingtoneSelected(
-                        newAlarmRingtoneWrapper = newAlarmRingtoneWrapper
+                        newAlarmRingtone = newAlarmRingtone
                     )
                 )
             }
@@ -618,9 +625,11 @@ private fun getAlarmRepeatingScheduleString(
         AlarmRepeatingMode.MON_FRI -> {
             DayOfWeek.MONDAY.shortName() + " - " + DayOfWeek.FRIDAY.shortName()
         }
+
         AlarmRepeatingMode.SAT_SUN -> {
             DayOfWeek.SATURDAY.shortName() + ", " + DayOfWeek.SUNDAY.shortName()
         }
+
         AlarmRepeatingMode.CUSTOM -> {
             val days = alarmRepeatingScheduleWrapper.alarmDaysOfWeek
 
@@ -640,7 +649,7 @@ private fun getAlarmRepeatingScheduleString(
 private fun areAllDaysAfterOneAnother(days: List<DayOfWeek>): Boolean {
     days.forEachIndexed { index, day ->
         if (index == days.size - 1) return true
-        if (days[index + 1].value - day.value != 1)  return false
+        if (days[index + 1].value - day.value != 1) return false
     }
 
     return false
@@ -661,16 +670,12 @@ private fun getAlarmSnoozeConfigurationString(
 }
 
 @Composable
-fun getAlarmRingtoneString(alarmRingtoneWrapper: AlarmRingtoneWrapper): String {
-    return if (alarmRingtoneWrapper is AlarmRingtoneWrapper.OriginalRingtone) {
-        when (alarmRingtoneWrapper.alarmRingtone) {
-            AlarmRingtone.GENTLE_GUITAR -> stringResource(R.string.gentle_guitar)
-            AlarmRingtone.ALARM_CLOCK -> stringResource(R.string.alarm_clock)
-            AlarmRingtone.AIR_HORN -> stringResource(R.string.air_horn)
-            AlarmRingtone.CUSTOM_SOUND -> stringResource(R.string.custom_sound)
-        }
-    } else {
-        stringResource(R.string.custom_sound)
+fun getAlarmRingtoneString(alarmRingtone: AlarmRingtone): String {
+    return when (alarmRingtone) {
+        AlarmRingtone.GENTLE_GUITAR -> stringResource(R.string.gentle_guitar)
+        AlarmRingtone.ALARM_CLOCK -> stringResource(R.string.alarm_clock)
+        AlarmRingtone.AIR_HORN -> stringResource(R.string.air_horn)
+        AlarmRingtone.CUSTOM_SOUND -> stringResource(R.string.custom_sound)
     }
 }
 

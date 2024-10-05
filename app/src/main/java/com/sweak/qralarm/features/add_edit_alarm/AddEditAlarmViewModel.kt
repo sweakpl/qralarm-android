@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
 import androidx.lifecycle.ViewModel
+import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -8,7 +9,9 @@ import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditAlarmViewModel @Inject constructor(): ViewModel() {
+class AddEditAlarmViewModel @Inject constructor(
+    private val alarmRingtonePlayer: AlarmRingtonePlayer
+): ViewModel() {
 
     var state = MutableStateFlow(AddEditAlarmScreenState())
 
@@ -72,10 +75,49 @@ class AddEditAlarmViewModel @Inject constructor(): ViewModel() {
                 }
             }
             is AddEditAlarmScreenUserEvent.AlarmRingtoneSelected -> {
+                alarmRingtonePlayer.stop()
+
                 state.update { currentState ->
                     currentState.copy(
-                        alarmRingtoneWrapper = event.newAlarmRingtoneWrapper,
-                        isChooseAlarmRingtoneDialogVisible = false
+                        alarmRingtone = event.newAlarmRingtone,
+                        isChooseAlarmRingtoneDialogVisible = false,
+                        availableAlarmRingtonesWithPlaybackState =
+                        currentState.availableAlarmRingtonesWithPlaybackState.mapValues { false }
+                    )
+                }
+            }
+            is AddEditAlarmScreenUserEvent.ToggleAlarmRingtonePlayback -> {
+                state.update { currentState ->
+                    val isPlaying = currentState
+                        .availableAlarmRingtonesWithPlaybackState[event.alarmRingtone]?.not()
+                        ?: false
+
+                    if (isPlaying) {
+                        alarmRingtonePlayer.playOriginalAlarmRingtonePreview(
+                            alarmRingtone = event.alarmRingtone,
+                            onPreviewCompleted = {
+                                state.update { currentState ->
+                                    currentState.copy(
+                                        availableAlarmRingtonesWithPlaybackState =
+                                        currentState.availableAlarmRingtonesWithPlaybackState
+                                            .mapValues { false }
+                                    )
+                                }
+                            }
+                        )
+                    } else {
+                        alarmRingtonePlayer.stop()
+                    }
+
+                    currentState.copy(
+                        availableAlarmRingtonesWithPlaybackState =
+                        currentState.availableAlarmRingtonesWithPlaybackState.mapValues {
+                            if (it.key == event.alarmRingtone) {
+                                !it.value
+                            } else {
+                                false
+                            }
+                        }
                     )
                 }
             }
@@ -111,5 +153,11 @@ class AddEditAlarmViewModel @Inject constructor(): ViewModel() {
             }
             else -> { /* no-op */ }
         }
+    }
+
+    override fun onCleared() {
+        alarmRingtonePlayer.onDestroy()
+
+        super.onCleared()
     }
 }

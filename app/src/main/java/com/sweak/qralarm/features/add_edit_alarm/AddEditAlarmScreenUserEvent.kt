@@ -1,7 +1,7 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
+import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRepeatingScheduleWrapper
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRingtoneWrapper
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationWrapper
 
 sealed class AddEditAlarmScreenUserEvent {
@@ -27,7 +27,10 @@ sealed class AddEditAlarmScreenUserEvent {
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()
     data class AlarmRingtoneSelected(
-        val newAlarmRingtoneWrapper: AlarmRingtoneWrapper
+        val newAlarmRingtone: AlarmRingtone
+    ) : AddEditAlarmScreenUserEvent()
+    data class ToggleAlarmRingtonePlayback(
+        val alarmRingtone: AlarmRingtone
     ) : AddEditAlarmScreenUserEvent()
     data class VibrationsEnabledChanged(val areEnabled: Boolean) : AddEditAlarmScreenUserEvent()
     data class CodeEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()

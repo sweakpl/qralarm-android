@@ -9,6 +9,7 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -25,4 +26,5 @@ object QRAlarmIcons {
     val ArrowDropUp = Icons.Outlined.ArrowDropUp
     val ArrowDropDown = Icons.Outlined.ArrowDropDown
     val Play = Icons.Outlined.PlayArrow
+    val Stop = Icons.Outlined.Stop
 }

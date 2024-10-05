@@ -17,8 +17,10 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,44 +31,21 @@ import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRingtoneWrapper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseAlarmRingtoneDialogBottomSheet(
-    initialAlarmRingtoneWrapper: AlarmRingtoneWrapper,
-    availableAlarmRingtones: List<AlarmRingtone>,
-    onDismissRequest: (newAlarmRingtoneWrapper: AlarmRingtoneWrapper) -> Unit
+    initialAlarmRingtone: AlarmRingtone,
+    availableAlarmRingtonesWithPlaybackState: Map<AlarmRingtone, Boolean>,
+    onTogglePlaybackState: (AlarmRingtone) -> Unit,
+    onDismissRequest: (newAlarmRingtone: AlarmRingtone) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    val selectedAlarmRingtone = remember {
-        if (initialAlarmRingtoneWrapper is AlarmRingtoneWrapper.OriginalRingtone) {
-            mutableStateOf(initialAlarmRingtoneWrapper.alarmRingtone)
-        } else {
-            mutableStateOf(AlarmRingtone.CUSTOM_SOUND)
-        }
-    }
+    var selectedAlarmRingtone by remember { mutableStateOf(initialAlarmRingtone) }
 
     ModalBottomSheet(
-        onDismissRequest = {
-            when (selectedAlarmRingtone.value) {
-                AlarmRingtone.GENTLE_GUITAR -> {
-                    onDismissRequest(AlarmRingtoneWrapper.OriginalRingtone.GentleGuitar)
-                }
-                AlarmRingtone.ALARM_CLOCK -> {
-                    onDismissRequest(AlarmRingtoneWrapper.OriginalRingtone.AlarmClock)
-                }
-                AlarmRingtone.AIR_HORN -> {
-                    onDismissRequest(AlarmRingtoneWrapper.OriginalRingtone.AirHorn)
-                }
-                AlarmRingtone.CUSTOM_SOUND -> {
-                    onDismissRequest(
-                        AlarmRingtoneWrapper.CustomRingtone(customSoundUriString = null)
-                    )
-                }
-            }
-        },
+        onDismissRequest = { onDismissRequest(selectedAlarmRingtone) },
         sheetState = modalBottomSheetState,
         containerColor = MaterialTheme.colorScheme.tertiary
     ) {
@@ -85,21 +64,21 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
             )
 
             Column(modifier = Modifier.selectableGroup()) {
-                availableAlarmRingtones.forEach { alarmRingtone ->
+                availableAlarmRingtonesWithPlaybackState.forEach { (alarmRingtone, playbackState) ->
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
                             .selectable(
-                                selected = selectedAlarmRingtone.value == alarmRingtone,
-                                onClick = { selectedAlarmRingtone.value = alarmRingtone },
+                                selected = selectedAlarmRingtone == alarmRingtone,
+                                onClick = { selectedAlarmRingtone = alarmRingtone },
                                 role = Role.RadioButton
                             )
                     ) {
                         Row {
                             RadioButton(
-                                selected = selectedAlarmRingtone.value == alarmRingtone,
+                                selected = selectedAlarmRingtone == alarmRingtone,
                                 onClick = null,
                                 colors = RadioButtonDefaults.colors(
                                     selectedColor = MaterialTheme.colorScheme.secondary,
@@ -121,13 +100,14 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
                             )
                         }
 
-                        IconButton(
-                            onClick = { /* TODO */ }
-                        ) {
+                        IconButton(onClick = { onTogglePlaybackState(alarmRingtone) }) {
                             Icon(
-                                imageVector = QRAlarmIcons.Play,
-                                contentDescription =
-                                stringResource(R.string.content_description_play_icon)
+                                imageVector =
+                                if (playbackState) QRAlarmIcons.Stop else QRAlarmIcons.Play,
+                                contentDescription = stringResource(
+                                    if (playbackState) R.string.content_description_stop_icon
+                                    else R.string.content_description_play_icon
+                                )
                             )
                         }
                     }
@@ -142,8 +122,9 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
 private fun ChooseAlarmRingtoneDialogBottomSheetPreview() {
     QRAlarmTheme {
         ChooseAlarmRingtoneDialogBottomSheet(
-            initialAlarmRingtoneWrapper = AlarmRingtoneWrapper.OriginalRingtone.GentleGuitar,
-            availableAlarmRingtones = AlarmRingtone.entries,
+            initialAlarmRingtone= AlarmRingtone.GENTLE_GUITAR,
+            availableAlarmRingtonesWithPlaybackState = AlarmRingtone.entries.associateWith { false },
+            onTogglePlaybackState = {},
             onDismissRequest = {}
         )
     }
