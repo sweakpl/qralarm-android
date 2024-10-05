@@ -7,11 +7,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.features.add_edit_alarm.navigation.addEditAlarmScreen
+import com.sweak.qralarm.features.add_edit_alarm.navigation.navigateToAddEditAlarm
+import com.sweak.qralarm.features.home.navigation.HOME_SCREEN_ROUTE
 import com.sweak.qralarm.features.home.navigation.homeScreen
 import com.sweak.qralarm.features.home.navigation.navigateToHome
 import com.sweak.qralarm.features.introduction.navigation.INTRODUCTION_SCREEN_ROUTE
 import com.sweak.qralarm.features.introduction.navigation.introductionScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +26,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = INTRODUCTION_SCREEN_ROUTE
+                    startDestination = HOME_SCREEN_ROUTE
                 ) {
                     introductionScreen(
                         onContinueClicked = {
@@ -36,7 +41,17 @@ class MainActivity : ComponentActivity() {
                         }
                     )
 
-                    homeScreen()
+                    homeScreen(
+                        onAddNewAlarm = {
+                            navController.navigateToAddEditAlarm()
+                        }
+                    )
+
+                    addEditAlarmScreen(
+                        onCancelClicked = {
+                            navController.navigateUp()
+                        }
+                    )
                 }
             }
         }

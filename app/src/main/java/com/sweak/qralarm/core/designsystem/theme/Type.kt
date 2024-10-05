@@ -30,14 +30,29 @@ val Typography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 20.sp
     ),
+    titleMedium = TextStyle(
+        fontFamily = amikoFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp
+    ),
     bodyLarge = TextStyle(
         fontFamily = amikoFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
+    bodyMedium = TextStyle(
+        fontFamily = amikoFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
     labelLarge = TextStyle(
         fontFamily = amikoFamily,
         fontWeight = FontWeight.SemiBold,
         fontSize = 14.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = amikoFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
     )
 )

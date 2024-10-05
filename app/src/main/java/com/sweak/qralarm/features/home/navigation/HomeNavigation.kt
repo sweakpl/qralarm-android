@@ -13,8 +13,10 @@ fun NavController.navigateToHome(navOptions: NavOptions) = navigate(
     navOptions = navOptions
 )
 
-fun NavGraphBuilder.homeScreen() {
+fun NavGraphBuilder.homeScreen(onAddNewAlarm: () -> Unit) {
     composable(route = HOME_SCREEN_ROUTE) {
-        HomeScreen()
+        HomeScreen(
+            onAddNewAlarm = onAddNewAlarm
+        )
     }
 }

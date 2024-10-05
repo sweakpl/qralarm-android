@@ -3,6 +3,11 @@
     <string name="content_description_qralarm_icon">QRAlarm icon</string>
     <string name="content_description_add_icon">Add (plus) icon</string>
     <string name="content_description_menu_icon">Menu icon</string>
+    <string name="content_description_close_icon">Close icon</string>
+    <string name="content_description_done_icon">Done icon</string>
+    <string name="content_description_forward_arrow_icon">Forward arrow icon</string>
+    <string name="content_description_drop_down_arrow_icon">Drop down arrow icon</string>
+    <string name="content_description_play_icon">Play icon</string>
 
     <string name="content_description_wake_up_catchphrase_image">Image showing a friendly stick man lying in bed woken up.</string>
     <string name="content_description_get_up_catchphrase_image">Image showing a smiling stick man walking with their phone ringing.</string>

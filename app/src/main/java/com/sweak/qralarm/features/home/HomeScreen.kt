@@ -30,13 +30,19 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
 @Composable
-fun HomeScreen() {
-    HomeScreenContent()
+fun HomeScreen(onAddNewAlarm: () -> Unit) {
+    HomeScreenContent(
+        onEvent = { event ->
+            when (event) {
+                HomeScreenUserEvent.AddNewAlarm -> onAddNewAlarm()
+            }
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeScreenContent() {
+private fun HomeScreenContent(onEvent: (HomeScreenUserEvent) -> Unit) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -66,7 +72,7 @@ private fun HomeScreenContent() {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* TODO */ },
+                onClick = { onEvent(HomeScreenUserEvent.AddNewAlarm) },
                 containerColor = MaterialTheme.colorScheme.tertiary
             ) {
                 Icon(
@@ -109,7 +115,7 @@ private fun HomeScreenContent() {
                 )
 
                 IconButton(
-                    onClick = { /* TODO */ }
+                    onClick = { onEvent(HomeScreenUserEvent.AddNewAlarm) }
                 ) {
                     Icon(
                         imageVector = QRAlarmIcons.Add,
@@ -127,6 +133,8 @@ private fun HomeScreenContent() {
 @Composable
 private fun HomeScreenContentPreview() {
     QRAlarmTheme {
-        HomeScreenContent()
+        HomeScreenContent(
+            onEvent = {}
+        )
     }
 }
