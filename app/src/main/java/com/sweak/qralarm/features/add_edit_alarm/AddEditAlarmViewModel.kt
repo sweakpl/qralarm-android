@@ -3,6 +3,7 @@ package com.sweak.qralarm.features.add_edit_alarm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
+import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditAlarmViewModel @Inject constructor(
-    private val alarmRingtonePlayer: AlarmRingtonePlayer
+    private val alarmRingtonePlayer: AlarmRingtonePlayer,
+    private val userDataRepository: UserDataRepository
 ): ViewModel() {
 
     var state = MutableStateFlow(AddEditAlarmScreenState())
@@ -31,6 +33,16 @@ class AddEditAlarmViewModel @Inject constructor(
                 alarmHourOfDay = dateTime.hour,
                 alarmMinute = dateTime.minute
             )
+        }
+
+        viewModelScope.launch {
+            userDataRepository.temporaryScannedCode.collect { temporaryScannedCode ->
+                // TODO: show on UI that code has been saved
+
+                state.update { currentState ->
+                    currentState.copy(currentlyAssignedCode = temporaryScannedCode)
+                }
+            }
         }
     }
 

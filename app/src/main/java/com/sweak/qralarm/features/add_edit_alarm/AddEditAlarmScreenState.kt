@@ -28,6 +28,7 @@ data class AddEditAlarmScreenState(
     val isChooseAlarmRingtoneDialogVisible: Boolean = false,
     val areVibrationsEnabled: Boolean = true,
     val isCodeEnabled: Boolean = true,
+    val currentlyAssignedCode: String? = null,
     val gentleWakeupDurationInSeconds: Int = 30,
     val availableGentleWakeUpDurationsInSeconds: List<Int> =
         AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS,

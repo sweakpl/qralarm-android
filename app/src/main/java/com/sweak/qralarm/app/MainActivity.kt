@@ -14,6 +14,8 @@ import com.sweak.qralarm.features.home.navigation.homeScreen
 import com.sweak.qralarm.features.home.navigation.navigateToHome
 import com.sweak.qralarm.features.introduction.navigation.INTRODUCTION_SCREEN_ROUTE
 import com.sweak.qralarm.features.introduction.navigation.introductionScreen
+import com.sweak.qralarm.features.scanner.navigation.navigateToScanner
+import com.sweak.qralarm.features.scanner.navigation.scannerScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,6 +52,15 @@ class MainActivity : ComponentActivity() {
                     addEditAlarmScreen(
                         onCancelClicked = {
                             navController.navigateUp()
+                        },
+                        onScanCustomCodeClicked = {
+                            navController.navigateToScanner()
+                        }
+                    )
+
+                    scannerScreen(
+                        onCustomCodeSaved = {
+                            navController.popBackStack()
                         }
                     )
                 }

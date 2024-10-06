@@ -5,6 +5,7 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,6 +33,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -41,6 +45,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
 import com.sweak.qralarm.core.designsystem.component.QRAlarmSwitch
@@ -49,6 +57,7 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
+import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.util.shortName
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneDialogBottomSheet
@@ -60,8 +69,12 @@ import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRepeatingScheduleWra
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationWrapper
 import java.time.DayOfWeek
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun AddEditAlarmScreen(onCancelClicked: () -> Unit) {
+fun AddEditAlarmScreen(
+    onCancelClicked: () -> Unit,
+    onScanCustomCodeClicked: () -> Unit
+) {
     val addEditAlarmViewModel = hiltViewModel<AddEditAlarmViewModel>()
     val addEditAlarmScreenState by addEditAlarmViewModel.state.collectAsStateWithLifecycle()
 
@@ -78,6 +91,11 @@ fun AddEditAlarmScreen(onCancelClicked: () -> Unit) {
                 AddEditAlarmScreenUserEvent.CustomRingtoneUriRetrieved(customRingtoneUri = uri)
             )
         }
+    )
+
+    var isInTheCameraPermissionFlowForCustomCodeScan by remember { mutableStateOf(false) }
+    val cameraPermissionState = rememberPermissionState(
+        permission = android.Manifest.permission.CAMERA
     )
 
     val context = LocalContext.current
@@ -98,6 +116,13 @@ fun AddEditAlarmScreen(onCancelClicked: () -> Unit) {
         }
     )
 
+    OnResume {
+        if (isInTheCameraPermissionFlowForCustomCodeScan) {
+            isInTheCameraPermissionFlowForCustomCodeScan = false
+            onScanCustomCodeClicked()
+        }
+    }
+
     AddEditAlarmScreenContent(
         state = addEditAlarmScreenState,
         onEvent = { event ->
@@ -105,6 +130,19 @@ fun AddEditAlarmScreen(onCancelClicked: () -> Unit) {
                 is AddEditAlarmScreenUserEvent.OnCancelClicked -> onCancelClicked()
                 is AddEditAlarmScreenUserEvent.PickCustomRingtone -> {
                     audioPickerLauncher.launch("audio/*")
+                }
+                is AddEditAlarmScreenUserEvent.TryScanSpecificCode -> {
+                    if (!cameraPermissionState.status.isGranted) {
+                        isInTheCameraPermissionFlowForCustomCodeScan = true
+
+                        if (cameraPermissionState.status.shouldShowRationale) {
+                            // TODO user denied previously and we should show dialog
+                        } else {
+                            cameraPermissionState.launchPermissionRequest()
+                        }
+                    } else {
+                        onScanCustomCodeClicked()
+                    }
                 }
                 else -> addEditAlarmViewModel.onEvent(event)
             }
@@ -432,48 +470,91 @@ private fun AddEditAlarmScreenContent(
                         Column {
                             Separator()
 
-                            Text(
-                                text = stringResource(R.string.assign_specific_code),
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier
-                                    .padding(
-                                        start = MaterialTheme.space.medium,
-                                        top = MaterialTheme.space.medium,
-                                        end = MaterialTheme.space.medium,
-                                        bottom = MaterialTheme.space.xSmall
-                                    )
-                            )
+                            AnimatedContent(
+                                targetState = state.currentlyAssignedCode,
+                                label = "Code assigning animation"
+                            ) { currentlyAssignedCode ->
+                                Column {
+                                    if (currentlyAssignedCode != null) {
+                                        Text(
+                                            text = stringResource(R.string.code_assigned),
+                                            style = MaterialTheme.typography.titleMedium,
+                                            modifier = Modifier
+                                                .padding(
+                                                    start = MaterialTheme.space.medium,
+                                                    top = MaterialTheme.space.medium,
+                                                    end = MaterialTheme.space.medium,
+                                                    bottom = MaterialTheme.space.xSmall
+                                                )
+                                        )
 
-                            Text(
-                                text = stringResource(R.string.assign_specific_code_description),
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
-                            )
+                                        Text(
+                                            text = stringResource(
+                                                R.string.current_code,
+                                                currentlyAssignedCode
+                                            ),
+                                            style = MaterialTheme.typography.labelMedium,
+                                            modifier = Modifier
+                                                .padding(
+                                                    start = MaterialTheme.space.medium,
+                                                    end = MaterialTheme.space.medium,
+                                                    bottom = MaterialTheme.space.medium
+                                                )
+                                        )
+                                    } else {
+                                        Text(
+                                            text = stringResource(R.string.assign_specific_code),
+                                            style = MaterialTheme.typography.titleMedium,
+                                            modifier = Modifier
+                                                .padding(
+                                                    start = MaterialTheme.space.medium,
+                                                    top = MaterialTheme.space.medium,
+                                                    end = MaterialTheme.space.medium,
+                                                    bottom = MaterialTheme.space.xSmall
+                                                )
+                                        )
 
-                            Card(
-                                colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.secondary
-                                ),
-                                modifier = Modifier
-                                    .padding(all = MaterialTheme.space.medium)
-                                    .clickable { /* TODO */ }
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(all = MaterialTheme.space.medium)
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.scan_your_own_code),
-                                        style = MaterialTheme.typography.labelLarge
-                                    )
+                                        Text(
+                                            text = stringResource(
+                                                R.string.assign_specific_code_description
+                                            ),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            modifier = Modifier
+                                                .padding(horizontal = MaterialTheme.space.medium)
+                                        )
 
-                                    Icon(
-                                        imageVector = QRAlarmIcons.ForwardArrow,
-                                        contentDescription =
-                                        stringResource(R.string.content_description_forward_arrow_icon)
-                                    )
+                                        Card(
+                                            colors = CardDefaults.cardColors(
+                                                containerColor = MaterialTheme.colorScheme.secondary
+                                            ),
+                                            modifier = Modifier
+                                                .padding(all = MaterialTheme.space.medium)
+                                                .clickable {
+                                                    onEvent(
+                                                        AddEditAlarmScreenUserEvent
+                                                            .TryScanSpecificCode
+                                                    )
+                                                }
+                                        ) {
+                                            Row(
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(all = MaterialTheme.space.medium)
+                                            ) {
+                                                Text(
+                                                    text = stringResource(R.string.scan_your_own_code),
+                                                    style = MaterialTheme.typography.labelLarge
+                                                )
+
+                                                Icon(
+                                                    imageVector = QRAlarmIcons.ForwardArrow,
+                                                    contentDescription =
+                                                    stringResource(R.string.content_description_forward_arrow_icon)
+                                                )
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }

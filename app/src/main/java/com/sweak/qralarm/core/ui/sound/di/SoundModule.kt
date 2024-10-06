@@ -1,4 +1,4 @@
-package com.sweak.qralarm.di
+package com.sweak.qralarm.core.ui.sound.di
 
 import android.content.Context
 import android.media.MediaPlayer
@@ -11,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object SoundModule {
 
     @Provides
     fun provideMediaPlayer(): MediaPlayer = MediaPlayer()

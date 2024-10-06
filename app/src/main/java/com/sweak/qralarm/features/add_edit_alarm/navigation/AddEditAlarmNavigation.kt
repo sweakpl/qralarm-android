@@ -9,10 +9,14 @@ const val ADD_EDIT_ALARM_SCREEN_ROUTE = "addEditAlarmScreen"
 
 fun NavController.navigateToAddEditAlarm() = navigate(route = ADD_EDIT_ALARM_SCREEN_ROUTE)
 
-fun NavGraphBuilder.addEditAlarmScreen(onCancelClicked: () -> Unit) {
+fun NavGraphBuilder.addEditAlarmScreen(
+    onCancelClicked: () -> Unit,
+    onScanCustomCodeClicked: () -> Unit
+) {
     composable(route = ADD_EDIT_ALARM_SCREEN_ROUTE) {
         AddEditAlarmScreen(
-            onCancelClicked = onCancelClicked
+            onCancelClicked = onCancelClicked,
+            onScanCustomCodeClicked = onScanCustomCodeClicked
         )
     }
 }

@@ -11,6 +11,9 @@ navigationCompose = "2.8.2"
 materialIconsExtended = "1.7.3"
 hiltNavigationCompose = "1.2.0"
 desugarJdkLibs = "2.1.2"
+code-scanner = "2.3.2"
+datastorePreferences = "1.1.1"
+accompanist-permissions = "0.36.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -27,7 +30,10 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
+desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
+code-scanner = { group = "com.github.yuriy-budiyev", name = "code-scanner", version.ref = "code-scanner" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
+google-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permissions"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
