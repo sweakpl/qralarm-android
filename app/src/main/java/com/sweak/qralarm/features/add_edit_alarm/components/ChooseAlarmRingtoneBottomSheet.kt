@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -37,12 +38,16 @@ import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
 fun ChooseAlarmRingtoneDialogBottomSheet(
     initialAlarmRingtone: AlarmRingtone,
     availableAlarmRingtonesWithPlaybackState: Map<AlarmRingtone, Boolean>,
+    isCustomRingtoneUploaded: Boolean,
     onTogglePlaybackState: (AlarmRingtone) -> Unit,
+    onPickCustomRingtone: () -> Unit,
     onDismissRequest: (newAlarmRingtone: AlarmRingtone) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    var selectedAlarmRingtone by remember { mutableStateOf(initialAlarmRingtone) }
+    var selectedAlarmRingtone by remember(initialAlarmRingtone) {
+        mutableStateOf(initialAlarmRingtone)
+    }
 
     ModalBottomSheet(
         onDismissRequest = { onDismissRequest(selectedAlarmRingtone) },
@@ -70,9 +75,18 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
+                            .height(height = MaterialTheme.space.xLarge)
                             .selectable(
                                 selected = selectedAlarmRingtone == alarmRingtone,
-                                onClick = { selectedAlarmRingtone = alarmRingtone },
+                                onClick = {
+                                    if (alarmRingtone == AlarmRingtone.CUSTOM_SOUND &&
+                                        !isCustomRingtoneUploaded
+                                    ) {
+                                        onPickCustomRingtone()
+                                    } else {
+                                        selectedAlarmRingtone = alarmRingtone
+                                    }
+                                },
                                 role = Role.RadioButton
                             )
                     ) {
@@ -100,15 +114,33 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
                             )
                         }
 
-                        IconButton(onClick = { onTogglePlaybackState(alarmRingtone) }) {
-                            Icon(
-                                imageVector =
-                                if (playbackState) QRAlarmIcons.Stop else QRAlarmIcons.Play,
-                                contentDescription = stringResource(
-                                    if (playbackState) R.string.content_description_stop_icon
-                                    else R.string.content_description_play_icon
-                                )
-                            )
+                        Row {
+                            if (alarmRingtone == AlarmRingtone.CUSTOM_SOUND &&
+                                isCustomRingtoneUploaded
+                            ) {
+                                IconButton(onClick = { onPickCustomRingtone() }) {
+                                    Icon(
+                                        imageVector = QRAlarmIcons.Edit,
+                                        contentDescription =
+                                        stringResource(R.string.content_description_edit_icon)
+                                    )
+                                }
+                            }
+
+                            if (alarmRingtone != AlarmRingtone.CUSTOM_SOUND ||
+                                isCustomRingtoneUploaded
+                            ) {
+                                IconButton(onClick = { onTogglePlaybackState(alarmRingtone) }) {
+                                    Icon(
+                                        imageVector =
+                                        if (playbackState) QRAlarmIcons.Stop else QRAlarmIcons.Play,
+                                        contentDescription = stringResource(
+                                            if (playbackState) R.string.content_description_stop_icon
+                                            else R.string.content_description_play_icon
+                                        )
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -124,7 +156,9 @@ private fun ChooseAlarmRingtoneDialogBottomSheetPreview() {
         ChooseAlarmRingtoneDialogBottomSheet(
             initialAlarmRingtone= AlarmRingtone.GENTLE_GUITAR,
             availableAlarmRingtonesWithPlaybackState = AlarmRingtone.entries.associateWith { false },
+            isCustomRingtoneUploaded = true,
             onTogglePlaybackState = {},
+            onPickCustomRingtone = {},
             onDismissRequest = {}
         )
     }

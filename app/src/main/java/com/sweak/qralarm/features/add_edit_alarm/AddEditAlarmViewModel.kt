@@ -1,10 +1,15 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
@@ -14,6 +19,9 @@ class AddEditAlarmViewModel @Inject constructor(
 ): ViewModel() {
 
     var state = MutableStateFlow(AddEditAlarmScreenState())
+
+    private val backendEventsChannel = Channel<AddEditAlarmScreenBackendEvent>()
+    val backendEvents = backendEventsChannel.receiveAsFlow()
 
     init {
         val dateTime = ZonedDateTime.now()
@@ -93,18 +101,39 @@ class AddEditAlarmViewModel @Inject constructor(
                         ?: false
 
                     if (isPlaying) {
-                        alarmRingtonePlayer.playOriginalAlarmRingtonePreview(
-                            alarmRingtone = event.alarmRingtone,
-                            onPreviewCompleted = {
-                                state.update { currentState ->
-                                    currentState.copy(
-                                        availableAlarmRingtonesWithPlaybackState =
-                                        currentState.availableAlarmRingtonesWithPlaybackState
-                                            .mapValues { false }
-                                    )
+                        if (event.alarmRingtone == AlarmRingtone.CUSTOM_SOUND &&
+                            (currentState.currentCustomAlarmRingtoneUri != null ||
+                                    currentState.temporaryCustomAlarmRingtoneUri != null)
+                        ) {
+                            val alarmRingtoneUri = currentState.temporaryCustomAlarmRingtoneUri
+                                ?: currentState.currentCustomAlarmRingtoneUri ?: return
+
+                            alarmRingtonePlayer.playUriAlarmRingtonePreview(
+                                alarmRingtoneUri = alarmRingtoneUri,
+                                onPreviewCompleted = {
+                                    state.update { currentState ->
+                                        currentState.copy(
+                                            availableAlarmRingtonesWithPlaybackState =
+                                            currentState.availableAlarmRingtonesWithPlaybackState
+                                                .mapValues { false }
+                                        )
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        } else {
+                            alarmRingtonePlayer.playOriginalAlarmRingtonePreview(
+                                alarmRingtone = event.alarmRingtone,
+                                onPreviewCompleted = {
+                                    state.update { currentState ->
+                                        currentState.copy(
+                                            availableAlarmRingtonesWithPlaybackState =
+                                            currentState.availableAlarmRingtonesWithPlaybackState
+                                                .mapValues { false }
+                                        )
+                                    }
+                                }
+                            )
+                        }
                     } else {
                         alarmRingtonePlayer.stop()
                     }
@@ -120,6 +149,27 @@ class AddEditAlarmViewModel @Inject constructor(
                         }
                     )
                 }
+            }
+            is AddEditAlarmScreenUserEvent.CustomRingtoneUriRetrieved -> viewModelScope.launch {
+                val uri = event.customRingtoneUri ?: run {
+                    backendEventsChannel.send(
+                        AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished(
+                            isSuccess = false
+                        )
+                    )
+                    return@launch
+                }
+
+                state.update { currentState ->
+                    currentState.copy(
+                        alarmRingtone = AlarmRingtone.CUSTOM_SOUND,
+                        temporaryCustomAlarmRingtoneUri = uri
+                    )
+                }
+
+                backendEventsChannel.send(
+                    AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished(isSuccess = true)
+                )
             }
             is AddEditAlarmScreenUserEvent.VibrationsEnabledChanged -> {
                 state.update { currentState ->

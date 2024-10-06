@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
+import android.net.Uri
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationWrapper
@@ -31,6 +32,10 @@ sealed class AddEditAlarmScreenUserEvent {
     ) : AddEditAlarmScreenUserEvent()
     data class ToggleAlarmRingtonePlayback(
         val alarmRingtone: AlarmRingtone
+    ) : AddEditAlarmScreenUserEvent()
+    data object PickCustomRingtone : AddEditAlarmScreenUserEvent()
+    data class CustomRingtoneUriRetrieved(
+        val customRingtoneUri: Uri?
     ) : AddEditAlarmScreenUserEvent()
     data class VibrationsEnabledChanged(val areEnabled: Boolean) : AddEditAlarmScreenUserEvent()
     data class CodeEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()

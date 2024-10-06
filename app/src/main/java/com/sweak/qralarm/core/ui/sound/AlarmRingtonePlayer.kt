@@ -46,6 +46,30 @@ class AlarmRingtonePlayer(
         }
     }
 
+    fun playUriAlarmRingtonePreview(alarmRingtoneUri: Uri, onPreviewCompleted: () -> Unit) {
+        mediaPlayer.apply {
+            reset()
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build()
+            )
+            try {
+                setDataSource(context, alarmRingtoneUri)
+            } catch (ioException: IOException) {
+                return
+            }
+            isLooping = false
+            setOnCompletionListener {
+                this@AlarmRingtonePlayer.stop()
+                onPreviewCompleted()
+            }
+            prepare()
+            start()
+        }
+    }
+
     fun stop() {
         try {
             if (mediaPlayer.isPlaying) {

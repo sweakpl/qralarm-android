@@ -1,5 +1,10 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
+import android.content.Context
+import android.content.Intent
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,6 +48,7 @@ import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
+import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.util.shortName
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneDialogBottomSheet
@@ -58,11 +65,47 @@ fun AddEditAlarmScreen(onCancelClicked: () -> Unit) {
     val addEditAlarmViewModel = hiltViewModel<AddEditAlarmViewModel>()
     val addEditAlarmScreenState by addEditAlarmViewModel.state.collectAsStateWithLifecycle()
 
+    val audioPickerLauncher = rememberLauncherForActivityResult(
+        contract = object : ActivityResultContracts.GetContent() {
+            override fun createIntent(context: Context, input: String): Intent {
+                return super.createIntent(context, input).apply {
+                    putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+                }
+            }
+        },
+        onResult = { uri ->
+            addEditAlarmViewModel.onEvent(
+                AddEditAlarmScreenUserEvent.CustomRingtoneUriRetrieved(customRingtoneUri = uri)
+            )
+        }
+    )
+
+    val context = LocalContext.current
+
+    ObserveAsEvents(
+        flow = addEditAlarmViewModel.backendEvents,
+        onEvent = { event ->
+            when (event) {
+                is AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished -> {
+                    Toast.makeText(
+                        context,
+                        if (event.isSuccess) R.string.ringtone_successfully_uploaded
+                        else R.string.ringtone_upload_unsuccessful,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    )
+
     AddEditAlarmScreenContent(
         state = addEditAlarmScreenState,
         onEvent = { event ->
             when (event) {
                 is AddEditAlarmScreenUserEvent.OnCancelClicked -> onCancelClicked()
+                is AddEditAlarmScreenUserEvent.PickCustomRingtone -> {
+                    audioPickerLauncher.launch("audio/*")
+                }
                 else -> addEditAlarmViewModel.onEvent(event)
             }
         }
@@ -573,12 +616,17 @@ private fun AddEditAlarmScreenContent(
             initialAlarmRingtone = state.alarmRingtone,
             availableAlarmRingtonesWithPlaybackState =
             state.availableAlarmRingtonesWithPlaybackState,
+            isCustomRingtoneUploaded = state.currentCustomAlarmRingtoneUri != null ||
+                    state.temporaryCustomAlarmRingtoneUri != null,
             onTogglePlaybackState = { toggledAlarmRingtone ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.ToggleAlarmRingtonePlayback(
                         alarmRingtone = toggledAlarmRingtone
                     )
                 )
+            },
+            onPickCustomRingtone = {
+                onEvent(AddEditAlarmScreenUserEvent.PickCustomRingtone)
             },
             onDismissRequest = { newAlarmRingtone ->
                 onEvent(

@@ -9,6 +9,7 @@
     <string name="content_description_drop_down_arrow_icon">Drop down arrow icon</string>
     <string name="content_description_play_icon">Play icon</string>
     <string name="content_description_stop_icon">Stop icon</string>
+    <string name="content_description_edit_icon">Edit icon</string>
 
     <string name="content_description_wake_up_catchphrase_image">Image showing a friendly stick man lying in bed woken up.</string>
     <string name="content_description_get_up_catchphrase_image">Image showing a smiling stick man walking with their phone ringing.</string>

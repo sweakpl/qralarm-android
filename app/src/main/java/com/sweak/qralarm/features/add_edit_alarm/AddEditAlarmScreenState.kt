@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
+import android.net.Uri
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_NUMBERS
@@ -22,6 +23,8 @@ data class AddEditAlarmScreenState(
     val alarmRingtone: AlarmRingtone = AlarmRingtone.GENTLE_GUITAR,
     val availableAlarmRingtonesWithPlaybackState: Map<AlarmRingtone, Boolean> =
         AlarmRingtone.entries.associateWith { false },
+    val currentCustomAlarmRingtoneUri: Uri? = null,
+    val temporaryCustomAlarmRingtoneUri: Uri? = null,
     val isChooseAlarmRingtoneDialogVisible: Boolean = false,
     val areVibrationsEnabled: Boolean = true,
     val isCodeEnabled: Boolean = true,

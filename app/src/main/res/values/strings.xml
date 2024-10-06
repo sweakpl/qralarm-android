@@ -49,4 +49,6 @@
     <string name="disabled">Disabled</string>
     <string name="min">min</string>
     <string name="sec">sec</string>
+    <string name="ringtone_successfully_uploaded">Your custom ringtone has been successfully uploaded!</string>
+    <string name="ringtone_upload_unsuccessful">Custom ringtone was not uploaded…</string>
 </resources>
