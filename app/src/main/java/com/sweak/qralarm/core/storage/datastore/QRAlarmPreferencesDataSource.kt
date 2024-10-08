@@ -11,15 +11,18 @@ import javax.inject.Inject
 class QRAlarmPreferencesDataSource @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
-    suspend fun setTemporaryScannedCode(code: String) {
+    suspend fun setTemporaryScannedCode(code: String?) {
         dataStore.edit { preferences ->
-            preferences[TEMPORARY_SCANNED_CODE] = code
+            preferences[TEMPORARY_SCANNED_CODE] = code ?: ""
         }
     }
 
     fun getTemporaryScannedCode(): Flow<String?> {
         return dataStore.data.map { preferences ->
-            return@map preferences[TEMPORARY_SCANNED_CODE]
+            val code = preferences[TEMPORARY_SCANNED_CODE]
+
+            if (code.isNullOrEmpty()) return@map null
+            else return@map code
         }
     }
 

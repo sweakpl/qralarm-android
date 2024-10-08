@@ -52,7 +52,7 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
     ModalBottomSheet(
         onDismissRequest = { onDismissRequest(selectedAlarmRingtone) },
         sheetState = modalBottomSheetState,
-        containerColor = MaterialTheme.colorScheme.tertiary
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(
             modifier = Modifier
@@ -96,7 +96,7 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
                                 onClick = null,
                                 colors = RadioButtonDefaults.colors(
                                     selectedColor = MaterialTheme.colorScheme.secondary,
-                                    unselectedColor = MaterialTheme.colorScheme.onTertiary
+                                    unselectedColor = MaterialTheme.colorScheme.onSurface
                                 )
                             )
 

@@ -53,4 +53,9 @@
     <string name="ringtone_upload_unsuccessful">Custom ringtone was not uploaded…</string>
     <string name="code_assigned">Code assigned!</string>
     <string name="current_code">Current code: %1$s</string>
+    <string name="camera_permission_required">Camera permission required</string>
+    <string name="camera_permission_required_description">Camera permission is required for scanning codes. In order to grant the permission go to settings and grant the camera permission manually.</string>
+    <string name="settings">Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="code_successfully_scanned">Code has been successfuly scanned!</string>
 </resources>

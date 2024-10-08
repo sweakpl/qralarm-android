@@ -2,6 +2,8 @@ package com.sweak.qralarm.features.add_edit_alarm
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -46,11 +48,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
+import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.component.QRAlarmSwitch
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
@@ -112,6 +116,13 @@ fun AddEditAlarmScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
+                is AddEditAlarmScreenBackendEvent.CustomCodeAssignmentFinished -> {
+                    Toast.makeText(
+                        context,
+                        R.string.code_successfully_scanned,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     )
@@ -119,7 +130,10 @@ fun AddEditAlarmScreen(
     OnResume {
         if (isInTheCameraPermissionFlowForCustomCodeScan) {
             isInTheCameraPermissionFlowForCustomCodeScan = false
-            onScanCustomCodeClicked()
+
+            if (cameraPermissionState.status is PermissionStatus.Granted) {
+                onScanCustomCodeClicked()
+            }
         }
     }
 
@@ -136,13 +150,29 @@ fun AddEditAlarmScreen(
                         isInTheCameraPermissionFlowForCustomCodeScan = true
 
                         if (cameraPermissionState.status.shouldShowRationale) {
-                            // TODO user denied previously and we should show dialog
+                            addEditAlarmViewModel.onEvent(
+                                AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(
+                                    isVisible = true
+                                )
+                            )
                         } else {
                             cameraPermissionState.launchPermissionRequest()
                         }
                     } else {
                         onScanCustomCodeClicked()
                     }
+                }
+                is AddEditAlarmScreenUserEvent.GoToApplicationSettingsClicked -> {
+                    addEditAlarmViewModel.onEvent(
+                        AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(
+                            isVisible = false
+                        )
+                    )
+                    context.startActivity(
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.parse("package:${context.packageName}")
+                        }
+                    )
                 }
                 else -> addEditAlarmViewModel.onEvent(event)
             }
@@ -719,6 +749,25 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
+    if (state.isCameraPermissionDeniedDialogVisible) {
+        QRAlarmDialog(
+            title = stringResource(R.string.camera_permission_required),
+            message = stringResource(R.string.camera_permission_required_description),
+            onDismissRequest = {
+                onEvent(
+                    AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(
+                        isVisible = false
+                    )
+                )
+            },
+            onPositiveClick = {
+                onEvent(AddEditAlarmScreenUserEvent.GoToApplicationSettingsClicked)
+            },
+            positiveButtonText = stringResource(R.string.settings),
+            negativeButtonText = stringResource(R.string.cancel)
+        )
+    }
+
     if (state.isChooseGentleWakeUpDurationDialogVisible) {
         ChooseGentleWakeUpDurationBottomSheet(
             initialGentleWakeUpDurationInSeconds = state.gentleWakeupDurationInSeconds,
@@ -741,7 +790,7 @@ private fun Separator() {
             .fillMaxWidth()
             .height(1.dp)
             .padding(horizontal = MaterialTheme.space.medium)
-            .background(color = MaterialTheme.colorScheme.onTertiary)
+            .background(color = MaterialTheme.colorScheme.onSurface)
     )
 }
 

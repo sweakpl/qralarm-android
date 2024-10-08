@@ -69,7 +69,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
             )
         },
         sheetState = modalBottomSheetState,
-        containerColor = MaterialTheme.colorScheme.tertiary
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(
             modifier = Modifier
@@ -102,7 +102,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                         onClick = null,
                         colors = RadioButtonDefaults.colors(
                             selectedColor = MaterialTheme.colorScheme.secondary,
-                            unselectedColor = MaterialTheme.colorScheme.onTertiary
+                            unselectedColor = MaterialTheme.colorScheme.onSurface
                         )
                     )
 
@@ -126,7 +126,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                         onClick = null,
                         colors = RadioButtonDefaults.colors(
                             selectedColor = MaterialTheme.colorScheme.secondary,
-                            unselectedColor = MaterialTheme.colorScheme.onTertiary
+                            unselectedColor = MaterialTheme.colorScheme.onSurface
                         )
                     )
 
@@ -150,7 +150,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                         onClick = null,
                         colors = RadioButtonDefaults.colors(
                             selectedColor = MaterialTheme.colorScheme.secondary,
-                            unselectedColor = MaterialTheme.colorScheme.onTertiary
+                            unselectedColor = MaterialTheme.colorScheme.onSurface
                         )
                     )
 
@@ -175,7 +175,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                             onClick = null,
                             colors = RadioButtonDefaults.colors(
                                 selectedColor = MaterialTheme.colorScheme.secondary,
-                                unselectedColor = MaterialTheme.colorScheme.onTertiary
+                                unselectedColor = MaterialTheme.colorScheme.onSurface
                             )
                         )
 

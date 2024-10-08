@@ -12,7 +12,9 @@ private val ColorScheme = lightColorScheme(
     secondary = BlueZodiac,
     onSecondary = Color.White,
     tertiary = ButterflyBush,
-    onTertiary = Color.White
+    onTertiary = Color.White,
+    surface = ButterflyBush,
+    onSurface = Color.White
 )
 
 @Composable

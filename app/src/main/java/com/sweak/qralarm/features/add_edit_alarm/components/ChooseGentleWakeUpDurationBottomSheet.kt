@@ -44,7 +44,7 @@ fun ChooseGentleWakeUpDurationBottomSheet(
     ModalBottomSheet(
         onDismissRequest = { onDismissRequest(selectedGentleWakeUpDurationInSeconds) },
         sheetState = modalBottomSheetState,
-        containerColor = MaterialTheme.colorScheme.tertiary
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         Column(
             modifier = Modifier
@@ -79,7 +79,7 @@ fun ChooseGentleWakeUpDurationBottomSheet(
                             onClick = null,
                             colors = RadioButtonDefaults.colors(
                                 selectedColor = MaterialTheme.colorScheme.secondary,
-                                unselectedColor = MaterialTheme.colorScheme.onTertiary
+                                unselectedColor = MaterialTheme.colorScheme.onSurface
                             )
                         )
 

@@ -4,4 +4,5 @@ sealed class AddEditAlarmScreenBackendEvent {
     data class CustomRingtoneRetrievalFinished(
         val isSuccess: Boolean
     ) : AddEditAlarmScreenBackendEvent()
+    data object CustomCodeAssignmentFinished : AddEditAlarmScreenBackendEvent()
 }

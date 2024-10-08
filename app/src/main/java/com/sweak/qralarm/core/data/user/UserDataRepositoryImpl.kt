@@ -8,7 +8,7 @@ import javax.inject.Inject
 class UserDataRepositoryImpl @Inject constructor(
     private val qrAlarmPreferencesDataSource: QRAlarmPreferencesDataSource
 ): UserDataRepository {
-    override suspend fun setTemporaryScannedCode(code: String) {
+    override suspend fun setTemporaryScannedCode(code: String?) {
         qrAlarmPreferencesDataSource.setTemporaryScannedCode(code = code)
     }
 

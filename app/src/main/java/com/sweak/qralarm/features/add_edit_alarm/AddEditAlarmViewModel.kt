@@ -36,11 +36,17 @@ class AddEditAlarmViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            userDataRepository.temporaryScannedCode.collect { temporaryScannedCode ->
-                // TODO: show on UI that code has been saved
+            userDataRepository.setTemporaryScannedCode(null)
 
+            userDataRepository.temporaryScannedCode.collect { temporaryScannedCode ->
                 state.update { currentState ->
                     currentState.copy(currentlyAssignedCode = temporaryScannedCode)
+                }
+
+                if (temporaryScannedCode != null) {
+                    backendEventsChannel.send(
+                        AddEditAlarmScreenBackendEvent.CustomCodeAssignmentFinished
+                    )
                 }
             }
         }
@@ -191,6 +197,11 @@ class AddEditAlarmViewModel @Inject constructor(
             is AddEditAlarmScreenUserEvent.CodeEnabledChanged -> {
                 state.update { currentState ->
                     currentState.copy(isCodeEnabled = event.isEnabled)
+                }
+            }
+            is AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
+                state.update { currentState ->
+                    currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
             }
             is AddEditAlarmScreenUserEvent.ChooseGentleWakeUpDurationDialogVisible -> {

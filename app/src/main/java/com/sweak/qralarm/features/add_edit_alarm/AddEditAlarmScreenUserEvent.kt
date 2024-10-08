@@ -40,6 +40,10 @@ sealed class AddEditAlarmScreenUserEvent {
     data class VibrationsEnabledChanged(val areEnabled: Boolean) : AddEditAlarmScreenUserEvent()
     data class CodeEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()
     data object TryScanSpecificCode : AddEditAlarmScreenUserEvent()
+    data class CameraPermissionDeniedDialogVisible(
+        val isVisible: Boolean
+    ) : AddEditAlarmScreenUserEvent()
+    data object GoToApplicationSettingsClicked : AddEditAlarmScreenUserEvent()
     data class ChooseGentleWakeUpDurationDialogVisible(
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()

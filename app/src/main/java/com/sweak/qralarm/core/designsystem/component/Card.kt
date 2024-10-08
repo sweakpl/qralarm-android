@@ -14,7 +14,7 @@ fun QRAlarmCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiary
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         modifier = modifier,
         content = content
