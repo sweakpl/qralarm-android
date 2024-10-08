@@ -3,14 +3,18 @@ package com.sweak.qralarm.core.designsystem.icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
+import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.Stop
@@ -35,4 +39,8 @@ object QRAlarmIcons {
     val More = Icons.Outlined.MoreVert
     val QrCodeScanner = Icons.Outlined.QrCodeScanner
     val Delete = Icons.Outlined.Delete
+    val Camera = Icons.Outlined.CameraAlt
+    val Alarm = Icons.Outlined.Alarm
+    val Notification = Icons.Outlined.Notifications
+    val FullScreen = Icons.Outlined.Fullscreen
 }

@@ -3,6 +3,7 @@ package com.sweak.qralarm.features.add_edit_alarm
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -51,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -63,6 +65,7 @@ import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
+import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.util.shortName
@@ -104,6 +107,15 @@ fun AddEditAlarmScreen(
     val cameraPermissionState = rememberPermissionState(
         permission = android.Manifest.permission.CAMERA
     )
+    val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS)
+    } else {
+        object : PermissionState {
+            override val permission: String get() = "android.permission.POST_NOTIFICATIONS"
+            override val status: PermissionStatus get() = PermissionStatus.Granted
+            override fun launchPermissionRequest() { /* no-op */ }
+        }
+    }
 
     val context = LocalContext.current
 
@@ -137,6 +149,14 @@ fun AddEditAlarmScreen(
             if (cameraPermissionState.status is PermissionStatus.Granted) {
                 onScanCustomCodeClicked()
             }
+        } else if (addEditAlarmScreenState.permissionsDialogState.isVisible) {
+            addEditAlarmViewModel.onEvent(
+                AddEditAlarmScreenUserEvent.TrySaveAlarm(
+                    cameraPermissionStatus = cameraPermissionState.status.isGranted,
+                    notificationsPermissionStatus =
+                    notificationsPermissionState.status.isGranted
+                )
+            )
         }
     }
 
@@ -145,6 +165,37 @@ fun AddEditAlarmScreen(
         onEvent = { event ->
             when (event) {
                 is AddEditAlarmScreenUserEvent.OnCancelClicked -> onCancelClicked()
+                is AddEditAlarmScreenUserEvent.SaveAlarmClicked -> {
+                    addEditAlarmViewModel.onEvent(
+                        AddEditAlarmScreenUserEvent.TrySaveAlarm(
+                            cameraPermissionStatus = cameraPermissionState.status.isGranted,
+                            notificationsPermissionStatus =
+                            notificationsPermissionState.status.isGranted
+                        )
+                    )
+                }
+                is AddEditAlarmScreenUserEvent.RequestCameraPermission -> {
+                    if (cameraPermissionState.status.shouldShowRationale) {
+                        addEditAlarmViewModel.onEvent(
+                            AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(
+                                isVisible = true
+                            )
+                        )
+                    } else {
+                        cameraPermissionState.launchPermissionRequest()
+                    }
+                }
+                is AddEditAlarmScreenUserEvent.RequestNotificationsPermission -> {
+                    if (notificationsPermissionState.status.shouldShowRationale) {
+                        addEditAlarmViewModel.onEvent(
+                            AddEditAlarmScreenUserEvent.NotificationsPermissionDeniedDialogVisible(
+                                isVisible = true
+                            )
+                        )
+                    } else {
+                        notificationsPermissionState.launchPermissionRequest()
+                    }
+                }
                 is AddEditAlarmScreenUserEvent.PickCustomRingtone -> {
                     audioPickerLauncher.launch("audio/*")
                 }
@@ -168,6 +219,11 @@ fun AddEditAlarmScreen(
                 is AddEditAlarmScreenUserEvent.GoToApplicationSettingsClicked -> {
                     addEditAlarmViewModel.onEvent(
                         AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(
+                            isVisible = false
+                        )
+                    )
+                    addEditAlarmViewModel.onEvent(
+                        AddEditAlarmScreenUserEvent.NotificationsPermissionDeniedDialogVisible(
                             isVisible = false
                         )
                     )
@@ -212,7 +268,7 @@ private fun AddEditAlarmScreenContent(
                 },
                 actions = {
                     IconButton(
-                        onClick = { /* TODO */ }
+                        onClick = { onEvent(AddEditAlarmScreenUserEvent.SaveAlarmClicked) }
                     ) {
                         Icon(
                             imageVector = QRAlarmIcons.Done,
@@ -848,6 +904,25 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
+    if (state.isNotificationsPermissionDeniedDialogVisible) {
+        QRAlarmDialog(
+            title = stringResource(R.string.notifications_permission_required),
+            message = stringResource(R.string.notifications_permission_required_description),
+            onDismissRequest = {
+                onEvent(
+                    AddEditAlarmScreenUserEvent.NotificationsPermissionDeniedDialogVisible(
+                        isVisible = false
+                    )
+                )
+            },
+            onPositiveClick = {
+                onEvent(AddEditAlarmScreenUserEvent.GoToApplicationSettingsClicked)
+            },
+            positiveButtonText = stringResource(R.string.settings),
+            negativeButtonText = stringResource(R.string.cancel)
+        )
+    }
+
     if (state.isChooseGentleWakeUpDurationDialogVisible) {
         ChooseGentleWakeUpDurationBottomSheet(
             initialGentleWakeUpDurationInSeconds = state.gentleWakeupDurationInSeconds,
@@ -859,6 +934,20 @@ private fun AddEditAlarmScreenContent(
                     )
                 )
             }
+        )
+    }
+
+    if (state.permissionsDialogState.isVisible) {
+        MissingPermissionsBottomSheet(
+            cameraPermissionState = state.permissionsDialogState.cameraPermissionStatus,
+            onCameraPermissionClick = {
+                onEvent(AddEditAlarmScreenUserEvent.RequestCameraPermission)
+            },
+            notificationsPermissionState = state.permissionsDialogState.notificationsPermissionState,
+            onNotificationsPermissionClick = {
+                onEvent(AddEditAlarmScreenUserEvent.RequestNotificationsPermission)
+            },
+            onDismissRequest = { onEvent(AddEditAlarmScreenUserEvent.HideMissingPermissionsDialog) }
         )
     }
 }
@@ -883,11 +972,9 @@ private fun getAlarmRepeatingScheduleString(
         AlarmRepeatingMode.MON_FRI -> {
             DayOfWeek.MONDAY.shortName() + " - " + DayOfWeek.FRIDAY.shortName()
         }
-
         AlarmRepeatingMode.SAT_SUN -> {
             DayOfWeek.SATURDAY.shortName() + ", " + DayOfWeek.SUNDAY.shortName()
         }
-
         AlarmRepeatingMode.CUSTOM -> {
             val days = alarmRepeatingScheduleWrapper.alarmDaysOfWeek
 

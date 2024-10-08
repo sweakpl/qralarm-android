@@ -54,6 +54,59 @@ class AddEditAlarmViewModel @Inject constructor(
 
     fun onEvent(event: AddEditAlarmScreenUserEvent) {
         when (event) {
+            is AddEditAlarmScreenUserEvent.TrySaveAlarm -> {
+                state.update { currentState ->
+                    if (currentState.permissionsDialogState.isVisible) {
+                        // You can also check here if all permissions are granted and just
+                        // set the alarm and exit the screen.
+                        return@update currentState.copy(
+                            permissionsDialogState =
+                            currentState.permissionsDialogState.copy(
+                                cameraPermissionStatus =
+                                currentState.permissionsDialogState.cameraPermissionStatus?.let {
+                                    event.cameraPermissionStatus
+                                },
+                                notificationsPermissionState =
+                                currentState.permissionsDialogState.notificationsPermissionState?.let {
+                                    event.notificationsPermissionStatus
+                                }
+                            )
+                        )
+                    }
+
+                    if (!event.cameraPermissionStatus || !event.notificationsPermissionStatus) {
+                        return@update currentState.copy(
+                            permissionsDialogState =
+                                AddEditAlarmScreenState.PermissionsDialogState(
+                                    isVisible = true,
+                                    cameraPermissionStatus =
+                                    if (!event.cameraPermissionStatus && currentState.isCodeEnabled)
+                                        false else null,
+                                    notificationsPermissionState =
+                                    if (!event.notificationsPermissionStatus) false else null
+                                )
+                        )
+                    }
+
+                    return@update currentState
+                }
+            }
+            is AddEditAlarmScreenUserEvent.HideMissingPermissionsDialog -> {
+                state.update { currentState ->
+                    currentState.copy(
+                        permissionsDialogState = AddEditAlarmScreenState.PermissionsDialogState(
+                            isVisible = false
+                        )
+                    )
+                }
+            }
+            is AddEditAlarmScreenUserEvent.NotificationsPermissionDeniedDialogVisible -> {
+                state.update { currentState ->
+                    currentState.copy(
+                        isNotificationsPermissionDeniedDialogVisible = event.isVisible
+                    )
+                }
+            }
             is AddEditAlarmScreenUserEvent.AlarmTimeChanged -> {
                 state.update { currentState ->
                     currentState.copy(

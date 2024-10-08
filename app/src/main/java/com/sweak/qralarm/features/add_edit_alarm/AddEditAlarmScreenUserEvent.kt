@@ -7,6 +7,17 @@ import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationW
 
 sealed class AddEditAlarmScreenUserEvent {
     data object OnCancelClicked : AddEditAlarmScreenUserEvent()
+    data object SaveAlarmClicked : AddEditAlarmScreenUserEvent()
+    data class TrySaveAlarm(
+        val cameraPermissionStatus: Boolean,
+        val notificationsPermissionStatus: Boolean
+    ) : AddEditAlarmScreenUserEvent()
+    data object HideMissingPermissionsDialog : AddEditAlarmScreenUserEvent()
+    data object RequestCameraPermission : AddEditAlarmScreenUserEvent()
+    data object RequestNotificationsPermission : AddEditAlarmScreenUserEvent()
+    data class NotificationsPermissionDeniedDialogVisible(
+        val isVisible: Boolean
+    ) : AddEditAlarmScreenUserEvent()
     data class AlarmTimeChanged(
         val newAlarmHourOfDay: Int,
         val newAlarmMinute: Int
@@ -51,7 +62,5 @@ sealed class AddEditAlarmScreenUserEvent {
     data class GentleWakeUpDurationSelected(
         val newGentleWakeUpDurationInSeconds: Int
     ) : AddEditAlarmScreenUserEvent()
-    data class TemporaryMuteEnabledChanged(
-        val isEnabled: Boolean
-    ) : AddEditAlarmScreenUserEvent()
+    data class TemporaryMuteEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()
 }

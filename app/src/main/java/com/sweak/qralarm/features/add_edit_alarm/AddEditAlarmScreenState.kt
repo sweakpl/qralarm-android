@@ -29,10 +29,18 @@ data class AddEditAlarmScreenState(
     val areVibrationsEnabled: Boolean = true,
     val isCodeEnabled: Boolean = true,
     val isCameraPermissionDeniedDialogVisible: Boolean = false,
+    val isNotificationsPermissionDeniedDialogVisible: Boolean = false,
     val currentlyAssignedCode: String? = null,
     val gentleWakeupDurationInSeconds: Int = 30,
     val availableGentleWakeUpDurationsInSeconds: List<Int> =
         AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS,
     val isChooseGentleWakeUpDurationDialogVisible: Boolean = false,
-    val isTemporaryMuteEnabled: Boolean = false
-)
+    val isTemporaryMuteEnabled: Boolean = false,
+    val permissionsDialogState: PermissionsDialogState = PermissionsDialogState()
+) {
+    data class PermissionsDialogState(
+        val isVisible: Boolean = false,
+        val cameraPermissionStatus: Boolean? = null,
+        val notificationsPermissionState: Boolean? = null
+    )
+}

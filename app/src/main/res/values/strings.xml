@@ -60,4 +60,14 @@
     <string name="code_successfully_scanned">Code has been successfully scanned!</string>
     <string name="assign_new_code">Assign new code</string>
     <string name="clear_assigned_code">Clear assigned code</string>
+    <string name="permissions_required">Permissions required!</string>
+    <string name="camera">Camera</string>
+    <string name="camera_usage">Used for scanning the QR/Bar codes.</string>
+    <string name="alarms_usage">Used for scheduling alarms at precise time.</string>
+    <string name="notifications">Notifications</string>
+    <string name="notifications_usage">Used to accompany the alarm with a visible notification.</string>
+    <string name="full_screen_display">Full screen display</string>
+    <string name="full_screen_display_usage">Used for displaying full screen alarm notification.</string>
+    <string name="notifications_permission_required">Notifications permission required</string>
+    <string name="notifications_permission_required_description">Notifications permission is required for notifying about your alarms. In order to grant the permission go to settings and grant the notifications permission manually.</string>
 </resources>
