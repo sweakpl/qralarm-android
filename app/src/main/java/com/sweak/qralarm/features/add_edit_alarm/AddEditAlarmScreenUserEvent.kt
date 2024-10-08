@@ -43,6 +43,7 @@ sealed class AddEditAlarmScreenUserEvent {
     data class CameraPermissionDeniedDialogVisible(
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()
+    data object ClearAssignedCode : AddEditAlarmScreenUserEvent()
     data object GoToApplicationSettingsClicked : AddEditAlarmScreenUserEvent()
     data class ChooseGentleWakeUpDurationDialogVisible(
         val isVisible: Boolean

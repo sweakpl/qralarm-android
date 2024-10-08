@@ -57,5 +57,7 @@
     <string name="camera_permission_required_description">Camera permission is required for scanning codes. In order to grant the permission go to settings and grant the camera permission manually.</string>
     <string name="settings">Settings</string>
     <string name="cancel">Cancel</string>
-    <string name="code_successfully_scanned">Code has been successfuly scanned!</string>
+    <string name="code_successfully_scanned">Code has been successfully scanned!</string>
+    <string name="assign_new_code">Assign new code</string>
+    <string name="clear_assigned_code">Clear assigned code</string>
 </resources>

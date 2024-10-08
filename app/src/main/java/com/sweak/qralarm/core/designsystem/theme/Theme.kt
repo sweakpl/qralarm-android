@@ -14,7 +14,9 @@ private val ColorScheme = lightColorScheme(
     tertiary = ButterflyBush,
     onTertiary = Color.White,
     surface = ButterflyBush,
-    onSurface = Color.White
+    onSurface = Color.White,
+    error = Monza,
+    onError = Color.White
 )
 
 @Composable

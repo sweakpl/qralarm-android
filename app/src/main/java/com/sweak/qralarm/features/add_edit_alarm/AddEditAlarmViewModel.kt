@@ -204,6 +204,9 @@ class AddEditAlarmViewModel @Inject constructor(
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
             }
+            is AddEditAlarmScreenUserEvent.ClearAssignedCode -> viewModelScope.launch {
+                userDataRepository.setTemporaryScannedCode(null)
+            }
             is AddEditAlarmScreenUserEvent.ChooseGentleWakeUpDurationDialogVisible -> {
                 state.update { currentState ->
                     currentState.copy(

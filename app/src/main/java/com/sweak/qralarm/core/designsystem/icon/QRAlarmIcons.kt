@@ -6,10 +6,13 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,4 +32,7 @@ object QRAlarmIcons {
     val Play = Icons.Outlined.PlayArrow
     val Stop = Icons.Outlined.Stop
     val Edit = Icons.Outlined.Edit
+    val More = Icons.Outlined.MoreVert
+    val QrCodeScanner = Icons.Outlined.QrCodeScanner
+    val Delete = Icons.Outlined.Delete
 }
