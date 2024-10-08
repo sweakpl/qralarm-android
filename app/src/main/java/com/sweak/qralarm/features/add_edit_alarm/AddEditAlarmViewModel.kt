@@ -2,6 +2,7 @@ package com.sweak.qralarm.features.add_edit_alarm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditAlarmViewModel @Inject constructor(
     private val alarmRingtonePlayer: AlarmRingtonePlayer,
-    private val userDataRepository: UserDataRepository
+    private val userDataRepository: UserDataRepository,
+    private val qrAlarmManager: QRAlarmManager
 ): ViewModel() {
 
     var state = MutableStateFlow(AddEditAlarmScreenState())
@@ -69,12 +71,24 @@ class AddEditAlarmViewModel @Inject constructor(
                                 notificationsPermissionState =
                                 currentState.permissionsDialogState.notificationsPermissionState?.let {
                                     event.notificationsPermissionStatus
+                                },
+                                alarmsPermissionState =
+                                currentState.permissionsDialogState.alarmsPermissionState?.let {
+                                    qrAlarmManager.canScheduleExactAlarms()
+                                },
+                                fullScreenIntentPermissionState =
+                                currentState.permissionsDialogState.fullScreenIntentPermissionState?.let {
+                                    qrAlarmManager.canUseFullScreenIntent()
                                 }
                             )
                         )
                     }
 
-                    if (!event.cameraPermissionStatus || !event.notificationsPermissionStatus) {
+                    if (!event.cameraPermissionStatus ||
+                        !event.notificationsPermissionStatus ||
+                        !qrAlarmManager.canScheduleExactAlarms() ||
+                        !qrAlarmManager.canUseFullScreenIntent()
+                    ) {
                         return@update currentState.copy(
                             permissionsDialogState =
                                 AddEditAlarmScreenState.PermissionsDialogState(
@@ -83,7 +97,11 @@ class AddEditAlarmViewModel @Inject constructor(
                                     if (!event.cameraPermissionStatus && currentState.isCodeEnabled)
                                         false else null,
                                     notificationsPermissionState =
-                                    if (!event.notificationsPermissionStatus) false else null
+                                    if (!event.notificationsPermissionStatus) false else null,
+                                    alarmsPermissionState =
+                                    if (!qrAlarmManager.canScheduleExactAlarms()) false else null,
+                                    fullScreenIntentPermissionState =
+                                    if (!qrAlarmManager.canUseFullScreenIntent()) false else null
                                 )
                         )
                     }

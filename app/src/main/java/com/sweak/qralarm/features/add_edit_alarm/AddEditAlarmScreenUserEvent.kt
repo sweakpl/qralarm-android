@@ -15,6 +15,8 @@ sealed class AddEditAlarmScreenUserEvent {
     data object HideMissingPermissionsDialog : AddEditAlarmScreenUserEvent()
     data object RequestCameraPermission : AddEditAlarmScreenUserEvent()
     data object RequestNotificationsPermission : AddEditAlarmScreenUserEvent()
+    data object RequestAlarmsPermission : AddEditAlarmScreenUserEvent()
+    data object RequestFullScreenIntentPermission : AddEditAlarmScreenUserEvent()
     data class NotificationsPermissionDeniedDialogVisible(
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()

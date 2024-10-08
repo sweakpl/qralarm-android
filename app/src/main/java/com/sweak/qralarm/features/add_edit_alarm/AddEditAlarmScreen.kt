@@ -196,6 +196,26 @@ fun AddEditAlarmScreen(
                         notificationsPermissionState.launchPermissionRequest()
                     }
                 }
+                is AddEditAlarmScreenUserEvent.RequestAlarmsPermission -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        context.startActivity(
+                            Intent().apply {
+                                action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                                data = Uri.parse("package:${context.packageName}")
+                            }
+                        )
+                    }
+                }
+                is AddEditAlarmScreenUserEvent.RequestFullScreenIntentPermission -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                        context.startActivity(
+                            Intent().apply {
+                                action = Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT
+                                data = Uri.parse("package:${context.packageName}")
+                            }
+                        )
+                    }
+                }
                 is AddEditAlarmScreenUserEvent.PickCustomRingtone -> {
                     audioPickerLauncher.launch("audio/*")
                 }
@@ -943,9 +963,18 @@ private fun AddEditAlarmScreenContent(
             onCameraPermissionClick = {
                 onEvent(AddEditAlarmScreenUserEvent.RequestCameraPermission)
             },
+            alarmsPermissionState = state.permissionsDialogState.alarmsPermissionState,
+            onAlarmsPermissionClick = {
+                onEvent(AddEditAlarmScreenUserEvent.RequestAlarmsPermission)
+            },
             notificationsPermissionState = state.permissionsDialogState.notificationsPermissionState,
             onNotificationsPermissionClick = {
                 onEvent(AddEditAlarmScreenUserEvent.RequestNotificationsPermission)
+            },
+            fullScreenIntentPermissionState =
+            state.permissionsDialogState.fullScreenIntentPermissionState,
+            onFullScreenIntentPermissionClick = {
+                onEvent(AddEditAlarmScreenUserEvent.RequestFullScreenIntentPermission)
             },
             onDismissRequest = { onEvent(AddEditAlarmScreenUserEvent.HideMissingPermissionsDialog) }
         )
