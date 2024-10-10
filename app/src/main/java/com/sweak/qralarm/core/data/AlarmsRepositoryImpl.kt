@@ -4,6 +4,7 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.storage.database.dao.AlarmsDao
 import com.sweak.qralarm.core.storage.database.model.AlarmEntity
+import java.time.DayOfWeek
 import javax.inject.Inject
 
 class AlarmsRepositoryImpl @Inject constructor(
@@ -35,5 +36,39 @@ class AlarmsRepositoryImpl @Inject constructor(
                 isTemporaryMuteEnabled = alarm.isTemporaryMuteEnabled
             )
         )
+    }
+
+    override suspend fun getAllAlarms(): List<Alarm> {
+        return alarmsDao.getAllAlarms().mapNotNull { alarmEntity ->
+            val repeatingMode = if (alarmEntity.repeatingAlarmOnceDayInMillis != null) {
+                Alarm.RepeatingMode.Once(alarmEntity.repeatingAlarmOnceDayInMillis)
+            } else if (alarmEntity.repeatingAlarmDays != null) {
+                Alarm.RepeatingMode.Days(
+                    alarmEntity.repeatingAlarmDays.split(", ").map {
+                        DayOfWeek.valueOf(it)
+                    }
+                )
+            } else {
+                return@mapNotNull null
+            }
+
+            Alarm(
+                alarmHourOfDay = alarmEntity.alarmHourOfDay,
+                alarmMinute = alarmEntity.alarmMinute,
+                isAlarmEnabled = alarmEntity.isAlarmEnabled,
+                repeatingMode = repeatingMode,
+                snoozeMode = Alarm.SnoozeMode(
+                    numberOfSnoozes = alarmEntity.numberOfSnoozes,
+                    snoozeDurationInMinutes = alarmEntity.snoozeDurationInMinutes
+                ),
+                ringtone = Alarm.Ringtone.valueOf(alarmEntity.ringtone),
+                customRingtoneUriString = alarmEntity.customRingtoneUriString,
+                areVibrationsEnabled = alarmEntity.areVibrationsEnabled,
+                isUsingCode = alarmEntity.isUsingCode,
+                assignedCode = alarmEntity.assignedCode,
+                gentleWakeUpDurationInSeconds = alarmEntity.gentleWakeUpDurationInSeconds,
+                isTemporaryMuteEnabled = alarmEntity.isTemporaryMuteEnabled
+            )
+        }
     }
 }
