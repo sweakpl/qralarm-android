@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.home.components
 
+import android.text.format.DateFormat
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
@@ -29,9 +31,8 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
+import com.sweak.qralarm.core.ui.util.getTimeString
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun AlarmCard(
@@ -55,14 +56,12 @@ fun AlarmCard(
                 )
         ) {
             Column {
-                // TODO: account for different time formats
-                val timeString = ZonedDateTime.now()
-                    .withHour(alarmWrapper.alarmHourOfDay)
-                    .withMinute(alarmWrapper.alarmMinute)
-                    .format(DateTimeFormatter.ofPattern("HH:mm"))
-
                 Text(
-                    text = timeString,
+                    text = getTimeString(
+                        alarmWrapper.alarmHourOfDay,
+                        alarmWrapper.alarmMinute,
+                        DateFormat.is24HourFormat(LocalContext.current)
+                    ),
                     style = MaterialTheme.typography.displayLarge
                 )
 

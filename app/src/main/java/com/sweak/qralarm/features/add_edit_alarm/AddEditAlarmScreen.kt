@@ -333,7 +333,6 @@ private fun AddEditAlarmScreenContent(
                                 )
                             )
                         },
-                        is24HoursView = true, // TODO: account for different formats
                         isEnabled = true,
                         modifier = Modifier.padding(vertical = MaterialTheme.space.mediumLarge)
                     )
@@ -1027,7 +1026,10 @@ fun getGentleWakeUpDurationString(gentleWakeUpDurationInSeconds: Int): String {
 private fun AddEditAlarmScreenContentPreview() {
     QRAlarmTheme {
         AddEditAlarmScreenContent(
-            state = AddEditAlarmScreenState(currentlyAssignedCode = "sdfa"),
+            state = AddEditAlarmScreenState(
+                alarmHourOfDay = 8,
+                alarmMinute = 0
+            ),
             onEvent = { }
         )
     }

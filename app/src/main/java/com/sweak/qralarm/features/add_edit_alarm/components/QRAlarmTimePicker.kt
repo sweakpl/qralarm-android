@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.add_edit_alarm.components
 
+import android.text.format.DateFormat
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
@@ -9,7 +10,6 @@ fun QRAlarmTimePicker(
     selectedHourOfDay: Int,
     selectedMinute: Int,
     onTimeChanged: (hourOfDay: Int, minute: Int) -> Unit,
-    is24HoursView: Boolean,
     isEnabled: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -21,6 +21,7 @@ fun QRAlarmTimePicker(
                 // timeChangedListener with the current time which breaks the uiState - we have to
                 // prevent the uiState update after this initial timeChangedListener call:
                 var isInitialUpdate = true
+                setIs24HourView(DateFormat.is24HourFormat(context))
 
                 setOnTimeChangedListener { _, hourOfDay, minute ->
                     if (!isInitialUpdate) {
@@ -32,7 +33,6 @@ fun QRAlarmTimePicker(
             }
         },
         update = {
-            it.setIs24HourView(is24HoursView)
             it.setTime(selectedHourOfDay, selectedMinute)
             it.isEnabled = isEnabled
         }
