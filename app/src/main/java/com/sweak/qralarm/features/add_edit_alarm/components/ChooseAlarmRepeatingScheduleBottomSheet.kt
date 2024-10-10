@@ -32,8 +32,8 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.util.shortName
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRepeatingScheduleWrapper
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode
 import java.time.DayOfWeek
 import java.time.format.TextStyle
 import java.util.Locale

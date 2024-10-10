@@ -5,7 +5,7 @@ import com.sweak.qralarm.core.domain.alarm.AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_NUMBERS
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRepeatingScheduleWrapper
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationWrapper
 
 data class AddEditAlarmScreenState(

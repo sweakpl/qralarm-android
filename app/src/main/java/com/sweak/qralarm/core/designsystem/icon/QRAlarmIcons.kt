@@ -25,6 +25,7 @@ import com.sweak.qralarm.R
 
 object QRAlarmIcons {
     val QRAlarm @Composable get() = ImageVector.vectorResource(R.drawable.ic_qralarm)
+    val NoQRCode @Composable get() = ImageVector.vectorResource(R.drawable.ic_no_qr_code)
 
     val Add = Icons.Outlined.Add
     val Menu = Icons.Outlined.Menu

@@ -68,16 +68,13 @@ import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
-import com.sweak.qralarm.core.ui.util.shortName
+import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneDialogBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseGentleWakeUpDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseSnoozeConfigurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRepeatingScheduleWrapper
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationWrapper
-import java.time.DayOfWeek
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -336,7 +333,7 @@ private fun AddEditAlarmScreenContent(
                                 )
                             )
                         },
-                        is24HoursView = true,
+                        is24HoursView = true, // TODO: account for different formats
                         isEnabled = true,
                         modifier = Modifier.padding(vertical = MaterialTheme.space.mediumLarge)
                     )
@@ -990,43 +987,6 @@ private fun Separator() {
             .padding(horizontal = MaterialTheme.space.medium)
             .background(color = MaterialTheme.colorScheme.onSurface)
     )
-}
-
-@Composable
-private fun getAlarmRepeatingScheduleString(
-    alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper
-): String {
-    return when (alarmRepeatingScheduleWrapper.alarmRepeatingMode) {
-        AlarmRepeatingMode.ONLY_ONCE -> stringResource(R.string.only_once)
-        AlarmRepeatingMode.MON_FRI -> {
-            DayOfWeek.MONDAY.shortName() + " - " + DayOfWeek.FRIDAY.shortName()
-        }
-        AlarmRepeatingMode.SAT_SUN -> {
-            DayOfWeek.SATURDAY.shortName() + ", " + DayOfWeek.SUNDAY.shortName()
-        }
-        AlarmRepeatingMode.CUSTOM -> {
-            val days = alarmRepeatingScheduleWrapper.alarmDaysOfWeek
-
-            if (days.size == 1) {
-                return days.first().shortName()
-            } else if (days.size == 2) {
-                return days.joinToString { it.shortName() }
-            } else if (areAllDaysAfterOneAnother(days)) {
-                return days.first().shortName() + " - " + days.last().shortName()
-            } else {
-                return days.joinToString { it.shortName() }
-            }
-        }
-    }
-}
-
-private fun areAllDaysAfterOneAnother(days: List<DayOfWeek>): Boolean {
-    days.forEachIndexed { index, day ->
-        if (index == days.size - 1) return true
-        if (days[index + 1].value - day.value != 1) return false
-    }
-
-    return false
 }
 
 @Composable
