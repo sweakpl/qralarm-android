@@ -1,8 +1,8 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
 import android.net.Uri
-import com.sweak.qralarm.core.domain.alarm.model.Alarm
-import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
+import com.sweak.qralarm.core.domain.alarm.Alarm
+import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 
 sealed class AddEditAlarmScreenUserEvent {

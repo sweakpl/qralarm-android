@@ -1,4 +1,4 @@
-package com.sweak.qralarm.core.domain.alarm.model
+package com.sweak.qralarm.core.domain.alarm
 
 import java.time.DayOfWeek
 

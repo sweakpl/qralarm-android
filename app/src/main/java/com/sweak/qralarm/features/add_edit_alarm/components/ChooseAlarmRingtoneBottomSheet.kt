@@ -31,7 +31,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
+import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

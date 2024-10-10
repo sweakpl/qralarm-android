@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.domain.alarm.model.Alarm
+import com.sweak.qralarm.core.domain.alarm.Alarm
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseSnoozeConfigurationBottomSheet(

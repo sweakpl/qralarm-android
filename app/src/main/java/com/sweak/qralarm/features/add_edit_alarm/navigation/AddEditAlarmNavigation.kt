@@ -11,11 +11,13 @@ fun NavController.navigateToAddEditAlarm() = navigate(route = ADD_EDIT_ALARM_SCR
 
 fun NavGraphBuilder.addEditAlarmScreen(
     onCancelClicked: () -> Unit,
+    onAlarmSaved: () -> Unit,
     onScanCustomCodeClicked: () -> Unit
 ) {
     composable(route = ADD_EDIT_ALARM_SCREEN_ROUTE) {
         AddEditAlarmScreen(
             onCancelClicked = onCancelClicked,
+            onAlarmSaved = onAlarmSaved,
             onScanCustomCodeClicked = onScanCustomCodeClicked
         )
     }

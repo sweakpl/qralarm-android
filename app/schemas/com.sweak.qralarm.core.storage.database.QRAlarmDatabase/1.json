@@ -1,0 +1,118 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "26634b9447ff8846dbc7ee45ee612970",
+    "entities": [
+      {
+        "tableName": "alarm",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alarmId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `alarmHourOfDay` INTEGER NOT NULL, `alarmMinute` INTEGER NOT NULL, `isAlarmEnabled` INTEGER NOT NULL, `repeatingAlarmOnceDayInMillis` INTEGER, `repeatingAlarmDays` TEXT, `numberOfSnoozes` INTEGER NOT NULL, `snoozeDurationInMinutes` INTEGER NOT NULL, `ringtone` TEXT NOT NULL, `customRingtoneUriString` TEXT, `areVibrationsEnabled` INTEGER NOT NULL, `isUsingCode` INTEGER NOT NULL, `assignedCode` TEXT, `gentleWakeUpDurationInSeconds` INTEGER NOT NULL, `isTemporaryMuteEnabled` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "alarmId",
+            "columnName": "alarmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alarmHourOfDay",
+            "columnName": "alarmHourOfDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alarmMinute",
+            "columnName": "alarmMinute",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAlarmEnabled",
+            "columnName": "isAlarmEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repeatingAlarmOnceDayInMillis",
+            "columnName": "repeatingAlarmOnceDayInMillis",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "repeatingAlarmDays",
+            "columnName": "repeatingAlarmDays",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "numberOfSnoozes",
+            "columnName": "numberOfSnoozes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "snoozeDurationInMinutes",
+            "columnName": "snoozeDurationInMinutes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ringtone",
+            "columnName": "ringtone",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customRingtoneUriString",
+            "columnName": "customRingtoneUriString",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "areVibrationsEnabled",
+            "columnName": "areVibrationsEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isUsingCode",
+            "columnName": "isUsingCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "assignedCode",
+            "columnName": "assignedCode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "gentleWakeUpDurationInSeconds",
+            "columnName": "gentleWakeUpDurationInSeconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isTemporaryMuteEnabled",
+            "columnName": "isTemporaryMuteEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "alarmId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '26634b9447ff8846dbc7ee45ee612970')"
+    ]
+  }
+}

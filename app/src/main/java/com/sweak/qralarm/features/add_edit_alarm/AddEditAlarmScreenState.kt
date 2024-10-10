@@ -4,8 +4,8 @@ import android.net.Uri
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_NUMBERS
-import com.sweak.qralarm.core.domain.alarm.model.Alarm
-import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
+import com.sweak.qralarm.core.domain.alarm.Alarm
+import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 
 data class AddEditAlarmScreenState(

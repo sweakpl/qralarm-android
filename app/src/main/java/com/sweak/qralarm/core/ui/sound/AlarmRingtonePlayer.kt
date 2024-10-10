@@ -7,7 +7,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.annotation.RawRes
 import com.sweak.qralarm.R
-import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
+import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import java.io.IOException
 
 class AlarmRingtonePlayer(

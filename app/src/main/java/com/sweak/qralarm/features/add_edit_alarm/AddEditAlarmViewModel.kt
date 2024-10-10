@@ -3,8 +3,14 @@ package com.sweak.qralarm.features.add_edit_alarm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
-import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
+import com.sweak.qralarm.core.domain.alarm.Alarm
+import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
+import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.SAT_SUN
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -12,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
@@ -19,6 +26,7 @@ import javax.inject.Inject
 class AddEditAlarmViewModel @Inject constructor(
     private val alarmRingtonePlayer: AlarmRingtonePlayer,
     private val userDataRepository: UserDataRepository,
+    private val alarmsRepository: AlarmsRepository,
     private val qrAlarmManager: QRAlarmManager
 ): ViewModel() {
 
@@ -104,6 +112,79 @@ class AddEditAlarmViewModel @Inject constructor(
                                     if (!qrAlarmManager.canUseFullScreenIntent()) false else null
                                 )
                         )
+                    }
+
+                    if (currentState.alarmHourOfDay != null && currentState.alarmMinute != null) {
+                        viewModelScope.launch {
+                            val repeatingMode =
+                                when (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode) {
+                                    ONLY_ONCE -> {
+                                        val onceAlarmDateTime = ZonedDateTime.now()
+                                            .withHour(currentState.alarmHourOfDay)
+                                            .withMinute(currentState.alarmMinute)
+                                            .withSecond(0)
+                                            .withNano(0)
+                                            .run {
+                                                if (isBefore(ZonedDateTime.now())) {
+                                                    return@run plusDays(1)
+                                                } else {
+                                                    return@run this
+                                                }
+                                            }
+
+                                        Alarm.RepeatingMode.Once(
+                                            onceAlarmDateTime.toInstant().toEpochMilli()
+                                        )
+                                    }
+                                    MON_FRI -> {
+                                        Alarm.RepeatingMode.Days(
+                                            listOf(
+                                                DayOfWeek.MONDAY,
+                                                DayOfWeek.TUESDAY,
+                                                DayOfWeek.WEDNESDAY,
+                                                DayOfWeek.THURSDAY,
+                                                DayOfWeek.FRIDAY
+                                            )
+                                        )
+                                    }
+                                    SAT_SUN -> {
+                                        Alarm.RepeatingMode.Days(
+                                            listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+                                        )
+                                    }
+                                    CUSTOM -> Alarm.RepeatingMode.Days(
+                                        currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
+                                    )
+                                }
+                            val customRingtoneUriString =
+                                if (currentState.temporaryCustomAlarmRingtoneUri != null) {
+                                    currentState.temporaryCustomAlarmRingtoneUri.toString()
+                                } else if (currentState.currentCustomAlarmRingtoneUri != null) {
+                                    currentState.currentCustomAlarmRingtoneUri.toString()
+                                } else {
+                                    null
+                                }
+
+                            alarmsRepository.addOrEditAlarm(
+                                alarm = Alarm(
+                                    alarmHourOfDay = currentState.alarmHourOfDay,
+                                    alarmMinute = currentState.alarmMinute,
+                                    isAlarmEnabled = currentState.isAlarmEnabled,
+                                    repeatingMode = repeatingMode,
+                                    snoozeMode = currentState.alarmSnoozeMode,
+                                    ringtone = currentState.ringtone,
+                                    customRingtoneUriString = customRingtoneUriString,
+                                    areVibrationsEnabled = currentState.areVibrationsEnabled,
+                                    isUsingCode = currentState.isCodeEnabled,
+                                    assignedCode = currentState.currentlyAssignedCode,
+                                    gentleWakeUpDurationInSeconds =
+                                    currentState.gentleWakeupDurationInSeconds,
+                                    isTemporaryMuteEnabled = currentState.isTemporaryMuteEnabled
+                                )
+                            )
+
+                            backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmSaved)
+                        }
                     }
 
                     return@update currentState

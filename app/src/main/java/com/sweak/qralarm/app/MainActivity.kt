@@ -53,6 +53,9 @@ class MainActivity : ComponentActivity() {
                         onCancelClicked = {
                             navController.navigateUp()
                         },
+                        onAlarmSaved = {
+                            navController.navigateUp()
+                        },
                         onScanCustomCodeClicked = {
                             navController.navigateToScanner()
                         }

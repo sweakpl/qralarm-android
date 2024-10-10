@@ -64,8 +64,8 @@ import com.sweak.qralarm.core.designsystem.component.QRAlarmSwitch
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.domain.alarm.model.Alarm
-import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
+import com.sweak.qralarm.core.domain.alarm.Alarm
+import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
@@ -80,6 +80,7 @@ import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
 @Composable
 fun AddEditAlarmScreen(
     onCancelClicked: () -> Unit,
+    onAlarmSaved: () -> Unit,
     onScanCustomCodeClicked: () -> Unit
 ) {
     val addEditAlarmViewModel = hiltViewModel<AddEditAlarmViewModel>()
@@ -120,6 +121,7 @@ fun AddEditAlarmScreen(
         flow = addEditAlarmViewModel.backendEvents,
         onEvent = { event ->
             when (event) {
+                is AddEditAlarmScreenBackendEvent.AlarmSaved -> onAlarmSaved()
                 is AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished -> {
                     Toast.makeText(
                         context,

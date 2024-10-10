@@ -50,6 +50,7 @@ fun ComboBox(
                 Text(
                     text = menuItems[selectedIndex].toString(),
                     style = MaterialTheme.typography.titleMedium,
+                    color = Color.Black,
                     modifier = Modifier
                         .padding(all = MaterialTheme.space.medium)
                         .weight(1f),
@@ -61,6 +62,7 @@ fun ComboBox(
                     contentDescription = stringResource(
                         R.string.content_description_drop_down_arrow_icon
                     ),
+                    tint = Color.Black,
                     modifier = Modifier.padding(all = MaterialTheme.space.medium)
                 )
             }
@@ -85,7 +87,8 @@ fun ComboBox(
                     text = {
                         Text(
                             text = content.toString(),
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Black
                         )
                     },
                     onClick = {
