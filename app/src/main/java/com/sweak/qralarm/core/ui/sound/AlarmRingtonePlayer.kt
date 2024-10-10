@@ -7,7 +7,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.annotation.RawRes
 import com.sweak.qralarm.R
-import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
+import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
 import java.io.IOException
 
 class AlarmRingtonePlayer(
@@ -15,7 +15,7 @@ class AlarmRingtonePlayer(
     private val mediaPlayer: MediaPlayer
 ) {
     fun playOriginalAlarmRingtonePreview(
-        alarmRingtone: AlarmRingtone,
+        ringtone: Ringtone,
         onPreviewCompleted: () -> Unit
     ) {
         mediaPlayer.apply {
@@ -27,8 +27,8 @@ class AlarmRingtonePlayer(
                     .build()
             )
             try {
-                if (alarmRingtone != AlarmRingtone.CUSTOM_SOUND) {
-                    setDataSource(context, getOriginalAlarmRingtoneUri(alarmRingtone))
+                if (ringtone != Ringtone.CUSTOM_SOUND) {
+                    setDataSource(context, getOriginalAlarmRingtoneUri(ringtone))
                 } else {
                     onPreviewCompleted()
                     return
@@ -83,22 +83,22 @@ class AlarmRingtonePlayer(
         }
     }
 
-    private fun getOriginalAlarmRingtoneUri(alarmRingtone: AlarmRingtone): Uri {
+    private fun getOriginalAlarmRingtoneUri(ringtone: Ringtone): Uri {
         return Uri.parse(
             "android.resource://"
                     + context.packageName
                     + "/"
-                    + getOriginalRingtoneResourceId(alarmRingtone)
+                    + getOriginalRingtoneResourceId(ringtone)
         )
     }
 
     @RawRes
-    private fun getOriginalRingtoneResourceId(alarmRingtone: AlarmRingtone): Int {
-        return when (alarmRingtone) {
-            AlarmRingtone.GENTLE_GUITAR -> R.raw.gentle_guitar
-            AlarmRingtone.ALARM_CLOCK -> R.raw.alarm_clock
-            AlarmRingtone.AIR_HORN -> R.raw.air_horn
-            AlarmRingtone.CUSTOM_SOUND -> -1
+    private fun getOriginalRingtoneResourceId(ringtone: Ringtone): Int {
+        return when (ringtone) {
+            Ringtone.GENTLE_GUITAR -> R.raw.gentle_guitar
+            Ringtone.ALARM_CLOCK -> R.raw.alarm_clock
+            Ringtone.AIR_HORN -> R.raw.air_horn
+            Ringtone.CUSTOM_SOUND -> -1
         }
     }
 

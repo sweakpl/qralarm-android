@@ -4,9 +4,9 @@ import android.net.Uri
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_NUMBERS
-import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
+import com.sweak.qralarm.core.domain.alarm.model.Alarm
+import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationWrapper
 
 data class AddEditAlarmScreenState(
     val alarmHourOfDay: Int? = null,
@@ -15,14 +15,13 @@ data class AddEditAlarmScreenState(
     val alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper =
         AlarmRepeatingScheduleWrapper(),
     val isChooseAlarmRepeatingScheduleDialogVisible: Boolean = false,
-    val alarmSnoozeConfigurationWrapper: AlarmSnoozeConfigurationWrapper =
-        AlarmSnoozeConfigurationWrapper(),
+    val alarmSnoozeMode: Alarm.SnoozeMode = Alarm.SnoozeMode(3, 10),
     val availableSnoozeNumbers: List<Int> = AVAILABLE_SNOOZE_NUMBERS,
     val availableSnoozeDurationsInMinutes: List<Int> = AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES,
     val isChooseAlarmSnoozeConfigurationDialogVisible: Boolean = false,
-    val alarmRingtone: AlarmRingtone = AlarmRingtone.GENTLE_GUITAR,
-    val availableAlarmRingtonesWithPlaybackState: Map<AlarmRingtone, Boolean> =
-        AlarmRingtone.entries.associateWith { false },
+    val ringtone: Ringtone = Ringtone.GENTLE_GUITAR,
+    val availableRingtonesWithPlaybackState: Map<Ringtone, Boolean> =
+        Ringtone.entries.associateWith { false },
     val currentCustomAlarmRingtoneUri: Uri? = null,
     val temporaryCustomAlarmRingtoneUri: Uri? = null,
     val isChooseAlarmRingtoneDialogVisible: Boolean = false,

@@ -64,7 +64,8 @@ import com.sweak.qralarm.core.designsystem.component.QRAlarmSwitch
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
+import com.sweak.qralarm.core.domain.alarm.model.Alarm
+import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
@@ -74,7 +75,6 @@ import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneD
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseGentleWakeUpDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseSnoozeConfigurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationWrapper
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -449,8 +449,8 @@ private fun AddEditAlarmScreenContent(
 
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(
-                                    text = getAlarmSnoozeConfigurationString(
-                                        state.alarmSnoozeConfigurationWrapper
+                                    text = getAlarmSnoozeModeString(
+                                        state.alarmSnoozeMode
                                     ),
                                     style = MaterialTheme.typography.labelMedium,
                                     modifier = Modifier.padding(end = MaterialTheme.space.small)
@@ -492,7 +492,7 @@ private fun AddEditAlarmScreenContent(
 
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(
-                                    text = getAlarmRingtoneString(state.alarmRingtone),
+                                    text = getAlarmRingtoneString(state.ringtone),
                                     style = MaterialTheme.typography.labelMedium,
                                     modifier = Modifier.padding(end = MaterialTheme.space.small)
                                 )
@@ -861,13 +861,13 @@ private fun AddEditAlarmScreenContent(
 
     if (state.isChooseAlarmSnoozeConfigurationDialogVisible) {
         ChooseSnoozeConfigurationBottomSheet(
-            initialAlarmSnoozeConfigurationWrapper = state.alarmSnoozeConfigurationWrapper,
+            initialAlarmSnoozeMode = state.alarmSnoozeMode,
             availableSnoozeNumbers = state.availableSnoozeNumbers,
             availableSnoozeDurationsInMinutes = state.availableSnoozeDurationsInMinutes,
             onDismissRequest = { newAlarmSnoozeConfigurationWrapper ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmSnoozeConfigurationSelected(
-                        newAlarmSnoozeConfigurationWrapper = newAlarmSnoozeConfigurationWrapper
+                        newAlarmSnoozeMode = newAlarmSnoozeConfigurationWrapper
                     )
                 )
             }
@@ -876,15 +876,15 @@ private fun AddEditAlarmScreenContent(
 
     if (state.isChooseAlarmRingtoneDialogVisible) {
         ChooseAlarmRingtoneDialogBottomSheet(
-            initialAlarmRingtone = state.alarmRingtone,
-            availableAlarmRingtonesWithPlaybackState =
-            state.availableAlarmRingtonesWithPlaybackState,
+            initialRingtone = state.ringtone,
+            availableRingtonesWithPlaybackState =
+            state.availableRingtonesWithPlaybackState,
             isCustomRingtoneUploaded = state.currentCustomAlarmRingtoneUri != null ||
                     state.temporaryCustomAlarmRingtoneUri != null,
             onTogglePlaybackState = { toggledAlarmRingtone ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.ToggleAlarmRingtonePlayback(
-                        alarmRingtone = toggledAlarmRingtone
+                        ringtone = toggledAlarmRingtone
                     )
                 )
             },
@@ -894,7 +894,7 @@ private fun AddEditAlarmScreenContent(
             onDismissRequest = { newAlarmRingtone ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmRingtoneSelected(
-                        newAlarmRingtone = newAlarmRingtone
+                        newRingtone = newAlarmRingtone
                     )
                 )
             }
@@ -989,26 +989,26 @@ private fun Separator() {
 }
 
 @Composable
-private fun getAlarmSnoozeConfigurationString(
-    alarmSnoozeConfigurationWrapper: AlarmSnoozeConfigurationWrapper
+private fun getAlarmSnoozeModeString(
+    alarmSnoozeMode: Alarm.SnoozeMode
 ): String {
-    if (alarmSnoozeConfigurationWrapper.numberOfSnoozes == 0) {
+    if (alarmSnoozeMode.numberOfSnoozes == 0) {
         return stringResource(R.string.no_snoozes)
     }
 
-    return alarmSnoozeConfigurationWrapper.numberOfSnoozes.toString() +
+    return alarmSnoozeMode.numberOfSnoozes.toString() +
             " x " +
-            alarmSnoozeConfigurationWrapper.snoozeDurationInMinutes +
+            alarmSnoozeMode.snoozeDurationInMinutes +
             " " + stringResource(R.string.min)
 }
 
 @Composable
-fun getAlarmRingtoneString(alarmRingtone: AlarmRingtone): String {
-    return when (alarmRingtone) {
-        AlarmRingtone.GENTLE_GUITAR -> stringResource(R.string.gentle_guitar)
-        AlarmRingtone.ALARM_CLOCK -> stringResource(R.string.alarm_clock)
-        AlarmRingtone.AIR_HORN -> stringResource(R.string.air_horn)
-        AlarmRingtone.CUSTOM_SOUND -> stringResource(R.string.custom_sound)
+fun getAlarmRingtoneString(ringtone: Ringtone): String {
+    return when (ringtone) {
+        Ringtone.GENTLE_GUITAR -> stringResource(R.string.gentle_guitar)
+        Ringtone.ALARM_CLOCK -> stringResource(R.string.alarm_clock)
+        Ringtone.AIR_HORN -> stringResource(R.string.air_horn)
+        Ringtone.CUSTOM_SOUND -> stringResource(R.string.custom_sound)
     }
 }
 

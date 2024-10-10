@@ -3,7 +3,7 @@ package com.sweak.qralarm.features.add_edit_alarm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
-import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
+import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -161,7 +161,7 @@ class AddEditAlarmViewModel @Inject constructor(
             is AddEditAlarmScreenUserEvent.AlarmSnoozeConfigurationSelected -> {
                 state.update { currentState ->
                     currentState.copy(
-                        alarmSnoozeConfigurationWrapper = event.newAlarmSnoozeConfigurationWrapper,
+                        alarmSnoozeMode = event.newAlarmSnoozeMode,
                         isChooseAlarmSnoozeConfigurationDialogVisible = false
                     )
                 }
@@ -176,21 +176,21 @@ class AddEditAlarmViewModel @Inject constructor(
 
                 state.update { currentState ->
                     currentState.copy(
-                        alarmRingtone = event.newAlarmRingtone,
+                        ringtone = event.newRingtone,
                         isChooseAlarmRingtoneDialogVisible = false,
-                        availableAlarmRingtonesWithPlaybackState =
-                        currentState.availableAlarmRingtonesWithPlaybackState.mapValues { false }
+                        availableRingtonesWithPlaybackState =
+                        currentState.availableRingtonesWithPlaybackState.mapValues { false }
                     )
                 }
             }
             is AddEditAlarmScreenUserEvent.ToggleAlarmRingtonePlayback -> {
                 state.update { currentState ->
                     val isPlaying = currentState
-                        .availableAlarmRingtonesWithPlaybackState[event.alarmRingtone]?.not()
+                        .availableRingtonesWithPlaybackState[event.ringtone]?.not()
                         ?: false
 
                     if (isPlaying) {
-                        if (event.alarmRingtone == AlarmRingtone.CUSTOM_SOUND &&
+                        if (event.ringtone == Ringtone.CUSTOM_SOUND &&
                             (currentState.currentCustomAlarmRingtoneUri != null ||
                                     currentState.temporaryCustomAlarmRingtoneUri != null)
                         ) {
@@ -202,8 +202,8 @@ class AddEditAlarmViewModel @Inject constructor(
                                 onPreviewCompleted = {
                                     state.update { currentState ->
                                         currentState.copy(
-                                            availableAlarmRingtonesWithPlaybackState =
-                                            currentState.availableAlarmRingtonesWithPlaybackState
+                                            availableRingtonesWithPlaybackState =
+                                            currentState.availableRingtonesWithPlaybackState
                                                 .mapValues { false }
                                         )
                                     }
@@ -211,12 +211,12 @@ class AddEditAlarmViewModel @Inject constructor(
                             )
                         } else {
                             alarmRingtonePlayer.playOriginalAlarmRingtonePreview(
-                                alarmRingtone = event.alarmRingtone,
+                                ringtone = event.ringtone,
                                 onPreviewCompleted = {
                                     state.update { currentState ->
                                         currentState.copy(
-                                            availableAlarmRingtonesWithPlaybackState =
-                                            currentState.availableAlarmRingtonesWithPlaybackState
+                                            availableRingtonesWithPlaybackState =
+                                            currentState.availableRingtonesWithPlaybackState
                                                 .mapValues { false }
                                         )
                                     }
@@ -228,9 +228,9 @@ class AddEditAlarmViewModel @Inject constructor(
                     }
 
                     currentState.copy(
-                        availableAlarmRingtonesWithPlaybackState =
-                        currentState.availableAlarmRingtonesWithPlaybackState.mapValues {
-                            if (it.key == event.alarmRingtone) {
+                        availableRingtonesWithPlaybackState =
+                        currentState.availableRingtonesWithPlaybackState.mapValues {
+                            if (it.key == event.ringtone) {
                                 !it.value
                             } else {
                                 false
@@ -251,7 +251,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
                 state.update { currentState ->
                     currentState.copy(
-                        alarmRingtone = AlarmRingtone.CUSTOM_SOUND,
+                        ringtone = Ringtone.CUSTOM_SOUND,
                         temporaryCustomAlarmRingtoneUri = uri
                     )
                 }

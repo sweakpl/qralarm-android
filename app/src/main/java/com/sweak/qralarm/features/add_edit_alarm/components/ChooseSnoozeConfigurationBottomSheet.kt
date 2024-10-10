@@ -20,29 +20,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationWrapper
-
+import com.sweak.qralarm.core.domain.alarm.model.Alarm
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseSnoozeConfigurationBottomSheet(
-    initialAlarmSnoozeConfigurationWrapper: AlarmSnoozeConfigurationWrapper,
+    initialAlarmSnoozeMode: Alarm.SnoozeMode,
     availableSnoozeNumbers: List<Int>,
     availableSnoozeDurationsInMinutes: List<Int>,
-    onDismissRequest: (newAlarmSnoozeConfigurationWrapper: AlarmSnoozeConfigurationWrapper) -> Unit
+    onDismissRequest: (newAlarmSnoozeMode: Alarm.SnoozeMode) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     var selectedNumberOfSnoozes by remember {
-        mutableIntStateOf(initialAlarmSnoozeConfigurationWrapper.numberOfSnoozes)
+        mutableIntStateOf(initialAlarmSnoozeMode.numberOfSnoozes)
     }
     var selectedSnoozeDurationInMinutes by remember {
-        mutableIntStateOf(initialAlarmSnoozeConfigurationWrapper.snoozeDurationInMinutes)
+        mutableIntStateOf(initialAlarmSnoozeMode.snoozeDurationInMinutes)
     }
 
     ModalBottomSheet(
         onDismissRequest = {
             onDismissRequest(
-                AlarmSnoozeConfigurationWrapper(
+                Alarm.SnoozeMode(
                     numberOfSnoozes = selectedNumberOfSnoozes,
                     snoozeDurationInMinutes = selectedSnoozeDurationInMinutes
                 )
@@ -124,7 +123,7 @@ fun ChooseSnoozeConfigurationBottomSheet(
 private fun ChooseSnoozeConfigurationBottomSheetPreview() {
     QRAlarmTheme {
         ChooseSnoozeConfigurationBottomSheet(
-            initialAlarmSnoozeConfigurationWrapper = AlarmSnoozeConfigurationWrapper(),
+            initialAlarmSnoozeMode = Alarm.SnoozeMode(3, 10),
             availableSnoozeNumbers = listOf(0, 1, 2, 3),
             availableSnoozeDurationsInMinutes = listOf(2, 3, 5, 10, 15, 20),
             onDismissRequest = {}

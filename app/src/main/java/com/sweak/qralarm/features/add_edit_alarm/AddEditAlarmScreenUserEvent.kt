@@ -1,9 +1,9 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
 import android.net.Uri
-import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
+import com.sweak.qralarm.core.domain.alarm.model.Alarm
+import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
-import com.sweak.qralarm.features.add_edit_alarm.model.AlarmSnoozeConfigurationWrapper
 
 sealed class AddEditAlarmScreenUserEvent {
     data object OnCancelClicked : AddEditAlarmScreenUserEvent()
@@ -35,16 +35,16 @@ sealed class AddEditAlarmScreenUserEvent {
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()
     data class AlarmSnoozeConfigurationSelected(
-        val newAlarmSnoozeConfigurationWrapper: AlarmSnoozeConfigurationWrapper
+        val newAlarmSnoozeMode: Alarm.SnoozeMode
     ) : AddEditAlarmScreenUserEvent()
     data class ChooseAlarmRingtoneDialogVisible(
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()
     data class AlarmRingtoneSelected(
-        val newAlarmRingtone: AlarmRingtone
+        val newRingtone: Ringtone
     ) : AddEditAlarmScreenUserEvent()
     data class ToggleAlarmRingtonePlayback(
-        val alarmRingtone: AlarmRingtone
+        val ringtone: Ringtone
     ) : AddEditAlarmScreenUserEvent()
     data object PickCustomRingtone : AddEditAlarmScreenUserEvent()
     data class CustomRingtoneUriRetrieved(

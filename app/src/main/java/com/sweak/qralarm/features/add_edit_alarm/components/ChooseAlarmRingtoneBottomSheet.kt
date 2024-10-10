@@ -31,22 +31,22 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.domain.alarm.AlarmRingtone
+import com.sweak.qralarm.core.domain.alarm.model.Alarm.Ringtone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseAlarmRingtoneDialogBottomSheet(
-    initialAlarmRingtone: AlarmRingtone,
-    availableAlarmRingtonesWithPlaybackState: Map<AlarmRingtone, Boolean>,
+    initialRingtone: Ringtone,
+    availableRingtonesWithPlaybackState: Map<Ringtone, Boolean>,
     isCustomRingtoneUploaded: Boolean,
-    onTogglePlaybackState: (AlarmRingtone) -> Unit,
+    onTogglePlaybackState: (Ringtone) -> Unit,
     onPickCustomRingtone: () -> Unit,
-    onDismissRequest: (newAlarmRingtone: AlarmRingtone) -> Unit
+    onDismissRequest: (newRingtone: Ringtone) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    var selectedAlarmRingtone by remember(initialAlarmRingtone) {
-        mutableStateOf(initialAlarmRingtone)
+    var selectedAlarmRingtone by remember(initialRingtone) {
+        mutableStateOf(initialRingtone)
     }
 
     ModalBottomSheet(
@@ -69,7 +69,7 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
             )
 
             Column(modifier = Modifier.selectableGroup()) {
-                availableAlarmRingtonesWithPlaybackState.forEach { (alarmRingtone, playbackState) ->
+                availableRingtonesWithPlaybackState.forEach { (alarmRingtone, playbackState) ->
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
@@ -79,7 +79,7 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
                             .selectable(
                                 selected = selectedAlarmRingtone == alarmRingtone,
                                 onClick = {
-                                    if (alarmRingtone == AlarmRingtone.CUSTOM_SOUND &&
+                                    if (alarmRingtone == Ringtone.CUSTOM_SOUND &&
                                         !isCustomRingtoneUploaded
                                     ) {
                                         onPickCustomRingtone()
@@ -103,10 +103,10 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
                             Text(
                                 text = stringResource(
                                     when (alarmRingtone) {
-                                        AlarmRingtone.GENTLE_GUITAR -> R.string.gentle_guitar
-                                        AlarmRingtone.ALARM_CLOCK -> R.string.alarm_clock
-                                        AlarmRingtone.AIR_HORN -> R.string.air_horn
-                                        AlarmRingtone.CUSTOM_SOUND -> R.string.custom_sound
+                                        Ringtone.GENTLE_GUITAR -> R.string.gentle_guitar
+                                        Ringtone.ALARM_CLOCK -> R.string.alarm_clock
+                                        Ringtone.AIR_HORN -> R.string.air_horn
+                                        Ringtone.CUSTOM_SOUND -> R.string.custom_sound
                                     }
                                 ),
                                 style = MaterialTheme.typography.titleLarge,
@@ -115,7 +115,7 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
                         }
 
                         Row {
-                            if (alarmRingtone == AlarmRingtone.CUSTOM_SOUND &&
+                            if (alarmRingtone == Ringtone.CUSTOM_SOUND &&
                                 isCustomRingtoneUploaded
                             ) {
                                 IconButton(onClick = { onPickCustomRingtone() }) {
@@ -127,7 +127,7 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
                                 }
                             }
 
-                            if (alarmRingtone != AlarmRingtone.CUSTOM_SOUND ||
+                            if (alarmRingtone != Ringtone.CUSTOM_SOUND ||
                                 isCustomRingtoneUploaded
                             ) {
                                 IconButton(onClick = { onTogglePlaybackState(alarmRingtone) }) {
@@ -154,8 +154,8 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
 private fun ChooseAlarmRingtoneDialogBottomSheetPreview() {
     QRAlarmTheme {
         ChooseAlarmRingtoneDialogBottomSheet(
-            initialAlarmRingtone= AlarmRingtone.GENTLE_GUITAR,
-            availableAlarmRingtonesWithPlaybackState = AlarmRingtone.entries.associateWith { false },
+            initialRingtone= Ringtone.GENTLE_GUITAR,
+            availableRingtonesWithPlaybackState = Ringtone.entries.associateWith { false },
             isCustomRingtoneUploaded = true,
             onTogglePlaybackState = {},
             onPickCustomRingtone = {},
