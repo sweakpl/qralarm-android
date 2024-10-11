@@ -37,13 +37,13 @@ import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 @Composable
 fun AlarmCard(
     alarmWrapper: AlarmWrapper,
-    onClick: (AlarmWrapper) -> Unit,
-    onAlarmEnabledChanged: (AlarmWrapper, Boolean) -> Unit,
+    onClick: (Long) -> Unit,
+    onAlarmEnabledChanged: (Long, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     QRAlarmCard(
         modifier = modifier
-            .clickable { onClick(alarmWrapper) }
+            .clickable { onClick(alarmWrapper.alarmId) }
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -88,7 +88,7 @@ fun AlarmCard(
                 QRAlarmSwitch(
                     checked = alarmWrapper.isAlarmEnabled,
                     onCheckedChange = {
-                        onAlarmEnabledChanged(alarmWrapper, it)
+                        onAlarmEnabledChanged(alarmWrapper.alarmId, it)
                     }
                 )
             }
@@ -105,6 +105,7 @@ private fun AlarmCardPreview() {
         var alarmWrapper by remember {
             mutableStateOf(
                 AlarmWrapper(
+                    alarmId = 0,
                     alarmHourOfDay = 8,
                     alarmMinute = 0,
                     alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),

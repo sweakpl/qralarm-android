@@ -46,6 +46,9 @@ class MainActivity : ComponentActivity() {
                     homeScreen(
                         onAddNewAlarm = {
                             navController.navigateToAddEditAlarm()
+                        },
+                        onEditAlarm = { alarmId ->
+                            navController.navigateToAddEditAlarm(alarmId = alarmId)
                         }
                     )
 

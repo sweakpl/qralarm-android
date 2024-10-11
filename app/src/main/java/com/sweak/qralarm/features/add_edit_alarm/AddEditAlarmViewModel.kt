@@ -1,5 +1,7 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
+import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
@@ -7,11 +9,13 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.SAT_SUN
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
+import com.sweak.qralarm.features.add_edit_alarm.navigation.ID_OF_ALARM_TO_EDIT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,11 +28,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditAlarmViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val alarmRingtonePlayer: AlarmRingtonePlayer,
     private val userDataRepository: UserDataRepository,
     private val alarmsRepository: AlarmsRepository,
     private val qrAlarmManager: QRAlarmManager
 ): ViewModel() {
+
+    private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM_TO_EDIT] ?: 0
 
     var state = MutableStateFlow(AddEditAlarmScreenState())
 
@@ -36,13 +43,41 @@ class AddEditAlarmViewModel @Inject constructor(
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     init {
-        val dateTime = ZonedDateTime.now()
+        if (idOfAlarm == 0L) {
+            val dateTime = ZonedDateTime.now()
 
-        state.update { currentState ->
-            currentState.copy(
-                alarmHourOfDay = dateTime.hour,
-                alarmMinute = dateTime.minute
-            )
+            state.update { currentState ->
+                currentState.copy(
+                    alarmHourOfDay = dateTime.hour,
+                    alarmMinute = dateTime.minute
+                )
+            }
+        } else {
+            viewModelScope.launch {
+                val alarm = alarmsRepository.getAlarm(alarmId = idOfAlarm) ?: return@launch
+                val alarmRepeatingScheduleWrapper = convertAlarmRepeatingMode(
+                    repeatingMode = alarm.repeatingMode
+                ) ?: return@launch
+
+                state.update { currentState ->
+                    currentState.copy(
+                        alarmHourOfDay = alarm.alarmHourOfDay,
+                        alarmMinute = alarm.alarmMinute,
+                        isAlarmEnabled = alarm.isAlarmEnabled,
+                        alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
+                        alarmSnoozeMode = alarm.snoozeMode,
+                        ringtone = alarm.ringtone,
+                        currentCustomAlarmRingtoneUri = alarm.customRingtoneUriString?.let {
+                            Uri.parse(it)
+                        },
+                        areVibrationsEnabled = alarm.areVibrationsEnabled,
+                        isCodeEnabled = alarm.isUsingCode,
+                        currentlyAssignedCode = alarm.assignedCode,
+                        gentleWakeupDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
+                        isTemporaryMuteEnabled = alarm.isTemporaryMuteEnabled
+                    )
+                }
+            }
         }
 
         viewModelScope.launch {
@@ -61,6 +96,46 @@ class AddEditAlarmViewModel @Inject constructor(
             }
         }
     }
+
+    private fun convertAlarmRepeatingMode(
+        repeatingMode: Alarm.RepeatingMode
+    ): AlarmRepeatingScheduleWrapper? {
+        if (repeatingMode is Alarm.RepeatingMode.Once) {
+            return AlarmRepeatingScheduleWrapper(
+                alarmRepeatingMode = AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
+            )
+        } else if (repeatingMode is Alarm.RepeatingMode.Days) {
+            val days = repeatingMode.repeatingDaysOfWeek
+
+            if (days.size == 2 && days.containsAll(listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY))) {
+                return AlarmRepeatingScheduleWrapper(
+                    alarmRepeatingMode = AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.SAT_SUN
+                )
+            } else if (days.size == 5 &&
+                days.containsAll(
+                    listOf(
+                        DayOfWeek.MONDAY,
+                        DayOfWeek.TUESDAY,
+                        DayOfWeek.WEDNESDAY,
+                        DayOfWeek.THURSDAY,
+                        DayOfWeek.FRIDAY
+                    )
+                )
+            ) {
+                return AlarmRepeatingScheduleWrapper(
+                    alarmRepeatingMode = AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
+                )
+            } else {
+                return AlarmRepeatingScheduleWrapper(
+                    alarmRepeatingMode = AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM,
+                    alarmDaysOfWeek = days
+                )
+            }
+        }
+
+        return null
+    }
+
 
     fun onEvent(event: AddEditAlarmScreenUserEvent) {
         when (event) {
@@ -167,6 +242,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
                             alarmsRepository.addOrEditAlarm(
                                 alarm = Alarm(
+                                    alarmId = idOfAlarm,
                                     alarmHourOfDay = currentState.alarmHourOfDay,
                                     alarmMinute = currentState.alarmMinute,
                                     isAlarmEnabled = currentState.isAlarmEnabled,

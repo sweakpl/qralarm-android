@@ -13,10 +13,14 @@ fun NavController.navigateToHome(navOptions: NavOptions) = navigate(
     navOptions = navOptions
 )
 
-fun NavGraphBuilder.homeScreen(onAddNewAlarm: () -> Unit) {
+fun NavGraphBuilder.homeScreen(
+    onAddNewAlarm: () -> Unit,
+    onEditAlarm: (Long) -> Unit
+) {
     composable(route = HOME_SCREEN_ROUTE) {
         HomeScreen(
-            onAddNewAlarm = onAddNewAlarm
+            onAddNewAlarm = onAddNewAlarm,
+            onEditAlarm = onEditAlarm
         )
     }
 }

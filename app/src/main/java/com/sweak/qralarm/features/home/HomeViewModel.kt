@@ -21,28 +21,31 @@ class HomeViewModel @Inject constructor(
     var state = MutableStateFlow(HomeScreenState())
 
     init {
-        viewModelScope.launch {
-            val allAlarms = alarmsRepository.getAllAlarms()
+        viewModelScope.launch { refreshInternal() }
+    }
 
-            if (allAlarms.isNotEmpty()) {
-                state.update { currentState ->
-                    currentState.copy(
-                        alarmWrappers = allAlarms.mapNotNull { alarm ->
-                            val alarmRepeatingScheduleWrapper =
-                                convertAlarmRepeatingMode(alarm.repeatingMode)
-                                    ?: return@mapNotNull null
+    fun refresh() = viewModelScope.launch { refreshInternal() }
 
-                            AlarmWrapper(
-                                alarmHourOfDay = alarm.alarmHourOfDay,
-                                alarmMinute = alarm.alarmMinute,
-                                alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
-                                isAlarmEnabled = alarm.isAlarmEnabled,
-                                isQRCOdeEnabled = alarm.isUsingCode
-                            )
-                        }
+    private suspend fun refreshInternal() {
+        val allAlarms = alarmsRepository.getAllAlarms()
+
+        state.update { currentState ->
+            currentState.copy(
+                alarmWrappers = allAlarms.mapNotNull { alarm ->
+                    val alarmRepeatingScheduleWrapper =
+                        convertAlarmRepeatingMode(alarm.repeatingMode)
+                            ?: return@mapNotNull null
+
+                    AlarmWrapper(
+                        alarmId = alarm.alarmId,
+                        alarmHourOfDay = alarm.alarmHourOfDay,
+                        alarmMinute = alarm.alarmMinute,
+                        alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
+                        isAlarmEnabled = alarm.isAlarmEnabled,
+                        isQRCOdeEnabled = alarm.isUsingCode
                     )
                 }
-            }
+            )
         }
     }
 

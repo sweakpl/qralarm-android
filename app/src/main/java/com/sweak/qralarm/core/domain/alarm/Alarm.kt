@@ -3,6 +3,7 @@ package com.sweak.qralarm.core.domain.alarm
 import java.time.DayOfWeek
 
 data class Alarm(
+    val alarmId: Long,
     val alarmHourOfDay: Int,
     val alarmMinute: Int,
     val isAlarmEnabled: Boolean,

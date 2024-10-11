@@ -35,20 +35,27 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.home.components.AlarmCard
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 
 @Composable
-fun HomeScreen(onAddNewAlarm: () -> Unit) {
+fun HomeScreen(
+    onAddNewAlarm: () -> Unit,
+    onEditAlarm: (Long) -> Unit
+) {
     val homeViewModel = hiltViewModel<HomeViewModel>()
     val homeScreenState by homeViewModel.state.collectAsStateWithLifecycle()
+
+    OnResume { homeViewModel.refresh() }
 
     HomeScreenContent(
         state = homeScreenState,
         onEvent = { event ->
             when (event) {
-                HomeScreenUserEvent.AddNewAlarm -> onAddNewAlarm()
+                is HomeScreenUserEvent.AddNewAlarm -> onAddNewAlarm()
+                is HomeScreenUserEvent.EditAlarm -> onEditAlarm(event.alarmId)
             }
         }
     )
@@ -149,10 +156,10 @@ private fun HomeScreenContent(
                 items(state.alarmWrappers) {
                     AlarmCard(
                         alarmWrapper = it,
-                        onClick = { alarmWrapper ->
-                            // TODO
+                        onClick = { alarmId ->
+                            onEvent(HomeScreenUserEvent.EditAlarm(alarmId = alarmId))
                         },
-                        onAlarmEnabledChanged = { alarmWrapper, enabled ->
+                        onAlarmEnabledChanged = { alarmId, enabled ->
                             // TODO
                         },
                         modifier = Modifier
@@ -185,6 +192,7 @@ private fun HomeScreenContentPreview() {
             state = HomeScreenState(
                 alarmWrappers = listOf(
                     AlarmWrapper(
+                        alarmId = 0,
                         alarmHourOfDay = 8,
                         alarmMinute = 0,
                         alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),

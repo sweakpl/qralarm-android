@@ -13,4 +13,7 @@ interface AlarmsDao {
 
     @Query("SELECT * FROM alarm")
     suspend fun getAllAlarms(): List<AlarmEntity>
+
+    @Query("SELECT * FROM alarm WHERE alarmId = :alarmId")
+    suspend fun getAlarms(alarmId: Long): AlarmEntity?
 }
