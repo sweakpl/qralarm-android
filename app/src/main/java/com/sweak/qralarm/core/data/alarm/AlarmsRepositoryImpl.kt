@@ -63,6 +63,10 @@ class AlarmsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteAlarm(alarmId: Long) {
+        alarmsDao.deleteAlarm(alarmId = alarmId)
+    }
+
     private fun convertAlarmEntity(alarmEntity: AlarmEntity): Alarm? {
         val repeatingMode = if (alarmEntity.repeatingAlarmOnceDayInMillis != null) {
             Alarm.RepeatingMode.Once(alarmEntity.repeatingAlarmOnceDayInMillis)

@@ -10,6 +10,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +26,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -34,6 +36,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -81,7 +84,8 @@ import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
 fun AddEditAlarmScreen(
     onCancelClicked: () -> Unit,
     onAlarmSaved: () -> Unit,
-    onScanCustomCodeClicked: () -> Unit
+    onScanCustomCodeClicked: () -> Unit,
+    onAlarmDeleted: () -> Unit
 ) {
     val addEditAlarmViewModel = hiltViewModel<AddEditAlarmViewModel>()
     val addEditAlarmScreenState by addEditAlarmViewModel.state.collectAsStateWithLifecycle()
@@ -137,6 +141,7 @@ fun AddEditAlarmScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
+                is AddEditAlarmScreenBackendEvent.AlarmDeleted -> onAlarmDeleted()
             }
         }
     )
@@ -748,11 +753,7 @@ private fun AddEditAlarmScreenContent(
                 QRAlarmCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(
-                            start = MaterialTheme.space.medium,
-                            end = MaterialTheme.space.medium,
-                            bottom = MaterialTheme.space.mediumLarge
-                        )
+                        .padding(horizontal = MaterialTheme.space.medium)
                 ) {
                     Box(
                         modifier = Modifier
@@ -844,6 +845,49 @@ private fun AddEditAlarmScreenContent(
                         )
                     }
                 }
+
+                if (state.isEditingExistingAlarm) {
+                    OutlinedButton(
+                        onClick = {
+                            onEvent(
+                                AddEditAlarmScreenUserEvent.DeleteAlarmDialogVisible(
+                                    isVisible = true
+                                )
+                            )
+                        },
+                        border = BorderStroke(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.error
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = MaterialTheme.space.medium,
+                                top = MaterialTheme.space.large,
+                                end = MaterialTheme.space.medium
+                            )
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.space.small),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = QRAlarmIcons.Delete,
+                                contentDescription = stringResource(
+                                    R.string.content_description_delete_icon
+                                ),
+                                tint = MaterialTheme.colorScheme.error
+                            )
+
+                            Text(
+                                text = stringResource(R.string.delete_alarm),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.space.mediumLarge))
             }
         }
     }
@@ -975,6 +1019,21 @@ private fun AddEditAlarmScreenContent(
                 onEvent(AddEditAlarmScreenUserEvent.RequestFullScreenIntentPermission)
             },
             onDismissRequest = { onEvent(AddEditAlarmScreenUserEvent.HideMissingPermissionsDialog) }
+        )
+    }
+
+    if (state.isDeleteAlarmDialogVisible) {
+        QRAlarmDialog(
+            title = stringResource(R.string.delete_this_alarm),
+            onDismissRequest = {
+                onEvent(AddEditAlarmScreenUserEvent.DeleteAlarmDialogVisible(isVisible = false))
+            },
+            onPositiveClick = {
+                onEvent(AddEditAlarmScreenUserEvent.DeleteAlarm)
+            },
+            positiveButtonText = stringResource(R.string.delete),
+            positiveButtonColor = MaterialTheme.colorScheme.error,
+            negativeButtonText = stringResource(R.string.cancel)
         )
     }
 }

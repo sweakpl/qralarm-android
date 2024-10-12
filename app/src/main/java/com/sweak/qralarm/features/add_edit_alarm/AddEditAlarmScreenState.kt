@@ -9,6 +9,7 @@ import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 
 data class AddEditAlarmScreenState(
+    val isEditingExistingAlarm: Boolean = false,
     val alarmHourOfDay: Int? = null,
     val alarmMinute: Int? = null,
     val isAlarmEnabled: Boolean = true,
@@ -35,7 +36,8 @@ data class AddEditAlarmScreenState(
         AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS,
     val isChooseGentleWakeUpDurationDialogVisible: Boolean = false,
     val isTemporaryMuteEnabled: Boolean = false,
-    val permissionsDialogState: PermissionsDialogState = PermissionsDialogState()
+    val permissionsDialogState: PermissionsDialogState = PermissionsDialogState(),
+    val isDeleteAlarmDialogVisible: Boolean = false
 ) {
     data class PermissionsDialogState(
         val isVisible: Boolean = false,

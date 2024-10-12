@@ -48,6 +48,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
             state.update { currentState ->
                 currentState.copy(
+                    isEditingExistingAlarm = false,
                     alarmHourOfDay = dateTime.hour,
                     alarmMinute = dateTime.minute
                 )
@@ -61,6 +62,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
                 state.update { currentState ->
                     currentState.copy(
+                        isEditingExistingAlarm = true,
                         alarmHourOfDay = alarm.alarmHourOfDay,
                         alarmMinute = alarm.alarmMinute,
                         isAlarmEnabled = alarm.isAlarmEnabled,
@@ -454,6 +456,15 @@ class AddEditAlarmViewModel @Inject constructor(
                 state.update { currentState ->
                     currentState.copy(isTemporaryMuteEnabled = event.isEnabled)
                 }
+            }
+            is AddEditAlarmScreenUserEvent.DeleteAlarmDialogVisible -> {
+                state.update { currentState ->
+                    currentState.copy(isDeleteAlarmDialogVisible = event.isVisible)
+                }
+            }
+            is AddEditAlarmScreenUserEvent.DeleteAlarm -> viewModelScope.launch {
+                alarmsRepository.deleteAlarm(alarmId = idOfAlarm)
+                backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmDeleted)
             }
             else -> { /* no-op */ }
         }

@@ -70,4 +70,7 @@
     <string name="full_screen_display_usage">Used for displaying full screen alarm notification.</string>
     <string name="notifications_permission_required">Notifications permission required</string>
     <string name="notifications_permission_required_description">Notifications permission is required for notifying about your alarms. In order to grant the permission go to settings and grant the notifications permission manually.</string>
+    <string name="delete_alarm">Delete alarm</string>
+    <string name="delete_this_alarm">Delete this alarm?</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -26,7 +26,7 @@ import com.sweak.qralarm.core.designsystem.theme.space
 @Composable
 fun QRAlarmDialog(
     title: String,
-    message: String,
+    message: String? = null,
     onDismissRequest: () -> Unit,
     onPositiveClick: () -> Unit,
     positiveButtonText: String,
@@ -51,30 +51,27 @@ fun QRAlarmDialog(
                     modifier = Modifier.padding(
                         start = MaterialTheme.space.medium,
                         top = MaterialTheme.space.medium,
-                        end = MaterialTheme.space.medium,
-                        bottom = MaterialTheme.space.small
+                        end = MaterialTheme.space.medium
                     )
                 )
 
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(
-                        start = MaterialTheme.space.medium,
-                        end = MaterialTheme.space.medium,
-                        bottom = MaterialTheme.space.medium
+                message?.let {
+                    Text(
+                        text = message,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(
+                            start = MaterialTheme.space.medium,
+                            top = MaterialTheme.space.small,
+                            end = MaterialTheme.space.medium
+                        )
                     )
-                )
+                }
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(
-                            start = MaterialTheme.space.medium,
-                            end = MaterialTheme.space.medium,
-                            bottom = MaterialTheme.space.medium
-                        )
+                        .padding(all = MaterialTheme.space.medium)
                 ) {
                     if (!onlyPositiveButton) {
                         TextButton(

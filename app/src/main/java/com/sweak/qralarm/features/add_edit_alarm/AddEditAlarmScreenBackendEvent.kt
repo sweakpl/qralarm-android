@@ -6,4 +6,5 @@ sealed class AddEditAlarmScreenBackendEvent {
         val isSuccess: Boolean
     ) : AddEditAlarmScreenBackendEvent()
     data object CustomCodeAssignmentFinished : AddEditAlarmScreenBackendEvent()
+    data object AlarmDeleted : AddEditAlarmScreenBackendEvent()
 }

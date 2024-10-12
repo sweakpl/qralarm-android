@@ -61,6 +61,9 @@ class MainActivity : ComponentActivity() {
                         },
                         onScanCustomCodeClicked = {
                             navController.navigateToScanner()
+                        },
+                        onAlarmDeleted = {
+                            navController.popBackStack()
                         }
                     )
 
