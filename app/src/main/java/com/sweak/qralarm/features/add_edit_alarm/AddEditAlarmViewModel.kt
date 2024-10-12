@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
+import android.content.ContentResolver
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.time.DayOfWeek
 import java.time.ZonedDateTime
 import javax.inject.Inject
@@ -32,7 +38,9 @@ class AddEditAlarmViewModel @Inject constructor(
     private val alarmRingtonePlayer: AlarmRingtonePlayer,
     private val userDataRepository: UserDataRepository,
     private val alarmsRepository: AlarmsRepository,
-    private val qrAlarmManager: QRAlarmManager
+    private val qrAlarmManager: QRAlarmManager,
+    private val contentResolver: ContentResolver,
+    private val filesDir: File
 ): ViewModel() {
 
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM_TO_EDIT] ?: 0
@@ -399,7 +407,35 @@ class AddEditAlarmViewModel @Inject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.CustomRingtoneUriRetrieved -> viewModelScope.launch {
-                val uri = event.customRingtoneUri ?: run {
+                event.customRingtoneUri?.let { retrievedUri ->
+                    val savedLocalAlarmSoundUri = try {
+                        copyUriContentToLocalStorage(retrievedUri)
+                    } catch (exception: Exception) {
+                        if (exception is IOException || exception is SecurityException) {
+                            backendEventsChannel.send(
+                                AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished(
+                                    isSuccess = false
+                                )
+                            )
+                            return@launch
+                        } else {
+                            throw exception
+                        }
+                    }
+
+                    state.update { currentState ->
+                        currentState.copy(
+                            ringtone = Ringtone.CUSTOM_SOUND,
+                            temporaryCustomAlarmRingtoneUri = savedLocalAlarmSoundUri
+                        )
+                    }
+
+                    backendEventsChannel.send(
+                        AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished(
+                            isSuccess = true
+                        )
+                    )
+                } ?: run {
                     backendEventsChannel.send(
                         AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished(
                             isSuccess = false
@@ -407,17 +443,6 @@ class AddEditAlarmViewModel @Inject constructor(
                     )
                     return@launch
                 }
-
-                state.update { currentState ->
-                    currentState.copy(
-                        ringtone = Ringtone.CUSTOM_SOUND,
-                        temporaryCustomAlarmRingtoneUri = uri
-                    )
-                }
-
-                backendEventsChannel.send(
-                    AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished(isSuccess = true)
-                )
             }
             is AddEditAlarmScreenUserEvent.VibrationsEnabledChanged -> {
                 state.update { currentState ->
@@ -467,6 +492,34 @@ class AddEditAlarmViewModel @Inject constructor(
                 backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmDeleted)
             }
             else -> { /* no-op */ }
+        }
+    }
+
+    private fun copyUriContentToLocalStorage(uri: Uri): Uri {
+        val file = File(filesDir, idOfAlarm.toString())
+
+        file.createNewFile()
+
+        FileOutputStream(file).use { outputStream ->
+            contentResolver.openInputStream(uri).use { inputStream ->
+                if (inputStream == null) {
+                    throw IOException()
+                }
+
+                copyStream(inputStream, outputStream)
+                outputStream.flush()
+            }
+        }
+
+        return Uri.fromFile(file)
+    }
+
+    private fun copyStream(inputStream: InputStream, outputStream: OutputStream) {
+        val buffer = ByteArray(1024)
+        var read: Int
+
+        while (inputStream.read(buffer).also { read = it } != -1) {
+            outputStream.write(buffer, 0, read)
         }
     }
 
