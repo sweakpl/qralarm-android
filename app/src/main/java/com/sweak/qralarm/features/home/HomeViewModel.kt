@@ -7,6 +7,7 @@ import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,32 +21,52 @@ class HomeViewModel @Inject constructor(
 
     var state = MutableStateFlow(HomeScreenState())
 
+    private var isInitializing = true
+
     init {
-        viewModelScope.launch { refreshInternal() }
-    }
+        viewModelScope.launch {
+            alarmsRepository.getAllAlarms().collect { allAlarms ->
+                if (!isInitializing) {
+                    // Delay added for the alarms list animation to be visible as the Flow update
+                    // Comes while the HomeScreen is still hidden behind e.g. AddEditAlarmScreen:
+                    delay(500)
+                }
 
-    fun refresh() = viewModelScope.launch { refreshInternal() }
+                state.update { currentState ->
+                    currentState.copy(
+                        alarmWrappers = allAlarms.mapNotNull { alarm ->
+                            val alarmRepeatingScheduleWrapper =
+                                convertAlarmRepeatingMode(alarm.repeatingMode)
+                                    ?: return@mapNotNull null
 
-    private suspend fun refreshInternal() {
-        val allAlarms = alarmsRepository.getAllAlarms()
-
-        state.update { currentState ->
-            currentState.copy(
-                alarmWrappers = allAlarms.mapNotNull { alarm ->
-                    val alarmRepeatingScheduleWrapper =
-                        convertAlarmRepeatingMode(alarm.repeatingMode)
-                            ?: return@mapNotNull null
-
-                    AlarmWrapper(
-                        alarmId = alarm.alarmId,
-                        alarmHourOfDay = alarm.alarmHourOfDay,
-                        alarmMinute = alarm.alarmMinute,
-                        alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
-                        isAlarmEnabled = alarm.isAlarmEnabled,
-                        isQRCOdeEnabled = alarm.isUsingCode
+                            AlarmWrapper(
+                                alarmId = alarm.alarmId,
+                                alarmHourOfDay = alarm.alarmHourOfDay,
+                                alarmMinute = alarm.alarmMinute,
+                                alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
+                                isAlarmEnabled = alarm.isAlarmEnabled,
+                                isQRCOdeEnabled = alarm.isUsingCode
+                            )
+                        }.sortedWith(
+                            compareBy(AlarmWrapper::alarmHourOfDay, AlarmWrapper::alarmMinute)
+                        )
                     )
                 }
-            )
+
+                isInitializing = false
+            }
+        }
+    }
+
+    fun onEvent(event: HomeScreenUserEvent) {
+        when (event) {
+            is HomeScreenUserEvent.AlarmEnabledChanged -> viewModelScope.launch {
+                alarmsRepository.setAlarmEnabled(
+                    alarmId = event.alarmId,
+                    enabled = event.enabled
+                )
+            }
+            else -> { /* no-op */ }
         }
     }
 

@@ -4,6 +4,8 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.storage.database.dao.AlarmsDao
 import com.sweak.qralarm.core.storage.database.model.AlarmEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.time.DayOfWeek
 import javax.inject.Inject
 
@@ -39,15 +41,25 @@ class AlarmsRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun setAlarmEnabled(alarmId: Long, enabled: Boolean) {
+        alarmsDao.getAlarm(alarmId = alarmId)?.let { alarmEntity ->
+            alarmsDao.upsertAlarm(
+                alarmEntity = alarmEntity.copy(isAlarmEnabled = enabled)
+            )
+        }
+    }
+
     override suspend fun getAlarm(alarmId: Long): Alarm? {
-        return alarmsDao.getAlarms(alarmId = alarmId)?.let { alarmEntity ->
+        return alarmsDao.getAlarm(alarmId = alarmId)?.let { alarmEntity ->
             convertAlarmEntity(alarmEntity = alarmEntity)
         }
     }
 
-    override suspend fun getAllAlarms(): List<Alarm> {
-        return alarmsDao.getAllAlarms().mapNotNull { alarmEntity ->
-            convertAlarmEntity(alarmEntity = alarmEntity)
+    override suspend fun getAllAlarms(): Flow<List<Alarm>> {
+        return alarmsDao.getAllAlarms().map { alarmEntityList ->
+            alarmEntityList.mapNotNull { alarmEntity ->
+                convertAlarmEntity(alarmEntity = alarmEntity)
+            }
         }
     }
 

@@ -35,7 +35,6 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.home.components.AlarmCard
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
@@ -48,14 +47,13 @@ fun HomeScreen(
     val homeViewModel = hiltViewModel<HomeViewModel>()
     val homeScreenState by homeViewModel.state.collectAsStateWithLifecycle()
 
-    OnResume { homeViewModel.refresh() }
-
     HomeScreenContent(
         state = homeScreenState,
         onEvent = { event ->
             when (event) {
                 is HomeScreenUserEvent.AddNewAlarm -> onAddNewAlarm()
                 is HomeScreenUserEvent.EditAlarm -> onEditAlarm(event.alarmId)
+                else -> homeViewModel.onEvent(event)
             }
         }
     )
@@ -153,14 +151,22 @@ private fun HomeScreenContent(
                     }
                 }
 
-                items(state.alarmWrappers) {
+                items(
+                    items = state.alarmWrappers,
+                    key = { it.alarmId }
+                ) {
                     AlarmCard(
                         alarmWrapper = it,
                         onClick = { alarmId ->
                             onEvent(HomeScreenUserEvent.EditAlarm(alarmId = alarmId))
                         },
                         onAlarmEnabledChanged = { alarmId, enabled ->
-                            // TODO
+                            onEvent(
+                                HomeScreenUserEvent.AlarmEnabledChanged(
+                                    alarmId = alarmId,
+                                    enabled = enabled
+                                )
+                            )
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -169,6 +175,7 @@ private fun HomeScreenContent(
                                 end = MaterialTheme.space.medium,
                                 bottom = MaterialTheme.space.medium
                             )
+                            .animateItem()
                     )
                 }
 
