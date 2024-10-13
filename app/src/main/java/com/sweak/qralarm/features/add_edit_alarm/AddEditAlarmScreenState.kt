@@ -38,7 +38,8 @@ data class AddEditAlarmScreenState(
     val isChooseGentleWakeUpDurationDialogVisible: Boolean = false,
     val isTemporaryMuteEnabled: Boolean = false,
     val permissionsDialogState: PermissionsDialogState = PermissionsDialogState(),
-    val isDeleteAlarmDialogVisible: Boolean = false
+    val isDeleteAlarmDialogVisible: Boolean = false,
+    val isDiscardAlarmChangesDialogVisible: Boolean = false
 ) {
     data class PermissionsDialogState(
         val isVisible: Boolean = false,

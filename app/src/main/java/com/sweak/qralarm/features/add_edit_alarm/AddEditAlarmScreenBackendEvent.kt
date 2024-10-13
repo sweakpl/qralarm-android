@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
 sealed class AddEditAlarmScreenBackendEvent {
+    data object AlarmChangesDiscarded : AddEditAlarmScreenBackendEvent()
     data object AlarmSaved : AddEditAlarmScreenBackendEvent()
     data class CustomRingtoneRetrievalFinished(
         val isSuccess: Boolean

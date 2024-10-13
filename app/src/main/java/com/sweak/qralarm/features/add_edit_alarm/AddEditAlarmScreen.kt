@@ -124,6 +124,7 @@ fun AddEditAlarmScreen(
         flow = addEditAlarmViewModel.backendEvents,
         onEvent = { event ->
             when (event) {
+                is AddEditAlarmScreenBackendEvent.AlarmChangesDiscarded -> onCancelClicked()
                 is AddEditAlarmScreenBackendEvent.AlarmSaved -> onAlarmSaved()
                 is AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished -> {
                     Toast.makeText(
@@ -167,7 +168,7 @@ fun AddEditAlarmScreen(
         state = addEditAlarmScreenState,
         onEvent = { event ->
             when (event) {
-                is AddEditAlarmScreenUserEvent.OnCancelClicked -> onCancelClicked()
+                is AddEditAlarmScreenUserEvent.ConfirmDiscardAlarmChanges -> onCancelClicked()
                 is AddEditAlarmScreenUserEvent.SaveAlarmClicked -> {
                     addEditAlarmViewModel.onEvent(
                         AddEditAlarmScreenUserEvent.TrySaveAlarm(
@@ -891,6 +892,23 @@ private fun AddEditAlarmScreenContent(
                 Spacer(modifier = Modifier.height(MaterialTheme.space.mediumLarge))
             }
         }
+    }
+
+    if (state.isDiscardAlarmChangesDialogVisible) {
+        QRAlarmDialog(
+            title = stringResource(R.string.discard_changes),
+            message = stringResource(R.string.discard_changes_description),
+            onDismissRequest = {
+                onEvent(
+                    AddEditAlarmScreenUserEvent.DiscardAlarmChangesDialogVisible(isVisible = false)
+                )
+            },
+            onPositiveClick = {
+                onEvent(AddEditAlarmScreenUserEvent.ConfirmDiscardAlarmChanges)
+            },
+            positiveButtonText = stringResource(R.string.discard),
+            negativeButtonText = stringResource(R.string.cancel)
+        )
     }
 
     if (state.isChooseAlarmRepeatingScheduleDialogVisible) {

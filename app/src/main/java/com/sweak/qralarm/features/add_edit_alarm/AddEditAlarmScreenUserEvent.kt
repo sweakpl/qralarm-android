@@ -7,6 +7,10 @@ import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 
 sealed class AddEditAlarmScreenUserEvent {
     data object OnCancelClicked : AddEditAlarmScreenUserEvent()
+    data class DiscardAlarmChangesDialogVisible(
+        val isVisible: Boolean
+    ) : AddEditAlarmScreenUserEvent()
+    data object ConfirmDiscardAlarmChanges : AddEditAlarmScreenUserEvent()
     data object SaveAlarmClicked : AddEditAlarmScreenUserEvent()
     data class TrySaveAlarm(
         val cameraPermissionStatus: Boolean,

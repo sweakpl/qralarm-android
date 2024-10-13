@@ -73,4 +73,7 @@
     <string name="delete_alarm">Delete alarm</string>
     <string name="delete_this_alarm">Delete this alarm?</string>
     <string name="delete">Delete</string>
+    <string name="discard_changes">Discard changes?</string>
+    <string name="discard_changes_description">Any changes made to this alarm will be discarded and not saved. Are you sure you want to discard?</string>
+    <string name="discard">Discard</string>
 </resources>
