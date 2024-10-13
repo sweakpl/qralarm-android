@@ -13,8 +13,8 @@ class AlarmsRepositoryImpl @Inject constructor(
     private val alarmsDao: AlarmsDao
 ) : AlarmsRepository {
 
-    override suspend fun addOrEditAlarm(alarm: Alarm) {
-        alarmsDao.upsertAlarm(
+    override suspend fun addOrEditAlarm(alarm: Alarm): Long {
+        return alarmsDao.upsertAlarm(
             alarmEntity = AlarmEntity(
                 alarmId = alarm.alarmId,
                 alarmHourOfDay = alarm.alarmHourOfDay,

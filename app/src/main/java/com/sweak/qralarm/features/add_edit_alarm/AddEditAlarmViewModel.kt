@@ -241,33 +241,55 @@ class AddEditAlarmViewModel @Inject constructor(
                                         currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
                                     )
                                 }
-                            val customRingtoneUriString =
-                                if (currentState.temporaryCustomAlarmRingtoneUri != null) {
-                                    currentState.temporaryCustomAlarmRingtoneUri.toString()
-                                } else if (currentState.currentCustomAlarmRingtoneUri != null) {
-                                    currentState.currentCustomAlarmRingtoneUri.toString()
-                                } else {
-                                    null
+
+                            val alarmToSave = Alarm(
+                                alarmId = idOfAlarm,
+                                alarmHourOfDay = currentState.alarmHourOfDay,
+                                alarmMinute = currentState.alarmMinute,
+                                isAlarmEnabled = currentState.isAlarmEnabled,
+                                repeatingMode = repeatingMode,
+                                snoozeMode = currentState.alarmSnoozeMode,
+                                ringtone = currentState.ringtone,
+                                customRingtoneUriString =
+                                currentState.currentCustomAlarmRingtoneUri?.toString(),
+                                areVibrationsEnabled = currentState.areVibrationsEnabled,
+                                isUsingCode = currentState.isCodeEnabled,
+                                assignedCode = currentState.currentlyAssignedCode,
+                                gentleWakeUpDurationInSeconds =
+                                currentState.gentleWakeupDurationInSeconds,
+                                isTemporaryMuteEnabled = currentState.isTemporaryMuteEnabled
+                            )
+
+                            val alarmId = alarmsRepository.addOrEditAlarm(alarm = alarmToSave).run {
+                                if (this > 0) this else idOfAlarm
+                            }
+
+                            if (currentState.temporaryCustomAlarmRingtoneUri != null) {
+                                val savedLocalAlarmSoundUri = try {
+                                    copyUriContentToLocalStorage(
+                                        uri = currentState.temporaryCustomAlarmRingtoneUri,
+                                        alarmId = alarmId
+                                    )
+                                } catch (exception: Exception) {
+                                    if (exception is IOException ||
+                                        exception is SecurityException
+                                    ) {
+                                        backendEventsChannel.send(
+                                            AddEditAlarmScreenBackendEvent
+                                                .CustomRingtoneRetrievalFinished(isSuccess = false)
+                                        )
+                                    } else {
+                                        throw exception
+                                    }
                                 }
 
-                            alarmsRepository.addOrEditAlarm(
-                                alarm = Alarm(
-                                    alarmId = idOfAlarm,
-                                    alarmHourOfDay = currentState.alarmHourOfDay,
-                                    alarmMinute = currentState.alarmMinute,
-                                    isAlarmEnabled = currentState.isAlarmEnabled,
-                                    repeatingMode = repeatingMode,
-                                    snoozeMode = currentState.alarmSnoozeMode,
-                                    ringtone = currentState.ringtone,
-                                    customRingtoneUriString = customRingtoneUriString,
-                                    areVibrationsEnabled = currentState.areVibrationsEnabled,
-                                    isUsingCode = currentState.isCodeEnabled,
-                                    assignedCode = currentState.currentlyAssignedCode,
-                                    gentleWakeUpDurationInSeconds =
-                                    currentState.gentleWakeupDurationInSeconds,
-                                    isTemporaryMuteEnabled = currentState.isTemporaryMuteEnabled
+                                alarmsRepository.addOrEditAlarm(
+                                    alarm = alarmToSave.copy(
+                                        alarmId = alarmId,
+                                        customRingtoneUriString = savedLocalAlarmSoundUri.toString()
+                                    )
                                 )
-                            )
+                            }
 
                             backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmSaved)
                         }
@@ -408,25 +430,10 @@ class AddEditAlarmViewModel @Inject constructor(
             }
             is AddEditAlarmScreenUserEvent.CustomRingtoneUriRetrieved -> viewModelScope.launch {
                 event.customRingtoneUri?.let { retrievedUri ->
-                    val savedLocalAlarmSoundUri = try {
-                        copyUriContentToLocalStorage(retrievedUri)
-                    } catch (exception: Exception) {
-                        if (exception is IOException || exception is SecurityException) {
-                            backendEventsChannel.send(
-                                AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished(
-                                    isSuccess = false
-                                )
-                            )
-                            return@launch
-                        } else {
-                            throw exception
-                        }
-                    }
-
                     state.update { currentState ->
                         currentState.copy(
                             ringtone = Ringtone.CUSTOM_SOUND,
-                            temporaryCustomAlarmRingtoneUri = savedLocalAlarmSoundUri
+                            temporaryCustomAlarmRingtoneUri = retrievedUri
                         )
                     }
 
@@ -495,8 +502,8 @@ class AddEditAlarmViewModel @Inject constructor(
         }
     }
 
-    private fun copyUriContentToLocalStorage(uri: Uri): Uri {
-        val file = File(filesDir, idOfAlarm.toString())
+    private fun copyUriContentToLocalStorage(uri: Uri, alarmId: Long): Uri {
+        val file = File(filesDir, alarmId.toString())
 
         file.createNewFile()
 
