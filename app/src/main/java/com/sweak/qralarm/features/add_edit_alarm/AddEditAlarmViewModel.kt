@@ -496,6 +496,9 @@ class AddEditAlarmViewModel @Inject constructor(
             }
             is AddEditAlarmScreenUserEvent.DeleteAlarm -> viewModelScope.launch {
                 alarmsRepository.deleteAlarm(alarmId = idOfAlarm)
+                File(filesDir, idOfAlarm.toString()).apply {
+                    if (exists()) delete()
+                }
                 backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmDeleted)
             }
             else -> { /* no-op */ }
@@ -504,7 +507,6 @@ class AddEditAlarmViewModel @Inject constructor(
 
     private fun copyUriContentToLocalStorage(uri: Uri, alarmId: Long): Uri {
         val file = File(filesDir, alarmId.toString())
-
         file.createNewFile()
 
         FileOutputStream(file).use { outputStream ->
