@@ -147,7 +147,6 @@ class AddEditAlarmViewModel @Inject constructor(
         return null
     }
 
-
     fun onEvent(event: AddEditAlarmScreenUserEvent) {
         when (event) {
             is AddEditAlarmScreenUserEvent.OnCancelClicked -> {
@@ -309,6 +308,12 @@ class AddEditAlarmViewModel @Inject constructor(
                                         customRingtoneUriString = savedLocalAlarmSoundUri.toString()
                                     )
                                 )
+                            }
+
+                            if (alarmToSave.isAlarmEnabled) {
+                                qrAlarmManager.setAlarm(alarmId = alarmId)
+                            } else {
+                                qrAlarmManager.cancelAlarm(alarmId = alarmId)
                             }
 
                             backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmSaved)

@@ -2,6 +2,7 @@ package com.sweak.qralarm.features.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
@@ -16,17 +17,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val alarmsRepository: AlarmsRepository
+    private val alarmsRepository: AlarmsRepository,
+    private val qrAlarmManager: QRAlarmManager
 ): ViewModel() {
 
     var state = MutableStateFlow(HomeScreenState())
 
     private var isInitializing = true
+    private var isTogglingAlarm = false
 
     init {
         viewModelScope.launch {
             alarmsRepository.getAllAlarms().collect { allAlarms ->
-                if (!isInitializing) {
+                if (!isInitializing && !isTogglingAlarm) {
                     // Delay added for the alarms list animation to be visible as the Flow update
                     // Comes while the HomeScreen is still hidden behind e.g. AddEditAlarmScreen:
                     delay(500)
@@ -45,7 +48,7 @@ class HomeViewModel @Inject constructor(
                                 alarmMinute = alarm.alarmMinute,
                                 alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
                                 isAlarmEnabled = alarm.isAlarmEnabled,
-                                isQRCOdeEnabled = alarm.isUsingCode
+                                isCodeEnabled = alarm.isUsingCode
                             )
                         }.sortedWith(
                             compareBy(AlarmWrapper::alarmHourOfDay, AlarmWrapper::alarmMinute)
@@ -54,6 +57,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 isInitializing = false
+                isTogglingAlarm = false
             }
         }
     }
@@ -61,10 +65,18 @@ class HomeViewModel @Inject constructor(
     fun onEvent(event: HomeScreenUserEvent) {
         when (event) {
             is HomeScreenUserEvent.AlarmEnabledChanged -> viewModelScope.launch {
+                isTogglingAlarm = true
+
                 alarmsRepository.setAlarmEnabled(
                     alarmId = event.alarmId,
                     enabled = event.enabled
                 )
+
+                if (event.enabled) {
+                    qrAlarmManager.setAlarm(alarmId = event.alarmId)
+                } else {
+                    qrAlarmManager.cancelAlarm(alarmId = event.alarmId)
+                }
             }
             else -> { /* no-op */ }
         }

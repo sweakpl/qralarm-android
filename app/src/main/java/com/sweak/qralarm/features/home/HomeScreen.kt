@@ -204,7 +204,7 @@ private fun HomeScreenContentPreview() {
                         alarmMinute = 0,
                         alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),
                         isAlarmEnabled = true,
-                        isQRCOdeEnabled = false
+                        isCodeEnabled = false
                     )
                 )
             ),

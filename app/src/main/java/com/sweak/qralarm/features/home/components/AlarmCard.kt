@@ -74,7 +74,7 @@ fun AlarmCard(
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (!alarmWrapper.isQRCOdeEnabled) {
+                if (!alarmWrapper.isCodeEnabled) {
                     Icon(
                         imageVector = QRAlarmIcons.NoQRCode,
                         contentDescription =
@@ -110,7 +110,7 @@ private fun AlarmCardPreview() {
                     alarmMinute = 0,
                     alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),
                     isAlarmEnabled = true,
-                    isQRCOdeEnabled = false
+                    isCodeEnabled = false
                 )
             )
         }

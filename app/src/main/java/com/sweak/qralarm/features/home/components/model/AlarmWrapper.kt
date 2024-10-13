@@ -8,5 +8,5 @@ data class AlarmWrapper(
     val alarmMinute: Int,
     val alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper,
     val isAlarmEnabled: Boolean,
-    val isQRCOdeEnabled: Boolean
+    val isCodeEnabled: Boolean
 )

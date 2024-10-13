@@ -4,10 +4,13 @@ import android.app.AlarmManager
 import android.app.Application
 import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -19,8 +22,10 @@ object AlarmModule {
     @Singleton
     fun provideQRAlarmManager(
         alarmManager: AlarmManager,
-        notificationManager: NotificationManager
-    ): QRAlarmManager = QRAlarmManager(alarmManager, notificationManager)
+        notificationManager: NotificationManager,
+        alarmsRepository: AlarmsRepository,
+        @ApplicationContext context: Context
+    ): QRAlarmManager = QRAlarmManager(alarmManager, notificationManager, alarmsRepository, context)
 
     @Provides
     fun provideAlarmManager(app: Application): AlarmManager =
