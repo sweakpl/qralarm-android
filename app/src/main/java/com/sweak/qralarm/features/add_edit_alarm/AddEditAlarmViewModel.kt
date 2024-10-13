@@ -95,7 +95,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
             userDataRepository.temporaryScannedCode.collect { temporaryScannedCode ->
                 state.update { currentState ->
-                    currentState.copy(currentlyAssignedCode = temporaryScannedCode)
+                    currentState.copy(temporaryAssignedCode = temporaryScannedCode)
                 }
 
                 if (temporaryScannedCode != null) {
@@ -254,7 +254,8 @@ class AddEditAlarmViewModel @Inject constructor(
                                 currentState.currentCustomAlarmRingtoneUri?.toString(),
                                 areVibrationsEnabled = currentState.areVibrationsEnabled,
                                 isUsingCode = currentState.isCodeEnabled,
-                                assignedCode = currentState.currentlyAssignedCode,
+                                assignedCode = currentState.temporaryAssignedCode
+                                    ?: currentState.currentlyAssignedCode,
                                 gentleWakeUpDurationInSeconds =
                                 currentState.gentleWakeupDurationInSeconds,
                                 isTemporaryMuteEnabled = currentState.isTemporaryMuteEnabled
@@ -466,8 +467,18 @@ class AddEditAlarmViewModel @Inject constructor(
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
             }
-            is AddEditAlarmScreenUserEvent.ClearAssignedCode -> viewModelScope.launch {
-                userDataRepository.setTemporaryScannedCode(null)
+            is AddEditAlarmScreenUserEvent.ClearAssignedCode -> {
+                if (state.value.currentlyAssignedCode != null &&
+                    state.value.temporaryAssignedCode == null
+                ) {
+                    state.update { currentState ->
+                        currentState.copy(currentlyAssignedCode = null)
+                    }
+                } else {
+                    viewModelScope.launch {
+                        userDataRepository.setTemporaryScannedCode(null)
+                    }
+                }
             }
             is AddEditAlarmScreenUserEvent.ChooseGentleWakeUpDurationDialogVisible -> {
                 state.update { currentState ->

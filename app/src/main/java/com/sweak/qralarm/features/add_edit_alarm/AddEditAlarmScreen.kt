@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -583,10 +582,11 @@ private fun AddEditAlarmScreenContent(
                             Separator()
 
                             AnimatedContent(
-                                targetState = state.currentlyAssignedCode,
+                                targetState = state.currentlyAssignedCode != null ||
+                                        state.temporaryAssignedCode != null,
                                 label = "Code assigning animation"
-                            ) { currentlyAssignedCode ->
-                                    if (currentlyAssignedCode != null) {
+                            ) { isAnyCodeAssigned ->
+                                    if (isAnyCodeAssigned) {
                                         Row(
                                             horizontalArrangement = Arrangement.SpaceBetween,
                                             verticalAlignment = Alignment.CenterVertically,
@@ -608,7 +608,8 @@ private fun AddEditAlarmScreenContent(
                                                 Text(
                                                     text = stringResource(
                                                         R.string.current_code,
-                                                        currentlyAssignedCode
+                                                        state.temporaryAssignedCode
+                                                            ?: state.currentlyAssignedCode ?: ""
                                                     ),
                                                     style = MaterialTheme.typography.labelMedium,
                                                     modifier = Modifier
