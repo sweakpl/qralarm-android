@@ -197,7 +197,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun toggleAlarm(alarmId: Long, enabled: Boolean) {
-        if (isTogglingAlarm) return // TODO: test with delay if it works
+        if (isTogglingAlarm) return
         
         viewModelScope.launch {
             isTogglingAlarm = true

@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="212dp">
 
-    <FrameLayout
+    <TimePicker
+        android:id="@+id/time_picker"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        tools:ignore="UselessParent">
-
-        <TimePicker
-            android:id="@+id/time_picker"
-            android:layout_width="match_parent"
-            android:layout_height="212dp"
-            android:theme="@style/TimePickerStyle"
-            android:timePickerMode="spinner" />
-
-    </FrameLayout>
+        android:layout_height="212dp"
+        android:theme="@style/TimePickerStyle"
+        android:timePickerMode="spinner" />
 
 </FrameLayout>
