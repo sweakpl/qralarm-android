@@ -31,7 +31,7 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
-import com.sweak.qralarm.core.ui.util.getTimeString
+import com.sweak.qralarm.core.ui.getTimeString
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 
 @Composable

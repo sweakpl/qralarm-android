@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,6 +49,7 @@ import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
+import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.home.components.AlarmCard
@@ -76,6 +78,44 @@ fun HomeScreen(
     }
 
     val context = LocalContext.current
+
+    ObserveAsEvents(
+        flow = homeViewModel.backendEvents,
+        onEvent = { event ->
+            when (event) {
+                is HomeScreenBackendEvent.AlarmSet -> {
+                    val days = event.daysHoursAndMinutesUntilAlarm.first
+                    val hours = event.daysHoursAndMinutesUntilAlarm.second
+                    val minutes = event.daysHoursAndMinutesUntilAlarm.third
+                    val resources = context.resources
+
+                    Toast.makeText(
+                        context,
+                        buildString {
+                            append(context.getString(R.string.alarm_in))
+                            append(' ')
+                            if (days != 0) {
+                                append(resources.getQuantityString(R.plurals.days, days, days))
+                                append(' ')
+                            }
+                            if (hours != 0 || days != 0) {
+                                append(resources.getQuantityString(R.plurals.hours, hours, hours))
+                                append(' ')
+                            }
+                            append(
+                                resources.getQuantityString(
+                                    R.plurals.minutes,
+                                    if (minutes == 0) 1 else minutes,
+                                    if (minutes == 0) 1 else minutes
+                                )
+                            )
+                        },
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    )
 
     OnResume {
         homeViewModel.onEvent(

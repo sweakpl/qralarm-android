@@ -5,7 +5,7 @@ import androidx.compose.ui.res.stringResource
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode
-import com.sweak.qralarm.core.ui.util.shortName
+import com.sweak.qralarm.core.ui.shortName
 import java.time.DayOfWeek
 
 @Composable

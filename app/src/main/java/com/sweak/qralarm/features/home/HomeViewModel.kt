@@ -5,11 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
@@ -22,6 +25,9 @@ class HomeViewModel @Inject constructor(
 ): ViewModel() {
 
     var state = MutableStateFlow(HomeScreenState())
+
+    private val backendEventsChannel = Channel<HomeScreenBackendEvent>()
+    val backendEvents = backendEventsChannel.receiveAsFlow()
 
     private var isInitializing = true
     private var isTogglingAlarm = false
@@ -210,10 +216,21 @@ class HomeViewModel @Inject constructor(
             currentlyToggledAlarmId = null
             currentlyToggledAlarmEnabledState = null
 
+            var alarmTimeInMills: Long? = null
+
             if (enabled) {
-                qrAlarmManager.setAlarm(alarmId = alarmId)
+                alarmTimeInMills = qrAlarmManager.setAlarm(alarmId = alarmId)
             } else {
                 qrAlarmManager.cancelAlarm(alarmId = alarmId)
+            }
+
+            alarmTimeInMills?.let {
+                backendEventsChannel.send(
+                    HomeScreenBackendEvent.AlarmSet(
+                        daysHoursAndMinutesUntilAlarm =
+                        getDaysHoursAndMinutesUntilAlarm(alarmTimeInMillis = it)
+                    )
+                )
             }
         }
     }

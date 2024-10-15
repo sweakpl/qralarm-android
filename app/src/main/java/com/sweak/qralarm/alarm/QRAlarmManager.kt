@@ -18,8 +18,8 @@ class QRAlarmManager(
     private val alarmsRepository: AlarmsRepository,
     private val context: Context
 ) {
-    suspend fun setAlarm(alarmId: Long) {
-        val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return
+    suspend fun setAlarm(alarmId: Long): Long? {
+        val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return null
 
         val alarmTimeInMillis = when (alarm.repeatingMode) {
             is Alarm.RepeatingMode.Once -> alarm.repeatingMode.alarmDayInMillis
@@ -79,6 +79,8 @@ class QRAlarmManager(
             AlarmManager.AlarmClockInfo(alarmTimeInMillis, alarmInfoPendingIntent),
             alarmPendingIntent
         )
+
+        return alarmTimeInMillis
     }
 
     fun cancelAlarm(alarmId: Long) {

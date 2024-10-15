@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.ui.util.shortName
+import com.sweak.qralarm.core.ui.shortName
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode
 import java.time.DayOfWeek

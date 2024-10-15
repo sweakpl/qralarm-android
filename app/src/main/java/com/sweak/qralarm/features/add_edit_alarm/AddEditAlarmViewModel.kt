@@ -10,6 +10,7 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
@@ -559,13 +560,21 @@ class AddEditAlarmViewModel @Inject constructor(
                     )
                 }
 
+                var alarmTimeInMills: Long? = null
+
                 if (alarmToSave.isAlarmEnabled) {
-                    qrAlarmManager.setAlarm(alarmId = alarmId)
+                    alarmTimeInMills = qrAlarmManager.setAlarm(alarmId = alarmId)
                 } else {
                     qrAlarmManager.cancelAlarm(alarmId = alarmId)
                 }
 
-                backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmSaved)
+                backendEventsChannel.send(
+                    AddEditAlarmScreenBackendEvent.AlarmSaved(
+                        daysHoursAndMinutesUntilAlarm = alarmTimeInMills?.let {
+                            getDaysHoursAndMinutesUntilAlarm(alarmTimeInMillis = it)
+                        }
+                    )
+                )
             }
         }
     }

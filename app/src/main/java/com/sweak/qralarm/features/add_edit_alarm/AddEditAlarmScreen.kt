@@ -125,7 +125,42 @@ fun AddEditAlarmScreen(
         onEvent = { event ->
             when (event) {
                 is AddEditAlarmScreenBackendEvent.AlarmChangesDiscarded -> onCancelClicked()
-                is AddEditAlarmScreenBackendEvent.AlarmSaved -> onAlarmSaved()
+                is AddEditAlarmScreenBackendEvent.AlarmSaved -> {
+                    if (event.daysHoursAndMinutesUntilAlarm != null) {
+                        val days = event.daysHoursAndMinutesUntilAlarm.first
+                        val hours = event.daysHoursAndMinutesUntilAlarm.second
+                        val minutes = event.daysHoursAndMinutesUntilAlarm.third
+                        val resources = context.resources
+
+                        Toast.makeText(
+                            context,
+                            buildString {
+                                append(context.getString(R.string.alarm_in))
+                                append(' ')
+                                if (days != 0) {
+                                    append(resources.getQuantityString(R.plurals.days, days, days))
+                                    append(' ')
+                                }
+                                if (hours != 0 || days != 0) {
+                                    append(
+                                        resources.getQuantityString(R.plurals.hours, hours, hours)
+                                    )
+                                    append(' ')
+                                }
+                                append(
+                                    resources.getQuantityString(
+                                        R.plurals.minutes,
+                                        if (minutes == 0) 1 else minutes,
+                                        if (minutes == 0) 1 else minutes
+                                    )
+                                )
+                            },
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    onAlarmSaved()
+                }
                 is AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished -> {
                     Toast.makeText(
                         context,
