@@ -180,7 +180,9 @@ class AddEditAlarmViewModel @Inject constructor(
 
                                 return@update currentState.copy(
                                     permissionsDialogState =
-                                    currentState.permissionsDialogState.copy(isVisible = false)
+                                    AddEditAlarmScreenState.PermissionsDialogState(
+                                        isVisible = false
+                                    )
                                 )
                             }
                         }

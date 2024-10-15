@@ -3,5 +3,26 @@ package com.sweak.qralarm.features.home
 sealed class HomeScreenUserEvent {
     data object AddNewAlarm : HomeScreenUserEvent()
     data class EditAlarm(val alarmId: Long) : HomeScreenUserEvent()
-    data class AlarmEnabledChanged(val alarmId: Long, val enabled: Boolean) : HomeScreenUserEvent()
+    data class AlarmEnabledChangeClicked(
+        val alarmId: Long? = null,
+        val enabled: Boolean? = null
+    ) : HomeScreenUserEvent()
+    data class TryChangeAlarmEnabled(
+        val alarmId: Long? = null,
+        val enabled: Boolean? = null,
+        val cameraPermissionStatus: Boolean,
+        val notificationsPermissionStatus: Boolean
+    ) : HomeScreenUserEvent()
+    data object HideMissingPermissionsDialog : HomeScreenUserEvent()
+    data object RequestCameraPermission : HomeScreenUserEvent()
+    data object RequestNotificationsPermission : HomeScreenUserEvent()
+    data object RequestAlarmsPermission : HomeScreenUserEvent()
+    data object RequestFullScreenIntentPermission : HomeScreenUserEvent()
+    data class CameraPermissionDeniedDialogVisible(
+        val isVisible: Boolean
+    ) : HomeScreenUserEvent()
+    data class NotificationsPermissionDeniedDialogVisible(
+        val isVisible: Boolean
+    ) : HomeScreenUserEvent()
+    data object GoToApplicationSettingsClicked : HomeScreenUserEvent()
 }

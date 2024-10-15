@@ -26,6 +26,9 @@ class HomeViewModel @Inject constructor(
     private var isInitializing = true
     private var isTogglingAlarm = false
 
+    private var currentlyToggledAlarmId: Long? = null
+    private var currentlyToggledAlarmEnabledState: Boolean? = null
+
     init {
         viewModelScope.launch {
             alarmsRepository.getAllAlarms().collect { allAlarms ->
@@ -64,21 +67,154 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeScreenUserEvent) {
         when (event) {
-            is HomeScreenUserEvent.AlarmEnabledChanged -> viewModelScope.launch {
-                isTogglingAlarm = true
+            is HomeScreenUserEvent.TryChangeAlarmEnabled -> {
+                if (event.enabled == false) {
+                    toggleAlarm(
+                        alarmId = event.alarmId!!,
+                        enabled = event.enabled
+                    )
 
-                alarmsRepository.setAlarmEnabled(
-                    alarmId = event.alarmId,
-                    enabled = event.enabled
-                )
+                    return
+                }
 
-                if (event.enabled) {
-                    qrAlarmManager.setAlarm(alarmId = event.alarmId)
+                if (event.alarmId != null && event.enabled != null) {
+                    currentlyToggledAlarmId = event.alarmId
+                    currentlyToggledAlarmEnabledState = event.enabled
                 } else {
-                    qrAlarmManager.cancelAlarm(alarmId = event.alarmId)
+                    if (currentlyToggledAlarmId == null || 
+                        currentlyToggledAlarmEnabledState == null
+                    ) {
+                        state.update { currentState ->
+                            currentState.copy(
+                                permissionsDialogState = 
+                                currentState.permissionsDialogState.copy(isVisible = false)
+                            )
+                        }
+                        
+                        return
+                    }
+                }
+
+                state.update { currentState ->
+                    if (currentState.permissionsDialogState.isVisible) {
+                        with (currentState.permissionsDialogState) {
+                            if ((cameraPermissionState == null || cameraPermissionState) &&
+                                (alarmsPermissionState == null || alarmsPermissionState) &&
+                                (notificationsPermissionState == null || notificationsPermissionState) &&
+                                (fullScreenIntentPermissionState == null || fullScreenIntentPermissionState)
+                            ) {
+                                toggleAlarm(
+                                    alarmId = currentlyToggledAlarmId!!,
+                                    enabled = currentlyToggledAlarmEnabledState!!
+                                )
+
+                                return@update currentState.copy(
+                                    permissionsDialogState =
+                                    currentState.permissionsDialogState.copy(isVisible = false)
+                                )
+                            }
+                        }
+
+                        return@update currentState.copy(
+                            permissionsDialogState =
+                            currentState.permissionsDialogState.copy(
+                                cameraPermissionState =
+                                currentState.permissionsDialogState.cameraPermissionState?.let {
+                                    event.cameraPermissionStatus
+                                },
+                                notificationsPermissionState =
+                                currentState.permissionsDialogState.notificationsPermissionState?.let {
+                                    event.notificationsPermissionStatus
+                                },
+                                alarmsPermissionState =
+                                currentState.permissionsDialogState.alarmsPermissionState?.let {
+                                    qrAlarmManager.canScheduleExactAlarms()
+                                },
+                                fullScreenIntentPermissionState =
+                                currentState.permissionsDialogState.fullScreenIntentPermissionState?.let {
+                                    qrAlarmManager.canUseFullScreenIntent()
+                                }
+                            )
+                        )
+                    }
+
+                    val isCodeEnabled = currentState.alarmWrappers
+                        .find { it.alarmId == event.alarmId }?.isCodeEnabled
+
+                    if ((!event.cameraPermissionStatus && isCodeEnabled == true) ||
+                        !event.notificationsPermissionStatus ||
+                        !qrAlarmManager.canScheduleExactAlarms() ||
+                        !qrAlarmManager.canUseFullScreenIntent()
+                    ) {
+                        return@update currentState.copy(
+                            permissionsDialogState =
+                            HomeScreenState.PermissionsDialogState(
+                                isVisible = true,
+                                cameraPermissionState =
+                                if (!event.cameraPermissionStatus && isCodeEnabled == true)
+                                    false else null,
+                                notificationsPermissionState =
+                                if (!event.notificationsPermissionStatus) false else null,
+                                alarmsPermissionState =
+                                if (!qrAlarmManager.canScheduleExactAlarms()) false else null,
+                                fullScreenIntentPermissionState =
+                                if (!qrAlarmManager.canUseFullScreenIntent()) false else null
+                            )
+                        )
+                    }
+
+                    toggleAlarm(
+                        alarmId = currentlyToggledAlarmId!!,
+                        enabled = currentlyToggledAlarmEnabledState!!
+                    )
+
+                    return@update currentState
+                }
+            }
+            is HomeScreenUserEvent.HideMissingPermissionsDialog -> {
+                state.update { currentState ->
+                    currentState.copy(
+                        permissionsDialogState = HomeScreenState.PermissionsDialogState(
+                            isVisible = false
+                        )
+                    )
+                }
+            }
+            is HomeScreenUserEvent.NotificationsPermissionDeniedDialogVisible -> {
+                state.update { currentState ->
+                    currentState.copy(
+                        isNotificationsPermissionDeniedDialogVisible = event.isVisible
+                    )
+                }
+            }
+            is HomeScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
+                state.update { currentState ->
+                    currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
             }
             else -> { /* no-op */ }
+        }
+    }
+
+    private fun toggleAlarm(alarmId: Long, enabled: Boolean) {
+        if (isTogglingAlarm) return // TODO: test with delay if it works
+        
+        viewModelScope.launch {
+            isTogglingAlarm = true
+
+            alarmsRepository.setAlarmEnabled(
+                alarmId = alarmId,
+                enabled = enabled
+            )
+
+            currentlyToggledAlarmId = null
+            currentlyToggledAlarmEnabledState = null
+
+            if (enabled) {
+                qrAlarmManager.setAlarm(alarmId = alarmId)
+            } else {
+                qrAlarmManager.cancelAlarm(alarmId = alarmId)
+            }
         }
     }
 
