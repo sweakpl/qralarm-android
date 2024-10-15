@@ -6,7 +6,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
+import com.sweak.qralarm.alarm.service.AlarmService
+import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_ALARM_ID
 import com.sweak.qralarm.app.MainActivity
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
@@ -41,7 +42,9 @@ class QRAlarmManager(
             }
         }
 
-        val alarmIntent = Intent(context, QRAlarmService::class.java)
+        val alarmIntent = Intent(context, AlarmService::class.java).apply {
+            putExtra(EXTRA_ALARM_ID, alarmId)
+        }
 
         val alarmPendingIntent =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -73,8 +76,6 @@ class QRAlarmManager(
                     else 0
         )
 
-        Log.i("QRAlarmManager", "Alarm being set at $alarmTimeInMillis")
-
         alarmManager.setAlarmClock(
             AlarmManager.AlarmClockInfo(alarmTimeInMillis, alarmInfoPendingIntent),
             alarmPendingIntent
@@ -89,14 +90,14 @@ class QRAlarmManager(
                 PendingIntent.getForegroundService(
                     context,
                     alarmId.toInt(),
-                    Intent(context, QRAlarmService::class.java),
+                    Intent(context, AlarmService::class.java),
                     PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
                 )
             } else {
                 PendingIntent.getService(
                     context,
                     alarmId.toInt(),
-                    Intent(context, QRAlarmService::class.java),
+                    Intent(context, AlarmService::class.java),
                     PendingIntent.FLAG_NO_CREATE or
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                                 PendingIntent.FLAG_IMMUTABLE

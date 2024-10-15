@@ -26,6 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             QRAlarmTheme {
                 val navController = rememberNavController()
+
                 NavHost(
                     navController = navController,
                     startDestination = HOME_SCREEN_ROUTE

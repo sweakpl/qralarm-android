@@ -92,4 +92,7 @@
     <string name="discard_changes_description">Any changes made to this alarm will be discarded and not saved. Are you sure you want to discard?</string>
     <string name="discard">Discard</string>
     <string name="alarm_in">Alarm in:</string>
+    <string name="alarm_notification_channel_name">Firing alarms</string>
+    <string name="alarm_notification_channel_description">Plays alarm sound, displays a notification and pops up on screen</string>
+    <string name="alarm_notification_title">Alarm is up! Wake Up!</string>
 </resources>

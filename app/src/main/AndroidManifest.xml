@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
@@ -28,7 +30,6 @@
         <activity
             android:name=".app.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.QRAlarm"
             tools:ignore="DiscouragedApi,LockedOrientationActivity">
             <intent-filter>
@@ -38,10 +39,18 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".alarm.activity.AlarmActivity"
+            android:launchMode="singleInstance"
+            android:showForAllUsers="true"
+            android:showWhenLocked="true"
+            android:theme="@style/Theme.QRAlarm" />
+
         <service
-            android:name=".alarm.QRAlarmService"
+            android:name=".alarm.service.AlarmService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
 
     </application>
 
