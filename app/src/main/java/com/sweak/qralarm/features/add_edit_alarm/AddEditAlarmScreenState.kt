@@ -43,7 +43,7 @@ data class AddEditAlarmScreenState(
 ) {
     data class PermissionsDialogState(
         val isVisible: Boolean = false,
-        val cameraPermissionStatus: Boolean? = null,
+        val cameraPermissionState: Boolean? = null,
         val notificationsPermissionState: Boolean? = null,
         val alarmsPermissionState: Boolean? = null,
         val fullScreenIntentPermissionState: Boolean? = null

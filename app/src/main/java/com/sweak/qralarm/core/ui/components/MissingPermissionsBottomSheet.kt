@@ -15,6 +15,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,6 +25,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,9 +38,29 @@ fun MissingPermissionsBottomSheet(
     onNotificationsPermissionClick: (() -> Unit)? = null,
     fullScreenIntentPermissionState: Boolean? = null,
     onFullScreenIntentPermissionClick: (() -> Unit)? = null,
+    onAllPermissionsGranted: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    LaunchedEffect(
+        cameraPermissionState,
+        alarmsPermissionState,
+        notificationsPermissionState,
+        fullScreenIntentPermissionState
+    ) {
+        if ((cameraPermissionState == null || cameraPermissionState) &&
+            (alarmsPermissionState == null || alarmsPermissionState) &&
+            (notificationsPermissionState == null || notificationsPermissionState) &&
+            (fullScreenIntentPermissionState == null || fullScreenIntentPermissionState)
+        ) {
+            launch {
+                modalBottomSheetState.hide()
+            }.invokeOnCompletion {
+                onAllPermissionsGranted()
+            }
+        }
+    }
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -265,6 +287,7 @@ private fun MissingPermissionsBottomSheetPreview() {
             onNotificationsPermissionClick = {},
             fullScreenIntentPermissionState = false,
             onFullScreenIntentPermissionClick = {},
+            onAllPermissionsGranted = {},
             onDismissRequest = {}
         )
     }

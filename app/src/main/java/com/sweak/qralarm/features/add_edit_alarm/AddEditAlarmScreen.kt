@@ -1020,7 +1020,7 @@ private fun AddEditAlarmScreenContent(
 
     if (state.permissionsDialogState.isVisible) {
         MissingPermissionsBottomSheet(
-            cameraPermissionState = state.permissionsDialogState.cameraPermissionStatus,
+            cameraPermissionState = state.permissionsDialogState.cameraPermissionState,
             onCameraPermissionClick = {
                 onEvent(AddEditAlarmScreenUserEvent.RequestCameraPermission)
             },
@@ -1037,6 +1037,7 @@ private fun AddEditAlarmScreenContent(
             onFullScreenIntentPermissionClick = {
                 onEvent(AddEditAlarmScreenUserEvent.RequestFullScreenIntentPermission)
             },
+            onAllPermissionsGranted = { onEvent(AddEditAlarmScreenUserEvent.SaveAlarmClicked) },
             onDismissRequest = { onEvent(AddEditAlarmScreenUserEvent.HideMissingPermissionsDialog) }
         )
     }
