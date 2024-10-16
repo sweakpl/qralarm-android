@@ -3,6 +3,7 @@ package com.sweak.qralarm.alarm.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +24,7 @@ class BootAndUpdateReceiver : BroadcastReceiver() {
 
     private val intentActionsToFilter = listOf(
         "android.intent.action.BOOT_COMPLETED",
+        "android.intent.action.LOCKED_BOOT_COMPLETED",
         "android.intent.action.ACTION_BOOT_COMPLETED",
         "android.intent.action.REBOOT",
         "android.intent.action.QUICKBOOT_POWERON",
@@ -32,6 +34,7 @@ class BootAndUpdateReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action in intentActionsToFilter) receiverScope.launch {
+            Log.i("BootAndUpdateReceive", intent.action.toString())
             if (!qrAlarmManager.canScheduleExactAlarms()) {
                 alarmsRepository.getAllAlarms().first().forEach { alarm ->
                     qrAlarmManager.cancelAlarm(alarmId = alarm.alarmId)

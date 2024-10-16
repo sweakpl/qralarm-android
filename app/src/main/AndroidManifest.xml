@@ -48,6 +48,7 @@
 
         <activity
             android:name=".alarm.activity.AlarmActivity"
+            android:directBootAware="true"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:showForAllUsers="true"
@@ -56,17 +57,20 @@
 
         <service
             android:name=".alarm.service.AlarmService"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
 
         <receiver
             android:name=".alarm.receiver.BootAndUpdateReceiver"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.REBOOT" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />

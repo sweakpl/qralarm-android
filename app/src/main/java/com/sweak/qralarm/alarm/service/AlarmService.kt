@@ -6,6 +6,7 @@ import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
+import android.util.Log
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
@@ -13,12 +14,19 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.ALARM_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.alarm.activity.AlarmActivity
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
+import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AlarmService : Service() {
 
+    @Inject lateinit var alarmsRepository: AlarmsRepository
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.i("AlarmService", "onStartCommand")
+
         var shouldStopService = false
         val alarmId = intent?.extras?.getLong(EXTRA_ALARM_ID).run {
             if (this == null) {
@@ -38,6 +46,12 @@ class AlarmService : Service() {
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
             } else 0
         )
+
+        runBlocking {
+            Log.i("AlarmService", "Trying to read alarm of id $alarmId")
+            val alarm = alarmsRepository.getAlarm(alarmId = alarmId)
+            Log.i("AlarmService", alarm.toString())
+        }
 
         if (shouldStopService) {
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
