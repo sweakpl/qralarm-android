@@ -13,14 +13,26 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.ALARM_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.alarm.activity.AlarmActivity
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
+import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.DisableAlarm
+import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class AlarmService : Service() {
 
+    private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
     @Inject lateinit var alarmsRepository: AlarmsRepository
+    @Inject lateinit var disableAlarm: DisableAlarm
+    @Inject lateinit var setAlarm: SetAlarm
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         var shouldStopService = false
@@ -48,6 +60,16 @@ class AlarmService : Service() {
             return START_NOT_STICKY
         }
 
+        serviceScope.launch {
+            alarmsRepository.getAlarm(alarmId = alarmId)?.let { alarm ->
+                if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
+                    disableAlarm(alarmId = alarmId)
+                } else if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
+                    setAlarm(alarmId = alarmId)
+                }
+            }
+        }
+
         return START_NOT_STICKY
     }
 
@@ -66,6 +88,7 @@ class AlarmService : Service() {
             applicationContext,
             alarmId.toInt(),
             Intent(applicationContext, AlarmActivity::class.java).apply {
+                putExtra(AlarmActivity.EXTRA_ALARM_ID, alarmId)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             },
             PendingIntent.FLAG_UPDATE_CURRENT or
@@ -88,6 +111,12 @@ class AlarmService : Service() {
             setFullScreenIntent(alarmFullScreenPendingIntent, true)
             return build()
         }
+    }
+
+    override fun onDestroy() {
+        serviceScope.cancel()
+
+        super.onDestroy()
     }
 
     override fun onBind(intent: Intent?) = null

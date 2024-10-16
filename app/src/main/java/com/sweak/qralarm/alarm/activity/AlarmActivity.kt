@@ -52,4 +52,8 @@ class AlarmActivity : ComponentActivity() {
             }
         }
     }
+
+    companion object {
+        const val EXTRA_ALARM_ID = "alarmId"
+    }
 }

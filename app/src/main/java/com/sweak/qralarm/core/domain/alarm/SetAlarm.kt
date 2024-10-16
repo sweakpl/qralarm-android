@@ -12,7 +12,10 @@ class SetAlarm @Inject constructor(
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return Result.Failure
 
         val alarmTimeInMillis = when (alarm.repeatingMode) {
-            is Alarm.RepeatingMode.Once -> alarm.repeatingMode.alarmDayInMillis
+            is Alarm.RepeatingMode.Once -> {
+                // TODO: check if the alarm time is not in the past
+                alarm.repeatingMode.alarmDayInMillis
+            }
             is Alarm.RepeatingMode.Days -> {
                 val todayDateTime = ZonedDateTime.now()
                 var alarmDateTime = ZonedDateTime.now()
