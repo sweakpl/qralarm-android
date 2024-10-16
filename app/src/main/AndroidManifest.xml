@@ -24,7 +24,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/Theme.QRAlarm"
+        android:theme="@style/Theme.QRAlarm.Splash"
         tools:targetApi="35">
 
         <activity
@@ -41,6 +41,7 @@
 
         <activity
             android:name=".alarm.activity.AlarmActivity"
+            android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:showForAllUsers="true"
             android:showWhenLocked="true"
