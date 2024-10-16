@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.DisableAlarm
+import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
@@ -21,7 +23,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
-    private val qrAlarmManager: QRAlarmManager
+    private val qrAlarmManager: QRAlarmManager,
+    private val setAlarm: SetAlarm,
+    private val disableAlarm: DisableAlarm
 ): ViewModel() {
 
     var state = MutableStateFlow(HomeScreenState())
@@ -207,30 +211,27 @@ class HomeViewModel @Inject constructor(
         
         viewModelScope.launch {
             isTogglingAlarm = true
-
-            alarmsRepository.setAlarmEnabled(
-                alarmId = alarmId,
-                enabled = enabled
-            )
-
             currentlyToggledAlarmId = null
             currentlyToggledAlarmEnabledState = null
 
-            var alarmTimeInMills: Long? = null
+            var setAlarmResult: SetAlarm.Result? = null
 
             if (enabled) {
-                alarmTimeInMills = qrAlarmManager.setAlarm(alarmId = alarmId)
+                setAlarmResult = setAlarm(alarmId = alarmId)
             } else {
-                qrAlarmManager.cancelAlarm(alarmId = alarmId)
+                disableAlarm(alarmId = alarmId)
             }
 
-            alarmTimeInMills?.let {
-                backendEventsChannel.send(
-                    HomeScreenBackendEvent.AlarmSet(
-                        daysHoursAndMinutesUntilAlarm =
-                        getDaysHoursAndMinutesUntilAlarm(alarmTimeInMillis = it)
+            setAlarmResult?.let { result ->
+                if (result is SetAlarm.Result.Success) {
+                    backendEventsChannel.send(
+                        HomeScreenBackendEvent.AlarmSet(
+                            daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
+                                alarmTimeInMillis = result.alarmTimInMillis
+                            )
+                        )
                     )
-                )
+                }
             }
         }
     }

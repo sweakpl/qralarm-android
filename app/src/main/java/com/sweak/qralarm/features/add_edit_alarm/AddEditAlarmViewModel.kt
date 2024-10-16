@@ -9,6 +9,8 @@ import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.DisableAlarm
+import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
@@ -40,6 +42,8 @@ class AddEditAlarmViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val alarmsRepository: AlarmsRepository,
     private val qrAlarmManager: QRAlarmManager,
+    private val setAlarm: SetAlarm,
+    private val disableAlarm: DisableAlarm,
     private val contentResolver: ContentResolver,
     private val filesDir: File
 ): ViewModel() {
@@ -560,21 +564,25 @@ class AddEditAlarmViewModel @Inject constructor(
                     )
                 }
 
-                var alarmTimeInMills: Long? = null
+                var setAlarmResult: SetAlarm.Result? = null
 
                 if (alarmToSave.isAlarmEnabled) {
-                    alarmTimeInMills = qrAlarmManager.setAlarm(alarmId = alarmId)
+                    setAlarmResult = setAlarm(alarmId = alarmId)
                 } else {
-                    qrAlarmManager.cancelAlarm(alarmId = alarmId)
+                    disableAlarm(alarmId = alarmId)
                 }
 
-                backendEventsChannel.send(
-                    AddEditAlarmScreenBackendEvent.AlarmSaved(
-                        daysHoursAndMinutesUntilAlarm = alarmTimeInMills?.let {
-                            getDaysHoursAndMinutesUntilAlarm(alarmTimeInMillis = it)
-                        }
-                    )
-                )
+                setAlarmResult?.let { result ->
+                    if (result is SetAlarm.Result.Success) {
+                        backendEventsChannel.send(
+                            AddEditAlarmScreenBackendEvent.AlarmSaved(
+                                daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
+                                    alarmTimeInMillis = result.alarmTimInMillis
+                                )
+                            )
+                        )
+                    }
+                }
             }
         }
     }

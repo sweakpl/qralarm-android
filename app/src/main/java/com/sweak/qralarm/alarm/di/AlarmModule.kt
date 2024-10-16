@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import com.sweak.qralarm.alarm.QRAlarmManager
-import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,9 +22,8 @@ object AlarmModule {
     fun provideQRAlarmManager(
         alarmManager: AlarmManager,
         notificationManager: NotificationManager,
-        alarmsRepository: AlarmsRepository,
         @ApplicationContext context: Context
-    ): QRAlarmManager = QRAlarmManager(alarmManager, notificationManager, alarmsRepository, context)
+    ): QRAlarmManager = QRAlarmManager(alarmManager, notificationManager, context)
 
     @Provides
     fun provideAlarmManager(app: Application): AlarmManager =

@@ -14,6 +14,8 @@ import androidx.navigation.navOptions
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.DisableAlarm
+import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.features.add_edit_alarm.navigation.addEditAlarmScreen
 import com.sweak.qralarm.features.add_edit_alarm.navigation.navigateToAddEditAlarm
 import com.sweak.qralarm.features.home.navigation.HOME_SCREEN_ROUTE
@@ -32,8 +34,9 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject lateinit var qrAlarmManager: QRAlarmManager
-
     @Inject lateinit var alarmsRepository: AlarmsRepository
+    @Inject lateinit var setAlarm: SetAlarm
+    @Inject lateinit var disableAlarm: DisableAlarm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -46,16 +49,12 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             if (!qrAlarmManager.canScheduleExactAlarms()) {
                 alarmsRepository.getAllAlarms().first().forEach { alarm ->
-                    qrAlarmManager.cancelAlarm(alarmId = alarm.alarmId)
-                    alarmsRepository.setAlarmEnabled(
-                        alarmId = alarm.alarmId,
-                        enabled = false
-                    )
+                    disableAlarm(alarmId = alarm.alarmId)
                 }
             } else {
                 alarmsRepository.getAllAlarms().first().forEach { alarm ->
                     if (alarm.isAlarmEnabled) {
-                        qrAlarmManager.setAlarm(alarmId = alarm.alarmId)
+                        setAlarm(alarmId = alarm.alarmId)
                     }
                 }
             }
