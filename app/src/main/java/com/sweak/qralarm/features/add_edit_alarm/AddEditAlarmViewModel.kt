@@ -582,6 +582,8 @@ class AddEditAlarmViewModel @Inject constructor(
                             )
                         )
                     }
+                } ?: run {
+                    backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmSaved())
                 }
             }
         }
