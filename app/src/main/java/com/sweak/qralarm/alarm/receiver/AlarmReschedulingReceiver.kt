@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BootAndUpdateReceiver : BroadcastReceiver() {
+class AlarmReschedulingReceiver : BroadcastReceiver() {
 
     private val receiverScope = CoroutineScope(Dispatchers.IO)
 
@@ -31,7 +31,10 @@ class BootAndUpdateReceiver : BroadcastReceiver() {
         "android.intent.action.REBOOT",
         "android.intent.action.QUICKBOOT_POWERON",
         "com.htc.intent.action.QUICKBOOT_POWERON",
-        "android.intent.action.MY_PACKAGE_REPLACED"
+        "android.intent.action.MY_PACKAGE_REPLACED",
+        "android.intent.action.TIME_SET",
+        "android.intent.action.DATE_CHANGED",
+        "android.intent.action.TIMEZONE_CHANGED"
     )
 
     override fun onReceive(context: Context, intent: Intent) {

@@ -64,7 +64,7 @@
             android:foregroundServiceType="mediaPlayback" />
 
         <receiver
-            android:name=".alarm.receiver.BootAndUpdateReceiver"
+            android:name=".alarm.receiver.AlarmReschedulingReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">
@@ -77,6 +77,9 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
             </intent-filter>
 
         </receiver>
