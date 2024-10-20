@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
@@ -28,6 +29,7 @@ import com.sweak.qralarm.features.scanner.navigation.scannerScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -54,7 +56,17 @@ class MainActivity : ComponentActivity() {
             } else {
                 alarmsRepository.getAllAlarms().first().forEach { alarm ->
                     if (alarm.isAlarmEnabled) {
-                        setAlarm(alarmId = alarm.alarmId)
+                        if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
+                            val currentTimeInMillis = ZonedDateTime.now().toInstant().toEpochMilli()
+
+                            if (alarm.repeatingMode.alarmDayInMillis < currentTimeInMillis) {
+                                disableAlarm(alarmId = alarm.alarmId)
+                            } else {
+                                setAlarm(alarmId = alarm.alarmId)
+                            }
+                        } else {
+                            setAlarm(alarmId = alarm.alarmId)
+                        }
                     }
                 }
             }

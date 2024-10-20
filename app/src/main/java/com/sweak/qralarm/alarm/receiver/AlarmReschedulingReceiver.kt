@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
@@ -12,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,7 +48,17 @@ class AlarmReschedulingReceiver : BroadcastReceiver() {
             } else {
                 alarmsRepository.getAllAlarms().first().forEach { alarm ->
                     if (alarm.isAlarmEnabled) {
-                        setAlarm(alarmId = alarm.alarmId)
+                        if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
+                            val currentTimeInMillis = ZonedDateTime.now().toInstant().toEpochMilli()
+
+                            if (alarm.repeatingMode.alarmDayInMillis < currentTimeInMillis) {
+                                disableAlarm(alarmId = alarm.alarmId)
+                            } else {
+                                setAlarm(alarmId = alarm.alarmId)
+                            }
+                        } else {
+                            setAlarm(alarmId = alarm.alarmId)
+                        }
                     }
                 }
             }
