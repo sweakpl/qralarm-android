@@ -56,10 +56,12 @@ class MainActivity : ComponentActivity() {
             } else {
                 alarmsRepository.getAllAlarms().first().forEach { alarm ->
                     if (alarm.isAlarmEnabled) {
-                        if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                            val currentTimeInMillis = ZonedDateTime.now().toInstant().toEpochMilli()
+                        val currentTimeInMillis = ZonedDateTime.now().toInstant().toEpochMilli()
 
-                            if (alarm.repeatingMode.alarmDayInMillis < currentTimeInMillis) {
+                        if (alarm.nextAlarmTimeInMillis < currentTimeInMillis) {
+                            qrAlarmManager.notifyAboutMissedAlarm()
+
+                            if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
                                 disableAlarm(alarmId = alarm.alarmId)
                             } else {
                                 setAlarm(alarmId = alarm.alarmId)

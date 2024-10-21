@@ -20,10 +20,7 @@ class AlarmsRepositoryImpl @Inject constructor(
                 alarmHourOfDay = alarm.alarmHourOfDay,
                 alarmMinute = alarm.alarmMinute,
                 isAlarmEnabled = alarm.isAlarmEnabled,
-                repeatingAlarmOnceDayInMillis =
-                if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                    alarm.repeatingMode.alarmDayInMillis
-                } else null,
+                nextAlarmTimeInMillis = alarm.nextAlarmTimeInMillis,
                 repeatingAlarmDays =
                 if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
                     alarm.repeatingMode.repeatingDaysOfWeek.joinToString { it.name }
@@ -57,7 +54,7 @@ class AlarmsRepositoryImpl @Inject constructor(
 
     override suspend fun getAllAlarms(): Flow<List<Alarm>> {
         return alarmsDao.getAllAlarms().map { alarmEntityList ->
-            alarmEntityList.mapNotNull { alarmEntity ->
+            alarmEntityList.map { alarmEntity ->
                 convertAlarmEntity(alarmEntity = alarmEntity)
             }
         }
@@ -67,17 +64,15 @@ class AlarmsRepositoryImpl @Inject constructor(
         alarmsDao.deleteAlarm(alarmId = alarmId)
     }
 
-    private fun convertAlarmEntity(alarmEntity: AlarmEntity): Alarm? {
-        val repeatingMode = if (alarmEntity.repeatingAlarmOnceDayInMillis != null) {
-            Alarm.RepeatingMode.Once(alarmEntity.repeatingAlarmOnceDayInMillis)
-        } else if (alarmEntity.repeatingAlarmDays != null) {
+    private fun convertAlarmEntity(alarmEntity: AlarmEntity): Alarm {
+        val repeatingMode = if (alarmEntity.repeatingAlarmDays != null) {
             Alarm.RepeatingMode.Days(
-                alarmEntity.repeatingAlarmDays.split(", ").map {
+                repeatingDaysOfWeek = alarmEntity.repeatingAlarmDays.split(", ").map {
                     DayOfWeek.valueOf(it)
                 }
             )
         } else {
-            return null
+            Alarm.RepeatingMode.Once
         }
 
         return Alarm(
@@ -86,6 +81,7 @@ class AlarmsRepositoryImpl @Inject constructor(
             alarmMinute = alarmEntity.alarmMinute,
             isAlarmEnabled = alarmEntity.isAlarmEnabled,
             repeatingMode = repeatingMode,
+            nextAlarmTimeInMillis = alarmEntity.nextAlarmTimeInMillis,
             snoozeMode = Alarm.SnoozeMode(
                 numberOfSnoozes = alarmEntity.numberOfSnoozes,
                 snoozeDurationInMinutes = alarmEntity.snoozeDurationInMinutes

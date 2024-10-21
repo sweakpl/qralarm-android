@@ -21,14 +21,6 @@ class SetAlarm @Inject constructor(
             is Alarm.RepeatingMode.Once -> {
                 if (alarmDateTime <= currentDateTime) {
                     alarmDateTime = alarmDateTime.plusDays(1)
-
-                    alarmsRepository.addOrEditAlarm(
-                        alarm = alarm.copy(
-                            repeatingMode = alarm.repeatingMode.copy(
-                                alarmDayInMillis = alarmDateTime.toInstant().toEpochMilli()
-                            )
-                        )
-                    )
                 }
 
                 alarmDateTime.toInstant().toEpochMilli()
@@ -43,6 +35,10 @@ class SetAlarm @Inject constructor(
                 alarmDateTime.toInstant().toEpochMilli()
             }
         }
+
+        alarmsRepository.addOrEditAlarm(
+            alarm = alarm.copy(nextAlarmTimeInMillis = alarmTimeInMillis)
+        )
 
         qrAlarmManager.setAlarm(
             alarmId = alarmId,

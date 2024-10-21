@@ -473,45 +473,47 @@ class AddEditAlarmViewModel @Inject constructor(
     private fun setAlarm(currentState: AddEditAlarmScreenState) {
         if (currentState.alarmHourOfDay != null && currentState.alarmMinute != null) {
             viewModelScope.launch {
-                val repeatingMode =
-                    when (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode) {
-                        ONLY_ONCE -> {
-                            val onceAlarmDateTime = ZonedDateTime.now()
-                                .withHour(currentState.alarmHourOfDay)
-                                .withMinute(currentState.alarmMinute)
-                                .withSecond(0)
-                                .withNano(0)
-                                .run {
-                                    if (isBefore(ZonedDateTime.now())) {
-                                        return@run plusDays(1)
-                                    } else {
-                                        return@run this
-                                    }
-                                }
+                val currentDateTime = ZonedDateTime.now()
+                var alarmDateTime = ZonedDateTime.now()
+                    .withHour(currentState.alarmHourOfDay)
+                    .withMinute(currentState.alarmMinute)
+                    .withSecond(0)
+                    .withNano(0)
+                val alarmTimeInMillis: Long
 
-                            Alarm.RepeatingMode.Once(
-                                onceAlarmDateTime.toInstant().toEpochMilli()
-                            )
+                val repeatingMode =
+                    if (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
+                        if (alarmDateTime <= currentDateTime) {
+                            alarmDateTime = alarmDateTime.plusDays(1)
                         }
-                        MON_FRI -> {
-                            Alarm.RepeatingMode.Days(
-                                listOf(
+
+                        alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
+
+                        Alarm.RepeatingMode.Once
+                    } else {
+                        val repeatingDaysOfWeek =
+                            when (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode) {
+                                MON_FRI -> listOf(
                                     DayOfWeek.MONDAY,
                                     DayOfWeek.TUESDAY,
                                     DayOfWeek.WEDNESDAY,
                                     DayOfWeek.THURSDAY,
                                     DayOfWeek.FRIDAY
                                 )
-                            )
+                                SAT_SUN -> listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+                                CUSTOM -> currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
+                                else -> emptyList()
+                            }
+
+                        while (alarmDateTime <= currentDateTime ||
+                            alarmDateTime.dayOfWeek !in repeatingDaysOfWeek
+                        ) {
+                            alarmDateTime = alarmDateTime.plusDays(1)
                         }
-                        SAT_SUN -> {
-                            Alarm.RepeatingMode.Days(
-                                listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-                            )
-                        }
-                        CUSTOM -> Alarm.RepeatingMode.Days(
-                            currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
-                        )
+
+                        alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
+
+                        Alarm.RepeatingMode.Days(repeatingDaysOfWeek = repeatingDaysOfWeek)
                     }
 
                 val alarmToSave = Alarm(
@@ -520,6 +522,7 @@ class AddEditAlarmViewModel @Inject constructor(
                     alarmMinute = currentState.alarmMinute,
                     isAlarmEnabled = currentState.isAlarmEnabled,
                     repeatingMode = repeatingMode,
+                    nextAlarmTimeInMillis = alarmTimeInMillis,
                     snoozeMode = currentState.alarmSnoozeMode,
                     ringtone = currentState.ringtone,
                     customRingtoneUriString =

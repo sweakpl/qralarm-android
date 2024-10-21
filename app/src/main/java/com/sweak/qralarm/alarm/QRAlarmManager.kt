@@ -6,9 +6,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.app.NotificationCompat
+import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_ALARM_ID
 import com.sweak.qralarm.app.MainActivity
+import com.sweak.qralarm.core.designsystem.theme.Jacarta
 
 class QRAlarmManager(
     private val alarmManager: AlarmManager,
@@ -98,5 +102,39 @@ class QRAlarmManager(
         } else {
             true
         }
+    }
+
+    fun notifyAboutMissedAlarm() {
+        val alarmMissedPendingIntent = PendingIntent.getActivity(
+            context,
+            ALARM_MISSED_NOTIFICATION_REQUEST_CODE,
+            Intent(context, MainActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        PendingIntent.FLAG_IMMUTABLE
+                    else 0
+        )
+
+        val contentText = context.getString(R.string.alarm_missed_notification_text)
+        val alarmSetIndicationNotification = NotificationCompat.Builder(
+            context,
+            ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
+        ).apply {
+            color = Jacarta.toArgb()
+            priority = NotificationCompat.PRIORITY_LOW
+            setOngoing(false)
+            setAutoCancel(true)
+            setColorized(true)
+            setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
+            setContentTitle(context.getString(R.string.alarm_missed_notification_title))
+            setContentText(contentText)
+            setSmallIcon(R.drawable.ic_qralarm)
+            setContentIntent(alarmMissedPendingIntent)
+        }.build()
+
+        notificationManager.notify(
+            ALARM_MISSED_NOTIFICATION_ID,
+            alarmSetIndicationNotification
+        )
     }
 }
