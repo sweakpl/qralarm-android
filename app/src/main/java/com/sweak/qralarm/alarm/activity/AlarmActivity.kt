@@ -12,6 +12,8 @@ import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.features.alarm.navigation.ALARM_SCREEN_ROUTE
 import com.sweak.qralarm.features.alarm.navigation.alarmScreen
+import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmScannerScreen
+import com.sweak.qralarm.features.disable_alarm_scanner.navigation.navigateToDisableAlarmScanner
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,12 +37,24 @@ class AlarmActivity : ComponentActivity() {
 
         setContent {
             QRAlarmTheme {
+                val navController = rememberNavController()
+
                 NavHost(
-                    navController = rememberNavController(),
+                    navController = navController,
                     startDestination = "$ALARM_SCREEN_ROUTE/$alarmId"
                 ) {
                     alarmScreen(
                         onStopAlarm = {
+                            stopService(Intent(this@AlarmActivity, AlarmService::class.java))
+                            finish()
+                        },
+                        onRequestCodeScan = {
+                            navController.navigateToDisableAlarmScanner(alarmId = alarmId)
+                        }
+                    )
+
+                    disableAlarmScannerScreen(
+                        onAlarmDisabled = {
                             stopService(Intent(this@AlarmActivity, AlarmService::class.java))
                             finish()
                         }

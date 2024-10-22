@@ -19,18 +19,35 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.getTimeString
 
 @Composable
-fun AlarmScreen(onStopAlarm: () -> Unit) {
+fun AlarmScreen(
+    onStopAlarm: () -> Unit,
+    onRequestCodeScan: () -> Unit
+) {
+    val alarmViewModel = hiltViewModel<AlarmViewModel>()
+
+    ObserveAsEvents(
+        flow = alarmViewModel.backendEvents,
+        onEvent = { event ->
+            when (event) {
+                is AlarmScreenBackendEvent.StopAlarm -> onStopAlarm()
+                is AlarmScreenBackendEvent.RequestCodeScanToStopAlarm -> onRequestCodeScan()
+            }
+        }
+    )
+
     AlarmScreenContent(
         state = AlarmScreenState(),
         onEvent = { event ->
             when (event) {
-                AlarmScreenUserEvent.StopAlarmClicked -> onStopAlarm()
+                AlarmScreenUserEvent.StopAlarmClicked -> alarmViewModel.onEvent(event)
             }
         }
     )

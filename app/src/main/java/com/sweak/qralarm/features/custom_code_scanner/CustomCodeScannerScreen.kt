@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.scanner
+package com.sweak.qralarm.features.custom_code_scanner
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -20,23 +20,23 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 
 @Composable
-fun ScannerScreen(onCustomCodeSaved: () -> Unit) {
-    val scannerViewModel = hiltViewModel<ScannerViewModel>()
+fun CustomCodeScannerScreen(onCustomCodeSaved: () -> Unit) {
+    val customCodeScannerViewModel = hiltViewModel<CustomCodeScannerViewModel>()
 
     ObserveAsEvents(
-        flow = scannerViewModel.backendEvents,
+        flow = customCodeScannerViewModel.backendEvents,
         onEvent = { event ->
             when (event) {
-                ScannerScreenBackendEvent.CustomCodeSaved -> onCustomCodeSaved()
+                CustomCodeScannerScreenBackendEvent.CustomCodeSaved -> onCustomCodeSaved()
             }
         }
     )
 
-    ScannerScreenContent(
+    CustomCodeScannerScreenContent(
         onEvent = { event ->
             when (event) {
-                is ScannerScreenUserEvent.CodeResultScanned -> {
-                    scannerViewModel.onEvent(event)
+                is CustomCodeScannerScreenUserEvent.CodeResultScanned -> {
+                    customCodeScannerViewModel.onEvent(event)
                 }
             }
         }
@@ -44,8 +44,8 @@ fun ScannerScreen(onCustomCodeSaved: () -> Unit) {
 }
 
 @Composable
-private fun ScannerScreenContent(
-    onEvent: (ScannerScreenUserEvent) -> Unit
+private fun CustomCodeScannerScreenContent(
+    onEvent: (CustomCodeScannerScreenUserEvent) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     lateinit var codeScanner: CodeScanner
@@ -81,7 +81,7 @@ private fun ScannerScreenContent(
                 errorCallback = ErrorCallback.SUPPRESS
 
                 decodeCallback = DecodeCallback { result ->
-                    onEvent(ScannerScreenUserEvent.CodeResultScanned(result = result))
+                    onEvent(CustomCodeScannerScreenUserEvent.CodeResultScanned(result = result))
                 }
 
                 startPreview()
@@ -94,9 +94,9 @@ private fun ScannerScreenContent(
 
 @Preview
 @Composable
-private fun ScannerScreenContentPreview() {
+private fun CustomCodeScannerScreenContentPreview() {
     QRAlarmTheme {
-        ScannerScreenContent(
+        CustomCodeScannerScreenContent(
             onEvent = {}
         )
     }

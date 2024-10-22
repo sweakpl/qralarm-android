@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.scanner
+package com.sweak.qralarm.features.custom_code_scanner
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,18 +10,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ScannerViewModel @Inject constructor(
+class CustomCodeScannerViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository
 ): ViewModel() {
 
-    private val backendEventsChannel = Channel<ScannerScreenBackendEvent>()
+    private val backendEventsChannel = Channel<CustomCodeScannerScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
-    fun onEvent(event: ScannerScreenUserEvent) {
+    fun onEvent(event: CustomCodeScannerScreenUserEvent) {
         when (event) {
-            is ScannerScreenUserEvent.CodeResultScanned -> viewModelScope.launch {
+            is CustomCodeScannerScreenUserEvent.CodeResultScanned -> viewModelScope.launch {
                 userDataRepository.setTemporaryScannedCode(code = event.result.text)
-                backendEventsChannel.send(ScannerScreenBackendEvent.CustomCodeSaved)
+                backendEventsChannel.send(CustomCodeScannerScreenBackendEvent.CustomCodeSaved)
             }
         }
     }

@@ -24,8 +24,8 @@ import com.sweak.qralarm.features.home.navigation.homeScreen
 import com.sweak.qralarm.features.home.navigation.navigateToHome
 import com.sweak.qralarm.features.introduction.navigation.INTRODUCTION_SCREEN_ROUTE
 import com.sweak.qralarm.features.introduction.navigation.introductionScreen
-import com.sweak.qralarm.features.scanner.navigation.navigateToScanner
-import com.sweak.qralarm.features.scanner.navigation.scannerScreen
+import com.sweak.qralarm.features.custom_code_scanner.navigation.navigateToCustomCodeScanner
+import com.sweak.qralarm.features.custom_code_scanner.navigation.customCodeScannerScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -111,14 +111,14 @@ class MainActivity : ComponentActivity() {
                             navController.navigateUp()
                         },
                         onScanCustomCodeClicked = {
-                            navController.navigateToScanner()
+                            navController.navigateToCustomCodeScanner()
                         },
                         onAlarmDeleted = {
                             navController.popBackStack()
                         }
                     )
 
-                    scannerScreen(
+                    customCodeScannerScreen(
                         onCustomCodeSaved = {
                             navController.popBackStack()
                         }
