@@ -1,5 +1,8 @@
 package com.sweak.qralarm.features.alarm
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.text.format.DateFormat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -20,18 +24,32 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
+import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.getTimeString
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AlarmScreen(
     onStopAlarm: () -> Unit,
     onRequestCodeScan: () -> Unit
 ) {
     val alarmViewModel = hiltViewModel<AlarmViewModel>()
+    val alarmScreenState by alarmViewModel.state.collectAsStateWithLifecycle()
+
+    val cameraPermissionState = rememberPermissionState(
+        permission = android.Manifest.permission.CAMERA
+    )
 
     ObserveAsEvents(
         flow = alarmViewModel.backendEvents,
@@ -43,11 +61,53 @@ fun AlarmScreen(
         }
     )
 
+    OnResume {
+        if (alarmScreenState.permissionsDialogState.isVisible) {
+            alarmViewModel.onEvent(
+                AlarmScreenUserEvent.TryStopAlarm(
+                    cameraPermissionStatus = cameraPermissionState.status.isGranted
+                )
+            )
+        }
+    }
+
+    val context = LocalContext.current
+
     AlarmScreenContent(
-        state = AlarmScreenState(),
+        state = alarmScreenState,
         onEvent = { event ->
             when (event) {
-                AlarmScreenUserEvent.StopAlarmClicked -> alarmViewModel.onEvent(event)
+                is AlarmScreenUserEvent.StopAlarmClicked -> {
+                    alarmViewModel.onEvent(
+                        AlarmScreenUserEvent.TryStopAlarm(
+                            cameraPermissionStatus = cameraPermissionState.status.isGranted
+                        )
+                    )
+                }
+                is AlarmScreenUserEvent.RequestCameraPermission -> {
+                    if (cameraPermissionState.status.shouldShowRationale) {
+                        alarmViewModel.onEvent(
+                            AlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(
+                                isVisible = true
+                            )
+                        )
+                    } else {
+                        cameraPermissionState.launchPermissionRequest()
+                    }
+                }
+                is AlarmScreenUserEvent.GoToApplicationSettingsClicked -> {
+                    alarmViewModel.onEvent(
+                        AlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(
+                            isVisible = false
+                        )
+                    )
+                    context.startActivity(
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.parse("package:${context.packageName}")
+                        }
+                    )
+                }
+                else -> alarmViewModel.onEvent(event)
             }
         }
     )
@@ -110,6 +170,32 @@ private fun AlarmScreenContent(
                 }
             }
         }
+    }
+
+    if (state.permissionsDialogState.isVisible) {
+        MissingPermissionsBottomSheet(
+            cameraPermissionState = state.permissionsDialogState.cameraPermissionState,
+            onCameraPermissionClick = {
+                onEvent(AlarmScreenUserEvent.RequestCameraPermission)
+            },
+            onAllPermissionsGranted = { onEvent(AlarmScreenUserEvent.StopAlarmClicked) },
+            onDismissRequest = { onEvent(AlarmScreenUserEvent.HideMissingPermissionsDialog) }
+        )
+    }
+
+    if (state.isCameraPermissionDeniedDialogVisible) {
+        QRAlarmDialog(
+            title = stringResource(R.string.camera_permission_required),
+            message = stringResource(R.string.camera_permission_required_description),
+            onDismissRequest = {
+                onEvent(AlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(isVisible = false))
+            },
+            onPositiveClick = {
+                onEvent(AlarmScreenUserEvent.GoToApplicationSettingsClicked)
+            },
+            positiveButtonText = stringResource(R.string.settings),
+            negativeButtonText = stringResource(R.string.cancel)
+        )
     }
 }
 

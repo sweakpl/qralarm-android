@@ -118,13 +118,15 @@ fun HomeScreen(
     )
 
     OnResume {
-        homeViewModel.onEvent(
-            HomeScreenUserEvent.TryChangeAlarmEnabled(
-                cameraPermissionStatus = cameraPermissionState.status.isGranted,
-                notificationsPermissionStatus =
-                notificationsPermissionState.status.isGranted
+        if (homeScreenState.permissionsDialogState.isVisible) {
+            homeViewModel.onEvent(
+                HomeScreenUserEvent.TryChangeAlarmEnabled(
+                    cameraPermissionStatus = cameraPermissionState.status.isGranted,
+                    notificationsPermissionStatus =
+                    notificationsPermissionState.status.isGranted
+                )
             )
-        )
+        }
     }
 
     HomeScreenContent(
