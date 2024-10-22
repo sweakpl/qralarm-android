@@ -6,15 +6,12 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.features.alarm.navigation.ALARM_SCREEN_ROUTE
+import com.sweak.qralarm.features.alarm.navigation.alarmScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,20 +31,20 @@ class AlarmActivity : ComponentActivity() {
             }
         }
 
+        val alarmId = intent.extras?.getLong(EXTRA_ALARM_ID) ?: 0
+
         setContent {
             QRAlarmTheme {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    val context = LocalContext.current
-
-                    Button(
-                        onClick = {
-                            context.stopService(Intent(context, AlarmService::class.java))
+                NavHost(
+                    navController = rememberNavController(),
+                    startDestination = "$ALARM_SCREEN_ROUTE/$alarmId"
+                ) {
+                    alarmScreen(
+                        onStopAlarm = {
+                            stopService(Intent(this@AlarmActivity, AlarmService::class.java))
                             finish()
-                        },
-                        modifier = Modifier.align(Alignment.Center)
-                    ) {
-                        Text(text = "Stop AlarmService")
-                    }
+                        }
+                    )
                 }
             }
         }

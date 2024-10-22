@@ -19,10 +19,15 @@ fun getTimeString(hourOfDay: Int, minute: Int, is24HourFormat: Boolean): String 
         .format(DateTimeFormatter.ofPattern(if (is24HourFormat) "HH:mm" else "hh:mm a"))
 }
 
+fun getTimeString(timeInMillis: Long, is24HourFormat: Boolean): String {
+    return Instant.ofEpochMilli(timeInMillis)
+        .atZone(ZoneId.systemDefault())
+        .format(DateTimeFormatter.ofPattern(if (is24HourFormat) "HH:mm" else "hh:mm a"))
+}
+
 fun getDaysHoursAndMinutesUntilAlarm(alarmTimeInMillis: Long): Triple<Int, Int, Int> {
-    val currentTimeInMillis = ZonedDateTime.now().toInstant().toEpochMilli()
     val diffDateTime = Instant
-        .ofEpochMilli(alarmTimeInMillis - currentTimeInMillis)
+        .ofEpochMilli(alarmTimeInMillis - System.currentTimeMillis())
         .atZone(ZoneId.of("UTC+00:00"))
 
     val days = (diffDateTime.dayOfYear - 1).run { if (this > 7) 0 else this }

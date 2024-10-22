@@ -99,4 +99,6 @@
     <string name="alarm_set_indication_notification_channel_description">Notifies about currently set alarm or missed alarms, hides in the notification drawer, does not make sound</string>
     <string name="alarm_missed_notification_title">Alarm missed!</string>
     <string name="alarm_missed_notification_text">Your previously set alarm was missed likely due to time change on your phone or the phone being off at the time of alarm.</string>
+    <string name="alarm_wake_up">Alarm - wake up!</string>
+    <string name="stop">STOP</string>
 </resources>

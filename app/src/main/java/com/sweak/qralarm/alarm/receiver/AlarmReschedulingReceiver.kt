@@ -13,7 +13,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -48,9 +47,7 @@ class AlarmReschedulingReceiver : BroadcastReceiver() {
             } else {
                 alarmsRepository.getAllAlarms().first().forEach { alarm ->
                     if (alarm.isAlarmEnabled) {
-                        val currentTimeInMillis = ZonedDateTime.now().toInstant().toEpochMilli()
-
-                        if (alarm.nextAlarmTimeInMillis < currentTimeInMillis) {
+                        if (alarm.nextAlarmTimeInMillis < System.currentTimeMillis()) {
                             qrAlarmManager.notifyAboutMissedAlarm()
 
                             if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {

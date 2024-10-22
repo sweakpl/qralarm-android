@@ -58,9 +58,9 @@ fun AlarmCard(
             Column {
                 Text(
                     text = getTimeString(
-                        alarmWrapper.alarmHourOfDay,
-                        alarmWrapper.alarmMinute,
-                        DateFormat.is24HourFormat(LocalContext.current)
+                        hourOfDay = alarmWrapper.alarmHourOfDay,
+                        minute = alarmWrapper.alarmMinute,
+                        is24HourFormat = DateFormat.is24HourFormat(LocalContext.current)
                     ),
                     style = MaterialTheme.typography.displayLarge
                 )
