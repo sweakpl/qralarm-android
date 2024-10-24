@@ -334,7 +334,7 @@ class AddEditAlarmViewModel @Inject constructor(
                             val alarmRingtoneUri = currentState.temporaryCustomAlarmRingtoneUri
                                 ?: currentState.currentCustomAlarmRingtoneUri ?: return
 
-                            alarmRingtonePlayer.playUriAlarmRingtonePreview(
+                            alarmRingtonePlayer.playAlarmRingtonePreview(
                                 alarmRingtoneUri = alarmRingtoneUri,
                                 onPreviewCompleted = {
                                     state.update { currentState ->
@@ -347,7 +347,7 @@ class AddEditAlarmViewModel @Inject constructor(
                                 }
                             )
                         } else {
-                            alarmRingtonePlayer.playOriginalAlarmRingtonePreview(
+                            alarmRingtonePlayer.playAlarmRingtonePreview(
                                 ringtone = event.ringtone,
                                 onPreviewCompleted = {
                                     state.update { currentState ->

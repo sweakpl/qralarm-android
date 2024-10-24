@@ -14,39 +14,52 @@ class AlarmRingtonePlayer(
     private val context: Context,
     private val mediaPlayer: MediaPlayer
 ) {
-    fun playOriginalAlarmRingtonePreview(
-        ringtone: Ringtone,
-        onPreviewCompleted: () -> Unit
-    ) {
+    fun playAlarmRingtone(ringtone: Ringtone) {
+        val alarmRingtoneUri: Uri = if (ringtone != Ringtone.CUSTOM_SOUND) {
+            getOriginalAlarmRingtoneUri(ringtone)
+        } else {
+            getOriginalAlarmRingtoneUri(Ringtone.GENTLE_GUITAR)
+        }
+
+        playAlarmRingtone(alarmRingtoneUri)
+    }
+
+    fun playAlarmRingtone(alarmRingtoneUri: Uri) {
         mediaPlayer.apply {
             reset()
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build()
-            )
             try {
-                if (ringtone != Ringtone.CUSTOM_SOUND) {
-                    setDataSource(context, getOriginalAlarmRingtoneUri(ringtone))
-                } else {
-                    onPreviewCompleted()
-                    return
-                }
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build()
+                )
+                setDataSource(context, alarmRingtoneUri)
+                isLooping = true
+                prepare()
+                start()
+            } catch (illegalStateException: IllegalStateException) {
+                return
             } catch (ioException: IOException) {
                 return
             }
-            isLooping = false
-            setOnCompletionListener {
-                this@AlarmRingtonePlayer.stop()
-                onPreviewCompleted()
-            }
-            prepare()
-            start()
         }
     }
 
-    fun playUriAlarmRingtonePreview(alarmRingtoneUri: Uri, onPreviewCompleted: () -> Unit) {
+    fun playAlarmRingtonePreview(ringtone: Ringtone, onPreviewCompleted: () -> Unit) {
+        val alarmRingtoneUri: Uri
+
+        if (ringtone != Ringtone.CUSTOM_SOUND) {
+            alarmRingtoneUri = getOriginalAlarmRingtoneUri(ringtone)
+        } else {
+            onPreviewCompleted()
+            return
+        }
+
+        playAlarmRingtonePreview(alarmRingtoneUri, onPreviewCompleted)
+    }
+
+    fun playAlarmRingtonePreview(alarmRingtoneUri: Uri, onPreviewCompleted: () -> Unit) {
         mediaPlayer.apply {
             reset()
             setAudioAttributes(

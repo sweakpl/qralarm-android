@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.net.Uri
 import android.os.Build
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
@@ -17,6 +18,7 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
+import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +35,9 @@ class AlarmService : Service() {
     @Inject lateinit var alarmsRepository: AlarmsRepository
     @Inject lateinit var disableAlarm: DisableAlarm
     @Inject lateinit var setAlarm: SetAlarm
+    @Inject lateinit var alarmRingtonePlayer: AlarmRingtonePlayer
+
+    private lateinit var alarm: Alarm
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         var shouldStopService = false
@@ -61,13 +66,18 @@ class AlarmService : Service() {
         }
 
         serviceScope.launch {
-            alarmsRepository.getAlarm(alarmId = alarmId)?.let { alarm ->
-                if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                    disableAlarm(alarmId = alarmId)
-                } else if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
-                    setAlarm(alarmId = alarmId)
-                }
+            alarmsRepository.getAlarm(alarmId = alarmId)?.let {
+                alarm = it
+            } ?: run {
+                ServiceCompat.stopForeground(
+                    this@AlarmService,
+                    ServiceCompat.STOP_FOREGROUND_REMOVE
+                )
+                return@launch
             }
+
+            handleAlarmRescheduling(alarmId)
+            startAlarm()
         }
 
         return START_NOT_STICKY
@@ -113,7 +123,31 @@ class AlarmService : Service() {
         }
     }
 
+    private suspend fun handleAlarmRescheduling(alarmId: Long) {
+        if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
+            disableAlarm(alarmId = alarmId)
+        } else if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
+            setAlarm(alarmId = alarmId)
+        }
+    }
+
+    private fun startAlarm() {
+        if (alarm.ringtone == Alarm.Ringtone.CUSTOM_SOUND) {
+            if (alarm.customRingtoneUriString != null) {
+                alarmRingtonePlayer.playAlarmRingtone(Uri.parse(alarm.customRingtoneUriString))
+            } else {
+                alarmRingtonePlayer.playAlarmRingtone(Alarm.Ringtone.GENTLE_GUITAR)
+            }
+        } else {
+            alarmRingtonePlayer.playAlarmRingtone(alarm.ringtone)
+        }
+    }
+
     override fun onDestroy() {
+        alarmRingtonePlayer.apply {
+            stop()
+            onDestroy()
+        }
         serviceScope.cancel()
 
         super.onDestroy()
