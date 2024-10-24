@@ -11,7 +11,8 @@ const val ID_OF_ALARM = "idOfAlarm"
 
 fun NavGraphBuilder.alarmScreen(
     onStopAlarm: () -> Unit,
-    onRequestCodeScan: () -> Unit
+    onRequestCodeScan: () -> Unit,
+    onSnoozeAlarm: () -> Unit
 ) {
     composable(
         route = "$ALARM_SCREEN_ROUTE/{$ID_OF_ALARM}",
@@ -23,7 +24,8 @@ fun NavGraphBuilder.alarmScreen(
     ) {
         AlarmScreen(
             onStopAlarm = onStopAlarm,
-            onRequestCodeScan = onRequestCodeScan
+            onRequestCodeScan = onRequestCodeScan,
+            onSnoozeAlarm = onSnoozeAlarm
         )
     }
 }

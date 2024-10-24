@@ -25,8 +25,9 @@ class AlarmsRepositoryImpl @Inject constructor(
                 if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
                     alarm.repeatingMode.repeatingDaysOfWeek.joinToString { it.name }
                 } else null,
-                numberOfSnoozes = alarm.snoozeMode.numberOfSnoozes,
-                snoozeDurationInMinutes = alarm.snoozeMode.snoozeDurationInMinutes,
+                numberOfSnoozes = alarm.snoozeConfig.snoozeMode.numberOfSnoozes,
+                snoozeDurationInMinutes = alarm.snoozeConfig.snoozeMode.snoozeDurationInMinutes,
+                numberOfSnoozesLeft = alarm.snoozeConfig.numberOfSnoozesLeft,
                 ringtone = alarm.ringtone.name,
                 customRingtoneUriString = alarm.customRingtoneUriString,
                 areVibrationsEnabled = alarm.areVibrationsEnabled,
@@ -82,9 +83,12 @@ class AlarmsRepositoryImpl @Inject constructor(
             isAlarmEnabled = alarmEntity.isAlarmEnabled,
             repeatingMode = repeatingMode,
             nextAlarmTimeInMillis = alarmEntity.nextAlarmTimeInMillis,
-            snoozeMode = Alarm.SnoozeMode(
-                numberOfSnoozes = alarmEntity.numberOfSnoozes,
-                snoozeDurationInMinutes = alarmEntity.snoozeDurationInMinutes
+            snoozeConfig = Alarm.SnoozeConfig(
+                snoozeMode = Alarm.SnoozeMode(
+                    numberOfSnoozes = alarmEntity.numberOfSnoozes,
+                    snoozeDurationInMinutes = alarmEntity.snoozeDurationInMinutes
+                ),
+                numberOfSnoozesLeft = alarmEntity.numberOfSnoozesLeft
             ),
             ringtone = Alarm.Ringtone.valueOf(alarmEntity.ringtone),
             customRingtoneUriString = alarmEntity.customRingtoneUriString,

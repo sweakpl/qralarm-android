@@ -81,7 +81,7 @@ class AddEditAlarmViewModel @Inject constructor(
                         alarmMinute = alarm.alarmMinute,
                         isAlarmEnabled = alarm.isAlarmEnabled,
                         alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
-                        alarmSnoozeMode = alarm.snoozeMode,
+                        alarmSnoozeMode = alarm.snoozeConfig.snoozeMode,
                         ringtone = alarm.ringtone,
                         currentCustomAlarmRingtoneUri = alarm.customRingtoneUriString?.let {
                             Uri.parse(it)
@@ -523,7 +523,10 @@ class AddEditAlarmViewModel @Inject constructor(
                     isAlarmEnabled = currentState.isAlarmEnabled,
                     repeatingMode = repeatingMode,
                     nextAlarmTimeInMillis = alarmTimeInMillis,
-                    snoozeMode = currentState.alarmSnoozeMode,
+                    snoozeConfig = Alarm.SnoozeConfig(
+                        snoozeMode = currentState.alarmSnoozeMode,
+                        numberOfSnoozesLeft = currentState.alarmSnoozeMode.numberOfSnoozes
+                    ),
                     ringtone = currentState.ringtone,
                     customRingtoneUriString =
                     currentState.currentCustomAlarmRingtoneUri?.toString(),

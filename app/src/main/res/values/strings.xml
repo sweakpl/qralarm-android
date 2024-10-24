@@ -101,4 +101,5 @@
     <string name="alarm_missed_notification_text">Your previously set alarm was missed likely due to time change on your phone or the phone being off at the time of alarm.</string>
     <string name="alarm_wake_up">Alarm - wake up!</string>
     <string name="stop">STOP</string>
+    <string name="snooze_capitals">SNOOZE</string>
 </resources>

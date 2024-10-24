@@ -9,7 +9,7 @@ data class Alarm(
     val isAlarmEnabled: Boolean,
     val repeatingMode: RepeatingMode,
     val nextAlarmTimeInMillis: Long,
-    val snoozeMode: SnoozeMode,
+    val snoozeConfig: SnoozeConfig,
     val ringtone: Ringtone,
     val customRingtoneUriString: String?,
     val areVibrationsEnabled: Boolean,
@@ -22,6 +22,11 @@ data class Alarm(
         data object Once : RepeatingMode()
         data class Days(val repeatingDaysOfWeek: List<DayOfWeek>) : RepeatingMode()
     }
+
+    data class SnoozeConfig(
+        val snoozeMode: SnoozeMode,
+        val numberOfSnoozesLeft: Int
+    )
 
     data class SnoozeMode(
         val numberOfSnoozes: Int,

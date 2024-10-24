@@ -14,6 +14,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -42,7 +43,8 @@ import com.sweak.qralarm.core.ui.getTimeString
 @Composable
 fun AlarmScreen(
     onStopAlarm: () -> Unit,
-    onRequestCodeScan: () -> Unit
+    onRequestCodeScan: () -> Unit,
+    onSnoozeAlarm: () -> Unit
 ) {
     val alarmViewModel = hiltViewModel<AlarmViewModel>()
     val alarmScreenState by alarmViewModel.state.collectAsStateWithLifecycle()
@@ -57,6 +59,7 @@ fun AlarmScreen(
             when (event) {
                 is AlarmScreenBackendEvent.StopAlarm -> onStopAlarm()
                 is AlarmScreenBackendEvent.RequestCodeScanToStopAlarm -> onRequestCodeScan()
+                is AlarmScreenBackendEvent.SnoozeAlarm -> onSnoozeAlarm()
             }
         }
     )
@@ -155,7 +158,7 @@ private fun AlarmScreenContent(
                 )
             }
 
-            Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Button(
                     onClick = { onEvent(AlarmScreenUserEvent.StopAlarmClicked) },
                     colors = ButtonDefaults.buttonColors(
@@ -167,6 +170,22 @@ private fun AlarmScreenContent(
                         style = MaterialTheme.typography.displaySmall,
                         modifier = Modifier.padding(all = MaterialTheme.space.small)
                     )
+                }
+
+                if (state.isSnoozeAvailable) {
+                    TextButton(
+                        onClick = { onEvent(AlarmScreenUserEvent.SnoozeAlarmClicked) },
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = MaterialTheme.colorScheme.onSecondary
+                        ),
+                        modifier = Modifier.padding(top = MaterialTheme.space.medium)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.snooze_capitals),
+                            style = MaterialTheme.typography.displaySmall,
+                            modifier = Modifier.padding(all = MaterialTheme.space.small)
+                        )
+                    }
                 }
             }
         }
@@ -204,7 +223,7 @@ private fun AlarmScreenContent(
 private fun AlarmScreenContentPreview() {
     QRAlarmTheme {
         AlarmScreenContent(
-            state= AlarmScreenState(),
+            state= AlarmScreenState(isSnoozeAvailable = true),
             onEvent = {}
         )
     }

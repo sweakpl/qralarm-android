@@ -3,7 +3,9 @@ package com.sweak.qralarm.features.alarm
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.SnoozeAlarm
 import com.sweak.qralarm.features.alarm.navigation.ID_OF_ALARM
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -12,16 +14,16 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 @HiltViewModel
 class AlarmViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val alarmsRepository: AlarmsRepository
+    private val alarmsRepository: AlarmsRepository,
+    private val snoozeAlarm: SnoozeAlarm
 ) : ViewModel() {
 
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM] ?: 0
-    private var isUsingCode by Delegates.notNull<Boolean>()
+    private lateinit var alarm: Alarm
 
     var state = MutableStateFlow(AlarmScreenState())
 
@@ -31,7 +33,13 @@ class AlarmViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             alarmsRepository.getAlarm(alarmId = idOfAlarm)?.let {
-                isUsingCode = it.isUsingCode
+                alarm = it
+
+                state.update { currentState ->
+                    currentState.copy(
+                        isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0
+                    )
+                }
             }
         }
     }
@@ -39,6 +47,8 @@ class AlarmViewModel @Inject constructor(
     fun onEvent(event: AlarmScreenUserEvent) {
         when (event) {
             is AlarmScreenUserEvent.TryStopAlarm -> {
+                val isUsingCode = ::alarm.isInitialized && alarm.isUsingCode
+
                 if (!isUsingCode) {
                     viewModelScope.launch {
                         backendEventsChannel.send(AlarmScreenBackendEvent.StopAlarm)
@@ -90,6 +100,12 @@ class AlarmViewModel @Inject constructor(
                     }
 
                     return@update currentState
+                }
+            }
+            is AlarmScreenUserEvent.SnoozeAlarmClicked -> {
+                viewModelScope.launch {
+                    snoozeAlarm(alarmId = idOfAlarm)
+                    backendEventsChannel.send(AlarmScreenBackendEvent.SnoozeAlarm)
                 }
             }
             is AlarmScreenUserEvent.HideMissingPermissionsDialog -> {

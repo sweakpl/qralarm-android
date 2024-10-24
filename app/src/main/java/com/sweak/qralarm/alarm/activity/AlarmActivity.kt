@@ -50,6 +50,10 @@ class AlarmActivity : ComponentActivity() {
                         },
                         onRequestCodeScan = {
                             navController.navigateToDisableAlarmScanner(alarmId = alarmId)
+                        },
+                        onSnoozeAlarm = {
+                            stopService(Intent(this@AlarmActivity, AlarmService::class.java))
+                            finish()
                         }
                     )
 
