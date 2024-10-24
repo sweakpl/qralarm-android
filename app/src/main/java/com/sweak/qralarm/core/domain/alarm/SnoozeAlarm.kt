@@ -14,8 +14,8 @@ class SnoozeAlarm @Inject constructor(
         alarmsRepository.addOrEditAlarm(
             alarm = alarm.copy(
                 snoozeConfig = alarm.snoozeConfig.copy(
-                    snoozeMode = alarm.snoozeConfig.snoozeMode,
-                    numberOfSnoozesLeft = alarm.snoozeConfig.numberOfSnoozesLeft - 1
+                    numberOfSnoozesLeft = alarm.snoozeConfig.numberOfSnoozesLeft - 1,
+                    isAlarmSnoozed = true
                 )
             )
         )

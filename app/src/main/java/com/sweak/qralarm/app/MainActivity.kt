@@ -77,10 +77,12 @@ class MainActivity : ComponentActivity() {
             areAlarmsAdjusted = true
 
             alarmsRepository.getAllAlarms().collect { alarms ->
-                alarms.firstOrNull { alarm -> alarm.isAlarmRunning }?.let { runningAlarm ->
-                    if (!AlarmService.isRunning) {
+                alarms.firstOrNull { alarm ->
+                    alarm.isAlarmRunning || alarm.snoozeConfig.isAlarmSnoozed
+                }?.let { activeAlarm ->
+                    if (activeAlarm.isAlarmRunning && !AlarmService.isRunning) {
                         alarmsRepository.setAlarmRunning(
-                            alarmId = runningAlarm.alarmId,
+                            alarmId = activeAlarm.alarmId,
                             running = false
                         )
                         return@let
@@ -89,7 +91,7 @@ class MainActivity : ComponentActivity() {
                     finish()
                     startActivity(
                         Intent(applicationContext, AlarmActivity::class.java).apply {
-                            putExtra(AlarmActivity.EXTRA_ALARM_ID, runningAlarm.alarmId)
+                            putExtra(AlarmActivity.EXTRA_ALARM_ID, activeAlarm.alarmId)
                             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         }
                     )

@@ -40,11 +40,21 @@ class DisableAlarmScannerViewModel @Inject constructor(
 
                     viewModelScope.launch {
                         if (assignedCode == null) {
+                            alarmsRepository.setAlarmSnoozed(
+                                alarmId = idOfAlarm,
+                                snoozed = false
+                            )
+
                             backendEventsChannel.send(
                                 DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned
                             )
                         } else {
                             if (event.result.text == assignedCode) {
+                                alarmsRepository.setAlarmSnoozed(
+                                    alarmId = idOfAlarm,
+                                    snoozed = false
+                                )
+
                                 backendEventsChannel.send(
                                     DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned
                                 )

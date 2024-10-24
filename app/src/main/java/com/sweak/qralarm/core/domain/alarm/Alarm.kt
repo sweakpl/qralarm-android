@@ -26,7 +26,8 @@ data class Alarm(
 
     data class SnoozeConfig(
         val snoozeMode: SnoozeMode,
-        val numberOfSnoozesLeft: Int
+        val numberOfSnoozesLeft: Int,
+        val isAlarmSnoozed: Boolean
     )
 
     data class SnoozeMode(

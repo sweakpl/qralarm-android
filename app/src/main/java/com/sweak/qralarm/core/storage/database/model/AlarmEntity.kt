@@ -16,6 +16,7 @@ data class AlarmEntity(
     val numberOfSnoozes: Int,
     val snoozeDurationInMinutes: Int,
     val numberOfSnoozesLeft: Int,
+    val isAlarmSnoozed: Boolean,
     val ringtone: String,
     val customRingtoneUriString: String?,
     val areVibrationsEnabled: Boolean,

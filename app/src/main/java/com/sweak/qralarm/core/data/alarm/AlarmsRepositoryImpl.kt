@@ -29,6 +29,7 @@ class AlarmsRepositoryImpl @Inject constructor(
                 numberOfSnoozes = alarm.snoozeConfig.snoozeMode.numberOfSnoozes,
                 snoozeDurationInMinutes = alarm.snoozeConfig.snoozeMode.snoozeDurationInMinutes,
                 numberOfSnoozesLeft = alarm.snoozeConfig.numberOfSnoozesLeft,
+                isAlarmSnoozed = alarm.snoozeConfig.isAlarmSnoozed,
                 ringtone = alarm.ringtone.name,
                 customRingtoneUriString = alarm.customRingtoneUriString,
                 areVibrationsEnabled = alarm.areVibrationsEnabled,
@@ -52,6 +53,14 @@ class AlarmsRepositoryImpl @Inject constructor(
         alarmsDao.getAlarm(alarmId = alarmId)?.let { alarmEntity ->
             alarmsDao.upsertAlarm(
                 alarmEntity = alarmEntity.copy(isAlarmRunning = running)
+            )
+        }
+    }
+
+    override suspend fun setAlarmSnoozed(alarmId: Long, snoozed: Boolean) {
+        alarmsDao.getAlarm(alarmId = alarmId)?.let { alarmEntity ->
+            alarmsDao.upsertAlarm(
+                alarmEntity = alarmEntity.copy(isAlarmSnoozed = snoozed)
             )
         }
     }
@@ -98,7 +107,8 @@ class AlarmsRepositoryImpl @Inject constructor(
                     numberOfSnoozes = alarmEntity.numberOfSnoozes,
                     snoozeDurationInMinutes = alarmEntity.snoozeDurationInMinutes
                 ),
-                numberOfSnoozesLeft = alarmEntity.numberOfSnoozesLeft
+                numberOfSnoozesLeft = alarmEntity.numberOfSnoozesLeft,
+                isAlarmSnoozed = alarmEntity.isAlarmSnoozed
             ),
             ringtone = Alarm.Ringtone.valueOf(alarmEntity.ringtone),
             customRingtoneUriString = alarmEntity.customRingtoneUriString,

@@ -79,10 +79,16 @@ class AlarmService : Service() {
 
             isRunning = true
 
-            alarmsRepository.setAlarmRunning(
-                alarmId = alarmId,
-                running = true
-            )
+            alarmsRepository.apply {
+                setAlarmRunning(
+                    alarmId = alarmId,
+                    running = true
+                )
+                setAlarmSnoozed(
+                    alarmId = alarmId,
+                    snoozed = false
+                )
+            }
 
             handleAlarmRescheduling(alarmId)
             startAlarm()

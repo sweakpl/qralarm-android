@@ -51,6 +51,11 @@ class AlarmViewModel @Inject constructor(
 
                 if (!isUsingCode) {
                     viewModelScope.launch {
+                        alarmsRepository.setAlarmSnoozed(
+                            alarmId = idOfAlarm,
+                            snoozed = false
+                        )
+
                         backendEventsChannel.send(AlarmScreenBackendEvent.StopAlarm)
                     }
                     return
