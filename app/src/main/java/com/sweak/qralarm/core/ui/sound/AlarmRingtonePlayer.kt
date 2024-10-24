@@ -4,6 +4,10 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
+import android.os.VibrationAttributes
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
 import androidx.annotation.RawRes
 import com.sweak.qralarm.R
@@ -12,7 +16,8 @@ import java.io.IOException
 
 class AlarmRingtonePlayer(
     private val context: Context,
-    private val mediaPlayer: MediaPlayer
+    private val mediaPlayer: MediaPlayer,
+    private val vibrator: Vibrator
 ) {
     fun playAlarmRingtone(ringtone: Ringtone) {
         val alarmRingtoneUri: Uri = if (ringtone != Ringtone.CUSTOM_SOUND) {
@@ -85,6 +90,8 @@ class AlarmRingtonePlayer(
 
     fun stop() {
         try {
+            vibrator.cancel()
+
             if (mediaPlayer.isPlaying) {
                 mediaPlayer.stop()
             }
@@ -93,6 +100,39 @@ class AlarmRingtonePlayer(
                 "AlarmRingtonePlayer",
                 "mediaPlayer was not initialized! Cannot stop it..."
             )
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    fun startVibration() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val vibrationAttributes = VibrationAttributes.Builder()
+                .setUsage(VibrationAttributes.USAGE_ALARM)
+                .build()
+
+            val vibrationEffect = VibrationEffect.createWaveform(
+                longArrayOf(1000, 1000),
+                intArrayOf(255, 0),
+                0
+            )
+
+            vibrator.vibrate(vibrationEffect, vibrationAttributes)
+        } else {
+            val vibrationAudioAttributes = AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val vibrationEffect = VibrationEffect.createWaveform(
+                    longArrayOf(1000, 1000),
+                    intArrayOf(255, 0),
+                    0
+                )
+
+                vibrator.vibrate(vibrationEffect, vibrationAudioAttributes)
+            } else {
+                vibrator.vibrate(longArrayOf(0, 1000, 1000), 0, vibrationAudioAttributes)
+            }
         }
     }
 
@@ -116,6 +156,7 @@ class AlarmRingtonePlayer(
     }
 
     fun onDestroy() {
+        vibrator.cancel()
         mediaPlayer.apply {
             reset()
             release()

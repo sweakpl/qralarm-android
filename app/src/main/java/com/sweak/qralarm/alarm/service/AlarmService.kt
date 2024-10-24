@@ -141,6 +141,10 @@ class AlarmService : Service() {
         } else {
             alarmRingtonePlayer.playAlarmRingtone(alarm.ringtone)
         }
+
+        if (alarm.areVibrationsEnabled) {
+            alarmRingtonePlayer.startVibration()
+        }
     }
 
     override fun onDestroy() {
