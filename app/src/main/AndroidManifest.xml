@@ -52,7 +52,7 @@
             android:name=".alarm.activity.AlarmActivity"
             android:directBootAware="true"
             android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:showForAllUsers="true"
             android:showWhenLocked="true"
             android:theme="@style/Theme.QRAlarm" />

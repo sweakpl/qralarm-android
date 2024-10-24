@@ -7,6 +7,7 @@ data class Alarm(
     val alarmHourOfDay: Int,
     val alarmMinute: Int,
     val isAlarmEnabled: Boolean,
+    val isAlarmRunning: Boolean,
     val repeatingMode: RepeatingMode,
     val nextAlarmTimeInMillis: Long,
     val snoozeConfig: SnoozeConfig,

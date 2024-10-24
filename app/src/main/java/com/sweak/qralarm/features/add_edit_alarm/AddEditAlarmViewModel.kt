@@ -521,6 +521,7 @@ class AddEditAlarmViewModel @Inject constructor(
                     alarmHourOfDay = currentState.alarmHourOfDay,
                     alarmMinute = currentState.alarmMinute,
                     isAlarmEnabled = currentState.isAlarmEnabled,
+                    isAlarmRunning = false,
                     repeatingMode = repeatingMode,
                     nextAlarmTimeInMillis = alarmTimeInMillis,
                     snoozeConfig = Alarm.SnoozeConfig(

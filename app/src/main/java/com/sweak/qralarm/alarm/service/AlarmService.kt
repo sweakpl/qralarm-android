@@ -25,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -76,6 +77,13 @@ class AlarmService : Service() {
                 return@launch
             }
 
+            isRunning = true
+
+            alarmsRepository.setAlarmRunning(
+                alarmId = alarmId,
+                running = true
+            )
+
             handleAlarmRescheduling(alarmId)
             startAlarm()
         }
@@ -87,7 +95,10 @@ class AlarmService : Service() {
         val alarmNotificationPendingIntent = PendingIntent.getActivity(
             applicationContext,
             alarmId.toInt(),
-            Intent(applicationContext, AlarmActivity::class.java),
+            Intent(applicationContext, AlarmActivity::class.java).apply {
+                putExtra(AlarmActivity.EXTRA_ALARM_ID, alarmId)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            },
             PendingIntent.FLAG_UPDATE_CURRENT or
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                         PendingIntent.FLAG_IMMUTABLE
@@ -99,7 +110,7 @@ class AlarmService : Service() {
             alarmId.toInt(),
             Intent(applicationContext, AlarmActivity::class.java).apply {
                 putExtra(AlarmActivity.EXTRA_ALARM_ID, alarmId)
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             },
             PendingIntent.FLAG_UPDATE_CURRENT or
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -148,6 +159,13 @@ class AlarmService : Service() {
     }
 
     override fun onDestroy() {
+        isRunning = false
+        runBlocking {
+            alarmsRepository.setAlarmRunning(
+                alarmId = alarm.alarmId,
+                running = false
+            )
+        }
         alarmRingtonePlayer.apply {
             stop()
             onDestroy()
@@ -161,5 +179,7 @@ class AlarmService : Service() {
 
     companion object {
         const val EXTRA_ALARM_ID = "alarmId"
+
+        var isRunning = false
     }
 }

@@ -10,6 +10,7 @@ data class AlarmEntity(
     val alarmHourOfDay: Int,
     val alarmMinute: Int,
     val isAlarmEnabled: Boolean,
+    val isAlarmRunning: Boolean,
     val nextAlarmTimeInMillis: Long,
     val repeatingAlarmDays: String?,
     val numberOfSnoozes: Int,

@@ -20,6 +20,7 @@ class AlarmsRepositoryImpl @Inject constructor(
                 alarmHourOfDay = alarm.alarmHourOfDay,
                 alarmMinute = alarm.alarmMinute,
                 isAlarmEnabled = alarm.isAlarmEnabled,
+                isAlarmRunning = alarm.isAlarmRunning,
                 nextAlarmTimeInMillis = alarm.nextAlarmTimeInMillis,
                 repeatingAlarmDays =
                 if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
@@ -43,6 +44,14 @@ class AlarmsRepositoryImpl @Inject constructor(
         alarmsDao.getAlarm(alarmId = alarmId)?.let { alarmEntity ->
             alarmsDao.upsertAlarm(
                 alarmEntity = alarmEntity.copy(isAlarmEnabled = enabled)
+            )
+        }
+    }
+
+    override suspend fun setAlarmRunning(alarmId: Long, running: Boolean) {
+        alarmsDao.getAlarm(alarmId = alarmId)?.let { alarmEntity ->
+            alarmsDao.upsertAlarm(
+                alarmEntity = alarmEntity.copy(isAlarmRunning = running)
             )
         }
     }
@@ -81,6 +90,7 @@ class AlarmsRepositoryImpl @Inject constructor(
             alarmHourOfDay = alarmEntity.alarmHourOfDay,
             alarmMinute = alarmEntity.alarmMinute,
             isAlarmEnabled = alarmEntity.isAlarmEnabled,
+            isAlarmRunning = alarmEntity.isAlarmRunning,
             repeatingMode = repeatingMode,
             nextAlarmTimeInMillis = alarmEntity.nextAlarmTimeInMillis,
             snoozeConfig = Alarm.SnoozeConfig(
