@@ -1,7 +1,11 @@
 package com.sweak.qralarm.features.disable_alarm_scanner
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -86,6 +90,7 @@ fun DisableAlarmScannerScreenContent(
             }
 
             codeScannerView
-        }
+        },
+        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
     )
 }
