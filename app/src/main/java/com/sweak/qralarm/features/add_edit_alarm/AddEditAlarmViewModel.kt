@@ -527,7 +527,8 @@ class AddEditAlarmViewModel @Inject constructor(
                     snoozeConfig = Alarm.SnoozeConfig(
                         snoozeMode = currentState.alarmSnoozeMode,
                         numberOfSnoozesLeft = currentState.alarmSnoozeMode.numberOfSnoozes,
-                        isAlarmSnoozed = false
+                        isAlarmSnoozed = false,
+                        nextSnoozedAlarmTimeInMillis = null
                     ),
                     ringtone = currentState.ringtone,
                     customRingtoneUriString =

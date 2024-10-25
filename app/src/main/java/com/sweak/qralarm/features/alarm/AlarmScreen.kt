@@ -142,14 +142,22 @@ private fun AlarmScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(R.string.alarm_wake_up),
+                    text = stringResource(
+                        if (state.isAlarmSnoozed) R.string.alarm_snoozed_until
+                        else R.string.alarm_wake_up
+                    ),
                     style = MaterialTheme.typography.displayLarge,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
 
                 Text(
                     text = getTimeString(
-                        timeInMillis = state.currentTimeInMillis,
+                        timeInMillis =
+                        if (state.isAlarmSnoozed && state.snoozedAlarmTimeInMillis != null) {
+                            state.snoozedAlarmTimeInMillis
+                        } else {
+                            state.currentTimeInMillis
+                        },
                         is24HourFormat = DateFormat.is24HourFormat(LocalContext.current)
                     ),
                     style = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
@@ -172,7 +180,7 @@ private fun AlarmScreenContent(
                     )
                 }
 
-                if (state.isSnoozeAvailable) {
+                if (!state.isAlarmSnoozed && state.isSnoozeAvailable) {
                     TextButton(
                         onClick = { onEvent(AlarmScreenUserEvent.SnoozeAlarmClicked) },
                         colors = ButtonDefaults.textButtonColors(
@@ -223,7 +231,11 @@ private fun AlarmScreenContent(
 private fun AlarmScreenContentPreview() {
     QRAlarmTheme {
         AlarmScreenContent(
-            state= AlarmScreenState(isSnoozeAvailable = true),
+            state = AlarmScreenState(
+//                isSnoozeAvailable = true,
+                isAlarmSnoozed = true,
+                snoozedAlarmTimeInMillis = 1729861439787
+            ),
             onEvent = {}
         )
     }

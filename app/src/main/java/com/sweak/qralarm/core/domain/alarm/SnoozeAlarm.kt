@@ -10,22 +10,22 @@ class SnoozeAlarm @Inject constructor(
 ) {
     suspend operator fun invoke(alarmId: Long) {
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return
-
-        alarmsRepository.addOrEditAlarm(
-            alarm = alarm.copy(
-                snoozeConfig = alarm.snoozeConfig.copy(
-                    numberOfSnoozesLeft = alarm.snoozeConfig.numberOfSnoozesLeft - 1,
-                    isAlarmSnoozed = true
-                )
-            )
-        )
-
         val snoozeAlarmTimeInMillis = ZonedDateTime.now()
             .withSecond(0)
             .withNano(0)
             .plusMinutes(alarm.snoozeConfig.snoozeMode.snoozeDurationInMinutes.toLong())
             .toInstant()
             .toEpochMilli()
+
+        alarmsRepository.addOrEditAlarm(
+            alarm = alarm.copy(
+                snoozeConfig = alarm.snoozeConfig.copy(
+                    numberOfSnoozesLeft = alarm.snoozeConfig.numberOfSnoozesLeft - 1,
+                    isAlarmSnoozed = true,
+                    nextSnoozedAlarmTimeInMillis = snoozeAlarmTimeInMillis
+                )
+            )
+        )
 
         qrAlarmManager.setAlarm(
             alarmId = alarm.alarmId,

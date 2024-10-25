@@ -5,6 +5,7 @@ import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.storage.database.dao.AlarmsDao
 import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.time.DayOfWeek
 import javax.inject.Inject
@@ -30,6 +31,7 @@ class AlarmsRepositoryImpl @Inject constructor(
                 snoozeDurationInMinutes = alarm.snoozeConfig.snoozeMode.snoozeDurationInMinutes,
                 numberOfSnoozesLeft = alarm.snoozeConfig.numberOfSnoozesLeft,
                 isAlarmSnoozed = alarm.snoozeConfig.isAlarmSnoozed,
+                nextSnoozedAlarmTimeInMillis = alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis,
                 ringtone = alarm.ringtone.name,
                 customRingtoneUriString = alarm.customRingtoneUriString,
                 areVibrationsEnabled = alarm.areVibrationsEnabled,
@@ -42,7 +44,7 @@ class AlarmsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setAlarmEnabled(alarmId: Long, enabled: Boolean) {
-        alarmsDao.getAlarm(alarmId = alarmId)?.let { alarmEntity ->
+        alarmsDao.getAlarm(alarmId = alarmId).firstOrNull()?.let { alarmEntity ->
             alarmsDao.upsertAlarm(
                 alarmEntity = alarmEntity.copy(isAlarmEnabled = enabled)
             )
@@ -50,7 +52,7 @@ class AlarmsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setAlarmRunning(alarmId: Long, running: Boolean) {
-        alarmsDao.getAlarm(alarmId = alarmId)?.let { alarmEntity ->
+        alarmsDao.getAlarm(alarmId = alarmId).firstOrNull()?.let { alarmEntity ->
             alarmsDao.upsertAlarm(
                 alarmEntity = alarmEntity.copy(isAlarmRunning = running)
             )
@@ -58,15 +60,25 @@ class AlarmsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setAlarmSnoozed(alarmId: Long, snoozed: Boolean) {
-        alarmsDao.getAlarm(alarmId = alarmId)?.let { alarmEntity ->
+        alarmsDao.getAlarm(alarmId = alarmId).firstOrNull()?.let { alarmEntity ->
             alarmsDao.upsertAlarm(
-                alarmEntity = alarmEntity.copy(isAlarmSnoozed = snoozed)
+                alarmEntity = alarmEntity.copy(
+                    isAlarmSnoozed = snoozed,
+                    nextSnoozedAlarmTimeInMillis =
+                    if (!snoozed) null else alarmEntity.nextSnoozedAlarmTimeInMillis
+                )
             )
         }
     }
 
     override suspend fun getAlarm(alarmId: Long): Alarm? {
-        return alarmsDao.getAlarm(alarmId = alarmId)?.let { alarmEntity ->
+        return alarmsDao.getAlarm(alarmId = alarmId).firstOrNull()?.let { alarmEntity ->
+            convertAlarmEntity(alarmEntity = alarmEntity)
+        }
+    }
+
+    override suspend fun getAlarmFlow(alarmId: Long): Flow<Alarm> {
+        return alarmsDao.getAlarm(alarmId = alarmId).map { alarmEntity ->
             convertAlarmEntity(alarmEntity = alarmEntity)
         }
     }
@@ -108,7 +120,8 @@ class AlarmsRepositoryImpl @Inject constructor(
                     snoozeDurationInMinutes = alarmEntity.snoozeDurationInMinutes
                 ),
                 numberOfSnoozesLeft = alarmEntity.numberOfSnoozesLeft,
-                isAlarmSnoozed = alarmEntity.isAlarmSnoozed
+                isAlarmSnoozed = alarmEntity.isAlarmSnoozed,
+                nextSnoozedAlarmTimeInMillis = alarmEntity.nextSnoozedAlarmTimeInMillis
             ),
             ringtone = Alarm.Ringtone.valueOf(alarmEntity.ringtone),
             customRingtoneUriString = alarmEntity.customRingtoneUriString,

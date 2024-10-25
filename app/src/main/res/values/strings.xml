@@ -102,4 +102,5 @@
     <string name="alarm_wake_up">Alarm - wake up!</string>
     <string name="stop">STOP</string>
     <string name="snooze_capitals">SNOOZE</string>
+    <string name="alarm_snoozed_until">Alarm snoozed until:</string>
 </resources>

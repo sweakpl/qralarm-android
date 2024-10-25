@@ -32,11 +32,13 @@ class AlarmViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            alarmsRepository.getAlarm(alarmId = idOfAlarm)?.let {
+            alarmsRepository.getAlarmFlow(alarmId = idOfAlarm).collect {
                 alarm = it
 
                 state.update { currentState ->
                     currentState.copy(
+                        isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed,
+                        snoozedAlarmTimeInMillis = it.snoozeConfig.nextSnoozedAlarmTimeInMillis,
                         isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0
                     )
                 }
