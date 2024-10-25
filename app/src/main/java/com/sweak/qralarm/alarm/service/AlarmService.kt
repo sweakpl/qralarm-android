@@ -90,7 +90,7 @@ class AlarmService : Service() {
                 )
             }
 
-            handleAlarmRescheduling(alarmId)
+            handleAlarmRescheduling()
             startAlarm()
         }
 
@@ -140,11 +140,11 @@ class AlarmService : Service() {
         }
     }
 
-    private suspend fun handleAlarmRescheduling(alarmId: Long) {
+    private suspend fun handleAlarmRescheduling() {
         if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-            disableAlarm(alarmId = alarmId)
+            disableAlarm(alarmId = alarm.alarmId)
         } else if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
-            setAlarm(alarmId = alarmId)
+            setAlarm(alarmId = alarm.alarmId)
         }
     }
 

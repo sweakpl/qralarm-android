@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.DisableAlarm
+import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.alarm.SnoozeAlarm
 import com.sweak.qralarm.features.alarm.navigation.ID_OF_ALARM
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +21,9 @@ import javax.inject.Inject
 class AlarmViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val alarmsRepository: AlarmsRepository,
-    private val snoozeAlarm: SnoozeAlarm
+    private val snoozeAlarm: SnoozeAlarm,
+    private val setAlarm: SetAlarm,
+    private val disableAlarm: DisableAlarm
 ) : ViewModel() {
 
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM] ?: 0
@@ -57,6 +61,7 @@ class AlarmViewModel @Inject constructor(
                             alarmId = idOfAlarm,
                             snoozed = false
                         )
+                        handleAlarmRescheduling()
 
                         backendEventsChannel.send(AlarmScreenBackendEvent.StopAlarm)
                     }
@@ -130,6 +135,16 @@ class AlarmViewModel @Inject constructor(
                 }
             }
             else -> { /* no-op */ }
+        }
+    }
+
+    private suspend fun handleAlarmRescheduling() {
+        if (::alarm.isInitialized) {
+            if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
+                disableAlarm(alarmId = alarm.alarmId)
+            } else if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
+                setAlarm(alarmId = alarm.alarmId)
+            }
         }
     }
 }
