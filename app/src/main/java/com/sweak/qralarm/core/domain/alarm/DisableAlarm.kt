@@ -18,5 +18,12 @@ class DisableAlarm @Inject constructor(
                 enabled = false
             )
         }
+
+        if (alarm?.snoozeConfig?.isAlarmSnoozed == true) {
+            alarmsRepository.setAlarmSnoozed(
+                alarmId = alarmId,
+                snoozed = false
+            )
+        }
     }
 }

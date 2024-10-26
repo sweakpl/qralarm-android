@@ -12,14 +12,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.activity.AlarmActivity
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
-import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
-import com.sweak.qralarm.core.domain.alarm.DisableAlarm
-import com.sweak.qralarm.core.domain.alarm.SetAlarm
+import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import com.sweak.qralarm.features.add_edit_alarm.navigation.addEditAlarmScreen
 import com.sweak.qralarm.features.add_edit_alarm.navigation.navigateToAddEditAlarm
 import com.sweak.qralarm.features.custom_code_scanner.navigation.customCodeScannerScreen
@@ -30,17 +27,14 @@ import com.sweak.qralarm.features.home.navigation.navigateToHome
 import com.sweak.qralarm.features.introduction.navigation.INTRODUCTION_SCREEN_ROUTE
 import com.sweak.qralarm.features.introduction.navigation.introductionScreen
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject lateinit var qrAlarmManager: QRAlarmManager
     @Inject lateinit var alarmsRepository: AlarmsRepository
-    @Inject lateinit var setAlarm: SetAlarm
-    @Inject lateinit var disableAlarm: DisableAlarm
+    @Inject lateinit var rescheduleAlarms: RescheduleAlarms
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -51,29 +45,7 @@ class MainActivity : ComponentActivity() {
         splashScreen.setKeepOnScreenCondition { !areAlarmsAdjusted }
 
         lifecycleScope.launch {
-            AlarmService.isRunning
-            if (!qrAlarmManager.canScheduleExactAlarms()) {
-                alarmsRepository.getAllAlarms().first().forEach { alarm ->
-                    disableAlarm(alarmId = alarm.alarmId)
-                }
-            } else {
-                alarmsRepository.getAllAlarms().first().forEach { alarm ->
-                    if (alarm.isAlarmEnabled) {
-                        if (alarm.nextAlarmTimeInMillis < System.currentTimeMillis()) {
-                            qrAlarmManager.notifyAboutMissedAlarm()
-
-                            if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                                disableAlarm(alarmId = alarm.alarmId)
-                            } else {
-                                setAlarm(alarmId = alarm.alarmId)
-                            }
-                        } else {
-                            setAlarm(alarmId = alarm.alarmId)
-                        }
-                    }
-                }
-            }
-
+            rescheduleAlarms()
             areAlarmsAdjusted = true
 
             alarmsRepository.getAllAlarms().collect { alarms ->

@@ -3,15 +3,10 @@ package com.sweak.qralarm.alarm.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.sweak.qralarm.alarm.QRAlarmManager
-import com.sweak.qralarm.core.domain.alarm.Alarm
-import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
-import com.sweak.qralarm.core.domain.alarm.DisableAlarm
-import com.sweak.qralarm.core.domain.alarm.SetAlarm
+import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,10 +15,7 @@ class AlarmReschedulingReceiver : BroadcastReceiver() {
 
     private val receiverScope = CoroutineScope(Dispatchers.IO)
 
-    @Inject lateinit var alarmsRepository: AlarmsRepository
-    @Inject lateinit var qrAlarmManager: QRAlarmManager
-    @Inject lateinit var setAlarm: SetAlarm
-    @Inject lateinit var disableAlarm: DisableAlarm
+    @Inject lateinit var rescheduleAlarms: RescheduleAlarms
 
     private val intentActionsToFilter = listOf(
         "android.intent.action.BOOT_COMPLETED",
@@ -40,27 +32,7 @@ class AlarmReschedulingReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action in intentActionsToFilter) receiverScope.launch {
-            if (!qrAlarmManager.canScheduleExactAlarms()) {
-                alarmsRepository.getAllAlarms().first().forEach { alarm ->
-                    disableAlarm(alarmId = alarm.alarmId)
-                }
-            } else {
-                alarmsRepository.getAllAlarms().first().forEach { alarm ->
-                    if (alarm.isAlarmEnabled) {
-                        if (alarm.nextAlarmTimeInMillis < System.currentTimeMillis()) {
-                            qrAlarmManager.notifyAboutMissedAlarm()
-
-                            if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                                disableAlarm(alarmId = alarm.alarmId)
-                            } else {
-                                setAlarm(alarmId = alarm.alarmId)
-                            }
-                        } else {
-                            setAlarm(alarmId = alarm.alarmId)
-                        }
-                    }
-                }
-            }
+            rescheduleAlarms()
         }
     }
 }
