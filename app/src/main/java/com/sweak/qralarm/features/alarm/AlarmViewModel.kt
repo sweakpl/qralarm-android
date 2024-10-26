@@ -41,6 +41,7 @@ class AlarmViewModel @Inject constructor(
 
                 state.update { currentState ->
                     currentState.copy(
+                        currentTimeInMillis = System.currentTimeMillis(),
                         isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed,
                         snoozedAlarmTimeInMillis = it.snoozeConfig.nextSnoozedAlarmTimeInMillis,
                         isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0
@@ -132,6 +133,11 @@ class AlarmViewModel @Inject constructor(
             is AlarmScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
                 state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
+                }
+            }
+            is AlarmScreenUserEvent.UpdateCurrentTime -> {
+                state.update { currentState ->
+                    currentState.copy(currentTimeInMillis = System.currentTimeMillis())
                 }
             }
             else -> { /* no-op */ }

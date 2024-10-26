@@ -8,4 +8,5 @@ sealed class AlarmScreenUserEvent {
     data object RequestCameraPermission : AlarmScreenUserEvent()
     data class CameraPermissionDeniedDialogVisible(val isVisible: Boolean) : AlarmScreenUserEvent()
     data object GoToApplicationSettingsClicked : AlarmScreenUserEvent()
+    data object UpdateCurrentTime : AlarmScreenUserEvent()
 }
