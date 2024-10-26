@@ -28,6 +28,7 @@ class AlarmViewModel @Inject constructor(
 
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM] ?: 0
     private lateinit var alarm: Alarm
+    private var isAlarmBeingStopped: Boolean = false
 
     var state = MutableStateFlow(AlarmScreenState())
 
@@ -39,13 +40,15 @@ class AlarmViewModel @Inject constructor(
             alarmsRepository.getAlarmFlow(alarmId = idOfAlarm).collect {
                 alarm = it
 
-                state.update { currentState ->
-                    currentState.copy(
-                        currentTimeInMillis = System.currentTimeMillis(),
-                        isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed,
-                        snoozedAlarmTimeInMillis = it.snoozeConfig.nextSnoozedAlarmTimeInMillis,
-                        isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0
-                    )
+                if (!isAlarmBeingStopped) {
+                    state.update { currentState ->
+                        currentState.copy(
+                            currentTimeInMillis = System.currentTimeMillis(),
+                            isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed,
+                            snoozedAlarmTimeInMillis = it.snoozeConfig.nextSnoozedAlarmTimeInMillis,
+                            isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0
+                        )
+                    }
                 }
             }
         }
@@ -58,6 +61,7 @@ class AlarmViewModel @Inject constructor(
 
                 if (!isUsingCode) {
                     viewModelScope.launch {
+                        isAlarmBeingStopped = true
                         alarmsRepository.setAlarmSnoozed(
                             alarmId = idOfAlarm,
                             snoozed = false

@@ -103,6 +103,7 @@ class AlarmService : Service() {
             alarmId.toInt(),
             Intent(applicationContext, AlarmActivity::class.java).apply {
                 putExtra(AlarmActivity.EXTRA_ALARM_ID, alarmId)
+                putExtra(AlarmActivity.EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY, false)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             },
             PendingIntent.FLAG_UPDATE_CURRENT or
@@ -116,6 +117,7 @@ class AlarmService : Service() {
             alarmId.toInt(),
             Intent(applicationContext, AlarmActivity::class.java).apply {
                 putExtra(AlarmActivity.EXTRA_ALARM_ID, alarmId)
+                putExtra(AlarmActivity.EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY, false)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             },
             PendingIntent.FLAG_UPDATE_CURRENT or

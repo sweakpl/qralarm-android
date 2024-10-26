@@ -92,6 +92,7 @@ class MainActivity : ComponentActivity() {
                     startActivity(
                         Intent(applicationContext, AlarmActivity::class.java).apply {
                             putExtra(AlarmActivity.EXTRA_ALARM_ID, activeAlarm.alarmId)
+                            putExtra(AlarmActivity.EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY, true)
                             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         }
                     )
