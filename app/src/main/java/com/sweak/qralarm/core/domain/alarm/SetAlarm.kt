@@ -42,7 +42,8 @@ class SetAlarm @Inject constructor(
 
         qrAlarmManager.setAlarm(
             alarmId = alarmId,
-            alarmTimeInMillis = alarmTimeInMillis
+            alarmTimeInMillis = alarmTimeInMillis,
+            isSnoozeAlarm = false
         )
 
         if (!alarm.isAlarmEnabled) {

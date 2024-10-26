@@ -29,7 +29,8 @@ class SnoozeAlarm @Inject constructor(
 
         qrAlarmManager.setAlarm(
             alarmId = alarm.alarmId,
-            alarmTimeInMillis = snoozeAlarmTimeInMillis
+            alarmTimeInMillis = snoozeAlarmTimeInMillis,
+            isSnoozeAlarm = true
         )
     }
 }

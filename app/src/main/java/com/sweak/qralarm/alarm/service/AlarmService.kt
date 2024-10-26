@@ -40,9 +40,9 @@ class AlarmService : Service() {
 
     private lateinit var alarm: Alarm
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         var shouldStopService = false
-        val alarmId = intent?.extras?.getLong(EXTRA_ALARM_ID).run {
+        val alarmId = intent.extras?.getLong(EXTRA_ALARM_ID).run {
             if (this == null) {
                 shouldStopService = true
                 return@run 0
@@ -79,16 +79,20 @@ class AlarmService : Service() {
 
             isRunning = true
 
-            alarmsRepository.apply {
-                setAlarmRunning(
-                    alarmId = alarmId,
-                    running = true
-                )
-                setAlarmSnoozed(
-                    alarmId = alarmId,
-                    snoozed = false
-                )
+            intent.extras?.getBoolean(EXTRA_IS_SNOOZE_ALARM)?.let { isSnoozeAlarm ->
+                if (!isSnoozeAlarm) {
+                    resetAvailableSnoozes()
+                }
             }
+
+            alarmsRepository.setAlarmRunning(
+                alarmId = alarmId,
+                running = true
+            )
+            alarmsRepository.setAlarmSnoozed(
+                alarmId = alarmId,
+                snoozed = false
+            )
 
             handleAlarmRescheduling()
             startAlarm()
@@ -142,6 +146,16 @@ class AlarmService : Service() {
         }
     }
 
+    private suspend fun resetAvailableSnoozes() {
+        alarmsRepository.addOrEditAlarm(
+            alarm = alarm.copy(
+                snoozeConfig = alarm.snoozeConfig.copy(
+                    numberOfSnoozesLeft = alarm.snoozeConfig.snoozeMode.numberOfSnoozes
+                )
+            )
+        )
+    }
+
     private suspend fun handleAlarmRescheduling() {
         if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
             disableAlarm(alarmId = alarm.alarmId)
@@ -187,6 +201,7 @@ class AlarmService : Service() {
 
     companion object {
         const val EXTRA_ALARM_ID = "alarmId"
+        const val EXTRA_IS_SNOOZE_ALARM = "isSnoozeAlarm"
 
         var isRunning = false
     }
