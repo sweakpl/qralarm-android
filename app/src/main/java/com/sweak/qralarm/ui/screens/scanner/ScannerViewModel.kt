@@ -1,14 +1,12 @@
 package com.sweak.qralarm.ui.screens.scanner
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.google.zxing.Result
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
-import com.sweak.qralarm.ui.screens.popBackStackThrottled
 import com.sweak.qralarm.util.ALARM_TYPE_NORMAL
 import com.sweak.qralarm.util.DEFAULT_DISMISS_ALARM_CODE
 import com.sweak.qralarm.util.SCAN_MODE_DISMISS_ALARM
@@ -40,7 +38,6 @@ class ScannerViewModel @Inject constructor(
         result: Result,
         scannerMode: String?,
         navController: NavHostController,
-        lifecycleOwner: LifecycleOwner,
         cancelAlarmSideEffect: () -> Unit
     ) {
         if (scannerMode == SCAN_MODE_DISMISS_ALARM) {
@@ -52,10 +49,9 @@ class ScannerViewModel @Inject constructor(
                 CoroutineScope(Dispatchers.Main).launch {
                     stopAlarmJob.join()
                     cancelAlarmSideEffect.invoke()
-                    navController.popBackStackThrottled(
+                    navController.popBackStack(
                         Screen.HomeScreen.route,
-                        false,
-                        lifecycleOwner
+                        false
                     )
                 }
             }

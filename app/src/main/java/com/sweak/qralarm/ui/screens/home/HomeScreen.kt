@@ -9,13 +9,16 @@ import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -23,6 +26,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,7 +35,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,9 +44,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.sweak.qralarm.R
 import com.sweak.qralarm.ui.screens.components.AlarmPermissionDialog
@@ -79,10 +84,8 @@ fun HomeScreen(
         rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
     } else {
         object : PermissionState {
-            override val hasPermission: Boolean get() = true
             override val permission: String get() = "android.permission.POST_NOTIFICATIONS"
-            override val permissionRequested: Boolean get() = true
-            override val shouldShowRationale: Boolean get() = false
+            override val status: PermissionStatus get() = PermissionStatus.Granted
             override fun launchPermissionRequest() { /* no-op */ }
         }
     }
@@ -135,113 +138,163 @@ fun HomeScreen(
         }
     }
 
-    ConstraintLayout(
-        constraints,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    listOf(
-                        MaterialTheme.colorScheme.primary,
-                        MaterialTheme.colorScheme.secondary
-                    )
-                )
-            )
-    ) {
-        AnimatedVisibility(
-            visible = !uiState.value.alarmSet && !uiState.value.alarmServiceRunning,
-            modifier = Modifier.layoutId("menuButton")
-        ) {
-            MenuButton(
-                modifier = Modifier.padding(MaterialTheme.space.medium),
-                navController = navController
-            ) {
-                homeViewModel.shouldNotUpdateAlarmStateDataStoreManagerUpdate = true
-            }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(uiState.value.alarmSet) {
+        if (!uiState.value.alarmSet) {
+            snackbarHostState.currentSnackbarData?.dismiss()
         }
+    }
 
-        Text(
-            text = stringResource(
-                if (uiState.value.alarmSet || uiState.value.alarmServiceRunning) R.string.alarm_at
-                else R.string.drag_to_set_alarm
-            ),
-            modifier = Modifier
-                .layoutId("alarmAtText")
-                .padding(horizontal = MaterialTheme.space.medium),
-            textAlign = TextAlign.Center,
-            fontSize = 32.sp,
-            fontFamily = amikoFamily,
-            fontWeight = FontWeight.SemiBold
-        )
-
-        TimePicker(
-            modifier = Modifier.layoutId("timePicker"),
-            uiState = uiState
-        )
-
-        StartStopAlarmButton(
-            modifier = Modifier.layoutId("startStopAlarmButton"),
-            uiState = uiState
-        ) {
-            homeViewModel.handleStartOrStopButtonClick(
-                navController,
-                cameraPermissionState,
-                notificationsPermissionState,
-                composableScope,
-                lifecycleOwner,
-                snackbarInitializer = { hoursAndMinutesUntilAlarmPair ->
-                    uiState.value.snackbarHostState.showSnackbar(
-                        message = if (hoursAndMinutesUntilAlarmPair.first > 0)
-                            context.getString(
-                                R.string.time_left_hours_minutes,
-                                hoursAndMinutesUntilAlarmPair.first,
-                                hoursAndMinutesUntilAlarmPair.second
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { snackbarData ->
+                    Snackbar(
+                        action = {
+                            TextButton(
+                                onClick = { snackbarData.performAction() }
+                            ) {
+                                Text(
+                                    text = snackbarData.visuals.actionLabel
+                                        ?: stringResource(R.string.cancel_capitals),
+                                )
+                            }
+                        },
+                        shape = MaterialTheme.shapes.medium,
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier.padding(all = MaterialTheme.space.medium)
+                    ) {
+                        Column {
+                            Text(
+                                text = stringResource(R.string.alarm_set),
+                                style = MaterialTheme.typography.displayMedium
                             )
-                        else
-                            context.getString(
-                                R.string.time_left_minutes,
-                                hoursAndMinutesUntilAlarmPair.second
-                            ),
-                        actionLabel = context.getString(R.string.cancel_capitals),
-                        duration = SnackbarDuration.Long
-                    )
-                },
-                handleAlarmMute = {
-                    context.sendBroadcast(
-                        Intent(ACTION_TEMPORARY_ALARM_SOUND_MUTE).apply {
-                            setPackage(context.packageName)
+
+                            Text(
+                                text = snackbarData.visuals.message,
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.padding(top = MaterialTheme.space.small)
+                            )
                         }
-                    )
+                    }
                 }
             )
         }
-
-        AnimatedVisibility(
-            visible = !uiState.value.alarmSet && !uiState.value.alarmServiceRunning,
-            modifier = Modifier.layoutId("repeatAlarmButton")
-        ) {
-            IconButton(
-                onClick = { homeViewModel.handleRepeatAlarmClick() }
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_repeat),
-                    tint = MaterialTheme.colorScheme.onSecondary,
-                    contentDescription = "Repeat icon",
-                    modifier = Modifier.alpha(
-                        if (uiState.value.isManualAlarmScheduling) 0.25f else 1f
+    ) { paddingValues ->
+        ConstraintLayout(
+            constraints,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.secondary
+                        )
                     )
                 )
-            }
-        }
-
-        AnimatedVisibility(
-            visible = uiState.value.alarmServiceRunning && uiState.value.snoozeAvailable,
-            modifier = Modifier.layoutId("snoozeButton")
         ) {
-            SnoozeButton(
-                onClick = { homeViewModel.handleSnoozeButtonClick(finishableActionSideEffect) },
-                modifier = Modifier.padding(0.dp, MaterialTheme.space.medium, 0.dp, 0.dp)
+            AnimatedVisibility(
+                visible = !uiState.value.alarmSet && !uiState.value.alarmServiceRunning,
+                modifier = Modifier
+                    .padding(top = paddingValues.calculateTopPadding())
+                    .layoutId("menuButton")
+            ) {
+                MenuButton(
+                    modifier = Modifier.padding(MaterialTheme.space.medium),
+                    navController = navController
+                ) {
+                    homeViewModel.shouldNotUpdateAlarmStateAfterDataStoreManagerUpdate = true
+                }
+            }
+
+            Text(
+                text = stringResource(
+                    if (uiState.value.alarmSet || uiState.value.alarmServiceRunning) R.string.alarm_at
+                    else R.string.drag_to_set_alarm
+                ),
+                modifier = Modifier
+                    .layoutId("alarmAtText")
+                    .padding(horizontal = MaterialTheme.space.medium),
+                textAlign = TextAlign.Center,
+                fontSize = 32.sp,
+                fontFamily = amikoFamily,
+                fontWeight = FontWeight.SemiBold
             )
+
+            TimePicker(
+                modifier = Modifier.layoutId("timePicker"),
+                uiState = uiState
+            )
+
+            StartStopAlarmButton(
+                modifier = Modifier.layoutId("startStopAlarmButton"),
+                uiState = uiState
+            ) {
+                homeViewModel.handleStartOrStopButtonClick(
+                    navController,
+                    cameraPermissionState,
+                    notificationsPermissionState,
+                    composableScope,
+                    lifecycleOwner,
+                    snackbarInitializer = { hoursAndMinutesUntilAlarmPair ->
+                        snackbarHostState.showSnackbar(
+                            message = if (hoursAndMinutesUntilAlarmPair.first > 0)
+                                context.getString(
+                                    R.string.time_left_hours_minutes,
+                                    hoursAndMinutesUntilAlarmPair.first,
+                                    hoursAndMinutesUntilAlarmPair.second
+                                )
+                            else
+                                context.getString(
+                                    R.string.time_left_minutes,
+                                    hoursAndMinutesUntilAlarmPair.second
+                                ),
+                            actionLabel = context.getString(R.string.cancel_capitals),
+                            duration = SnackbarDuration.Long
+                        )
+                    },
+                    handleAlarmMute = {
+                        context.sendBroadcast(
+                            Intent(ACTION_TEMPORARY_ALARM_SOUND_MUTE).apply {
+                                setPackage(context.packageName)
+                            }
+                        )
+                    }
+                )
+            }
+
+            AnimatedVisibility(
+                visible = !uiState.value.alarmSet && !uiState.value.alarmServiceRunning,
+                modifier = Modifier.layoutId("repeatAlarmButton")
+            ) {
+                IconButton(
+                    onClick = { homeViewModel.handleRepeatAlarmClick() }
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_repeat),
+                        tint = MaterialTheme.colorScheme.onSecondary,
+                        contentDescription = "Repeat icon",
+                        modifier = Modifier.alpha(
+                            if (uiState.value.isManualAlarmScheduling) 0.25f else 1f
+                        )
+                    )
+                }
+            }
+
+            AnimatedVisibility(
+                visible = uiState.value.alarmServiceRunning && uiState.value.snoozeAvailable,
+                modifier = Modifier.layoutId("snoozeButton")
+            ) {
+                SnoozeButton(
+                    onClick = { homeViewModel.handleSnoozeButtonClick(finishableActionSideEffect) },
+                    modifier = Modifier.padding(0.dp, MaterialTheme.space.medium, 0.dp, 0.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(paddingValues.calculateBottomPadding()))
         }
     }
 
@@ -336,7 +389,7 @@ fun HomeScreen(
                 uiState.value = uiState.value.copy(showCodePossessionConfirmationDialog = false)
             },
             onSettingsClicked = {
-                homeViewModel.shouldNotUpdateAlarmStateDataStoreManagerUpdate = true
+                homeViewModel.shouldNotUpdateAlarmStateAfterDataStoreManagerUpdate = true
                 navController.navigateThrottled(
                     Screen.SettingsScreen.route,
                     lifecycleOwner
@@ -374,8 +427,6 @@ fun HomeScreen(
             }
         )
     }
-
-    AlarmSetSnackbar(snackbarHostState = uiState.value.snackbarHostState)
 }
 
 @Composable
@@ -482,59 +533,6 @@ fun SnoozeButton(
                 MaterialTheme.space.medium,
                 MaterialTheme.space.extraSmall
             )
-        )
-    }
-}
-
-@Composable
-fun AlarmSetSnackbar(
-    snackbarHostState: SnackbarHostState
-) {
-    ConstraintLayout(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        val snackbar = createRef()
-
-        SnackbarHost(
-            modifier = Modifier
-                .constrainAs(snackbar) {
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-                .padding(MaterialTheme.space.medium),
-            hostState = snackbarHostState,
-            snackbar = {
-                Snackbar(
-                    action = {
-                        TextButton(
-                            onClick = { snackbarHostState.currentSnackbarData?.performAction() }
-                        ) {
-                            Text(
-                                text = snackbarHostState.currentSnackbarData?.visuals?.actionLabel
-                                    ?: stringResource(R.string.cancel_capitals),
-                            )
-                        }
-                    },
-                    shape = MaterialTheme.shapes.medium,
-                    containerColor = MaterialTheme.colorScheme.tertiary
-                ) {
-                    Column {
-                        Text(
-                            text = stringResource(R.string.alarm_set),
-                            style = MaterialTheme.typography.displayMedium
-                        )
-
-                        snackbarHostState.currentSnackbarData?.visuals?.message?.let {
-                            Text(
-                                text = it,
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.padding(top = MaterialTheme.space.small)
-                            )
-                        }
-                    }
-                }
-            }
         )
     }
 }

@@ -1,14 +1,18 @@
 package com.sweak.qralarm.ui.screens.scanner
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
@@ -70,7 +74,6 @@ fun ScannerScreen(
                         result = result,
                         scannerMode = scannerMode,
                         navController = navController,
-                        lifecycleOwner = lifecycleOwner,
                         cancelAlarmSideEffect = finishableActionSideEffect
                     )
                 }
@@ -79,7 +82,8 @@ fun ScannerScreen(
             }
 
             codeScannerView
-        }
+        },
+        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
     )
 
     DismissCodeAddedDialog(

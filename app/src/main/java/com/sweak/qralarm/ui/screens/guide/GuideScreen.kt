@@ -10,6 +10,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -91,117 +92,122 @@ fun GuideScreen(
         }
     }
 
-    ConstraintLayout(
-        constraints,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    listOf(
-                        MaterialTheme.colorScheme.primary,
-                        MaterialTheme.colorScheme.secondary
+    Scaffold { paddingValues ->
+        ConstraintLayout(
+            constraints,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.secondary
+                        )
                     )
                 )
-            )
-    ) {
-        if (!isFirstLaunch()) {
-            BackButton(
-                modifier = Modifier
-                    .padding(
-                        start = MaterialTheme.space.medium,
-                        top = MaterialTheme.space.large - MaterialTheme.space.extraSmall
-                    )
-                    .layoutId("backButton"),
-                navController = navController
-            )
-        }
-
-        Text(
-            text = stringResource(R.string.guide),
-            modifier = Modifier
-                .padding(
-                    MaterialTheme.space.small,
-                    MaterialTheme.space.large,
-                    MaterialTheme.space.small,
-                    MaterialTheme.space.large
-                )
-                .layoutId("guideText"),
-            style = MaterialTheme.typography.displayLarge
-        )
-
-        HorizontalPager(
-            state = pagerState,
-            verticalAlignment = Alignment.Top,
-            modifier = Modifier.layoutId("guidePages")
-        ) { page ->
-            if (page == 0) {
-                GuidePageQRCode()
-            } else if (page == 1) {
-                GuidePageBackgroundWork()
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .layoutId("navigationButtons"),
-            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            TextButton(
-                onClick = {
-                    if (pagerState.currentPage == 1) {
-                        composableScope.launch {
-                            pagerState.animateScrollToPage(0)
-                        }
-                    }
-                },
-                modifier = Modifier
-                    .padding(
-                        start = MaterialTheme.space.large,
-                        bottom = MaterialTheme.space.large,
-                        top = MaterialTheme.space.large
-                    )
-                    .alpha(if (previousButtonVisible.value) 1f else 0f)
-            ) {
-                Text(
-                    text = stringResource(R.string.previous),
-                    modifier = Modifier.padding(MaterialTheme.space.extraSmall)
+            if (!isFirstLaunch()) {
+                BackButton(
+                    modifier = Modifier
+                        .padding(
+                            start = MaterialTheme.space.medium,
+                            top = MaterialTheme.space.run {
+                                large - extraSmall
+                            } + paddingValues.calculateTopPadding()
+                        )
+                        .layoutId("backButton"),
+                    navController = navController
                 )
             }
 
-            Button(
-                onClick = {
-                    if (pagerState.currentPage == 0) {
-                        composableScope.launch {
-                            pagerState.animateScrollToPage(1)
-                        }
-                    } else if (pagerState.currentPage == 1) {
-                        if (isFirstLaunch()) {
-                            closeGuideCallback()
-                            navController.navigateThrottled(
-                                Screen.HomeScreen.route,
-                                lifecycleOwner
-                            ) {
-                                popUpTo(Screen.GuideScreen.route) {
-                                    inclusive = true
-                                }
-                            }
-                        } else {
-                            navController.popBackStackThrottled(lifecycleOwner)
-                        }
-                    }
-                },
+            Text(
+                text = stringResource(R.string.guide),
                 modifier = Modifier
                     .padding(
-                        end = MaterialTheme.space.large,
-                        bottom = MaterialTheme.space.large,
-                        top = MaterialTheme.space.large
+                        MaterialTheme.space.small,
+                        MaterialTheme.space.large + paddingValues.calculateTopPadding(),
+                        MaterialTheme.space.small,
+                        MaterialTheme.space.large
                     )
+                    .layoutId("guideText"),
+                style = MaterialTheme.typography.displayLarge
+            )
+
+            HorizontalPager(
+                state = pagerState,
+                verticalAlignment = Alignment.Top,
+                modifier = Modifier.layoutId("guidePages")
+            ) { page ->
+                if (page == 0) {
+                    GuidePageQRCode()
+                } else if (page == 1) {
+                    GuidePageBackgroundWork()
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = paddingValues.calculateBottomPadding())
+                    .layoutId("navigationButtons"),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = stringResource(R.string.next),
-                    modifier = Modifier.padding(MaterialTheme.space.extraSmall)
-                )
+                TextButton(
+                    onClick = {
+                        if (pagerState.currentPage == 1) {
+                            composableScope.launch {
+                                pagerState.animateScrollToPage(0)
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(
+                            start = MaterialTheme.space.large,
+                            bottom = MaterialTheme.space.large,
+                            top = MaterialTheme.space.large
+                        )
+                        .alpha(if (previousButtonVisible.value) 1f else 0f)
+                ) {
+                    Text(
+                        text = stringResource(R.string.previous),
+                        modifier = Modifier.padding(MaterialTheme.space.extraSmall)
+                    )
+                }
+
+                Button(
+                    onClick = {
+                        if (pagerState.currentPage == 0) {
+                            composableScope.launch {
+                                pagerState.animateScrollToPage(1)
+                            }
+                        } else if (pagerState.currentPage == 1) {
+                            if (isFirstLaunch()) {
+                                closeGuideCallback()
+                                navController.navigateThrottled(
+                                    Screen.HomeScreen.route,
+                                    lifecycleOwner
+                                ) {
+                                    popUpTo(Screen.GuideScreen.route) {
+                                        inclusive = true
+                                    }
+                                }
+                            } else {
+                                navController.popBackStackThrottled(lifecycleOwner)
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(
+                            end = MaterialTheme.space.large,
+                            bottom = MaterialTheme.space.large,
+                            top = MaterialTheme.space.large
+                        )
+                ) {
+                    Text(
+                        text = stringResource(R.string.next),
+                        modifier = Modifier.padding(MaterialTheme.space.extraSmall)
+                    )
+                }
             }
         }
     }

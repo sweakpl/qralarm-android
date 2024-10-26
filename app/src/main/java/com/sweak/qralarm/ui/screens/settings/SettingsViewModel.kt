@@ -16,6 +16,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.navigateThrottled
@@ -364,20 +366,18 @@ class SettingsViewModel @Inject constructor(
         cameraPermissionState: PermissionState,
         lifecycleOwner: LifecycleOwner
     ) {
-        if (!cameraPermissionState.hasPermission) {
-            when {
-                !cameraPermissionState.permissionRequested ||
-                        cameraPermissionState.shouldShowRationale -> {
-                    settingsUiState.value =
-                        settingsUiState.value.copy(showCameraPermissionDialog = true)
-                    return
-                }
-                !cameraPermissionState.shouldShowRationale -> {
-                    settingsUiState.value =
-                        settingsUiState.value.copy(showCameraPermissionRevokedDialog = true)
-                    return
-                }
+        if (!cameraPermissionState.status.isGranted) {
+            if (cameraPermissionState.status.shouldShowRationale) {
+                settingsUiState.value = settingsUiState.value.copy(
+                    showCameraPermissionRevokedDialog = true
+                )
+            } else {
+                settingsUiState.value = settingsUiState.value.copy(
+                    showCameraPermissionDialog = true
+                )
             }
+
+            return
         }
 
         navController.navigateThrottled(

@@ -26,11 +26,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -45,7 +45,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -57,6 +56,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -70,7 +70,7 @@ import com.sweak.qralarm.ui.theme.Kimberly
 import com.sweak.qralarm.ui.theme.space
 import com.sweak.qralarm.util.Screen
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
@@ -138,571 +138,579 @@ fun SettingsScreen(
         }
     }
 
-    ConstraintLayout(
-        constraints,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    listOf(
-                        MaterialTheme.colorScheme.primary,
-                        MaterialTheme.colorScheme.secondary
+    Scaffold { paddingValues ->
+        ConstraintLayout(
+            constraints,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.secondary
+                        )
                     )
                 )
-            )
-    ) {
-        BackButton(
-            modifier = Modifier
-                .padding(
-                    start = MaterialTheme.space.medium,
-                    top = MaterialTheme.space.large - MaterialTheme.space.extraSmall
-                )
-                .layoutId("backButton"),
-            navController = navController
-        )
-
-        Text(
-            text = stringResource(R.string.settings),
-            modifier = Modifier
-                .padding(
-                    MaterialTheme.space.small,
-                    MaterialTheme.space.large,
-                    MaterialTheme.space.small,
-                    MaterialTheme.space.large
-                )
-                .layoutId("settingsText"),
-            style = MaterialTheme.typography.displayLarge
-        )
-
-        Column(
-            modifier = Modifier
-                .padding(horizontal = MaterialTheme.space.large)
-                .verticalScroll(scrollState)
-                .layoutId("settingsColumn"),
-            verticalArrangement = Arrangement.Top
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(bottom = MaterialTheme.space.medium),
-                    text = stringResource(R.string.alarm_sound),
-                    style = MaterialTheme.typography.displayMedium.copy(
-                        fontWeight = FontWeight.Normal
+            BackButton(
+                modifier = Modifier
+                    .padding(
+                        start = MaterialTheme.space.medium,
+                        top = MaterialTheme.space.run {
+                            large - extraSmall
+                        } + paddingValues.calculateTopPadding()
                     )
-                )
+                    .layoutId("backButton"),
+                navController = navController
+            )
+
+            Text(
+                text = stringResource(R.string.settings),
+                modifier = Modifier
+                    .padding(
+                        MaterialTheme.space.small,
+                        MaterialTheme.space.large + paddingValues.calculateTopPadding(),
+                        MaterialTheme.space.small,
+                        MaterialTheme.space.large
+                    )
+                    .layoutId("settingsText"),
+                style = MaterialTheme.typography.displayLarge
+            )
+
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = MaterialTheme.space.large)
+                    .verticalScroll(scrollState)
+                    .layoutId("settingsColumn"),
+                verticalArrangement = Arrangement.Top
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .padding(bottom = MaterialTheme.space.medium),
+                        text = stringResource(R.string.alarm_sound),
+                        style = MaterialTheme.typography.displayMedium.copy(
+                            fontWeight = FontWeight.Normal
+                        )
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        ComboBox(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(40.dp)
+                                .padding(end = MaterialTheme.space.medium),
+                            menuItems = uiState.value.availableAlarmSounds.map {
+                                stringResource(it.nameResourceId)
+                            },
+                            menuExpandedState = uiState.value.alarmSoundsDropdownMenuExpanded,
+                            selectedIndex = uiState.value.selectedAlarmSoundIndex,
+                            updateMenuExpandedStatus = {
+                                uiState.value =
+                                    uiState.value.copy(alarmSoundsDropdownMenuExpanded = true)
+                            },
+                            onDismissMenuView = {
+                                uiState.value =
+                                    uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                            },
+                            onMenuItemClick = { index ->
+                                if (settingsViewModel.isLocalSoundAlarmChosen(index)) {
+                                    audioPickerLauncher.launch("audio/*")
+                                } else {
+                                    settingsViewModel.updateAlarmSoundSelection(index)
+                                }
+                                uiState.value =
+                                    uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                            }
+                        )
+
+                        IconButton(
+                            onClick = {
+                                settingsViewModel.playOrStopAlarmPreview(context)
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(
+                                    id = if (uiState.value.alarmPreviewPlaying) {
+                                        R.drawable.ic_stop
+                                    } else {
+                                        R.drawable.ic_play
+                                    }
+                                ),
+                                contentDescription = "Play/Stop button",
+                                tint = MaterialTheme.colorScheme.tertiary
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.space.large))
 
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                            .weight(1f)
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.snooze_duration_setting_title),
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.snooze_duration_setting_description),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+
                     ComboBox(
                         modifier = Modifier
-                            .weight(1f)
                             .height(40.dp)
-                            .padding(end = MaterialTheme.space.medium),
-                        menuItems = uiState.value.availableAlarmSounds.map {
-                            stringResource(it.nameResourceId)
-                        },
-                        menuExpandedState = uiState.value.alarmSoundsDropdownMenuExpanded,
-                        selectedIndex = uiState.value.selectedAlarmSoundIndex,
+                            .width(80.dp),
+                        enabled = uiState.value.availableSnoozeMaxCounts
+                            [uiState.value.selectedSnoozeMaxCountIndex].count != 0,
+                        menuItems = uiState.value.availableSnoozeDurations,
+                        menuExpandedState = uiState.value.snoozeDurationsDropdownMenuExpanded,
+                        selectedIndex = uiState.value.selectedSnoozeDurationIndex,
                         updateMenuExpandedStatus = {
                             uiState.value =
-                                uiState.value.copy(alarmSoundsDropdownMenuExpanded = true)
+                                uiState.value.copy(snoozeDurationsDropdownMenuExpanded = true)
                         },
                         onDismissMenuView = {
                             uiState.value =
-                                uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                                uiState.value.copy(snoozeDurationsDropdownMenuExpanded = false)
                         },
                         onMenuItemClick = { index ->
-                            if (settingsViewModel.isLocalSoundAlarmChosen(index)) {
-                                audioPickerLauncher.launch("audio/*")
-                            } else {
-                                settingsViewModel.updateAlarmSoundSelection(index)
-                            }
+                            settingsViewModel.updateSnoozeDurationSelection(index)
                             uiState.value =
-                                uiState.value.copy(alarmSoundsDropdownMenuExpanded = false)
+                                uiState.value.copy(snoozeDurationsDropdownMenuExpanded = false)
                         }
                     )
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                            .weight(1f)
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.snooze_number_setting_title),
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.snooze_number_setting_description),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+
+                    ComboBox(
+                        modifier = Modifier
+                            .height(40.dp)
+                            .width(80.dp),
+                        menuItems = uiState.value.availableSnoozeMaxCounts,
+                        menuExpandedState = uiState.value.snoozeMaxCountsDropdownMenuExpanded,
+                        selectedIndex = uiState.value.selectedSnoozeMaxCountIndex,
+                        updateMenuExpandedStatus = {
+                            uiState.value =
+                                uiState.value.copy(snoozeMaxCountsDropdownMenuExpanded = true)
+                        },
+                        onDismissMenuView = {
+                            uiState.value =
+                                uiState.value.copy(snoozeMaxCountsDropdownMenuExpanded = false)
+                        },
+                        onMenuItemClick = { index ->
+                            settingsViewModel.updateSnoozeMaxCountSelection(index)
+                            uiState.value =
+                                uiState.value.copy(snoozeMaxCountsDropdownMenuExpanded = false)
+                        }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                            .weight(1f)
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.gentle_wakeup_setting_title),
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.gentle_wakeup_setting_description),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+
+                    ComboBox(
+                        modifier = Modifier
+                            .height(40.dp)
+                            .width(80.dp),
+                        menuItems = uiState.value.availableGentleWakeupDurations,
+                        menuExpandedState =
+                        uiState.value.availableGentleWakeupDurationsDropdownMenuExpanded,
+                        selectedIndex = uiState.value.selectedGentleWakeupDurationIndex,
+                        updateMenuExpandedStatus = {
+                            uiState.value =
+                                uiState.value.copy(
+                                    availableGentleWakeupDurationsDropdownMenuExpanded = true
+                                )
+                        },
+                        onDismissMenuView = {
+                            uiState.value =
+                                uiState.value.copy(
+                                    availableGentleWakeupDurationsDropdownMenuExpanded = false
+                                )
+                        },
+                        onMenuItemClick = { index ->
+                            settingsViewModel.updateGentleWakeupDurationSelection(index)
+                            uiState.value =
+                                uiState.value.copy(
+                                    availableGentleWakeupDurationsDropdownMenuExpanded = false
+                                )
+                        }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                            .weight(1f)
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.enable_vibrations_setting_title),
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.enable_vibrations_setting_description),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+
+                    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
+                        Switch(
+                            checked = uiState.value.vibrationsEnabled,
+                            onCheckedChange = settingsViewModel::handleEnableVibrationsSwitch,
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = MaterialTheme.colorScheme.tertiary,
+                                uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                                checkedTrackColor =
+                                MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
+                                uncheckedTrackColor =
+                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+                            ),
+                            modifier = Modifier
+                                .padding(
+                                    horizontal = 20.dp,
+                                    vertical = MaterialTheme.space.medium
+                                )
+                                .scale(1.5f)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                            .weight(1f)
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.accept_all_codes_setting_title),
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.accept_all_codes_setting_description),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+
+                    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
+                        Switch(
+                            checked = uiState.value.acceptAnyCodeType,
+                            onCheckedChange = settingsViewModel::handleAcceptBarcodesSwitch,
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = MaterialTheme.colorScheme.tertiary,
+                                uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                                checkedTrackColor =
+                                MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
+                                uncheckedTrackColor =
+                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+                            ),
+                            modifier = Modifier
+                                .padding(
+                                    horizontal = 20.dp,
+                                    vertical = MaterialTheme.space.medium
+                                )
+                                .scale(1.5f)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                            .weight(1f)
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.temporary_mute_setting_title),
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.temporary_mute_setting_description),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+
+                    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
+                        Switch(
+                            checked = uiState.value.temporaryMuteEnabled,
+                            onCheckedChange = settingsViewModel::handleEnableTemporaryMuteSwitch,
+                            colors = SwitchDefaults.colors(
+                                checkedThumbColor = MaterialTheme.colorScheme.tertiary,
+                                uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                                checkedTrackColor =
+                                MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
+                                uncheckedTrackColor =
+                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+                            ),
+                            modifier = Modifier
+                                .padding(
+                                    horizontal = 20.dp,
+                                    vertical = MaterialTheme.space.medium
+                                )
+                                .scale(1.5f)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                            .weight(1f)
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.download_code_title),
+                            style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Normal)
+                        )
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.download_code_description),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
 
                     IconButton(
                         onClick = {
-                            settingsViewModel.playOrStopAlarmPreview(context)
-                        }
+                            saveDefaultCodeImageLauncher.launch("QRAlarmCode.jpg")
+                        },
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
                     ) {
                         Icon(
-                            painter = painterResource(
-                                id = if (uiState.value.alarmPreviewPlaying) {
-                                    R.drawable.ic_stop
-                                } else {
-                                    R.drawable.ic_play
-                                }
-                            ),
-                            contentDescription = "Play/Stop button",
-                            tint = MaterialTheme.colorScheme.tertiary
+                            painter = painterResource(id = R.drawable.ic_download),
+                            contentDescription = "Download button",
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.padding(6.dp)
                         )
                     }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+                Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                        .weight(1f)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.snooze_duration_setting_title),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            fontWeight = FontWeight.Normal
+                    Column(
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                            .weight(1f)
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.scan_new_code_title),
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Normal
+                            )
                         )
-                    )
 
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.snooze_duration_setting_description),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.scan_new_code_description),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+
+                    IconButton(
+                        onClick = {
+                            settingsViewModel.handleScanCustomDismissCodeButton(
+                                navController,
+                                cameraPermissionState,
+                                lifecycleOwner
+                            )
+                        },
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_scan),
+                            contentDescription = "Scan button",
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.padding(6.dp)
+                        )
+                    }
                 }
 
-                ComboBox(
-                    modifier = Modifier
-                        .height(40.dp)
-                        .width(80.dp),
-                    enabled = uiState.value.availableSnoozeMaxCounts
-                            [uiState.value.selectedSnoozeMaxCountIndex].count != 0,
-                    menuItems = uiState.value.availableSnoozeDurations,
-                    menuExpandedState = uiState.value.snoozeDurationsDropdownMenuExpanded,
-                    selectedIndex = uiState.value.selectedSnoozeDurationIndex,
-                    updateMenuExpandedStatus = {
-                        uiState.value =
-                            uiState.value.copy(snoozeDurationsDropdownMenuExpanded = true)
-                    },
-                    onDismissMenuView = {
-                        uiState.value =
-                            uiState.value.copy(snoozeDurationsDropdownMenuExpanded = false)
-                    },
-                    onMenuItemClick = { index ->
-                        settingsViewModel.updateSnoozeDurationSelection(index)
-                        uiState.value =
-                            uiState.value.copy(snoozeDurationsDropdownMenuExpanded = false)
+                Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                            .weight(1f)
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.qralarm_guide_title),
+                            style = MaterialTheme.typography.displayMedium.copy(
+                                fontWeight = FontWeight.Normal
+                            )
+                        )
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.qralarm_guide_description),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
                     }
+
+                    IconButton(
+                        onClick = {
+                            navController.navigateThrottled(
+                                Screen.GuideScreen.route,
+                                lifecycleOwner
+                            )
+                        },
+                        modifier = Modifier
+                            .padding(end = MaterialTheme.space.medium)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_guide),
+                            contentDescription = "Guide button",
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.padding(6.dp)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(
+                        R.string.current_dismiss_code,
+                        uiState.value.dismissAlarmCode
+                    ),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Spacer(
+                    modifier = Modifier.height(
+                        MaterialTheme.space.large + paddingValues.calculateBottomPadding()
+                    )
                 )
             }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                        .weight(1f)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.snooze_number_setting_title),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            fontWeight = FontWeight.Normal
-                        )
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.snooze_number_setting_description),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                ComboBox(
-                    modifier = Modifier
-                        .height(40.dp)
-                        .width(80.dp),
-                    menuItems = uiState.value.availableSnoozeMaxCounts,
-                    menuExpandedState = uiState.value.snoozeMaxCountsDropdownMenuExpanded,
-                    selectedIndex = uiState.value.selectedSnoozeMaxCountIndex,
-                    updateMenuExpandedStatus = {
-                        uiState.value =
-                            uiState.value.copy(snoozeMaxCountsDropdownMenuExpanded = true)
-                    },
-                    onDismissMenuView = {
-                        uiState.value =
-                            uiState.value.copy(snoozeMaxCountsDropdownMenuExpanded = false)
-                    },
-                    onMenuItemClick = { index ->
-                        settingsViewModel.updateSnoozeMaxCountSelection(index)
-                        uiState.value =
-                            uiState.value.copy(snoozeMaxCountsDropdownMenuExpanded = false)
-                    }
-                )
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                        .weight(1f)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.gentle_wakeup_setting_title),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            fontWeight = FontWeight.Normal
-                        )
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.gentle_wakeup_setting_description),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                ComboBox(
-                    modifier = Modifier
-                        .height(40.dp)
-                        .width(80.dp),
-                    menuItems = uiState.value.availableGentleWakeupDurations,
-                    menuExpandedState =
-                    uiState.value.availableGentleWakeupDurationsDropdownMenuExpanded,
-                    selectedIndex = uiState.value.selectedGentleWakeupDurationIndex,
-                    updateMenuExpandedStatus = {
-                        uiState.value =
-                            uiState.value.copy(
-                                availableGentleWakeupDurationsDropdownMenuExpanded = true
-                            )
-                    },
-                    onDismissMenuView = {
-                        uiState.value =
-                            uiState.value.copy(
-                                availableGentleWakeupDurationsDropdownMenuExpanded = false
-                            )
-                    },
-                    onMenuItemClick = { index ->
-                        settingsViewModel.updateGentleWakeupDurationSelection(index)
-                        uiState.value =
-                            uiState.value.copy(
-                                availableGentleWakeupDurationsDropdownMenuExpanded = false
-                            )
-                    }
-                )
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                        .weight(1f)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.enable_vibrations_setting_title),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            fontWeight = FontWeight.Normal
-                        )
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.enable_vibrations_setting_description),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides false) {
-                    Switch(
-                        checked = uiState.value.vibrationsEnabled,
-                        onCheckedChange = settingsViewModel::handleEnableVibrationsSwitch,
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.tertiary,
-                            uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                            checkedTrackColor =
-                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
-                            uncheckedTrackColor =
-                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
-                        ),
-                        modifier = Modifier
-                            .padding(
-                                horizontal = 20.dp,
-                                vertical = MaterialTheme.space.medium
-                            )
-                            .scale(1.5f)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                        .weight(1f)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.accept_all_codes_setting_title),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            fontWeight = FontWeight.Normal
-                        )
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.accept_all_codes_setting_description),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides false) {
-                    Switch(
-                        checked = uiState.value.acceptAnyCodeType,
-                        onCheckedChange = settingsViewModel::handleAcceptBarcodesSwitch,
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.tertiary,
-                            uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                            checkedTrackColor =
-                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
-                            uncheckedTrackColor =
-                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
-                        ),
-                        modifier = Modifier
-                            .padding(
-                                horizontal = 20.dp,
-                                vertical = MaterialTheme.space.medium
-                            )
-                            .scale(1.5f)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                        .weight(1f)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.temporary_mute_setting_title),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            fontWeight = FontWeight.Normal
-                        )
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.temporary_mute_setting_description),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides false) {
-                    Switch(
-                        checked = uiState.value.temporaryMuteEnabled,
-                        onCheckedChange = settingsViewModel::handleEnableTemporaryMuteSwitch,
-                        colors = SwitchDefaults.colors(
-                            checkedThumbColor = MaterialTheme.colorScheme.tertiary,
-                            uncheckedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                            checkedTrackColor =
-                            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
-                            uncheckedTrackColor =
-                            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
-                        ),
-                        modifier = Modifier
-                            .padding(
-                                horizontal = 20.dp,
-                                vertical = MaterialTheme.space.medium
-                            )
-                            .scale(1.5f)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                        .weight(1f)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.download_code_title),
-                        style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Normal)
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.download_code_description),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                IconButton(
-                    onClick = {
-                        saveDefaultCodeImageLauncher.launch("QRAlarmCode.jpg")
-                    },
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_download),
-                        contentDescription = "Download button",
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.padding(6.dp)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                        .weight(1f)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.scan_new_code_title),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            fontWeight = FontWeight.Normal
-                        )
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.scan_new_code_description),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                IconButton(
-                    onClick = {
-                        settingsViewModel.handleScanCustomDismissCodeButton(
-                            navController,
-                            cameraPermissionState,
-                            lifecycleOwner
-                        )
-                    },
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_scan),
-                        contentDescription = "Scan button",
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.padding(6.dp)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                        .weight(1f)
-                ) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.qralarm_guide_title),
-                        style = MaterialTheme.typography.displayMedium.copy(
-                            fontWeight = FontWeight.Normal
-                        )
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.qralarm_guide_description),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-
-                IconButton(
-                    onClick = {
-                        navController.navigateThrottled(
-                            Screen.GuideScreen.route,
-                            lifecycleOwner
-                        )
-                    },
-                    modifier = Modifier
-                        .padding(end = MaterialTheme.space.medium)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_guide),
-                        contentDescription = "Guide button",
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.padding(6.dp)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
-
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(
-                    R.string.current_dismiss_code,
-                    uiState.value.dismissAlarmCode
-                ),
-                style = MaterialTheme.typography.bodyLarge
-            )
-
-            Spacer(modifier = Modifier.height(MaterialTheme.space.large))
         }
     }
 

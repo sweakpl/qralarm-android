@@ -12,8 +12,8 @@ android {
         applicationId "com.sweak.qralarm"
         minSdk 21
         targetSdk 35
-        versionCode 28
-        versionName "1.7.1"
+        versionCode 29
+        versionName "1.7.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -67,13 +67,13 @@ dependencies {
     implementation 'com.google.android.material:material:1.12.0'
 
     // Jetpack Compose
-    implementation 'androidx.compose.ui:ui:1.7.2'
+    implementation 'androidx.compose.ui:ui:1.7.4'
     implementation 'androidx.compose.material3:material3:1.3.0'
-    implementation 'androidx.compose.ui:ui-tooling-preview:1.7.2'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.7.4'
     implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.1'
-    implementation 'androidx.activity:activity-compose:1.9.2'
-    implementation 'androidx.navigation:navigation-compose:2.8.1'
-    debugImplementation 'androidx.compose.ui:ui-tooling:1.7.2'
+    implementation 'androidx.activity:activity-compose:1.9.3'
+    implementation 'androidx.navigation:navigation-compose:2.8.3'
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.7.4'
 
     // Coroutines
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.6'
@@ -90,12 +90,10 @@ dependencies {
     implementation 'com.github.yuriy-budiyev:code-scanner:2.3.2'
 
     // Permission handling
-    //noinspection GradleDependency
-    implementation 'com.google.accompanist:accompanist-permissions:0.23.1'
+    implementation 'com.google.accompanist:accompanist-permissions:0.36.0'
 
     // API < 26 support for DateTime API
-    // noinspection GradleDependency
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
 
     // Tests
     testImplementation 'junit:junit:4.13.2'

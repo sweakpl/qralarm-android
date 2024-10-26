@@ -1,6 +1,5 @@
 package com.sweak.qralarm.ui.screens.home
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -10,13 +9,27 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.data.DataStoreManager
 import com.sweak.qralarm.ui.screens.navigateThrottled
-import com.sweak.qralarm.util.*
+import com.sweak.qralarm.util.ALARM_TYPE_NORMAL
+import com.sweak.qralarm.util.ALARM_TYPE_SNOOZE
+import com.sweak.qralarm.util.SCAN_MODE_DISMISS_ALARM
+import com.sweak.qralarm.util.Screen
+import com.sweak.qralarm.util.TimeFormat
+import com.sweak.qralarm.util.getAlarmHourOfDay
+import com.sweak.qralarm.util.getAlarmMinute
+import com.sweak.qralarm.util.getAlarmTimeInMillis
+import com.sweak.qralarm.util.getHoursAndMinutesUntilTimePair
+import com.sweak.qralarm.util.getSnoozeAlarmTimeInMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.ZoneId
 import javax.inject.Inject
 
@@ -54,8 +67,7 @@ class HomeViewModel @Inject constructor(
                 showCodePossessionConfirmationDialog = false,
                 showFullScreenIntentPermissionDialog = false,
                 showEnableRepeatingAlarmsDialog = false,
-                showDisableRepeatingAlarmsDialog = false,
-                snackbarHostState = SnackbarHostState()
+                showDisableRepeatingAlarmsDialog = false
             )
         )
     }
@@ -65,7 +77,7 @@ class HomeViewModel @Inject constructor(
     // on the SettingsScreen which causes an additional and redundant broadcast of the ALARM_SET
     // value in a FlowCollector. This is an issue internal to the DataStoreManager and not the
     // DataStore framework itself.
-    var shouldNotUpdateAlarmStateDataStoreManagerUpdate: Boolean = false
+    var shouldNotUpdateAlarmStateAfterDataStoreManagerUpdate: Boolean = false
 
     init {
         viewModelScope.launch {
@@ -80,25 +92,25 @@ class HomeViewModel @Inject constructor(
         }
         viewModelScope.launch {
             dataStoreManager.getBoolean(DataStoreManager.ALARM_SET).collect {
-                if (shouldNotUpdateAlarmStateDataStoreManagerUpdate) {
-                    shouldNotUpdateAlarmStateDataStoreManagerUpdate = false
+                if (it) {
+                    homeUiState.value = homeUiState.value.copy(alarmSet = true)
+                }
+
+                if (shouldNotUpdateAlarmStateAfterDataStoreManagerUpdate) {
+                    shouldNotUpdateAlarmStateAfterDataStoreManagerUpdate = false
                     return@collect
                 }
 
-                homeUiState.value = if (!it) {
+                if (!it) {
                     val originalAlarmTimeInMillis =
                         dataStoreManager.getLong(DataStoreManager.ALARM_TIME_IN_MILLIS).first()
 
-                    homeUiState.value.copy(
+                    homeUiState.value = homeUiState.value.copy(
                         alarmSet = false,
                         alarmHourOfDay = getAlarmHourOfDay(originalAlarmTimeInMillis),
                         alarmMinute = getAlarmMinute(originalAlarmTimeInMillis)
                     )
-                } else {
-                    homeUiState.value.copy(alarmSet = true)
                 }
-
-                if (!it) homeUiState.value.snackbarHostState.currentSnackbarData?.dismiss()
             }
         }
     }
@@ -113,36 +125,26 @@ class HomeViewModel @Inject constructor(
         snackbarInitializer: suspend (Pair<Int, Int>) -> SnackbarResult,
         handleAlarmMute: () -> Unit
     ) {
-        if (!cameraPermissionState.hasPermission) {
-            when {
-                !cameraPermissionState.permissionRequested ||
-                        cameraPermissionState.shouldShowRationale -> {
-                    homeUiState.value = homeUiState.value.copy(showCameraPermissionDialog = true)
-                    return
-                }
-                !cameraPermissionState.shouldShowRationale -> {
-                    homeUiState.value =
-                        homeUiState.value.copy(showCameraPermissionRevokedDialog = true)
-                    return
-                }
+        if (!cameraPermissionState.status.isGranted) {
+            if (cameraPermissionState.status.shouldShowRationale) {
+                homeUiState.value = homeUiState.value.copy(showCameraPermissionRevokedDialog = true)
+            } else {
+                homeUiState.value = homeUiState.value.copy(showCameraPermissionDialog = true)
             }
+
+            return
         }
 
-        if (!notificationsPermissionState.hasPermission) {
-            when {
-                !notificationsPermissionState.permissionRequested ||
-                        notificationsPermissionState.shouldShowRationale -> {
-                    homeUiState.value = homeUiState.value.copy(
-                        showNotificationsPermissionDialog = true
-                    )
-                    return
-                }
-                !notificationsPermissionState.shouldShowRationale -> {
-                    homeUiState.value =
-                        homeUiState.value.copy(showNotificationsPermissionRevokedDialog = true)
-                    return
-                }
+        if (!notificationsPermissionState.status.isGranted) {
+            if (notificationsPermissionState.status.shouldShowRationale) {
+                homeUiState.value = homeUiState.value.copy(
+                    showNotificationsPermissionRevokedDialog = true
+                )
+            } else {
+                homeUiState.value = homeUiState.value.copy(showNotificationsPermissionDialog = true)
             }
+
+            return
         }
 
         if (!qrAlarmManager.canUseFullScreenIntent()) {
@@ -300,7 +302,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun confirmCodePossession() = viewModelScope.launch {
-        shouldNotUpdateAlarmStateDataStoreManagerUpdate = true
+        shouldNotUpdateAlarmStateAfterDataStoreManagerUpdate = true
         dataStoreManager.putBoolean(DataStoreManager.SHOULD_REMIND_USER_TO_GET_CODE, false)
     }
 

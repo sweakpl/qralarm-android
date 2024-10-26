@@ -1,6 +1,5 @@
 package com.sweak.qralarm.ui.screens.home
 
-import androidx.compose.material3.SnackbarHostState
 import com.sweak.qralarm.util.TimeFormat
 
 data class HomeUiState(
@@ -19,6 +18,5 @@ data class HomeUiState(
     var showCodePossessionConfirmationDialog: Boolean,
     var showFullScreenIntentPermissionDialog: Boolean,
     var showEnableRepeatingAlarmsDialog: Boolean,
-    var showDisableRepeatingAlarmsDialog: Boolean,
-    var snackbarHostState: SnackbarHostState
+    var showDisableRepeatingAlarmsDialog: Boolean
 )
