@@ -460,6 +460,7 @@ class AddEditAlarmViewModel @Inject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.DeleteAlarm -> viewModelScope.launch {
+                disableAlarm(alarmId = idOfAlarm)
                 alarmsRepository.deleteAlarm(alarmId = idOfAlarm)
                 File(filesDir, idOfAlarm.toString()).apply {
                     if (exists()) delete()
