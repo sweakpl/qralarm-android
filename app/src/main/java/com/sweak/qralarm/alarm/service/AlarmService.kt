@@ -3,14 +3,19 @@ package com.sweak.qralarm.alarm.service
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
+import androidx.core.content.ContextCompat
 import com.sweak.qralarm.R
+import com.sweak.qralarm.alarm.ACTION_TEMPORARY_ALARM_MUTE
 import com.sweak.qralarm.alarm.ALARM_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.activity.AlarmActivity
@@ -23,8 +28,10 @@ import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -41,6 +48,25 @@ class AlarmService : Service() {
     @Inject lateinit var alarmRingtonePlayer: AlarmRingtonePlayer
 
     private lateinit var alarm: Alarm
+
+    private lateinit var temporaryAlarmMuteJob: Job
+    private var hasAlarmBeenAlreadyTemporarilyMuted = false
+
+    private val temporaryAlarmMuteReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (hasAlarmBeenAlreadyTemporarilyMuted) return
+            else hasAlarmBeenAlreadyTemporarilyMuted = true
+
+            serviceScope.launch {
+                alarmRingtonePlayer.stop()
+
+                temporaryAlarmMuteJob = serviceScope.launch {
+                    delay(15000) // 15 seconds
+                    startAlarm()
+                }
+            }
+        }
+    }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         var shouldStopService = false
@@ -82,6 +108,13 @@ class AlarmService : Service() {
             }
 
             isRunning = true
+
+            ContextCompat.registerReceiver(
+                this@AlarmService,
+                temporaryAlarmMuteReceiver,
+                IntentFilter(ACTION_TEMPORARY_ALARM_MUTE),
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
 
             intent.extras?.getBoolean(EXTRA_IS_SNOOZE_ALARM)?.let { isSnoozeAlarm ->
                 if (!isSnoozeAlarm) {
@@ -186,6 +219,10 @@ class AlarmService : Service() {
 
     override fun onDestroy() {
         isRunning = false
+
+        if (::temporaryAlarmMuteJob.isInitialized) temporaryAlarmMuteJob.cancel()
+        unregisterReceiver(temporaryAlarmMuteReceiver)
+
         runBlocking {
             alarmsRepository.setAlarmRunning(
                 alarmId = alarm.alarmId,

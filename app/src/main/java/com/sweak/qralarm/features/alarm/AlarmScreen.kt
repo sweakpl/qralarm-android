@@ -32,6 +32,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
+import com.sweak.qralarm.alarm.ACTION_TEMPORARY_ALARM_MUTE
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
@@ -54,6 +55,7 @@ fun AlarmScreen(
     val cameraPermissionState = rememberPermissionState(
         permission = android.Manifest.permission.CAMERA
     )
+    val context = LocalContext.current
 
     ObserveAsEvents(
         flow = alarmViewModel.backendEvents,
@@ -62,6 +64,13 @@ fun AlarmScreen(
                 is AlarmScreenBackendEvent.StopAlarm -> onStopAlarm()
                 is AlarmScreenBackendEvent.RequestCodeScanToStopAlarm -> onRequestCodeScan()
                 is AlarmScreenBackendEvent.SnoozeAlarm -> onSnoozeAlarm()
+                is AlarmScreenBackendEvent.TryTemporarilyMuteAlarm -> {
+                    context.sendBroadcast(
+                        Intent(ACTION_TEMPORARY_ALARM_MUTE).apply {
+                            setPackage(context.packageName)
+                        }
+                    )
+                }
             }
         }
     )
@@ -77,8 +86,6 @@ fun AlarmScreen(
     }
 
     TimeTickReceiver { alarmViewModel.onEvent(AlarmScreenUserEvent.UpdateCurrentTime) }
-
-    val context = LocalContext.current
 
     AlarmScreenContent(
         state = alarmScreenState,

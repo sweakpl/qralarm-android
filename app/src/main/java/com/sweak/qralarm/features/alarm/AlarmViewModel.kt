@@ -101,6 +101,14 @@ class AlarmViewModel @Inject constructor(
                     }
 
                     if (!event.cameraPermissionStatus) {
+                        if (alarm.isTemporaryMuteEnabled) {
+                            viewModelScope.launch {
+                                backendEventsChannel.send(
+                                    AlarmScreenBackendEvent.TryTemporarilyMuteAlarm
+                                )
+                            }
+                        }
+
                         return@update currentState.copy(
                             permissionsDialogState =
                             AlarmScreenState.PermissionsDialogState(
@@ -111,6 +119,12 @@ class AlarmViewModel @Inject constructor(
                     }
 
                     viewModelScope.launch {
+                        if (alarm.isTemporaryMuteEnabled) {
+                            backendEventsChannel.send(
+                                AlarmScreenBackendEvent.TryTemporarilyMuteAlarm
+                            )
+                        }
+
                         backendEventsChannel.send(
                             AlarmScreenBackendEvent.RequestCodeScanToStopAlarm
                         )
