@@ -41,10 +41,7 @@ fun AlarmCard(
     onAlarmEnabledChanged: (Long, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    QRAlarmCard(
-        modifier = modifier
-            .clickable { onClick(alarmWrapper.alarmId) }
-    ) {
+    QRAlarmCard(modifier = modifier.clickable { onClick(alarmWrapper.alarmId) }) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,

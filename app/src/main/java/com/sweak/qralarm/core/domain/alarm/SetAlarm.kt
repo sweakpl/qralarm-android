@@ -53,6 +53,14 @@ class SetAlarm @Inject constructor(
             )
         }
 
+        val upcomingAlarmNotificationTimeInMillis =
+            alarmDateTime.minusHours(2).toInstant().toEpochMilli()
+
+        qrAlarmManager.scheduleUpcomingAlarmNotification(
+            alarmId = alarmId,
+            upcomingAlarmNotificationTimeInMillis = upcomingAlarmNotificationTimeInMillis
+        )
+
         return Result.Success(alarmTimInMillis = alarmTimeInMillis)
     }
 

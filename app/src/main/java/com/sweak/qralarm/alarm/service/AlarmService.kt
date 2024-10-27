@@ -12,6 +12,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.ALARM_NOTIFICATION_CHANNEL_ID
+import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.activity.AlarmActivity
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.domain.alarm.Alarm
@@ -34,6 +35,7 @@ class AlarmService : Service() {
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     @Inject lateinit var alarmsRepository: AlarmsRepository
+    @Inject lateinit var qrAlarmManager: QRAlarmManager
     @Inject lateinit var disableAlarm: DisableAlarm
     @Inject lateinit var setAlarm: SetAlarm
     @Inject lateinit var alarmRingtonePlayer: AlarmRingtonePlayer
@@ -65,6 +67,8 @@ class AlarmService : Service() {
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
             return START_NOT_STICKY
         }
+
+        qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
 
         serviceScope.launch {
             alarmsRepository.getAlarm(alarmId = alarmId)?.let {

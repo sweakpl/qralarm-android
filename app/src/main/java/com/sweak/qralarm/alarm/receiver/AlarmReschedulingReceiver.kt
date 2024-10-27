@@ -7,13 +7,14 @@ import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class AlarmReschedulingReceiver : BroadcastReceiver() {
 
-    private val receiverScope = CoroutineScope(Dispatchers.IO)
+    private val receiverScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     @Inject lateinit var rescheduleAlarms: RescheduleAlarms
 

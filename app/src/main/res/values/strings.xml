@@ -103,4 +103,6 @@
     <string name="stop">STOP</string>
     <string name="snooze_capitals">SNOOZE</string>
     <string name="alarm_snoozed_until">Alarm snoozed until:</string>
+    <string name="upcoming_alarm_indication_notification_title">Upcoming alarm</string>
+    <string name="upcoming_alarm_indication_notification_text">Alarm has been set for %1$s</string>
 </resources>

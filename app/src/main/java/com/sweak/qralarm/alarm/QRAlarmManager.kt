@@ -1,6 +1,7 @@
 package com.sweak.qralarm.alarm
 
 import android.app.AlarmManager
+import android.app.AlarmManager.RTC_WAKEUP
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -9,6 +10,7 @@ import android.os.Build
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import com.sweak.qralarm.R
+import com.sweak.qralarm.alarm.receiver.PostUpcomingAlarmNotificationReceiver
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_ALARM_ID
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_IS_SNOOZE_ALARM
@@ -62,6 +64,26 @@ class QRAlarmManager(
         )
     }
 
+    fun scheduleUpcomingAlarmNotification(
+        alarmId: Long,
+        upcomingAlarmNotificationTimeInMillis: Long
+    ) {
+        alarmManager.set(
+            RTC_WAKEUP,
+            upcomingAlarmNotificationTimeInMillis,
+            PendingIntent.getBroadcast(
+                context,
+                alarmId.toInt(),
+                Intent(context, PostUpcomingAlarmNotificationReceiver::class.java).apply {
+                    putExtra(PostUpcomingAlarmNotificationReceiver.EXTRA_ALARM_ID, alarmId)
+                },
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    PendingIntent.FLAG_IMMUTABLE
+                else 0
+            )
+        )
+    }
+
     fun cancelAlarm(alarmId: Long) {
         val alarmPendingIntent =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -86,6 +108,26 @@ class QRAlarmManager(
         if (alarmPendingIntent != null) {
             alarmManager.cancel(alarmPendingIntent)
             alarmPendingIntent.cancel()
+        }
+
+        cancelUpcomingAlarmNotification(alarmId = alarmId)
+    }
+
+    fun cancelUpcomingAlarmNotification(alarmId: Long) {
+        val upcomingAlarmNotificationPendingIntent = PendingIntent.getBroadcast(
+            context,
+            alarmId.toInt(),
+            Intent(context, PostUpcomingAlarmNotificationReceiver::class.java),
+            PendingIntent.FLAG_NO_CREATE or
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        PendingIntent.FLAG_IMMUTABLE
+                    else 0
+        )
+
+        if (upcomingAlarmNotificationPendingIntent != null) {
+            alarmManager.cancel(upcomingAlarmNotificationPendingIntent)
+            upcomingAlarmNotificationPendingIntent.cancel()
+            notificationManager.cancel(alarmId.toInt())
         }
     }
 

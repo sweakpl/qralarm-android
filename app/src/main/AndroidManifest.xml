@@ -85,6 +85,8 @@
 
         </receiver>
 
+        <receiver android:name=".alarm.receiver.PostUpcomingAlarmNotificationReceiver" />
+
     </application>
 
 </manifest>
