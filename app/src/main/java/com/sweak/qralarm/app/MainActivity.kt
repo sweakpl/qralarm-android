@@ -17,6 +17,7 @@ import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
+import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.features.add_edit_alarm.navigation.addEditAlarmScreen
 import com.sweak.qralarm.features.add_edit_alarm.navigation.navigateToAddEditAlarm
 import com.sweak.qralarm.features.custom_code_scanner.navigation.customCodeScannerScreen
@@ -27,12 +28,15 @@ import com.sweak.qralarm.features.home.navigation.navigateToHome
 import com.sweak.qralarm.features.introduction.navigation.INTRODUCTION_SCREEN_ROUTE
 import com.sweak.qralarm.features.introduction.navigation.introductionScreen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @Inject lateinit var userDataRepository: UserDataRepository
     @Inject lateinit var alarmsRepository: AlarmsRepository
     @Inject lateinit var rescheduleAlarms: RescheduleAlarms
 
@@ -41,12 +45,12 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
-        var areAlarmsAdjusted by mutableStateOf(false)
-        splashScreen.setKeepOnScreenCondition { !areAlarmsAdjusted }
+        var shouldShowSplashScreen by mutableStateOf(true)
+        splashScreen.setKeepOnScreenCondition { shouldShowSplashScreen }
 
         lifecycleScope.launch {
             rescheduleAlarms()
-            areAlarmsAdjusted = true
+            shouldShowSplashScreen = false
 
             alarmsRepository.getAllAlarms().collect { alarms ->
                 alarms.firstOrNull { alarm ->
@@ -72,13 +76,19 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        val isIntroductionFinished: Boolean
+        runBlocking {
+            isIntroductionFinished = userDataRepository.isIntroductionFinished.first()
+        }
+
         setContent {
             QRAlarmTheme {
                 val navController = rememberNavController()
 
                 NavHost(
                     navController = navController,
-                    startDestination = HOME_SCREEN_ROUTE
+                    startDestination =
+                    if (isIntroductionFinished) HOME_SCREEN_ROUTE else INTRODUCTION_SCREEN_ROUTE
                 ) {
                     introductionScreen(
                         onContinueClicked = {

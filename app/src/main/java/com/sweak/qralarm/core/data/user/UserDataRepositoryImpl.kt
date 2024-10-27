@@ -8,6 +8,14 @@ import javax.inject.Inject
 class UserDataRepositoryImpl @Inject constructor(
     private val qrAlarmPreferencesDataSource: QRAlarmPreferencesDataSource
 ): UserDataRepository {
+
+    override suspend fun setIntroductionFinished(finished: Boolean) {
+        qrAlarmPreferencesDataSource.setIntroductionFinished(finished = finished)
+    }
+
+    override val isIntroductionFinished: Flow<Boolean>
+        get() = qrAlarmPreferencesDataSource.getIntroductionFinished()
+
     override suspend fun setTemporaryScannedCode(code: String?) {
         qrAlarmPreferencesDataSource.setTemporaryScannedCode(code = code)
     }

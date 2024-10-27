@@ -31,10 +31,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.features.introduction.pages.IntroductionPage1
 import com.sweak.qralarm.features.introduction.pages.IntroductionPage2
 import com.sweak.qralarm.features.introduction.pages.IntroductionPage3
@@ -42,10 +44,21 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun IntroductionScreen(onContinueClicked: () -> Unit) {
+    val introductionViewModel = hiltViewModel<IntroductionViewModel>()
+
+    ObserveAsEvents(
+        flow = introductionViewModel.backendEvents,
+        onEvent = { event ->
+            when (event) {
+                IntroductionScreenBackendEvent.IntroductionFinishConfirmed -> onContinueClicked()
+            }
+        }
+    )
+
     IntroductionScreenContent(
         onEvent = { event ->
             when (event) {
-                IntroductionScreenUserEvent.ContinueClicked -> onContinueClicked()
+                IntroductionScreenUserEvent.ContinueClicked -> introductionViewModel.onEvent(event)
             }
         }
     )
