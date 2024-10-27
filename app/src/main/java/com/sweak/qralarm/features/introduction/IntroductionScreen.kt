@@ -1,6 +1,5 @@
 package com.sweak.qralarm.features.introduction
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,12 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +38,7 @@ import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.features.introduction.pages.IntroductionPage1
 import com.sweak.qralarm.features.introduction.pages.IntroductionPage2
 import com.sweak.qralarm.features.introduction.pages.IntroductionPage3
+import kotlinx.coroutines.launch
 
 @Composable
 fun IntroductionScreen(onContinueClicked: () -> Unit) {
@@ -76,7 +71,7 @@ private fun IntroductionScreenContent(
                 )
         ) {
             val pagerState = rememberPagerState(pageCount = { 3 })
-            var isContinueButtonVisible by remember { mutableStateOf(false) }
+            val composableScope = rememberCoroutineScope()
 
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -106,17 +101,12 @@ private fun IntroductionScreenContent(
                     )
                 )
 
-                LaunchedEffect(pagerState) {
-                    snapshotFlow { pagerState.settledPage }.collect { page ->
-                        if (page == 2) {
-                            isContinueButtonVisible = true
-                        }
-                    }
-                }
-
                 HorizontalPager(
                     state = pagerState,
-                    modifier = Modifier.padding(bottom = MaterialTheme.space.large)
+                    verticalAlignment = Alignment.Top,
+                    modifier = Modifier
+                        .padding(bottom = MaterialTheme.space.large)
+                        .weight(1f)
                 ) { page ->
                     when (page) {
                         0 -> IntroductionPage1(
@@ -140,32 +130,41 @@ private fun IntroductionScreenContent(
 
                     Box(
                         modifier = Modifier
-                            .padding(MaterialTheme.space.small)
+                            .padding(horizontal = MaterialTheme.space.small)
                             .clip(CircleShape)
                             .background(color)
                             .size(MaterialTheme.space.small)
                     )
                 }
             }
-
-            AnimatedVisibility(
-                visible = isContinueButtonVisible,
+            
+            Button(
+                onClick = { 
+                    if (pagerState.currentPage == 2) {
+                        onEvent(IntroductionScreenUserEvent.ContinueClicked)
+                    } else {
+                        composableScope.launch {
+                            pagerState.animateScrollToPage(page = pagerState.currentPage + 1)
+                        }
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiary
+                ),
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(
                         start = MaterialTheme.space.mediumLarge,
                         end = MaterialTheme.space.mediumLarge,
                         bottom = MaterialTheme.space.mediumLarge
                     )
             ) {
-                Button(
-                    onClick = { onEvent(IntroductionScreenUserEvent.ContinueClicked) },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = stringResource(R.string.lets_go))
-                }
+                Text(
+                    text = stringResource(
+                        if (pagerState.currentPage == 2) R.string.lets_go
+                        else R.string.next_step
+                    )
+                )
             }
         }
     }
