@@ -1,5 +1,6 @@
 package com.sweak.qralarm.alarm.service
 
+import android.animation.ValueAnimator
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
@@ -10,6 +11,7 @@ import android.content.IntentFilter
 import android.content.pm.ServiceInfo
 import android.net.Uri
 import android.os.Build
+import android.view.animation.LinearInterpolator
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
@@ -34,6 +36,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -49,6 +52,9 @@ class AlarmService : Service() {
 
     private lateinit var alarm: Alarm
 
+    private lateinit var alarmVolumeAnimator: ValueAnimator
+    private lateinit var delayedVibrationJob: Job
+
     private lateinit var temporaryAlarmMuteJob: Job
     private var hasAlarmBeenAlreadyTemporarilyMuted = false
 
@@ -59,10 +65,14 @@ class AlarmService : Service() {
 
             serviceScope.launch {
                 alarmRingtonePlayer.stop()
+                if (::delayedVibrationJob.isInitialized) delayedVibrationJob.cancel()
 
                 temporaryAlarmMuteJob = serviceScope.launch {
                     delay(15000) // 15 seconds
-                    startAlarm()
+
+                    withContext(Dispatchers.Main) {
+                        startAlarm()
+                    }
                 }
             }
         }
@@ -132,7 +142,10 @@ class AlarmService : Service() {
             )
 
             handleAlarmRescheduling()
-            startAlarm()
+
+            withContext(Dispatchers.Main) {
+                startAlarm()
+            }
         }
 
         return START_NOT_STICKY
@@ -202,6 +215,17 @@ class AlarmService : Service() {
     }
 
     private fun startAlarm() {
+        if (alarm.gentleWakeUpDurationInSeconds > 0) {
+            alarmVolumeAnimator = ValueAnimator.ofInt(0, 100).apply {
+                duration = alarm.gentleWakeUpDurationInSeconds * 1000L
+                interpolator = LinearInterpolator()
+                addUpdateListener {
+                    alarmRingtonePlayer.setVolume(it.animatedValue as Int)
+                }
+                start()
+            }
+        }
+
         if (alarm.ringtone == Alarm.Ringtone.CUSTOM_SOUND) {
             if (alarm.customRingtoneUriString != null) {
                 alarmRingtonePlayer.playAlarmRingtone(Uri.parse(alarm.customRingtoneUriString))
@@ -213,7 +237,14 @@ class AlarmService : Service() {
         }
 
         if (alarm.areVibrationsEnabled) {
-            alarmRingtonePlayer.startVibration()
+            if (alarm.gentleWakeUpDurationInSeconds > 0) {
+                delayedVibrationJob = serviceScope.launch {
+                    delay(alarm.gentleWakeUpDurationInSeconds * 1000L)
+                    alarmRingtonePlayer.startVibration()
+                }
+            } else {
+                alarmRingtonePlayer.startVibration()
+            }
         }
     }
 
@@ -229,10 +260,15 @@ class AlarmService : Service() {
                 running = false
             )
         }
+
+        if (::alarmVolumeAnimator.isInitialized) alarmVolumeAnimator.cancel()
+        if (::delayedVibrationJob.isInitialized) delayedVibrationJob.cancel()
+
         alarmRingtonePlayer.apply {
             stop()
             onDestroy()
         }
+
         serviceScope.cancel()
 
         super.onDestroy()

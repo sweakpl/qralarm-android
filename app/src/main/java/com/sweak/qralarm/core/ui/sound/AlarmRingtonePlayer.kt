@@ -9,6 +9,7 @@ import android.os.VibrationAttributes
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
+import androidx.annotation.IntRange
 import androidx.annotation.RawRes
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
@@ -133,6 +134,19 @@ class AlarmRingtonePlayer(
             } else {
                 vibrator.vibrate(longArrayOf(0, 1000, 1000), 0, vibrationAudioAttributes)
             }
+        }
+    }
+
+    fun setVolume(@IntRange(from = 0, to = 100) volume: Int) {
+        try {
+            val scaledVolume = volume / 100f
+
+            mediaPlayer.setVolume(scaledVolume, scaledVolume)
+        } catch (illegalStateException: IllegalStateException) {
+            Log.e(
+                "AlarmRingtonePlayer",
+                "mediaPlayer was not initialized! Cannot set volume..."
+            )
         }
     }
 
