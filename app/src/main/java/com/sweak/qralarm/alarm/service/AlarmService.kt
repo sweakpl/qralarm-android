@@ -88,12 +88,13 @@ class AlarmService : Service() {
                 return@run this
             }
         }
-        val alarmNotification = createAlarmNotification(alarmId = alarmId)
+
+        qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
 
         ServiceCompat.startForeground(
             this,
             alarmId.toInt(),
-            alarmNotification,
+            createAlarmNotification(alarmId = alarmId),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
             } else 0
@@ -103,8 +104,6 @@ class AlarmService : Service() {
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
             return START_NOT_STICKY
         }
-
-        qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
 
         serviceScope.launch {
             alarmsRepository.getAlarm(alarmId = alarmId)?.let {
