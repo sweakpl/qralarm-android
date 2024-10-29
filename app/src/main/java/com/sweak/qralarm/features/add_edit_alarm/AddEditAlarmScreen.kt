@@ -1122,7 +1122,10 @@ private fun getAlarmSnoozeModeString(
 fun getAlarmRingtoneString(ringtone: Ringtone): String {
     return when (ringtone) {
         Ringtone.GENTLE_GUITAR -> stringResource(R.string.gentle_guitar)
+        Ringtone.KALIMBA -> stringResource(R.string.kalimba)
+        Ringtone.CLASSIC_ALARM -> stringResource(R.string.classic_alarm)
         Ringtone.ALARM_CLOCK -> stringResource(R.string.alarm_clock)
+        Ringtone.ROOSTER -> stringResource(R.string.rooster)
         Ringtone.AIR_HORN -> stringResource(R.string.air_horn)
         Ringtone.CUSTOM_SOUND -> stringResource(R.string.custom_sound)
     }

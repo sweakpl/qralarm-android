@@ -193,7 +193,10 @@ class AlarmRingtonePlayer(
     private fun getOriginalRingtoneResourceId(ringtone: Ringtone): Int {
         return when (ringtone) {
             Ringtone.GENTLE_GUITAR -> R.raw.gentle_guitar
+            Ringtone.KALIMBA -> R.raw.kalimba
+            Ringtone.CLASSIC_ALARM -> R.raw.classic_alarm
             Ringtone.ALARM_CLOCK -> R.raw.alarm_clock
+            Ringtone.ROOSTER -> R.raw.rooster
             Ringtone.AIR_HORN -> R.raw.air_horn
             Ringtone.CUSTOM_SOUND -> -1
         }

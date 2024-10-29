@@ -39,7 +39,10 @@ data class Alarm(
 
     enum class Ringtone {
         GENTLE_GUITAR,
+        KALIMBA,
+        CLASSIC_ALARM,
         ALARM_CLOCK,
+        ROOSTER,
         AIR_HORN,
         CUSTOM_SOUND
     }

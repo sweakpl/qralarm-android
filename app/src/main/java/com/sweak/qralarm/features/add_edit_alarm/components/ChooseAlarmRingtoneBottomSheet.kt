@@ -104,7 +104,10 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
                                 text = stringResource(
                                     when (alarmRingtone) {
                                         Ringtone.GENTLE_GUITAR -> R.string.gentle_guitar
+                                        Ringtone.KALIMBA -> R.string.kalimba
+                                        Ringtone.CLASSIC_ALARM -> R.string.classic_alarm
                                         Ringtone.ALARM_CLOCK -> R.string.alarm_clock
+                                        Ringtone.ROOSTER -> R.string.rooster
                                         Ringtone.AIR_HORN -> R.string.air_horn
                                         Ringtone.CUSTOM_SOUND -> R.string.custom_sound
                                     }

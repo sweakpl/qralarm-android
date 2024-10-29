@@ -108,4 +108,7 @@
     <string name="next_step">Next step</string>
     <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarm in less than 1 hour - in order to edit, disable the alarm by scanning the code.</string>
     <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarm in less than 1 hour - scan the code to disable the alarm.</string>
+    <string name="kalimba">Kalimba</string>
+    <string name="classic_alarm">Classic alarm</string>
+    <string name="rooster">Rooster</string>
 </resources>
