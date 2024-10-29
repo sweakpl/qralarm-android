@@ -85,7 +85,9 @@
 
         </receiver>
 
-        <receiver android:name=".alarm.receiver.PostUpcomingAlarmNotificationReceiver" />
+        <receiver
+            android:name=".alarm.receiver.PostUpcomingAlarmNotificationReceiver"
+            android:directBootAware="true" />
 
     </application>
 
