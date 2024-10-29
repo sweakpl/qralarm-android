@@ -2,7 +2,7 @@ package com.sweak.qralarm.features.home
 
 sealed class HomeScreenUserEvent {
     data object AddNewAlarm : HomeScreenUserEvent()
-    data class EditAlarm(val alarmId: Long) : HomeScreenUserEvent()
+    data class EditAlarmClicked(val alarmId: Long) : HomeScreenUserEvent()
     data class AlarmEnabledChangeClicked(
         val alarmId: Long? = null,
         val enabled: Boolean? = null

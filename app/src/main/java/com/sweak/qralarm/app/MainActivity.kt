@@ -22,6 +22,8 @@ import com.sweak.qralarm.features.add_edit_alarm.navigation.addEditAlarmScreen
 import com.sweak.qralarm.features.add_edit_alarm.navigation.navigateToAddEditAlarm
 import com.sweak.qralarm.features.custom_code_scanner.navigation.customCodeScannerScreen
 import com.sweak.qralarm.features.custom_code_scanner.navigation.navigateToCustomCodeScanner
+import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmScannerScreen
+import com.sweak.qralarm.features.disable_alarm_scanner.navigation.navigateToDisableAlarmScanner
 import com.sweak.qralarm.features.home.navigation.HOME_SCREEN_ROUTE
 import com.sweak.qralarm.features.home.navigation.homeScreen
 import com.sweak.qralarm.features.home.navigation.navigateToHome
@@ -109,6 +111,12 @@ class MainActivity : ComponentActivity() {
                         },
                         onEditAlarm = { alarmId ->
                             navController.navigateToAddEditAlarm(alarmId = alarmId)
+                        },
+                        onRedirectToScanner = { alarmId ->
+                            navController.navigateToDisableAlarmScanner(
+                                alarmId = alarmId,
+                                isDisablingBeforeAlarmFired = true
+                            )
                         }
                     )
 
@@ -129,6 +137,12 @@ class MainActivity : ComponentActivity() {
 
                     customCodeScannerScreen(
                         onCustomCodeSaved = {
+                            navController.popBackStack()
+                        }
+                    )
+
+                    disableAlarmScannerScreen(
+                        onAlarmDisabled = {
                             navController.popBackStack()
                         }
                     )

@@ -540,7 +540,8 @@ class AddEditAlarmViewModel @Inject constructor(
                         ?: currentState.currentlyAssignedCode,
                     gentleWakeUpDurationInSeconds =
                     currentState.gentleWakeupDurationInSeconds,
-                    isTemporaryMuteEnabled = currentState.isTemporaryMuteEnabled
+                    isTemporaryMuteEnabled = currentState.isTemporaryMuteEnabled,
+                    skipAlarmUntilTimeInMillis = null
                 )
 
                 val alarmId = alarmsRepository.addOrEditAlarm(alarm = alarmToSave).run {

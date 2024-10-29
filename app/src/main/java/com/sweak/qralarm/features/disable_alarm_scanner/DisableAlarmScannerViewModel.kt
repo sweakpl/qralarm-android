@@ -8,6 +8,7 @@ import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.ID_OF_ALARM
+import com.sweak.qralarm.features.disable_alarm_scanner.navigation.IS_DISABLING_BEFORE_ALARM_FIRED
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -23,6 +24,9 @@ class DisableAlarmScannerViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM] ?: 0
+    private val isDisablingBeforeAlarmFired: Boolean =
+        savedStateHandle[IS_DISABLING_BEFORE_ALARM_FIRED] ?: false
+
     private lateinit var alarm: Alarm
     private var shouldScan = true
 
@@ -49,6 +53,15 @@ class DisableAlarmScannerViewModel @Inject constructor(
                                 alarmId = idOfAlarm,
                                 snoozed = false
                             )
+
+                            if (isDisablingBeforeAlarmFired) {
+                                disableAlarm(alarmId = alarm.alarmId)
+                                alarmsRepository.setSkipNextAlarm(
+                                    alarmId = alarm.alarmId,
+                                    skip = true
+                                )
+                            }
+
                             handleAlarmRescheduling()
 
                             backendEventsChannel.send(
@@ -60,6 +73,15 @@ class DisableAlarmScannerViewModel @Inject constructor(
                                     alarmId = idOfAlarm,
                                     snoozed = false
                                 )
+
+                                if (isDisablingBeforeAlarmFired) {
+                                    disableAlarm(alarmId = alarm.alarmId)
+                                    alarmsRepository.setSkipNextAlarm(
+                                        alarmId = alarm.alarmId,
+                                        skip = true
+                                    )
+                                }
+
                                 handleAlarmRescheduling()
 
                                 backendEventsChannel.send(

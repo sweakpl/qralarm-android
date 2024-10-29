@@ -17,7 +17,8 @@ data class Alarm(
     val isUsingCode: Boolean,
     val assignedCode: String?,
     val gentleWakeUpDurationInSeconds: Int,
-    val isTemporaryMuteEnabled: Boolean
+    val isTemporaryMuteEnabled: Boolean,
+    val skipAlarmUntilTimeInMillis: Long?
 ) {
     sealed class RepeatingMode {
         data object Once : RepeatingMode()

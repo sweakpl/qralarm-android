@@ -27,7 +27,10 @@ class SetAlarm @Inject constructor(
             }
             is Alarm.RepeatingMode.Days -> {
                 while (alarmDateTime <= currentDateTime ||
-                    alarmDateTime.dayOfWeek !in alarm.repeatingMode.repeatingDaysOfWeek
+                    alarmDateTime.dayOfWeek !in alarm.repeatingMode.repeatingDaysOfWeek ||
+                    alarm.skipAlarmUntilTimeInMillis?.run {
+                        return@run alarmDateTime.toInstant().toEpochMilli() <= this
+                    } == true
                 ) {
                     alarmDateTime = alarmDateTime.plusDays(1)
                 }

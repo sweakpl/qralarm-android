@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.CanManipulateAlarm
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
@@ -25,7 +26,8 @@ class HomeViewModel @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
     private val qrAlarmManager: QRAlarmManager,
     private val setAlarm: SetAlarm,
-    private val disableAlarm: DisableAlarm
+    private val disableAlarm: DisableAlarm,
+    private val canManipulateAlarm: CanManipulateAlarm
 ): ViewModel() {
 
     var state = MutableStateFlow(HomeScreenState())
@@ -77,12 +79,29 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeScreenUserEvent) {
         when (event) {
+            is HomeScreenUserEvent.EditAlarmClicked -> viewModelScope.launch {
+                if (canManipulateAlarm(alarmId = event.alarmId)) {
+                    backendEventsChannel.send(
+                        HomeScreenBackendEvent.RedirectToEditAlarm(alarmId = event.alarmId)
+                    )
+                } else {
+                    backendEventsChannel.send(HomeScreenBackendEvent.CanNotEditAlarm)
+                }
+            }
             is HomeScreenUserEvent.TryChangeAlarmEnabled -> {
                 if (event.enabled == false) {
-                    toggleAlarm(
-                        alarmId = event.alarmId!!,
-                        enabled = event.enabled
-                    )
+                    viewModelScope.launch {
+                        if (canManipulateAlarm(alarmId = event.alarmId!!)) {
+                            toggleAlarm(
+                                alarmId = event.alarmId,
+                                enabled = event.enabled
+                            )
+                        } else {
+                            backendEventsChannel.send(
+                                HomeScreenBackendEvent.CanNotDisableAlarm(alarmId = event.alarmId)
+                            )
+                        }
+                    }
 
                     return
                 }
@@ -217,6 +236,10 @@ class HomeViewModel @Inject constructor(
             var setAlarmResult: SetAlarm.Result? = null
 
             if (enabled) {
+                alarmsRepository.setSkipNextAlarm(
+                    alarmId = alarmId,
+                    skip = false
+                )
                 setAlarmResult = setAlarm(alarmId = alarmId)
             } else {
                 disableAlarm(alarmId = alarmId)

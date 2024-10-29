@@ -38,7 +38,8 @@ class AlarmsRepositoryImpl @Inject constructor(
                 isUsingCode = alarm.isUsingCode,
                 assignedCode = alarm.assignedCode,
                 gentleWakeUpDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
-                isTemporaryMuteEnabled = alarm.isTemporaryMuteEnabled
+                isTemporaryMuteEnabled = alarm.isTemporaryMuteEnabled,
+                skipAlarmUntilTimeInMillis = alarm.skipAlarmUntilTimeInMillis
             )
         )
     }
@@ -66,6 +67,17 @@ class AlarmsRepositoryImpl @Inject constructor(
                     isAlarmSnoozed = snoozed,
                     nextSnoozedAlarmTimeInMillis =
                     if (!snoozed) null else alarmEntity.nextSnoozedAlarmTimeInMillis
+                )
+            )
+        }
+    }
+
+    override suspend fun setSkipNextAlarm(alarmId: Long, skip: Boolean) {
+        alarmsDao.getAlarm(alarmId = alarmId).firstOrNull()?.let { alarmEntity ->
+            alarmsDao.upsertAlarm(
+                alarmEntity = alarmEntity.copy(
+                    skipAlarmUntilTimeInMillis =
+                    if (skip) alarmEntity.nextAlarmTimeInMillis else null
                 )
             )
         }
@@ -129,7 +141,8 @@ class AlarmsRepositoryImpl @Inject constructor(
             isUsingCode = alarmEntity.isUsingCode,
             assignedCode = alarmEntity.assignedCode,
             gentleWakeUpDurationInSeconds = alarmEntity.gentleWakeUpDurationInSeconds,
-            isTemporaryMuteEnabled = alarmEntity.isTemporaryMuteEnabled
+            isTemporaryMuteEnabled = alarmEntity.isTemporaryMuteEnabled,
+            skipAlarmUntilTimeInMillis = alarmEntity.skipAlarmUntilTimeInMillis
         )
     }
 }

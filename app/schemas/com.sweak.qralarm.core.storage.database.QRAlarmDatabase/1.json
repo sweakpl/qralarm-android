@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2a00868a4cb096ecdea477688a43c9aa",
+    "identityHash": "4b3cc56524eefc32b7660690a441c24f",
     "entities": [
       {
         "tableName": "alarm",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alarmId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `alarmHourOfDay` INTEGER NOT NULL, `alarmMinute` INTEGER NOT NULL, `isAlarmEnabled` INTEGER NOT NULL, `isAlarmRunning` INTEGER NOT NULL, `nextAlarmTimeInMillis` INTEGER NOT NULL, `repeatingAlarmDays` TEXT, `numberOfSnoozes` INTEGER NOT NULL, `snoozeDurationInMinutes` INTEGER NOT NULL, `numberOfSnoozesLeft` INTEGER NOT NULL, `isAlarmSnoozed` INTEGER NOT NULL, `nextSnoozedAlarmTimeInMillis` INTEGER, `ringtone` TEXT NOT NULL, `customRingtoneUriString` TEXT, `areVibrationsEnabled` INTEGER NOT NULL, `isUsingCode` INTEGER NOT NULL, `assignedCode` TEXT, `gentleWakeUpDurationInSeconds` INTEGER NOT NULL, `isTemporaryMuteEnabled` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alarmId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `alarmHourOfDay` INTEGER NOT NULL, `alarmMinute` INTEGER NOT NULL, `isAlarmEnabled` INTEGER NOT NULL, `isAlarmRunning` INTEGER NOT NULL, `nextAlarmTimeInMillis` INTEGER NOT NULL, `repeatingAlarmDays` TEXT, `numberOfSnoozes` INTEGER NOT NULL, `snoozeDurationInMinutes` INTEGER NOT NULL, `numberOfSnoozesLeft` INTEGER NOT NULL, `isAlarmSnoozed` INTEGER NOT NULL, `nextSnoozedAlarmTimeInMillis` INTEGER, `ringtone` TEXT NOT NULL, `customRingtoneUriString` TEXT, `areVibrationsEnabled` INTEGER NOT NULL, `isUsingCode` INTEGER NOT NULL, `assignedCode` TEXT, `gentleWakeUpDurationInSeconds` INTEGER NOT NULL, `isTemporaryMuteEnabled` INTEGER NOT NULL, `skipAlarmUntilTimeInMillis` INTEGER)",
         "fields": [
           {
             "fieldPath": "alarmId",
@@ -121,6 +121,12 @@
             "columnName": "isTemporaryMuteEnabled",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "skipAlarmUntilTimeInMillis",
+            "columnName": "skipAlarmUntilTimeInMillis",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -136,7 +142,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2a00868a4cb096ecdea477688a43c9aa')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b3cc56524eefc32b7660690a441c24f')"
     ]
   }
 }

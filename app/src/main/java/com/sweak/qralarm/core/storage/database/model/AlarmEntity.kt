@@ -24,5 +24,6 @@ data class AlarmEntity(
     val isUsingCode: Boolean,
     val assignedCode: String?,
     val gentleWakeUpDurationInSeconds: Int,
-    val isTemporaryMuteEnabled: Boolean
+    val isTemporaryMuteEnabled: Boolean,
+    val skipAlarmUntilTimeInMillis: Long?
 )

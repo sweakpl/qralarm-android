@@ -59,7 +59,8 @@ import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 @Composable
 fun HomeScreen(
     onAddNewAlarm: () -> Unit,
-    onEditAlarm: (Long) -> Unit
+    onEditAlarm: (Long) -> Unit,
+    onRedirectToScanner: (alarmId: Long) -> Unit
 ) {
     val homeViewModel = hiltViewModel<HomeViewModel>()
     val homeScreenState by homeViewModel.state.collectAsStateWithLifecycle()
@@ -113,6 +114,23 @@ fun HomeScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
+                is HomeScreenBackendEvent.RedirectToEditAlarm -> onEditAlarm(event.alarmId)
+                is HomeScreenBackendEvent.CanNotEditAlarm -> {
+                    Toast.makeText(
+                        context,
+                        R.string.alarm_in_less_than_1_hour_to_edit_scan_code,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                is HomeScreenBackendEvent.CanNotDisableAlarm -> {
+                    Toast.makeText(
+                        context,
+                        R.string.alarm_in_less_than_1_hour_scan_code_to_disable,
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    onRedirectToScanner(event.alarmId)
+                }
             }
         }
     )
@@ -134,7 +152,6 @@ fun HomeScreen(
         onEvent = { event ->
             when (event) {
                 is HomeScreenUserEvent.AddNewAlarm -> onAddNewAlarm()
-                is HomeScreenUserEvent.EditAlarm -> onEditAlarm(event.alarmId)
                 is HomeScreenUserEvent.AlarmEnabledChangeClicked -> {
                     homeViewModel.onEvent(
                         event = HomeScreenUserEvent.TryChangeAlarmEnabled(
@@ -310,7 +327,7 @@ private fun HomeScreenContent(
                     AlarmCard(
                         alarmWrapper = it,
                         onClick = { alarmId ->
-                            onEvent(HomeScreenUserEvent.EditAlarm(alarmId = alarmId))
+                            onEvent(HomeScreenUserEvent.EditAlarmClicked(alarmId = alarmId))
                         },
                         onAlarmEnabledChanged = { alarmId, enabled ->
                             onEvent(
