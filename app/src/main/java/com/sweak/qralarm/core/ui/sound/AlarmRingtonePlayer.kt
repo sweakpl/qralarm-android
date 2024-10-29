@@ -14,6 +14,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -26,6 +27,8 @@ class AlarmRingtonePlayer(
     private val vibrator: Vibrator
 ) {
     private val playerScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    lateinit var volumeIncreaseJob: Job
+    lateinit var vibrationDelayJob: Job
 
     fun playAlarmRingtone(ringtone: Ringtone, volumeIncreaseSeconds: Int) {
         val alarmRingtoneUri: Uri = if (ringtone != Ringtone.CUSTOM_SOUND) {
@@ -58,7 +61,7 @@ class AlarmRingtonePlayer(
         }
 
         if (volumeIncreaseSeconds > 0) {
-            playerScope.launch {
+            volumeIncreaseJob = playerScope.launch {
                 for (volume in 0..100) {
                     try {
                         val scaledVolume = volume / 100f
@@ -116,7 +119,8 @@ class AlarmRingtonePlayer(
     }
 
     fun stop() {
-        playerScope.cancel()
+        if (::volumeIncreaseJob.isInitialized) volumeIncreaseJob.cancel()
+        if (::vibrationDelayJob.isInitialized) vibrationDelayJob.cancel()
 
         try {
             vibrator.cancel()
@@ -134,7 +138,7 @@ class AlarmRingtonePlayer(
 
     fun startVibration(delaySeconds: Int) {
         if (delaySeconds > 0) {
-            playerScope.launch {
+            vibrationDelayJob = playerScope.launch {
                 delay(delaySeconds * 1000L)
                 startVibrationInternal()
             }
