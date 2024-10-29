@@ -9,10 +9,15 @@ import android.os.VibrationAttributes
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
-import androidx.annotation.IntRange
 import androidx.annotation.RawRes
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 class AlarmRingtonePlayer(
@@ -20,17 +25,19 @@ class AlarmRingtonePlayer(
     private val mediaPlayer: MediaPlayer,
     private val vibrator: Vibrator
 ) {
-    fun playAlarmRingtone(ringtone: Ringtone) {
+    private val playerScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+
+    fun playAlarmRingtone(ringtone: Ringtone, volumeIncreaseSeconds: Int) {
         val alarmRingtoneUri: Uri = if (ringtone != Ringtone.CUSTOM_SOUND) {
             getOriginalAlarmRingtoneUri(ringtone)
         } else {
             getOriginalAlarmRingtoneUri(Ringtone.GENTLE_GUITAR)
         }
 
-        playAlarmRingtone(alarmRingtoneUri)
+        playAlarmRingtone(alarmRingtoneUri, volumeIncreaseSeconds)
     }
 
-    fun playAlarmRingtone(alarmRingtoneUri: Uri) {
+    fun playAlarmRingtone(alarmRingtoneUri: Uri, volumeIncreaseSeconds: Int) {
         mediaPlayer.apply {
             reset()
             try {
@@ -43,13 +50,32 @@ class AlarmRingtonePlayer(
                 setDataSource(context, alarmRingtoneUri)
                 isLooping = true
                 prepare()
-                start()
             } catch (illegalStateException: IllegalStateException) {
                 return
             } catch (ioException: IOException) {
                 return
             }
         }
+
+        if (volumeIncreaseSeconds > 0) {
+            playerScope.launch {
+                for (volume in 0..100) {
+                    try {
+                        val scaledVolume = volume / 100f
+                        mediaPlayer.setVolume(scaledVolume, scaledVolume)
+                    } catch (illegalStateException: IllegalStateException) {
+                        Log.e(
+                            "AlarmRingtonePlayer",
+                            "mediaPlayer was not initialized! Cannot set volume..."
+                        )
+                    }
+
+                    delay(volumeIncreaseSeconds * 10L)
+                }
+            }
+        }
+
+        mediaPlayer.start()
     }
 
     fun playAlarmRingtonePreview(ringtone: Ringtone, onPreviewCompleted: () -> Unit) {
@@ -90,6 +116,8 @@ class AlarmRingtonePlayer(
     }
 
     fun stop() {
+        playerScope.cancel()
+
         try {
             vibrator.cancel()
 
@@ -104,8 +132,19 @@ class AlarmRingtonePlayer(
         }
     }
 
+    fun startVibration(delaySeconds: Int) {
+        if (delaySeconds > 0) {
+            playerScope.launch {
+                delay(delaySeconds * 1000L)
+                startVibrationInternal()
+            }
+        } else {
+            startVibrationInternal()
+        }
+    }
+
     @Suppress("DEPRECATION")
-    fun startVibration() {
+    private fun startVibrationInternal() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val vibrationAttributes = VibrationAttributes.Builder()
                 .setUsage(VibrationAttributes.USAGE_ALARM)
@@ -137,19 +176,6 @@ class AlarmRingtonePlayer(
         }
     }
 
-    fun setVolume(@IntRange(from = 0, to = 100) volume: Int) {
-        try {
-            val scaledVolume = volume / 100f
-
-            mediaPlayer.setVolume(scaledVolume, scaledVolume)
-        } catch (illegalStateException: IllegalStateException) {
-            Log.e(
-                "AlarmRingtonePlayer",
-                "mediaPlayer was not initialized! Cannot set volume..."
-            )
-        }
-    }
-
     private fun getOriginalAlarmRingtoneUri(ringtone: Ringtone): Uri {
         return Uri.parse(
             "android.resource://"
@@ -170,6 +196,7 @@ class AlarmRingtonePlayer(
     }
 
     fun onDestroy() {
+        playerScope.cancel()
         vibrator.cancel()
         mediaPlayer.apply {
             reset()
