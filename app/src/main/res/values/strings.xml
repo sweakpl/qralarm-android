@@ -111,4 +111,6 @@
     <string name="kalimba">Kalimba</string>
     <string name="classic_alarm">Classic alarm</string>
     <string name="rooster">Rooster</string>
+    <string name="menu">Menu</string>
+    <string name="introduction">Introduction</string>
 </resources>

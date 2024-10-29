@@ -6,6 +6,7 @@
     <string name="content_description_close_icon">Close icon</string>
     <string name="content_description_done_icon">Done icon</string>
     <string name="content_description_forward_arrow_icon">Forward arrow icon</string>
+    <string name="content_description_back_arrow_icon">Back arrow icon</string>
     <string name="content_description_drop_down_arrow_icon">Drop down arrow icon</string>
     <string name="content_description_play_icon">Play icon</string>
     <string name="content_description_stop_icon">Stop icon</string>

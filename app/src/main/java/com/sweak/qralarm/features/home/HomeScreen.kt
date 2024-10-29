@@ -60,6 +60,7 @@ import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 fun HomeScreen(
     onAddNewAlarm: () -> Unit,
     onEditAlarm: (Long) -> Unit,
+    onMenuClicked: () -> Unit,
     onRedirectToScanner: (alarmId: Long) -> Unit
 ) {
     val homeViewModel = hiltViewModel<HomeViewModel>()
@@ -151,6 +152,7 @@ fun HomeScreen(
         state = homeScreenState,
         onEvent = { event ->
             when (event) {
+                is HomeScreenUserEvent.MenuClicked -> onMenuClicked()
                 is HomeScreenUserEvent.AddNewAlarm -> onAddNewAlarm()
                 is HomeScreenUserEvent.AlarmEnabledChangeClicked -> {
                     homeViewModel.onEvent(
@@ -246,7 +248,7 @@ private fun HomeScreenContent(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = { /* TODO */ }
+                        onClick = { onEvent(HomeScreenUserEvent.MenuClicked) }
                     ) {
                         Icon(
                             imageVector = QRAlarmIcons.Menu,

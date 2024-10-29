@@ -1,6 +1,7 @@
 package com.sweak.qralarm.core.designsystem.icon
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Alarm
@@ -32,6 +33,7 @@ object QRAlarmIcons {
     val Close = Icons.Outlined.Close
     val Done = Icons.Outlined.Done
     val ForwardArrow = Icons.AutoMirrored.Outlined.ArrowForwardIos
+    val BackArrow = Icons.AutoMirrored.Outlined.ArrowBackIos
     val ArrowDropUp = Icons.Outlined.ArrowDropUp
     val ArrowDropDown = Icons.Outlined.ArrowDropDown
     val Play = Icons.Outlined.PlayArrow

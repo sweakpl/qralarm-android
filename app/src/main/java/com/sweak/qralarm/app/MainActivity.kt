@@ -29,6 +29,9 @@ import com.sweak.qralarm.features.home.navigation.homeScreen
 import com.sweak.qralarm.features.home.navigation.navigateToHome
 import com.sweak.qralarm.features.introduction.navigation.INTRODUCTION_SCREEN_ROUTE
 import com.sweak.qralarm.features.introduction.navigation.introductionScreen
+import com.sweak.qralarm.features.introduction.navigation.navigateToIntroduction
+import com.sweak.qralarm.features.menu.navigation.menuScreen
+import com.sweak.qralarm.features.menu.navigation.navigateToMenu
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -90,18 +93,23 @@ class MainActivity : ComponentActivity() {
                 NavHost(
                     navController = navController,
                     startDestination =
-                    if (isIntroductionFinished) HOME_SCREEN_ROUTE else INTRODUCTION_SCREEN_ROUTE
+                    if (isIntroductionFinished) HOME_SCREEN_ROUTE
+                    else "$INTRODUCTION_SCREEN_ROUTE/${false}"
                 ) {
                     introductionScreen(
-                        onContinueClicked = {
-                            navController.navigateToHome(
-                                navOptions = navOptions {
-                                    popUpTo(
-                                        route = INTRODUCTION_SCREEN_ROUTE,
-                                        popUpToBuilder = { inclusive = true }
-                                    )
-                                }
-                            )
+                        onContinueClicked = { wasLaunchedFromMenu ->
+                            if (wasLaunchedFromMenu) {
+                                navController.popBackStack()
+                            } else {
+                                navController.navigateToHome(
+                                    navOptions = navOptions {
+                                        popUpTo(
+                                            route = "$INTRODUCTION_SCREEN_ROUTE/${false}",
+                                            popUpToBuilder = { inclusive = true }
+                                        )
+                                    }
+                                )
+                            }
                         }
                     )
 
@@ -111,6 +119,9 @@ class MainActivity : ComponentActivity() {
                         },
                         onEditAlarm = { alarmId ->
                             navController.navigateToAddEditAlarm(alarmId = alarmId)
+                        },
+                        onMenuClicked = {
+                            navController.navigateToMenu()
                         },
                         onRedirectToScanner = { alarmId ->
                             navController.navigateToDisableAlarmScanner(
@@ -144,6 +155,17 @@ class MainActivity : ComponentActivity() {
                     disableAlarmScannerScreen(
                         onAlarmDisabled = {
                             navController.popBackStack()
+                        }
+                    )
+
+                    menuScreen(
+                        onBackClicked = {
+                            navController.navigateUp()
+                        },
+                        onIntroductionClicked = {
+                            navController.navigateToIntroduction(
+                                isLaunchedFromMenu = true
+                            )
                         }
                     )
                 }
