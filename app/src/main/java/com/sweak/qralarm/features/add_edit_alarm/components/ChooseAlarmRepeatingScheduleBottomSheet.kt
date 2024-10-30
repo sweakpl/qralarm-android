@@ -161,6 +161,30 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                     )
                 }
 
+                Row(
+                    modifier = Modifier
+                        .selectable(
+                            selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.EVERYDAY,
+                            onClick = { selectedAlarmRepeatingMode = AlarmRepeatingMode.EVERYDAY },
+                            role = Role.RadioButton
+                        )
+                ) {
+                    RadioButton(
+                        selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.EVERYDAY,
+                        onClick = null,
+                        colors = RadioButtonDefaults.colors(
+                            selectedColor = MaterialTheme.colorScheme.secondary,
+                            unselectedColor = MaterialTheme.colorScheme.onSurface
+                        )
+                    )
+
+                    Text(
+                        text = stringResource(R.string.everyday),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(start = MaterialTheme.space.medium)
+                    )
+                }
+
                 Column {
                     Row(
                         modifier = Modifier

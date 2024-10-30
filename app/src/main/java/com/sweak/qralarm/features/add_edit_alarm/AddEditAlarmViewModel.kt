@@ -12,9 +12,10 @@ import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.ui.convertAlarmRepeatingMode
 import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
-import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.SAT_SUN
@@ -111,45 +112,6 @@ class AddEditAlarmViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    private fun convertAlarmRepeatingMode(
-        repeatingMode: Alarm.RepeatingMode
-    ): AlarmRepeatingScheduleWrapper? {
-        if (repeatingMode is Alarm.RepeatingMode.Once) {
-            return AlarmRepeatingScheduleWrapper(
-                alarmRepeatingMode = AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
-            )
-        } else if (repeatingMode is Alarm.RepeatingMode.Days) {
-            val days = repeatingMode.repeatingDaysOfWeek
-
-            if (days.size == 2 && days.containsAll(listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY))) {
-                return AlarmRepeatingScheduleWrapper(
-                    alarmRepeatingMode = AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.SAT_SUN
-                )
-            } else if (days.size == 5 &&
-                days.containsAll(
-                    listOf(
-                        DayOfWeek.MONDAY,
-                        DayOfWeek.TUESDAY,
-                        DayOfWeek.WEDNESDAY,
-                        DayOfWeek.THURSDAY,
-                        DayOfWeek.FRIDAY
-                    )
-                )
-            ) {
-                return AlarmRepeatingScheduleWrapper(
-                    alarmRepeatingMode = AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
-                )
-            } else {
-                return AlarmRepeatingScheduleWrapper(
-                    alarmRepeatingMode = AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM,
-                    alarmDaysOfWeek = days
-                )
-            }
-        }
-
-        return null
     }
 
     fun onEvent(event: AddEditAlarmScreenUserEvent) {
@@ -502,6 +464,7 @@ class AddEditAlarmViewModel @Inject constructor(
                                     DayOfWeek.FRIDAY
                                 )
                                 SAT_SUN -> listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+                                EVERYDAY -> DayOfWeek.entries
                                 CUSTOM -> currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
                                 else -> emptyList()
                             }

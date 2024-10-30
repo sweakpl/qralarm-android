@@ -1,5 +1,12 @@
 package com.sweak.qralarm.core.ui
 
+import com.sweak.qralarm.core.domain.alarm.Alarm
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.SAT_SUN
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
@@ -39,4 +46,39 @@ fun getDaysHoursAndMinutesUntilAlarm(alarmTimeInMillis: Long): Triple<Int, Int, 
     } else {
         Triple(days, hours, minutes)
     }
+}
+
+fun convertAlarmRepeatingMode(
+    repeatingMode: Alarm.RepeatingMode
+): AlarmRepeatingScheduleWrapper? {
+    if (repeatingMode is Alarm.RepeatingMode.Once) {
+        return AlarmRepeatingScheduleWrapper(alarmRepeatingMode = ONLY_ONCE)
+    } else if (repeatingMode is Alarm.RepeatingMode.Days) {
+        val days = repeatingMode.repeatingDaysOfWeek
+
+        if (days.size == 2 && days.containsAll(listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY))) {
+            return AlarmRepeatingScheduleWrapper(alarmRepeatingMode = SAT_SUN)
+        } else if (days.size == 5 &&
+            days.containsAll(
+                listOf(
+                    DayOfWeek.MONDAY,
+                    DayOfWeek.TUESDAY,
+                    DayOfWeek.WEDNESDAY,
+                    DayOfWeek.THURSDAY,
+                    DayOfWeek.FRIDAY
+                )
+            )
+        ) {
+            return AlarmRepeatingScheduleWrapper(alarmRepeatingMode = MON_FRI)
+        } else if (days.size == 7) {
+            return AlarmRepeatingScheduleWrapper(alarmRepeatingMode = EVERYDAY)
+        } else {
+            return AlarmRepeatingScheduleWrapper(
+                alarmRepeatingMode = CUSTOM,
+                alarmDaysOfWeek = days
+            )
+        }
+    }
+
+    return null
 }

@@ -20,6 +20,7 @@ fun getAlarmRepeatingScheduleString(
         AlarmRepeatingMode.SAT_SUN -> {
             DayOfWeek.SATURDAY.shortName() + ", " + DayOfWeek.SUNDAY.shortName()
         }
+        AlarmRepeatingMode.EVERYDAY -> stringResource(R.string.everyday)
         AlarmRepeatingMode.CUSTOM -> {
             val days = alarmRepeatingScheduleWrapper.alarmDaysOfWeek
 

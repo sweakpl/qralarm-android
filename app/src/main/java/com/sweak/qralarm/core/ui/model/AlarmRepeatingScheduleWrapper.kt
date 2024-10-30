@@ -7,6 +7,6 @@ data class AlarmRepeatingScheduleWrapper(
     val alarmDaysOfWeek: List<DayOfWeek> = emptyList()
 ) {
     enum class AlarmRepeatingMode {
-        ONLY_ONCE, MON_FRI, SAT_SUN, CUSTOM
+        ONLY_ONCE, MON_FRI, SAT_SUN, EVERYDAY, CUSTOM
     }
 }
