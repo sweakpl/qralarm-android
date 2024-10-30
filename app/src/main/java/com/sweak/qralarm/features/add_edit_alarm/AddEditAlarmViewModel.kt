@@ -177,6 +177,12 @@ class AddEditAlarmViewModel @Inject constructor(
                         )
                     }
 
+                    if (!currentState.isAlarmEnabled) {
+                        setAlarm(currentState)
+
+                        return@update currentState
+                    }
+
                     if ((!event.cameraPermissionStatus && currentState.isCodeEnabled) ||
                         !event.notificationsPermissionStatus ||
                         !qrAlarmManager.canScheduleExactAlarms() ||

@@ -54,6 +54,7 @@ class MainActivity : ComponentActivity() {
         splashScreen.setKeepOnScreenCondition { shouldShowSplashScreen }
 
         lifecycleScope.launch {
+            userDataRepository.setLegacyDataMigrated(migrated = true)
             rescheduleAlarms()
             shouldShowSplashScreen = false
 

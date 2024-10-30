@@ -22,4 +22,11 @@ class UserDataRepositoryImpl @Inject constructor(
 
     override val temporaryScannedCode: Flow<String?>
         get() = qrAlarmPreferencesDataSource.getTemporaryScannedCode()
+
+    override suspend fun setLegacyDataMigrated(migrated: Boolean) {
+        qrAlarmPreferencesDataSource.setLegacyDataMigrated(migrated = migrated)
+    }
+
+    override val isLegacyDataMigrated: Flow<Boolean>
+        get() = qrAlarmPreferencesDataSource.getLegacyDataMigrated()
 }
