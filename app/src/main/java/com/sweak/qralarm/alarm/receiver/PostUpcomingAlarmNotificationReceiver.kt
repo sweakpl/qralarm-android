@@ -75,7 +75,7 @@ class PostUpcomingAlarmNotificationReceiver : BroadcastReceiver() {
             }.build()
 
             notificationManager.notify(
-                alarmId.toInt(),
+                Int.MAX_VALUE - alarmId.toInt(),
                 upcomingAlarmIndicationNotification
             )
         }
