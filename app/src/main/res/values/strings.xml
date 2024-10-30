@@ -114,4 +114,6 @@
     <string name="menu">Menu</string>
     <string name="introduction">Introduction</string>
     <string name="everyday">Everyday</string>
+    <string name="no_alarms">No alarms</string>
+    <string name="create_using_button">Create one using the \'+\' button above or below.</string>
 </resources>
