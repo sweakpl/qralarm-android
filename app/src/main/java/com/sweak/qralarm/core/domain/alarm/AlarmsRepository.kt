@@ -9,7 +9,7 @@ interface AlarmsRepository {
     suspend fun setAlarmSnoozed(alarmId: Long, snoozed: Boolean)
     suspend fun setSkipNextAlarm(alarmId: Long, skip: Boolean)
     suspend fun getAlarm(alarmId: Long): Alarm?
-    suspend fun getAlarmFlow(alarmId: Long): Flow<Alarm>
-    suspend fun getAllAlarms(): Flow<List<Alarm>>
+    fun getAlarmFlow(alarmId: Long): Flow<Alarm>
+    fun getAllAlarms(): Flow<List<Alarm>>
     suspend fun deleteAlarm(alarmId: Long)
 }

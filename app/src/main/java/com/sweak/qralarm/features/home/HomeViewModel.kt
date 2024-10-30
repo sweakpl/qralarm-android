@@ -50,6 +50,7 @@ class HomeViewModel @Inject constructor(
 
                 state.update { currentState ->
                     currentState.copy(
+                        isLoading = false,
                         alarmWrappers = allAlarms.mapNotNull { alarm ->
                             val alarmRepeatingScheduleWrapper =
                                 convertAlarmRepeatingMode(alarm.repeatingMode)

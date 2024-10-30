@@ -89,13 +89,13 @@ class AlarmsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAlarmFlow(alarmId: Long): Flow<Alarm> {
+    override fun getAlarmFlow(alarmId: Long): Flow<Alarm> {
         return alarmsDao.getAlarm(alarmId = alarmId).map { alarmEntity ->
             convertAlarmEntity(alarmEntity = alarmEntity)
         }
     }
 
-    override suspend fun getAllAlarms(): Flow<List<Alarm>> {
+    override fun getAllAlarms(): Flow<List<Alarm>> {
         return alarmsDao.getAllAlarms().map { alarmEntityList ->
             alarmEntityList.map { alarmEntity ->
                 convertAlarmEntity(alarmEntity = alarmEntity)

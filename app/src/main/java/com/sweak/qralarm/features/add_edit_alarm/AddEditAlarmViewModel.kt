@@ -63,6 +63,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
             state.update { currentState ->
                 currentState.copy(
+                    isLoading = false,
                     isEditingExistingAlarm = false,
                     alarmHourOfDay = dateTime.hour,
                     alarmMinute = dateTime.minute
@@ -77,6 +78,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
                 state.update { currentState ->
                     currentState.copy(
+                        isLoading = false,
                         isEditingExistingAlarm = true,
                         alarmHourOfDay = alarm.alarmHourOfDay,
                         alarmMinute = alarm.alarmMinute,

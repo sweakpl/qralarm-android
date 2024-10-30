@@ -3,6 +3,7 @@ package com.sweak.qralarm.features.home
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 
 data class HomeScreenState(
+    val isLoading: Boolean = true,
     val alarmWrappers: List<AlarmWrapper> = emptyList(),
     val permissionsDialogState: PermissionsDialogState = PermissionsDialogState(),
     val isNotificationsPermissionDeniedDialogVisible: Boolean = false,

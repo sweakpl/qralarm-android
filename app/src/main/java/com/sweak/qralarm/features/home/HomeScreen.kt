@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -284,7 +287,10 @@ private fun HomeScreenContent(
         },
         floatingActionButtonPosition = FabPosition.End
     ) { paddingValues ->
-        Box(
+        AnimatedContent(
+            targetState = state.isLoading,
+            contentAlignment = Alignment.Center,
+            label = "homeScreenLoadingAnimation",
             modifier = Modifier
                 .fillMaxSize()
                 .background(
@@ -295,115 +301,130 @@ private fun HomeScreenContent(
                         )
                     )
                 )
-        ) {
-            LazyColumn(modifier = Modifier.padding(paddingValues = paddingValues)) {
-                item {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
+        ) { isLoading ->
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .padding(paddingValues = paddingValues)
+                ) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = MaterialTheme.space.medium,
-                                top = MaterialTheme.space.medium,
-                                end = MaterialTheme.space.small,
-                                bottom = MaterialTheme.space.mediumLarge
-                            )
-                    ) {
-                        Text(
-                            text = stringResource(R.string.alarms),
-                            style = MaterialTheme.typography.displaySmall,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-
-                        IconButton(
-                            onClick = { onEvent(HomeScreenUserEvent.AddNewAlarm) }
-                        ) {
-                            Icon(
-                                imageVector = QRAlarmIcons.Add,
-                                contentDescription = stringResource(R.string.content_description_add_icon),
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier.size(size = MaterialTheme.space.large)
-                            )
-                        }
-                    }
+                            .size(MaterialTheme.space.xLarge)
+                            .align(alignment = Alignment.Center)
+                    )
                 }
-
-                if (state.alarmWrappers.isNotEmpty()) {
-                    items(
-                        items = state.alarmWrappers,
-                        key = { it.alarmId }
-                    ) {
-                        AlarmCard(
-                            alarmWrapper = it,
-                            onClick = { alarmId ->
-                                onEvent(HomeScreenUserEvent.EditAlarmClicked(alarmId = alarmId))
-                            },
-                            onAlarmEnabledChanged = { alarmId, enabled ->
-                                onEvent(
-                                    HomeScreenUserEvent.AlarmEnabledChangeClicked(
-                                        alarmId = alarmId,
-                                        enabled = enabled
-                                    )
-                                )
-                            },
+            } else {
+                LazyColumn(modifier = Modifier.padding(paddingValues = paddingValues)) {
+                    item {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
                                     start = MaterialTheme.space.medium,
-                                    end = MaterialTheme.space.medium,
-                                    bottom = MaterialTheme.space.medium
+                                    top = MaterialTheme.space.medium,
+                                    end = MaterialTheme.space.small,
+                                    bottom = MaterialTheme.space.mediumLarge
                                 )
-                                .animateItem()
-                        )
-                    }
-                } else {
-                    item {
-                        OutlinedCard(
-                            colors = CardDefaults.outlinedCardColors(
-                                containerColor = Color.Transparent,
-                                contentColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            border = BorderStroke(
-                                width = 1.dp,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = MaterialTheme.space.medium)
                         ) {
-                            Column(
-                                verticalArrangement =
-                                Arrangement.spacedBy(MaterialTheme.space.small),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(
-                                        horizontal = MaterialTheme.space.mediumLarge,
-                                        vertical = MaterialTheme.space.medium
-                                    )
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.no_alarms),
-                                    style = MaterialTheme.typography.titleMedium
-                                )
+                            Text(
+                                text = stringResource(R.string.alarms),
+                                style = MaterialTheme.typography.displaySmall,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
 
-                                Text(
-                                    text = stringResource(R.string.create_using_button),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    textAlign = TextAlign.Center
+                            IconButton(
+                                onClick = { onEvent(HomeScreenUserEvent.AddNewAlarm) }
+                            ) {
+                                Icon(
+                                    imageVector = QRAlarmIcons.Add,
+                                    contentDescription = stringResource(R.string.content_description_add_icon),
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                    modifier = Modifier.size(size = MaterialTheme.space.large)
                                 )
                             }
                         }
                     }
-                }
 
-                item {
-                    Spacer(
-                        modifier = Modifier.height(
-                            MaterialTheme.space.run { xxLarge + small }
+                    if (state.alarmWrappers.isNotEmpty()) {
+                        items(
+                            items = state.alarmWrappers,
+                            key = { it.alarmId }
+                        ) {
+                            AlarmCard(
+                                alarmWrapper = it,
+                                onClick = { alarmId ->
+                                    onEvent(HomeScreenUserEvent.EditAlarmClicked(alarmId = alarmId))
+                                },
+                                onAlarmEnabledChanged = { alarmId, enabled ->
+                                    onEvent(
+                                        HomeScreenUserEvent.AlarmEnabledChangeClicked(
+                                            alarmId = alarmId,
+                                            enabled = enabled
+                                        )
+                                    )
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        start = MaterialTheme.space.medium,
+                                        end = MaterialTheme.space.medium,
+                                        bottom = MaterialTheme.space.medium
+                                    )
+                                    .animateItem()
+                            )
+                        }
+                    } else {
+                        item {
+                            OutlinedCard(
+                                colors = CardDefaults.outlinedCardColors(
+                                    containerColor = Color.Transparent,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                border = BorderStroke(
+                                    width = 1.dp,
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = MaterialTheme.space.medium)
+                            ) {
+                                Column(
+                                    verticalArrangement =
+                                    Arrangement.spacedBy(MaterialTheme.space.small),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(
+                                            horizontal = MaterialTheme.space.mediumLarge,
+                                            vertical = MaterialTheme.space.medium
+                                        )
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.no_alarms),
+                                        style = MaterialTheme.typography.titleMedium
+                                    )
+
+                                    Text(
+                                        text = stringResource(R.string.create_using_button),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    item {
+                        Spacer(
+                            modifier = Modifier.height(
+                                MaterialTheme.space.run { xxLarge + small }
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
