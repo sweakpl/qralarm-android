@@ -127,8 +127,9 @@ class QRAlarmManager(
         if (upcomingAlarmNotificationPendingIntent != null) {
             alarmManager.cancel(upcomingAlarmNotificationPendingIntent)
             upcomingAlarmNotificationPendingIntent.cancel()
-            notificationManager.cancel(Int.MAX_VALUE - alarmId.toInt())
         }
+
+        notificationManager.cancel(Int.MAX_VALUE - alarmId.toInt())
     }
 
     fun canScheduleExactAlarms(): Boolean =

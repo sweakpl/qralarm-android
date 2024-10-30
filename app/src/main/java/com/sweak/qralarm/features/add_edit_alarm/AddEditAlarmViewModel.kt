@@ -575,6 +575,8 @@ class AddEditAlarmViewModel @Inject constructor(
                     )
                 }
 
+                qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
+
                 var setAlarmResult: SetAlarm.Result? = null
 
                 if (alarmToSave.isAlarmEnabled) {
