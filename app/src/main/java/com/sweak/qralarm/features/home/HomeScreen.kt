@@ -71,7 +71,8 @@ fun HomeScreen(
     onAddNewAlarm: () -> Unit,
     onEditAlarm: (Long) -> Unit,
     onMenuClicked: () -> Unit,
-    onRedirectToScanner: (alarmId: Long) -> Unit
+    onRedirectToScanner: (alarmId: Long) -> Unit,
+    onGoToOptimizationClicked: () -> Unit
 ) {
     val homeViewModel = hiltViewModel<HomeViewModel>()
     val homeScreenState by homeViewModel.state.collectAsStateWithLifecycle()
@@ -233,6 +234,12 @@ fun HomeScreen(
                             data = Uri.parse("package:${context.packageName}")
                         }
                     )
+                }
+                is HomeScreenUserEvent.GoToOptimizationClicked -> {
+                    homeViewModel.onEvent(
+                        HomeScreenUserEvent.OptimizationGuideDialogVisible(isVisible = false)
+                    )
+                    onGoToOptimizationClicked()
                 }
                 else -> homeViewModel.onEvent(event)
             }
@@ -485,6 +492,18 @@ private fun HomeScreenContent(
             },
             positiveButtonText = stringResource(R.string.settings),
             negativeButtonText = stringResource(R.string.cancel)
+        )
+    }
+
+    if (state.isOptimizationGuideDialogVisible) {
+        QRAlarmDialog(
+            title = stringResource(R.string.ensure_the_best_performance),
+            message = stringResource(R.string.optimization_dialog_description),
+            onDismissRequest = {
+                onEvent(HomeScreenUserEvent.OptimizationGuideDialogVisible(isVisible = false))
+            },
+            onPositiveClick = { onEvent(HomeScreenUserEvent.GoToOptimizationClicked) },
+            positiveButtonText = stringResource(R.string.lets_go)
         )
     }
 }

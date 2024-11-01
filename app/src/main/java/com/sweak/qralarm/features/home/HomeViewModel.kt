@@ -7,6 +7,8 @@ import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CanManipulateAlarm
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
+import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.domain.user.UserDataRepository.OptimizationGuideState
 import com.sweak.qralarm.core.ui.convertAlarmRepeatingMode
 import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
@@ -14,6 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,6 +26,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
     private val qrAlarmManager: QRAlarmManager,
+    private val userDataRepository: UserDataRepository,
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
     private val canManipulateAlarm: CanManipulateAlarm
@@ -72,6 +76,23 @@ class HomeViewModel @Inject constructor(
 
                 isInitializing = false
                 isTogglingAlarm = false
+            }
+        }
+
+        viewModelScope.launch {
+            val optimizationGuideState = userDataRepository.optimizationGuideState.first()
+
+            if (optimizationGuideState != OptimizationGuideState.HAS_BEEN_SEEN) {
+                viewModelScope.launch {
+                    userDataRepository.optimizationGuideState.collect { optimizationGuideState ->
+                        state.update { currentState ->
+                            currentState.copy(
+                                isOptimizationGuideDialogVisible =
+                                optimizationGuideState == OptimizationGuideState.SHOULD_BE_SEEN
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -218,6 +239,11 @@ class HomeViewModel @Inject constructor(
             is HomeScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
                 state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
+                }
+            }
+            is HomeScreenUserEvent.OptimizationGuideDialogVisible -> {
+                state.update { currentState ->
+                    currentState.copy(isOptimizationGuideDialogVisible = event.isVisible)
                 }
             }
             else -> { /* no-op */ }

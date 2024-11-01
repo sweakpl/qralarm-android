@@ -24,6 +24,7 @@ import com.sweak.qralarm.features.add_edit_alarm.navigation.ID_OF_ALARM_TO_EDIT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -442,133 +443,141 @@ class AddEditAlarmViewModel @Inject constructor(
     }
 
     private fun setAlarm(currentState: AddEditAlarmScreenState) {
-        if (currentState.alarmHourOfDay != null && currentState.alarmMinute != null) {
-            viewModelScope.launch {
-                val currentDateTime = ZonedDateTime.now()
-                var alarmDateTime = ZonedDateTime.now()
-                    .withHour(currentState.alarmHourOfDay)
-                    .withMinute(currentState.alarmMinute)
-                    .withSecond(0)
-                    .withNano(0)
-                val alarmTimeInMillis: Long
+        if (currentState.alarmHourOfDay == null || currentState.alarmMinute == null) {
+            return
+        }
 
-                val repeatingMode =
-                    if (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
-                        if (alarmDateTime <= currentDateTime) {
-                            alarmDateTime = alarmDateTime.plusDays(1)
-                        }
+        viewModelScope.launch {
+            val optimizationGuideState = userDataRepository.optimizationGuideState.first()
 
-                        alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
+            if (optimizationGuideState == UserDataRepository.OptimizationGuideState.NONE) {
+                userDataRepository.setOptimizationGuideState(
+                    state = UserDataRepository.OptimizationGuideState.SHOULD_BE_SEEN
+                )
+            }
 
-                        Alarm.RepeatingMode.Once
-                    } else {
-                        val repeatingDaysOfWeek =
-                            when (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode) {
-                                MON_FRI -> listOf(
-                                    DayOfWeek.MONDAY,
-                                    DayOfWeek.TUESDAY,
-                                    DayOfWeek.WEDNESDAY,
-                                    DayOfWeek.THURSDAY,
-                                    DayOfWeek.FRIDAY
-                                )
-                                SAT_SUN -> listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-                                EVERYDAY -> DayOfWeek.entries
-                                CUSTOM -> currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
-                                else -> emptyList()
-                            }
+            val currentDateTime = ZonedDateTime.now()
+            var alarmDateTime = ZonedDateTime.now()
+                .withHour(currentState.alarmHourOfDay)
+                .withMinute(currentState.alarmMinute)
+                .withSecond(0)
+                .withNano(0)
+            val alarmTimeInMillis: Long
 
-                        while (alarmDateTime <= currentDateTime ||
-                            alarmDateTime.dayOfWeek !in repeatingDaysOfWeek
-                        ) {
-                            alarmDateTime = alarmDateTime.plusDays(1)
-                        }
-
-                        alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
-
-                        Alarm.RepeatingMode.Days(repeatingDaysOfWeek = repeatingDaysOfWeek)
+            val repeatingMode =
+                if (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
+                    if (alarmDateTime <= currentDateTime) {
+                        alarmDateTime = alarmDateTime.plusDays(1)
                     }
 
-                val alarmToSave = Alarm(
-                    alarmId = idOfAlarm,
-                    alarmHourOfDay = currentState.alarmHourOfDay,
-                    alarmMinute = currentState.alarmMinute,
-                    isAlarmEnabled = currentState.isAlarmEnabled,
-                    isAlarmRunning = false,
-                    repeatingMode = repeatingMode,
-                    nextAlarmTimeInMillis = alarmTimeInMillis,
-                    snoozeConfig = Alarm.SnoozeConfig(
-                        snoozeMode = currentState.alarmSnoozeMode,
-                        numberOfSnoozesLeft = currentState.alarmSnoozeMode.numberOfSnoozes,
-                        isAlarmSnoozed = false,
-                        nextSnoozedAlarmTimeInMillis = null
-                    ),
-                    ringtone = currentState.ringtone,
-                    customRingtoneUriString =
-                    currentState.currentCustomAlarmRingtoneUri?.toString(),
-                    areVibrationsEnabled = currentState.areVibrationsEnabled,
-                    isUsingCode = currentState.isCodeEnabled,
-                    assignedCode = currentState.temporaryAssignedCode
-                        ?: currentState.currentlyAssignedCode,
-                    gentleWakeUpDurationInSeconds =
-                    currentState.gentleWakeupDurationInSeconds,
-                    isTemporaryMuteEnabled = currentState.isTemporaryMuteEnabled,
-                    skipAlarmUntilTimeInMillis = null
-                )
+                    alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
 
-                val alarmId = alarmsRepository.addOrEditAlarm(alarm = alarmToSave).run {
-                    if (this > 0) this else idOfAlarm
+                    Alarm.RepeatingMode.Once
+                } else {
+                    val repeatingDaysOfWeek =
+                        when (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode) {
+                            MON_FRI -> listOf(
+                                DayOfWeek.MONDAY,
+                                DayOfWeek.TUESDAY,
+                                DayOfWeek.WEDNESDAY,
+                                DayOfWeek.THURSDAY,
+                                DayOfWeek.FRIDAY
+                            )
+                            SAT_SUN -> listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+                            EVERYDAY -> DayOfWeek.entries
+                            CUSTOM -> currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
+                            else -> emptyList()
+                        }
+
+                    while (alarmDateTime <= currentDateTime ||
+                        alarmDateTime.dayOfWeek !in repeatingDaysOfWeek
+                    ) {
+                        alarmDateTime = alarmDateTime.plusDays(1)
+                    }
+
+                    alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
+
+                    Alarm.RepeatingMode.Days(repeatingDaysOfWeek = repeatingDaysOfWeek)
                 }
 
-                if (currentState.temporaryCustomAlarmRingtoneUri != null) {
-                    val savedLocalAlarmSoundUri = try {
-                        copyUriContentToLocalStorage(
-                            uri = currentState.temporaryCustomAlarmRingtoneUri,
-                            alarmId = alarmId
-                        )
-                    } catch (exception: Exception) {
-                        if (exception is IOException ||
-                            exception is SecurityException
-                        ) {
-                            backendEventsChannel.send(
-                                AddEditAlarmScreenBackendEvent
-                                    .CustomRingtoneRetrievalFinished(isSuccess = false)
-                            )
-                        } else {
-                            throw exception
-                        }
-                    }
+            val alarmToSave = Alarm(
+                alarmId = idOfAlarm,
+                alarmHourOfDay = currentState.alarmHourOfDay,
+                alarmMinute = currentState.alarmMinute,
+                isAlarmEnabled = currentState.isAlarmEnabled,
+                isAlarmRunning = false,
+                repeatingMode = repeatingMode,
+                nextAlarmTimeInMillis = alarmTimeInMillis,
+                snoozeConfig = Alarm.SnoozeConfig(
+                    snoozeMode = currentState.alarmSnoozeMode,
+                    numberOfSnoozesLeft = currentState.alarmSnoozeMode.numberOfSnoozes,
+                    isAlarmSnoozed = false,
+                    nextSnoozedAlarmTimeInMillis = null
+                ),
+                ringtone = currentState.ringtone,
+                customRingtoneUriString = currentState.currentCustomAlarmRingtoneUri?.toString(),
+                areVibrationsEnabled = currentState.areVibrationsEnabled,
+                isUsingCode = currentState.isCodeEnabled,
+                assignedCode = currentState.temporaryAssignedCode
+                    ?: currentState.currentlyAssignedCode,
+                gentleWakeUpDurationInSeconds = currentState.gentleWakeupDurationInSeconds,
+                isTemporaryMuteEnabled = currentState.isTemporaryMuteEnabled,
+                skipAlarmUntilTimeInMillis = null
+            )
 
-                    alarmsRepository.addOrEditAlarm(
-                        alarm = alarmToSave.copy(
-                            alarmId = alarmId,
-                            customRingtoneUriString = savedLocalAlarmSoundUri.toString()
+            val alarmId = alarmsRepository.addOrEditAlarm(alarm = alarmToSave).run {
+                if (this > 0) this else idOfAlarm
+            }
+
+            if (currentState.temporaryCustomAlarmRingtoneUri != null) {
+                val savedLocalAlarmSoundUri = try {
+                    copyUriContentToLocalStorage(
+                        uri = currentState.temporaryCustomAlarmRingtoneUri,
+                        alarmId = alarmId
+                    )
+                } catch (exception: Exception) {
+                    if (exception is IOException ||
+                        exception is SecurityException
+                    ) {
+                        backendEventsChannel.send(
+                            AddEditAlarmScreenBackendEvent
+                                .CustomRingtoneRetrievalFinished(isSuccess = false)
+                        )
+                    } else {
+                        throw exception
+                    }
+                }
+
+                alarmsRepository.addOrEditAlarm(
+                    alarm = alarmToSave.copy(
+                        alarmId = alarmId,
+                        customRingtoneUriString = savedLocalAlarmSoundUri.toString()
+                    )
+                )
+            }
+
+            qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
+
+            var setAlarmResult: SetAlarm.Result? = null
+
+            if (alarmToSave.isAlarmEnabled) {
+                setAlarmResult = setAlarm(alarmId = alarmId)
+            } else {
+                disableAlarm(alarmId = alarmId)
+            }
+
+            setAlarmResult?.let { result ->
+                if (result is SetAlarm.Result.Success) {
+                    backendEventsChannel.send(
+                        AddEditAlarmScreenBackendEvent.AlarmSaved(
+                            daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
+                                alarmTimeInMillis = result.alarmTimInMillis
+                            )
                         )
                     )
                 }
-
-                qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
-
-                var setAlarmResult: SetAlarm.Result? = null
-
-                if (alarmToSave.isAlarmEnabled) {
-                    setAlarmResult = setAlarm(alarmId = alarmId)
-                } else {
-                    disableAlarm(alarmId = alarmId)
-                }
-
-                setAlarmResult?.let { result ->
-                    if (result is SetAlarm.Result.Success) {
-                        backendEventsChannel.send(
-                            AddEditAlarmScreenBackendEvent.AlarmSaved(
-                                daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
-                                    alarmTimeInMillis = result.alarmTimInMillis
-                                )
-                            )
-                        )
-                    }
-                } ?: run {
-                    backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmSaved())
-                }
+            } ?: run {
+                backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmSaved())
             }
         }
     }

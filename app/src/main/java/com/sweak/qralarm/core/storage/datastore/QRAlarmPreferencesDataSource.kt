@@ -24,6 +24,18 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun setOptimizationGuideState(state: String) {
+        dataStore.edit { preferences ->
+            preferences[OPTIMIZATION_GUIDE_STATE] = state
+        }
+    }
+
+    fun getOptimizationGuideState(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[OPTIMIZATION_GUIDE_STATE] ?: "NONE"
+        }
+    }
+
     suspend fun setTemporaryScannedCode(code: String?) {
         dataStore.edit { preferences ->
             preferences[TEMPORARY_SCANNED_CODE] = code ?: ""
@@ -53,6 +65,7 @@ class QRAlarmPreferencesDataSource @Inject constructor(
 
     private companion object {
         val TEMPORARY_SCANNED_CODE = stringPreferencesKey("temporaryScannedCode")
+        val OPTIMIZATION_GUIDE_STATE = stringPreferencesKey("optimizationGuideState")
         val INTRODUCTION_FINISHED = booleanPreferencesKey("introductionFinished")
         val LEGACY_DATA_MIGRATED = booleanPreferencesKey("legacyDataMigrated")
     }

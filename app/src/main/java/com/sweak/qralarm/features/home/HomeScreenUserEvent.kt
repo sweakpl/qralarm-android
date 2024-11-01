@@ -26,4 +26,6 @@ sealed class HomeScreenUserEvent {
         val isVisible: Boolean
     ) : HomeScreenUserEvent()
     data object GoToApplicationSettingsClicked : HomeScreenUserEvent()
+    data class OptimizationGuideDialogVisible(val isVisible: Boolean) : HomeScreenUserEvent()
+    data object GoToOptimizationClicked : HomeScreenUserEvent()
 }

@@ -7,7 +7,8 @@ data class HomeScreenState(
     val alarmWrappers: List<AlarmWrapper> = emptyList(),
     val permissionsDialogState: PermissionsDialogState = PermissionsDialogState(),
     val isNotificationsPermissionDeniedDialogVisible: Boolean = false,
-    val isCameraPermissionDeniedDialogVisible: Boolean = false
+    val isCameraPermissionDeniedDialogVisible: Boolean = false,
+    val isOptimizationGuideDialogVisible: Boolean = false
 ) {
     data class PermissionsDialogState(
         val isVisible: Boolean = false,

@@ -118,8 +118,8 @@
     <string name="create_using_button">Create one using the + button above or below.</string>
     <string name="optimization_guide">Optimization guide</string>
     <string name="optimize_qralarm">Optimize QRAlarm</string>
-    <string name="ensure_the_best_performance">Ensure the best performance!</string>
-    <string name="optimization_screen_description">The following settings will help QRAlarm work best in your system to deliver you the best mornings ever! ⏰ 🚀</string>
+    <string name="ensure_the_best_performance">Ensure the best performance! ⏰ 🚀</string>
+    <string name="optimization_screen_description">The following settings will help QRAlarm work best in your system to deliver you the best mornings ever!</string>
     <string name="enable_background_work">Enable background work</string>
     <string name="enable_background_work_description">Do not allow the system to interfere with your alarms and sleep assured!</string>
     <string name="fully_optimize_for_your_system">Fully optimize for your system</string>
@@ -138,4 +138,5 @@
     <string name="select_manufacturer_and_follow_instructions">Select your phone manufacturer and follow the instructions provided.</string>
     <string name="click_to_go_to_app_settings">Click to go to QRAlarm application settings.</string>
     <string name="browser_not_found">Browser not found…</string>
+    <string name="optimization_dialog_description">Make QRAlarm work best in your system by checking our optimization guide and sleep assured!</string>
 </resources>

@@ -6,9 +6,16 @@ interface UserDataRepository {
     suspend fun setIntroductionFinished(finished: Boolean)
     val isIntroductionFinished: Flow<Boolean>
 
+    suspend fun setOptimizationGuideState(state: OptimizationGuideState)
+    val optimizationGuideState: Flow<OptimizationGuideState>
+
     suspend fun setTemporaryScannedCode(code: String?)
     val temporaryScannedCode: Flow<String?>
 
     suspend fun setLegacyDataMigrated(migrated: Boolean)
     val isLegacyDataMigrated: Flow<Boolean>
+
+    enum class OptimizationGuideState {
+        NONE, SHOULD_BE_SEEN, HAS_BEEN_SEEN
+    }
 }

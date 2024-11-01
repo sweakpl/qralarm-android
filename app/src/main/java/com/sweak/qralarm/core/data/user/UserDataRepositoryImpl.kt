@@ -3,6 +3,7 @@ package com.sweak.qralarm.core.data.user
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.storage.datastore.QRAlarmPreferencesDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserDataRepositoryImpl @Inject constructor(
@@ -15,6 +16,17 @@ class UserDataRepositoryImpl @Inject constructor(
 
     override val isIntroductionFinished: Flow<Boolean>
         get() = qrAlarmPreferencesDataSource.getIntroductionFinished()
+
+    override suspend fun setOptimizationGuideState(
+        state: UserDataRepository.OptimizationGuideState
+    ) {
+        qrAlarmPreferencesDataSource.setOptimizationGuideState(state = state.name)
+    }
+
+    override val optimizationGuideState: Flow<UserDataRepository.OptimizationGuideState>
+        get() = qrAlarmPreferencesDataSource.getOptimizationGuideState().map {
+            UserDataRepository.OptimizationGuideState.valueOf(it)
+        }
 
     override suspend fun setTemporaryScannedCode(code: String?) {
         qrAlarmPreferencesDataSource.setTemporaryScannedCode(code = code)

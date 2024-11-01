@@ -131,6 +131,9 @@ class MainActivity : ComponentActivity() {
                                 alarmId = alarmId,
                                 isDisablingBeforeAlarmFired = true
                             )
+                        },
+                        onGoToOptimizationClicked = {
+                            navController.navigateToOptimization()
                         }
                     )
 

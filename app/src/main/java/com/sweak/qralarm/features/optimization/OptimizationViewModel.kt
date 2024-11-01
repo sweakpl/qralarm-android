@@ -4,9 +4,11 @@ import android.os.Build
 import android.os.PowerManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.core.domain.user.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,13 +17,24 @@ import javax.inject.Named
 @HiltViewModel
 class OptimizationViewModel @Inject constructor(
     private val powerManager: PowerManager,
-    @Named("PackageName") private val packageName: String
+    @Named("PackageName") private val packageName: String,
+    private val userDataRepository: UserDataRepository
 ): ViewModel() {
 
     var state = MutableStateFlow(OptimizationScreenState())
 
     init {
-        refreshInternal()
+        viewModelScope.launch {
+            val optimizationGuideState = userDataRepository.optimizationGuideState.first()
+
+            if (optimizationGuideState == UserDataRepository.OptimizationGuideState.SHOULD_BE_SEEN) {
+                userDataRepository.setOptimizationGuideState(
+                    state = UserDataRepository.OptimizationGuideState.HAS_BEEN_SEEN
+                )
+            }
+
+            refreshInternal()
+        }
     }
 
     fun refresh() = viewModelScope.launch {

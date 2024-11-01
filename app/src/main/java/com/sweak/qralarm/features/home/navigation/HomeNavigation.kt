@@ -17,14 +17,16 @@ fun NavGraphBuilder.homeScreen(
     onAddNewAlarm: () -> Unit,
     onEditAlarm: (Long) -> Unit,
     onMenuClicked: () -> Unit,
-    onRedirectToScanner: (alarmId: Long) -> Unit
+    onRedirectToScanner: (alarmId: Long) -> Unit,
+    onGoToOptimizationClicked: () -> Unit
 ) {
     composable(route = HOME_SCREEN_ROUTE) {
         HomeScreen(
             onAddNewAlarm = onAddNewAlarm,
             onEditAlarm = onEditAlarm,
             onMenuClicked = onMenuClicked,
-            onRedirectToScanner = onRedirectToScanner
+            onRedirectToScanner = onRedirectToScanner,
+            onGoToOptimizationClicked = onGoToOptimizationClicked
         )
     }
 }
