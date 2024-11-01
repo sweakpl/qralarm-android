@@ -5,6 +5,8 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Alarm
+import androidx.compose.material.icons.outlined.AppSettingsAlt
+import androidx.compose.material.icons.outlined.AppShortcut
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material.icons.outlined.CameraAlt
@@ -18,6 +20,7 @@ import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.QrCodeScanner
+import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -46,4 +49,7 @@ object QRAlarmIcons {
     val Alarm = Icons.Outlined.Alarm
     val Notification = Icons.Outlined.Notifications
     val FullScreen = Icons.Outlined.Fullscreen
+    val AutomaticSettings = Icons.Outlined.SettingsSuggest
+    val AppSettings = Icons.Outlined.AppSettingsAlt
+    val SpecialAppSettings = Icons.Outlined.AppShortcut
 }

@@ -32,6 +32,8 @@ import com.sweak.qralarm.features.introduction.navigation.introductionScreen
 import com.sweak.qralarm.features.introduction.navigation.navigateToIntroduction
 import com.sweak.qralarm.features.menu.navigation.menuScreen
 import com.sweak.qralarm.features.menu.navigation.navigateToMenu
+import com.sweak.qralarm.features.optimization.navigation.navigateToOptimization
+import com.sweak.qralarm.features.optimization.navigation.optimizationScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -167,6 +169,15 @@ class MainActivity : ComponentActivity() {
                             navController.navigateToIntroduction(
                                 isLaunchedFromMenu = true
                             )
+                        },
+                        onOptimizationGuideClicked = {
+                            navController.navigateToOptimization()
+                        }
+                    )
+
+                    optimizationScreen(
+                        onBackClicked = {
+                            navController.navigateUp()
                         }
                     )
                 }

@@ -19,6 +19,9 @@
     <string name="content_description_notification_icon">Notification icon</string>
     <string name="content_description_full_screen_icon">Full screen display icon</string>
     <string name="content_description_no_qr_code_icon">Disabled QR code icon</string>
+    <string name="content_description_automatic_settings_icon">Automatic settings icon</string>
+    <string name="content_description_app_settings_icon">Application settings icon</string>
+    <string name="content_description_special_app_settings_icon">Special app settings icon</string>
 
     <string name="content_description_wake_up_catchphrase_image">Image showing a friendly stick man lying in bed woken up.</string>
     <string name="content_description_get_up_catchphrase_image">Image showing a smiling stick man walking with their phone ringing.</string>

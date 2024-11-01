@@ -45,6 +45,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp
     ),
+    bodySmall = TextStyle(
+        fontFamily = amikoFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
+    ),
     labelLarge = TextStyle(
         fontFamily = amikoFamily,
         fontWeight = FontWeight.SemiBold,

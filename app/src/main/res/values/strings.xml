@@ -116,4 +116,26 @@
     <string name="everyday">Everyday</string>
     <string name="no_alarms">No alarms</string>
     <string name="create_using_button">Create one using the + button above or below.</string>
+    <string name="optimization_guide">Optimization guide</string>
+    <string name="optimize_qralarm">Optimize QRAlarm</string>
+    <string name="ensure_the_best_performance">Ensure the best performance!</string>
+    <string name="optimization_screen_description">The following settings will help QRAlarm work best in your system to deliver you the best mornings ever! ⏰ 🚀</string>
+    <string name="enable_background_work">Enable background work</string>
+    <string name="enable_background_work_description">Do not allow the system to interfere with your alarms and sleep assured!</string>
+    <string name="fully_optimize_for_your_system">Fully optimize for your system</string>
+    <string name="fully_optimize_for_your_system_description">Some Android systems impose specific restrictions on working applications which may impact QRAlarm. Optimize the app by following the instructions for your phone:</string>
+    <string name="ensure_the_best_settings_possible">Ensure the best settings possible</string>
+    <string name="ensure_the_best_settings_possible_description">Make sure these settings are enabled as well (if your system supports those):</string>
+    <string name="display_on_lock_screen_description">alarms will be quickly available when they ring.</string>
+    <string name="autostart">Autostart</string>
+    <string name="autostart_description">alarms will be automatically enabled after phone restarts.</string>
+    <string name="display_on_lock_screen">Display on lock screen</string>
+    <string name="work_in_background_limited_click_to_enable">Work in background is limited. Click to enable.</string>
+    <string name="work_in_background_enabled">Work in background is enabled. Good job!</string>
+    <string name="setting_unavailable_refer_to_the_next_step">Setting unavailable - please refer to the next steps.</string>
+    <string name="dontkilmyapp_com">dontkillmyapp.com</string>
+    <string name="dontkilmyapp_com_full_uri" translatable="false">https://dontkillmyapp.com/</string>
+    <string name="select_manufacturer_and_follow_instructions">Select your phone manufacturer and follow the instructions provided.</string>
+    <string name="click_to_go_to_app_settings">Click to go to QRAlarm application settings.</string>
+    <string name="browser_not_found">Browser not found…</string>
 </resources>

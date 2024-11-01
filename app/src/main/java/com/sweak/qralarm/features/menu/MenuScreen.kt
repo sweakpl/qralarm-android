@@ -29,13 +29,15 @@ import com.sweak.qralarm.features.menu.components.MenuEntry
 @Composable
 fun MenuScreen(
     onBackClicked: () -> Unit,
-    onIntroductionClicked: () -> Unit
+    onIntroductionClicked: () -> Unit,
+    onOptimizationGuideClicked: () -> Unit
 ) {
     MenuScreenContent(
         onEvent = { event ->
             when (event) {
                 is MenuScreenUserEvent.OnBackClicked -> onBackClicked()
                 is MenuScreenUserEvent.OnIntroductionClicked -> onIntroductionClicked()
+                is MenuScreenUserEvent.OnOptimizationGuideClicked -> onOptimizationGuideClicked()
             }
         }
     )
@@ -95,6 +97,11 @@ fun MenuScreenContent(
                 MenuEntry(
                     title = stringResource(R.string.introduction),
                     onClick = { onEvent(MenuScreenUserEvent.OnIntroductionClicked) }
+                )
+
+                MenuEntry(
+                    title = stringResource(R.string.optimization_guide),
+                    onClick = { onEvent(MenuScreenUserEvent.OnOptimizationGuideClicked) }
                 )
             }
         }
