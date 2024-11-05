@@ -30,7 +30,8 @@ import com.sweak.qralarm.features.menu.components.MenuEntry
 fun MenuScreen(
     onBackClicked: () -> Unit,
     onIntroductionClicked: () -> Unit,
-    onOptimizationGuideClicked: () -> Unit
+    onOptimizationGuideClicked: () -> Unit,
+    onQRAlarmProClicked: () -> Unit
 ) {
     MenuScreenContent(
         onEvent = { event ->
@@ -38,6 +39,7 @@ fun MenuScreen(
                 is MenuScreenUserEvent.OnBackClicked -> onBackClicked()
                 is MenuScreenUserEvent.OnIntroductionClicked -> onIntroductionClicked()
                 is MenuScreenUserEvent.OnOptimizationGuideClicked -> onOptimizationGuideClicked()
+                is MenuScreenUserEvent.OnQRAlarmProClicked -> onQRAlarmProClicked()
             }
         }
     )
@@ -102,6 +104,11 @@ fun MenuScreenContent(
                 MenuEntry(
                     title = stringResource(R.string.optimization_guide),
                     onClick = { onEvent(MenuScreenUserEvent.OnOptimizationGuideClicked) }
+                )
+
+                MenuEntry(
+                    title = stringResource(R.string.qralarm_pro),
+                    onClick = { onEvent(MenuScreenUserEvent.OnQRAlarmProClicked) }
                 )
             }
         }

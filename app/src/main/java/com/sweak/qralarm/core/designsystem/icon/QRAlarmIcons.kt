@@ -3,12 +3,15 @@ package com.sweak.qralarm.core.designsystem.icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
+import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Alarm
+import androidx.compose.material.icons.outlined.AllInclusive
 import androidx.compose.material.icons.outlined.AppSettingsAlt
 import androidx.compose.material.icons.outlined.AppShortcut
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
+import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
@@ -22,6 +25,7 @@ import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Stop
+import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -52,4 +56,8 @@ object QRAlarmIcons {
     val AutomaticSettings = Icons.Outlined.SettingsSuggest
     val AppSettings = Icons.Outlined.AppSettingsAlt
     val SpecialAppSettings = Icons.Outlined.AppShortcut
+    val SpecialAlarmSettings = Icons.Outlined.Tune
+    val EarlyAccess = Icons.Default.Bolt
+    val NoAds = Icons.Outlined.Block
+    val AccessForever = Icons.Outlined.AllInclusive
 }

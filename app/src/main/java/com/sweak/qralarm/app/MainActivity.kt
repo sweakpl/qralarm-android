@@ -34,6 +34,8 @@ import com.sweak.qralarm.features.menu.navigation.menuScreen
 import com.sweak.qralarm.features.menu.navigation.navigateToMenu
 import com.sweak.qralarm.features.optimization.navigation.navigateToOptimization
 import com.sweak.qralarm.features.optimization.navigation.optimizationScreen
+import com.sweak.qralarm.features.qralarm_pro.navigation.navigateToQRAlarmPro
+import com.sweak.qralarm.features.qralarm_pro.navigation.qralarmProScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -43,9 +45,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject lateinit var userDataRepository: UserDataRepository
-    @Inject lateinit var alarmsRepository: AlarmsRepository
-    @Inject lateinit var rescheduleAlarms: RescheduleAlarms
+    @Inject
+    lateinit var userDataRepository: UserDataRepository
+    @Inject
+    lateinit var alarmsRepository: AlarmsRepository
+    @Inject
+    lateinit var rescheduleAlarms: RescheduleAlarms
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -175,11 +180,20 @@ class MainActivity : ComponentActivity() {
                         },
                         onOptimizationGuideClicked = {
                             navController.navigateToOptimization()
+                        },
+                        onQRAlarmProClicked = {
+                            navController.navigateToQRAlarmPro()
                         }
                     )
 
                     optimizationScreen(
                         onBackClicked = {
+                            navController.navigateUp()
+                        }
+                    )
+
+                    qralarmProScreen(
+                        onNotNowClicked = {
                             navController.navigateUp()
                         }
                     )

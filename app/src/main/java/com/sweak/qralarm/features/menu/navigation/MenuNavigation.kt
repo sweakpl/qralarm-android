@@ -12,13 +12,15 @@ fun NavController.navigateToMenu() = navigate(MENU_SCREEN_ROUTE)
 fun NavGraphBuilder.menuScreen(
     onBackClicked: () -> Unit,
     onIntroductionClicked: () -> Unit,
-    onOptimizationGuideClicked: () -> Unit
+    onOptimizationGuideClicked: () -> Unit,
+    onQRAlarmProClicked: () -> Unit
 ) {
     composable(route = MENU_SCREEN_ROUTE) {
         MenuScreen(
             onBackClicked = onBackClicked,
             onIntroductionClicked = onIntroductionClicked,
-            onOptimizationGuideClicked = onOptimizationGuideClicked
+            onOptimizationGuideClicked = onOptimizationGuideClicked,
+            onQRAlarmProClicked = onQRAlarmProClicked
         )
     }
 }
