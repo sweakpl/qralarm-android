@@ -30,7 +30,7 @@ fun IntroductionPage2(modifier: Modifier = Modifier) {
             text = stringResource(R.string.get_up_catchphrase),
             style = MaterialTheme.typography.displaySmall,
             color = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.padding(bottom = MaterialTheme.space.small)
+            modifier = Modifier.padding(bottom = MaterialTheme.space.xSmall)
         )
 
         Text(
@@ -38,7 +38,7 @@ fun IntroductionPage2(modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onPrimary,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = MaterialTheme.space.mediumLarge)
+            modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
         )
 
         Image(

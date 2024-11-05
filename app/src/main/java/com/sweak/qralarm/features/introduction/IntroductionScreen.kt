@@ -92,7 +92,7 @@ private fun IntroductionScreenContent(
                     .verticalScroll(rememberScrollState())
                     .weight(1f)
             ) {
-                Spacer(modifier = Modifier.height(MaterialTheme.space.large))
+                Spacer(modifier = Modifier.height(MaterialTheme.space.mediumLarge))
 
                 Icon(
                     imageVector = QRAlarmIcons.QRAlarm,
@@ -110,15 +110,15 @@ private fun IntroductionScreenContent(
                         start = MaterialTheme.space.mediumLarge,
                         top = MaterialTheme.space.small,
                         end = MaterialTheme.space.mediumLarge,
-                        bottom = MaterialTheme.space.xLarge
+                        bottom = MaterialTheme.space.mediumLarge
                     )
                 )
 
                 HorizontalPager(
                     state = pagerState,
-                    verticalAlignment = Alignment.Top,
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(bottom = MaterialTheme.space.large)
+                        .padding(bottom = MaterialTheme.space.medium)
                         .weight(1f)
                 ) { page ->
                     when (page) {
@@ -135,7 +135,7 @@ private fun IntroductionScreenContent(
                 }
             }
 
-            Row(modifier = Modifier.padding(bottom = MaterialTheme.space.mediumLarge)) {
+            Row(modifier = Modifier.padding(bottom = MaterialTheme.space.medium)) {
                 repeat(pagerState.pageCount) {
                     val color =
                         if (pagerState.currentPage == it) MaterialTheme.colorScheme.tertiary
