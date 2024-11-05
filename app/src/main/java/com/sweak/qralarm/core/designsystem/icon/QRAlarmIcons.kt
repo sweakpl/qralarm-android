@@ -24,6 +24,7 @@ import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.SettingsSuggest
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Stop
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.runtime.Composable
@@ -56,6 +57,7 @@ object QRAlarmIcons {
     val AutomaticSettings = Icons.Outlined.SettingsSuggest
     val AppSettings = Icons.Outlined.AppSettingsAlt
     val SpecialAppSettings = Icons.Outlined.AppShortcut
+    val Star = Icons.Outlined.Star
     val SpecialAlarmSettings = Icons.Outlined.Tune
     val EarlyAccess = Icons.Default.Bolt
     val NoAds = Icons.Outlined.Block

@@ -147,4 +147,9 @@
     <string name="get_it_now">Get it now!</string>
     <string name="not_now">Not now</string>
     <string name="qralarm_pro_package_name">com.sweak.qralarm.pro</string>
+    <string name="special_settings">Special settings</string>
+    <string name="do_not_leave_alarm">Do not leave alarm</string>
+    <string name="do_not_leave_alarm_description">Keep displaying alarm screen when the alarm is ringing.</string>
+    <string name="block_volume_down">Block volume down</string>
+    <string name="block_volume_down_description">Do not let the volume of the alarm ringtone be decreased.</string>
 </resources>

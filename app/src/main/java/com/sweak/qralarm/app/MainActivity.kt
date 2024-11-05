@@ -154,6 +154,9 @@ class MainActivity : ComponentActivity() {
                         },
                         onAlarmDeleted = {
                             navController.popBackStack()
+                        },
+                        onRedirectToQRAlarmPro = {
+                            navController.navigateToQRAlarmPro()
                         }
                     )
 

@@ -22,6 +22,7 @@
     <string name="content_description_automatic_settings_icon">Automatic settings icon</string>
     <string name="content_description_app_settings_icon">Application settings icon</string>
     <string name="content_description_special_app_settings_icon">Special app settings icon</string>
+    <string name="content_description_star_icon">Star icon</string>
     <string name="content_description_special_alarm_settings_icon">Special alarm settings icon</string>
     <string name="content_description_early_access_icon">Early access icon</string>
     <string name="content_description_no_ads_icon">No ads icon</string>
