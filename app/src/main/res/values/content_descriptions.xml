@@ -25,7 +25,6 @@
     <string name="content_description_star_icon">Star icon</string>
     <string name="content_description_special_alarm_settings_icon">Special alarm settings icon</string>
     <string name="content_description_early_access_icon">Early access icon</string>
-    <string name="content_description_no_ads_icon">No ads icon</string>
     <string name="content_description_access_forever_icon">Access forever icon</string>
 
     <string name="content_description_wake_up_catchphrase_image">Image showing a friendly stick man lying in bed woken up.</string>

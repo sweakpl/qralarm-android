@@ -100,6 +100,7 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                 modifier = Modifier
                     .padding(paddingValues = paddingValues)
                     .fillMaxWidth()
+                    .align(Alignment.Center)
             ) {
                 Spacer(modifier = Modifier.height(height = MaterialTheme.space.xxLarge))
 

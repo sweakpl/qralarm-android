@@ -11,7 +11,6 @@ import androidx.compose.material.icons.outlined.AppSettingsAlt
 import androidx.compose.material.icons.outlined.AppShortcut
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
-import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
@@ -60,6 +59,5 @@ object QRAlarmIcons {
     val Star = Icons.Outlined.Star
     val SpecialAlarmSettings = Icons.Outlined.Tune
     val EarlyAccess = Icons.Default.Bolt
-    val NoAds = Icons.Outlined.Block
     val AccessForever = Icons.Outlined.AllInclusive
 }

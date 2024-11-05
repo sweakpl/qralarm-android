@@ -60,22 +60,6 @@ fun QRAlarmProFeaturesList(modifier: Modifier = Modifier) {
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                imageVector = QRAlarmIcons.NoAds,
-                contentDescription = stringResource(R.string.content_description_no_ads_icon),
-                tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(size = MaterialTheme.space.large)
-            )
-
-            Text(
-                text = stringResource(R.string.no_ads_experience),
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.padding(start = MaterialTheme.space.mediumLarge)
-            )
-        }
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
                 imageVector = QRAlarmIcons.AccessForever,
                 contentDescription = stringResource(
                     R.string.content_description_access_forever_icon
