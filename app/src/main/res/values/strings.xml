@@ -27,7 +27,7 @@
         <item quantity="other">%1$d minutes</item>
     </plurals>
 
-    <string name="app_name">QRAlarm</string>
+    <string name="app_name" translatable="false">QRAlarm</string>
     <string name="welcome_to_qralarm">Welcome to QRAlarm!</string>
     <string name="wake_up_catchphrase">Wake UP!</string>
     <string name="wake_up_catchphrase_description">Set your alarm like you always would and prepare to be woken up by QRAlarm the next morning.</string>
@@ -133,19 +133,19 @@
     <string name="work_in_background_limited_click_to_enable">Work in background is limited. Click to enable.</string>
     <string name="work_in_background_enabled">Work in background is enabled. Good job!</string>
     <string name="setting_unavailable_refer_to_the_next_step">Setting unavailable - please refer to the next steps.</string>
-    <string name="dontkilmyapp_com">dontkillmyapp.com</string>
+    <string name="dontkilmyapp_com" translatable="false">dontkillmyapp.com</string>
     <string name="dontkilmyapp_com_full_uri" translatable="false">https://dontkillmyapp.com/</string>
     <string name="select_manufacturer_and_follow_instructions">Select your phone manufacturer and follow the instructions provided.</string>
     <string name="click_to_go_to_app_settings">Click to go to QRAlarm application settings.</string>
     <string name="browser_not_found">Browser not found…</string>
     <string name="optimization_dialog_description">Make QRAlarm work best in your system by checking our optimization guide and sleep assured!</string>
-    <string name="qralarm_pro">QRAlarm PRO</string>
+    <string name="qralarm_pro" translatable="false">QRAlarm PRO</string>
     <string name="special_alarm_settings">Special alarm settings</string>
     <string name="early_access_to_new_features">Early access to new features</string>
     <string name="buy_once_enjoy_forever">Buy once - enjoy forever!</string>
     <string name="get_it_now">Get it now!</string>
     <string name="not_now">Not now</string>
-    <string name="qralarm_pro_package_name">com.sweak.qralarm.pro</string>
+    <string name="qralarm_pro_package_name" translatable="false">com.sweak.qralarm.pro</string>
     <string name="special_settings">Special settings</string>
     <string name="do_not_leave_alarm">Do not leave alarm</string>
     <string name="do_not_leave_alarm_description">Keep displaying alarm screen when the alarm is ringing.</string>

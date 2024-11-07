@@ -232,7 +232,10 @@ fun OptimizationScreenContent(
                                 }
                             )
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(vertical = MaterialTheme.space.medium)
+                        ) {
                             Spacer(modifier = Modifier.width(MaterialTheme.space.medium))
 
                             Icon(
@@ -251,7 +254,7 @@ fun OptimizationScreenContent(
                                 ),
                                 style = MaterialTheme.typography.labelLarge,
                                 modifier = Modifier
-                                    .padding(all = MaterialTheme.space.medium)
+                                    .padding(horizontal = MaterialTheme.space.medium)
                                     .weight(1f)
                             )
 
@@ -311,7 +314,10 @@ fun OptimizationScreenContent(
                             bottom = MaterialTheme.space.large
                         )
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = MaterialTheme.space.medium)
+                    ) {
                         Spacer(modifier = Modifier.width(MaterialTheme.space.medium))
 
                         Icon(
@@ -324,7 +330,7 @@ fun OptimizationScreenContent(
 
                         Column(
                             modifier = Modifier
-                                .padding(all = MaterialTheme.space.medium)
+                                .padding(horizontal = MaterialTheme.space.medium)
                                 .weight(1f)
                         ) {
                             Text(
@@ -440,7 +446,10 @@ fun OptimizationScreenContent(
                             bottom = MaterialTheme.space.large
                         )
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = MaterialTheme.space.medium)
+                    ) {
                         Spacer(modifier = Modifier.width(MaterialTheme.space.medium))
 
                         Icon(
@@ -455,7 +464,7 @@ fun OptimizationScreenContent(
                             text = stringResource(R.string.click_to_go_to_app_settings),
                             style = MaterialTheme.typography.labelLarge,
                             modifier = Modifier
-                                .padding(all = MaterialTheme.space.medium)
+                                .padding(horizontal = MaterialTheme.space.medium)
                                 .weight(1f)
                         )
 
