@@ -61,22 +61,27 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
+    debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.material.icons.extended)
-    implementation(libs.code.scanner)
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.google.accompanist.permissions)
+    implementation(libs.androidx.navigation.compose)
+
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.code.scanner)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.google.accompanist.permissions)
+
     coreLibraryDesugaring(libs.desugar.jdk.libs)
-    debugImplementation(libs.androidx.ui.tooling)
 }
