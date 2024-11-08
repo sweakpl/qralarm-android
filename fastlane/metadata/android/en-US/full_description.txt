@@ -1,1 +1,12 @@
-QRAlarm is an Android alarm clock application that does not only wake You up, but also makes You get up to disable the alarm by scanning the QR Code.
+Say goodbye to oversleeping with QRAlarm! 🚀
+
+Have you ever...
+⏰ ...found yourself caught in the “snooze loop” where you kept snoozing the alarm while never getting up?
+😴 ...turned off your alarm giving yourself those mythical “5 more minutes” just to fall back asleep again and oversleep?
+📝 ...wanted to start off the day earlier to get your tasks done but you simply couldn’t leave your bed in the morning?
+
+Then QRAlarm is perfect for you! 🫵
+
+QRAlarm is not just another alarm clock app - it is there to help you always get up on time by needing you to scan QR/Bar code to disable the alarm that you placed away from your bed!
+
+Download the app now, set up and configure your alarms and let QRAlarm work its magic! 🪄

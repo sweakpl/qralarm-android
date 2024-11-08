@@ -1,0 +1,4 @@
+QRAlarm 2.0 is here!
+* Multiple alarm scheduling,
+* Individual alarm settings,
+* New features and improvements.
