@@ -135,10 +135,15 @@ class AlarmViewModel @Inject constructor(
             }
             is AlarmScreenUserEvent.SnoozeAlarmClicked -> {
                 viewModelScope.launch {
+                    state.update { currentState ->
+                        currentState.copy(isAnimatingAlarmSnooze = true)
+                    }
+
                     snoozeAlarm(
                         alarmId = idOfAlarm,
                         isReschedulingCurrentSnooze = false
                     )
+
                     backendEventsChannel.send(AlarmScreenBackendEvent.SnoozeAlarm)
                 }
             }

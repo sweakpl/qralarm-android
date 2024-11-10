@@ -182,7 +182,8 @@ private fun AlarmScreenContent(
                     onClick = { onEvent(AlarmScreenUserEvent.StopAlarmClicked) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiary
-                    )
+                    ),
+                    enabled = !state.isAnimatingAlarmSnooze,
                 ) {
                     Text(
                         text = stringResource(R.string.stop),
@@ -197,6 +198,7 @@ private fun AlarmScreenContent(
                         colors = ButtonDefaults.textButtonColors(
                             contentColor = MaterialTheme.colorScheme.onSecondary
                         ),
+                        enabled = !state.isAnimatingAlarmSnooze,
                         modifier = Modifier.padding(top = MaterialTheme.space.medium)
                     ) {
                         Text(
