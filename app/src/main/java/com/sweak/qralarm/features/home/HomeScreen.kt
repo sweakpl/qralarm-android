@@ -514,6 +514,7 @@ private fun HomeScreenContentPreview() {
     QRAlarmTheme {
         HomeScreenContent(
             state = HomeScreenState(
+                isLoading = false,
                 alarmWrappers = listOf(
                     AlarmWrapper(
                         alarmId = 0,

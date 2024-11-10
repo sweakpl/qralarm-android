@@ -424,7 +424,8 @@ private fun AddEditAlarmScreenContent(
                         ) {
                             Text(
                                 text = stringResource(R.string.alarm_enabled),
-                                style = MaterialTheme.typography.titleLarge
+                                style = MaterialTheme.typography.titleLarge,
+                                modifier = Modifier.weight(1f)
                             )
 
                             QRAlarmSwitch(
@@ -469,7 +470,8 @@ private fun AddEditAlarmScreenContent(
                             ) {
                                 Text(
                                     text = stringResource(R.string.repeating),
-                                    style = MaterialTheme.typography.titleLarge
+                                    style = MaterialTheme.typography.titleLarge,
+                                    modifier = Modifier.weight(1f)
                                 )
 
                                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -514,7 +516,8 @@ private fun AddEditAlarmScreenContent(
                             ) {
                                 Text(
                                     text = stringResource(R.string.snooze),
-                                    style = MaterialTheme.typography.titleLarge
+                                    style = MaterialTheme.typography.titleLarge,
+                                    modifier = Modifier.weight(1f)
                                 )
 
                                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -557,7 +560,8 @@ private fun AddEditAlarmScreenContent(
                             ) {
                                 Text(
                                     text = stringResource(R.string.ringtone),
-                                    style = MaterialTheme.typography.titleLarge
+                                    style = MaterialTheme.typography.titleLarge,
+                                    modifier = Modifier.weight(1f)
                                 )
 
                                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -592,7 +596,8 @@ private fun AddEditAlarmScreenContent(
                         ) {
                             Text(
                                 text = stringResource(R.string.vibrations),
-                                style = MaterialTheme.typography.titleLarge
+                                style = MaterialTheme.typography.titleLarge,
+                                modifier = Modifier.weight(1f)
                             )
 
                             QRAlarmSwitch(
@@ -629,7 +634,8 @@ private fun AddEditAlarmScreenContent(
                         ) {
                             Text(
                                 text = stringResource(R.string.use_qr_bar_code),
-                                style = MaterialTheme.typography.titleLarge
+                                style = MaterialTheme.typography.titleLarge,
+                                modifier = Modifier.weight(1f)
                             )
 
                             QRAlarmSwitch(
@@ -959,7 +965,8 @@ private fun AddEditAlarmScreenContent(
                         ) {
                             Text(
                                 text = stringResource(R.string.special_settings),
-                                style = MaterialTheme.typography.displaySmall
+                                style = MaterialTheme.typography.displaySmall,
+                                modifier = Modifier.weight(1f)
                             )
 
                             Icon(
@@ -1323,7 +1330,7 @@ private fun AddEditAlarmScreenContentPreview() {
     QRAlarmTheme {
         AddEditAlarmScreenContent(
             state = AddEditAlarmScreenState(
-                isLoading = true,
+                isLoading = false,
                 alarmHourOfDay = 8,
                 alarmMinute = 0
             ),

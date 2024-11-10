@@ -115,7 +115,7 @@
     <string name="alarm_wake_up">Alarm - pobudka!</string>
     <string name="stop">STOP</string>
     <string name="snooze_capitals">DRZEMKA</string>
-    <string name="alarm_snoozed_until">Alarm zdrzemkowany do:</string>
+    <string name="alarm_snoozed_until">Alarm uśpiony do:</string>
     <string name="upcoming_alarm_indication_notification_title">Nadchodzący alarm</string>
     <string name="upcoming_alarm_indication_notification_text">Ustawiono alarm na %1$s</string>
     <string name="next_step">Następny krok</string>
