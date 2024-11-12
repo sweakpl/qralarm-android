@@ -39,6 +39,8 @@ class AlarmActivity : ComponentActivity() {
             }
         }
 
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         val alarmId = intent.extras?.getLong(EXTRA_ALARM_ID) ?: 0
         isLaunchedFromMainActivity =
             intent.extras?.getBoolean(EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY) ?: false

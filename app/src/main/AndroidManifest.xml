@@ -55,8 +55,10 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:showForAllUsers="true"
+            android:showOnLockScreen="true"
             android:showWhenLocked="true"
-            android:theme="@style/Theme.QRAlarm" />
+            android:theme="@style/Theme.QRAlarm"
+            android:turnScreenOn="true" />
 
         <service
             android:name=".alarm.service.AlarmService"

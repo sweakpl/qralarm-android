@@ -172,7 +172,8 @@ class AlarmService : Service() {
             ALARM_NOTIFICATION_CHANNEL_ID
         ).apply {
             color = Jacarta.toArgb()
-            priority = NotificationCompat.PRIORITY_HIGH
+            priority = NotificationCompat.PRIORITY_MAX
+            setCategory(NotificationCompat.CATEGORY_ALARM)
             setOngoing(true)
             setColorized(true)
             setContentTitle(getString(R.string.alarm_notification_title))
