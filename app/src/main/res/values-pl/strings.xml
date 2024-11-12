@@ -52,7 +52,6 @@
     <string name="home">Strona główna</string>
     <string name="alarms">Alarmy</string>
     <string name="alarm">Alarm</string>
-    <string name="alarm_enabled">Alarm włączony</string>
     <string name="repeating">Powtarzanie</string>
     <string name="snooze">Drzemka</string>
     <string name="ringtone">Dzwonek</string>
@@ -137,7 +136,7 @@
     <string name="enable_background_work_description">Nie pozwól, aby system zakłócał twoje alarmy i śpij spokojnie!</string>
     <string name="fully_optimize_for_your_system">W pełni zoptymalizuj pod swój system</string>
     <string name="fully_optimize_for_your_system_description">Niektóre systemy Android nakładają określone ograniczenia na działające aplikacje, które mogą mieć wpływ na QRAlarm. Zoptymalizuj aplikację, postępując zgodnie z instrukcjami dla swojego telefonu:</string>
-    <string name="ensure_the_best_settings_possible">Zapewnienij najlepsze możliwe ustawienia</string>
+    <string name="ensure_the_best_settings_possible">Zapewnij najlepsze możliwe ustawienia</string>
     <string name="ensure_the_best_settings_possible_description">Upewnij się, że te ustawienia są również włączone (jeśli system je obsługuje):</string>
     <string name="display_on_lock_screen_description">alarmy będą szybko dostępne, gdy zadzwonią.</string>
     <string name="autostart">Autostart</string>

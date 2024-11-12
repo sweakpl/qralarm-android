@@ -412,44 +412,6 @@ private fun AddEditAlarmScreenContent(
                                 bottom = MaterialTheme.space.mediumLarge
                             )
                     ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    horizontal = MaterialTheme.space.medium,
-                                    vertical = MaterialTheme.space.small
-                                )
-                        ) {
-                            Text(
-                                text = stringResource(R.string.alarm_enabled),
-                                style = MaterialTheme.typography.titleLarge,
-                                modifier = Modifier.weight(1f)
-                            )
-
-                            QRAlarmSwitch(
-                                checked = state.isAlarmEnabled,
-                                onCheckedChange = {
-                                    onEvent(
-                                        AddEditAlarmScreenUserEvent.AlarmEnabledChanged(
-                                            isEnabled = it
-                                        )
-                                    )
-                                }
-                            )
-                        }
-                    }
-
-                    QRAlarmCard(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = MaterialTheme.space.medium,
-                                end = MaterialTheme.space.medium,
-                                bottom = MaterialTheme.space.mediumLarge
-                            )
-                    ) {
                         Box(
                             modifier = Modifier
                                 .clickable {

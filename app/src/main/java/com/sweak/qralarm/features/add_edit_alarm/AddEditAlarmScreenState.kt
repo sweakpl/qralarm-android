@@ -13,7 +13,6 @@ data class AddEditAlarmScreenState(
     val isEditingExistingAlarm: Boolean = false,
     val alarmHourOfDay: Int? = null,
     val alarmMinute: Int? = null,
-    val isAlarmEnabled: Boolean = true,
     val alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper =
         AlarmRepeatingScheduleWrapper(),
     val isChooseAlarmRepeatingScheduleDialogVisible: Boolean = false,

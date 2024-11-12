@@ -83,7 +83,6 @@ class AddEditAlarmViewModel @Inject constructor(
                         isEditingExistingAlarm = true,
                         alarmHourOfDay = alarm.alarmHourOfDay,
                         alarmMinute = alarm.alarmMinute,
-                        isAlarmEnabled = alarm.isAlarmEnabled,
                         alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
                         alarmSnoozeMode = alarm.snoozeConfig.snoozeMode,
                         ringtone = alarm.ringtone,
@@ -180,12 +179,6 @@ class AddEditAlarmViewModel @Inject constructor(
                         )
                     }
 
-                    if (!currentState.isAlarmEnabled) {
-                        setAlarm(currentState)
-
-                        return@update currentState
-                    }
-
                     if ((!event.cameraPermissionStatus && currentState.isCodeEnabled) ||
                         !event.notificationsPermissionStatus ||
                         !qrAlarmManager.canScheduleExactAlarms() ||
@@ -236,12 +229,6 @@ class AddEditAlarmViewModel @Inject constructor(
                         alarmHourOfDay = event.newAlarmHourOfDay,
                         alarmMinute = event.newAlarmMinute
                     )
-                }
-            }
-            is AddEditAlarmScreenUserEvent.AlarmEnabledChanged -> {
-                hasUnsavedChanges = true
-                state.update { currentState ->
-                    currentState.copy(isAlarmEnabled = event.isEnabled)
                 }
             }
             is AddEditAlarmScreenUserEvent.ChooseAlarmRepeatingScheduleDialogVisible -> {
@@ -504,7 +491,7 @@ class AddEditAlarmViewModel @Inject constructor(
                 alarmId = idOfAlarm,
                 alarmHourOfDay = currentState.alarmHourOfDay,
                 alarmMinute = currentState.alarmMinute,
-                isAlarmEnabled = currentState.isAlarmEnabled,
+                isAlarmEnabled = true,
                 isAlarmRunning = false,
                 repeatingMode = repeatingMode,
                 nextAlarmTimeInMillis = alarmTimeInMillis,
@@ -558,26 +545,16 @@ class AddEditAlarmViewModel @Inject constructor(
 
             qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
 
-            var setAlarmResult: SetAlarm.Result? = null
+            val setAlarmResult = setAlarm(alarmId = alarmId)
 
-            if (alarmToSave.isAlarmEnabled) {
-                setAlarmResult = setAlarm(alarmId = alarmId)
-            } else {
-                disableAlarm(alarmId = alarmId)
-            }
-
-            setAlarmResult?.let { result ->
-                if (result is SetAlarm.Result.Success) {
-                    backendEventsChannel.send(
-                        AddEditAlarmScreenBackendEvent.AlarmSaved(
-                            daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
-                                alarmTimeInMillis = result.alarmTimInMillis
-                            )
+            if (setAlarmResult is SetAlarm.Result.Success) {
+                backendEventsChannel.send(
+                    AddEditAlarmScreenBackendEvent.AlarmSaved(
+                        daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
+                            alarmTimeInMillis = setAlarmResult.alarmTimInMillis
                         )
                     )
-                }
-            } ?: run {
-                backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmSaved())
+                )
             }
         }
     }

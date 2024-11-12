@@ -39,7 +39,6 @@
     <string name="home">Home</string>
     <string name="alarms">Alarms</string>
     <string name="alarm">Alarm</string>
-    <string name="alarm_enabled">Alarm enabled</string>
     <string name="repeating">Repeating</string>
     <string name="snooze">Snooze</string>
     <string name="ringtone">Ringtone</string>

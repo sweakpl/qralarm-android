@@ -28,7 +28,6 @@ sealed class AddEditAlarmScreenUserEvent {
         val newAlarmHourOfDay: Int,
         val newAlarmMinute: Int
     ) : AddEditAlarmScreenUserEvent()
-    data class AlarmEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()
     data class ChooseAlarmRepeatingScheduleDialogVisible(
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()
