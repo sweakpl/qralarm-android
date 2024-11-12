@@ -95,6 +95,16 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+
+        viewModelScope.launch {
+            userDataRepository.isAlarmMissedDetected.collect { alarmMissedDetected ->
+                if (alarmMissedDetected) {
+                    state.update { currentState ->
+                        currentState.copy(isAlarmMissedDialogVisible = true)
+                    }
+                }
+            }
+        }
     }
 
     fun onEvent(event: HomeScreenUserEvent) {
@@ -244,6 +254,13 @@ class HomeViewModel @Inject constructor(
             is HomeScreenUserEvent.OptimizationGuideDialogVisible -> {
                 state.update { currentState ->
                     currentState.copy(isOptimizationGuideDialogVisible = event.isVisible)
+                }
+            }
+            is HomeScreenUserEvent.AlarmMissedDialogVisible -> viewModelScope.launch {
+                userDataRepository.setAlarmMissedDetected(detected = false)
+
+                state.update { currentState ->
+                    currentState.copy(isAlarmMissedDialogVisible = event.isVisible)
                 }
             }
             else -> { /* no-op */ }

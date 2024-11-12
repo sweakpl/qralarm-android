@@ -239,6 +239,10 @@ fun HomeScreen(
                     homeViewModel.onEvent(
                         HomeScreenUserEvent.OptimizationGuideDialogVisible(isVisible = false)
                     )
+                    homeViewModel.onEvent(
+                        HomeScreenUserEvent.AlarmMissedDialogVisible(isVisible = false)
+                    )
+
                     onGoToOptimizationClicked()
                 }
                 else -> homeViewModel.onEvent(event)
@@ -504,6 +508,18 @@ private fun HomeScreenContent(
             },
             onPositiveClick = { onEvent(HomeScreenUserEvent.GoToOptimizationClicked) },
             positiveButtonText = stringResource(R.string.lets_go)
+        )
+    }
+
+    if (state.isAlarmMissedDialogVisible) {
+        QRAlarmDialog(
+            title = stringResource(R.string.alarm_didnt_ring),
+            message = stringResource(R.string.alarm_didnt_ring_description),
+            onDismissRequest = {
+                onEvent(HomeScreenUserEvent.AlarmMissedDialogVisible(isVisible = false))
+            },
+            onPositiveClick = { onEvent(HomeScreenUserEvent.GoToOptimizationClicked) },
+            positiveButtonText = stringResource(R.string.optimize_now)
         )
     }
 }

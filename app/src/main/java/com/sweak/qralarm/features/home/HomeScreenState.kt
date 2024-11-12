@@ -8,7 +8,8 @@ data class HomeScreenState(
     val permissionsDialogState: PermissionsDialogState = PermissionsDialogState(),
     val isNotificationsPermissionDeniedDialogVisible: Boolean = false,
     val isCameraPermissionDeniedDialogVisible: Boolean = false,
-    val isOptimizationGuideDialogVisible: Boolean = false
+    val isOptimizationGuideDialogVisible: Boolean = false,
+    val isAlarmMissedDialogVisible: Boolean = false
 ) {
     data class PermissionsDialogState(
         val isVisible: Boolean = false,

@@ -1,12 +1,14 @@
 package com.sweak.qralarm.core.domain.alarm
 
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.core.domain.user.UserDataRepository
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class RescheduleAlarms @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
     private val qrAlarmManager: QRAlarmManager,
+    private val userDataRepository: UserDataRepository,
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
     private val snoozeAlarm: SnoozeAlarm
@@ -23,6 +25,7 @@ class RescheduleAlarms @Inject constructor(
                 ) {
                     if (alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis < System.currentTimeMillis()) {
                         qrAlarmManager.notifyAboutMissedAlarm()
+                        userDataRepository.setAlarmMissedDetected(detected = true)
 
                         if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
                             disableAlarm(alarmId = alarm.alarmId)
@@ -42,6 +45,7 @@ class RescheduleAlarms @Inject constructor(
                 } else if (alarm.isAlarmEnabled) {
                     if (alarm.nextAlarmTimeInMillis < System.currentTimeMillis()) {
                         qrAlarmManager.notifyAboutMissedAlarm()
+                        userDataRepository.setAlarmMissedDetected(detected = true)
 
                         if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
                             disableAlarm(alarmId = alarm.alarmId)

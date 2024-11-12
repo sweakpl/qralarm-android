@@ -12,6 +12,9 @@ interface UserDataRepository {
     suspend fun setTemporaryScannedCode(code: String?)
     val temporaryScannedCode: Flow<String?>
 
+    suspend fun setAlarmMissedDetected(detected: Boolean)
+    val isAlarmMissedDetected: Flow<Boolean>
+
     suspend fun setLegacyDataMigrated(migrated: Boolean)
     val isLegacyDataMigrated: Flow<Boolean>
 
