@@ -28,14 +28,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.QRAlarm.Splash"
+        tools:ignore="DiscouragedApi,LockedOrientationActivity"
         tools:targetApi="35">
 
         <activity
             android:name=".app.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.QRAlarm"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.QRAlarm">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,6 +55,7 @@
             android:directBootAware="true"
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:showForAllUsers="true"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
