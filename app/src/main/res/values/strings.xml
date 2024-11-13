@@ -153,4 +153,5 @@
     <string name="alarm_didnt_ring">Alarm didn\'t ring? ⏰</string>
     <string name="alarm_didnt_ring_description">Was the last alarm missed? If so, make sure you\'ve thoroughly followed our Optimization guide that is supposed to make sure that QRAlarm works best in your system!</string>
     <string name="optimize_now">Optimize now!</string>
+    <string name="there_was_an_issue_playing_ringtone">There was an issue playing the ringtone…</string>
 </resources>

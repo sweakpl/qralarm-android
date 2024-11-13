@@ -42,8 +42,8 @@ class AlarmRingtonePlayer(
 
     fun playAlarmRingtone(alarmRingtoneUri: Uri, volumeIncreaseSeconds: Int) {
         mediaPlayer.apply {
-            reset()
             try {
+                reset()
                 setAudioAttributes(
                     AudioAttributes.Builder()
                         .setUsage(AudioAttributes.USAGE_ALARM)
@@ -81,40 +81,50 @@ class AlarmRingtonePlayer(
         mediaPlayer.start()
     }
 
-    fun playAlarmRingtonePreview(ringtone: Ringtone, onPreviewCompleted: () -> Unit) {
+    fun playAlarmRingtonePreview(
+        ringtone: Ringtone,
+        onPreviewCompleted: (hasErrorOccurred: Boolean) -> Unit
+    ) {
         val alarmRingtoneUri: Uri
 
         if (ringtone != Ringtone.CUSTOM_SOUND) {
             alarmRingtoneUri = getOriginalAlarmRingtoneUri(ringtone)
         } else {
-            onPreviewCompleted()
+            onPreviewCompleted(true)
             return
         }
 
         playAlarmRingtonePreview(alarmRingtoneUri, onPreviewCompleted)
     }
 
-    fun playAlarmRingtonePreview(alarmRingtoneUri: Uri, onPreviewCompleted: () -> Unit) {
+    fun playAlarmRingtonePreview(
+        alarmRingtoneUri: Uri,
+        onPreviewCompleted: (hasErrorOccurred: Boolean) -> Unit
+    ) {
         mediaPlayer.apply {
-            reset()
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build()
-            )
             try {
+                reset()
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build()
+                )
                 setDataSource(context, alarmRingtoneUri)
+                isLooping = false
+                setOnCompletionListener {
+                    this@AlarmRingtonePlayer.stop()
+                    onPreviewCompleted(false)
+                }
+                prepare()
+                start()
             } catch (ioException: IOException) {
+                onPreviewCompleted(true)
+                return
+            } catch (illegalStateException: IllegalStateException) {
+                onPreviewCompleted(true)
                 return
             }
-            isLooping = false
-            setOnCompletionListener {
-                this@AlarmRingtonePlayer.stop()
-                onPreviewCompleted()
-            }
-            prepare()
-            start()
         }
     }
 

@@ -162,4 +162,5 @@
     <string name="alarm_didnt_ring">Alarm nie zadzwonił? ⏰</string>
     <string name="alarm_didnt_ring_description">Czy ostatni alarm został pominięty? Jeśli tak, upewnij się, że dokładnie zastosowałeś się do naszego Przewodnika optymalizacyjnego, który ma na celu upewnienie się, że QRAlarm działa najlepiej w Twoim systemie!</string>
     <string name="optimize_now">Zoptymalizuj teraz!</string>
+    <string name="there_was_an_issue_playing_ringtone">Wystąpił problem z odtworzeniem dzwonka…</string>
 </resources>

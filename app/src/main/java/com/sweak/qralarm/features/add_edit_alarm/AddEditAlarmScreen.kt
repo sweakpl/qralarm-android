@@ -180,6 +180,13 @@ fun AddEditAlarmScreen(
                     ).show()
                 }
                 is AddEditAlarmScreenBackendEvent.AlarmDeleted -> onAlarmDeleted()
+                is AddEditAlarmScreenBackendEvent.AlarmRingtonePreviewPlaybackError -> {
+                    Toast.makeText(
+                        context,
+                        R.string.there_was_an_issue_playing_ringtone,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     )

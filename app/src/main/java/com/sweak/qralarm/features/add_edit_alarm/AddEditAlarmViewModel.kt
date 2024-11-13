@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
@@ -281,10 +282,9 @@ class AddEditAlarmViewModel @Inject constructor(
             is AddEditAlarmScreenUserEvent.ToggleAlarmRingtonePlayback -> {
                 state.update { currentState ->
                     val isPlaying = currentState
-                        .availableRingtonesWithPlaybackState[event.ringtone]?.not()
-                        ?: false
+                        .availableRingtonesWithPlaybackState[event.ringtone] ?: false
 
-                    if (isPlaying) {
+                    if (!isPlaying) {
                         if (event.ringtone == Ringtone.CUSTOM_SOUND &&
                             (currentState.currentCustomAlarmRingtoneUri != null ||
                                     currentState.temporaryCustomAlarmRingtoneUri != null)
@@ -294,7 +294,16 @@ class AddEditAlarmViewModel @Inject constructor(
 
                             alarmRingtonePlayer.playAlarmRingtonePreview(
                                 alarmRingtoneUri = alarmRingtoneUri,
-                                onPreviewCompleted = {
+                                onPreviewCompleted = { hasErrorOccurred ->
+                                    if (hasErrorOccurred) {
+                                        viewModelScope.launch {
+                                            backendEventsChannel.send(
+                                                AddEditAlarmScreenBackendEvent
+                                                    .AlarmRingtonePreviewPlaybackError
+                                            )
+                                        }
+                                    }
+
                                     state.update { currentState ->
                                         currentState.copy(
                                             availableRingtonesWithPlaybackState =
@@ -307,7 +316,16 @@ class AddEditAlarmViewModel @Inject constructor(
                         } else {
                             alarmRingtonePlayer.playAlarmRingtonePreview(
                                 ringtone = event.ringtone,
-                                onPreviewCompleted = {
+                                onPreviewCompleted = { hasErrorOccurred ->
+                                    if (hasErrorOccurred) {
+                                        viewModelScope.launch {
+                                            backendEventsChannel.send(
+                                                AddEditAlarmScreenBackendEvent
+                                                    .AlarmRingtonePreviewPlaybackError
+                                            )
+                                        }
+                                    }
+
                                     state.update { currentState ->
                                         currentState.copy(
                                             availableRingtonesWithPlaybackState =
@@ -559,9 +577,12 @@ class AddEditAlarmViewModel @Inject constructor(
         }
     }
 
+    @SuppressLint("SetWorldReadable")
     private fun copyUriContentToLocalStorage(uri: Uri, alarmId: Long): Uri {
         val file = File(filesDir, alarmId.toString())
         file.createNewFile()
+        // Setting world-readable due to: https://stackoverflow.com/a/11977292/14037302
+        file.setReadable(true, false)
 
         FileOutputStream(file).use { outputStream ->
             contentResolver.openInputStream(uri).use { inputStream ->
