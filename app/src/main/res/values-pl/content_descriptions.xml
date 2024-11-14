@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_qralarm_icon">Ikona QRAlarm</string>
+    <string name="content_description_add_icon">Ikona dodawania (plus)</string>
+    <string name="content_description_menu_icon">Ikona menu</string>
+    <string name="content_description_close_icon">Ikona zamknięcia</string>
+    <string name="content_description_done_icon">Ikona Gotowe</string>
+    <string name="content_description_forward_arrow_icon">Ikona strzałki do przodu</string>
+    <string name="content_description_back_arrow_icon">Ikona strzałki wstecz</string>
+    <string name="content_description_drop_down_arrow_icon">Ikona strzałki w dół</string>
+    <string name="content_description_play_icon">Ikona odtwarzania</string>
+    <string name="content_description_stop_icon">Ikona zatrzymania</string>
+    <string name="content_description_edit_icon">Ikona edycji</string>
+    <string name="content_description_more_icon">Ikona Więcej opcji</string>
+    <string name="content_description_qr_code_scanner_icon">Ikona skanera kodów QR</string>
+    <string name="content_description_delete_icon">Ikona usuwania</string>
+    <string name="content_description_camera_icon">Ikona kamery</string>
+    <string name="content_description_alarm_icon">Ikona alarmu</string>
+    <string name="content_description_notification_icon">Ikona powiadomienia</string>
+    <string name="content_description_full_screen_icon">Ikona wyświetlania na pełnym ekranie</string>
+    <string name="content_description_no_qr_code_icon">Ikona wyłączonego kodu QR</string>
+    <string name="content_description_automatic_settings_icon">Ikona ustawień automatycznych</string>
+    <string name="content_description_app_settings_icon">Ikona ustawień aplikacji</string>
+    <string name="content_description_special_app_settings_icon">Ikona specjalnych ustawień aplikacji</string>
+    <string name="content_description_star_icon">Ikona gwiazdy</string>
+    <string name="content_description_special_alarm_settings_icon">Ikona specjalnych ustawień alarmu</string>
+    <string name="content_description_early_access_icon">Ikona wczesnego dostępu</string>
+    <string name="content_description_access_forever_icon">Ikona dostępu na zawsze</string>
+    <string name="content_description_flash_icon">Ikona latarki</string>
+
+    <string name="content_description_wake_up_catchphrase_image">Obraz przedstawiający przyjaznego patyczaka leżącego w łóżku po przebudzeniu.</string>
+    <string name="content_description_get_up_catchphrase_image">Obraz przedstawiający uśmiechniętego patyczaka idącego z dzwoniącym telefonem.</string>
+    <string name="content_description_rise_up_catchphrase_image">Image showing a happy stick man after they scanned the QR Code with their phone.</string>
+    <string name="content_description_qralarm_pro_image">Obraz ikony aplikacji QRAlarm PRO</string>
+</resources>
