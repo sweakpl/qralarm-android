@@ -1,2 +1,0 @@
-* System alarm priority improvements,
-* UI usability improvements.

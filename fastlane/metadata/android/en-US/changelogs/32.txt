@@ -1,0 +1,2 @@
+* Improved the responsiveness of the code scanner,
+* Bug fixes.
