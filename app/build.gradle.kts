@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.ui.viewbinding)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
@@ -84,7 +85,12 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.datastore.preferences)
 
-    implementation(libs.code.scanner)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.zxing.core)
+
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.google.accompanist.permissions)
 
