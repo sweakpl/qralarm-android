@@ -75,7 +75,7 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
-    private companion object {
+    companion object {
         val TEMPORARY_SCANNED_CODE = stringPreferencesKey("temporaryScannedCode")
         val OPTIMIZATION_GUIDE_STATE = stringPreferencesKey("optimizationGuideState")
         val INTRODUCTION_FINISHED = booleanPreferencesKey("introductionFinished")
