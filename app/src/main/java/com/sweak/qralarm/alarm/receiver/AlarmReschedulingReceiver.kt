@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.IOException
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
@@ -55,11 +56,13 @@ class AlarmReschedulingReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action in intentActionsToFilter) receiverScope.launch {
-            if (intent.action == "android.intent.action.MY_PACKAGE_REPLACED" &&
-                !userDataRepository.isLegacyDataMigrated.first()
-            ) {
-                userDataRepository.setLegacyDataMigrated(migrated = true)
-                migrateLegacyData(context)
+            if (intent.action == "android.intent.action.MY_PACKAGE_REPLACED") {
+                try {
+                    if (!userDataRepository.isLegacyDataMigrated.first()) {
+                        userDataRepository.setLegacyDataMigrated(migrated = true)
+                        migrateLegacyData(context)
+                    }
+                } catch (ignored: IOException) { /* no-op */ }
             }
 
             rescheduleAlarms()
