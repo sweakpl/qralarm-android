@@ -9,6 +9,7 @@ import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.alarm.SnoozeAlarm
 import com.sweak.qralarm.features.alarm.navigation.ID_OF_ALARM
+import com.sweak.qralarm.features.alarm.navigation.IS_TRANSIENT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +30,7 @@ class AlarmViewModel @Inject constructor(
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM] ?: 0
     private lateinit var alarm: Alarm
     private var isAlarmBeingStopped: Boolean = false
+    private val isTransient: Boolean = savedStateHandle[IS_TRANSIENT] ?: true
 
     var state = MutableStateFlow(AlarmScreenState())
 
@@ -136,7 +138,7 @@ class AlarmViewModel @Inject constructor(
             is AlarmScreenUserEvent.SnoozeAlarmClicked -> {
                 viewModelScope.launch {
                     state.update { currentState ->
-                        currentState.copy(isAnimatingAlarmSnooze = true)
+                        currentState.copy(isInteractionEnabled = !isTransient)
                     }
 
                     snoozeAlarm(

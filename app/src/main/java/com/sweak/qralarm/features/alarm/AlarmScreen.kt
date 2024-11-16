@@ -185,7 +185,7 @@ private fun AlarmScreenContent(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiary
                     ),
-                    enabled = !state.isAnimatingAlarmSnooze,
+                    enabled = state.isInteractionEnabled,
                 ) {
                     Text(
                         text = stringResource(R.string.stop),
@@ -200,7 +200,7 @@ private fun AlarmScreenContent(
                         colors = ButtonDefaults.textButtonColors(
                             contentColor = MaterialTheme.colorScheme.onSecondary
                         ),
-                        enabled = !state.isAnimatingAlarmSnooze,
+                        enabled = state.isInteractionEnabled,
                         modifier = Modifier.padding(top = MaterialTheme.space.medium)
                     ) {
                         Text(

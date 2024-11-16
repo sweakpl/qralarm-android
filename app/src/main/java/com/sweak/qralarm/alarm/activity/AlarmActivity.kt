@@ -51,7 +51,7 @@ class AlarmActivity : FragmentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = "$ALARM_SCREEN_ROUTE/$alarmId"
+                    startDestination = "$ALARM_SCREEN_ROUTE/$alarmId/${!isLaunchedFromMainActivity}"
                 ) {
                     alarmScreen(
                         onStopAlarm = {

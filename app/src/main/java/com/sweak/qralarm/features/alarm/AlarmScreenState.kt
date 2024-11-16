@@ -5,7 +5,7 @@ data class AlarmScreenState(
     val isAlarmSnoozed: Boolean = false,
     val snoozedAlarmTimeInMillis: Long? = null,
     val isSnoozeAvailable: Boolean = false,
-    val isAnimatingAlarmSnooze: Boolean = false,
+    val isInteractionEnabled: Boolean = true,
     val permissionsDialogState: PermissionsDialogState = PermissionsDialogState(),
     val isCameraPermissionDeniedDialogVisible: Boolean = false
 ) {
