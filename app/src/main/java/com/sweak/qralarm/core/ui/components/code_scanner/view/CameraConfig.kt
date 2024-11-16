@@ -51,7 +51,6 @@ class CameraConfig(private val context: Context) {
     }
 
     fun startCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView) {
-
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
         cameraProviderFuture.addListener({
@@ -67,8 +66,8 @@ class CameraConfig(private val context: Context) {
                     ).apply {
                         configureAutoFocus(previewView, this)
                     }
-                } catch (exc: Exception) {
-                    Log.e("TAG", "Use case binding failed", exc)
+                } catch (exception: Exception) {
+                    Log.e("CameraConfig", "Error when starting camera", exception)
                 }
             }
         }, ContextCompat.getMainExecutor(context))
@@ -103,8 +102,8 @@ class CameraConfig(private val context: Context) {
                         .setAutoCancelDuration(2, TimeUnit.SECONDS)
                         .build()
                 )
-            } catch (e: CameraInfoUnavailableException) {
-                Log.d("ERROR", "cannot access camera", e)
+            } catch (exception: CameraInfoUnavailableException) {
+                Log.d("CameraConfig", "Cannot access camera", exception)
             }
         }
     }
