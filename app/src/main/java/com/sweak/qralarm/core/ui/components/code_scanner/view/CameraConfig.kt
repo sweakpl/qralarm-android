@@ -76,9 +76,14 @@ class CameraConfig(private val context: Context) {
 
     fun stopCamera() {
         switchOffFlash()
+
         cameraProvider?.let {
             it.unbindAll()
             camera = null
+        }
+
+        if (!cameraExecutor.isShutdown) {
+            cameraExecutor.shutdownNow()
         }
     }
 
