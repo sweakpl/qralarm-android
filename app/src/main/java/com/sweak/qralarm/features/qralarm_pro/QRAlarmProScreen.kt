@@ -68,7 +68,7 @@ fun QRAlarmProScreen(
                         } catch (activityNotFoundException: ActivityNotFoundException) {
                             Toast.makeText(
                                 context,
-                                context.getString(R.string.browser_not_found),
+                                context.getString(R.string.issue_opening_the_page),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }

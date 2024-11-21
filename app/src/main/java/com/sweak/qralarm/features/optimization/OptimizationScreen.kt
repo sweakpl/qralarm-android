@@ -91,12 +91,16 @@ fun OptimizationScreen(onBackClicked: () -> Unit) {
                 is OptimizationScreenUserEvent.BackgroundWorkWebsiteClicked -> {
                     try {
                         uriHandler.openUri(context.getString(R.string.dontkilmyapp_com_full_uri))
-                    } catch (exception: ActivityNotFoundException) {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.browser_not_found),
-                            Toast.LENGTH_LONG
-                        ).show()
+                    } catch (exception: Exception) {
+                        if (exception is ActivityNotFoundException ||
+                            exception is IllegalArgumentException
+                        ) {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.issue_opening_the_page),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 }
                 is OptimizationScreenUserEvent.ApplicationSettingsClicked -> {

@@ -136,7 +136,7 @@
     <string name="dontkilmyapp_com_full_uri" translatable="false">https://dontkillmyapp.com/</string>
     <string name="select_manufacturer_and_follow_instructions">Select your phone manufacturer and follow the instructions provided.</string>
     <string name="click_to_go_to_app_settings">Click to go to QRAlarm application settings.</string>
-    <string name="browser_not_found">Browser not found…</string>
+    <string name="issue_opening_the_page">There was and issue opening the page…</string>
     <string name="optimization_dialog_description">Make QRAlarm work best in your system by checking our optimization guide and sleep assured!</string>
     <string name="qralarm_pro" translatable="false">QRAlarm PRO</string>
     <string name="special_alarm_settings">Special alarm settings</string>

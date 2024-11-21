@@ -147,7 +147,7 @@
     <string name="setting_unavailable_refer_to_the_next_step">Ustawienie niedostępne - przejdź do następnych kroków.</string>
     <string name="select_manufacturer_and_follow_instructions">Wybierz swojego producenta telefonu i postępuj zgodnie z wyświetlanymi instrukcjami.</string>
     <string name="click_to_go_to_app_settings">Kliknij, aby przejść do ustawień aplikacji QRAlarm.</string>
-    <string name="browser_not_found">Nie znaleziono przeglądarki…</string>
+    <string name="issue_opening_the_page">Wystąpił problem podczas otwierania strony…</string>
     <string name="optimization_dialog_description">Spraw, aby QRAlarm działał jak najlepiej w Twoim systemie, sprawdzając nasz przewodnik optymalizacji i śpij spokojnie!</string>
     <string name="special_alarm_settings">Specjalne ustawienia alarmu</string>
     <string name="early_access_to_new_features">Wczesny dostęp do nowych funkcji</string>
