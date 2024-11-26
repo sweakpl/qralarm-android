@@ -1,6 +1,5 @@
-package com.sweak.qralarm.features.add_edit_alarm.di
+package com.sweak.qralarm.features.di
 
-import android.content.ContentResolver
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -8,14 +7,15 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
+import java.io.File
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object AddEditAlarmModule {
+object FeaturesModule {
 
     @Provides
     @ViewModelScoped
-    fun provideContentResolver(
+    fun provideFilesDir(
         @ApplicationContext context: Context
-    ): ContentResolver = context.contentResolver
+    ): File = context.filesDir
 }

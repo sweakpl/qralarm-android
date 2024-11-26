@@ -9,7 +9,8 @@ data class HomeScreenState(
     val isNotificationsPermissionDeniedDialogVisible: Boolean = false,
     val isCameraPermissionDeniedDialogVisible: Boolean = false,
     val isOptimizationGuideDialogVisible: Boolean = false,
-    val isAlarmMissedDialogVisible: Boolean = false
+    val isAlarmMissedDialogVisible: Boolean = false,
+    val deleteAlarmDialogState: DeleteAlarmDialogState = DeleteAlarmDialogState()
 ) {
     data class PermissionsDialogState(
         val isVisible: Boolean = false,
@@ -17,5 +18,10 @@ data class HomeScreenState(
         val notificationsPermissionState: Boolean? = null,
         val alarmsPermissionState: Boolean? = null,
         val fullScreenIntentPermissionState: Boolean? = null
+    )
+
+    data class DeleteAlarmDialogState(
+        val isVisible: Boolean = false,
+        val alarmId: Long? = null
     )
 }

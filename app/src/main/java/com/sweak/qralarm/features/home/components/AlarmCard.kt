@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.home.components
 
 import android.text.format.DateFormat
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,15 +35,16 @@ import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
-import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.getTimeString
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 
 @Composable
 fun AlarmCard(
     alarmWrapper: AlarmWrapper,
-    onClick: (Long) -> Unit,
-    onAlarmEnabledChanged: (Long, Boolean) -> Unit,
+    onClick: (alarmId: Long) -> Unit,
+    onAlarmEnabledChanged: (alarmId: Long, enabled: Boolean) -> Unit,
+    onDeleteAlarmClick: (alarmId: Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     QRAlarmCard(modifier = modifier.clickable { onClick(alarmWrapper.alarmId) }) {
@@ -48,8 +54,9 @@ fun AlarmCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = MaterialTheme.space.medium,
-                    vertical = MaterialTheme.space.smallMedium
+                    start = MaterialTheme.space.medium,
+                    top = MaterialTheme.space.smallMedium,
+                    bottom = MaterialTheme.space.smallMedium
                 )
         ) {
             Column {
@@ -88,6 +95,46 @@ fun AlarmCard(
                         onAlarmEnabledChanged(alarmWrapper.alarmId, it)
                     }
                 )
+
+                var expanded by remember { mutableStateOf(false) }
+
+                IconButton(onClick = {expanded = true}) {
+                    Icon(
+                        imageVector = QRAlarmIcons.More,
+                        contentDescription = stringResource(R.string.content_description_more_icon)
+                    )
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .background(color = MaterialTheme.colorScheme.surface)
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(R.string.delete_alarm),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = QRAlarmIcons.Delete,
+                                    contentDescription = stringResource(
+                                        R.string.content_description_delete_icon
+                                    ),
+                                    tint = MaterialTheme.colorScheme.error
+                                )
+                            },
+                            onClick = {
+                                expanded = false
+                                onDeleteAlarmClick(alarmWrapper.alarmId)
+                            }
+                        )
+                    }
+                }
             }
         }
     }
@@ -118,6 +165,7 @@ private fun AlarmCardPreview() {
             onAlarmEnabledChanged = { _, enabled ->
                 alarmWrapper = alarmWrapper.copy(isAlarmEnabled = enabled)
             },
+            onDeleteAlarmClick = {},
             modifier = Modifier.fillMaxWidth()
         )
     }

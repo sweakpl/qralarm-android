@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +30,8 @@ class HomeViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
-    private val canManipulateAlarm: CanManipulateAlarm
+    private val canManipulateAlarm: CanManipulateAlarm,
+    private val filesDir: File
 ): ViewModel() {
 
     var state = MutableStateFlow(HomeScreenState())
@@ -261,6 +263,44 @@ class HomeViewModel @Inject constructor(
 
                 state.update { currentState ->
                     currentState.copy(isAlarmMissedDialogVisible = event.isVisible)
+                }
+            }
+            is HomeScreenUserEvent.TryDeleteAlarm -> viewModelScope.launch {
+                if (canManipulateAlarm(alarmId = event.alarmId)) {
+                    state.update { currentState ->
+                        currentState.copy(
+                            deleteAlarmDialogState = HomeScreenState.DeleteAlarmDialogState(
+                                isVisible = true,
+                                alarmId = event.alarmId
+                            )
+                        )
+                    }
+                } else {
+                    backendEventsChannel.send(HomeScreenBackendEvent.CanNotEditAlarm)
+                }
+            }
+            is HomeScreenUserEvent.HideDeleteAlarmDialog -> {
+                state.update { currentState ->
+                    currentState.copy(
+                        deleteAlarmDialogState = HomeScreenState.DeleteAlarmDialogState(
+                            isVisible = false
+                        )
+                    )
+                }
+            }
+            is HomeScreenUserEvent.DeleteAlarm -> viewModelScope.launch {
+                disableAlarm(alarmId = event.alarmId)
+                alarmsRepository.deleteAlarm(alarmId = event.alarmId)
+                File(filesDir, event.alarmId.toString()).apply {
+                    if (exists()) delete()
+                }
+
+                state.update { currentState ->
+                    currentState.copy(
+                        deleteAlarmDialogState = HomeScreenState.DeleteAlarmDialogState(
+                            isVisible = false
+                        )
+                    )
                 }
             }
             else -> { /* no-op */ }

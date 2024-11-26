@@ -29,4 +29,7 @@ sealed class HomeScreenUserEvent {
     data class OptimizationGuideDialogVisible(val isVisible: Boolean) : HomeScreenUserEvent()
     data object GoToOptimizationClicked : HomeScreenUserEvent()
     data class AlarmMissedDialogVisible(val isVisible: Boolean) : HomeScreenUserEvent()
+    data class TryDeleteAlarm(val alarmId: Long) : HomeScreenUserEvent()
+    data object HideDeleteAlarmDialog : HomeScreenUserEvent()
+    data class DeleteAlarm(val alarmId: Long) : HomeScreenUserEvent()
 }

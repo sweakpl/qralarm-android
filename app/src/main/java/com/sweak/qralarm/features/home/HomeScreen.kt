@@ -378,6 +378,9 @@ private fun HomeScreenContent(
                                         )
                                     )
                                 },
+                                onDeleteAlarmClick = { alarmId ->
+                                    onEvent(HomeScreenUserEvent.TryDeleteAlarm(alarmId = alarmId))
+                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(
@@ -520,6 +523,21 @@ private fun HomeScreenContent(
             },
             onPositiveClick = { onEvent(HomeScreenUserEvent.GoToOptimizationClicked) },
             positiveButtonText = stringResource(R.string.optimize_now)
+        )
+    }
+
+    if (state.deleteAlarmDialogState.isVisible) {
+        QRAlarmDialog(
+            title = stringResource(R.string.delete_this_alarm),
+            onDismissRequest = { onEvent(HomeScreenUserEvent.HideDeleteAlarmDialog) },
+            onPositiveClick = {
+                state.deleteAlarmDialogState.alarmId?.let {
+                    onEvent(HomeScreenUserEvent.DeleteAlarm(alarmId = it))
+                }
+            },
+            positiveButtonText = stringResource(R.string.delete),
+            positiveButtonColor = MaterialTheme.colorScheme.error,
+            negativeButtonText = stringResource(R.string.cancel)
         )
     }
 }
