@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.home.components
 
 import android.text.format.DateFormat
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,8 +37,11 @@ import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
+import com.sweak.qralarm.core.ui.getDayString
 import com.sweak.qralarm.core.ui.getTimeString
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 
 @Composable
@@ -88,6 +92,20 @@ fun AlarmCard(
                     ),
                     style = MaterialTheme.typography.bodyLarge
                 )
+
+                AnimatedVisibility(
+                    visible = alarmWrapper.isAlarmEnabled &&
+                            alarmWrapper.alarmRepeatingScheduleWrapper.alarmRepeatingMode != ONLY_ONCE
+                ) {
+                    Text(
+                        text = stringResource(
+                            R.string.next_alarm_date,
+                            getDayString(alarmWrapper.nextAlarmTimeInMillis)
+                        ),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -207,9 +225,9 @@ private fun AlarmCardPreview() {
                     alarmId = 0,
                     alarmHourOfDay = 8,
                     alarmMinute = 0,
+                    nextAlarmTimeInMillis = 1732604400000,
                     alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(
-                        alarmRepeatingMode =
-                        AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
+                        alarmRepeatingMode = EVERYDAY
                     ),
                     isAlarmEnabled = true,
                     isCodeEnabled = false,

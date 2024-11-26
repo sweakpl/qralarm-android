@@ -156,4 +156,5 @@
     <string name="there_was_an_issue_playing_ringtone">There was an issue playing the ringtone…</string>
     <string name="skip_next_alarm">Skip next alarm</string>
     <string name="undo_skipping_next_alarm">Undo skipping next alarm</string>
+    <string name="next_alarm_date">Next: %1$s</string>
 </resources>

@@ -15,7 +15,7 @@ private val ColorScheme = lightColorScheme(
     onTertiary = Color.White,
     surface = ButterflyBush,
     onSurface = Color.White,
-    onSurfaceVariant = DustyGray,
+    onSurfaceVariant = Nobel,
     error = Monza,
     onError = Color.White
 )

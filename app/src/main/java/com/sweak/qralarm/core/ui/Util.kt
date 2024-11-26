@@ -82,3 +82,9 @@ fun convertAlarmRepeatingMode(
 
     return null
 }
+
+fun getDayString(timeInMillis: Long): String {
+    return Instant.ofEpochMilli(timeInMillis)
+        .atZone(ZoneId.systemDefault())
+        .format(DateTimeFormatter.ofPattern("EEEE d.M"))
+}

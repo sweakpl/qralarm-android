@@ -69,6 +69,7 @@ class HomeViewModel @Inject constructor(
                                 alarmId = alarm.alarmId,
                                 alarmHourOfDay = alarm.alarmHourOfDay,
                                 alarmMinute = alarm.alarmMinute,
+                                nextAlarmTimeInMillis = alarm.nextAlarmTimeInMillis,
                                 alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
                                 isAlarmEnabled = alarm.isAlarmEnabled,
                                 isCodeEnabled = alarm.isUsingCode,
