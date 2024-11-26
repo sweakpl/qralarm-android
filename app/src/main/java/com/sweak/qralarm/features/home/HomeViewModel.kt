@@ -42,8 +42,8 @@ class HomeViewModel @Inject constructor(
     private val backendEventsChannel = Channel<HomeScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
-    private var isInitializing = true
     private var isTogglingAlarm = false
+    private var hasEnteredAddEditAlarmScreen = false
 
     private var currentlyToggledAlarmId: Long? = null
     private var currentlyToggledAlarmEnabledState: Boolean? = null
@@ -51,9 +51,9 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             alarmsRepository.getAllAlarms().collect { allAlarms ->
-                if (!isInitializing && !isTogglingAlarm) {
+                if (hasEnteredAddEditAlarmScreen) {
                     // Delay added for the alarms list animation to be visible as the Flow update
-                    // Comes while the HomeScreen is still hidden behind e.g. AddEditAlarmScreen:
+                    // Comes while the HomeScreen is still hidden behind AddEditAlarmScreen:
                     delay(500)
                 }
 
@@ -88,8 +88,7 @@ class HomeViewModel @Inject constructor(
                     )
                 }
 
-                isInitializing = false
-                isTogglingAlarm = false
+                hasEnteredAddEditAlarmScreen = false
             }
         }
 
@@ -125,6 +124,7 @@ class HomeViewModel @Inject constructor(
         when (event) {
             is HomeScreenUserEvent.EditAlarmClicked -> viewModelScope.launch {
                 if (canManipulateAlarm(alarmId = event.alarmId)) {
+                    hasEnteredAddEditAlarmScreen = true
                     backendEventsChannel.send(
                         HomeScreenBackendEvent.RedirectToEditAlarm(alarmId = event.alarmId)
                     )
@@ -362,6 +362,8 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+        }.invokeOnCompletion {
+            isTogglingAlarm = false
         }
     }
 }
