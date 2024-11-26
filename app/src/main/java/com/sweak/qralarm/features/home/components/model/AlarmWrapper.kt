@@ -8,5 +8,11 @@ data class AlarmWrapper(
     val alarmMinute: Int,
     val alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper,
     val isAlarmEnabled: Boolean,
-    val isCodeEnabled: Boolean
-)
+    val isCodeEnabled: Boolean,
+    val skipNextAlarmConfig: SkipNextAlarmConfig = SkipNextAlarmConfig()
+) {
+    data class SkipNextAlarmConfig(
+        val isSkippingSupported: Boolean = false,
+        val isSkippingNextAlarm: Boolean = false
+    )
+}

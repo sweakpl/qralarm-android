@@ -3,6 +3,7 @@ package com.sweak.qralarm.core.designsystem.icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
+import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Alarm
@@ -34,6 +35,7 @@ import com.sweak.qralarm.R
 object QRAlarmIcons {
     val QRAlarm @Composable get() = ImageVector.vectorResource(R.drawable.ic_qralarm)
     val NoQRCode @Composable get() = ImageVector.vectorResource(R.drawable.ic_no_qr_code)
+    val SkipNextAlarm @Composable get() = ImageVector.vectorResource(R.drawable.ic_skip_next_alarm)
 
     val Add = Icons.Outlined.Add
     val Menu = Icons.Outlined.Menu
@@ -60,4 +62,5 @@ object QRAlarmIcons {
     val SpecialAlarmSettings = Icons.Outlined.Tune
     val EarlyAccess = Icons.Default.Bolt
     val AccessForever = Icons.Outlined.AllInclusive
+    val Undo = Icons.AutoMirrored.Outlined.Undo
 }

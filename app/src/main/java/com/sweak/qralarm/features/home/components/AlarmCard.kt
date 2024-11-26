@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
@@ -45,6 +46,7 @@ fun AlarmCard(
     onClick: (alarmId: Long) -> Unit,
     onAlarmEnabledChanged: (alarmId: Long, enabled: Boolean) -> Unit,
     onDeleteAlarmClick: (alarmId: Long) -> Unit,
+    onSkipNextAlarmChanged: (alarmId: Long, skip: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     QRAlarmCard(modifier = modifier.clickable { onClick(alarmWrapper.alarmId) }) {
@@ -60,13 +62,24 @@ fun AlarmCard(
                 )
         ) {
             Column {
+                val indicateSkippingNextAlarm =
+                    alarmWrapper.skipNextAlarmConfig.isSkippingSupported &&
+                            alarmWrapper.skipNextAlarmConfig.isSkippingNextAlarm
+
                 Text(
                     text = getTimeString(
                         hourOfDay = alarmWrapper.alarmHourOfDay,
                         minute = alarmWrapper.alarmMinute,
                         is24HourFormat = DateFormat.is24HourFormat(LocalContext.current)
                     ),
-                    style = MaterialTheme.typography.displayLarge
+                    style = MaterialTheme.typography.displayLarge.copy(
+                        textDecoration =
+                        if (indicateSkippingNextAlarm) TextDecoration.LineThrough
+                        else TextDecoration.None
+                    ),
+                    color =
+                    if (indicateSkippingNextAlarm) MaterialTheme.colorScheme.onSurfaceVariant
+                    else MaterialTheme.colorScheme.onSurface
                 )
 
                 Text(
@@ -98,7 +111,7 @@ fun AlarmCard(
 
                 var expanded by remember { mutableStateOf(false) }
 
-                IconButton(onClick = {expanded = true}) {
+                IconButton(onClick = { expanded = true }) {
                     Icon(
                         imageVector = QRAlarmIcons.More,
                         contentDescription = stringResource(R.string.content_description_more_icon)
@@ -111,6 +124,48 @@ fun AlarmCard(
                             .wrapContentWidth()
                             .background(color = MaterialTheme.colorScheme.surface)
                     ) {
+                        if (alarmWrapper.skipNextAlarmConfig.isSkippingSupported) {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(
+                                            if (alarmWrapper.skipNextAlarmConfig.isSkippingNextAlarm) {
+                                                R.string.undo_skipping_next_alarm
+                                            } else {
+                                                R.string.skip_next_alarm
+                                            }
+                                        ),
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector =
+                                        if (alarmWrapper.skipNextAlarmConfig.isSkippingNextAlarm) {
+                                            QRAlarmIcons.Undo
+                                        } else {
+                                            QRAlarmIcons.SkipNextAlarm
+                                        },
+                                        contentDescription = stringResource(
+                                            if (alarmWrapper.skipNextAlarmConfig.isSkippingNextAlarm) {
+                                                R.string.content_description_no_qr_code_icon
+                                            } else {
+                                                R.string.content_description_skip_next_alarm_icon
+                                            }
+                                        ),
+                                        tint = MaterialTheme.colorScheme.onSurface
+                                    )
+                                },
+                                onClick = {
+                                    expanded = false
+                                    onSkipNextAlarmChanged(
+                                        alarmWrapper.alarmId,
+                                        !alarmWrapper.skipNextAlarmConfig.isSkippingNextAlarm
+                                    )
+                                }
+                            )
+                        }
+
                         DropdownMenuItem(
                             text = {
                                 Text(
@@ -152,9 +207,16 @@ private fun AlarmCardPreview() {
                     alarmId = 0,
                     alarmHourOfDay = 8,
                     alarmMinute = 0,
-                    alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),
+                    alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(
+                        alarmRepeatingMode =
+                        AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
+                    ),
                     isAlarmEnabled = true,
-                    isCodeEnabled = false
+                    isCodeEnabled = false,
+                    skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig(
+                        isSkippingSupported = true,
+                        isSkippingNextAlarm = false
+                    )
                 )
             )
         }
@@ -166,6 +228,7 @@ private fun AlarmCardPreview() {
                 alarmWrapper = alarmWrapper.copy(isAlarmEnabled = enabled)
             },
             onDeleteAlarmClick = {},
+            onSkipNextAlarmChanged = { _, _ -> },
             modifier = Modifier.fillMaxWidth()
         )
     }

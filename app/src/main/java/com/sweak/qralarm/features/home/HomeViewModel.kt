@@ -6,11 +6,13 @@ import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CanManipulateAlarm
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
+import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.domain.user.UserDataRepository.OptimizationGuideState
 import com.sweak.qralarm.core.ui.convertAlarmRepeatingMode
 import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -28,6 +30,7 @@ class HomeViewModel @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
     private val qrAlarmManager: QRAlarmManager,
     private val userDataRepository: UserDataRepository,
+    private val rescheduleAlarms: RescheduleAlarms,
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
     private val canManipulateAlarm: CanManipulateAlarm,
@@ -68,7 +71,15 @@ class HomeViewModel @Inject constructor(
                                 alarmMinute = alarm.alarmMinute,
                                 alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
                                 isAlarmEnabled = alarm.isAlarmEnabled,
-                                isCodeEnabled = alarm.isUsingCode
+                                isCodeEnabled = alarm.isUsingCode,
+                                skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig(
+                                    isSkippingSupported =
+                                    alarmRepeatingScheduleWrapper.alarmRepeatingMode != ONLY_ONCE &&
+                                            alarm.isAlarmEnabled,
+                                    isSkippingNextAlarm =
+                                    alarm.skipAlarmUntilTimeInMillis != null &&
+                                            alarm.skipAlarmUntilTimeInMillis > System.currentTimeMillis()
+                                )
                             )
                         }.sortedWith(
                             compareBy(AlarmWrapper::alarmHourOfDay, AlarmWrapper::alarmMinute)
@@ -301,6 +312,18 @@ class HomeViewModel @Inject constructor(
                             isVisible = false
                         )
                     )
+                }
+            }
+            is HomeScreenUserEvent.SkipNextAlarmChanged -> viewModelScope.launch {
+                if (canManipulateAlarm(alarmId = event.alarmId)) {
+                    alarmsRepository.setSkipNextAlarm(
+                        alarmId = event.alarmId,
+                        skip = event.skip
+                    )
+                    qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = event.alarmId)
+                    rescheduleAlarms()
+                } else {
+                    backendEventsChannel.send(HomeScreenBackendEvent.CanNotEditAlarm)
                 }
             }
             else -> { /* no-op */ }
