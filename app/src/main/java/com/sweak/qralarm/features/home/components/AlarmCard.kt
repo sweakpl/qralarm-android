@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
@@ -65,7 +66,17 @@ fun AlarmCard(
                     bottom = MaterialTheme.space.smallMedium
                 )
         ) {
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
+                AnimatedVisibility(visible = alarmWrapper.alarmLabel != null) {
+                    Text(
+                        text = alarmWrapper.alarmLabel ?: "",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
                 val indicateSkippingNextAlarm =
                     alarmWrapper.skipNextAlarmConfig.isSkippingSupported &&
                             alarmWrapper.skipNextAlarmConfig.isSkippingNextAlarm
@@ -225,6 +236,7 @@ private fun AlarmCardPreview() {
                     alarmId = 0,
                     alarmHourOfDay = 8,
                     alarmMinute = 0,
+                    alarmLabel = "Work alarm",
                     nextAlarmTimeInMillis = 1732604400000,
                     alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(
                         alarmRepeatingMode = EVERYDAY

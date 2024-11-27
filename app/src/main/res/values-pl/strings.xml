@@ -166,4 +166,6 @@
     <string name="skip_next_alarm">Pomiń kolejny alarm</string>
     <string name="undo_skipping_next_alarm">Cofnij pominięcie kolejnego alarmu</string>
     <string name="next_alarm_date">Następny: %1$s</string>
+    <string name="alarm_label">Etykieta alarmu</string>
+    <string name="enter_your_alarm_label">Wprowadź etykietę alarmu…</string>
 </resources>

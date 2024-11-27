@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -816,6 +817,70 @@ private fun AddEditAlarmScreenContent(
                                         }
                                     }
                                 }
+                            }
+                        }
+                    }
+
+                    QRAlarmCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = MaterialTheme.space.medium,
+                                end = MaterialTheme.space.medium,
+                                bottom = MaterialTheme.space.mediumLarge
+                            )
+                    ) {
+                        Column(modifier = Modifier.padding(all = MaterialTheme.space.medium)) {
+                            Text(
+                                text = stringResource(R.string.alarm_label),
+                                style = MaterialTheme.typography.titleLarge,
+                                modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
+                            )
+
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement =
+                                Arrangement.spacedBy(MaterialTheme.space.medium)
+                            ) {
+                                Icon(
+                                    imageVector = QRAlarmIcons.Label,
+                                    contentDescription = stringResource(
+                                        R.string.content_description_label_icon
+                                    ),
+                                    modifier = Modifier.size(size = MaterialTheme.space.mediumLarge)
+                                )
+
+                                BasicTextField(
+                                    value = state.alarmLabel ?: "",
+                                    onValueChange = {
+                                        onEvent(
+                                            AddEditAlarmScreenUserEvent.AlarmLabelChanged(
+                                                newAlarmLabel = it
+                                            )
+                                        )
+                                    },
+                                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                                        color = MaterialTheme.colorScheme.onTertiary
+                                    ),
+                                    singleLine = true,
+                                    decorationBox = { innerTextField ->
+                                        if (state.alarmLabel.isNullOrBlank()) {
+                                            Text(
+                                                text =
+                                                stringResource(R.string.enter_your_alarm_label),
+                                                style = MaterialTheme.typography.titleMedium.copy(
+                                                    color =
+                                                    MaterialTheme.colorScheme.onTertiary.copy(
+                                                        alpha = 0.25f
+                                                    )
+                                                )
+                                            )
+                                        }
+
+                                        innerTextField()
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                )
                             }
                         }
                     }

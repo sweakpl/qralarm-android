@@ -37,6 +37,7 @@ class AlarmsRepositoryImpl @Inject constructor(
                 areVibrationsEnabled = alarm.areVibrationsEnabled,
                 isUsingCode = alarm.isUsingCode,
                 assignedCode = alarm.assignedCode,
+                alarmLabel = alarm.alarmLabel,
                 gentleWakeUpDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
                 isTemporaryMuteEnabled = alarm.isTemporaryMuteEnabled,
                 skipAlarmUntilTimeInMillis = alarm.skipAlarmUntilTimeInMillis
@@ -140,6 +141,7 @@ class AlarmsRepositoryImpl @Inject constructor(
             areVibrationsEnabled = alarmEntity.areVibrationsEnabled,
             isUsingCode = alarmEntity.isUsingCode,
             assignedCode = alarmEntity.assignedCode,
+            alarmLabel = alarmEntity.alarmLabel,
             gentleWakeUpDurationInSeconds = alarmEntity.gentleWakeUpDurationInSeconds,
             isTemporaryMuteEnabled = alarmEntity.isTemporaryMuteEnabled,
             skipAlarmUntilTimeInMillis = alarmEntity.skipAlarmUntilTimeInMillis

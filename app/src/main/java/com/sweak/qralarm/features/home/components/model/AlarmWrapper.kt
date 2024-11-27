@@ -6,6 +6,7 @@ data class AlarmWrapper(
     val alarmId: Long,
     val alarmHourOfDay: Int,
     val alarmMinute: Int,
+    val alarmLabel: String?,
     val nextAlarmTimeInMillis: Long,
     val alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper,
     val isAlarmEnabled: Boolean,

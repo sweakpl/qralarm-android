@@ -23,6 +23,7 @@ data class AlarmEntity(
     val areVibrationsEnabled: Boolean,
     val isUsingCode: Boolean,
     val assignedCode: String?,
+    val alarmLabel: String?,
     val gentleWakeUpDurationInSeconds: Int,
     val isTemporaryMuteEnabled: Boolean,
     val skipAlarmUntilTimeInMillis: Long?

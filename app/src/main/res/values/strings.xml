@@ -157,4 +157,6 @@
     <string name="skip_next_alarm">Skip next alarm</string>
     <string name="undo_skipping_next_alarm">Undo skipping next alarm</string>
     <string name="next_alarm_date">Next: %1$s</string>
+    <string name="alarm_label">Alarm label</string>
+    <string name="enter_your_alarm_label">Enter your alarm label…</string>
 </resources>

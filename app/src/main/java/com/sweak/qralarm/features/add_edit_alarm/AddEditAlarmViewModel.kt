@@ -93,6 +93,7 @@ class AddEditAlarmViewModel @Inject constructor(
                         areVibrationsEnabled = alarm.areVibrationsEnabled,
                         isCodeEnabled = alarm.isUsingCode,
                         currentlyAssignedCode = alarm.assignedCode,
+                        alarmLabel = alarm.alarmLabel,
                         gentleWakeupDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
                         isTemporaryMuteEnabled = alarm.isTemporaryMuteEnabled
                     )
@@ -408,6 +409,14 @@ class AddEditAlarmViewModel @Inject constructor(
                     }
                 }
             }
+            is AddEditAlarmScreenUserEvent.AlarmLabelChanged -> {
+                hasUnsavedChanges = true
+                state.update { currentState ->
+                    currentState.copy(
+                        alarmLabel = event.newAlarmLabel.run { this.ifBlank { null } }
+                    )
+                }
+            }
             is AddEditAlarmScreenUserEvent.ChooseGentleWakeUpDurationDialogVisible -> {
                 state.update { currentState ->
                     currentState.copy(
@@ -525,6 +534,7 @@ class AddEditAlarmViewModel @Inject constructor(
                 isUsingCode = currentState.isCodeEnabled,
                 assignedCode = currentState.temporaryAssignedCode
                     ?: currentState.currentlyAssignedCode,
+                alarmLabel = currentState.alarmLabel,
                 gentleWakeUpDurationInSeconds = currentState.gentleWakeupDurationInSeconds,
                 isTemporaryMuteEnabled = currentState.isTemporaryMuteEnabled,
                 skipAlarmUntilTimeInMillis = null

@@ -562,6 +562,7 @@ private fun HomeScreenContentPreview() {
                         alarmId = 0,
                         alarmHourOfDay = 8,
                         alarmMinute = 0,
+                        alarmLabel = "Work alarm",
                         nextAlarmTimeInMillis = 1732604400000,
                         alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),
                         isAlarmEnabled = true,
