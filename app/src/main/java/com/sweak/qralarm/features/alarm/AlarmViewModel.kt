@@ -47,6 +47,7 @@ class AlarmViewModel @Inject constructor(
                         currentState.copy(
                             currentTimeInMillis = System.currentTimeMillis(),
                             isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed,
+                            alarmLabel = it.alarmLabel,
                             snoozedAlarmTimeInMillis = it.snoozeConfig.nextSnoozedAlarmTimeInMillis,
                             isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0
                         )

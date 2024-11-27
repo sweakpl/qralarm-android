@@ -154,10 +154,11 @@ private fun AlarmScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(
-                        if (state.isAlarmSnoozed) R.string.alarm_snoozed_until
-                        else R.string.alarm_wake_up
-                    ),
+                    text = if (state.isAlarmSnoozed) {
+                        stringResource(R.string.alarm_snoozed_until)
+                    } else {
+                        state.alarmLabel ?: stringResource(R.string.alarm_wake_up)
+                    },
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.displayLarge,
                     color = MaterialTheme.colorScheme.onPrimary
