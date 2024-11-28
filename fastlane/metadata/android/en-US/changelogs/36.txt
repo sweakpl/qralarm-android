@@ -1,0 +1,5 @@
+* Alarms now can have labels assigned to them,
+* Added the option of skipping next scheduled alarm for repeating alarms,
+* Alarm cards are now displaying alarm labels and, for repeating alarms, date of the next scheduled alarm,
+* Added quick alarm settings on the home screen (skip, delete),
+* Bug fixes.
