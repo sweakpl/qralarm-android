@@ -22,6 +22,6 @@ class CanManipulateAlarm @Inject constructor(
 
         val hoursUntilAlarm = currentDateTime.until(alarmDateTime, ChronoUnit.HOURS)
 
-        return hoursUntilAlarm > 1
+        return hoursUntilAlarm > 0
     }
 }

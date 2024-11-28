@@ -105,6 +105,10 @@ class AddEditAlarmViewModel @Inject constructor(
             userDataRepository.setTemporaryScannedCode(null)
 
             userDataRepository.temporaryScannedCode.collect { temporaryScannedCode ->
+                if (temporaryScannedCode != state.value.temporaryAssignedCode) {
+                    hasUnsavedChanges = true
+                }
+
                 state.update { currentState ->
                     currentState.copy(temporaryAssignedCode = temporaryScannedCode)
                 }
@@ -225,7 +229,12 @@ class AddEditAlarmViewModel @Inject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.AlarmTimeChanged -> {
-                hasUnsavedChanges = true
+                if (event.newAlarmHourOfDay != state.value.alarmHourOfDay ||
+                    event.newAlarmMinute != state.value.alarmMinute
+                ) {
+                    hasUnsavedChanges = true
+                }
+
                 state.update { currentState ->
                     currentState.copy(
                         alarmHourOfDay = event.newAlarmHourOfDay,
@@ -239,7 +248,10 @@ class AddEditAlarmViewModel @Inject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.AlarmRepeatingScheduleSelected -> {
-                hasUnsavedChanges = true
+                if (event.newAlarmRepeatingScheduleWrapper != state.value.alarmRepeatingScheduleWrapper) {
+                    hasUnsavedChanges = true
+                }
+
                 state.update { currentState ->
                     currentState.copy(
                         alarmRepeatingScheduleWrapper = event.newAlarmRepeatingScheduleWrapper,
@@ -255,7 +267,10 @@ class AddEditAlarmViewModel @Inject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.AlarmSnoozeConfigurationSelected -> {
-                hasUnsavedChanges = true
+                if (event.newAlarmSnoozeMode != state.value.alarmSnoozeMode) {
+                    hasUnsavedChanges = true
+                }
+
                 state.update { currentState ->
                     currentState.copy(
                         alarmSnoozeMode = event.newAlarmSnoozeMode,
@@ -270,7 +285,11 @@ class AddEditAlarmViewModel @Inject constructor(
             }
             is AddEditAlarmScreenUserEvent.AlarmRingtoneSelected -> {
                 alarmRingtonePlayer.stop()
-                hasUnsavedChanges = true
+
+                if (event.newRingtone != state.value.ringtone) {
+                    hasUnsavedChanges = true
+                }
+
                 state.update { currentState ->
                     currentState.copy(
                         ringtone = event.newRingtone,
@@ -356,6 +375,7 @@ class AddEditAlarmViewModel @Inject constructor(
             is AddEditAlarmScreenUserEvent.CustomRingtoneUriRetrieved -> viewModelScope.launch {
                 event.customRingtoneUri?.let { retrievedUri ->
                     hasUnsavedChanges = true
+
                     state.update { currentState ->
                         currentState.copy(
                             ringtone = Ringtone.CUSTOM_SOUND,
@@ -425,7 +445,10 @@ class AddEditAlarmViewModel @Inject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.GentleWakeUpDurationSelected -> {
-                hasUnsavedChanges = true
+                if (event.newGentleWakeUpDurationInSeconds != state.value.gentleWakeupDurationInSeconds) {
+                    hasUnsavedChanges = true
+                }
+
                 state.update { currentState ->
                     currentState.copy(
                         gentleWakeupDurationInSeconds = event.newGentleWakeUpDurationInSeconds,
