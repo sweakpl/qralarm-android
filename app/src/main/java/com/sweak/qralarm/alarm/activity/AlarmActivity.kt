@@ -83,9 +83,11 @@ class AlarmActivity : FragmentActivity() {
                                             override fun onDismissSucceeded() {
                                                 super.onDismissSucceeded()
 
-                                                navController.navigateToDisableAlarmScanner(
-                                                    alarmId = alarmId
-                                                )
+                                                if (userManager.isUserUnlocked) {
+                                                    navController.navigateToDisableAlarmScanner(
+                                                        alarmId = alarmId
+                                                    )
+                                                }
                                             }
                                         }
                                     )
