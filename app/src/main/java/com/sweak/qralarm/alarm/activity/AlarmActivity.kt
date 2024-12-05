@@ -1,14 +1,19 @@
 package com.sweak.qralarm.alarm.activity
 
+import android.app.KeyguardManager
+import android.app.KeyguardManager.KeyguardDismissCallback
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.UserManager
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.app.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
@@ -63,7 +68,37 @@ class AlarmActivity : FragmentActivity() {
                             }
                         },
                         onRequestCodeScan = {
-                            navController.navigateToDisableAlarmScanner(alarmId = alarmId)
+                            val userManager = getSystemService(USER_SERVICE) as UserManager
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
+                                !userManager.isUserUnlocked
+                            ) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    val keyguardManager =
+                                        getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+
+                                    keyguardManager.requestDismissKeyguard(
+                                        this@AlarmActivity,
+                                        object : KeyguardDismissCallback() {
+                                            override fun onDismissSucceeded() {
+                                                super.onDismissSucceeded()
+
+                                                navController.navigateToDisableAlarmScanner(
+                                                    alarmId = alarmId
+                                                )
+                                            }
+                                        }
+                                    )
+                                } else {
+                                    Toast.makeText(
+                                        this@AlarmActivity,
+                                        getString(R.string.unlock_device_to_scan_code),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            } else {
+                                navController.navigateToDisableAlarmScanner(alarmId = alarmId)
+                            }
                         },
                         onSnoozeAlarm = {
                             stopService(Intent(this@AlarmActivity, AlarmService::class.java))

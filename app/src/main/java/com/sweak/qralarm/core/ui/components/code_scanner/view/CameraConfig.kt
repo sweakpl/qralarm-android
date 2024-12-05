@@ -57,7 +57,7 @@ class CameraConfig(private val context: Context) {
             cameraProvider = cameraProviderFuture.get().apply {
                 try {
                     unbindAll()
-                    preview.setSurfaceProvider(previewView.surfaceProvider)
+                    preview.surfaceProvider = previewView.surfaceProvider
                     camera = bindToLifecycle(
                         lifecycleOwner,
                         cameraSelector,
