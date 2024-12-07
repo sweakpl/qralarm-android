@@ -231,7 +231,10 @@ class AlarmService : Service() {
         isRunning = false
 
         if (::temporaryAlarmMuteJob.isInitialized) temporaryAlarmMuteJob.cancel()
-        unregisterReceiver(temporaryAlarmMuteReceiver)
+
+        try {
+            unregisterReceiver(temporaryAlarmMuteReceiver)
+        } catch (illegalArgumentException: IllegalArgumentException) { /* no-op */ }
 
         runBlocking {
             alarmsRepository.setAlarmRunning(
