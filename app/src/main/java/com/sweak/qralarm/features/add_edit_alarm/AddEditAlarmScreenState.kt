@@ -32,6 +32,7 @@ data class AddEditAlarmScreenState(
     val isNotificationsPermissionDeniedDialogVisible: Boolean = false,
     val currentlyAssignedCode: String? = null,
     val temporaryAssignedCode: String? = null,
+    val isOpenCodeLinkEnabled: Boolean = false,
     val alarmLabel: String? = null,
     val gentleWakeupDurationInSeconds: Int = 30,
     val availableGentleWakeUpDurationsInSeconds: List<Int> =

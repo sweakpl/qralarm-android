@@ -168,5 +168,6 @@
     <string name="next_alarm_date">Następny: %1$s</string>
     <string name="alarm_label">Etykieta alarmu</string>
     <string name="enter_your_alarm_label">Wprowadź etykietę alarmu…</string>
-    <string name="unlock_device_to_scan_code">Odblokuj urządzenie by skanować kod!</string>
+    <string name="open_code_link">Otwórz link z kodu</string>
+    <string name="open_code_link_description">Jeśli kod zawiera prawidłowy URL, aplikacja go otworzy automatycznie po skanowaniu.</string>
 </resources>

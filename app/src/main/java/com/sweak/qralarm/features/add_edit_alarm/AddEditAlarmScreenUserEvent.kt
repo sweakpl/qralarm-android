@@ -60,6 +60,7 @@ sealed class AddEditAlarmScreenUserEvent {
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()
     data object ClearAssignedCode : AddEditAlarmScreenUserEvent()
+    data class OpenCodeLinkEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()
     data object GoToApplicationSettingsClicked : AddEditAlarmScreenUserEvent()
     data class AlarmLabelChanged(val newAlarmLabel: String) : AddEditAlarmScreenUserEvent()
     data class ChooseGentleWakeUpDurationDialogVisible(

@@ -10,14 +10,16 @@ import com.sweak.qralarm.core.ui.components.code_scanner.QRAlarmCodeScanner
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 
 @Composable
-fun DisableAlarmScannerScreen(onAlarmDisabled: () -> Unit) {
+fun DisableAlarmScannerScreen(onAlarmDisabled: (uriStringToTryToOpen: String?) -> Unit) {
     val disableAlarmScannerViewModel = hiltViewModel<DisableAlarmScannerViewModel>()
 
     ObserveAsEvents(
         flow = disableAlarmScannerViewModel.backendEvents,
         onEvent = { event ->
             when (event) {
-                is DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned -> onAlarmDisabled()
+                is DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned -> {
+                    onAlarmDisabled(event.uriStringToOpen)
+                }
             }
         }
     )

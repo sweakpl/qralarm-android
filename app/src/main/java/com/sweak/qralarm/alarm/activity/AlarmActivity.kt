@@ -1,6 +1,8 @@
 package com.sweak.qralarm.alarm.activity
 
+import android.app.KeyguardManager
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
@@ -78,12 +80,84 @@ class AlarmActivity : FragmentActivity() {
                     )
 
                     disableAlarmScannerScreen(
-                        onAlarmDisabled = {
-                            stopService(Intent(this@AlarmActivity, AlarmService::class.java))
-                            finish()
+                        onAlarmDisabled = { uriStringToTryToOpen ->
+                            if (uriStringToTryToOpen == null ||
+                                Build.VERSION.SDK_INT < Build.VERSION_CODES.O
+                            ) {
+                                stopService(Intent(this@AlarmActivity, AlarmService::class.java))
+                                finish()
 
-                            if (isLaunchedFromMainActivity) {
-                                startActivity(Intent(this@AlarmActivity, MainActivity::class.java))
+                                if (isLaunchedFromMainActivity) {
+                                    startActivity(
+                                        Intent(this@AlarmActivity, MainActivity::class.java)
+                                    )
+                                }
+                            } else {
+                                var uri = uriStringToTryToOpen
+
+                                if (!uriStringToTryToOpen.startsWith("http://") &&
+                                    !uriStringToTryToOpen.startsWith("https://")
+                                ) {
+                                    uri = "http://$uri"
+                                }
+
+                                val keyguardManager =
+                                    getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+
+                                if (keyguardManager.isKeyguardSecure &&
+                                    keyguardManager.isDeviceLocked
+                                ) {
+                                    keyguardManager.requestDismissKeyguard(
+                                        this@AlarmActivity,
+                                        object : KeyguardManager.KeyguardDismissCallback() {
+                                            override fun onDismissSucceeded() {
+                                                super.onDismissSucceeded()
+
+                                                stopService(
+                                                    Intent(
+                                                        this@AlarmActivity,
+                                                        AlarmService::class.java
+                                                    )
+                                                )
+                                                finish()
+
+                                                try {
+                                                    startActivity(
+                                                        Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                                                    )
+                                                } catch (exception: Exception) {
+                                                    if (isLaunchedFromMainActivity) {
+                                                        startActivity(
+                                                            Intent(
+                                                                this@AlarmActivity,
+                                                                MainActivity::class.java
+                                                            )
+                                                        )
+                                                    }
+                                                }
+                                            }
+
+                                            override fun onDismissCancelled() {
+                                                navController.popBackStack()
+                                            }
+                                        }
+                                    )
+                                } else {
+                                    stopService(
+                                        Intent(this@AlarmActivity, AlarmService::class.java)
+                                    )
+                                    finish()
+
+                                    try {
+                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)))
+                                    } catch (exception: Exception) {
+                                        if (isLaunchedFromMainActivity) {
+                                            startActivity(
+                                                Intent(this@AlarmActivity, MainActivity::class.java)
+                                            )
+                                        }
+                                    }
+                                }
                             }
                         }
                     )

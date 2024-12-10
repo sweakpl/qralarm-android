@@ -634,15 +634,131 @@ private fun AddEditAlarmScreenContent(
                                             state.temporaryAssignedCode != null,
                                     label = "Code assigning animation"
                                 ) { isAnyCodeAssigned ->
-                                    if (isAnyCodeAssigned) {
-                                        Row(
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            modifier = Modifier.fillMaxWidth()
-                                        ) {
-                                            Column(modifier = Modifier.weight(1f)) {
+                                    Column {
+                                        if (isAnyCodeAssigned) {
+                                            Row(
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                Column(modifier = Modifier.weight(1f)) {
+                                                    Text(
+                                                        text = stringResource(R.string.code_assigned),
+                                                        style = MaterialTheme.typography.titleMedium,
+                                                        modifier = Modifier
+                                                            .padding(
+                                                                start = MaterialTheme.space.medium,
+                                                                top = MaterialTheme.space.medium,
+                                                                end = MaterialTheme.space.medium,
+                                                                bottom = MaterialTheme.space.xSmall
+                                                            )
+                                                    )
+
+                                                    Text(
+                                                        text = stringResource(
+                                                            R.string.current_code,
+                                                            state.temporaryAssignedCode
+                                                                ?: state.currentlyAssignedCode ?: ""
+                                                        ),
+                                                        style = MaterialTheme.typography.labelMedium,
+                                                        modifier = Modifier
+                                                            .padding(
+                                                                start = MaterialTheme.space.medium,
+                                                                end = MaterialTheme.space.medium,
+                                                                bottom = MaterialTheme.space.medium
+                                                            )
+                                                    )
+                                                }
+
+                                                var expanded by remember { mutableStateOf(false) }
+
+                                                IconButton(onClick = { expanded = true }) {
+                                                    Icon(
+                                                        imageVector = QRAlarmIcons.More,
+                                                        contentDescription = stringResource(
+                                                            R.string.content_description_more_icon
+                                                        )
+                                                    )
+
+                                                    DropdownMenu(
+                                                        expanded = expanded,
+                                                        onDismissRequest = { expanded = false },
+                                                        modifier = Modifier
+                                                            .wrapContentWidth()
+                                                            .background(
+                                                                color =
+                                                                MaterialTheme.colorScheme.surface
+                                                            )
+                                                    ) {
+                                                        DropdownMenuItem(
+                                                            text = {
+                                                                Text(
+                                                                    text = stringResource(
+                                                                        R.string.assign_new_code
+                                                                    ),
+                                                                    style =
+                                                                    MaterialTheme.typography.labelMedium
+                                                                )
+                                                            },
+                                                            leadingIcon = {
+                                                                Icon(
+                                                                    imageVector =
+                                                                    QRAlarmIcons.QrCodeScanner,
+                                                                    contentDescription = stringResource(
+                                                                        R.string.content_description_qr_code_scanner_icon
+                                                                    ),
+                                                                    tint =
+                                                                    MaterialTheme.colorScheme.onSurface
+                                                                )
+                                                            },
+                                                            onClick = {
+                                                                expanded = false
+                                                                onEvent(
+                                                                    AddEditAlarmScreenUserEvent
+                                                                        .TryScanSpecificCode
+                                                                )
+                                                            }
+                                                        )
+
+                                                        DropdownMenuItem(
+                                                            text = {
+                                                                Text(
+                                                                    text = stringResource(
+                                                                        R.string.clear_assigned_code
+                                                                    ),
+                                                                    style =
+                                                                    MaterialTheme.typography.labelMedium,
+                                                                    color =
+                                                                    MaterialTheme.colorScheme.error
+                                                                )
+                                                            },
+                                                            leadingIcon = {
+                                                                Icon(
+                                                                    imageVector = QRAlarmIcons.Delete,
+                                                                    contentDescription = stringResource(
+                                                                        R.string.content_description_delete_icon
+                                                                    ),
+                                                                    tint =
+                                                                    MaterialTheme.colorScheme.error
+                                                                )
+                                                            },
+                                                            onClick = {
+                                                                expanded = false
+                                                                onEvent(
+                                                                    AddEditAlarmScreenUserEvent
+                                                                        .ClearAssignedCode
+                                                                )
+                                                            }
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            Column {
                                                 Text(
-                                                    text = stringResource(R.string.code_assigned),
+                                                    text = stringResource(
+                                                        R.string.assign_specific_code
+                                                    ),
                                                     style = MaterialTheme.typography.titleMedium,
                                                     modifier = Modifier
                                                         .padding(
@@ -655,164 +771,100 @@ private fun AddEditAlarmScreenContent(
 
                                                 Text(
                                                     text = stringResource(
-                                                        R.string.current_code,
-                                                        state.temporaryAssignedCode
-                                                            ?: state.currentlyAssignedCode ?: ""
+                                                        R.string.assign_specific_code_description
                                                     ),
-                                                    style = MaterialTheme.typography.labelMedium,
+                                                    style = MaterialTheme.typography.bodyMedium,
                                                     modifier = Modifier
                                                         .padding(
-                                                            start = MaterialTheme.space.medium,
-                                                            end = MaterialTheme.space.medium,
-                                                            bottom = MaterialTheme.space.medium
+                                                            horizontal = MaterialTheme.space.medium
                                                         )
                                                 )
-                                            }
 
-                                            var expanded by remember { mutableStateOf(false) }
-
-                                            IconButton(onClick = { expanded = true }) {
-                                                Icon(
-                                                    imageVector = QRAlarmIcons.More,
-                                                    contentDescription = stringResource(
-                                                        R.string.content_description_more_icon
-                                                    )
-                                                )
-
-                                                DropdownMenu(
-                                                    expanded = expanded,
-                                                    onDismissRequest = { expanded = false },
+                                                Card(
+                                                    colors = CardDefaults.cardColors(
+                                                        containerColor =
+                                                        MaterialTheme.colorScheme.secondary
+                                                    ),
                                                     modifier = Modifier
-                                                        .wrapContentWidth()
-                                                        .background(
-                                                            color =
-                                                            MaterialTheme.colorScheme.surface
-                                                        )
-                                                ) {
-                                                    DropdownMenuItem(
-                                                        text = {
-                                                            Text(
-                                                                text = stringResource(
-                                                                    R.string.assign_new_code
-                                                                ),
-                                                                style =
-                                                                MaterialTheme.typography.labelMedium
-                                                            )
-                                                        },
-                                                        leadingIcon = {
-                                                            Icon(
-                                                                imageVector =
-                                                                QRAlarmIcons.QrCodeScanner,
-                                                                contentDescription = stringResource(
-                                                                    R.string.content_description_qr_code_scanner_icon
-                                                                ),
-                                                                tint =
-                                                                MaterialTheme.colorScheme.onSurface
-                                                            )
-                                                        },
-                                                        onClick = {
-                                                            expanded = false
+                                                        .padding(all = MaterialTheme.space.medium)
+                                                        .clickable {
                                                             onEvent(
                                                                 AddEditAlarmScreenUserEvent
                                                                     .TryScanSpecificCode
                                                             )
                                                         }
-                                                    )
+                                                ) {
+                                                    Row(
+                                                        horizontalArrangement =
+                                                        Arrangement.SpaceBetween,
+                                                        modifier = Modifier
+                                                            .fillMaxWidth()
+                                                            .padding(all = MaterialTheme.space.medium)
+                                                    ) {
+                                                        Text(
+                                                            text =
+                                                            stringResource(R.string.scan_your_own_code),
+                                                            style = MaterialTheme.typography.labelLarge
+                                                        )
 
-                                                    DropdownMenuItem(
-                                                        text = {
-                                                            Text(
-                                                                text = stringResource(
-                                                                    R.string.clear_assigned_code
-                                                                ),
-                                                                style =
-                                                                MaterialTheme.typography.labelMedium,
-                                                                color =
-                                                                MaterialTheme.colorScheme.error
+                                                        Icon(
+                                                            imageVector = QRAlarmIcons.ForwardArrow,
+                                                            contentDescription = stringResource(
+                                                                R.string.content_description_forward_arrow_icon
                                                             )
-                                                        },
-                                                        leadingIcon = {
-                                                            Icon(
-                                                                imageVector = QRAlarmIcons.Delete,
-                                                                contentDescription = stringResource(
-                                                                    R.string.content_description_delete_icon
-                                                                ),
-                                                                tint =
-                                                                MaterialTheme.colorScheme.error
-                                                            )
-                                                        },
-                                                        onClick = {
-                                                            expanded = false
-                                                            onEvent(
-                                                                AddEditAlarmScreenUserEvent
-                                                                    .ClearAssignedCode
-                                                            )
-                                                        }
-                                                    )
+                                                        )
+                                                    }
                                                 }
                                             }
                                         }
-                                    } else {
-                                        Column {
-                                            Text(
-                                                text = stringResource(
-                                                    R.string.assign_specific_code
-                                                ),
-                                                style = MaterialTheme.typography.titleMedium,
-                                                modifier = Modifier
-                                                    .padding(
-                                                        start = MaterialTheme.space.medium,
-                                                        top = MaterialTheme.space.medium,
-                                                        end = MaterialTheme.space.medium,
-                                                        bottom = MaterialTheme.space.xSmall
-                                                    )
-                                            )
 
-                                            Text(
-                                                text = stringResource(
-                                                    R.string.assign_specific_code_description
-                                                ),
-                                                style = MaterialTheme.typography.bodyMedium,
-                                                modifier = Modifier
-                                                    .padding(
-                                                        horizontal = MaterialTheme.space.medium
-                                                    )
-                                            )
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                            Separator()
 
-                                            Card(
-                                                colors = CardDefaults.cardColors(
-                                                    containerColor =
-                                                    MaterialTheme.colorScheme.secondary
-                                                ),
+                                            Row(
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically,
                                                 modifier = Modifier
+                                                    .fillMaxWidth()
                                                     .padding(all = MaterialTheme.space.medium)
-                                                    .clickable {
-                                                        onEvent(
-                                                            AddEditAlarmScreenUserEvent
-                                                                .TryScanSpecificCode
-                                                        )
-                                                    }
                                             ) {
-                                                Row(
-                                                    horizontalArrangement =
-                                                    Arrangement.SpaceBetween,
+                                                Column(
                                                     modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .padding(all = MaterialTheme.space.medium)
+                                                        .weight(1f)
+                                                        .padding(
+                                                            end = MaterialTheme.space.smallMedium
+                                                        )
                                                 ) {
                                                     Text(
-                                                        text =
-                                                        stringResource(R.string.scan_your_own_code),
-                                                        style = MaterialTheme.typography.labelLarge
+                                                        text = stringResource(
+                                                            R.string.open_code_link
+                                                        ),
+                                                        style = MaterialTheme.typography.titleLarge,
+                                                        modifier = Modifier
+                                                            .padding(
+                                                                bottom = MaterialTheme.space.xSmall
+                                                            )
                                                     )
 
-                                                    Icon(
-                                                        imageVector = QRAlarmIcons.ForwardArrow,
-                                                        contentDescription = stringResource(
-                                                            R.string.content_description_forward_arrow_icon
-                                                        )
+                                                    Text(
+                                                        text = stringResource(
+                                                            R.string.open_code_link_description
+                                                        ),
+                                                        style = MaterialTheme.typography.bodyMedium
                                                     )
                                                 }
+
+                                                QRAlarmSwitch(
+                                                    checked = state.isOpenCodeLinkEnabled,
+                                                    onCheckedChange = {
+                                                        onEvent(
+                                                            AddEditAlarmScreenUserEvent
+                                                                .OpenCodeLinkEnabledChanged(
+                                                                    isEnabled = it
+                                                                )
+                                                        )
+                                                    }
+                                                )
                                             }
                                         }
                                     }

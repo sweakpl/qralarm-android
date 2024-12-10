@@ -143,6 +143,7 @@ class AlarmReschedulingReceiver : BroadcastReceiver() {
             areVibrationsEnabled = enableVibrations.run { this ?: true },
             isUsingCode = true,
             assignedCode = dismissAlarmCode,
+            isOpenCodeLinkEnabled = false,
             alarmLabel = null,
             gentleWakeUpDurationInSeconds = gentleWakeUpDurationSeconds ?: 0,
             isTemporaryMuteEnabled =

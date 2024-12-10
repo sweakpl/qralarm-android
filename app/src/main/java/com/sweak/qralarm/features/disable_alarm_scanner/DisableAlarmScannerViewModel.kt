@@ -48,6 +48,8 @@ class DisableAlarmScannerViewModel @Inject constructor(
                     shouldScan = false
 
                     viewModelScope.launch {
+                        val scannedCodeText = event.result.text
+
                         if (alarm.assignedCode == null) {
                             alarmsRepository.setAlarmSnoozed(
                                 alarmId = idOfAlarm,
@@ -65,10 +67,13 @@ class DisableAlarmScannerViewModel @Inject constructor(
                             handleAlarmRescheduling()
 
                             backendEventsChannel.send(
-                                DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned
+                                DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned(
+                                    uriStringToOpen =
+                                    if (alarm.isOpenCodeLinkEnabled) scannedCodeText else null
+                                )
                             )
                         } else {
-                            if (event.result.text == alarm.assignedCode) {
+                            if (scannedCodeText == alarm.assignedCode) {
                                 alarmsRepository.setAlarmSnoozed(
                                     alarmId = idOfAlarm,
                                     snoozed = false
@@ -85,7 +90,10 @@ class DisableAlarmScannerViewModel @Inject constructor(
                                 handleAlarmRescheduling()
 
                                 backendEventsChannel.send(
-                                    DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned
+                                    DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned(
+                                        uriStringToOpen =
+                                        if (alarm.isOpenCodeLinkEnabled) scannedCodeText else null
+                                    )
                                 )
                             } else {
                                 shouldScan = true

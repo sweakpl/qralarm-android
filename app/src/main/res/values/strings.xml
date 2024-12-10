@@ -159,5 +159,6 @@
     <string name="next_alarm_date">Next: %1$s</string>
     <string name="alarm_label">Alarm label</string>
     <string name="enter_your_alarm_label">Enter your alarm label…</string>
-    <string name="unlock_device_to_scan_code">Unlock the device to scan the code!</string>
+    <string name="open_code_link">Open code link</string>
+    <string name="open_code_link_description">If the code contains a valid URL the app will open it automatically upon scanning.</string>
 </resources>

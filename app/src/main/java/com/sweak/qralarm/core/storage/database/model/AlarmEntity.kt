@@ -1,5 +1,6 @@
 package com.sweak.qralarm.core.storage.database.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -23,6 +24,7 @@ data class AlarmEntity(
     val areVibrationsEnabled: Boolean,
     val isUsingCode: Boolean,
     val assignedCode: String?,
+    @ColumnInfo(defaultValue = "FALSE") val isOpenCodeLinkEnabled: Boolean,
     val alarmLabel: String?,
     val gentleWakeUpDurationInSeconds: Int,
     val isTemporaryMuteEnabled: Boolean,
