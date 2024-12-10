@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraInfoUnavailableException
 import androidx.camera.core.CameraSelector
@@ -51,6 +52,7 @@ class CameraConfig(private val context: Context) {
     }
 
     fun startCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView) {
+        ProcessCameraProvider.configureInstance(Camera2Config.defaultConfig())
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
         cameraProviderFuture.addListener({
