@@ -52,7 +52,10 @@ class CameraConfig(private val context: Context) {
     }
 
     fun startCamera(lifecycleOwner: LifecycleOwner, previewView: PreviewView) {
-        ProcessCameraProvider.configureInstance(Camera2Config.defaultConfig())
+        try {
+            ProcessCameraProvider.configureInstance(Camera2Config.defaultConfig())
+        } catch (illegalStateException: IllegalStateException) {  /* no-op */ }
+
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
 
         cameraProviderFuture.addListener({
