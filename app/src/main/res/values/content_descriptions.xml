@@ -35,4 +35,5 @@
     <string name="content_description_get_up_catchphrase_image">Image showing a smiling stick man walking with their phone ringing.</string>
     <string name="content_description_rise_up_catchphrase_image">Image showing a happy stick man after they scanned the QR Code with their phone.</string>
     <string name="content_description_qralarm_pro_image">QRAlarm PRO app icon image</string>
+    <string name="content_description_five_stars_image">Five golden stars image</string>
 </resources>

@@ -31,7 +31,8 @@ fun MenuScreen(
     onBackClicked: () -> Unit,
     onIntroductionClicked: () -> Unit,
     onOptimizationGuideClicked: () -> Unit,
-    onQRAlarmProClicked: () -> Unit
+    onQRAlarmProClicked: () -> Unit,
+    onRateQRAlarmClicked: () -> Unit
 ) {
     MenuScreenContent(
         onEvent = { event ->
@@ -40,6 +41,7 @@ fun MenuScreen(
                 is MenuScreenUserEvent.OnIntroductionClicked -> onIntroductionClicked()
                 is MenuScreenUserEvent.OnOptimizationGuideClicked -> onOptimizationGuideClicked()
                 is MenuScreenUserEvent.OnQRAlarmProClicked -> onQRAlarmProClicked()
+                is MenuScreenUserEvent.OnRateQRAlarmClicked -> onRateQRAlarmClicked()
             }
         }
     )
@@ -109,6 +111,11 @@ fun MenuScreenContent(
                 MenuEntry(
                     title = stringResource(R.string.qralarm_pro),
                     onClick = { onEvent(MenuScreenUserEvent.OnQRAlarmProClicked) }
+                )
+
+                MenuEntry(
+                    title = stringResource(R.string.rate_qralarm),
+                    onClick = { onEvent(MenuScreenUserEvent.OnRateQRAlarmClicked) }
                 )
             }
         }

@@ -13,14 +13,16 @@ fun NavGraphBuilder.menuScreen(
     onBackClicked: () -> Unit,
     onIntroductionClicked: () -> Unit,
     onOptimizationGuideClicked: () -> Unit,
-    onQRAlarmProClicked: () -> Unit
+    onQRAlarmProClicked: () -> Unit,
+    onRateQRAlarmClicked: () -> Unit
 ) {
     composable(route = MENU_SCREEN_ROUTE) {
         MenuScreen(
             onBackClicked = onBackClicked,
             onIntroductionClicked = onIntroductionClicked,
             onOptimizationGuideClicked = onOptimizationGuideClicked,
-            onQRAlarmProClicked = onQRAlarmProClicked
+            onQRAlarmProClicked = onQRAlarmProClicked,
+            onRateQRAlarmClicked = onRateQRAlarmClicked
         )
     }
 }

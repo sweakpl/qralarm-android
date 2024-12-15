@@ -42,6 +42,13 @@ class UserDataRepositoryImpl @Inject constructor(
     override val isAlarmMissedDetected: Flow<Boolean>
         get() = qrAlarmPreferencesDataSource.getAlarmMissedDetected()
 
+    override suspend fun setNextRatePromptTimeInMillis(promptTime: Long?) {
+        qrAlarmPreferencesDataSource.setNextRatePromptTimeInMillis(promptTime = promptTime)
+    }
+
+    override val nextRatePromptTimeInMillis: Flow<Long?>
+        get() = qrAlarmPreferencesDataSource.getNextRatePromptTimeInMillis()
+
     override suspend fun setLegacyDataMigrated(migrated: Boolean) {
         qrAlarmPreferencesDataSource.setLegacyDataMigrated(migrated = migrated)
     }

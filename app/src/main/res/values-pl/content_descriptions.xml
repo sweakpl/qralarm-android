@@ -35,4 +35,5 @@
     <string name="content_description_get_up_catchphrase_image">Obraz przedstawiający uśmiechniętego patyczaka idącego z dzwoniącym telefonem.</string>
     <string name="content_description_rise_up_catchphrase_image">Image showing a happy stick man after they scanned the QR Code with their phone.</string>
     <string name="content_description_qralarm_pro_image">Obraz ikony aplikacji QRAlarm PRO</string>
+    <string name="content_description_five_stars_image">Obraz pięciu złotych gwiazdek</string>
 </resources>

@@ -36,10 +36,13 @@ import com.sweak.qralarm.features.optimization.navigation.navigateToOptimization
 import com.sweak.qralarm.features.optimization.navigation.optimizationScreen
 import com.sweak.qralarm.features.qralarm_pro.navigation.navigateToQRAlarmPro
 import com.sweak.qralarm.features.qralarm_pro.navigation.qralarmProScreen
+import com.sweak.qralarm.features.rate.navigation.navigateToRate
+import com.sweak.qralarm.features.rate.navigation.rateScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -52,6 +55,8 @@ class MainActivity : FragmentActivity() {
     @Inject
     lateinit var rescheduleAlarms: RescheduleAlarms
 
+    private var rateQRAlarmPromptTimeInMillis: Long? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
 
@@ -63,6 +68,15 @@ class MainActivity : FragmentActivity() {
         lifecycleScope.launch {
             userDataRepository.setLegacyDataMigrated(migrated = true)
             rescheduleAlarms()
+
+            if (userDataRepository.nextRatePromptTimeInMillis.first() == null) {
+                userDataRepository.setNextRatePromptTimeInMillis(
+                    promptTime = ZonedDateTime.now().plusDays(3).toInstant().toEpochMilli()
+                )
+            }
+
+            rateQRAlarmPromptTimeInMillis = userDataRepository.nextRatePromptTimeInMillis.first()
+
             shouldShowSplashScreen = false
 
             alarmsRepository.getAllAlarms().collect { alarms ->
@@ -148,6 +162,12 @@ class MainActivity : FragmentActivity() {
                         },
                         onAlarmSaved = {
                             navController.navigateUp()
+
+                            rateQRAlarmPromptTimeInMillis?.let {
+                                if (it != 0L && it <= System.currentTimeMillis()) {
+                                    navController.navigateToRate()
+                                }
+                            }
                         },
                         onScanCustomCodeClicked = {
                             navController.navigateToCustomCodeScanner()
@@ -186,6 +206,9 @@ class MainActivity : FragmentActivity() {
                         },
                         onQRAlarmProClicked = {
                             navController.navigateToQRAlarmPro()
+                        },
+                        onRateQRAlarmClicked = {
+                            navController.navigateToRate()
                         }
                     )
 
@@ -197,6 +220,12 @@ class MainActivity : FragmentActivity() {
 
                     qralarmProScreen(
                         onNotNowClicked = {
+                            navController.navigateUp()
+                        }
+                    )
+
+                    rateScreen(
+                        onExit = {
                             navController.navigateUp()
                         }
                     )
