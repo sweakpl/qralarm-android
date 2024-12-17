@@ -71,7 +71,7 @@ class MainActivity : FragmentActivity() {
 
             if (userDataRepository.nextRatePromptTimeInMillis.first() == null) {
                 userDataRepository.setNextRatePromptTimeInMillis(
-                    promptTime = ZonedDateTime.now().plusDays(3).toInstant().toEpochMilli()
+                    promptTime = ZonedDateTime.now().plusDays(7).toInstant().toEpochMilli()
                 )
             }
 

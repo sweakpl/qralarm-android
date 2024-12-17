@@ -55,7 +55,7 @@ class RateViewModel @Inject constructor(
             is RateScreenUserEvent.NotNowClicked -> viewModelScope.launch {
                 userDataRepository.setNextRatePromptTimeInMillis(
                     promptTime =  if (!state.value.isNeverShowAgainChecked) {
-                        ZonedDateTime.now().plusDays(3).toInstant().toEpochMilli()
+                        ZonedDateTime.now().plusMonths(1).toInstant().toEpochMilli()
                     } else{
                         null
                     }
