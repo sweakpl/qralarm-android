@@ -2,9 +2,11 @@ package com.sweak.qralarm.features.optimization
 
 import android.os.Build
 import android.os.PowerManager
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.features.optimization.navigation.IS_LAUNCHED_FROM_MENU
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +18,7 @@ import javax.inject.Named
 
 @HiltViewModel
 class OptimizationViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val powerManager: PowerManager,
     @Named("PackageName") private val packageName: String,
     private val userDataRepository: UserDataRepository
@@ -24,6 +27,13 @@ class OptimizationViewModel @Inject constructor(
     var state = MutableStateFlow(OptimizationScreenState())
 
     init {
+        state.update { currentState ->
+            currentState.copy(
+                shouldDelayInstructionsTransitions =
+                !(savedStateHandle[IS_LAUNCHED_FROM_MENU] ?: true)
+            )
+        }
+
         viewModelScope.launch {
             val optimizationGuideState = userDataRepository.optimizationGuideState.first()
 

@@ -152,7 +152,7 @@ class MainActivity : FragmentActivity() {
                             )
                         },
                         onGoToOptimizationClicked = {
-                            navController.navigateToOptimization()
+                            navController.navigateToOptimization(isLaunchedFromMenu = false)
                         }
                     )
 
@@ -202,7 +202,9 @@ class MainActivity : FragmentActivity() {
                             )
                         },
                         onOptimizationGuideClicked = {
-                            navController.navigateToOptimization()
+                            navController.navigateToOptimization(
+                                isLaunchedFromMenu = true
+                            )
                         },
                         onQRAlarmProClicked = {
                             navController.navigateToQRAlarmPro()
