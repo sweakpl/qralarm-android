@@ -63,7 +63,7 @@
     <string name="gentle_wake_up">Delikatna pobudka</string>
     <string name="temporary_mute">Tymczasowe wyciszenie</string>
     <string name="gentle_wake_up_description">Głośność alarmu będzie wzrastała przez określony czas.</string>
-    <string name="temporary_mute_description">Alarm zostanie wyciszony na 15 sekund po kliknięciu STOP podczas korzystania z kodu QR/Kreskowego.</string>
+    <string name="temporary_mute_description">Alarm zostanie wyciszony na zadany czas po kliknięciu STOP podczas korzystania z kodu QR/Kreskowego.</string>
     <string name="only_once">Tylko raz</string>
     <string name="custom">Własne</string>
     <string name="number_of_snoozes">Liczba drzemek:</string>

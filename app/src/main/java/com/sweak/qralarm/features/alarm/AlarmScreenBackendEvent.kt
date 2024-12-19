@@ -4,5 +4,5 @@ sealed class AlarmScreenBackendEvent {
     data object StopAlarm : AlarmScreenBackendEvent()
     data object RequestCodeScanToStopAlarm : AlarmScreenBackendEvent()
     data object SnoozeAlarm : AlarmScreenBackendEvent()
-    data object TryTemporarilyMuteAlarm : AlarmScreenBackendEvent()
+    data class TryTemporarilyMuteAlarm(val muteDurationInSeconds: Int) : AlarmScreenBackendEvent()
 }

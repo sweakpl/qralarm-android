@@ -4,6 +4,7 @@ import android.net.Uri
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_NUMBERS
+import com.sweak.qralarm.core.domain.alarm.AVAILABLE_TEMPORARY_MUTE_DURATIONS_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
@@ -38,7 +39,10 @@ data class AddEditAlarmScreenState(
     val availableGentleWakeUpDurationsInSeconds: List<Int> =
         AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS,
     val isChooseGentleWakeUpDurationDialogVisible: Boolean = false,
-    val isTemporaryMuteEnabled: Boolean = false,
+    val temporaryMuteDurationInSeconds: Int = 15,
+    val availableTemporaryMuteDurationsInSeconds: List<Int> =
+        AVAILABLE_TEMPORARY_MUTE_DURATIONS_IN_SECONDS,
+    val isChooseTemporaryMuteDurationDialogVisible: Boolean = false,
     val permissionsDialogState: PermissionsDialogState = PermissionsDialogState(),
     val isDeleteAlarmDialogVisible: Boolean = false,
     val isDiscardAlarmChangesDialogVisible: Boolean = false

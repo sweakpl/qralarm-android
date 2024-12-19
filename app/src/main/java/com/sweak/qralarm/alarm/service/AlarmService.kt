@@ -15,7 +15,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import com.sweak.qralarm.R
-import com.sweak.qralarm.alarm.ACTION_TEMPORARY_ALARM_MUTE
 import com.sweak.qralarm.alarm.ALARM_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.activity.AlarmActivity
@@ -59,9 +58,13 @@ class AlarmService : Service() {
 
             serviceScope.launch {
                 alarmRingtonePlayer.stop()
+                val muteDurationSeconds = intent?.getIntExtra(
+                    EXTRA_TEMPORARY_MUTE_DURATION_SECONDS,
+                    15
+                ) ?: 15
 
                 temporaryAlarmMuteJob = serviceScope.launch {
-                    delay(15000) // 15 seconds
+                    delay(muteDurationSeconds * 1000L)
                     startAlarm()
                 }
             }
@@ -258,6 +261,9 @@ class AlarmService : Service() {
     companion object {
         const val EXTRA_ALARM_ID = "alarmId"
         const val EXTRA_IS_SNOOZE_ALARM = "isSnoozeAlarm"
+
+        const val ACTION_TEMPORARY_ALARM_MUTE = "com.sweak.qralarm.TEMPORARY_ALARM_MUTE"
+        const val EXTRA_TEMPORARY_MUTE_DURATION_SECONDS = "muteDurationSeconds"
 
         var isRunning = false
     }

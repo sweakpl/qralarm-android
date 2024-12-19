@@ -19,7 +19,7 @@ data class Alarm(
     val isOpenCodeLinkEnabled: Boolean,
     val alarmLabel: String?,
     val gentleWakeUpDurationInSeconds: Int,
-    val isTemporaryMuteEnabled: Boolean,
+    val temporaryMuteDurationInSeconds: Int,
     val skipAlarmUntilTimeInMillis: Long?
 ) {
     sealed class RepeatingMode {

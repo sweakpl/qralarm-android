@@ -40,7 +40,7 @@ class AlarmsRepositoryImpl @Inject constructor(
                 isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
                 alarmLabel = alarm.alarmLabel,
                 gentleWakeUpDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
-                isTemporaryMuteEnabled = alarm.isTemporaryMuteEnabled,
+                temporaryMuteDurationInSeconds = alarm.temporaryMuteDurationInSeconds,
                 skipAlarmUntilTimeInMillis = alarm.skipAlarmUntilTimeInMillis
             )
         )
@@ -145,7 +145,7 @@ class AlarmsRepositoryImpl @Inject constructor(
             isOpenCodeLinkEnabled = alarmEntity.isOpenCodeLinkEnabled,
             alarmLabel = alarmEntity.alarmLabel,
             gentleWakeUpDurationInSeconds = alarmEntity.gentleWakeUpDurationInSeconds,
-            isTemporaryMuteEnabled = alarmEntity.isTemporaryMuteEnabled,
+            temporaryMuteDurationInSeconds = alarmEntity.temporaryMuteDurationInSeconds,
             skipAlarmUntilTimeInMillis = alarmEntity.skipAlarmUntilTimeInMillis
         )
     }

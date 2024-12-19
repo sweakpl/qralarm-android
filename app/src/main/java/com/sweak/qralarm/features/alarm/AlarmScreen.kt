@@ -33,7 +33,8 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
-import com.sweak.qralarm.alarm.ACTION_TEMPORARY_ALARM_MUTE
+import com.sweak.qralarm.alarm.service.AlarmService.Companion.ACTION_TEMPORARY_ALARM_MUTE
+import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_TEMPORARY_MUTE_DURATION_SECONDS
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
@@ -69,6 +70,10 @@ fun AlarmScreen(
                     context.sendBroadcast(
                         Intent(ACTION_TEMPORARY_ALARM_MUTE).apply {
                             setPackage(context.packageName)
+                            putExtra(
+                                EXTRA_TEMPORARY_MUTE_DURATION_SECONDS,
+                                event.muteDurationInSeconds
+                            )
                         }
                     )
                 }

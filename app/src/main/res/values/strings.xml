@@ -50,7 +50,7 @@
     <string name="gentle_wake_up">Gentle wake up</string>
     <string name="temporary_mute">Temporary mute</string>
     <string name="gentle_wake_up_description">Alarm volume will increase for the specified time.</string>
-    <string name="temporary_mute_description">Alarm will be muted for 15 seconds after clicking STOP when using QR/Bar code.</string>
+    <string name="temporary_mute_description">Alarm will be muted for the specified time after clicking STOP when using QR/Bar code.</string>
     <string name="only_once">Only once</string>
     <string name="custom">Custom</string>
     <string name="number_of_snoozes">Number of snoozes:</string>

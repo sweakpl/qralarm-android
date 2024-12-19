@@ -80,6 +80,7 @@ import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeating
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneDialogBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseGentleWakeUpDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseSnoozeConfigurationBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.components.ChooseTemporaryMuteDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -984,7 +985,7 @@ private fun AddEditAlarmScreenContent(
 
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(
-                                        text = getGentleWakeUpDurationString(
+                                        text = getSecondsDurationString(
                                             state.gentleWakeupDurationInSeconds
                                         ),
                                         style = MaterialTheme.typography.labelMedium,
@@ -1004,40 +1005,60 @@ private fun AddEditAlarmScreenContent(
 
                         Separator()
 
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = MaterialTheme.space.medium)
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = MaterialTheme.space.smallMedium)
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.temporary_mute),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    modifier = Modifier.padding(bottom = MaterialTheme.space.xSmall)
-                                )
-
-                                Text(
-                                    text = stringResource(R.string.temporary_mute_description),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-
-                            QRAlarmSwitch(
-                                checked = state.isTemporaryMuteEnabled,
-                                onCheckedChange = {
+                                .clickable {
                                     onEvent(
-                                        AddEditAlarmScreenUserEvent.TemporaryMuteEnabledChanged(
-                                            isEnabled = it
-                                        )
+                                        AddEditAlarmScreenUserEvent
+                                            .ChooseTemporaryMuteDurationDialogVisible(
+                                                isVisible = true
+                                            )
                                     )
                                 }
-                            )
+                        ) {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(all = MaterialTheme.space.medium)
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(end = MaterialTheme.space.smallMedium)
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.temporary_mute),
+                                        style = MaterialTheme.typography.titleLarge,
+                                        modifier = Modifier
+                                            .padding(bottom = MaterialTheme.space.xSmall)
+                                    )
+
+                                    Text(
+                                        text = stringResource(R.string.temporary_mute_description),
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        text = getSecondsDurationString(
+                                            state.temporaryMuteDurationInSeconds
+                                        ),
+                                        style = MaterialTheme.typography.labelMedium,
+                                        modifier = Modifier.padding(end = MaterialTheme.space.small)
+                                    )
+
+                                    Icon(
+                                        imageVector = QRAlarmIcons.ForwardArrow,
+                                        contentDescription = stringResource(
+                                            R.string.content_description_forward_arrow_icon
+                                        ),
+                                        modifier = Modifier.size(size = MaterialTheme.space.medium)
+                                    )
+                                }
+                            }
                         }
                     }
 
@@ -1328,6 +1349,21 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
+    if (state.isChooseTemporaryMuteDurationDialogVisible) {
+        ChooseTemporaryMuteDurationBottomSheet(
+            initialTemporaryMuteDurationInSeconds = state.temporaryMuteDurationInSeconds,
+            availableTemporaryMuteDurationsInSeconds =
+            state.availableTemporaryMuteDurationsInSeconds,
+            onDismissRequest = { newTemporaryMuteDurationInSeconds ->
+                onEvent(
+                    AddEditAlarmScreenUserEvent.TemporaryMuteDurationSelected(
+                        newTemporaryMuteDurationInSeconds = newTemporaryMuteDurationInSeconds
+                    )
+                )
+            }
+        )
+    }
+
     if (state.permissionsDialogState.isVisible) {
         MissingPermissionsBottomSheet(
             cameraPermissionState = state.permissionsDialogState.cameraPermissionState,
@@ -1407,11 +1443,11 @@ fun getAlarmRingtoneString(ringtone: Ringtone): String {
 }
 
 @Composable
-fun getGentleWakeUpDurationString(gentleWakeUpDurationInSeconds: Int): String {
-    return if (gentleWakeUpDurationInSeconds == 0) {
+fun getSecondsDurationString(durationInSeconds: Int): String {
+    return if (durationInSeconds == 0) {
         stringResource(R.string.disabled)
     } else {
-        gentleWakeUpDurationInSeconds.toString() + " " + stringResource(R.string.sec)
+        durationInSeconds.toString() + " " + stringResource(R.string.sec)
     }
 }
 

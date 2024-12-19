@@ -104,10 +104,12 @@ class AlarmViewModel @Inject constructor(
                     }
 
                     if (!event.cameraPermissionStatus) {
-                        if (alarm.isTemporaryMuteEnabled) {
+                        if (alarm.temporaryMuteDurationInSeconds > 0) {
                             viewModelScope.launch {
                                 backendEventsChannel.send(
-                                    AlarmScreenBackendEvent.TryTemporarilyMuteAlarm
+                                    AlarmScreenBackendEvent.TryTemporarilyMuteAlarm(
+                                        muteDurationInSeconds = alarm.temporaryMuteDurationInSeconds
+                                    )
                                 )
                             }
                         }
@@ -122,9 +124,11 @@ class AlarmViewModel @Inject constructor(
                     }
 
                     viewModelScope.launch {
-                        if (alarm.isTemporaryMuteEnabled) {
+                        if (alarm.temporaryMuteDurationInSeconds > 0) {
                             backendEventsChannel.send(
-                                AlarmScreenBackendEvent.TryTemporarilyMuteAlarm
+                                AlarmScreenBackendEvent.TryTemporarilyMuteAlarm(
+                                    muteDurationInSeconds = alarm.temporaryMuteDurationInSeconds
+                                )
                             )
                         }
 

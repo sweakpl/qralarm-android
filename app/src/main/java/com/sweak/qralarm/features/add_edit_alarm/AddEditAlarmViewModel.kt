@@ -96,7 +96,7 @@ class AddEditAlarmViewModel @Inject constructor(
                         isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
                         alarmLabel = alarm.alarmLabel,
                         gentleWakeupDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
-                        isTemporaryMuteEnabled = alarm.isTemporaryMuteEnabled
+                        temporaryMuteDurationInSeconds = alarm.temporaryMuteDurationInSeconds
                     )
                 }
             }
@@ -463,10 +463,21 @@ class AddEditAlarmViewModel @Inject constructor(
                     )
                 }
             }
-            is AddEditAlarmScreenUserEvent.TemporaryMuteEnabledChanged -> {
-                hasUnsavedChanges = true
+            is AddEditAlarmScreenUserEvent.ChooseTemporaryMuteDurationDialogVisible -> {
                 state.update { currentState ->
-                    currentState.copy(isTemporaryMuteEnabled = event.isEnabled)
+                    currentState.copy(isChooseTemporaryMuteDurationDialogVisible = event.isVisible)
+                }
+            }
+            is AddEditAlarmScreenUserEvent.TemporaryMuteDurationSelected -> {
+                if (event.newTemporaryMuteDurationInSeconds != state.value.temporaryMuteDurationInSeconds) {
+                    hasUnsavedChanges = true
+                }
+
+                state.update { currentState ->
+                    currentState.copy(
+                        temporaryMuteDurationInSeconds = event.newTemporaryMuteDurationInSeconds,
+                        isChooseTemporaryMuteDurationDialogVisible = false
+                    )
                 }
             }
             is AddEditAlarmScreenUserEvent.DeleteAlarmDialogVisible -> {
@@ -567,7 +578,7 @@ class AddEditAlarmViewModel @Inject constructor(
                 isOpenCodeLinkEnabled = currentState.isOpenCodeLinkEnabled,
                 alarmLabel = currentState.alarmLabel,
                 gentleWakeUpDurationInSeconds = currentState.gentleWakeupDurationInSeconds,
-                isTemporaryMuteEnabled = currentState.isTemporaryMuteEnabled,
+                temporaryMuteDurationInSeconds = currentState.temporaryMuteDurationInSeconds,
                 skipAlarmUntilTimeInMillis = null
             )
 

@@ -27,7 +27,9 @@ object DatabaseModule {
             } else context,
             QRAlarmDatabase::class.java,
             "QRAlarmDatabase"
-        ).build()
+        )
+            .addMigrations(QRAlarmDatabase.MIGRATION_3_4)
+            .build()
 
     @Provides
     fun provideAlarmsDao(

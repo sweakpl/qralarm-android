@@ -69,7 +69,12 @@ sealed class AddEditAlarmScreenUserEvent {
     data class GentleWakeUpDurationSelected(
         val newGentleWakeUpDurationInSeconds: Int
     ) : AddEditAlarmScreenUserEvent()
-    data class TemporaryMuteEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()
+    data class ChooseTemporaryMuteDurationDialogVisible(
+        val isVisible: Boolean
+    ) : AddEditAlarmScreenUserEvent()
+    data class TemporaryMuteDurationSelected(
+        val newTemporaryMuteDurationInSeconds: Int
+    ) : AddEditAlarmScreenUserEvent()
     data object TryUseSpecialAlarmSettings : AddEditAlarmScreenUserEvent()
     data class DeleteAlarmDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
     data object DeleteAlarm : AddEditAlarmScreenUserEvent()

@@ -146,8 +146,12 @@ class AlarmReschedulingReceiver : BroadcastReceiver() {
             isOpenCodeLinkEnabled = false,
             alarmLabel = null,
             gentleWakeUpDurationInSeconds = gentleWakeUpDurationSeconds ?: 0,
-            isTemporaryMuteEnabled =
-            temporaryAlarmMuteDisabled.run { if (this != null) !this else false },
+            temporaryMuteDurationInSeconds = temporaryAlarmMuteDisabled.run {
+                if (this != null) {
+                    if (this) 0 else 15
+                }
+                else 0
+            },
             skipAlarmUntilTimeInMillis = null
         )
 
