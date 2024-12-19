@@ -181,7 +181,8 @@ fun RateScreenContent(
                 ) {
                     Text(
                         text = stringResource(R.string.i_love_it_rate_me),
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center
                     )
                 }
 
