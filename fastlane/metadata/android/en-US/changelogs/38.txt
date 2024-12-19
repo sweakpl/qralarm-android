@@ -1,2 +1,0 @@
-* Added the option of opening links from the scanned codes when disabling alarms - can be enabled in the individual alarm settings (Only on Android 8+),
-* It is no longer required to unlock the device after it was restared to scan the code when disabling alarms.

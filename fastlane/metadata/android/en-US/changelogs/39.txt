@@ -1,0 +1,3 @@
+* Temporary mute duration now can be adjusted,
+* Optimization guide is now less cluttered and easier to follow,
+* Added the rate screen.
