@@ -1,0 +1,38 @@
+<resources>
+    <string name="content_description_qralarm_icon">Icône QRAlarm</string>
+    <string name="content_description_add_icon">Ajouter une icône (plus)</string>
+    <string name="content_description_menu_icon">Icône de menu</string>
+    <string name="content_description_close_icon">Icône Fermer</string>
+    <string name="content_description_done_icon">Icône Terminé</string>
+    <string name="content_description_forward_arrow_icon">Icône de flèche vers l\'avant</string>
+    <string name="content_description_back_arrow_icon">Icône de flèche de retour</string>
+    <string name="content_description_drop_down_arrow_icon">Icône de flèche déroulante</string>
+    <string name="content_description_play_icon">Icône de lecture</string>
+    <string name="content_description_stop_icon">Icône d\'arrêt</string>
+    <string name="content_description_edit_icon">Modifier l\'icône</string>
+    <string name="content_description_more_icon">Icône Plus d\'options</string>
+    <string name="content_description_qr_code_scanner_icon">Icône du scanner de code QR</string>
+    <string name="content_description_delete_icon">Supprimer l\'icône</string>
+    <string name="content_description_camera_icon">Icône d\'appareil photo</string>
+    <string name="content_description_alarm_icon">Icône d\'alarme</string>
+    <string name="content_description_notification_icon">Icône de notification</string>
+    <string name="content_description_full_screen_icon">Icône d\'affichage plein écran</string>
+    <string name="content_description_no_qr_code_icon">Icône de code QR désactivé</string>
+    <string name="content_description_automatic_settings_icon">Icône de paramètres automatiques</string>
+    <string name="content_description_app_settings_icon">Icône des paramètres de l\'application</string>
+    <string name="content_description_special_app_settings_icon">Icône de paramètres d\'application spéciaux</string>
+    <string name="content_description_star_icon">Icône étoile</string>
+    <string name="content_description_special_alarm_settings_icon">Icône de paramètres d\'alarme spéciaux</string>
+    <string name="content_description_early_access_icon">Icône d\'accès anticipé</string>
+    <string name="content_description_access_forever_icon">Icône d\'accès permanent</string>
+    <string name="content_description_flash_icon">Icône Flash</string>
+    <string name="content_description_undo_icon">Icône Annuler les modifications</string>
+    <string name="content_description_skip_next_alarm_icon">Ignorer l\'icône d\'alarme suivante</string>
+    <string name="content_description_label_icon">Icône d\'étiquette</string>
+
+    <string name="content_description_wake_up_catchphrase_image">Image montrant un bonhomme allumette sympathique allongé dans son lit et réveillé.</string>
+    <string name="content_description_get_up_catchphrase_image">Image montrant un bonhomme allumette souriant marchant avec son téléphone qui sonne.</string>
+    <string name="content_description_rise_up_catchphrase_image">Image montrant un bonhomme allumette heureux après avoir scanné le code QR avec son téléphone.</string>
+    <string name="content_description_qralarm_pro_image">Image de l\'icône de l\'application QRAlarm PRO</string>
+    <string name="content_description_five_stars_image">Image de cinq étoiles dorées</string>
+</resources>

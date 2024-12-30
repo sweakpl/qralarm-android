@@ -1,0 +1,179 @@
+<resources>
+    <plurals name="number_of_snoozes_plural">
+        <item quantity="one">%1$d Schlummern</item>
+        <item quantity="other">%1$d Schlummern</item>
+    </plurals>
+
+    <plurals name="snooze_duration_plural">
+        <item quantity="one">%1$d Minute</item>
+        <item quantity="other">%1$d Minuten</item>
+    </plurals>
+
+    <plurals name="number_of_seconds_plural">
+        <item quantity="one">%1$d Sekunde</item>
+        <item quantity="other">%1$d Sekunden</item>
+    </plurals>
+
+    <plurals name="days">
+        <item quantity="one">%1$d Tag</item>
+        <item quantity="other">%1$d Tage</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">%1$d Stunde</item>
+        <item quantity="other">%1$d Stunden</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%1$d Minute</item>
+        <item quantity="other">%1$d Minuten</item>
+    </plurals>
+
+    <string name="app_name" translatable="false">QRAlarm</string>
+    <string name="welcome_to_qralarm">Willkommen bei QRAlarm!</string>
+    <string name="wake_up_catchphrase">Aufwachen!</string>
+    <string name="wake_up_catchphrase_description">Stellen Sie Ihren Wecker wie gewohnt ein und lassen Sie sich am nächsten Morgen von QRAlarm wecken.</string>
+    <string name="get_up_catchphrase">Aufstehen!</string>
+    <string name="get_up_catchphrase_description">QRAlarm stellt sicher, dass Sie nicht nur aufgewacht sind, sondern auch aufgestanden sind und den Alarm deaktiviert haben.</string>
+    <string name="rise_up_catchphrase">Erhebt euch!</string>
+    <string name="rise_up_catchphrase_description">Scannen Sie den Code, deaktivieren Sie den Alarm und verabschieden Sie sich vom Verschlafen! Genießen Sie Ihren Morgen mit QRAlarm!</string>
+    <string name="lets_go">Lass uns gehen!</string>
+    <string name="home">Heim</string>
+    <string name="alarms">Alarm</string>
+    <string name="alarm">Alarm</string>
+    <string name="repeating">Wiederholen</string>
+    <string name="snooze">Schlummern</string>
+    <string name="ringtone">Klingelton</string>
+    <string name="vibrations">Vibrationen</string>
+    <string name="use_qr_bar_code">QR/Barcode verwenden</string>
+    <string name="assign_specific_code">Bestimmten Code zuweisen</string>
+    <string name="assign_specific_code_description">Der Alarm kann mit einem beliebigen Code deaktiviert werden. Klicken Sie unten, um Ihren eigenen QR oder Barcode zuzuweisen, mit dem dieser Alarm deaktiviert werden soll:</string>
+    <string name="scan_your_own_code">Scannen Sie Ihren eigenen Code</string>
+    <string name="gentle_wake_up">Sanftes Wecken</string>
+    <string name="temporary_mute">Vorübergehende Stummschaltung</string>
+    <string name="gentle_wake_up_description">Die Alarmlautstärke wird für die angegebene Zeit erhöht.</string>
+    <string name="temporary_mute_description">Bei Verwendung eines QR/Barcodes wird der Alarm nach dem Klicken auf STOP für die angegebene Zeit stummgeschaltet.</string>
+    <string name="only_once">Nur einmal</string>
+    <string name="custom">Brauch</string>
+    <string name="number_of_snoozes">Anzahl der Schlummervorgänge:</string>
+    <string name="snooze_duration">Schlummerdauer:</string>
+    <string name="no_snoozes">Kein Schlummern</string>
+    <string name="gentle_guitar">Sanfte Gitarre</string>
+    <string name="alarm_clock">Wecker</string>
+    <string name="air_horn">Drucklufthupe</string>
+    <string name="custom_sound">Benutzerdefinierter Sound</string>
+    <string name="disabled">Deaktiviert</string>
+    <string name="min">Min</string>
+    <string name="sec">Sek</string>
+    <string name="ringtone_successfully_uploaded">Ihr benutzerdefinierter Klingelton wurde erfolgreich hochgeladen!</string>
+    <string name="ringtone_upload_unsuccessful">Benutzerdefinierter Klingelton wurde nicht hochgeladen…</string>
+    <string name="code_assigned">Code zugewiesen!</string>
+    <string name="current_code">Aktueller Code: %1$s</string>
+    <string name="camera_permission_required">Kameraerlaubnis erforderlich</string>
+    <string name="camera_permission_required_description">Zum Scannen von Codes ist eine Kameraberechtigung erforderlich. Um die Berechtigung zu erteilen, gehen Sie zu den Einstellungen und erteilen Sie die Kameraberechtigung manuell.</string>
+    <string name="settings">Einstellungen</string>
+    <string name="cancel">Stornieren</string>
+    <string name="code_successfully_assigned">Code wurde erfolgreich zugewiesen!</string>
+    <string name="assign_new_code">Neuen Code zuweisen</string>
+    <string name="clear_assigned_code">Zugewiesenen Code löschen</string>
+    <string name="permissions_required">Berechtigungen erforderlich!</string>
+    <string name="camera">Kamera</string>
+    <string name="camera_usage">Wird zum Scannen der QR/Barcodes verwendet.</string>
+    <string name="alarms_usage">Wird zum Planen von Alarmen zu genauen Zeiten verwendet.</string>
+    <string name="notifications">Benachrichtigungen</string>
+    <string name="notifications_usage">Wird verwendet, um den Alarm mit einer visuellen Benachrichtigung zu begleiten.</string>
+    <string name="full_screen_display">Vollbildanzeige</string>
+    <string name="full_screen_display_usage">Wird zur Anzeige einer Alarmbenachrichtigung im Vollbildmodus verwendet.</string>
+    <string name="notifications_permission_required">Benachrichtigungsberechtigung erforderlich</string>
+    <string name="notifications_permission_required_description">Zum Senden von Benachrichtigungen über Ihre Alarme ist die Benachrichtigungsberechtigung erforderlich. Um die Berechtigung zu erteilen, gehen Sie zu den Einstellungen und erteilen Sie die Benachrichtigungsberechtigung manuell.</string>
+    <string name="delete_alarm">Alarm löschen</string>
+    <string name="delete_this_alarm">Diesen Alarm löschen?</string>
+    <string name="delete">Löschen</string>
+    <string name="discard_changes">Änderungen verwerfen?</string>
+    <string name="discard_changes_description">Alle an diesem Alarm vorgenommenen Änderungen werden verworfen und nicht gespeichert. Möchten Sie wirklich verwerfen?</string>
+    <string name="discard">Verwerfen</string>
+    <string name="alarm_in">Alarm in:</string>
+    <string name="alarm_notification_channel_name">Alarme auslösen</string>
+    <string name="alarm_notification_channel_description">Spielt einen Alarmton ab, zeigt eine Benachrichtigung an und erscheint auf dem Bildschirm</string>
+    <string name="alarm_notification_title">Alarm ausgelöst! Aufwachen!</string>
+    <string name="alarm_set_indication_notification_channel_name">Benachrichtigung über Alarme</string>
+    <string name="alarm_set_indication_notification_channel_description">Benachrichtigt über aktuell eingestellte oder verpasste Alarme, versteckt sich in der Benachrichtigungsleiste, gibt keinen Ton aus</string>
+    <string name="alarm_missed_notification_title">Alarm verpasst!</string>
+    <string name="alarm_missed_notification_text">Ihr zuvor eingestellter Alarm wurde wahrscheinlich aufgrund einer Zeitumstellung Ihres Telefons oder weil das Telefon zum Zeitpunkt des Alarms ausgeschaltet war, verpasst.</string>
+    <string name="alarm_wake_up">Alarm - wach auf!</string>
+    <string name="stop">STOPPEN</string>
+    <string name="snooze_capitals">SCHLUMMERN</string>
+    <string name="alarm_snoozed_until">Alarm wurde stummgeschaltet bis:</string>
+    <string name="upcoming_alarm_indication_notification_title">Bevorstehender Alarm</string>
+    <string name="upcoming_alarm_indication_notification_text">Der Alarm wurde für %1$s eingestellt.</string>
+    <string name="next_step">Nächster Schritt</string>
+    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarm in weniger als 1 Stunde – zum Bearbeiten deaktivieren Sie den Alarm durch Scannen des Codes.</string>
+    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarm in weniger als 1 Stunde – scannen Sie den Code, um den Alarm zu deaktivieren.</string>
+    <string name="kalimba">Kalimba</string>
+    <string name="classic_alarm">Klassischer Wecker</string>
+    <string name="rooster">Hahn</string>
+    <string name="menu">Menü</string>
+    <string name="introduction">Einführung</string>
+    <string name="everyday">Täglich</string>
+    <string name="no_alarms">Keine Alarme</string>
+    <string name="create_using_button">Erstellen Sie eins mit der Schaltfläche „+“ oben oder unten.</string>
+    <string name="optimization_guide">Optimierungsleitfaden</string>
+    <string name="optimize_qralarm">QRAlarm optimieren</string>
+    <string name="ensure_the_best_performance">Sorgen Sie für beste Leistung! ⏰ 🚀</string>
+    <string name="optimization_screen_description">Die folgenden Einstellungen sorgen dafür, dass QRAlarm auf Ihrem System optimal funktioniert und Ihnen den schönsten Morgen aller Zeiten beschert!</string>
+    <string name="enable_background_work">Hintergrundarbeit aktivieren</string>
+    <string name="enable_background_work_description">Lassen Sie nicht zu, dass das System Ihre Alarme stört, und schlafen Sie beruhigt!</string>
+    <string name="fully_optimize_for_your_system">Vollständige Optimierung für Ihr System</string>
+    <string name="fully_optimize_for_your_system_description">Einige Android-Systeme legen bestimmte Beschränkungen für funktionierende Anwendungen fest, die sich auf QRAlarm auswirken können. Optimieren Sie die App, indem Sie die Anweisungen für Ihr Telefon befolgen:</string>
+    <string name="ensure_the_best_settings_possible">Sorgen Sie für die bestmöglichen Einstellungen</string>
+    <string name="ensure_the_best_settings_possible_description">Stellen Sie sicher, dass diese Einstellungen auch aktiviert sind (sofern Ihr System diese unterstützt):</string>
+    <string name="display_on_lock_screen_description">Alarme sind schnell verfügbar, wenn sie klingeln.</string>
+    <string name="autostart">Autostart</string>
+    <string name="autostart_description">Alarme werden nach dem Neustart des Telefons automatisch aktiviert.</string>
+    <string name="display_on_lock_screen">Anzeige auf dem Sperrbildschirm</string>
+    <string name="work_in_background_limited_click_to_enable">Die Arbeit im Hintergrund ist eingeschränkt. Klicken Sie hier, um es zu aktivieren.</string>
+    <string name="work_in_background_enabled">Arbeiten im Hintergrund ist aktiviert. Gute Arbeit!</string>
+    <string name="setting_unavailable_refer_to_the_next_step">Einstellung nicht verfügbar – bitte lesen Sie die nächsten Schritte.</string>
+    <string name="dontkilmyapp_com" translatable="false">dontkillmyapp.com</string>
+    <string name="dontkilmyapp_com_full_uri" translatable="false">https://dontkillmyapp.com/</string>
+    <string name="select_manufacturer_and_follow_instructions">Wählen Sie Ihren Telefonhersteller aus und folgen Sie den bereitgestellten Anweisungen.</string>
+    <string name="click_to_go_to_app_settings">Klicken Sie hier, um zu den QRAlarm-Anwendungseinstellungen zu gelangen.</string>
+    <string name="issue_opening_the_page">Beim Öffnen der Seite ist ein Problem aufgetreten…</string>
+    <string name="optimization_dialog_description">Sorgen Sie dafür, dass QRAlarm auf Ihrem System optimal funktioniert, indem Sie unseren Optimierungsleitfaden lesen und beruhigt schlafen können!</string>
+    <string name="qralarm_pro" translatable="false">QRAlarm PRO</string>
+    <string name="special_alarm_settings">Spezielle Alarmeinstellungen</string>
+    <string name="early_access_to_new_features">Frühzeitiger Zugriff auf neue Funktionen</string>
+    <string name="buy_once_enjoy_forever">Einmal kaufen – ewig genießen!</string>
+    <string name="get_it_now">Hol es dir jetzt!</string>
+    <string name="not_now">Nicht jetzt</string>
+    <string name="qralarm_pro_package_name" translatable="false">com.sweak.qralarm.pro</string>
+    <string name="special_settings">Spezielle Einstellungen</string>
+    <string name="do_not_leave_alarm">Lassen Sie keinen Alarm</string>
+    <string name="do_not_leave_alarm_description">Zeigt weiterhin den Alarmbildschirm an, wenn der Alarm klingelt.</string>
+    <string name="block_volume_down">Lautstärke verringern</string>
+    <string name="block_volume_down_description">Die Lautstärke des Alarmklingeltons darf nicht verringert werden.</string>
+    <string name="alarm_didnt_ring">Wecker hat nicht geklingelt? ⏰</string>
+    <string name="alarm_didnt_ring_description">Wurde der letzte Alarm verpasst? Wenn ja, stellen Sie sicher, dass Sie unseren Optimierungsleitfaden genau befolgt haben. Dieser soll sicherstellen, dass QRAlarm auf Ihrem System optimal funktioniert!</string>
+    <string name="optimize_now">Jetzt optimieren!</string>
+    <string name="there_was_an_issue_playing_ringtone">Beim Abspielen des Klingeltons ist ein Problem aufgetreten…</string>
+    <string name="skip_next_alarm">Nächsten Alarm überspringen</string>
+    <string name="undo_skipping_next_alarm">Überspringen des nächsten Alarms rückgängig machen</string>
+    <string name="next_alarm_date">Nächste: %1$s</string>
+    <string name="alarm_label">Alarmbezeichnung</string>
+    <string name="enter_your_alarm_label">Alarmbezeichnung eingeben…</string>
+    <string name="open_code_link">Code-Link öffnen</string>
+    <string name="open_code_link_description">Wenn der Code eine gültige URL enthält, öffnet die App diese beim Scannen automatisch.</string>
+    <string name="do_you_enjoy_qralarm">Gefällt Ihnen QRAlarm? 🚀 ⏰</string>
+    <string name="im_working_hard">Ich arbeite hart daran, Ihren Morgen so reibungslos wie möglich zu gestalten! 🫡</string>
+    <string name="i_love_it_rate_me">Ich liebe es – bewerte mich! ❤️</string>
+    <string name="did_something_go_wrong">Ist etwas schief gelaufen?\nGemeinsam können wir das Problem beheben!</string>
+    <string name="tell_me_what_is_wrong">Sag mir, was los ist</string>
+    <string name="do_not_show_again">Diesen Bildschirm nicht mehr anzeigen.</string>
+    <string name="qralarm_github_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android</string>
+    <string name="qralarm_github_issues_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android/issues</string>
+    <string name="rate_qralarm">Bewerten Sie QRAlarm</string>
+    <string name="previous">Vorherige</string>
+    <string name="scan_code">Code scannen</string>
+    <string name="or_use_already_used_code">Oder verwenden Sie bereits verwendeten Code</string>
+    <string name="click_to_choose">*Zum Auswählen anklicken*</string>
+</resources>

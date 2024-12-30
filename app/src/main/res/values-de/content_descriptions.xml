@@ -1,0 +1,38 @@
+<resources>
+    <string name="content_description_qralarm_icon">QRAlarm-Symbol</string>
+    <string name="content_description_add_icon">Symbol „Hinzufügen“ (Plus)</string>
+    <string name="content_description_menu_icon">Menüsymbol</string>
+    <string name="content_description_close_icon">Symbol „Schließen“</string>
+    <string name="content_description_done_icon">Symbol „Fertig“</string>
+    <string name="content_description_forward_arrow_icon">Vorwärtspfeil-Symbol</string>
+    <string name="content_description_back_arrow_icon">Zurück-Pfeilsymbol</string>
+    <string name="content_description_drop_down_arrow_icon">Dropdown-Pfeilsymbol</string>
+    <string name="content_description_play_icon">Wiedergabesymbol</string>
+    <string name="content_description_stop_icon">Stoppsymbol</string>
+    <string name="content_description_edit_icon">Symbol „Bearbeiten“</string>
+    <string name="content_description_more_icon">Symbol „Weitere Optionen“</string>
+    <string name="content_description_qr_code_scanner_icon">QR-Code-Scanner-Symbol</string>
+    <string name="content_description_delete_icon">Symbol „Löschen“</string>
+    <string name="content_description_camera_icon">Kamerasymbol</string>
+    <string name="content_description_alarm_icon">Alarmsymbol</string>
+    <string name="content_description_notification_icon">Benachrichtigungssymbol</string>
+    <string name="content_description_full_screen_icon">Symbol für Vollbildanzeige</string>
+    <string name="content_description_no_qr_code_icon">Deaktiviertes QR-Code-Symbol</string>
+    <string name="content_description_automatic_settings_icon">Symbol für automatische Einstellungen</string>
+    <string name="content_description_app_settings_icon">Symbol „Anwendungseinstellungen“</string>
+    <string name="content_description_special_app_settings_icon">Symbol für spezielle App-Einstellungen</string>
+    <string name="content_description_star_icon">Sternsymbol</string>
+    <string name="content_description_special_alarm_settings_icon">Symbol für spezielle Alarmeinstellungen</string>
+    <string name="content_description_early_access_icon">Symbol für frühen Zugriff</string>
+    <string name="content_description_access_forever_icon">Symbol „Für immer zugreifen“</string>
+    <string name="content_description_flash_icon">Blitzsymbol</string>
+    <string name="content_description_undo_icon">Symbol „Änderungen rückgängig machen“</string>
+    <string name="content_description_skip_next_alarm_icon">Symbol „Nächsten Alarm überspringen“</string>
+    <string name="content_description_label_icon">Beschriftungssymbol</string>
+
+    <string name="content_description_wake_up_catchphrase_image">Bild, das einen freundlichen Strichmännchen zeigt, der aufgewacht im Bett liegt.</string>
+    <string name="content_description_get_up_catchphrase_image">Bild, das einen lächelnden Strichmännchen zeigt, während sein Telefon klingelt.</string>
+    <string name="content_description_rise_up_catchphrase_image">Bild, das einen glücklichen Strichmännchen zeigt, nachdem er den QR-Code mit seinem Telefon gescannt hat.</string>
+    <string name="content_description_qralarm_pro_image">QRAlarm PRO App-Symbolbild</string>
+    <string name="content_description_five_stars_image">Bild mit fünf goldenen Sternen</string>
+</resources>
