@@ -1,0 +1,3 @@
+* Added French, German, Spanish and Italian machine translations - PLEASE REPORT ANY MISTAKES!
+* Added the option of assigning a previously scanned code to edited alarm,
+* User interface improvements and fixes.
