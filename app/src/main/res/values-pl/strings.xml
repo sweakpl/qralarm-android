@@ -58,7 +58,7 @@
     <string name="vibrations">Wibracje</string>
     <string name="use_qr_bar_code">Używaj kodu QR/Kreskowego</string>
     <string name="assign_specific_code">Przypisz konkretny kod</string>
-    <string name="assign_specific_code_description">Alarm można wyłączyć dowolnym kodem. Kliknij poniżej, aby zeskanować własny kod QR lub kod kreskowy, który zostanie użyty do wyłączenia tego alarmu:</string>
+    <string name="assign_specific_code_description">Alarm można wyłączyć dowolnym kodem. Kliknij poniżej, aby przypisać własny kod QR lub kod kreskowy, który zostanie użyty do wyłączenia tego alarmu:</string>
     <string name="scan_your_own_code">Zeskanuj swój własny kod</string>
     <string name="gentle_wake_up">Delikatna pobudka</string>
     <string name="temporary_mute">Tymczasowe wyciszenie</string>
@@ -84,7 +84,7 @@
     <string name="camera_permission_required_description">Do skanowania kodów wymagane jest uprawnienie do korzystania z kamery. Aby nadać uprawnienia, należy przejść do ustawień i ręcznie nadać uprawnienie do korzystania z kamery.</string>
     <string name="settings">Ustawienia</string>
     <string name="cancel">Anuluj</string>
-    <string name="code_successfully_scanned">Kod został pomyślnie zeskanowany!</string>
+    <string name="code_successfully_assigned">Kod został pomyślnie przypisany!</string>
     <string name="assign_new_code">Przypisz nowy kod</string>
     <string name="clear_assigned_code">Wyczyść przypisany kod</string>
     <string name="permissions_required">Wymagane uprawnienia!</string>
@@ -178,4 +178,7 @@
     <string name="do_not_show_again">Nie pokazuj tego ekranu ponownie.</string>
     <string name="rate_qralarm">Oceń QRAlarm</string>
     <string name="previous">Poprzedni</string>
+    <string name="scan_code">Skanuj kod</string>
+    <string name="or_use_already_used_code">Lub użyj już używanego kodu</string>
+    <string name="click_to_choose">*Kliknij by wybrać*</string>
 </resources>

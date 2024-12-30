@@ -26,6 +26,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -60,19 +61,28 @@ class AddEditAlarmViewModel @Inject constructor(
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     init {
-        if (idOfAlarm == 0L) {
-            val dateTime = ZonedDateTime.now()
+        viewModelScope.launch {
+            val allSavedAlarmCodes = alarmsRepository.getAllAlarms()
+                .map { alarms ->
+                    alarms
+                        .mapNotNull { alarm -> alarm.assignedCode }
+                        .distinct()
+                }
+                .first()
 
-            state.update { currentState ->
-                currentState.copy(
-                    isLoading = false,
-                    isEditingExistingAlarm = false,
-                    alarmHourOfDay = dateTime.hour,
-                    alarmMinute = dateTime.minute
-                )
-            }
-        } else {
-            viewModelScope.launch {
+            if (idOfAlarm == 0L) {
+                val dateTime = ZonedDateTime.now()
+
+                state.update { currentState ->
+                    currentState.copy(
+                        isLoading = false,
+                        isEditingExistingAlarm = false,
+                        alarmHourOfDay = dateTime.hour,
+                        alarmMinute = dateTime.minute,
+                        previouslySavedCodes = allSavedAlarmCodes
+                    )
+                }
+            } else {
                 val alarm = alarmsRepository.getAlarm(alarmId = idOfAlarm) ?: return@launch
                 val alarmRepeatingScheduleWrapper = convertAlarmRepeatingMode(
                     repeatingMode = alarm.repeatingMode
@@ -92,6 +102,7 @@ class AddEditAlarmViewModel @Inject constructor(
                         },
                         areVibrationsEnabled = alarm.areVibrationsEnabled,
                         isCodeEnabled = alarm.isUsingCode,
+                        previouslySavedCodes = allSavedAlarmCodes,
                         currentlyAssignedCode = alarm.assignedCode,
                         isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
                         alarmLabel = alarm.alarmLabel,
@@ -410,9 +421,21 @@ class AddEditAlarmViewModel @Inject constructor(
                     currentState.copy(isCodeEnabled = event.isEnabled)
                 }
             }
+            is AddEditAlarmScreenUserEvent.AssignCodeDialogVisible -> {
+                state.update { currentState ->
+                    currentState.copy(isAssignCodeDialogVisible = event.isVisible)
+                }
+            }
             is AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
                 state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
+                }
+            }
+            is AddEditAlarmScreenUserEvent.CodeChosenFromList -> viewModelScope.launch {
+                userDataRepository.setTemporaryScannedCode(code = event.code)
+
+                state.update { currentState ->
+                    currentState.copy(isAssignCodeDialogVisible = false)
                 }
             }
             is AddEditAlarmScreenUserEvent.ClearAssignedCode -> {

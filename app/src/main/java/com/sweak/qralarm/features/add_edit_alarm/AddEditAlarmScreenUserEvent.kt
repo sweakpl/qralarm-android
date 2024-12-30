@@ -55,10 +55,12 @@ sealed class AddEditAlarmScreenUserEvent {
     ) : AddEditAlarmScreenUserEvent()
     data class VibrationsEnabledChanged(val areEnabled: Boolean) : AddEditAlarmScreenUserEvent()
     data class CodeEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()
+    data class AssignCodeDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
     data object TryScanSpecificCode : AddEditAlarmScreenUserEvent()
     data class CameraPermissionDeniedDialogVisible(
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()
+    data class CodeChosenFromList(val code: String) : AddEditAlarmScreenUserEvent()
     data object ClearAssignedCode : AddEditAlarmScreenUserEvent()
     data class OpenCodeLinkEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()
     data object GoToApplicationSettingsClicked : AddEditAlarmScreenUserEvent()

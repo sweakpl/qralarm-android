@@ -29,6 +29,8 @@ data class AddEditAlarmScreenState(
     val isChooseAlarmRingtoneDialogVisible: Boolean = false,
     val areVibrationsEnabled: Boolean = true,
     val isCodeEnabled: Boolean = true,
+    val isAssignCodeDialogVisible: Boolean = false,
+    val previouslySavedCodes: List<String> = emptyList(),
     val isCameraPermissionDeniedDialogVisible: Boolean = false,
     val isNotificationsPermissionDeniedDialogVisible: Boolean = false,
     val currentlyAssignedCode: String? = null,

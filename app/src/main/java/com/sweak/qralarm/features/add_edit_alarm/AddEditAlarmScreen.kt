@@ -76,6 +76,7 @@ import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
+import com.sweak.qralarm.features.add_edit_alarm.components.AssignCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneDialogBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseGentleWakeUpDurationBottomSheet
@@ -178,7 +179,7 @@ fun AddEditAlarmScreen(
                 is AddEditAlarmScreenBackendEvent.CustomCodeAssignmentFinished -> {
                     Toast.makeText(
                         context,
-                        R.string.code_successfully_scanned,
+                        R.string.code_successfully_assigned,
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -276,6 +277,10 @@ fun AddEditAlarmScreen(
                     audioPickerLauncher.launch("audio/*")
                 }
                 is AddEditAlarmScreenUserEvent.TryScanSpecificCode -> {
+                    addEditAlarmViewModel.onEvent(
+                        AddEditAlarmScreenUserEvent.AssignCodeDialogVisible(isVisible = false)
+                    )
+
                     if (!cameraPermissionState.status.isGranted) {
                         isInTheCameraPermissionFlowForCustomCodeScan = true
 
@@ -716,7 +721,9 @@ private fun AddEditAlarmScreenContent(
                                                                 expanded = false
                                                                 onEvent(
                                                                     AddEditAlarmScreenUserEvent
-                                                                        .TryScanSpecificCode
+                                                                        .AssignCodeDialogVisible(
+                                                                            isVisible = true
+                                                                        )
                                                                 )
                                                             }
                                                         )
@@ -781,6 +788,9 @@ private fun AddEditAlarmScreenContent(
                                                         )
                                                 )
 
+                                                val areSavedCodesAvailable =
+                                                    state.previouslySavedCodes.isNotEmpty()
+
                                                 Card(
                                                     colors = CardDefaults.cardColors(
                                                         containerColor =
@@ -790,8 +800,15 @@ private fun AddEditAlarmScreenContent(
                                                         .padding(all = MaterialTheme.space.medium)
                                                         .clickable {
                                                             onEvent(
-                                                                AddEditAlarmScreenUserEvent
-                                                                    .TryScanSpecificCode
+                                                                if (areSavedCodesAvailable) {
+                                                                    AddEditAlarmScreenUserEvent
+                                                                        .AssignCodeDialogVisible(
+                                                                            isVisible = true
+                                                                        )
+                                                                } else {
+                                                                    AddEditAlarmScreenUserEvent
+                                                                        .TryScanSpecificCode
+                                                                }
                                                             )
                                                         }
                                                 ) {
@@ -800,12 +817,20 @@ private fun AddEditAlarmScreenContent(
                                                         Arrangement.SpaceBetween,
                                                         modifier = Modifier
                                                             .fillMaxWidth()
-                                                            .padding(all = MaterialTheme.space.medium)
+                                                            .padding(
+                                                                all = MaterialTheme.space.medium
+                                                            )
                                                     ) {
                                                         Text(
-                                                            text =
-                                                            stringResource(R.string.scan_your_own_code),
-                                                            style = MaterialTheme.typography.labelLarge
+                                                            text = stringResource(
+                                                                if (areSavedCodesAvailable) {
+                                                                    R.string.assign_specific_code
+                                                                } else {
+                                                                    R.string.scan_your_own_code
+                                                                }
+                                                            ),
+                                                            style =
+                                                            MaterialTheme.typography.labelLarge
                                                         )
 
                                                         Icon(
@@ -1332,6 +1357,19 @@ private fun AddEditAlarmScreenContent(
             },
             positiveButtonText = stringResource(R.string.settings),
             negativeButtonText = stringResource(R.string.cancel)
+        )
+    }
+
+    if (state.isAssignCodeDialogVisible) {
+        AssignCodeBottomSheet(
+            onScanCodeClicked = { onEvent(AddEditAlarmScreenUserEvent.TryScanSpecificCode) },
+            availableCodes = state.previouslySavedCodes,
+            onChooseCodeFromList = { code ->
+                onEvent(AddEditAlarmScreenUserEvent.CodeChosenFromList(code = code))
+            },
+            onDismissRequest = {
+                onEvent(AddEditAlarmScreenUserEvent.AssignCodeDialogVisible(isVisible = false))
+            }
         )
     }
 
