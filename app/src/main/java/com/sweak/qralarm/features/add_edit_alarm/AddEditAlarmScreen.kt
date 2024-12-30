@@ -696,6 +696,9 @@ private fun AddEditAlarmScreenContent(
                                                                 MaterialTheme.colorScheme.surface
                                                             )
                                                     ) {
+                                                        val areSavedCodesAvailable =
+                                                            state.previouslySavedCodes.isNotEmpty()
+
                                                         DropdownMenuItem(
                                                             text = {
                                                                 Text(
@@ -720,10 +723,15 @@ private fun AddEditAlarmScreenContent(
                                                             onClick = {
                                                                 expanded = false
                                                                 onEvent(
-                                                                    AddEditAlarmScreenUserEvent
-                                                                        .AssignCodeDialogVisible(
-                                                                            isVisible = true
-                                                                        )
+                                                                    if (areSavedCodesAvailable) {
+                                                                        AddEditAlarmScreenUserEvent
+                                                                            .AssignCodeDialogVisible(
+                                                                                isVisible = true
+                                                                            )
+                                                                    } else {
+                                                                        AddEditAlarmScreenUserEvent
+                                                                            .TryScanSpecificCode
+                                                                    }
                                                                 )
                                                             }
                                                         )
@@ -1260,10 +1268,15 @@ private fun AddEditAlarmScreenContent(
                 )
             },
             onPositiveClick = {
+                onEvent(
+                    AddEditAlarmScreenUserEvent.DiscardAlarmChangesDialogVisible(isVisible = false)
+                )
+            },
+            onNegativeClick = {
                 onEvent(AddEditAlarmScreenUserEvent.ConfirmDiscardAlarmChanges)
             },
-            positiveButtonText = stringResource(R.string.discard),
-            negativeButtonText = stringResource(R.string.cancel)
+            positiveButtonText = stringResource(R.string.cancel),
+            negativeButtonText = stringResource(R.string.discard)
         )
     }
 
