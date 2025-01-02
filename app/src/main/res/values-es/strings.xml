@@ -35,7 +35,6 @@
         <item quantity="other">%1$d minutos</item>
     </plurals>
 
-    <string name="app_name" translatable="false">QRAlarm</string>
     <string name="welcome_to_qralarm">¡Bienvenido a QRAlarm!</string>
     <string name="wake_up_catchphrase">¡Despertar!</string>
     <string name="wake_up_catchphrase_description">Configura tu alarma como lo harías siempre y prepárate para que QRAlarm te despierte a la mañana siguiente.</string>
@@ -140,19 +139,15 @@
     <string name="work_in_background_limited_click_to_enable">El trabajo en segundo plano es limitado. Haga clic para habilitar.</string>
     <string name="work_in_background_enabled">El trabajo en segundo plano está habilitado. ¡Buen trabajo!</string>
     <string name="setting_unavailable_refer_to_the_next_step">Configuración no disponible: consulte los siguientes pasos.</string>
-    <string name="dontkilmyapp_com" translatable="false">dontkillmyapp.com</string>
-    <string name="dontkilmyapp_com_full_uri" translatable="false">https://dontkillmyapp.com/</string>
     <string name="select_manufacturer_and_follow_instructions">Seleccione el fabricante de su teléfono y siga las instrucciones proporcionadas.</string>
     <string name="click_to_go_to_app_settings">Haga clic para ir a la configuración de la aplicación QRAlarm.</string>
     <string name="issue_opening_the_page">Hubo un problema al abrir la página…</string>
     <string name="optimization_dialog_description">¡Haga que QRAlarm funcione mejor en su sistema consultando nuestra guía de optimización y duerma tranquilo!</string>
-    <string name="qralarm_pro" translatable="false">QRAlarm PRO</string>
     <string name="special_alarm_settings">Configuraciones de alarma especiales</string>
     <string name="early_access_to_new_features">Acceso anticipado a nuevas funciones</string>
     <string name="buy_once_enjoy_forever">¡Cómpralo una vez y disfrútalo para siempre!</string>
     <string name="get_it_now">¡Consíguelo ahora!</string>
     <string name="not_now">Ahora no</string>
-    <string name="qralarm_pro_package_name" translatable="false">com.sweak.qralarm.pro</string>
     <string name="special_settings">Configuraciones especiales</string>
     <string name="do_not_leave_alarm">No dejes la alarma</string>
     <string name="do_not_leave_alarm_description">Seguir mostrando la pantalla de alarma cuando la alarma esté sonando.</string>
@@ -170,13 +165,11 @@
     <string name="open_code_link">Enlace de código abierto</string>
     <string name="open_code_link_description">Si el código contiene una URL válida, la aplicación la abrirá automáticamente al escanearla.</string>
     <string name="do_you_enjoy_qralarm">¿Te gusta QRAlarm? 🚀 ⏰</string>
-    <string name="im_working_hard">¡Estoy trabajando duro para que tus mañanas sean lo más tranquilas posible! 🫡</string>
+    <string name="im_working_hard">¡Estoy trabajando duro para que tus mañanas sean lo más tranquilas posible! 🙂</string>
     <string name="i_love_it_rate_me">Me encanta - ¡califícame! ❤️</string>
     <string name="did_something_go_wrong">¿Algo salió mal?\n¡Podemos trabajar juntos para solucionarlo!</string>
     <string name="tell_me_what_is_wrong">Dime qué pasa</string>
     <string name="do_not_show_again">No volver a mostrar esta pantalla.</string>
-    <string name="qralarm_github_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android</string>
-    <string name="qralarm_github_issues_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android/issues</string>
     <string name="rate_qralarm">Califica QRAlarm</string>
     <string name="previous">Anterior</string>
     <string name="scan_code">Escanear código</string>
