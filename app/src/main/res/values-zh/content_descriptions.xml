@@ -1,0 +1,38 @@
+<resources>
+    <string name="content_description_qralarm_icon">QRAlarm 图标</string>
+    <string name="content_description_add_icon">添加 (plus) 图标</string>
+    <string name="content_description_menu_icon">菜单图标</string>
+    <string name="content_description_close_icon">关闭图标</string>
+    <string name="content_description_done_icon">确认图标</string>
+    <string name="content_description_forward_arrow_icon">前进箭头图标</string>
+    <string name="content_description_back_arrow_icon">后退箭头图标</string>
+    <string name="content_description_drop_down_arrow_icon">下拉箭头图标</string>
+    <string name="content_description_play_icon">播放图标</string>
+    <string name="content_description_stop_icon">停止图标</string>
+    <string name="content_description_edit_icon">编辑图标</string>
+    <string name="content_description_more_icon">更多选项图标</string>
+    <string name="content_description_qr_code_scanner_icon">二维码扫描器图标</string>
+    <string name="content_description_delete_icon">删除图标</string>
+    <string name="content_description_camera_icon">摄像头图标</string>
+    <string name="content_description_alarm_icon">闹钟图标</string>
+    <string name="content_description_notification_icon">通知图标</string>
+    <string name="content_description_full_screen_icon">全屏显示图标</string>
+    <string name="content_description_no_qr_code_icon">未启用扫码图标</string>
+    <string name="content_description_automatic_settings_icon">自动设置图标</string>
+    <string name="content_description_app_settings_icon">应用程序设置图标</string>
+    <string name="content_description_special_app_settings_icon">特殊程序设置图标</string>
+    <string name="content_description_star_icon">星星图标</string>
+    <string name="content_description_special_alarm_settings_icon">特殊闹钟设置图标</string>
+    <string name="content_description_early_access_icon">预览体验功能图标</string>
+    <string name="content_description_access_forever_icon">访问永久图标</string>
+    <string name="content_description_flash_icon">闪烁图标</string>
+    <string name="content_description_undo_icon">撤销图标</string>
+    <string name="content_description_skip_next_alarm_icon">跳过下次响铃图标</string>
+    <string name="content_description_label_icon">标签图标</string>
+
+    <string name="content_description_wake_up_catchphrase_image">图像显示一位躺在床上的人被唤醒了</string>
+    <string name="content_description_get_up_catchphrase_image">图像显示一个人正拿着响铃的手机在走路</string>
+    <string name="content_description_rise_up_catchphrase_image">图像显示一个人用手机扫描二维码后开心地笑着</string>
+    <string name="content_description_qralarm_pro_image">QRAlarm 高级版应用图标</string>
+    <string name="content_description_five_stars_image">五星好评图标</string>
+</resources>
