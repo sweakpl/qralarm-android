@@ -175,4 +175,6 @@
     <string name="scan_code">Codice di scansione</string>
     <string name="or_use_already_used_code">Oppure usa il codice già utilizzato</string>
     <string name="click_to_choose">*Clicca per scegliere*</string>
+    <string name="_1_hour_lock">Blocco di 1 ora</string>
+    <string name="_1_hour_lock_description">L\'allarme non può essere annullato senza codice se si verifica in meno di un\'ora.</string>
 </resources>

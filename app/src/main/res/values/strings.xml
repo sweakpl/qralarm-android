@@ -174,4 +174,6 @@
     <string name="scan_code">Scan code</string>
     <string name="or_use_already_used_code">Or use already used code</string>
     <string name="click_to_choose">*Click to choose*</string>
+    <string name="_1_hour_lock">1 hour lock</string>
+    <string name="_1_hour_lock_description">Alarm can\'t be canceled without code if it is in less than 1 hour.</string>
 </resources>

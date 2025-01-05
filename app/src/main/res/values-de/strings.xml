@@ -169,4 +169,6 @@
     <string name="scan_code">Code scannen</string>
     <string name="or_use_already_used_code">Oder verwenden Sie bereits verwendeten Code</string>
     <string name="click_to_choose">*Zum Auswählen anklicken*</string>
+    <string name="_1_hour_lock">1 Stunde Sperre</string>
+    <string name="_1_hour_lock_description">Der Alarm kann nicht ohne Code abgebrochen werden, wenn er in weniger als 1 Stunde erfolgt.</string>
 </resources>

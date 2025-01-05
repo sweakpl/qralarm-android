@@ -25,6 +25,7 @@ data class AlarmEntity(
     val isUsingCode: Boolean,
     val assignedCode: String?,
     @ColumnInfo(defaultValue = "FALSE") val isOpenCodeLinkEnabled: Boolean,
+    @ColumnInfo(defaultValue = "TRUE") val isOneHourLockEnabled: Boolean,
     val alarmLabel: String?,
     val gentleWakeUpDurationInSeconds: Int,
     val temporaryMuteDurationInSeconds: Int,

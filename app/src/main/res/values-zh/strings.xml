@@ -163,4 +163,6 @@
     <string name="scan_code">扫码</string>
     <string name="or_use_already_used_code">或使用已录入的码</string>
     <string name="click_to_choose">*点击以选择*</string>
+    <string name="_1_hour_lock">1 小时锁</string>
+    <string name="_1_hour_lock_description">如果不到 1 小时，警报不能在没有密码的情况下取消。</string>
 </resources>

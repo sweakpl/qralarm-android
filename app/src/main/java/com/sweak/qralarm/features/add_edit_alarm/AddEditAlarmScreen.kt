@@ -901,6 +901,52 @@ private fun AddEditAlarmScreenContent(
                                                 )
                                             }
                                         }
+
+                                        Separator()
+
+                                        Row(
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(all = MaterialTheme.space.medium)
+                                        ) {
+                                            Column(
+                                                modifier = Modifier
+                                                    .weight(1f)
+                                                    .padding(
+                                                        end = MaterialTheme.space.smallMedium
+                                                    )
+                                            ) {
+                                                Text(
+                                                    text = stringResource(R.string._1_hour_lock),
+                                                    style = MaterialTheme.typography.titleLarge,
+                                                    modifier = Modifier
+                                                        .padding(
+                                                            bottom = MaterialTheme.space.xSmall
+                                                        )
+                                                )
+
+                                                Text(
+                                                    text = stringResource(
+                                                        R.string._1_hour_lock_description
+                                                    ),
+                                                    style = MaterialTheme.typography.bodyMedium
+                                                )
+                                            }
+
+                                            QRAlarmSwitch(
+                                                checked = state.isOneHourLockEnabled,
+                                                onCheckedChange = {
+                                                    onEvent(
+                                                        AddEditAlarmScreenUserEvent
+                                                            .OneHourLockEnabledChanged(
+                                                                isEnabled = it
+                                                            )
+                                                    )
+                                                }
+                                            )
+                                        }
                                     }
                                 }
                             }

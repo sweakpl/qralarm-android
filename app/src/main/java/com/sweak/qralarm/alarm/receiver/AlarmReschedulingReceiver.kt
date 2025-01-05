@@ -144,6 +144,7 @@ class AlarmReschedulingReceiver : BroadcastReceiver() {
             isUsingCode = true,
             assignedCode = dismissAlarmCode,
             isOpenCodeLinkEnabled = false,
+            isOneHourLockEnabled = true,
             alarmLabel = null,
             gentleWakeUpDurationInSeconds = gentleWakeUpDurationSeconds ?: 0,
             temporaryMuteDurationInSeconds = temporaryAlarmMuteDisabled.run {

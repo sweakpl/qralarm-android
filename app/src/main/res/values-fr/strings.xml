@@ -175,4 +175,6 @@
     <string name="scan_code">Code de numérisation</string>
     <string name="or_use_already_used_code">Ou utilisez le code déjà utilisé</string>
     <string name="click_to_choose">*Cliquez pour choisir*</string>
+    <string name="_1_hour_lock">Serrure de 1 heure</string>
+    <string name="_1_hour_lock_description">L\'alarme ne peut pas être annulée sans code si elle a lieu dans moins d\'une heure.</string>
 </resources>

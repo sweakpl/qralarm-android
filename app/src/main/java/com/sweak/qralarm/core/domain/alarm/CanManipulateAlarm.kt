@@ -12,7 +12,7 @@ class CanManipulateAlarm @Inject constructor(
     suspend operator fun invoke(alarmId: Long): Boolean {
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return false
 
-        if (!alarm.isUsingCode || !alarm.isAlarmEnabled) return true
+        if (!alarm.isUsingCode || !alarm.isAlarmEnabled || !alarm.isOneHourLockEnabled) return true
 
         val alarmDateTime = ZonedDateTime.ofInstant(
             Instant.ofEpochMilli(alarm.nextAlarmTimeInMillis),

@@ -175,4 +175,6 @@
     <string name="scan_code">Escanear código</string>
     <string name="or_use_already_used_code">O utilizar código ya utilizado</string>
     <string name="click_to_choose">*Haga clic para elegir*</string>
+    <string name="_1_hour_lock">Bloqueo de 1 hora</string>
+    <string name="_1_hour_lock_description">La alarma no se puede cancelar sin código si es queda 1 hora.</string>
 </resources>

@@ -105,6 +105,7 @@ class AddEditAlarmViewModel @Inject constructor(
                         previouslySavedCodes = allSavedAlarmCodes,
                         currentlyAssignedCode = alarm.assignedCode,
                         isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
+                        isOneHourLockEnabled = alarm.isOneHourLockEnabled,
                         alarmLabel = alarm.alarmLabel,
                         gentleWakeupDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
                         temporaryMuteDurationInSeconds = alarm.temporaryMuteDurationInSeconds
@@ -459,6 +460,12 @@ class AddEditAlarmViewModel @Inject constructor(
                     currentState.copy(isOpenCodeLinkEnabled = event.isEnabled)
                 }
             }
+            is AddEditAlarmScreenUserEvent.OneHourLockEnabledChanged -> {
+                hasUnsavedChanges = true
+                state.update { currentState ->
+                    currentState.copy(isOneHourLockEnabled = event.isEnabled)
+                }
+            }
             is AddEditAlarmScreenUserEvent.AlarmLabelChanged -> {
                 hasUnsavedChanges = true
                 state.update { currentState ->
@@ -599,6 +606,7 @@ class AddEditAlarmViewModel @Inject constructor(
                 assignedCode = currentState.temporaryAssignedCode
                     ?: currentState.currentlyAssignedCode,
                 isOpenCodeLinkEnabled = currentState.isOpenCodeLinkEnabled,
+                isOneHourLockEnabled = currentState.isOneHourLockEnabled,
                 alarmLabel = currentState.alarmLabel,
                 gentleWakeUpDurationInSeconds = currentState.gentleWakeupDurationInSeconds,
                 temporaryMuteDurationInSeconds = currentState.temporaryMuteDurationInSeconds,
