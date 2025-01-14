@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -274,7 +275,15 @@ fun AddEditAlarmScreen(
                     }
                 }
                 is AddEditAlarmScreenUserEvent.PickCustomRingtone -> {
-                    audioPickerLauncher.launch("audio/*")
+                    try {
+                        audioPickerLauncher.launch("audio/*")
+                    } catch (activityNotFoundException: ActivityNotFoundException) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.issue_opening_the_page),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
                 is AddEditAlarmScreenUserEvent.TryScanSpecificCode -> {
                     addEditAlarmViewModel.onEvent(
