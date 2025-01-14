@@ -7,6 +7,7 @@ import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import java.time.DayOfWeek
 import javax.inject.Inject
 
@@ -93,8 +94,8 @@ class AlarmsRepositoryImpl @Inject constructor(
     }
 
     override fun getAlarmFlow(alarmId: Long): Flow<Alarm> {
-        return alarmsDao.getAlarm(alarmId = alarmId).map { alarmEntity ->
-            convertAlarmEntity(alarmEntity = alarmEntity)
+        return alarmsDao.getAlarm(alarmId = alarmId).mapNotNull { alarmEntity ->
+            alarmEntity?.let { convertAlarmEntity(alarmEntity = it) }
         }
     }
 

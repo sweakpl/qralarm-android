@@ -16,7 +16,7 @@ interface AlarmsDao {
     fun getAllAlarms(): Flow<List<AlarmEntity>>
 
     @Query("SELECT * FROM alarm WHERE alarmId = :alarmId")
-    fun getAlarm(alarmId: Long): Flow<AlarmEntity>
+    fun getAlarm(alarmId: Long): Flow<AlarmEntity?>
 
     @Query("DELETE FROM alarm WHERE alarmId = :alarmId")
     suspend fun deleteAlarm(alarmId: Long)
