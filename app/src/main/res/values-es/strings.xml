@@ -177,4 +177,6 @@
     <string name="click_to_choose">*Haga clic para elegir*</string>
     <string name="_1_hour_lock">Bloqueo de 1 hora</string>
     <string name="_1_hour_lock_description">La alarma no se puede cancelar sin código si es queda 1 hora.</string>
+    <string name="power_off_guard">Protección contra apagado</string>
+    <string name="power_off_guard_description">No te permitas apagar el teléfono cuando suene la alarma.</string>
 </resources>

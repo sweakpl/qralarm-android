@@ -177,4 +177,6 @@
     <string name="click_to_choose">*Cliquez pour choisir*</string>
     <string name="_1_hour_lock">Serrure de 1 heure</string>
     <string name="_1_hour_lock_description">L\'alarme ne peut pas être annulée sans code si elle a lieu dans moins d\'une heure.</string>
+    <string name="power_off_guard">Protection contre l\'arrêt</string>
+    <string name="power_off_guard_description">Ne vous laissez pas aller à éteindre votre téléphone lorsque l\'alarme sonne.</string>
 </resources>

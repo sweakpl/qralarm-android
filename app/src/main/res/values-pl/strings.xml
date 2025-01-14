@@ -183,4 +183,6 @@
     <string name="click_to_choose">*Kliknij by wybrać*</string>
     <string name="_1_hour_lock">Blokada 1 godziny</string>
     <string name="_1_hour_lock_description">Alarm nie może być anulowany bez kodu, jeśli jest za mniej niż 1 godzinę.</string>
+    <string name="power_off_guard">Ochrona wyłączania</string>
+    <string name="power_off_guard_description">Nie pozwól sobie na wyłączenie telefonu, gdy dzwoni alarm.</string>
 </resources>

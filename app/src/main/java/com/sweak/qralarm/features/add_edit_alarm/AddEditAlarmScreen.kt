@@ -1228,6 +1228,48 @@ private fun AddEditAlarmScreenContent(
                                             .padding(end = MaterialTheme.space.smallMedium)
                                     ) {
                                         Text(
+                                            text = stringResource(R.string.power_off_guard),
+                                            style = MaterialTheme.typography.titleLarge,
+                                            modifier = Modifier
+                                                .padding(bottom = MaterialTheme.space.xSmall)
+                                        )
+
+                                        Text(
+                                            text = stringResource(
+                                                R.string.power_off_guard_description
+                                            ),
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                    }
+
+                                    QRAlarmSwitch(
+                                        checked = false,
+                                        onCheckedChange = {
+                                            onEvent(
+                                                AddEditAlarmScreenUserEvent
+                                                    .TryUseSpecialAlarmSettings
+                                            )
+                                        }
+                                    )
+                                }
+                            }
+
+                            Column {
+                                Separator()
+
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(all = MaterialTheme.space.medium)
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .padding(end = MaterialTheme.space.smallMedium)
+                                    ) {
+                                        Text(
                                             text = stringResource(R.string.block_volume_down),
                                             style = MaterialTheme.typography.titleLarge,
                                             modifier = Modifier
