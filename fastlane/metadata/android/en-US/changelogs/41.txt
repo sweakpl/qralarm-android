@@ -1,0 +1,3 @@
+* The "1-hour before alarm edition lock" can now be toggled in the alarm settings,
+* Added the Chinese language,
+* Translation improvements.
