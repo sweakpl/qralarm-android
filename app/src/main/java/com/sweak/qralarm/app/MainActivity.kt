@@ -183,12 +183,18 @@ class MainActivity : FragmentActivity() {
                     customCodeScannerScreen(
                         onCustomCodeSaved = {
                             navController.popBackStack()
+                        },
+                        onCloseClicked = {
+                            navController.navigateUp()
                         }
                     )
 
                     disableAlarmScannerScreen(
                         onAlarmDisabled = {
                             navController.popBackStack()
+                        },
+                        onCloseClicked = {
+                            navController.navigateUp()
                         }
                     )
 

@@ -21,7 +21,8 @@ fun NavController.navigateToDisableAlarmScanner(
 )
 
 fun NavGraphBuilder.disableAlarmScannerScreen(
-    onAlarmDisabled: (uriStringToTryToOpen: String?) -> Unit
+    onAlarmDisabled: (uriStringToTryToOpen: String?) -> Unit,
+    onCloseClicked: () -> Unit
 ) {
     composable(
         route = DISABLE_ALARM_SCANNER_SCREEN_ROUTE +
@@ -37,7 +38,8 @@ fun NavGraphBuilder.disableAlarmScannerScreen(
         )
     ) {
         DisableAlarmScannerScreen(
-            onAlarmDisabled = onAlarmDisabled
+            onAlarmDisabled = onAlarmDisabled,
+            onCloseClicked = onCloseClicked
         )
     }
 }

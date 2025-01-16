@@ -159,6 +159,9 @@ class AlarmActivity : FragmentActivity() {
                                     }
                                 }
                             }
+                        },
+                        onCloseClicked = {
+                            navController.navigateUp()
                         }
                     )
                 }

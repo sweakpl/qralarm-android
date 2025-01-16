@@ -19,6 +19,7 @@ import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.LegacyCodeAnal
 class CodeScannerFragment : Fragment(), AbstractCodeAnalyzer.BarcodeDetector {
 
     var decodeCallback: (result: Result) -> Unit = { /* no-op */ }
+    var closeCallback: () -> Unit = { /* no-op */ }
 
     private var _binding: FragmentCodeScannerBinding? = null
     private val viewBinding get() = _binding!!
@@ -38,6 +39,7 @@ class CodeScannerFragment : Fragment(), AbstractCodeAnalyzer.BarcodeDetector {
 
         configureCamera()
         configureFlash()
+        configureClose()
     }
 
     override fun onDestroyView() {
@@ -86,6 +88,12 @@ class CodeScannerFragment : Fragment(), AbstractCodeAnalyzer.BarcodeDetector {
                     )
                 }
             }
+        }
+    }
+
+    private fun configureClose() {
+        viewBinding.closeButton.setOnClickListener {
+            closeCallback()
         }
     }
 

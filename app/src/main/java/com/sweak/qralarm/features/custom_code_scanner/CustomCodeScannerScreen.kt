@@ -12,7 +12,10 @@ import com.sweak.qralarm.core.ui.components.code_scanner.QRAlarmCodeScanner
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 
 @Composable
-fun CustomCodeScannerScreen(onCustomCodeSaved: () -> Unit) {
+fun CustomCodeScannerScreen(
+    onCustomCodeSaved: () -> Unit,
+    onCloseClicked: () -> Unit
+) {
     val customCodeScannerViewModel = hiltViewModel<CustomCodeScannerViewModel>()
 
     ObserveAsEvents(
@@ -30,6 +33,9 @@ fun CustomCodeScannerScreen(onCustomCodeSaved: () -> Unit) {
                 is CustomCodeScannerScreenUserEvent.CodeResultScanned -> {
                     customCodeScannerViewModel.onEvent(event)
                 }
+                is CustomCodeScannerScreenUserEvent.OnCloseClicked -> {
+                    onCloseClicked()
+                }
             }
         }
     )
@@ -42,6 +48,9 @@ private fun CustomCodeScannerScreenContent(
     QRAlarmCodeScanner(
         decodeCallback = { result ->
             onEvent(CustomCodeScannerScreenUserEvent.CodeResultScanned(result = result))
+        },
+        closeCallback = {
+            onEvent(CustomCodeScannerScreenUserEvent.OnCloseClicked)
         },
         modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
     )

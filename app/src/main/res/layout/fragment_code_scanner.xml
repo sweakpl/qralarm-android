@@ -16,6 +16,15 @@
         android:layout_height="match_parent" />
 
     <ImageView
+        android:id="@+id/close_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="start|top"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/content_description_close_icon"
+        android:src="@drawable/ic_close" />
+
+    <ImageView
         android:id="@+id/flash_button"
         android:layout_width="32dp"
         android:layout_height="32dp"

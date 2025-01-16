@@ -10,6 +10,7 @@ import com.sweak.qralarm.databinding.LayoutCodeScannerBinding
 @Composable
 fun QRAlarmCodeScanner(
     decodeCallback: (result: Result) -> Unit,
+    closeCallback: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     AndroidViewBinding(
@@ -18,5 +19,6 @@ fun QRAlarmCodeScanner(
     ) {
         val codeScannerFragment = fragmentContainerView.getFragment<CodeScannerFragment>()
         codeScannerFragment.decodeCallback = decodeCallback
+        codeScannerFragment.closeCallback = closeCallback
     }
 }

@@ -23,6 +23,7 @@ class CustomCodeScannerViewModel @Inject constructor(
                 userDataRepository.setTemporaryScannedCode(code = event.result.text)
                 backendEventsChannel.send(CustomCodeScannerScreenBackendEvent.CustomCodeSaved)
             }
+            else -> { /* no-op */ }
         }
     }
 }

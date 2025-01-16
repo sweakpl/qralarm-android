@@ -10,7 +10,10 @@ import com.sweak.qralarm.core.ui.components.code_scanner.QRAlarmCodeScanner
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 
 @Composable
-fun DisableAlarmScannerScreen(onAlarmDisabled: (uriStringToTryToOpen: String?) -> Unit) {
+fun DisableAlarmScannerScreen(
+    onAlarmDisabled: (uriStringToTryToOpen: String?) -> Unit,
+    onCloseClicked: () -> Unit
+) {
     val disableAlarmScannerViewModel = hiltViewModel<DisableAlarmScannerViewModel>()
 
     ObserveAsEvents(
@@ -30,6 +33,9 @@ fun DisableAlarmScannerScreen(onAlarmDisabled: (uriStringToTryToOpen: String?) -
                 is DisableAlarmScannerScreenUserEvent.CodeResultScanned -> {
                     disableAlarmScannerViewModel.onEvent(event)
                 }
+                is DisableAlarmScannerScreenUserEvent.OnCloseClicked -> {
+                    onCloseClicked()
+                }
             }
         }
     )
@@ -42,6 +48,9 @@ fun DisableAlarmScannerScreenContent(
     QRAlarmCodeScanner(
         decodeCallback = { result ->
             onEvent(DisableAlarmScannerScreenUserEvent.CodeResultScanned(result = result))
+        },
+        closeCallback = {
+            onEvent(DisableAlarmScannerScreenUserEvent.OnCloseClicked)
         },
         modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
     )

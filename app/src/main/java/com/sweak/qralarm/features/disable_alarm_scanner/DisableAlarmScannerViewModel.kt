@@ -102,6 +102,7 @@ class DisableAlarmScannerViewModel @Inject constructor(
                     }
                 }
             }
+            else -> { /* no-op */ }
         }
     }
 
