@@ -9,39 +9,39 @@ class LegacyCodeAnalyzer(
 ) : AbstractCodeAnalyzer(barcodeDetector) {
 
     override fun analyze(image: ImageProxy) {
-        val plane = image.planes[0]
-        val rotationDegrees = image.imageInfo.rotationDegrees
+        image.use { img ->
+            val plane = img.planes[0]
+            val rotationDegrees = img.imageInfo.rotationDegrees
 
-        val byteArray: ByteArray
-        val imageWidth: Int
-        val imageHeight: Int
+            val byteArray: ByteArray
+            val imageWidth: Int
+            val imageHeight: Int
 
-        if (rotationDegrees == 0 || rotationDegrees == 180) {
-            byteArray = plane.buffer.toByteArray()
-            imageWidth = image.width
-            imageHeight = image.height
-        } else {
-            byteArray = rotateImageArray(plane.buffer.toByteArray(), image.width, image.height, rotationDegrees)
-            imageWidth = image.height
-            imageHeight = image.width
+            if (rotationDegrees == 0 || rotationDegrees == 180) {
+                byteArray = plane.buffer.toByteArray()
+                imageWidth = img.width
+                imageHeight = img.height
+            } else {
+                byteArray = rotateImageArray(plane.buffer.toByteArray(), img.width, img.height, rotationDegrees)
+                imageWidth = img.height
+                imageHeight = img.width
+            }
+
+            val size = imageWidth.coerceAtMost(imageHeight) * ScanOverlay.RATIO
+
+            val left = (imageWidth - size) / 2f
+            val top = (imageHeight - size) / 2f
+
+            analyse(
+                yuvData = byteArray,
+                dataWidth = imageWidth,
+                dataHeight = imageHeight,
+                left = left.roundToInt(),
+                top = top.roundToInt(),
+                width = size.roundToInt(),
+                height = size.roundToInt()
+            )
         }
-
-        val size = imageWidth.coerceAtMost(imageHeight) * ScanOverlay.RATIO
-
-        val left = (imageWidth - size) / 2f
-        val top = (imageHeight - size) / 2f
-
-        analyse(
-            yuvData = byteArray,
-            dataWidth = imageWidth,
-            dataHeight = imageHeight,
-            left = left.roundToInt(),
-            top = top.roundToInt(),
-            width = size.roundToInt(),
-            height = size.roundToInt()
-        )
-
-        image.close()
     }
 
     // 90, 180. 270 rotation

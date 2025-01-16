@@ -80,6 +80,7 @@ class CameraConfig(private val context: Context) {
 
     fun stopCamera() {
         switchOffFlash()
+        imageAnalysis.clearAnalyzer()
 
         cameraProvider?.let {
             it.unbindAll()
