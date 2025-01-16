@@ -163,8 +163,8 @@
     <string name="scan_code">扫码</string>
     <string name="or_use_already_used_code">或使用已录入的码</string>
     <string name="click_to_choose">*点击以选择*</string>
-    <string name="_1_hour_lock">1 小时锁</string>
-    <string name="_1_hour_lock_description">如果不到 1 小时，警报不能在没有密码的情况下取消。</string>
+    <string name="_1_hour_lock">1 小时内响铃锁定</string>
+    <string name="_1_hour_lock_description">开启后，若本闹钟距离响铃不足一小时，则只能通过扫码提前关闭。</string>
     <string name="power_off_guard">关机保护</string>
     <string name="power_off_guard_description">当闹钟响起时，不要让自己关掉手机。</string>
 </resources>
