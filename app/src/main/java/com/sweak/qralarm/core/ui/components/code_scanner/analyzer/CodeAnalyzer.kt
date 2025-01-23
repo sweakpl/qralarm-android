@@ -9,6 +9,11 @@ class CodeAnalyzer(
 ) : AbstractCodeAnalyzer(barcodeDetector) {
 
     override fun analyze(image: ImageProxy) {
+        if (image.planes.isEmpty()) {
+            image.close()
+            return
+        }
+
         image.use { img ->
             val plane = img.planes[0]
             val imageData = plane.buffer.toByteArray()

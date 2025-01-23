@@ -43,10 +43,11 @@ class CodeScannerFragment : Fragment(), AbstractCodeAnalyzer.BarcodeDetector {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-
         cameraConfig?.stopCamera()
+        cameraConfig = null
         _binding = null
+        
+        super.onDestroyView()
     }
 
     private fun configureCamera() {
