@@ -76,24 +76,11 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
-    suspend fun setLegacyDataMigrated(migrated: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[LEGACY_DATA_MIGRATED] = migrated
-        }
-    }
-
-    fun getLegacyDataMigrated(): Flow<Boolean> {
-        return dataStore.data.map { preferences ->
-            preferences[LEGACY_DATA_MIGRATED] ?: false
-        }
-    }
-
     companion object {
         val TEMPORARY_SCANNED_CODE = stringPreferencesKey("temporaryScannedCode")
         val OPTIMIZATION_GUIDE_STATE = stringPreferencesKey("optimizationGuideState")
         val INTRODUCTION_FINISHED = booleanPreferencesKey("introductionFinished")
         val ALARM_MISSED_DETECTED = booleanPreferencesKey("alarmMissedDetected")
         val NEXT_RATE_PROMPT_TIME = longPreferencesKey("nextRatePromptTime")
-        val LEGACY_DATA_MIGRATED = booleanPreferencesKey("legacyDataMigrated")
     }
 }

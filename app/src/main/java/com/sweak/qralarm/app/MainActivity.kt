@@ -66,7 +66,6 @@ class MainActivity : FragmentActivity() {
         splashScreen.setKeepOnScreenCondition { shouldShowSplashScreen }
 
         lifecycleScope.launch {
-            userDataRepository.setLegacyDataMigrated(migrated = true)
             rescheduleAlarms()
 
             if (userDataRepository.nextRatePromptTimeInMillis.first() == null) {

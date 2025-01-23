@@ -48,11 +48,4 @@ class UserDataRepositoryImpl @Inject constructor(
 
     override val nextRatePromptTimeInMillis: Flow<Long?>
         get() = qrAlarmPreferencesDataSource.getNextRatePromptTimeInMillis()
-
-    override suspend fun setLegacyDataMigrated(migrated: Boolean) {
-        qrAlarmPreferencesDataSource.setLegacyDataMigrated(migrated = migrated)
-    }
-
-    override val isLegacyDataMigrated: Flow<Boolean>
-        get() = qrAlarmPreferencesDataSource.getLegacyDataMigrated()
 }
