@@ -67,6 +67,8 @@ class AlarmRingtonePlayer(
         }
 
         if (volumeIncreaseSeconds > 0) {
+            player?.volume = 0f
+
             volumeIncreaseJob = playerScope.launch {
                 for (volume in 0..100) {
                     val scaledVolume = volume / 100f
