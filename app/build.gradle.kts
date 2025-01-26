@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.ui.viewbinding)
+    implementation(libs.androidx.media3.exoplayer)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

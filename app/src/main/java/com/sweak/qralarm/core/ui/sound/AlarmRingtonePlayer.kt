@@ -1,15 +1,17 @@
 package com.sweak.qralarm.core.ui.sound
 
 import android.content.Context
-import android.media.AudioAttributes
-import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.VibrationAttributes
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import androidx.annotation.RawRes
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import kotlinx.coroutines.CoroutineScope
@@ -19,16 +21,23 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 class AlarmRingtonePlayer(
     private val context: Context,
-    private val mediaPlayer: MediaPlayer,
     private val vibrator: Vibrator
 ) {
-    private val playerScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private val playerScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+    private var player: ExoPlayer? = null
+
     lateinit var volumeIncreaseJob: Job
     lateinit var vibrationDelayJob: Job
+
+    private fun initializePlayer() {
+        if (player == null) {
+            player = ExoPlayer.Builder(context).build()
+        }
+    }
 
     fun playAlarmRingtone(ringtone: Ringtone, volumeIncreaseSeconds: Int) {
         val alarmRingtoneUri: Uri = if (ringtone != Ringtone.CUSTOM_SOUND) {
@@ -41,90 +50,74 @@ class AlarmRingtonePlayer(
     }
 
     fun playAlarmRingtone(alarmRingtoneUri: Uri, volumeIncreaseSeconds: Int) {
-        mediaPlayer.apply {
-            try {
-                reset()
-                setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_ALARM)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build()
-                )
-                setDataSource(context, alarmRingtoneUri)
-                isLooping = true
-                prepare()
-            } catch (illegalStateException: IllegalStateException) {
-                return
-            } catch (ioException: IOException) {
-                return
-            }
+        initializePlayer()
+
+        player?.apply {
+            setMediaItem(MediaItem.fromUri(alarmRingtoneUri))
+            repeatMode = Player.REPEAT_MODE_ALL
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+                    .setUsage(C.USAGE_ALARM)
+                    .build(),
+                false
+            )
+            playWhenReady = false
+            prepare()
         }
 
         if (volumeIncreaseSeconds > 0) {
             volumeIncreaseJob = playerScope.launch {
                 for (volume in 0..100) {
-                    try {
-                        val scaledVolume = volume / 100f
-                        mediaPlayer.setVolume(scaledVolume, scaledVolume)
-                    } catch (illegalStateException: IllegalStateException) {
-                        Log.e(
-                            "AlarmRingtonePlayer",
-                            "mediaPlayer was not initialized! Cannot set volume..."
-                        )
-                    }
+                    val scaledVolume = volume / 100f
+                    player?.volume = scaledVolume
 
                     delay(volumeIncreaseSeconds * 10L)
                 }
             }
         }
 
-        mediaPlayer.start()
+        player?.play()
     }
 
     fun playAlarmRingtonePreview(
         ringtone: Ringtone,
         onPreviewCompleted: (hasErrorOccurred: Boolean) -> Unit
     ) {
-        val alarmRingtoneUri: Uri
-
-        if (ringtone != Ringtone.CUSTOM_SOUND) {
-            alarmRingtoneUri = getOriginalAlarmRingtoneUri(ringtone)
-        } else {
+        if (ringtone == Ringtone.CUSTOM_SOUND) {
             onPreviewCompleted(true)
             return
         }
 
-        playAlarmRingtonePreview(alarmRingtoneUri, onPreviewCompleted)
+        playAlarmRingtonePreview(getOriginalAlarmRingtoneUri(ringtone), onPreviewCompleted)
     }
 
     fun playAlarmRingtonePreview(
         alarmRingtoneUri: Uri,
         onPreviewCompleted: (hasErrorOccurred: Boolean) -> Unit
     ) {
-        mediaPlayer.apply {
-            try {
-                reset()
-                setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build()
-                )
-                setDataSource(context, alarmRingtoneUri)
-                isLooping = false
-                setOnCompletionListener {
-                    this@AlarmRingtonePlayer.stop()
-                    onPreviewCompleted(false)
+        initializePlayer()
+
+        player?.apply {
+            setMediaItem(MediaItem.fromUri(alarmRingtoneUri))
+            repeatMode = Player.REPEAT_MODE_OFF
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+                    .setUsage(C.USAGE_MEDIA)
+                    .build(),
+                true
+            )
+            addListener(object : Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    if (playbackState == Player.STATE_ENDED) {
+                        stop()
+                        onPreviewCompleted(false)
+                    }
                 }
-                prepare()
-                start()
-            } catch (ioException: IOException) {
-                onPreviewCompleted(true)
-                return
-            } catch (illegalStateException: IllegalStateException) {
-                onPreviewCompleted(true)
-                return
-            }
+            })
+            playWhenReady = true
+            prepare()
         }
     }
 
@@ -132,17 +125,11 @@ class AlarmRingtonePlayer(
         if (::volumeIncreaseJob.isInitialized) volumeIncreaseJob.cancel()
         if (::vibrationDelayJob.isInitialized) vibrationDelayJob.cancel()
 
-        try {
-            vibrator.cancel()
+        vibrator.cancel()
 
-            if (mediaPlayer.isPlaying) {
-                mediaPlayer.stop()
-            }
-        } catch (exception: IllegalStateException) {
-            Log.e(
-                "AlarmRingtonePlayer",
-                "mediaPlayer was not initialized! Cannot stop it..."
-            )
+        player?.apply {
+            stop()
+            clearMediaItems()
         }
     }
 
@@ -172,8 +159,8 @@ class AlarmRingtonePlayer(
 
             vibrator.vibrate(vibrationEffect, vibrationAttributes)
         } else {
-            val vibrationAudioAttributes = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_ALARM)
+            val vibrationAudioAttributes = android.media.AudioAttributes.Builder()
+                .setUsage(android.media.AudioAttributes.USAGE_ALARM)
                 .build()
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -215,9 +202,7 @@ class AlarmRingtonePlayer(
     fun onDestroy() {
         playerScope.cancel()
         vibrator.cancel()
-        mediaPlayer.apply {
-            reset()
-            release()
-        }
+        player?.release()
+        player = null
     }
 }

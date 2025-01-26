@@ -33,6 +33,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -57,7 +58,10 @@ class AlarmService : Service() {
             else hasAlarmBeenAlreadyTemporarilyMuted = true
 
             serviceScope.launch {
-                alarmRingtonePlayer.stop()
+                withContext(Dispatchers.Main) {
+                    alarmRingtonePlayer.stop()
+                }
+
                 val muteDurationSeconds = intent?.getIntExtra(
                     EXTRA_TEMPORARY_MUTE_DURATION_SECONDS,
                     15
@@ -65,7 +69,10 @@ class AlarmService : Service() {
 
                 temporaryAlarmMuteJob = serviceScope.launch {
                     delay(muteDurationSeconds * 1000L)
-                    startAlarm()
+
+                    withContext(Dispatchers.Main) {
+                        startAlarm()
+                    }
                 }
             }
         }
@@ -135,7 +142,9 @@ class AlarmService : Service() {
 
             handleAlarmRescheduling()
 
-            startAlarm()
+            withContext(Dispatchers.Main) {
+                startAlarm()
+            }
         }
 
         return START_NOT_STICKY

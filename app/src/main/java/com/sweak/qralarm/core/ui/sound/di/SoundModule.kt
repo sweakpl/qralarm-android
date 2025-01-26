@@ -2,7 +2,6 @@ package com.sweak.qralarm.core.ui.sound.di
 
 import android.app.Service
 import android.content.Context
-import android.media.MediaPlayer
 import android.os.Build
 import android.os.Vibrator
 import android.os.VibratorManager
@@ -16,9 +15,6 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object SoundModule {
-
-    @Provides
-    fun provideMediaPlayer(): MediaPlayer = MediaPlayer()
 
     @Suppress("DEPRECATION")
     @Provides
@@ -35,7 +31,6 @@ object SoundModule {
     @Provides
     fun provideAlarmRingtonePlayer(
         @ApplicationContext context: Context,
-        mediaPlayer: MediaPlayer,
         vibrator: Vibrator
-    ): AlarmRingtonePlayer = AlarmRingtonePlayer(context, mediaPlayer, vibrator)
+    ): AlarmRingtonePlayer = AlarmRingtonePlayer(context, vibrator)
 }
