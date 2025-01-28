@@ -1,11 +1,13 @@
 package com.sweak.qralarm.features.add_edit_alarm.components
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -17,6 +19,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -33,26 +37,27 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChooseAlarmRingtoneDialogBottomSheet(
+fun ChooseAlarmRingtoneConfigDialogBottomSheet(
     initialRingtone: Ringtone,
     availableRingtonesWithPlaybackState: Map<Ringtone, Boolean>,
     isCustomRingtoneUploaded: Boolean,
     onTogglePlaybackState: (Ringtone) -> Unit,
     onPickCustomRingtone: () -> Unit,
-    onDismissRequest: (newRingtone: Ringtone) -> Unit
+    alarmVolumeMode: Alarm.AlarmVolumeMode,
+    onDismissRequest: (newRingtone: Ringtone, newAlarmVolumeMode: Alarm.AlarmVolumeMode) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    var selectedAlarmRingtone by remember(initialRingtone) {
-        mutableStateOf(initialRingtone)
-    }
+    var selectedAlarmRingtone by remember(initialRingtone) { mutableStateOf(initialRingtone) }
+    var selectedAlarmVolumeMode by remember(alarmVolumeMode) { mutableStateOf(alarmVolumeMode) }
 
     ModalBottomSheet(
-        onDismissRequest = { onDismissRequest(selectedAlarmRingtone) },
+        onDismissRequest = { onDismissRequest(selectedAlarmRingtone, selectedAlarmVolumeMode) },
         sheetState = modalBottomSheetState,
         containerColor = MaterialTheme.colorScheme.surface
     ) {
@@ -69,6 +74,73 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
                 style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.padding(bottom = MaterialTheme.space.mediumLarge)
             )
+
+            Text(
+                text = stringResource(R.string.lock_alarm_to_this_volume),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = MaterialTheme.space.smallMedium)
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = MaterialTheme.space.mediumLarge)
+            ) {
+                val isUsingSystemVolume =
+                    selectedAlarmVolumeMode is Alarm.AlarmVolumeMode.System
+
+                IconButton(
+                    onClick = {
+                        selectedAlarmVolumeMode =
+                            if (selectedAlarmVolumeMode is Alarm.AlarmVolumeMode.System) {
+                                Alarm.AlarmVolumeMode.Custom(volumePercentage = 50)
+                            } else {
+                                Alarm.AlarmVolumeMode.System
+                            }
+                    }
+                ) {
+                    Icon(
+                        imageVector =
+                        if (!isUsingSystemVolume) QRAlarmIcons.Sound else QRAlarmIcons.UsingSystem,
+                        contentDescription = stringResource(
+                            if (!isUsingSystemVolume) R.string.content_description_sound_icon
+                            else R.string.content_description_active_system_setting
+                        ),
+                        modifier = Modifier.size(size = MaterialTheme.space.large)
+                    )
+                }
+
+                AnimatedContent(targetState = isUsingSystemVolume) { systemVolume ->
+                    if (systemVolume) {
+                        Text(
+                            text = stringResource(R.string.using_system_alarm_volume),
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(start = MaterialTheme.space.medium)
+                        )
+                    } else if (selectedAlarmVolumeMode is Alarm.AlarmVolumeMode.Custom) {
+                        Slider(
+                            value = (selectedAlarmVolumeMode as Alarm.AlarmVolumeMode.Custom)
+                                .volumePercentage.toFloat(),
+                            valueRange = 0f..100f,
+                            steps = 9,
+                            onValueChange = { newValue ->
+                                selectedAlarmVolumeMode = Alarm.AlarmVolumeMode.Custom(
+                                    volumePercentage = if (newValue < 10f) 10 else newValue.toInt()
+                                )
+                            },
+                            colors = SliderDefaults.colors(
+                                thumbColor = MaterialTheme.colorScheme.secondary,
+                                activeTrackColor = MaterialTheme.colorScheme.secondary,
+                                activeTickColor = MaterialTheme.colorScheme.secondary,
+                                inactiveTrackColor = MaterialTheme.colorScheme.onTertiary,
+                                inactiveTickColor = MaterialTheme.colorScheme.onTertiary
+                            ),
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = MaterialTheme.space.medium)
+                        )
+                    }
+                }
+            }
 
             Column(
                 modifier = Modifier
@@ -162,13 +234,14 @@ fun ChooseAlarmRingtoneDialogBottomSheet(
 @Composable
 private fun ChooseAlarmRingtoneDialogBottomSheetPreview() {
     QRAlarmTheme {
-        ChooseAlarmRingtoneDialogBottomSheet(
+        ChooseAlarmRingtoneConfigDialogBottomSheet(
             initialRingtone= Ringtone.GENTLE_GUITAR,
             availableRingtonesWithPlaybackState = Ringtone.entries.associateWith { false },
             isCustomRingtoneUploaded = true,
             onTogglePlaybackState = {},
             onPickCustomRingtone = {},
-            onDismissRequest = {}
+            alarmVolumeMode = Alarm.AlarmVolumeMode.System,
+            onDismissRequest = { _, _ -> }
         )
     }
 }

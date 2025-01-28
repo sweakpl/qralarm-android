@@ -29,6 +29,8 @@
     <string name="content_description_undo_icon">Icono de deshacer cambios</string>
     <string name="content_description_skip_next_alarm_icon">Saltar el siguiente icono de alarma</string>
     <string name="content_description_label_icon">Icono de etiqueta</string>
+    <string name="content_description_sound_icon">Icono de sonido</string>
+    <string name="content_description_active_system_setting">Icono de configuración activa del sistema</string>
 
     <string name="content_description_wake_up_catchphrase_image">Imagen que muestra a un simpático hombre de palo acostado en la cama, despertado.</string>
     <string name="content_description_get_up_catchphrase_image">Imagen que muestra a un hombre de palo sonriente caminando con su teléfono sonando.</string>

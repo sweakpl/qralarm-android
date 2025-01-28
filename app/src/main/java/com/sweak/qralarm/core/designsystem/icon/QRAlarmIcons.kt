@@ -5,6 +5,7 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.outlined.Label
 import androidx.compose.material.icons.automirrored.outlined.Undo
+import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Alarm
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.QrCodeScanner
+import androidx.compose.material.icons.outlined.SecurityUpdateGood
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Stop
@@ -65,4 +67,6 @@ object QRAlarmIcons {
     val AccessForever = Icons.Outlined.AllInclusive
     val Undo = Icons.AutoMirrored.Outlined.Undo
     val Label = Icons.AutoMirrored.Outlined.Label
+    val Sound = Icons.AutoMirrored.Outlined.VolumeUp
+    val UsingSystem = Icons.Outlined.SecurityUpdateGood
 }

@@ -35,6 +35,10 @@ class AlarmsRepositoryImpl @Inject constructor(
                 nextSnoozedAlarmTimeInMillis = alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis,
                 ringtone = alarm.ringtone.name,
                 customRingtoneUriString = alarm.customRingtoneUriString,
+                alarmVolumePercentage =
+                if (alarm.alarmVolumeMode is Alarm.AlarmVolumeMode.Custom) {
+                    alarm.alarmVolumeMode.volumePercentage
+                } else 0,
                 areVibrationsEnabled = alarm.areVibrationsEnabled,
                 isUsingCode = alarm.isUsingCode,
                 assignedCode = alarm.assignedCode,
@@ -141,6 +145,10 @@ class AlarmsRepositoryImpl @Inject constructor(
             ),
             ringtone = Alarm.Ringtone.valueOf(alarmEntity.ringtone),
             customRingtoneUriString = alarmEntity.customRingtoneUriString,
+            alarmVolumeMode = alarmEntity.alarmVolumePercentage.run {
+                if (this < 10) Alarm.AlarmVolumeMode.System
+                else Alarm.AlarmVolumeMode.Custom(volumePercentage = this)
+            },
             areVibrationsEnabled = alarmEntity.areVibrationsEnabled,
             isUsingCode = alarmEntity.isUsingCode,
             assignedCode = alarmEntity.assignedCode,

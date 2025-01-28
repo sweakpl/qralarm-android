@@ -100,6 +100,7 @@ class AddEditAlarmViewModel @Inject constructor(
                         currentCustomAlarmRingtoneUri = alarm.customRingtoneUriString?.let {
                             Uri.parse(it)
                         },
+                        alarmVolumeMode = alarm.alarmVolumeMode,
                         areVibrationsEnabled = alarm.areVibrationsEnabled,
                         isCodeEnabled = alarm.isUsingCode,
                         previouslySavedCodes = allSavedAlarmCodes,
@@ -293,20 +294,23 @@ class AddEditAlarmViewModel @Inject constructor(
             }
             is AddEditAlarmScreenUserEvent.ChooseAlarmRingtoneDialogVisible -> {
                 state.update { currentState ->
-                    currentState.copy(isChooseAlarmRingtoneDialogVisible = event.isVisible)
+                    currentState.copy(isChooseAlarmRingtoneConfigDialogVisible = event.isVisible)
                 }
             }
-            is AddEditAlarmScreenUserEvent.AlarmRingtoneSelected -> {
+            is AddEditAlarmScreenUserEvent.AlarmRingtoneConfigSelected -> {
                 alarmRingtonePlayer.stop()
 
-                if (event.newRingtone != state.value.ringtone) {
+                if (event.newRingtone != state.value.ringtone ||
+                    event.newAlarmVolumeMode != state.value.alarmVolumeMode
+                ) {
                     hasUnsavedChanges = true
                 }
 
                 state.update { currentState ->
                     currentState.copy(
                         ringtone = event.newRingtone,
-                        isChooseAlarmRingtoneDialogVisible = false,
+                        alarmVolumeMode = event.newAlarmVolumeMode,
+                        isChooseAlarmRingtoneConfigDialogVisible = false,
                         availableRingtonesWithPlaybackState =
                         currentState.availableRingtonesWithPlaybackState.mapValues { false }
                     )
@@ -601,6 +605,7 @@ class AddEditAlarmViewModel @Inject constructor(
                 ),
                 ringtone = currentState.ringtone,
                 customRingtoneUriString = currentState.currentCustomAlarmRingtoneUri?.toString(),
+                alarmVolumeMode = currentState.alarmVolumeMode,
                 areVibrationsEnabled = currentState.areVibrationsEnabled,
                 isUsingCode = currentState.isCodeEnabled,
                 assignedCode = currentState.temporaryAssignedCode

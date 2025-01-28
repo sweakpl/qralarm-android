@@ -29,6 +29,8 @@
     <string name="content_description_undo_icon">Icona Annulla modifiche</string>
     <string name="content_description_skip_next_alarm_icon">Salta l\'icona dell\'allarme successivo</string>
     <string name="content_description_label_icon">Icona etichetta</string>
+    <string name="content_description_sound_icon">Icona del suono</string>
+    <string name="content_description_active_system_setting">Icona delle impostazioni di sistema attive</string>
 
     <string name="content_description_wake_up_catchphrase_image">Immagine che mostra un amichevole omino stilizzato sdraiato sul letto, svegliato.</string>
     <string name="content_description_get_up_catchphrase_image">Immagine che mostra un omino stilizzato sorridente che cammina mentre il suo telefono squilla.</string>

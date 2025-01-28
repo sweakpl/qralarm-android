@@ -13,6 +13,7 @@ data class Alarm(
     val snoozeConfig: SnoozeConfig,
     val ringtone: Ringtone,
     val customRingtoneUriString: String?,
+    val alarmVolumeMode: AlarmVolumeMode,
     val areVibrationsEnabled: Boolean,
     val isUsingCode: Boolean,
     val assignedCode: String?,
@@ -48,5 +49,10 @@ data class Alarm(
         ROOSTER,
         AIR_HORN,
         CUSTOM_SOUND
+    }
+
+    sealed class AlarmVolumeMode {
+        data object System : AlarmVolumeMode()
+        data class Custom(val volumePercentage: Int) : AlarmVolumeMode()
     }
 }

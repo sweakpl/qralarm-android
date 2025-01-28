@@ -179,4 +179,6 @@
     <string name="_1_hour_lock_description">L\'allarme non può essere annullato senza codice se si verifica in meno di un\'ora.</string>
     <string name="power_off_guard">Protezione spegnimento</string>
     <string name="power_off_guard_description">Non lasciatevi spegnere il telefono quando suona la sveglia.</string>
+    <string name="lock_alarm_to_this_volume">Impostare la sveglia su questo volume quando suona:</string>
+    <string name="using_system_alarm_volume">Utilizzo del volume degli allarmi di sistema</string>
 </resources>

@@ -79,7 +79,7 @@ import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
 import com.sweak.qralarm.features.add_edit_alarm.components.AssignCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneDialogBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneConfigDialogBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseGentleWakeUpDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseSnoozeConfigurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseTemporaryMuteDurationBottomSheet
@@ -1405,8 +1405,8 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isChooseAlarmRingtoneDialogVisible) {
-        ChooseAlarmRingtoneDialogBottomSheet(
+    if (state.isChooseAlarmRingtoneConfigDialogVisible) {
+        ChooseAlarmRingtoneConfigDialogBottomSheet(
             initialRingtone = state.ringtone,
             availableRingtonesWithPlaybackState =
             state.availableRingtonesWithPlaybackState,
@@ -1422,10 +1422,12 @@ private fun AddEditAlarmScreenContent(
             onPickCustomRingtone = {
                 onEvent(AddEditAlarmScreenUserEvent.PickCustomRingtone)
             },
-            onDismissRequest = { newAlarmRingtone ->
+            alarmVolumeMode = state.alarmVolumeMode,
+            onDismissRequest = { newAlarmRingtone, newAlarmVolumeMode ->
                 onEvent(
-                    AddEditAlarmScreenUserEvent.AlarmRingtoneSelected(
-                        newRingtone = newAlarmRingtone
+                    AddEditAlarmScreenUserEvent.AlarmRingtoneConfigSelected(
+                        newRingtone = newAlarmRingtone,
+                        newAlarmVolumeMode = newAlarmVolumeMode
                     )
                 )
             }

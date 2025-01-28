@@ -43,8 +43,9 @@ sealed class AddEditAlarmScreenUserEvent {
     data class ChooseAlarmRingtoneDialogVisible(
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()
-    data class AlarmRingtoneSelected(
-        val newRingtone: Ringtone
+    data class AlarmRingtoneConfigSelected(
+        val newRingtone: Ringtone,
+        val newAlarmVolumeMode: Alarm.AlarmVolumeMode
     ) : AddEditAlarmScreenUserEvent()
     data class ToggleAlarmRingtonePlayback(
         val ringtone: Ringtone

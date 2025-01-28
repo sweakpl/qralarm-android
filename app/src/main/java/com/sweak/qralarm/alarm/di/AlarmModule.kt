@@ -5,6 +5,7 @@ import android.app.Application
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
+import android.media.AudioManager
 import com.sweak.qralarm.alarm.QRAlarmManager
 import dagger.Module
 import dagger.Provides
@@ -32,4 +33,8 @@ object AlarmModule {
     @Provides
     fun provideNotificationManager(app: Application): NotificationManager =
         app.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
+
+    @Provides
+    fun provideAudioManager(app: Application): AudioManager =
+        app.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 }

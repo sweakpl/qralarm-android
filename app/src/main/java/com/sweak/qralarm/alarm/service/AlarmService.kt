@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ServiceInfo
+import android.media.AudioManager
 import android.net.Uri
 import android.os.Build
 import androidx.compose.ui.graphics.toArgb
@@ -46,11 +47,13 @@ class AlarmService : Service() {
     @Inject lateinit var disableAlarm: DisableAlarm
     @Inject lateinit var setAlarm: SetAlarm
     @Inject lateinit var alarmRingtonePlayer: AlarmRingtonePlayer
+    @Inject lateinit var audioManager: AudioManager
 
     private lateinit var alarm: Alarm
 
     private lateinit var temporaryAlarmMuteJob: Job
     private var hasAlarmBeenAlreadyTemporarilyMuted = false
+    private var originalSystemAlarmVolume: Int? = null
 
     private val temporaryAlarmMuteReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -142,6 +145,8 @@ class AlarmService : Service() {
 
             handleAlarmRescheduling()
 
+            adjustAlarmVolume()
+
             withContext(Dispatchers.Main) {
                 startAlarm()
             }
@@ -214,6 +219,25 @@ class AlarmService : Service() {
         }
     }
 
+    private fun adjustAlarmVolume() {
+        val alarmVolumeMode = alarm.alarmVolumeMode
+
+        if (alarmVolumeMode is Alarm.AlarmVolumeMode.Custom) {
+            originalSystemAlarmVolume = audioManager.getStreamVolume(AudioManager.STREAM_ALARM)
+
+            val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
+            val minVolume = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                audioManager.getStreamMinVolume(AudioManager.STREAM_ALARM)
+            } else 0
+            val volumeRange = maxVolume - minVolume
+            val volumePercentage = alarmVolumeMode.volumePercentage
+            val volumeLevel = (minVolume + (volumeRange * (volumePercentage / 100.0))).toInt()
+                .coerceAtLeast(minVolume + 1)
+
+            audioManager.setStreamVolume(AudioManager.STREAM_ALARM, volumeLevel, 0)
+        }
+    }
+
     private fun startAlarm() {
         if (alarm.ringtone == Alarm.Ringtone.CUSTOM_SOUND) {
             if (alarm.customRingtoneUriString != null) {
@@ -258,6 +282,10 @@ class AlarmService : Service() {
         alarmRingtonePlayer.apply {
             stop()
             onDestroy()
+        }
+
+        originalSystemAlarmVolume?.let {
+            audioManager.setStreamVolume(AudioManager.STREAM_ALARM, it, 0)
         }
 
         serviceScope.cancel()

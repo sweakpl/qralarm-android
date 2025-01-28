@@ -29,6 +29,8 @@
     <string name="content_description_undo_icon">Undo changes icon</string>
     <string name="content_description_skip_next_alarm_icon">Skip next alarm icon</string>
     <string name="content_description_label_icon">Label icon</string>
+    <string name="content_description_sound_icon">Sound icon</string>
+    <string name="content_description_active_system_setting">Active system setting icon</string>
 
     <string name="content_description_wake_up_catchphrase_image">Image showing a friendly stick man lying in bed woken up.</string>
     <string name="content_description_get_up_catchphrase_image">Image showing a smiling stick man walking with their phone ringing.</string>
