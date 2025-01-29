@@ -33,7 +33,10 @@ class AlarmReschedulingReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action in intentActionsToFilter) receiverScope.launch {
-            rescheduleAlarms()
+            rescheduleAlarms(
+                notifyAboutMissedAlarms =
+                intent.action != "android.intent.action.LOCKED_BOOT_COMPLETED"
+            )
         }
     }
 }

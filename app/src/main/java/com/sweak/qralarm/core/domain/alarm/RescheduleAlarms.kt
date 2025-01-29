@@ -13,7 +13,7 @@ class RescheduleAlarms @Inject constructor(
     private val disableAlarm: DisableAlarm,
     private val snoozeAlarm: SnoozeAlarm
 ) {
-    suspend operator fun invoke() {
+    suspend operator fun invoke(notifyAboutMissedAlarms: Boolean = true) {
         if (!qrAlarmManager.canScheduleExactAlarms()) {
             alarmsRepository.getAllAlarms().first().forEach { alarm ->
                 disableAlarm(alarmId = alarm.alarmId)
@@ -24,8 +24,10 @@ class RescheduleAlarms @Inject constructor(
                     alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis != null
                 ) {
                     if (alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis < System.currentTimeMillis()) {
-                        qrAlarmManager.notifyAboutMissedAlarm()
-                        userDataRepository.setAlarmMissedDetected(detected = true)
+                        if (notifyAboutMissedAlarms) {
+                            qrAlarmManager.notifyAboutMissedAlarm()
+                            userDataRepository.setAlarmMissedDetected(detected = true)
+                        }
 
                         if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
                             disableAlarm(alarmId = alarm.alarmId)
@@ -44,8 +46,10 @@ class RescheduleAlarms @Inject constructor(
                     }
                 } else if (alarm.isAlarmEnabled) {
                     if (alarm.nextAlarmTimeInMillis < System.currentTimeMillis()) {
-                        qrAlarmManager.notifyAboutMissedAlarm()
-                        userDataRepository.setAlarmMissedDetected(detected = true)
+                        if (notifyAboutMissedAlarms) {
+                            qrAlarmManager.notifyAboutMissedAlarm()
+                            userDataRepository.setAlarmMissedDetected(detected = true)
+                        }
 
                         if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
                             disableAlarm(alarmId = alarm.alarmId)
