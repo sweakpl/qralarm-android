@@ -1,4 +1,5 @@
 
+
 <p align="center">
    <img src="./fastlane/metadata/android/en-US/images/icon.png" width="192" height="192"/>
 </p>
@@ -56,3 +57,11 @@ Download the app now, set up and configure your alarms and let QRAlarm work its 
 * Tap the file and install - the app doesn't require any special permissions,
 
 or get it on [Google Play](https://play.google.com/store/apps/details?id=com.sweak.qralarm), [F-Droid](https://f-droid.org/packages/com.sweak.qralarm/) or [IzzyOnDroid](https://apt.izzysoft.de/fdroid/index/apk/com.sweak.qralarm/).
+
+## APK Signature Verification
+
+All official open-source releases of QRAlarm are signed with the following SHA-256 fingerprint:
+`9D:88:90:E1:97:16:01:D1:E4:E5:A1:C0:0F:F1:E3:A1:54:38:10:D2:8E:1C:5B:E4:D2:B5:C0:89:64:B1:81:57`
+
+You can verify an APK’s signature with:
+`keytool -printcert -jarfile qralarm-android-signed.apk`
