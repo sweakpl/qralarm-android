@@ -88,13 +88,13 @@ import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AddEditAlarmScreen(
+    addEditAlarmViewModel: AddEditAlarmViewModel,
     onCancelClicked: () -> Unit,
     onAlarmSaved: () -> Unit,
     onScanCustomCodeClicked: () -> Unit,
     onAlarmDeleted: () -> Unit,
     onRedirectToQRAlarmPro: () -> Unit
 ) {
-    val addEditAlarmViewModel = hiltViewModel<AddEditAlarmViewModel>()
     val addEditAlarmScreenState by addEditAlarmViewModel.state.collectAsStateWithLifecycle()
 
     val audioPickerLauncher = rememberLauncherForActivityResult(

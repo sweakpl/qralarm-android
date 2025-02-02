@@ -18,7 +18,7 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import com.sweak.qralarm.core.domain.user.UserDataRepository
-import com.sweak.qralarm.features.add_edit_alarm.navigation.addEditAlarmScreen
+import com.sweak.qralarm.features.add_edit_alarm.navigation.addEditAlarmFlow
 import com.sweak.qralarm.features.add_edit_alarm.navigation.navigateToAddEditAlarm
 import com.sweak.qralarm.features.custom_code_scanner.navigation.customCodeScannerScreen
 import com.sweak.qralarm.features.custom_code_scanner.navigation.navigateToCustomCodeScanner
@@ -155,7 +155,8 @@ class MainActivity : FragmentActivity() {
                         }
                     )
 
-                    addEditAlarmScreen(
+                    addEditAlarmFlow(
+                        navController = navController,
                         onCancelClicked = {
                             navController.navigateUp()
                         },
