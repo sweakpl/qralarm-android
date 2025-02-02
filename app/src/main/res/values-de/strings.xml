@@ -175,4 +175,5 @@
     <string name="power_off_guard_description">Schalten Sie Ihr Telefon nicht aus, wenn der Wecker klingelt.</string>
     <string name="lock_alarm_to_this_volume">Stellen Sie den Alarm auf diese Lautstärke ein, wenn er klingelt:</string>
     <string name="using_system_alarm_volume">Verwendung der Systemalarmlautstärke</string>
+    <string name="advanced_settings">Erweiterte Einstellungen</string>
 </resources>

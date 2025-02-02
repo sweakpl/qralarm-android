@@ -169,4 +169,5 @@
     <string name="power_off_guard_description">当闹钟响起时，不要让自己关掉手机。</string>
     <string name="lock_alarm_to_this_volume">设置闹钟响起时的音量：</string>
     <string name="using_system_alarm_volume">使用系统警报音量</string>
+    <string name="advanced_settings">高级设置</string>
 </resources>

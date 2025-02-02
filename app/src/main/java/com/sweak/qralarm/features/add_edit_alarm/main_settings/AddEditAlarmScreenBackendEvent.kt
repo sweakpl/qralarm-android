@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm
+package com.sweak.qralarm.features.add_edit_alarm.main_settings
 
 sealed class AddEditAlarmScreenBackendEvent {
     data object AlarmChangesDiscarded : AddEditAlarmScreenBackendEvent()

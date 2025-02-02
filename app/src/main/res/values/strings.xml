@@ -180,4 +180,5 @@
     <string name="power_off_guard_description">Do not let yourself turn off your phone when the alarm is ringing.</string>
     <string name="lock_alarm_to_this_volume">Set the alarm to this volume when it rings:</string>
     <string name="using_system_alarm_volume">Using system alarm volume</string>
+    <string name="advanced_settings">Advanced settings</string>
 </resources>

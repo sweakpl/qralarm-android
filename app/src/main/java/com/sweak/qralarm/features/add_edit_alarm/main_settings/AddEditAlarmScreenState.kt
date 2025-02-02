@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm
+package com.sweak.qralarm.features.add_edit_alarm.main_settings
 
 import android.net.Uri
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS

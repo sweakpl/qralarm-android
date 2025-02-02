@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm
+package com.sweak.qralarm.features.add_edit_alarm.main_settings
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -56,7 +56,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -77,13 +76,13 @@ import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
+import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.AssignCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneConfigDialogBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.components.ChooseGentleWakeUpDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseSnoozeConfigurationBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.components.ChooseTemporaryMuteDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
+import com.sweak.qralarm.features.add_edit_alarm.main_settings.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -92,6 +91,7 @@ fun AddEditAlarmScreen(
     onCancelClicked: () -> Unit,
     onAlarmSaved: () -> Unit,
     onScanCustomCodeClicked: () -> Unit,
+    onAdvancedSettingsClicked: () -> Unit,
     onAlarmDeleted: () -> Unit,
     onRedirectToQRAlarmPro: () -> Unit
 ) {
@@ -322,6 +322,9 @@ fun AddEditAlarmScreen(
                             data = Uri.parse("package:${context.packageName}")
                         }
                     )
+                }
+                is AddEditAlarmScreenUserEvent.AdvancedSettingsClicked -> {
+                    onAdvancedSettingsClicked()
                 }
                 is AddEditAlarmScreenUserEvent.TryUseSpecialAlarmSettings -> {
                     onRedirectToQRAlarmPro()
@@ -860,102 +863,6 @@ private fun AddEditAlarmScreenContent(
                                                 }
                                             }
                                         }
-
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                            Separator()
-
-                                            Row(
-                                                horizontalArrangement = Arrangement.SpaceBetween,
-                                                verticalAlignment = Alignment.CenterVertically,
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .padding(all = MaterialTheme.space.medium)
-                                            ) {
-                                                Column(
-                                                    modifier = Modifier
-                                                        .weight(1f)
-                                                        .padding(
-                                                            end = MaterialTheme.space.smallMedium
-                                                        )
-                                                ) {
-                                                    Text(
-                                                        text = stringResource(
-                                                            R.string.open_code_link
-                                                        ),
-                                                        style = MaterialTheme.typography.titleLarge,
-                                                        modifier = Modifier
-                                                            .padding(
-                                                                bottom = MaterialTheme.space.xSmall
-                                                            )
-                                                    )
-
-                                                    Text(
-                                                        text = stringResource(
-                                                            R.string.open_code_link_description
-                                                        ),
-                                                        style = MaterialTheme.typography.bodyMedium
-                                                    )
-                                                }
-
-                                                QRAlarmSwitch(
-                                                    checked = state.isOpenCodeLinkEnabled,
-                                                    onCheckedChange = {
-                                                        onEvent(
-                                                            AddEditAlarmScreenUserEvent
-                                                                .OpenCodeLinkEnabledChanged(
-                                                                    isEnabled = it
-                                                                )
-                                                        )
-                                                    }
-                                                )
-                                            }
-                                        }
-
-                                        Separator()
-
-                                        Row(
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(all = MaterialTheme.space.medium)
-                                        ) {
-                                            Column(
-                                                modifier = Modifier
-                                                    .weight(1f)
-                                                    .padding(
-                                                        end = MaterialTheme.space.smallMedium
-                                                    )
-                                            ) {
-                                                Text(
-                                                    text = stringResource(R.string._1_hour_lock),
-                                                    style = MaterialTheme.typography.titleLarge,
-                                                    modifier = Modifier
-                                                        .padding(
-                                                            bottom = MaterialTheme.space.xSmall
-                                                        )
-                                                )
-
-                                                Text(
-                                                    text = stringResource(
-                                                        R.string._1_hour_lock_description
-                                                    ),
-                                                    style = MaterialTheme.typography.bodyMedium
-                                                )
-                                            }
-
-                                            QRAlarmSwitch(
-                                                checked = state.isOneHourLockEnabled,
-                                                onCheckedChange = {
-                                                    onEvent(
-                                                        AddEditAlarmScreenUserEvent
-                                                            .OneHourLockEnabledChanged(
-                                                                isEnabled = it
-                                                            )
-                                                    )
-                                                }
-                                            )
-                                        }
                                     }
                                 }
                             }
@@ -1038,12 +945,7 @@ private fun AddEditAlarmScreenContent(
                         Box(
                             modifier = Modifier
                                 .clickable {
-                                    onEvent(
-                                        AddEditAlarmScreenUserEvent
-                                            .ChooseGentleWakeUpDurationDialogVisible(
-                                                isVisible = true
-                                            )
-                                    )
+                                    onEvent(AddEditAlarmScreenUserEvent.AdvancedSettingsClicked)
                                 }
                         ) {
                             Row(
@@ -1059,93 +961,29 @@ private fun AddEditAlarmScreenContent(
                                         .padding(end = MaterialTheme.space.smallMedium)
                                 ) {
                                     Text(
-                                        text = stringResource(R.string.gentle_wake_up),
+                                        text = stringResource(R.string.advanced_settings),
                                         style = MaterialTheme.typography.titleLarge,
                                         modifier = Modifier
                                             .padding(bottom = MaterialTheme.space.xSmall)
                                     )
 
                                     Text(
-                                        text = stringResource(R.string.gentle_wake_up_description),
+                                        text = buildString {
+                                            append(stringResource(R.string.gentle_wake_up))
+                                            append(", ")
+                                            append(stringResource(R.string.temporary_mute))
+                                        },
                                         style = MaterialTheme.typography.bodyMedium
                                     )
                                 }
 
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(
-                                        text = getSecondsDurationString(
-                                            state.gentleWakeupDurationInSeconds
-                                        ),
-                                        style = MaterialTheme.typography.labelMedium,
-                                        modifier = Modifier.padding(end = MaterialTheme.space.small)
-                                    )
-
-                                    Icon(
-                                        imageVector = QRAlarmIcons.ForwardArrow,
-                                        contentDescription = stringResource(
-                                            R.string.content_description_forward_arrow_icon
-                                        ),
-                                        modifier = Modifier.size(size = MaterialTheme.space.medium)
-                                    )
-                                }
-                            }
-                        }
-
-                        Separator()
-
-                        Box(
-                            modifier = Modifier
-                                .clickable {
-                                    onEvent(
-                                        AddEditAlarmScreenUserEvent
-                                            .ChooseTemporaryMuteDurationDialogVisible(
-                                                isVisible = true
-                                            )
-                                    )
-                                }
-                        ) {
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(all = MaterialTheme.space.medium)
-                            ) {
-                                Column(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(end = MaterialTheme.space.smallMedium)
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.temporary_mute),
-                                        style = MaterialTheme.typography.titleLarge,
-                                        modifier = Modifier
-                                            .padding(bottom = MaterialTheme.space.xSmall)
-                                    )
-
-                                    Text(
-                                        text = stringResource(R.string.temporary_mute_description),
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
-
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(
-                                        text = getSecondsDurationString(
-                                            state.temporaryMuteDurationInSeconds
-                                        ),
-                                        style = MaterialTheme.typography.labelMedium,
-                                        modifier = Modifier.padding(end = MaterialTheme.space.small)
-                                    )
-
-                                    Icon(
-                                        imageVector = QRAlarmIcons.ForwardArrow,
-                                        contentDescription = stringResource(
-                                            R.string.content_description_forward_arrow_icon
-                                        ),
-                                        modifier = Modifier.size(size = MaterialTheme.space.medium)
-                                    )
-                                }
+                                Icon(
+                                    imageVector = QRAlarmIcons.ForwardArrow,
+                                    contentDescription = stringResource(
+                                        R.string.content_description_forward_arrow_icon
+                                    ),
+                                    modifier = Modifier.size(size = MaterialTheme.space.mediumLarge)
+                                )
                             }
                         }
                     }
@@ -1481,35 +1319,6 @@ private fun AddEditAlarmScreenContent(
             },
             onDismissRequest = {
                 onEvent(AddEditAlarmScreenUserEvent.AssignCodeDialogVisible(isVisible = false))
-            }
-        )
-    }
-
-    if (state.isChooseGentleWakeUpDurationDialogVisible) {
-        ChooseGentleWakeUpDurationBottomSheet(
-            initialGentleWakeUpDurationInSeconds = state.gentleWakeupDurationInSeconds,
-            availableGentleWakeUpDurationsInSeconds = state.availableGentleWakeUpDurationsInSeconds,
-            onDismissRequest = { newGentleWakeUpDurationInSeconds ->
-                onEvent(
-                    AddEditAlarmScreenUserEvent.GentleWakeUpDurationSelected(
-                        newGentleWakeUpDurationInSeconds = newGentleWakeUpDurationInSeconds
-                    )
-                )
-            }
-        )
-    }
-
-    if (state.isChooseTemporaryMuteDurationDialogVisible) {
-        ChooseTemporaryMuteDurationBottomSheet(
-            initialTemporaryMuteDurationInSeconds = state.temporaryMuteDurationInSeconds,
-            availableTemporaryMuteDurationsInSeconds =
-            state.availableTemporaryMuteDurationsInSeconds,
-            onDismissRequest = { newTemporaryMuteDurationInSeconds ->
-                onEvent(
-                    AddEditAlarmScreenUserEvent.TemporaryMuteDurationSelected(
-                        newTemporaryMuteDurationInSeconds = newTemporaryMuteDurationInSeconds
-                    )
-                )
             }
         )
     }

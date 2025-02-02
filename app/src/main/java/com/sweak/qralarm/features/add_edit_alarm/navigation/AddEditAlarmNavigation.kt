@@ -8,12 +8,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmScreen
+import com.sweak.qralarm.features.add_edit_alarm.main_settings.AddEditAlarmScreen
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
+import com.sweak.qralarm.features.add_edit_alarm.advanced_settings.AdvancedAlarmSettingsScreen
 
 const val ADD_EDIT_ALARM_FLOW_ROUTE = "addEditAlarmFlow"
-const val ADD_EDIT_ALARM_SCREEN_ROUTE = "addEditAlarmScreen"
 const val ID_OF_ALARM_TO_EDIT = "idOfAlarmToEdit"
+
+const val ADD_EDIT_ALARM_SCREEN_ROUTE = "addEditAlarmScreen"
+const val ADVANCED_ALARM_SETTINGS_SCREEN_ROUTE = "advancedAlarmSettingsScreen"
 
 fun NavController.navigateToAddEditAlarm(
     alarmId: Long = 0
@@ -49,8 +52,25 @@ fun NavGraphBuilder.addEditAlarmFlow(
                 onCancelClicked = onCancelClicked,
                 onAlarmSaved = onAlarmSaved,
                 onScanCustomCodeClicked = onScanCustomCodeClicked,
+                onAdvancedSettingsClicked = {
+                    navController.navigate(ADVANCED_ALARM_SETTINGS_SCREEN_ROUTE)
+                },
                 onAlarmDeleted = onAlarmDeleted,
                 onRedirectToQRAlarmPro = onRedirectToQRAlarmPro
+            )
+        }
+
+        composable(route = ADVANCED_ALARM_SETTINGS_SCREEN_ROUTE) {
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry("$ADD_EDIT_ALARM_FLOW_ROUTE/{$ID_OF_ALARM_TO_EDIT}")
+            }
+            val addEditAlarmViewModel = hiltViewModel<AddEditAlarmViewModel>(parentEntry)
+
+            AdvancedAlarmSettingsScreen(
+                addEditAlarmViewModel = addEditAlarmViewModel,
+                onCancelClicked = {
+                    navController.navigateUp()
+                }
             )
         }
     }

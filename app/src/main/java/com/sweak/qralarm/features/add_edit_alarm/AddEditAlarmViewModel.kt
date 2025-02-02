@@ -21,6 +21,11 @@ import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeat
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.SAT_SUN
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
+import com.sweak.qralarm.features.add_edit_alarm.main_settings.AddEditAlarmFlowUserEvent
+import com.sweak.qralarm.features.add_edit_alarm.main_settings.AddEditAlarmScreenBackendEvent
+import com.sweak.qralarm.features.add_edit_alarm.main_settings.AddEditAlarmScreenState
+import com.sweak.qralarm.features.add_edit_alarm.main_settings.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
+import com.sweak.qralarm.features.add_edit_alarm.main_settings.AddEditAlarmFlowUserEvent.AdvancedAlarmScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.navigation.ID_OF_ALARM_TO_EDIT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -136,7 +141,7 @@ class AddEditAlarmViewModel @Inject constructor(
         }
     }
 
-    fun onEvent(event: AddEditAlarmScreenUserEvent) {
+    fun onEvent(event: AddEditAlarmFlowUserEvent) {
         when (event) {
             is AddEditAlarmScreenUserEvent.OnCancelClicked -> {
                 if (state.value.isEditingExistingAlarm && hasUnsavedChanges) {
@@ -458,13 +463,13 @@ class AddEditAlarmViewModel @Inject constructor(
                     }
                 }
             }
-            is AddEditAlarmScreenUserEvent.OpenCodeLinkEnabledChanged -> {
+            is AdvancedAlarmScreenUserEvent.OpenCodeLinkEnabledChanged -> {
                 hasUnsavedChanges = true
                 state.update { currentState ->
                     currentState.copy(isOpenCodeLinkEnabled = event.isEnabled)
                 }
             }
-            is AddEditAlarmScreenUserEvent.OneHourLockEnabledChanged -> {
+            is AdvancedAlarmScreenUserEvent.OneHourLockEnabledChanged -> {
                 hasUnsavedChanges = true
                 state.update { currentState ->
                     currentState.copy(isOneHourLockEnabled = event.isEnabled)
@@ -478,14 +483,14 @@ class AddEditAlarmViewModel @Inject constructor(
                     )
                 }
             }
-            is AddEditAlarmScreenUserEvent.ChooseGentleWakeUpDurationDialogVisible -> {
+            is AdvancedAlarmScreenUserEvent.ChooseGentleWakeUpDurationDialogVisible -> {
                 state.update { currentState ->
                     currentState.copy(
                         isChooseGentleWakeUpDurationDialogVisible = event.isVisible
                     )
                 }
             }
-            is AddEditAlarmScreenUserEvent.GentleWakeUpDurationSelected -> {
+            is AdvancedAlarmScreenUserEvent.GentleWakeUpDurationSelected -> {
                 if (event.newGentleWakeUpDurationInSeconds != state.value.gentleWakeupDurationInSeconds) {
                     hasUnsavedChanges = true
                 }
@@ -497,12 +502,12 @@ class AddEditAlarmViewModel @Inject constructor(
                     )
                 }
             }
-            is AddEditAlarmScreenUserEvent.ChooseTemporaryMuteDurationDialogVisible -> {
+            is AdvancedAlarmScreenUserEvent.ChooseTemporaryMuteDurationDialogVisible -> {
                 state.update { currentState ->
                     currentState.copy(isChooseTemporaryMuteDurationDialogVisible = event.isVisible)
                 }
             }
-            is AddEditAlarmScreenUserEvent.TemporaryMuteDurationSelected -> {
+            is AdvancedAlarmScreenUserEvent.TemporaryMuteDurationSelected -> {
                 if (event.newTemporaryMuteDurationInSeconds != state.value.temporaryMuteDurationInSeconds) {
                     hasUnsavedChanges = true
                 }
