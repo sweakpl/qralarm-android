@@ -148,15 +148,15 @@ fun SpecialAlarmSettingsScreenContent(
                                 }
                             )
                         }
-                    }
 
-                    Column {
                         HorizontalDivider(
                             thickness = 1.dp,
                             color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
+                    }
 
+                    Column {
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically,
@@ -194,52 +194,52 @@ fun SpecialAlarmSettingsScreenContent(
                                 }
                             )
                         }
-                    }
 
-                    Column {
                         HorizontalDivider(
                             thickness = 1.dp,
                             color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
+                    }
+                }
 
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
+                Column {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(all = MaterialTheme.space.medium)
+                    ) {
+                        Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = MaterialTheme.space.medium)
+                                .weight(1f)
+                                .padding(end = MaterialTheme.space.smallMedium)
                         ) {
-                            Column(
+                            Text(
+                                text = stringResource(R.string.block_volume_down),
+                                style = MaterialTheme.typography.titleLarge,
                                 modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = MaterialTheme.space.smallMedium)
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.block_volume_down),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    modifier = Modifier
-                                        .padding(bottom = MaterialTheme.space.xSmall)
-                                )
+                                    .padding(bottom = MaterialTheme.space.xSmall)
+                            )
 
-                                Text(
-                                    text = stringResource(
-                                        R.string.block_volume_down_description
-                                    ),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-
-                            QRAlarmSwitch(
-                                checked = false,
-                                onCheckedChange = {
-                                    onEvent(
-                                        SpecialAlarmSettingsScreenUserEvent
-                                            .TryUseSpecialAlarmSettings
-                                    )
-                                }
+                            Text(
+                                text = stringResource(
+                                    R.string.block_volume_down_description
+                                ),
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
+
+                        QRAlarmSwitch(
+                            checked = false,
+                            onCheckedChange = {
+                                onEvent(
+                                    SpecialAlarmSettingsScreenUserEvent
+                                        .TryUseSpecialAlarmSettings
+                                )
+                            }
+                        )
                     }
                 }
             }
