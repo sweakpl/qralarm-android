@@ -8,9 +8,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.sweak.qralarm.features.add_edit_alarm.main_settings.AddEditAlarmScreen
+import com.sweak.qralarm.features.add_edit_alarm.destinations.AddEditAlarmScreen
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
-import com.sweak.qralarm.features.add_edit_alarm.advanced_settings.AdvancedAlarmSettingsScreen
+import com.sweak.qralarm.features.add_edit_alarm.destinations.AdvancedAlarmSettingsScreen
 
 const val ADD_EDIT_ALARM_FLOW_ROUTE = "addEditAlarmFlow"
 const val ID_OF_ALARM_TO_EDIT = "idOfAlarmToEdit"

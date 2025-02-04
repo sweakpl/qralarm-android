@@ -1,14 +1,11 @@
 package com.sweak.qralarm.core.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -81,7 +78,10 @@ fun MissingPermissionsBottomSheet(
                 modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
             )
 
-            Separator()
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
 
             cameraPermissionState?.let {
                 Row(
@@ -125,7 +125,10 @@ fun MissingPermissionsBottomSheet(
                     )
                 }
 
-                Separator()
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
 
             alarmsPermissionState?.let {
@@ -168,7 +171,10 @@ fun MissingPermissionsBottomSheet(
                     )
                 }
 
-                Separator()
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
 
             notificationsPermissionState?.let {
@@ -213,7 +219,10 @@ fun MissingPermissionsBottomSheet(
                     )
                 }
 
-                Separator()
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
 
             fullScreenIntentPermissionState?.let {
@@ -258,20 +267,13 @@ fun MissingPermissionsBottomSheet(
                     )
                 }
 
-                Separator()
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     }
-}
-
-@Composable
-private fun Separator() {
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(color = MaterialTheme.colorScheme.onSurface)
-    )
 }
 
 @Preview

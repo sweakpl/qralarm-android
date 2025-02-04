@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm.main_settings
+package com.sweak.qralarm.features.add_edit_alarm.destinations
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -37,6 +37,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -76,13 +77,15 @@ import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
+import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
+import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmScreenBackendEvent
+import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmScreenState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.AssignCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneConfigDialogBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseSnoozeConfigurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
-import com.sweak.qralarm.features.add_edit_alarm.main_settings.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -487,7 +490,11 @@ private fun AddEditAlarmScreenContent(
                             }
                         }
 
-                        Separator()
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                        )
 
                         Box(
                             modifier = Modifier
@@ -533,7 +540,11 @@ private fun AddEditAlarmScreenContent(
                             }
                         }
 
-                        Separator()
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                        )
 
                         Box(
                             modifier = Modifier
@@ -575,7 +586,11 @@ private fun AddEditAlarmScreenContent(
                             }
                         }
 
-                        Separator()
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                        )
 
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
@@ -645,7 +660,11 @@ private fun AddEditAlarmScreenContent(
 
                         AnimatedVisibility(visible = state.isCodeEnabled) {
                             Column {
-                                Separator()
+                                HorizontalDivider(
+                                    thickness = 1.dp,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                                )
 
                                 AnimatedContent(
                                     targetState = state.currentlyAssignedCode != null ||
@@ -1018,7 +1037,11 @@ private fun AddEditAlarmScreenContent(
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             Column {
-                                Separator()
+                                HorizontalDivider(
+                                    thickness = 1.dp,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                                )
 
                                 Row(
                                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -1060,7 +1083,11 @@ private fun AddEditAlarmScreenContent(
                             }
 
                             Column {
-                                Separator()
+                                HorizontalDivider(
+                                    thickness = 1.dp,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                                )
 
                                 Row(
                                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -1102,7 +1129,11 @@ private fun AddEditAlarmScreenContent(
                             }
 
                             Column {
-                                Separator()
+                                HorizontalDivider(
+                                    thickness = 1.dp,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                                )
 
                                 Row(
                                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -1361,17 +1392,6 @@ private fun AddEditAlarmScreenContent(
             negativeButtonText = stringResource(R.string.cancel)
         )
     }
-}
-
-@Composable
-private fun Separator() {
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .padding(horizontal = MaterialTheme.space.medium)
-            .background(color = MaterialTheme.colorScheme.onSurface)
-    )
 }
 
 @Composable
