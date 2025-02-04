@@ -37,7 +37,7 @@ import com.sweak.qralarm.core.designsystem.component.QRAlarmSwitch
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmScreenUserEvent
+import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmScreenState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseGentleWakeUpDurationBottomSheet
@@ -46,7 +46,7 @@ import com.sweak.qralarm.features.add_edit_alarm.components.ChooseTemporaryMuteD
 @Composable
 fun AdvancedAlarmSettingsScreen(
     addEditAlarmViewModel: AddEditAlarmViewModel,
-    onCancelClicked: () -> Unit,
+    onCancelClicked: () -> Unit
 ) {
     val addEditAlarmScreenState by addEditAlarmViewModel.state.collectAsStateWithLifecycle()
 
@@ -54,7 +54,7 @@ fun AdvancedAlarmSettingsScreen(
         state = addEditAlarmScreenState,
         onEvent = { event ->
             when (event) {
-                is AdvancedAlarmScreenUserEvent.OnCancelClicked -> onCancelClicked()
+                is AdvancedAlarmSettingsScreenUserEvent.OnCancelClicked -> onCancelClicked()
                 else -> addEditAlarmViewModel.onEvent(event)
             }
         }
@@ -65,7 +65,7 @@ fun AdvancedAlarmSettingsScreen(
 @Composable
 private fun AdvancedAlarmSettingsScreenContent(
     state: AddEditAlarmScreenState,
-    onEvent: (AdvancedAlarmScreenUserEvent) -> Unit
+    onEvent: (AdvancedAlarmSettingsScreenUserEvent) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -79,7 +79,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = { onEvent(AdvancedAlarmScreenUserEvent.OnCancelClicked) }
+                        onClick = { onEvent(AdvancedAlarmSettingsScreenUserEvent.OnCancelClicked) }
                     ) {
                         Icon(
                             imageVector = QRAlarmIcons.BackArrow,
@@ -122,7 +122,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                     modifier = Modifier
                         .clickable {
                             onEvent(
-                                AdvancedAlarmScreenUserEvent
+                                AdvancedAlarmSettingsScreenUserEvent
                                     .ChooseGentleWakeUpDurationDialogVisible(isVisible = true)
                             )
                         }
@@ -182,7 +182,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                     modifier = Modifier
                         .clickable {
                             onEvent(
-                                AdvancedAlarmScreenUserEvent
+                                AdvancedAlarmSettingsScreenUserEvent
                                     .ChooseTemporaryMuteDurationDialogVisible(isVisible = true)
                             )
                         }
@@ -281,7 +281,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                                 checked = state.isOpenCodeLinkEnabled,
                                 onCheckedChange = {
                                     onEvent(
-                                        AdvancedAlarmScreenUserEvent.OpenCodeLinkEnabledChanged(
+                                        AdvancedAlarmSettingsScreenUserEvent.OpenCodeLinkEnabledChanged(
                                             isEnabled = it
                                         )
                                     )
@@ -331,7 +331,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                             checked = state.isOneHourLockEnabled,
                             onCheckedChange = {
                                 onEvent(
-                                    AdvancedAlarmScreenUserEvent.OneHourLockEnabledChanged(
+                                    AdvancedAlarmSettingsScreenUserEvent.OneHourLockEnabledChanged(
                                         isEnabled = it
                                     )
                                 )
@@ -349,7 +349,7 @@ private fun AdvancedAlarmSettingsScreenContent(
             availableGentleWakeUpDurationsInSeconds = state.availableGentleWakeUpDurationsInSeconds,
             onDismissRequest = { newGentleWakeUpDurationInSeconds ->
                 onEvent(
-                    AdvancedAlarmScreenUserEvent.GentleWakeUpDurationSelected(
+                    AdvancedAlarmSettingsScreenUserEvent.GentleWakeUpDurationSelected(
                         newGentleWakeUpDurationInSeconds = newGentleWakeUpDurationInSeconds
                     )
                 )
@@ -364,7 +364,7 @@ private fun AdvancedAlarmSettingsScreenContent(
             state.availableTemporaryMuteDurationsInSeconds,
             onDismissRequest = { newTemporaryMuteDurationInSeconds ->
                 onEvent(
-                    AdvancedAlarmScreenUserEvent.TemporaryMuteDurationSelected(
+                    AdvancedAlarmSettingsScreenUserEvent.TemporaryMuteDurationSelected(
                         newTemporaryMuteDurationInSeconds = newTemporaryMuteDurationInSeconds
                     )
                 )

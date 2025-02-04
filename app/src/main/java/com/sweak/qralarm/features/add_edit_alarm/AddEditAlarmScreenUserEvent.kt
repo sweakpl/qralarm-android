@@ -68,30 +68,35 @@ sealed class AddEditAlarmFlowUserEvent {
         data object GoToApplicationSettingsClicked : AddEditAlarmScreenUserEvent()
         data class AlarmLabelChanged(val newAlarmLabel: String) : AddEditAlarmScreenUserEvent()
         data object AdvancedSettingsClicked : AddEditAlarmScreenUserEvent()
-        data object TryUseSpecialAlarmSettings : AddEditAlarmScreenUserEvent()
+        data object SpecialSettingsClicked : AddEditAlarmScreenUserEvent()
         data class DeleteAlarmDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
         data object DeleteAlarm : AddEditAlarmScreenUserEvent()
     }
 
-    sealed class AdvancedAlarmScreenUserEvent : AddEditAlarmFlowUserEvent() {
-        data object OnCancelClicked : AdvancedAlarmScreenUserEvent()
+    sealed class AdvancedAlarmSettingsScreenUserEvent : AddEditAlarmFlowUserEvent() {
+        data object OnCancelClicked : AdvancedAlarmSettingsScreenUserEvent()
         data class ChooseGentleWakeUpDurationDialogVisible(
             val isVisible: Boolean
-        ) : AdvancedAlarmScreenUserEvent()
+        ) : AdvancedAlarmSettingsScreenUserEvent()
         data class GentleWakeUpDurationSelected(
             val newGentleWakeUpDurationInSeconds: Int
-        ) : AdvancedAlarmScreenUserEvent()
+        ) : AdvancedAlarmSettingsScreenUserEvent()
         data class ChooseTemporaryMuteDurationDialogVisible(
             val isVisible: Boolean
-        ) : AdvancedAlarmScreenUserEvent()
+        ) : AdvancedAlarmSettingsScreenUserEvent()
         data class TemporaryMuteDurationSelected(
             val newTemporaryMuteDurationInSeconds: Int
-        ) : AdvancedAlarmScreenUserEvent()
+        ) : AdvancedAlarmSettingsScreenUserEvent()
         data class OpenCodeLinkEnabledChanged(
             val isEnabled: Boolean
-        ) : AdvancedAlarmScreenUserEvent()
+        ) : AdvancedAlarmSettingsScreenUserEvent()
         data class OneHourLockEnabledChanged(
             val isEnabled: Boolean
-        ) : AdvancedAlarmScreenUserEvent()
+        ) : AdvancedAlarmSettingsScreenUserEvent()
+    }
+
+    sealed class SpecialAlarmSettingsScreenUserEvent : AddEditAlarmFlowUserEvent() {
+        data object OnCancelClicked : SpecialAlarmSettingsScreenUserEvent()
+        data object TryUseSpecialAlarmSettings : SpecialAlarmSettingsScreenUserEvent()
     }
 }
