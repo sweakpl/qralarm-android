@@ -1,0 +1,3 @@
+* Added the alarm volume setting,
+* Simplified alarm editing screen,
+* Bug fixes.
