@@ -9,7 +9,7 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 
-data class AddEditAlarmScreenState(
+data class AddEditAlarmFlowState(
     val isLoading: Boolean = true,
     val isEditingExistingAlarm: Boolean = false,
     val alarmHourOfDay: Int? = null,

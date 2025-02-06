@@ -78,8 +78,8 @@ import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmScreenBackendEvent
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmScreenState
+import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowBackendEvent
+import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.AssignCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
@@ -135,8 +135,8 @@ fun AddEditAlarmScreen(
         flow = addEditAlarmViewModel.backendEvents,
         onEvent = { event ->
             when (event) {
-                is AddEditAlarmScreenBackendEvent.AlarmChangesDiscarded -> onCancelClicked()
-                is AddEditAlarmScreenBackendEvent.AlarmSaved -> {
+                is AddEditAlarmFlowBackendEvent.AlarmChangesDiscarded -> onCancelClicked()
+                is AddEditAlarmFlowBackendEvent.AlarmSaved -> {
                     if (event.daysHoursAndMinutesUntilAlarm != null) {
                         val days = event.daysHoursAndMinutesUntilAlarm.first
                         val hours = event.daysHoursAndMinutesUntilAlarm.second
@@ -172,7 +172,7 @@ fun AddEditAlarmScreen(
 
                     onAlarmSaved()
                 }
-                is AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished -> {
+                is AddEditAlarmFlowBackendEvent.CustomRingtoneRetrievalFinished -> {
                     Toast.makeText(
                         context,
                         if (event.isSuccess) R.string.ringtone_successfully_uploaded
@@ -180,15 +180,15 @@ fun AddEditAlarmScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
-                is AddEditAlarmScreenBackendEvent.CustomCodeAssignmentFinished -> {
+                is AddEditAlarmFlowBackendEvent.CustomCodeAssignmentFinished -> {
                     Toast.makeText(
                         context,
                         R.string.code_successfully_assigned,
                         Toast.LENGTH_LONG
                     ).show()
                 }
-                is AddEditAlarmScreenBackendEvent.AlarmDeleted -> onAlarmDeleted()
-                is AddEditAlarmScreenBackendEvent.AlarmRingtonePreviewPlaybackError -> {
+                is AddEditAlarmFlowBackendEvent.AlarmDeleted -> onAlarmDeleted()
+                is AddEditAlarmFlowBackendEvent.AlarmRingtonePreviewPlaybackError -> {
                     Toast.makeText(
                         context,
                         R.string.there_was_an_issue_playing_ringtone,
@@ -341,7 +341,7 @@ fun AddEditAlarmScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddEditAlarmScreenContent(
-    state: AddEditAlarmScreenState,
+    state: AddEditAlarmFlowState,
     onEvent: (AddEditAlarmScreenUserEvent) -> Unit
 ) {
     Scaffold(
@@ -1331,7 +1331,7 @@ fun getSecondsDurationString(durationInSeconds: Int): String {
 private fun AddEditAlarmScreenContentPreview() {
     QRAlarmTheme {
         AddEditAlarmScreenContent(
-            state = AddEditAlarmScreenState(
+            state = AddEditAlarmFlowState(
                 isLoading = false,
                 alarmHourOfDay = 8,
                 alarmMinute = 0

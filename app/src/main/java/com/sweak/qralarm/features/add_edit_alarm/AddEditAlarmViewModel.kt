@@ -57,9 +57,9 @@ class AddEditAlarmViewModel @Inject constructor(
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM_TO_EDIT] ?: 0
     private var hasUnsavedChanges = false
 
-    var state = MutableStateFlow(AddEditAlarmScreenState())
+    var state = MutableStateFlow(AddEditAlarmFlowState())
 
-    private val backendEventsChannel = Channel<AddEditAlarmScreenBackendEvent>()
+    private val backendEventsChannel = Channel<AddEditAlarmFlowBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     init {
@@ -131,7 +131,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
                 if (temporaryScannedCode != null) {
                     backendEventsChannel.send(
-                        AddEditAlarmScreenBackendEvent.CustomCodeAssignmentFinished
+                        AddEditAlarmFlowBackendEvent.CustomCodeAssignmentFinished
                     )
                 }
             }
@@ -148,7 +148,7 @@ class AddEditAlarmViewModel @Inject constructor(
                 } else {
                     viewModelScope.launch {
                         backendEventsChannel.send(
-                            AddEditAlarmScreenBackendEvent.AlarmChangesDiscarded
+                            AddEditAlarmFlowBackendEvent.AlarmChangesDiscarded
                         )
                     }
                 }
@@ -171,7 +171,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
                                 return@update currentState.copy(
                                     permissionsDialogState =
-                                    AddEditAlarmScreenState.PermissionsDialogState(
+                                    AddEditAlarmFlowState.PermissionsDialogState(
                                         isVisible = false
                                     )
                                 )
@@ -208,7 +208,7 @@ class AddEditAlarmViewModel @Inject constructor(
                     ) {
                         return@update currentState.copy(
                             permissionsDialogState =
-                                AddEditAlarmScreenState.PermissionsDialogState(
+                                AddEditAlarmFlowState.PermissionsDialogState(
                                     isVisible = true,
                                     cameraPermissionState =
                                     if (!event.cameraPermissionStatus && currentState.isCodeEnabled)
@@ -231,7 +231,7 @@ class AddEditAlarmViewModel @Inject constructor(
             is AddEditAlarmScreenUserEvent.HideMissingPermissionsDialog -> {
                 state.update { currentState ->
                     currentState.copy(
-                        permissionsDialogState = AddEditAlarmScreenState.PermissionsDialogState(
+                        permissionsDialogState = AddEditAlarmFlowState.PermissionsDialogState(
                             isVisible = false
                         )
                     )
@@ -337,7 +337,7 @@ class AddEditAlarmViewModel @Inject constructor(
                                     if (hasErrorOccurred) {
                                         viewModelScope.launch {
                                             backendEventsChannel.send(
-                                                AddEditAlarmScreenBackendEvent
+                                                AddEditAlarmFlowBackendEvent
                                                     .AlarmRingtonePreviewPlaybackError
                                             )
                                         }
@@ -359,7 +359,7 @@ class AddEditAlarmViewModel @Inject constructor(
                                     if (hasErrorOccurred) {
                                         viewModelScope.launch {
                                             backendEventsChannel.send(
-                                                AddEditAlarmScreenBackendEvent
+                                                AddEditAlarmFlowBackendEvent
                                                     .AlarmRingtonePreviewPlaybackError
                                             )
                                         }
@@ -403,13 +403,13 @@ class AddEditAlarmViewModel @Inject constructor(
                     }
 
                     backendEventsChannel.send(
-                        AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished(
+                        AddEditAlarmFlowBackendEvent.CustomRingtoneRetrievalFinished(
                             isSuccess = true
                         )
                     )
                 } ?: run {
                     backendEventsChannel.send(
-                        AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished(
+                        AddEditAlarmFlowBackendEvent.CustomRingtoneRetrievalFinished(
                             isSuccess = false
                         )
                     )
@@ -527,13 +527,13 @@ class AddEditAlarmViewModel @Inject constructor(
                 File(filesDir, idOfAlarm.toString()).apply {
                     if (exists()) delete()
                 }
-                backendEventsChannel.send(AddEditAlarmScreenBackendEvent.AlarmDeleted)
+                backendEventsChannel.send(AddEditAlarmFlowBackendEvent.AlarmDeleted)
             }
             else -> { /* no-op */ }
         }
     }
 
-    private fun setAlarm(currentState: AddEditAlarmScreenState) {
+    private fun setAlarm(currentState: AddEditAlarmFlowState) {
         if (currentState.alarmHourOfDay == null || currentState.alarmMinute == null) {
             return
         }
@@ -635,7 +635,7 @@ class AddEditAlarmViewModel @Inject constructor(
                         exception is SecurityException
                     ) {
                         backendEventsChannel.send(
-                            AddEditAlarmScreenBackendEvent
+                            AddEditAlarmFlowBackendEvent
                                 .CustomRingtoneRetrievalFinished(isSuccess = false)
                         )
                     } else {
@@ -657,7 +657,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
             if (setAlarmResult is SetAlarm.Result.Success) {
                 backendEventsChannel.send(
-                    AddEditAlarmScreenBackendEvent.AlarmSaved(
+                    AddEditAlarmFlowBackendEvent.AlarmSaved(
                         daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
                             alarmTimeInMillis = setAlarmResult.alarmTimInMillis
                         )
