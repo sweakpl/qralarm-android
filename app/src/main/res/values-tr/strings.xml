@@ -50,7 +50,7 @@
     <string name="gentle_wake_up">Nazik Uyanma</string>
     <string name="temporary_mute">Geçici Sessize Alma</string>
     <string name="gentle_wake_up_description">Alarm sesi belirtilen süre boyunca kademeli olarak artacaktır.</string>
-    <string name="temporary_mute_description">QR/Bar kodu kullanırken STOP\'a basıldığında, alarm belirtilen süre boyunca sessize alınacaktır.</string>
+    <string name="temporary_mute_description">QR/Bar kodu kullanırken DURDUR\'a basıldığında, alarm belirtilen süre boyunca sessize alınacaktır.</string>
     <string name="only_once">Yalnızca bir kez</string>
     <string name="custom">Özel</string>
     <string name="number_of_snoozes">Erteleme sayısı:</string>
