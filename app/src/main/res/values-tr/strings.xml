@@ -1,0 +1,184 @@
+<resources>
+    <plurals name="number_of_snoozes_plural">
+        <item quantity="one">%1$d kez erteleme</item>
+        <item quantity="other">%1$d kez erteleme</item>
+    </plurals>
+
+    <plurals name="snooze_duration_plural">
+        <item quantity="other">%1$d dakika</item>
+    </plurals>
+
+    <plurals name="number_of_seconds_plural">
+        <item quantity="other">%1$d saniye</item>
+    </plurals>
+
+    <plurals name="days">
+        <item quantity="one">%1$d gün</item>
+        <item quantity="other">%1$d gün</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">%1$d saat</item>
+        <item quantity="other">%1$d saat</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%1$d dakika</item>
+        <item quantity="other">%1$d dakika</item>
+    </plurals>
+
+    <string name="app_name" translatable="false">QRAlarm</string>
+    <string name="welcome_to_qralarm">QRAlarm\'a hoş geldiniz!</string>
+    <string name="wake_up_catchphrase">Uyan!</string>
+    <string name="wake_up_catchphrase_description">Alarmınızı her zamanki gibi kurun ve ertesi sabah QRAlarm tarafından uyandırılmaya hazır olun.</string>
+    <string name="get_up_catchphrase">Kalk!</string>
+    <string name="get_up_catchphrase_description">QRAlarm, sadece uyanmanızı değil, aynı zamanda ayağa kalkmanızı ve alarmı devre dışı bırakmanızı da sağlayacaktır.</string>
+    <string name="rise_up_catchphrase">Ayağa Kalk!</string>
+    <string name="rise_up_catchphrase_description">Kodu tarayın, alarmı devre dışı bırakın ve fazla uyumaya elveda deyin! Sabahlarınızın keyfini QRAlarm ile çıkarın!</string>
+    <string name="lets_go">Hadi başlayalım!</string>
+    <string name="home">Ana Sayfa</string>
+    <string name="alarms">Alarmlar</string>
+    <string name="alarm">Alarm</string>
+    <string name="repeating">Tekrarlayan</string>
+    <string name="snooze">Ertele</string>
+    <string name="ringtone">Zil Sesi</string>
+    <string name="vibrations">Titreşim</string>
+    <string name="use_qr_bar_code">QR/Bar kod kullan</string>
+    <string name="assign_specific_code">Belirli bir kod ata</string>
+    <string name="assign_specific_code_description">Alarm herhangi bir kodla devre dışı bırakılabilir. Bu alarmı devre dışı bırakmak için kendi QR veya Bar kodunuzu atamak üzere aşağıya tıklayın:</string>
+    <string name="scan_your_own_code">Kendi kodunuzu tarayın</string>
+    <string name="gentle_wake_up">Nazik Uyanma</string>
+    <string name="temporary_mute">Geçici Sessize Alma</string>
+    <string name="gentle_wake_up_description">Alarm sesi belirtilen süre boyunca kademeli olarak artacaktır.</string>
+    <string name="temporary_mute_description">QR/Bar kodu kullanırken STOP\'a basıldığında, alarm belirtilen süre boyunca sessize alınacaktır.</string>
+    <string name="only_once">Yalnızca bir kez</string>
+    <string name="custom">Özel</string>
+    <string name="number_of_snoozes">Erteleme sayısı:</string>
+    <string name="snooze_duration">Erteleme süresi:</string>
+    <string name="no_snoozes">Erteleme yok</string>
+    <string name="gentle_guitar">Yumuşak gitar</string>
+    <string name="alarm_clock">Alarm saati</string>
+    <string name="air_horn">Hava kornası</string>
+    <string name="custom_sound">Özel ses</string>
+    <string name="disabled">Devre dışı</string>
+    <string name="min">dk</string>
+    <string name="sec">sn</string>
+    <string name="ringtone_successfully_uploaded">Özel zil sesiniz başarıyla yüklendi!</string>
+    <string name="ringtone_upload_unsuccessful">Özel zil sesi yüklenemedi…</string>
+    <string name="code_assigned">Kod atandı!</string>
+    <string name="current_code">Geçerli kod: %1$s</string>
+    <string name="camera_permission_required">Kamera izni gerekli</string>
+    <string name="camera_permission_required_description">Kodları taramak için kamera izni gereklidir. İzni vermek için ayarlara gidin ve kamera iznini manuel olarak tanıyın.</string>
+    <string name="settings">Ayarlar</string>
+    <string name="cancel">İptal</string>
+    <string name="code_successfully_assigned">Kod başarıyla atandı!</string>
+    <string name="assign_new_code">Yeni kod ata</string>
+    <string name="clear_assigned_code">Atanmış kodu temizle</string>
+    <string name="permissions_required">İzinler gerekli!</string>
+    <string name="camera">Kamera</string>
+    <string name="camera_usage">QR/Bar kodlarını taramak için kullanılır.</string>
+    <string name="alarms_usage">Alarmları tam zamanında planlamak için kullanılır.</string>
+    <string name="notifications">Bildirimler</string>
+    <string name="notifications_usage">Alarmı görünür bir bildirimle birlikte sunmak için kullanılır.</string>
+    <string name="full_screen_display">Tam ekran görüntü</string>
+    <string name="full_screen_display_usage">Tam ekran alarm bildirimini göstermek için kullanılır.</string>
+    <string name="notifications_permission_required">Bildirim izni gerekli</string>
+    <string name="notifications_permission_required_description">Alarmlarınız hakkında bildirim almak için bildirim izni gereklidir. İzni vermek için ayarlara gidin ve bildirim iznini manuel olarak tanıyın.</string>
+    <string name="delete_alarm">Alarmı sil</string>
+    <string name="delete_this_alarm">Bu alarmı silmek istiyor musunuz?</string>
+    <string name="delete">Sil</string>
+    <string name="discard_changes">Değişiklikler iptal edilsin mi?</string>
+    <string name="discard_changes_description">Bu alarmda yapılan tüm değişiklikler iptal edilecek ve kaydedilmeyecek. İptal etmek istediğinize emin misiniz?</string>
+    <string name="discard">İptal et</string>
+    <string name="alarm_in">Alarm başlama süresi:</string>
+    <string name="alarm_notification_channel_name">Alarm tetiklemesi</string>
+    <string name="alarm_notification_channel_description">Alarm sesi çalar, bir bildirim görüntüler ve ekranda belirir</string>
+    <string name="alarm_notification_title">Alarm çalıyor! Uyan!</string>
+    <string name="alarm_set_indication_notification_channel_name">Alarmları bildiriyor</string>
+    <string name="alarm_set_indication_notification_channel_description">Mevcut veya kaçırılmış alarmlar hakkında bildirim yapar, bildirim panelinde gizlenir, ses çıkarmaz</string>
+    <string name="alarm_missed_notification_title">Alarm kaçırıldı!</string>
+    <string name="alarm_missed_notification_text">Daha önce kurduğunuz alarm muhtemelen telefonunuzdaki saat değişikliği veya telefonun alarm sırasında kapalı olması nedeniyle kaçırıldı.</string>
+    <string name="alarm_wake_up">Alarm - uyan!</string>
+    <string name="stop">DURDUR</string>
+    <string name="snooze_capitals">ERTELE</string>
+    <string name="alarm_snoozed_until">Alarm şu zamana kadar ertelendi:</string>
+    <string name="upcoming_alarm_indication_notification_title">Yaklaşan alarm</string>
+    <string name="upcoming_alarm_indication_notification_text">Alarm şu tarih ve saat için ayarlandı: %1$s</string>
+    <string name="next_step">Sonraki adım</string>
+    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarm 1 saatten kısa sürede çalacak - düzenlemek için kodu tarayarak alarmı devre dışı bırakın.</string>
+    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarm 1 saatten kısa sürede çalacak - alarmı devre dışı bırakmak için kodu tarayın.</string>
+    <string name="kalimba">Kalimba</string>
+    <string name="classic_alarm">Klasik alarm</string>
+    <string name="rooster">Horoz</string>
+    <string name="menu">Menü</string>
+    <string name="introduction">Giriş</string>
+    <string name="everyday">Her gün</string>
+    <string name="no_alarms">Alarm yok</string>
+    <string name="create_using_button">Yukarıdaki veya aşağıdaki + düğmesini kullanarak bir alarm oluşturun.</string>
+    <string name="optimization_guide">Optimizasyon rehberi</string>
+    <string name="optimize_qralarm">QRAlarm\'ı Optimize Et</string>
+    <string name="ensure_the_best_performance">En iyi performansı sağlayın! ⏰ 🚀</string>
+    <string name="optimization_screen_description">Aşağıdaki ayarlar, QRAlarm\'ın sisteminizde en iyi şekilde çalışmasına yardımcı olacak ve size harika sabahlar sunacaktır!</string>
+    <string name="enable_background_work">Arka plan çalışmasını etkinleştir</string>
+    <string name="enable_background_work_description">Sistemin alarmlarınıza müdahale etmesine izin vermeyin ve rahat uyuyun!</string>
+    <string name="fully_optimize_for_your_system">Sisteminize tam olarak optimize edin</string>
+    <string name="fully_optimize_for_your_system_description">Bazı Android sistemleri, çalışan uygulamalara özel kısıtlamalar getirerek QRAlarm\'ı etkileyebilir. Telefonunuz için verilen talimatları izleyerek uygulamayı optimize edin:</string>
+    <string name="ensure_the_best_settings_possible">En iyi ayarları mümkün kılın</string>
+    <string name="ensure_the_best_settings_possible_description">Bu ayarların da etkin olduğundan emin olun (sisteminiz bunları destekliyorsa):</string>
+    <string name="display_on_lock_screen_description">alarmlar çaldığında hızlıca erişilebilir olacaktır.</string>
+    <string name="autostart">Otomatik başlatma</string>
+    <string name="autostart_description">Telefon yeniden başlatıldığında alarmlar otomatik olarak etkinleştirilecektir.</string>
+    <string name="display_on_lock_screen">Kilit ekranında göster</string>
+    <string name="work_in_background_limited_click_to_enable">Arka planda çalışma sınırlı. Etkinleştirmek için tıklayın.</string>
+    <string name="work_in_background_enabled">Arka planda çalışma etkin. Harika!</string>
+    <string name="setting_unavailable_refer_to_the_next_step">Ayar kullanılamıyor - lütfen sonraki adımlara bakın.</string>
+    <string name="dontkilmyapp_com" translatable="false">dontkillmyapp.com</string>
+    <string name="dontkilmyapp_com_full_uri" translatable="false">https://dontkillmyapp.com/</string>
+    <string name="select_manufacturer_and_follow_instructions">Telefon üreticinizi seçin ve sağlanan talimatları izleyin.</string>
+    <string name="click_to_go_to_app_settings">QRAlarm uygulama ayarlarına gitmek için tıklayın.</string>
+    <string name="issue_opening_the_page">Sayfa açılırken bir sorun oluştu…</string>
+    <string name="optimization_dialog_description">Optimizasyon rehberimizi inceleyerek QRAlarm\'ın sisteminizde en iyi şekilde çalışmasını sağlayın ve rahat uyuyun!</string>
+    <string name="qralarm_pro" translatable="false">QRAlarm PRO</string>
+    <string name="special_alarm_settings">Özel alarm ayarları</string>
+    <string name="early_access_to_new_features">Yeni özelliklere erken erişim</string>
+    <string name="buy_once_enjoy_forever">Bir kez satın al - sonsuza dek keyfini çıkar!</string>
+    <string name="get_it_now">Hemen alın!</string>
+    <string name="not_now">Şimdi değil</string>
+    <string name="qralarm_pro_package_name" translatable="false">com.sweak.qralarm.pro</string>
+    <string name="special_settings">Özel ayarlar</string>
+    <string name="do_not_leave_alarm">Alarm ekranından ayrılma</string>
+    <string name="do_not_leave_alarm_description">Alarm çalarken alarm ekranının açık kalmasını sağlar.</string>
+    <string name="block_volume_down">Ses azaltmayı engelle</string>
+    <string name="block_volume_down_description">Alarm zil sesinin kısılmasına izin verme.</string>
+    <string name="alarm_didnt_ring">Alarm çalmadı mı? ⏰</string>
+    <string name="alarm_didnt_ring_description">Son alarm mı kaçırıldı? Öyleyse, QRAlarm\'ın sisteminizde en iyi şekilde çalışmasını sağlamak için hazırladığımız Optimizasyon rehberini eksiksiz uyguladığınızdan emin olun!</string>
+    <string name="optimize_now">Şimdi optimize et!</string>
+    <string name="there_was_an_issue_playing_ringtone">Zil sesi çalarken bir sorun oluştu…</string>
+    <string name="skip_next_alarm">Sonraki alarmı atla</string>
+    <string name="undo_skipping_next_alarm">Sonraki alarmı atlamayı geri al</string>
+    <string name="next_alarm_date">Sonraki: %1$s</string>
+    <string name="alarm_label">Alarm etiketi</string>
+    <string name="enter_your_alarm_label">Alarm etiketinizi girin…</string>
+    <string name="open_code_link">Kod bağlantısını aç</string>
+    <string name="open_code_link_description">Kod geçerli bir URL içeriyorsa, tarandığında uygulama otomatik olarak açacaktır.</string>
+    <string name="do_you_enjoy_qralarm">QRAlarm\'dan memnun musunuz? 🚀 ⏰</string>
+    <string name="im_working_hard">Sabahlarınızı olabildiğince sorunsuz hale getirmek için çok çalışıyorum! 🙂</string>
+    <string name="i_love_it_rate_me">Harika - bana puan ver! ❤️</string>
+    <string name="did_something_go_wrong">Bir şeyler yanlış mı gitti?\nBunu birlikte düzeltebiliriz!</string>
+    <string name="tell_me_what_is_wrong">Sorunun ne olduğunu anlatın</string>
+    <string name="do_not_show_again">Bu ekranı bir daha gösterme.</string>
+    <string name="qralarm_github_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android</string>
+    <string name="qralarm_github_issues_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android/issues</string>
+    <string name="rate_qralarm">QRAlarm\'ı değerlendirin</string>
+    <string name="previous">Önceki</string>
+    <string name="scan_code">Kodu tara</string>
+    <string name="or_use_already_used_code">Veya daha önce kullanılan kodu kullan</string>
+    <string name="click_to_choose">*Seçmek için tıkla*</string>
+    <string name="_1_hour_lock">1 saat kilidi</string>
+    <string name="_1_hour_lock_description">Alarm, 1 saatten az süre kalmışsa kod olmadan iptal edilemez.</string>
+    <string name="power_off_guard">Kapatma koruması</string>
+    <string name="power_off_guard_description">Alarm çalarken telefonunuzu kapatmanıza izin vermeyin.</string>
+    <string name="lock_alarm_to_this_volume">Alarm çaldığında bu ses seviyesine ayarla:</string>
+    <string name="using_system_alarm_volume">Sistem alarm ses seviyesi kullanılıyor</string>
+    <string name="advanced_settings">Gelişmiş ayarlar</string>
+</resources>
