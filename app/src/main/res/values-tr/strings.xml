@@ -5,10 +5,12 @@
     </plurals>
 
     <plurals name="snooze_duration_plural">
+        <item quantity="one">%1$d dakika</item>
         <item quantity="other">%1$d dakika</item>
     </plurals>
 
     <plurals name="number_of_seconds_plural">
+        <item quantity="one">%1$d saniye</item>
         <item quantity="other">%1$d saniye</item>
     </plurals>
 
