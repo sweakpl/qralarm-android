@@ -20,7 +20,8 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="start|top"
-        android:layout_margin="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="64dp"
         android:contentDescription="@string/content_description_close_icon"
         android:src="@drawable/ic_close" />
 
@@ -29,7 +30,8 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="end|top"
-        android:layout_margin="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="64dp"
         android:contentDescription="@string/content_description_flash_icon"
         android:src="@drawable/ic_flash_off" />
 

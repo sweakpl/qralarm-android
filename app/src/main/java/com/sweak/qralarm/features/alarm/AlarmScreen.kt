@@ -144,7 +144,6 @@ private fun AlarmScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues = paddingValues)
                 .background(
                     brush = Brush.verticalGradient(
                         listOf(
@@ -153,6 +152,7 @@ private fun AlarmScreenContent(
                         )
                     )
                 )
+                .padding(paddingValues = paddingValues)
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.xLarge),

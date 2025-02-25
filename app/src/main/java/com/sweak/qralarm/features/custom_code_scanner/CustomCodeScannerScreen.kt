@@ -1,10 +1,6 @@
 package com.sweak.qralarm.features.custom_code_scanner
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
@@ -51,8 +47,7 @@ private fun CustomCodeScannerScreenContent(
         },
         closeCallback = {
             onEvent(CustomCodeScannerScreenUserEvent.OnCloseClicked)
-        },
-        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)
+        }
     )
 }
 

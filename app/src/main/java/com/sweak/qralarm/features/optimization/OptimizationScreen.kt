@@ -159,7 +159,6 @@ fun OptimizationScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues = paddingValues)
                 .background(
                     brush = Brush.verticalGradient(
                         listOf(
@@ -168,6 +167,7 @@ fun OptimizationScreenContent(
                         )
                     )
                 )
+                .padding(paddingValues = paddingValues)
         ) {
             Text(
                 text = stringResource(R.string.ensure_the_best_performance),

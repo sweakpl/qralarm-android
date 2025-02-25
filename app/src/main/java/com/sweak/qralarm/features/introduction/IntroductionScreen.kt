@@ -73,7 +73,6 @@ private fun IntroductionScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues = paddingValues)
                 .background(
                     brush = Brush.verticalGradient(
                         listOf(
@@ -82,6 +81,7 @@ private fun IntroductionScreenContent(
                         )
                     )
                 )
+                .padding(paddingValues = paddingValues)
         ) {
             val pagerState = rememberPagerState(pageCount = { 3 })
             val composableScope = rememberCoroutineScope()

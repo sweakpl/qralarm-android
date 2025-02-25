@@ -3,6 +3,7 @@ package com.sweak.qralarm.app
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -61,6 +62,8 @@ class MainActivity : FragmentActivity() {
         val splashScreen = installSplashScreen()
 
         super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge()
 
         var shouldShowSplashScreen by mutableStateOf(true)
         splashScreen.setKeepOnScreenCondition { shouldShowSplashScreen }
