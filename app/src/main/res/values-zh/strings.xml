@@ -36,7 +36,7 @@
     <string name="alarm">闹钟</string>
     <string name="repeating">重复周期</string>
     <string name="snooze">稍后再响</string>
-    <string name="ringtone">闹钟铃声</string>
+    <string name="ringtone">铃声与音量</string>
     <string name="vibrations">震动</string>
     <string name="use_qr_bar_code">使用二维码/条形码</string>
     <string name="assign_specific_code">录入特定二维码/条形码</string>
@@ -168,6 +168,6 @@
     <string name="power_off_guard">关机保护</string>
     <string name="power_off_guard_description">当闹钟响起时，不要让自己关掉手机。</string>
     <string name="lock_alarm_to_this_volume">设置闹钟响起时的音量：</string>
-    <string name="using_system_alarm_volume">使用系统警报音量</string>
+    <string name="using_system_alarm_volume">当前使用系统闹钟音量</string>
     <string name="advanced_settings">高级设置</string>
 </resources>
