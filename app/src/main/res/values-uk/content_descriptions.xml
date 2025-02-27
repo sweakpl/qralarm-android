@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_qralarm_icon">Піктограма QRAlarm</string>
+    <string name="content_description_add_icon">Піктограма додавання (плюс)</string>
+    <string name="content_description_menu_icon">Піктограма меню</string>
+    <string name="content_description_close_icon">Піктограма закриття</string>
+    <string name="content_description_done_icon">Піктограма готовності</string>
+    <string name="content_description_forward_arrow_icon">Піктограма стрілки вперед</string>
+    <string name="content_description_back_arrow_icon">Піктограма стрілки назад</string>
+    <string name="content_description_drop_down_arrow_icon">Піктограма стрілки вниз</string>
+    <string name="content_description_play_icon">Піктограма відтворення</string>
+    <string name="content_description_stop_icon">Піктограма зупинки</string>
+    <string name="content_description_edit_icon">Піктограма редагування</string>
+    <string name="content_description_more_icon">Піктограма Додаткових налаштувань</string>
+    <string name="content_description_qr_code_scanner_icon">Піктограма сканера QR-коду</string>
+    <string name="content_description_delete_icon">Піктограма видалення</string>
+    <string name="content_description_camera_icon">Піктограма камери</string>
+    <string name="content_description_alarm_icon">Піктограма будильника</string>
+    <string name="content_description_notification_icon">Піктограма повідомлення</string>
+    <string name="content_description_full_screen_icon">Піктограма повноекранного відображення</string>
+    <string name="content_description_no_qr_code_icon">Піктограма відключеного QR-коду</string>
+    <string name="content_description_automatic_settings_icon">Піктограма автоматичних налаштувань</string>
+    <string name="content_description_app_settings_icon">Піктограма налаштувань програми</string>
+    <string name="content_description_special_app_settings_icon">Піктограма спеціальних налаштувань програми</string>
+    <string name="content_description_star_icon">Піктограма зірки</string>
+    <string name="content_description_special_alarm_settings_icon">Піктограма спеціальних налаштувань будильника</string>
+    <string name="content_description_early_access_icon">Піктограма раннього доступу</string>
+    <string name="content_description_access_forever_icon">Піктограма доступу назавжди</string>
+    <string name="content_description_flash_icon">Піктограма ліхтаря</string>
+    <string name="content_description_undo_icon">Піктограма відміни</string>
+    <string name="content_description_skip_next_alarm_icon">Піктограма пропуску наступного будильника</string>
+    <string name="content_description_label_icon">Піктограма назви</string>
+    <string name="content_description_sound_icon">Піктограма дзвінка</string>
+    <string name="content_description_active_system_setting">Піктограма активних налаштувань системи</string>
+
+    <string name="content_description_wake_up_catchphrase_image">Картина із зображенням доброзичливого стікмена, що лежить у ліжку після пробудження.</string>
+    <string name="content_description_get_up_catchphrase_image">Картина із зображенням усміхненого стікмена, яка йде з телефоном, що дзвонить.</string>
+    <string name="content_description_rise_up_catchphrase_image">Зображення, на якому зображений щасливий стікмена після того, як він відсканував QR-код своїм телефоном.</string>
+    <string name="content_description_qralarm_pro_image">Зображення іконки програми QRAlarm PRO</string>
+    <string name="content_description_five_stars_image">Зображення п'яти золотих зірок</string>
+</resources>
