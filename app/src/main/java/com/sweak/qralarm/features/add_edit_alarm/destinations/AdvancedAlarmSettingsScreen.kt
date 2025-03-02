@@ -96,9 +96,8 @@ private fun AdvancedAlarmSettingsScreenContent(
             )
         }
     ) { paddingValues ->
-        Column(
+        Box(
             modifier = Modifier
-                .padding(paddingValues)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .background(
@@ -110,140 +109,192 @@ private fun AdvancedAlarmSettingsScreenContent(
                     )
                 )
         ) {
-            QRAlarmCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = MaterialTheme.space.medium,
-                        vertical = MaterialTheme.space.mediumLarge
-                    )
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clickable {
-                            onEvent(
-                                AdvancedAlarmSettingsScreenUserEvent
-                                    .ChooseGentleWakeUpDurationDialogVisible(isVisible = true)
-                            )
-                        }
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(all = MaterialTheme.space.medium)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(end = MaterialTheme.space.smallMedium)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.gentle_wake_up),
-                                style = MaterialTheme.typography.titleLarge,
-                                modifier = Modifier
-                                    .padding(bottom = MaterialTheme.space.xSmall)
-                            )
-
-                            Text(
-                                text = stringResource(R.string.gentle_wake_up_description),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = getSecondsDurationString(
-                                    state.gentleWakeupDurationInSeconds
-                                ),
-                                style = MaterialTheme.typography.labelMedium,
-                                modifier = Modifier.padding(end = MaterialTheme.space.small)
-                            )
-
-                            Icon(
-                                imageVector = QRAlarmIcons.ForwardArrow,
-                                contentDescription = stringResource(
-                                    R.string.content_description_forward_arrow_icon
-                                ),
-                                modifier = Modifier.size(size = MaterialTheme.space.medium)
-                            )
-                        }
-                    }
-                }
-
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
-                )
-
-                Box(
-                    modifier = Modifier
-                        .clickable {
-                            onEvent(
-                                AdvancedAlarmSettingsScreenUserEvent
-                                    .ChooseTemporaryMuteDurationDialogVisible(isVisible = true)
-                            )
-                        }
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(all = MaterialTheme.space.medium)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(end = MaterialTheme.space.smallMedium)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.temporary_mute),
-                                style = MaterialTheme.typography.titleLarge,
-                                modifier = Modifier
-                                    .padding(bottom = MaterialTheme.space.xSmall)
-                            )
-
-                            Text(
-                                text = stringResource(R.string.temporary_mute_description),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = getSecondsDurationString(
-                                    state.temporaryMuteDurationInSeconds
-                                ),
-                                style = MaterialTheme.typography.labelMedium,
-                                modifier = Modifier.padding(end = MaterialTheme.space.small)
-                            )
-
-                            Icon(
-                                imageVector = QRAlarmIcons.ForwardArrow,
-                                contentDescription = stringResource(
-                                    R.string.content_description_forward_arrow_icon
-                                ),
-                                modifier = Modifier.size(size = MaterialTheme.space.medium)
-                            )
-                        }
-                    }
-                }
-            }
-
-            if (state.isCodeEnabled) {
+            Column(modifier = Modifier.padding(paddingValues)) {
                 QRAlarmCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = MaterialTheme.space.medium,
-                            end = MaterialTheme.space.medium,
-                            bottom = MaterialTheme.space.mediumLarge
+                            horizontal = MaterialTheme.space.medium,
+                            vertical = MaterialTheme.space.mediumLarge
                         )
                 ) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Box(
+                        modifier = Modifier
+                            .clickable {
+                                onEvent(
+                                    AdvancedAlarmSettingsScreenUserEvent
+                                        .ChooseGentleWakeUpDurationDialogVisible(isVisible = true)
+                                )
+                            }
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(all = MaterialTheme.space.medium)
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(end = MaterialTheme.space.smallMedium)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.gentle_wake_up),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    modifier = Modifier
+                                        .padding(bottom = MaterialTheme.space.xSmall)
+                                )
+
+                                Text(
+                                    text = stringResource(R.string.gentle_wake_up_description),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = getSecondsDurationString(
+                                        state.gentleWakeupDurationInSeconds
+                                    ),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    modifier = Modifier.padding(end = MaterialTheme.space.small)
+                                )
+
+                                Icon(
+                                    imageVector = QRAlarmIcons.ForwardArrow,
+                                    contentDescription = stringResource(
+                                        R.string.content_description_forward_arrow_icon
+                                    ),
+                                    modifier = Modifier.size(size = MaterialTheme.space.medium)
+                                )
+                            }
+                        }
+                    }
+
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .clickable {
+                                onEvent(
+                                    AdvancedAlarmSettingsScreenUserEvent
+                                        .ChooseTemporaryMuteDurationDialogVisible(isVisible = true)
+                                )
+                            }
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(all = MaterialTheme.space.medium)
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(end = MaterialTheme.space.smallMedium)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.temporary_mute),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    modifier = Modifier
+                                        .padding(bottom = MaterialTheme.space.xSmall)
+                                )
+
+                                Text(
+                                    text = stringResource(R.string.temporary_mute_description),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = getSecondsDurationString(
+                                        state.temporaryMuteDurationInSeconds
+                                    ),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    modifier = Modifier.padding(end = MaterialTheme.space.small)
+                                )
+
+                                Icon(
+                                    imageVector = QRAlarmIcons.ForwardArrow,
+                                    contentDescription = stringResource(
+                                        R.string.content_description_forward_arrow_icon
+                                    ),
+                                    modifier = Modifier.size(size = MaterialTheme.space.medium)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                if (state.isCodeEnabled) {
+                    QRAlarmCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = MaterialTheme.space.medium,
+                                end = MaterialTheme.space.medium,
+                                bottom = MaterialTheme.space.mediumLarge
+                            )
+                    ) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(all = MaterialTheme.space.medium)
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(
+                                            end = MaterialTheme.space.smallMedium
+                                        )
+                                ) {
+                                    Text(
+                                        text = stringResource(
+                                            R.string.open_code_link
+                                        ),
+                                        style = MaterialTheme.typography.titleLarge,
+                                        modifier = Modifier
+                                            .padding(
+                                                bottom = MaterialTheme.space.xSmall
+                                            )
+                                    )
+
+                                    Text(
+                                        text = stringResource(
+                                            R.string.open_code_link_description
+                                        ),
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+
+                                QRAlarmSwitch(
+                                    checked = state.isOpenCodeLinkEnabled,
+                                    onCheckedChange = {
+                                        onEvent(
+                                            AdvancedAlarmSettingsScreenUserEvent
+                                                .OpenCodeLinkEnabledChanged(isEnabled = it)
+                                        )
+                                    }
+                                )
+                            }
+                        }
+
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                        )
+
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically,
@@ -259,9 +310,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                                     )
                             ) {
                                 Text(
-                                    text = stringResource(
-                                        R.string.open_code_link
-                                    ),
+                                    text = stringResource(R.string._1_hour_lock),
                                     style = MaterialTheme.typography.titleLarge,
                                     modifier = Modifier
                                         .padding(
@@ -271,72 +320,23 @@ private fun AdvancedAlarmSettingsScreenContent(
 
                                 Text(
                                     text = stringResource(
-                                        R.string.open_code_link_description
+                                        R.string._1_hour_lock_description
                                     ),
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                             }
 
                             QRAlarmSwitch(
-                                checked = state.isOpenCodeLinkEnabled,
+                                checked = state.isOneHourLockEnabled,
                                 onCheckedChange = {
                                     onEvent(
-                                        AdvancedAlarmSettingsScreenUserEvent.OpenCodeLinkEnabledChanged(
+                                        AdvancedAlarmSettingsScreenUserEvent.OneHourLockEnabledChanged(
                                             isEnabled = it
                                         )
                                     )
                                 }
                             )
                         }
-                    }
-
-                    HorizontalDivider(
-                        thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
-                    )
-
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(all = MaterialTheme.space.medium)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(
-                                    end = MaterialTheme.space.smallMedium
-                                )
-                        ) {
-                            Text(
-                                text = stringResource(R.string._1_hour_lock),
-                                style = MaterialTheme.typography.titleLarge,
-                                modifier = Modifier
-                                    .padding(
-                                        bottom = MaterialTheme.space.xSmall
-                                    )
-                            )
-
-                            Text(
-                                text = stringResource(
-                                    R.string._1_hour_lock_description
-                                ),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-
-                        QRAlarmSwitch(
-                            checked = state.isOneHourLockEnabled,
-                            onCheckedChange = {
-                                onEvent(
-                                    AdvancedAlarmSettingsScreenUserEvent.OneHourLockEnabledChanged(
-                                        isEnabled = it
-                                    )
-                                )
-                            }
-                        )
                     }
                 }
             }

@@ -3,6 +3,7 @@ package com.sweak.qralarm.features.add_edit_alarm.destinations
 import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -87,9 +88,8 @@ fun SpecialAlarmSettingsScreenContent(
             )
         }
     ) { paddingValues ->
-        Column(
+        Box(
             modifier = Modifier
-                .padding(paddingValues)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .background(
@@ -101,59 +101,107 @@ fun SpecialAlarmSettingsScreenContent(
                     )
                 )
         ) {
-            QRAlarmCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = MaterialTheme.space.medium,
-                        vertical = MaterialTheme.space.mediumLarge
-                    )
-            ) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Column {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = MaterialTheme.space.medium)
-                        ) {
-                            Column(
+            Column(modifier = Modifier.padding(paddingValues)) {
+                QRAlarmCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = MaterialTheme.space.medium,
+                            vertical = MaterialTheme.space.mediumLarge
+                        )
+                ) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        Column {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = MaterialTheme.space.smallMedium)
+                                    .fillMaxWidth()
+                                    .padding(all = MaterialTheme.space.medium)
                             ) {
-                                Text(
-                                    text = stringResource(R.string.do_not_leave_alarm),
-                                    style = MaterialTheme.typography.titleLarge,
+                                Column(
                                     modifier = Modifier
-                                        .padding(bottom = MaterialTheme.space.xSmall)
-                                )
+                                        .weight(1f)
+                                        .padding(end = MaterialTheme.space.smallMedium)
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.do_not_leave_alarm),
+                                        style = MaterialTheme.typography.titleLarge,
+                                        modifier = Modifier
+                                            .padding(bottom = MaterialTheme.space.xSmall)
+                                    )
 
-                                Text(
-                                    text = stringResource(
-                                        R.string.do_not_leave_alarm_description
-                                    ),
-                                    style = MaterialTheme.typography.bodyMedium
+                                    Text(
+                                        text = stringResource(
+                                            R.string.do_not_leave_alarm_description
+                                        ),
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+
+                                QRAlarmSwitch(
+                                    checked = false,
+                                    onCheckedChange = {
+                                        onEvent(
+                                            SpecialAlarmSettingsScreenUserEvent
+                                                .TryUseSpecialAlarmSettings
+                                        )
+                                    }
                                 )
                             }
 
-                            QRAlarmSwitch(
-                                checked = false,
-                                onCheckedChange = {
-                                    onEvent(
-                                        SpecialAlarmSettingsScreenUserEvent
-                                            .TryUseSpecialAlarmSettings
-                                    )
-                                }
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                             )
                         }
 
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
-                        )
+                        Column {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(all = MaterialTheme.space.medium)
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(end = MaterialTheme.space.smallMedium)
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.power_off_guard),
+                                        style = MaterialTheme.typography.titleLarge,
+                                        modifier = Modifier
+                                            .padding(bottom = MaterialTheme.space.xSmall)
+                                    )
+
+                                    Text(
+                                        text = stringResource(
+                                            R.string.power_off_guard_description
+                                        ),
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+
+                                QRAlarmSwitch(
+                                    checked = false,
+                                    onCheckedChange = {
+                                        onEvent(
+                                            SpecialAlarmSettingsScreenUserEvent
+                                                .TryUseSpecialAlarmSettings
+                                        )
+                                    }
+                                )
+                            }
+
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                            )
+                        }
                     }
 
                     Column {
@@ -170,7 +218,7 @@ fun SpecialAlarmSettingsScreenContent(
                                     .padding(end = MaterialTheme.space.smallMedium)
                             ) {
                                 Text(
-                                    text = stringResource(R.string.power_off_guard),
+                                    text = stringResource(R.string.block_volume_down),
                                     style = MaterialTheme.typography.titleLarge,
                                     modifier = Modifier
                                         .padding(bottom = MaterialTheme.space.xSmall)
@@ -178,7 +226,7 @@ fun SpecialAlarmSettingsScreenContent(
 
                                 Text(
                                     text = stringResource(
-                                        R.string.power_off_guard_description
+                                        R.string.block_volume_down_description
                                     ),
                                     style = MaterialTheme.typography.bodyMedium
                                 )
@@ -194,52 +242,6 @@ fun SpecialAlarmSettingsScreenContent(
                                 }
                             )
                         }
-
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
-                        )
-                    }
-                }
-
-                Column {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(all = MaterialTheme.space.medium)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(end = MaterialTheme.space.smallMedium)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.block_volume_down),
-                                style = MaterialTheme.typography.titleLarge,
-                                modifier = Modifier
-                                    .padding(bottom = MaterialTheme.space.xSmall)
-                            )
-
-                            Text(
-                                text = stringResource(
-                                    R.string.block_volume_down_description
-                                ),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-
-                        QRAlarmSwitch(
-                            checked = false,
-                            onCheckedChange = {
-                                onEvent(
-                                    SpecialAlarmSettingsScreenUserEvent
-                                        .TryUseSpecialAlarmSettings
-                                )
-                            }
-                        )
                     }
                 }
             }
