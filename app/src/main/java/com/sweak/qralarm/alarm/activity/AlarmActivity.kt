@@ -2,12 +2,12 @@ package com.sweak.qralarm.alarm.activity
 
 import android.app.KeyguardManager
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
@@ -88,12 +88,17 @@ class AlarmActivity : FragmentActivity() {
                                 Build.VERSION.SDK_INT < Build.VERSION_CODES.O
                             ) {
                                 stopService(Intent(this@AlarmActivity, AlarmService::class.java))
-                                finish()
 
-                                if (isLaunchedFromMainActivity) {
-                                    startActivity(
-                                        Intent(this@AlarmActivity, MainActivity::class.java)
-                                    )
+                                lifecycleScope.launch {
+                                    navController.popBackStack()
+                                    delay(1500)
+                                    finish()
+
+                                    if (isLaunchedFromMainActivity) {
+                                        startActivity(
+                                            Intent(this@AlarmActivity, MainActivity::class.java)
+                                        )
+                                    }
                                 }
                             } else {
                                 var uri = uriStringToTryToOpen
@@ -126,7 +131,7 @@ class AlarmActivity : FragmentActivity() {
 
                                                 try {
                                                     startActivity(
-                                                        Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                                                        Intent(Intent.ACTION_VIEW, uri.toUri())
                                                     )
                                                 } catch (exception: Exception) {
                                                     if (isLaunchedFromMainActivity) {
@@ -152,7 +157,7 @@ class AlarmActivity : FragmentActivity() {
                                     finish()
 
                                     try {
-                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)))
+                                        startActivity(Intent(Intent.ACTION_VIEW, uri.toUri()))
                                     } catch (exception: Exception) {
                                         if (isLaunchedFromMainActivity) {
                                             startActivity(

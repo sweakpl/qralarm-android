@@ -49,7 +49,9 @@ class AlarmViewModel @Inject constructor(
                             isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed,
                             alarmLabel = it.alarmLabel,
                             snoozedAlarmTimeInMillis = it.snoozeConfig.nextSnoozedAlarmTimeInMillis,
-                            isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0
+                            isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0,
+                            isInteractionEnabled =
+                                it.isAlarmRunning || (it.snoozeConfig.isAlarmSnoozed && !isTransient)
                         )
                     }
                 }
