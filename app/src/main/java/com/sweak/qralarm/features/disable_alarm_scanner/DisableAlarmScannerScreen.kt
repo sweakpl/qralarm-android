@@ -42,8 +42,8 @@ fun DisableAlarmScannerScreenContent(
     onEvent: (DisableAlarmScannerScreenUserEvent) -> Unit
 ) {
     QRAlarmCodeScanner(
-        decodeCallback = { result ->
-            onEvent(DisableAlarmScannerScreenUserEvent.CodeResultScanned(result = result))
+        decodeCallback = { codeValue ->
+            onEvent(DisableAlarmScannerScreenUserEvent.CodeResultScanned(codeResult = codeValue))
         },
         closeCallback = {
             onEvent(DisableAlarmScannerScreenUserEvent.OnCloseClicked)

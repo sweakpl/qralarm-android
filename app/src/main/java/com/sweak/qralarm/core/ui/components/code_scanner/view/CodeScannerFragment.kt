@@ -1,6 +1,5 @@
 package com.sweak.qralarm.core.ui.components.code_scanner.view
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,16 +8,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import com.google.zxing.Result
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeAnalyzer
 import com.sweak.qralarm.databinding.FragmentCodeScannerBinding
-import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.AbstractCodeAnalyzer
-import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.LegacyCodeAnalyzer
 
-class CodeScannerFragment : Fragment(), AbstractCodeAnalyzer.BarcodeDetector {
+class CodeScannerFragment : Fragment(), CodeAnalyzer.CodeDetector {
 
-    var decodeCallback: (result: Result) -> Unit = { /* no-op */ }
+    var decodeCallback: (codeValue: String) -> Unit = { /* no-op */ }
     var closeCallback: () -> Unit = { /* no-op */ }
 
     private var _binding: FragmentCodeScannerBinding? = null
@@ -52,14 +48,7 @@ class CodeScannerFragment : Fragment(), AbstractCodeAnalyzer.BarcodeDetector {
 
     private fun configureCamera() {
         cameraConfig = CameraConfig(requireContext()).apply {
-            val analyzer: AbstractCodeAnalyzer =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    CodeAnalyzer(this@CodeScannerFragment)
-                } else {
-                    LegacyCodeAnalyzer(this@CodeScannerFragment)
-                }
-
-            setAnalyzer(analyzer)
+            setAnalyzer(CodeAnalyzer(this@CodeScannerFragment))
             startCamera(
                 lifecycleOwner = this@CodeScannerFragment as LifecycleOwner,
                 previewView = viewBinding.cameraXScannerPreviewView
@@ -98,11 +87,11 @@ class CodeScannerFragment : Fragment(), AbstractCodeAnalyzer.BarcodeDetector {
         }
     }
 
-    override fun onBarcodeFound(result: Result) {
-        decodeCallback(result)
+    override fun onCodeFound(codeValue: String) {
+        decodeCallback(codeValue)
     }
 
-    override fun onError(msg: String) {
-        Log.e("CodeScannerFragment", msg)
+    override fun onError(exception: Exception) {
+        Log.e("CodeScannerFragment", exception.toString())
     }
 }

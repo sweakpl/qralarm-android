@@ -42,8 +42,8 @@ private fun CustomCodeScannerScreenContent(
     onEvent: (CustomCodeScannerScreenUserEvent) -> Unit
 ) {
     QRAlarmCodeScanner(
-        decodeCallback = { result ->
-            onEvent(CustomCodeScannerScreenUserEvent.CodeResultScanned(result = result))
+        decodeCallback = { codeValue ->
+            onEvent(CustomCodeScannerScreenUserEvent.CodeResultScanned(codeResult = codeValue))
         },
         closeCallback = {
             onEvent(CustomCodeScannerScreenUserEvent.OnCloseClicked)
