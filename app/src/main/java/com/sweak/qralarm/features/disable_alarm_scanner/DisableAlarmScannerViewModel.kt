@@ -51,7 +51,7 @@ class DisableAlarmScannerViewModel @Inject constructor(
                     shouldScan = false
 
                     viewModelScope.launch {
-                        val scannedCodeText = event.result.text
+                        val scannedCodeText = event.codeResult
 
                         if (alarm.assignedCode == null) {
                             alarmsRepository.setAlarmSnoozed(

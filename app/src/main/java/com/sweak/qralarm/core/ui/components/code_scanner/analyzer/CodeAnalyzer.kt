@@ -1,37 +1,72 @@
 package com.sweak.qralarm.core.ui.components.code_scanner.analyzer
 
+import androidx.camera.core.ExperimentalGetImage
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import com.sweak.qralarm.core.ui.components.code_scanner.view.ScanOverlay
-import kotlin.math.roundToInt
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.common.InputImage
 
 class CodeAnalyzer(
-    barcodeDetector: BarcodeDetector
-) : AbstractCodeAnalyzer(barcodeDetector) {
+    private val codeDetector: CodeDetector
+) : ImageAnalysis.Analyzer {
 
-    override fun analyze(image: ImageProxy) {
-        if (image.planes.isEmpty()) {
-            image.close()
+    interface CodeDetector {
+        fun onCodeFound(codeValue: String)
+        fun onError(exception: Exception)
+    }
+
+    private val barcodeScanner by lazy {
+        val optionsBuilder = BarcodeScannerOptions.Builder().enableAllPotentialBarcodes()
+
+        try {
+            BarcodeScanning.getClient(optionsBuilder.build())
+        } catch (e: Exception) {
+            codeDetector.onError(e)
+            null
+        }
+    }
+
+    @Volatile
+    private var failureOccurred = false
+    private var failureTimestamp = 0L
+
+    @ExperimentalGetImage
+    override fun analyze(imageProxy: ImageProxy) {
+        if (imageProxy.image == null) return
+
+        if (failureOccurred && System.currentTimeMillis() - failureTimestamp < 1000L) {
+            imageProxy.close()
             return
         }
 
-        image.use { img ->
-            val plane = img.planes[0]
-            val imageData = plane.buffer.toByteArray()
+        failureOccurred = false
 
-            val size = img.width.coerceAtMost(img.height) * ScanOverlay.RATIO
-
-            val left = (img.width - size) / 2f
-            val top = (img.height - size) / 2f
-
-            analyse(
-                yuvData = imageData,
-                dataWidth = plane.rowStride,
-                dataHeight = img.height,
-                left = left.roundToInt(),
-                top = top.roundToInt(),
-                width = size.roundToInt(),
-                height = size.roundToInt()
+        barcodeScanner?.let { scanner ->
+            scanner.process(
+                InputImage.fromMediaImage(
+                    imageProxy.image!!,
+                    imageProxy.imageInfo.rotationDegrees
+                )
             )
+                .addOnSuccessListener { codes ->
+                    codes.firstNotNullOfOrNull { it }?.let {
+                        it.rawValue?.let { codeValue ->
+                            if (codeValue.isNotEmpty()) {
+                                codeDetector.onCodeFound(codeValue)
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    failureOccurred = true
+                    failureTimestamp = System.currentTimeMillis()
+
+                    codeDetector.onError(it)
+                }
+                .addOnCompleteListener {
+                    imageProxy.close()
+                }
         }
     }
 }
