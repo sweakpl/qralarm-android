@@ -21,21 +21,21 @@ import com.sweak.qralarm.core.designsystem.theme.space
 @Composable
 fun QRAlarmProFeaturesList(modifier: Modifier = Modifier) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.large),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.mediumLarge),
         modifier = modifier
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                imageVector = QRAlarmIcons.SpecialAlarmSettings,
+                imageVector = QRAlarmIcons.DoNotLeaveAlarm,
                 contentDescription = stringResource(
-                    R.string.content_description_special_alarm_settings_icon
+                    R.string.content_description_do_not_leave_alarm_icon
                 ),
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(size = MaterialTheme.space.large)
             )
 
             Text(
-                text = stringResource(R.string.special_alarm_settings),
+                text = stringResource(R.string.do_not_leave_alarm),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(start = MaterialTheme.space.mediumLarge)
@@ -44,14 +44,33 @@ fun QRAlarmProFeaturesList(modifier: Modifier = Modifier) {
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                imageVector = QRAlarmIcons.EarlyAccess,
-                contentDescription = stringResource(R.string.content_description_early_access_icon),
+                imageVector = QRAlarmIcons.PowerOffGuard,
+                contentDescription =
+                    stringResource(R.string.content_description_power_off_guard_icon),
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(size = MaterialTheme.space.large)
             )
 
             Text(
-                text = stringResource(R.string.early_access_to_new_features),
+                text = stringResource(R.string.power_off_guard),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.padding(start = MaterialTheme.space.mediumLarge)
+            )
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = QRAlarmIcons.Sound,
+                contentDescription = stringResource(
+                    R.string.content_description_sound_icon
+                ),
+                tint = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.size(size = MaterialTheme.space.large)
+            )
+
+            Text(
+                text = stringResource(R.string.block_volume_down),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(start = MaterialTheme.space.mediumLarge)

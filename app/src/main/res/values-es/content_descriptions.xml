@@ -22,8 +22,8 @@
     <string name="content_description_app_settings_icon">Icono de configuración de la aplicación</string>
     <string name="content_description_special_app_settings_icon">Icono de configuración de aplicaciones especiales</string>
     <string name="content_description_star_icon">Icono de estrella</string>
-    <string name="content_description_special_alarm_settings_icon">Icono de configuración de alarma especial</string>
-    <string name="content_description_early_access_icon">Icono de acceso anticipado</string>
+    <string name="content_description_do_not_leave_alarm_icon">No deje el icono de funcionalidad de alarma</string>
+    <string name="content_description_power_off_guard_icon">Icono de la función de protección de apagado</string>
     <string name="content_description_access_forever_icon">Icono de acceso para siempre</string>
     <string name="content_description_flash_icon">Icono de Flash</string>
     <string name="content_description_undo_icon">Icono de deshacer cambios</string>

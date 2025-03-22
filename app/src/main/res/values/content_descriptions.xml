@@ -22,8 +22,8 @@
     <string name="content_description_app_settings_icon">Application settings icon</string>
     <string name="content_description_special_app_settings_icon">Special app settings icon</string>
     <string name="content_description_star_icon">Star icon</string>
-    <string name="content_description_special_alarm_settings_icon">Special alarm settings icon</string>
-    <string name="content_description_early_access_icon">Early access icon</string>
+    <string name="content_description_do_not_leave_alarm_icon">Do not leave alarm functionality icon</string>
+    <string name="content_description_power_off_guard_icon">Power-off guard functionality icon</string>
     <string name="content_description_access_forever_icon">Access forever icon</string>
     <string name="content_description_flash_icon">Flash icon</string>
     <string name="content_description_undo_icon">Undo changes icon</string>

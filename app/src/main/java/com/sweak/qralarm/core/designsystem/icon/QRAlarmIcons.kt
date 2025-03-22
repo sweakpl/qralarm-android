@@ -6,7 +6,6 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.outlined.Label
 import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
-import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Alarm
 import androidx.compose.material.icons.outlined.AllInclusive
@@ -20,16 +19,17 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Fullscreen
+import androidx.compose.material.icons.outlined.GppGood
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.PhonelinkLock
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.SecurityUpdateGood
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Stop
-import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -62,8 +62,8 @@ object QRAlarmIcons {
     val AppSettings = Icons.Outlined.AppSettingsAlt
     val SpecialAppSettings = Icons.Outlined.AppShortcut
     val Star = Icons.Outlined.Star
-    val SpecialAlarmSettings = Icons.Outlined.Tune
-    val EarlyAccess = Icons.Default.Bolt
+    val DoNotLeaveAlarm = Icons.Outlined.PhonelinkLock
+    val PowerOffGuard = Icons.Outlined.GppGood
     val AccessForever = Icons.Outlined.AllInclusive
     val Undo = Icons.AutoMirrored.Outlined.Undo
     val Label = Icons.AutoMirrored.Outlined.Label

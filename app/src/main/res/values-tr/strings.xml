@@ -141,8 +141,6 @@
     <string name="issue_opening_the_page">Sayfa açılırken bir sorun oluştu…</string>
     <string name="optimization_dialog_description">Optimizasyon rehberimizi inceleyerek QRAlarm\'ın sisteminizde en iyi şekilde çalışmasını sağlayın ve rahat uyuyun!</string>
     <string name="qralarm_pro" translatable="false">QRAlarm PRO</string>
-    <string name="special_alarm_settings">Özel alarm ayarları</string>
-    <string name="early_access_to_new_features">Yeni özelliklere erken erişim</string>
     <string name="buy_once_enjoy_forever">Bir kez satın al - sonsuza dek keyfini çıkar!</string>
     <string name="get_it_now">Hemen alın!</string>
     <string name="not_now">Şimdi değil</string>

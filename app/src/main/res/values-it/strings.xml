@@ -143,8 +143,6 @@
     <string name="click_to_go_to_app_settings">Fare clic per accedere alle impostazioni dell\'applicazione QRAlarm.</string>
     <string name="issue_opening_the_page">C\'è stato un problema nell\'aprire la pagina…</string>
     <string name="optimization_dialog_description">Per far sì che QRAlarm funzioni al meglio nel tuo sistema, consulta la nostra guida all\'ottimizzazione e dormi sonni tranquilli!</string>
-    <string name="special_alarm_settings">Impostazioni di allarme speciali</string>
-    <string name="early_access_to_new_features">Accesso anticipato alle nuove funzionalità</string>
     <string name="buy_once_enjoy_forever">Acquista una volta, goditi per sempre!</string>
     <string name="get_it_now">Acquistalo subito!</string>
     <string name="not_now">Non adesso</string>

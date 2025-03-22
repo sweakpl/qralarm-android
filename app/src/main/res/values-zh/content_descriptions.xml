@@ -22,8 +22,8 @@
     <string name="content_description_app_settings_icon">应用程序设置图标</string>
     <string name="content_description_special_app_settings_icon">特殊程序设置图标</string>
     <string name="content_description_star_icon">星星图标</string>
-    <string name="content_description_special_alarm_settings_icon">特殊闹钟设置图标</string>
-    <string name="content_description_early_access_icon">预览体验功能图标</string>
+    <string name="content_description_do_not_leave_alarm_icon">不要离开警报功能图标</string>
+    <string name="content_description_power_off_guard_icon">断电保护功能图标</string>
     <string name="content_description_access_forever_icon">访问永久图标</string>
     <string name="content_description_flash_icon">闪烁图标</string>
     <string name="content_description_undo_icon">撤销图标</string>
