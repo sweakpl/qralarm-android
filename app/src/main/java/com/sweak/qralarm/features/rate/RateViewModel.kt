@@ -29,10 +29,7 @@ class RateViewModel @Inject constructor(
                 val nextRatePromptTimeInMillis =
                     userDataRepository.nextRatePromptTimeInMillis.first()
 
-                currentState.copy(
-                    isNeverShowAgainChecked =
-                    nextRatePromptTimeInMillis == null || nextRatePromptTimeInMillis == 0L
-                )
+                currentState.copy(isNeverShowAgainChecked = nextRatePromptTimeInMillis == 0L)
             }
         }
     }
@@ -45,19 +42,19 @@ class RateViewModel @Inject constructor(
                 }
             }
             is RateScreenUserEvent.RateMeClicked -> viewModelScope.launch {
-                userDataRepository.setNextRatePromptTimeInMillis(promptTime = null)
+                userDataRepository.setNextRatePromptTimeInMillis(promptTime = 0L)
                 backendEventsChannel.send(RateScreenBackendEvent.RateMeClickProcessed)
             }
             is RateScreenUserEvent.SomethingWrongClicked -> viewModelScope.launch {
-                userDataRepository.setNextRatePromptTimeInMillis(promptTime = null)
+                userDataRepository.setNextRatePromptTimeInMillis(promptTime = 0L)
                 backendEventsChannel.send(RateScreenBackendEvent.SomethingWrongClickProcessed)
             }
             is RateScreenUserEvent.NotNowClicked -> viewModelScope.launch {
                 userDataRepository.setNextRatePromptTimeInMillis(
                     promptTime =  if (!state.value.isNeverShowAgainChecked) {
                         ZonedDateTime.now().plusMonths(1).toInstant().toEpochMilli()
-                    } else{
-                        null
+                    } else {
+                        0L
                     }
                 )
 
