@@ -77,7 +77,7 @@
     <string name="min">хв</string>
     <string name="sec">сек</string>
     <string name="ringtone_successfully_uploaded">Ваш власний дзвінок успішно завантажено!</string>
-    <string name="ringtone_upload_unsuccessful">Власний дзвінок не було надіслано...</string>
+    <string name="ringtone_upload_unsuccessful">Власний дзвінок не було надіслано…</string>
     <string name="code_assigned">Код присвоєно!</string>
     <string name="current_code">Поточний код: %1$s</string>
     <string name="camera_permission_required">Потрібен дозвіл на використання камери</string>
@@ -145,12 +145,10 @@
     <string name="work_in_background_limited_click_to_enable">Фонова робота обмежена. Натисніть, щоб увімкнути.</string>
     <string name="work_in_background_enabled">Фонова робота триває. Молодці!</string>
     <string name="setting_unavailable_refer_to_the_next_step">Налаштування недоступне - перейдіть до наступних кроків.</string>
-    <string name="select_manufacturer_and_follow_instructions">Виберіть виробника телефону та дотримуйтесь інструкцій, які з'являться на екрані.</string>
+    <string name="select_manufacturer_and_follow_instructions">Виберіть виробника телефону та дотримуйтесь інструкцій, які з\'являться на екрані.</string>
     <string name="click_to_go_to_app_settings">Натисніть, щоб отримати доступ до налаштувань програми QRAlarm.</string>
-    <string name="issue_opening_the_page">Виникла проблема при відкритті сторінки...</string>
+    <string name="issue_opening_the_page">Виникла проблема при відкритті сторінки…</string>
     <string name="optimization_dialog_description">Зробіть так, щоб QRAlarm працював якнайкраще для вашої системи, переглянувши наш посібник з оптимізації, і спіть спокійно!</string>
-    <string name="special_alarm_settings">Спеціальні налаштування будильника</string>
-    <string name="early_access_to_new_features">Ранній доступ до нових функцій</string>
     <string name="buy_once_enjoy_forever">Купуйте один раз - насолоджуйтеся назавжди!</string>
     <string name="get_it_now">Получіть зараз!</string>
     <string name="not_now">Не зараз</string>
@@ -162,7 +160,7 @@
     <string name="alarm_didnt_ring">Будильник не пролунав? ⏰</string>
     <string name="alarm_didnt_ring_description">Ви пропустили останній будильник? Якщо так, переконайтеся, що ви уважно дотримуєтесь нашого Посібника з оптимізації, який розроблено для того, щоб QRAlarm найкраще працював у вашій системі!</string>
     <string name="optimize_now">Оптимізуйте зараз!</string>
-    <string name="there_was_an_issue_playing_ringtone">Виникла проблема з відтворенням дзвінка...</string>
+    <string name="there_was_an_issue_playing_ringtone">Виникла проблема з відтворенням дзвінка…</string>
     <string name="skip_next_alarm">Пропустити наступний будильник</string>
     <string name="undo_skipping_next_alarm">Відмінити пропуск наступного будильника</string>
     <string name="next_alarm_date">Наступний: %1$s</string>
