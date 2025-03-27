@@ -1,0 +1,2 @@
+* UI and performance improvements,
+* Added Ukrainian language.
