@@ -33,6 +33,9 @@ class DisableAlarmScannerViewModel @Inject constructor(
     private val backendEventsChannel = Channel<DisableAlarmScannerScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
+    private var lastWrongCodeWarningMillis = 0L
+    private val wrongCodeWarningDelayMillis = 3000L
+
     init {
         viewModelScope.launch {
             alarmsRepository.getAlarm(alarmId = idOfAlarm)?.let {
@@ -96,6 +99,15 @@ class DisableAlarmScannerViewModel @Inject constructor(
                                     )
                                 )
                             } else {
+                                val currentTimeInMillis = System.currentTimeMillis()
+
+                                if (currentTimeInMillis - lastWrongCodeWarningMillis > wrongCodeWarningDelayMillis) {
+                                    backendEventsChannel.send(
+                                        DisableAlarmScannerScreenBackendEvent.IncorrectCodeScanned
+                                    )
+                                    lastWrongCodeWarningMillis = currentTimeInMillis
+                                }
+
                                 shouldScan = true
                             }
                         }

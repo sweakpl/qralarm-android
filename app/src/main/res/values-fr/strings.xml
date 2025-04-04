@@ -180,4 +180,5 @@
     <string name="lock_alarm_to_this_volume">Réglez l\'alarme sur ce volume lorsqu\'elle sonne :</string>
     <string name="using_system_alarm_volume">Utilisation du volume d\'alarme du système</string>
     <string name="advanced_settings">Paramètres avancés</string>
+    <string name="incorrect_code_scanned">Code erroné scanné !</string>
 </resources>

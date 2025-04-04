@@ -181,4 +181,5 @@
     <string name="lock_alarm_to_this_volume">Alarm çaldığında bu ses seviyesine ayarla:</string>
     <string name="using_system_alarm_volume">Sistem alarm ses seviyesi kullanılıyor</string>
     <string name="advanced_settings">Gelişmiş ayarlar</string>
+    <string name="incorrect_code_scanned">Yanlış kod tarandı!</string>
 </resources>
