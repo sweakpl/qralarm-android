@@ -32,9 +32,9 @@
     <string name="content_description_sound_icon">Ton-Symbol</string>
     <string name="content_description_active_system_setting">Symbol für die aktive Systemeinstellung</string>
 
-    <string name="content_description_wake_up_catchphrase_image">Bild, das einen freundlichen Strichmännchen zeigt, der aufgewacht im Bett liegt.</string>
-    <string name="content_description_get_up_catchphrase_image">Bild, das einen lächelnden Strichmännchen zeigt, während sein Telefon klingelt.</string>
-    <string name="content_description_rise_up_catchphrase_image">Bild, das einen glücklichen Strichmännchen zeigt, nachdem er den QR-Code mit seinem Telefon gescannt hat.</string>
+    <string name="content_description_wake_up_catchphrase_image">Bild, das ein freundliches Strichmännchen zeigt, der aufgewacht im Bett liegt.</string>
+    <string name="content_description_get_up_catchphrase_image">Bild, das ein lächelndes Strichmännchen zeigt, während sein Telefon klingelt.</string>
+    <string name="content_description_rise_up_catchphrase_image">Bild, das ein glückliches Strichmännchen zeigt, nachdem er den QR-Code mit seinem Telefon gescannt hat.</string>
     <string name="content_description_qralarm_pro_image">QRAlarm PRO App-Symbolbild</string>
     <string name="content_description_five_stars_image">Bild mit fünf goldenen Sternen</string>
 </resources>
