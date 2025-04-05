@@ -31,6 +31,7 @@
     <string name="content_description_label_icon">Beschriftungssymbol</string>
     <string name="content_description_sound_icon">Ton-Symbol</string>
     <string name="content_description_active_system_setting">Symbol für die aktive Systemeinstellung</string>
+    <string name="content_description_copy_icon">Symbol kopieren</string>
 
     <string name="content_description_wake_up_catchphrase_image">Bild, das einen freundlichen Strichmännchen zeigt, der aufgewacht im Bett liegt.</string>
     <string name="content_description_get_up_catchphrase_image">Bild, das einen lächelnden Strichmännchen zeigt, während sein Telefon klingelt.</string>

@@ -187,4 +187,5 @@
     <string name="using_system_alarm_volume">Використання гучності сигналу будильника</string>
     <string name="advanced_settings">Розширені налаштування</string>
     <string name="incorrect_code_scanned">Відскановано невірний код!</string>
+    <string name="copy_alarm">Тривога копіювання</string>
 </resources>

@@ -31,6 +31,7 @@
     <string name="content_description_label_icon">标签图标</string>
     <string name="content_description_sound_icon">声音图标</string>
     <string name="content_description_active_system_setting">活动系统设置图标</string>
+    <string name="content_description_copy_icon">复制图标</string>
 
     <string name="content_description_wake_up_catchphrase_image">图像显示一位躺在床上的人被唤醒了</string>
     <string name="content_description_get_up_catchphrase_image">图像显示一个人正拿着响铃的手机在走路</string>

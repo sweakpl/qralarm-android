@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CanManipulateAlarm
+import com.sweak.qralarm.core.domain.alarm.CopyAlarm
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
@@ -34,6 +35,7 @@ class HomeViewModel @Inject constructor(
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
     private val canManipulateAlarm: CanManipulateAlarm,
+    private val copyAlarm: CopyAlarm,
     private val filesDir: File
 ): ViewModel() {
 
@@ -327,6 +329,9 @@ class HomeViewModel @Inject constructor(
                 } else {
                     backendEventsChannel.send(HomeScreenBackendEvent.CanNotEditAlarm)
                 }
+            }
+            is HomeScreenUserEvent.CopyAlarm -> viewModelScope.launch {
+                copyAlarm(event.alarmId)
             }
             else -> { /* no-op */ }
         }

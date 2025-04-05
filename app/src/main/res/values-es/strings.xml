@@ -181,4 +181,5 @@
     <string name="using_system_alarm_volume">Uso del volumen de alarma del sistema</string>
     <string name="advanced_settings">Configuración avanzada</string>
     <string name="incorrect_code_scanned">¡Código incorrecto escaneado!</string>
+    <string name="copy_alarm">Copiar alarma</string>
 </resources>

@@ -50,8 +50,9 @@ fun AlarmCard(
     alarmWrapper: AlarmWrapper,
     onClick: (alarmId: Long) -> Unit,
     onAlarmEnabledChanged: (alarmId: Long, enabled: Boolean) -> Unit,
-    onDeleteAlarmClick: (alarmId: Long) -> Unit,
     onSkipNextAlarmChanged: (alarmId: Long, skip: Boolean) -> Unit,
+    onCopyAlarmClick: (alarmId: Long) -> Unit,
+    onDeleteAlarmClick: (alarmId: Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     QRAlarmCard(modifier = modifier.clickable { onClick(alarmWrapper.alarmId) }) {
@@ -198,6 +199,28 @@ fun AlarmCard(
                         DropdownMenuItem(
                             text = {
                                 Text(
+                                    text = stringResource(R.string.copy_alarm),
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = QRAlarmIcons.Copy,
+                                    contentDescription = stringResource(
+                                        R.string.content_description_copy_icon
+                                    ),
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            },
+                            onClick = {
+                                expanded = false
+                                onCopyAlarmClick(alarmWrapper.alarmId)
+                            }
+                        )
+
+                        DropdownMenuItem(
+                            text = {
+                                Text(
                                     text = stringResource(R.string.delete_alarm),
                                     style = MaterialTheme.typography.labelMedium,
                                     color = MaterialTheme.colorScheme.error
@@ -257,8 +280,9 @@ private fun AlarmCardPreview() {
             onAlarmEnabledChanged = { _, enabled ->
                 alarmWrapper = alarmWrapper.copy(isAlarmEnabled = enabled)
             },
-            onDeleteAlarmClick = {},
             onSkipNextAlarmChanged = { _, _ -> },
+            onCopyAlarmClick = {},
+            onDeleteAlarmClick = {},
             modifier = Modifier.fillMaxWidth()
         )
     }

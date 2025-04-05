@@ -175,4 +175,5 @@
     <string name="using_system_alarm_volume">Verwendung der Systemalarmlautstärke</string>
     <string name="advanced_settings">Erweiterte Einstellungen</string>
     <string name="incorrect_code_scanned">Falscher Code gescannt!</string>
+    <string name="copy_alarm">Alarm kopieren</string>
 </resources>

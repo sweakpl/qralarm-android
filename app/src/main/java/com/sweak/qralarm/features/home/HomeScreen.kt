@@ -378,9 +378,6 @@ private fun HomeScreenContent(
                                         )
                                     )
                                 },
-                                onDeleteAlarmClick = { alarmId ->
-                                    onEvent(HomeScreenUserEvent.TryDeleteAlarm(alarmId = alarmId))
-                                },
                                 onSkipNextAlarmChanged = { alarmId, skip ->
                                     onEvent(
                                         HomeScreenUserEvent.SkipNextAlarmChanged(
@@ -388,6 +385,12 @@ private fun HomeScreenContent(
                                             skip = skip
                                         )
                                     )
+                                },
+                                onCopyAlarmClick = { alarmId ->
+                                    onEvent(HomeScreenUserEvent.CopyAlarm(alarmId = alarmId))
+                                },
+                                onDeleteAlarmClick = { alarmId ->
+                                    onEvent(HomeScreenUserEvent.TryDeleteAlarm(alarmId = alarmId))
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()

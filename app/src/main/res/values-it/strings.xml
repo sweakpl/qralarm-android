@@ -181,4 +181,5 @@
     <string name="using_system_alarm_volume">Utilizzo del volume degli allarmi di sistema</string>
     <string name="advanced_settings">Impostazioni avanzate</string>
     <string name="incorrect_code_scanned">Codice errato scansionato!</string>
+    <string name="copy_alarm">Copia allarme</string>
 </resources>

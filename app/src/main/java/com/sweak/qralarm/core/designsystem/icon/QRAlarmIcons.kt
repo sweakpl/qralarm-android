@@ -15,6 +15,7 @@ import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
@@ -69,4 +70,5 @@ object QRAlarmIcons {
     val Label = Icons.AutoMirrored.Outlined.Label
     val Sound = Icons.AutoMirrored.Outlined.VolumeUp
     val UsingSystem = Icons.Outlined.SecurityUpdateGood
+    val Copy = Icons.Outlined.ContentCopy
 }

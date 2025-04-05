@@ -169,4 +169,5 @@
     <string name="using_system_alarm_volume">当前使用系统闹钟音量</string>
     <string name="advanced_settings">高级设置</string>
     <string name="incorrect_code_scanned">扫描的代码不正确！</string>
+    <string name="copy_alarm">重复警报</string>
 </resources>

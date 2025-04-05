@@ -180,4 +180,5 @@
     <string name="using_system_alarm_volume">Using system alarm volume</string>
     <string name="advanced_settings">Advanced settings</string>
     <string name="incorrect_code_scanned">Incorrect code scanned!</string>
+    <string name="copy_alarm">Copy alarm</string>
 </resources>

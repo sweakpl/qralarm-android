@@ -31,6 +31,7 @@
     <string name="content_description_label_icon">Icône d\'étiquette</string>
     <string name="content_description_sound_icon">Icône sonore</string>
     <string name="content_description_active_system_setting">Icône de réglage du système actif</string>
+    <string name="content_description_copy_icon">Icône de copie</string>
 
     <string name="content_description_wake_up_catchphrase_image">Image montrant un bonhomme allumette sympathique allongé dans son lit et réveillé.</string>
     <string name="content_description_get_up_catchphrase_image">Image montrant un bonhomme allumette souriant marchant avec son téléphone qui sonne.</string>
