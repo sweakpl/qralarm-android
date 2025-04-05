@@ -40,6 +40,7 @@ import java.io.OutputStream
 import java.time.DayOfWeek
 import java.time.ZonedDateTime
 import javax.inject.Inject
+import androidx.core.net.toUri
 
 @HiltViewModel
 class AddEditAlarmViewModel @Inject constructor(
@@ -99,9 +100,7 @@ class AddEditAlarmViewModel @Inject constructor(
                         alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
                         alarmSnoozeMode = alarm.snoozeConfig.snoozeMode,
                         ringtone = alarm.ringtone,
-                        currentCustomAlarmRingtoneUri = alarm.customRingtoneUriString?.let {
-                            Uri.parse(it)
-                        },
+                        currentCustomAlarmRingtoneUri = alarm.customRingtoneUriString?.toUri(),
                         alarmVolumeMode = alarm.alarmVolumeMode,
                         areVibrationsEnabled = alarm.areVibrationsEnabled,
                         isCodeEnabled = alarm.isUsingCode,

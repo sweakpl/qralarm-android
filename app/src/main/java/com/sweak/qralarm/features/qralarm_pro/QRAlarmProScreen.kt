@@ -2,7 +2,6 @@ package com.sweak.qralarm.features.qralarm_pro
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.net.toUri
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
@@ -52,7 +52,7 @@ fun QRAlarmProScreen(
                         context.startActivity(
                             Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=$qralarmProPackageName")
+                                "market://details?id=$qralarmProPackageName".toUri()
                             )
                         )
                     } catch (activityNotFoundException: ActivityNotFoundException) {
@@ -60,9 +60,7 @@ fun QRAlarmProScreen(
                             context.startActivity(
                                 Intent(
                                     Intent.ACTION_VIEW,
-                                    Uri.parse(
-                                        "https://play.google.com/store/apps/details?id=$qralarmProPackageName"
-                                    )
+                                    "https://play.google.com/store/apps/details?id=$qralarmProPackageName".toUri()
                                 )
                             )
                         } catch (activityNotFoundException: ActivityNotFoundException) {

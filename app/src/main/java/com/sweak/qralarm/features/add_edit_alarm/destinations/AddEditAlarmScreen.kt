@@ -3,7 +3,6 @@ package com.sweak.qralarm.features.add_edit_alarm.destinations
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
@@ -57,6 +56,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -77,9 +77,9 @@ import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowBackendEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
+import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.AssignCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
@@ -262,7 +262,7 @@ fun AddEditAlarmScreen(
                         context.startActivity(
                             Intent().apply {
                                 action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-                                data = Uri.parse("package:${context.packageName}")
+                                data = "package:${context.packageName}".toUri()
                             }
                         )
                     }
@@ -272,7 +272,7 @@ fun AddEditAlarmScreen(
                         context.startActivity(
                             Intent().apply {
                                 action = Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT
-                                data = Uri.parse("package:${context.packageName}")
+                                data = "package:${context.packageName}".toUri()
                             }
                         )
                     }
@@ -322,7 +322,7 @@ fun AddEditAlarmScreen(
                     )
                     context.startActivity(
                         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                            data = Uri.parse("package:${context.packageName}")
+                            data = "package:${context.packageName}".toUri()
                         }
                     )
                 }

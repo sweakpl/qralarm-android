@@ -3,7 +3,6 @@ package com.sweak.qralarm.core.ui.components.code_scanner.view
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.PorterDuff
@@ -11,6 +10,7 @@ import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.graphics.toColorInt
 
 class ScanOverlay  @JvmOverloads constructor(
     context: Context,
@@ -35,13 +35,13 @@ class ScanOverlay  @JvmOverloads constructor(
         setLayerType(LAYER_TYPE_SOFTWARE, null)
 
         viewFinderCornerPaint = Paint(ANTI_ALIAS_FLAG).apply {
-            color = Color.parseColor("#FF5C54A4")
+            color = "#FF5C54A4".toColorInt()
             style = Paint.Style.STROKE
             strokeWidth = 2f * Resources.getSystem().displayMetrics.density
         }
 
         backgroundPaint = Paint().apply {
-            color = Color.parseColor("#770C1445")
+        color = "#770C1445".toColorInt()
             style = Paint.Style.FILL
         }
     }

@@ -21,6 +21,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.core.net.toUri
 
 class AlarmRingtonePlayer(
     private val context: Context,
@@ -180,12 +181,10 @@ class AlarmRingtonePlayer(
     }
 
     private fun getOriginalAlarmRingtoneUri(ringtone: Ringtone): Uri {
-        return Uri.parse(
-            "android.resource://"
-                    + context.packageName
-                    + "/"
-                    + getOriginalRingtoneResourceId(ringtone)
-        )
+        return ("android.resource://"
+                + context.packageName
+                + "/"
+                + getOriginalRingtoneResourceId(ringtone)).toUri()
     }
 
     @RawRes

@@ -29,7 +29,6 @@
         <item quantity="other">%1$d dakika</item>
     </plurals>
 
-    <string name="app_name" translatable="false">QRAlarm</string>
     <string name="welcome_to_qralarm">QRAlarm\'a hoş geldiniz!</string>
     <string name="wake_up_catchphrase">Uyan!</string>
     <string name="wake_up_catchphrase_description">Alarmınızı her zamanki gibi kurun ve ertesi sabah QRAlarm tarafından uyandırılmaya hazır olun.</string>
@@ -134,17 +133,13 @@
     <string name="work_in_background_limited_click_to_enable">Arka planda çalışma sınırlı. Etkinleştirmek için tıklayın.</string>
     <string name="work_in_background_enabled">Arka planda çalışma etkin. Harika!</string>
     <string name="setting_unavailable_refer_to_the_next_step">Ayar kullanılamıyor - lütfen sonraki adımlara bakın.</string>
-    <string name="dontkilmyapp_com" translatable="false">dontkillmyapp.com</string>
-    <string name="dontkilmyapp_com_full_uri" translatable="false">https://dontkillmyapp.com/</string>
     <string name="select_manufacturer_and_follow_instructions">Telefon üreticinizi seçin ve sağlanan talimatları izleyin.</string>
     <string name="click_to_go_to_app_settings">QRAlarm uygulama ayarlarına gitmek için tıklayın.</string>
     <string name="issue_opening_the_page">Sayfa açılırken bir sorun oluştu…</string>
     <string name="optimization_dialog_description">Optimizasyon rehberimizi inceleyerek QRAlarm\'ın sisteminizde en iyi şekilde çalışmasını sağlayın ve rahat uyuyun!</string>
-    <string name="qralarm_pro" translatable="false">QRAlarm PRO</string>
     <string name="buy_once_enjoy_forever">Bir kez satın al - sonsuza dek keyfini çıkar!</string>
     <string name="get_it_now">Hemen alın!</string>
     <string name="not_now">Şimdi değil</string>
-    <string name="qralarm_pro_package_name" translatable="false">com.sweak.qralarm.pro</string>
     <string name="special_settings">Özel ayarlar</string>
     <string name="do_not_leave_alarm">Alarm ekranından ayrılma</string>
     <string name="do_not_leave_alarm_description">Alarm çalarken alarm ekranının açık kalmasını sağlar.</string>
@@ -167,8 +162,6 @@
     <string name="did_something_go_wrong">Bir şeyler yanlış mı gitti?\nBunu birlikte düzeltebiliriz!</string>
     <string name="tell_me_what_is_wrong">Sorunun ne olduğunu anlatın</string>
     <string name="do_not_show_again">Bu ekranı bir daha gösterme.</string>
-    <string name="qralarm_github_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android</string>
-    <string name="qralarm_github_issues_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android/issues</string>
     <string name="rate_qralarm">QRAlarm\'ı değerlendirin</string>
     <string name="previous">Önceki</string>
     <string name="scan_code">Kodu tara</string>

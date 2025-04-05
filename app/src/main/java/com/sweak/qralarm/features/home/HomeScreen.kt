@@ -1,7 +1,6 @@
 package com.sweak.qralarm.features.home
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
@@ -45,6 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -203,7 +203,7 @@ fun HomeScreen(
                         context.startActivity(
                             Intent().apply {
                                 action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-                                data = Uri.parse("package:${context.packageName}")
+                                data = "package:${context.packageName}".toUri()
                             }
                         )
                     }
@@ -213,7 +213,7 @@ fun HomeScreen(
                         context.startActivity(
                             Intent().apply {
                                 action = Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT
-                                data = Uri.parse("package:${context.packageName}")
+                                data = "package:${context.packageName}".toUri()
                             }
                         )
                     }
@@ -231,7 +231,7 @@ fun HomeScreen(
                     )
                     context.startActivity(
                         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                            data = Uri.parse("package:${context.packageName}")
+                            data = "package:${context.packageName}".toUri()
                         }
                     )
                 }

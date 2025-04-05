@@ -27,7 +27,6 @@
     <string name="content_description_power_off_guard_icon">Піктограма Захист від вимкнення</string>
     <string name="content_description_access_forever_icon">Піктограма доступу назавжди</string>
     <string name="content_description_flash_icon">Піктограма ліхтаря</string>
-    <string name="content_description_undo_icon">Піктограма відміни</string>
     <string name="content_description_skip_next_alarm_icon">Піктограма пропуску наступного будильника</string>
     <string name="content_description_label_icon">Піктограма назви</string>
     <string name="content_description_sound_icon">Піктограма дзвінка</string>

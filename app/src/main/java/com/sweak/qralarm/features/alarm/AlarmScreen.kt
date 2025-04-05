@@ -1,7 +1,6 @@
 package com.sweak.qralarm.features.alarm
 
 import android.content.Intent
-import android.net.Uri
 import android.provider.Settings
 import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedVisibility
@@ -26,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -123,7 +123,7 @@ fun AlarmScreen(
                     )
                     context.startActivity(
                         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                            data = Uri.parse("package:${context.packageName}")
+                            data = "package:${context.packageName}".toUri()
                         }
                     )
                 }

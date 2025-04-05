@@ -9,12 +9,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ServiceInfo
 import android.media.AudioManager
-import android.net.Uri
 import android.os.Build
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.ALARM_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.alarm.QRAlarmManager
@@ -33,7 +33,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -242,7 +241,7 @@ class AlarmService : Service() {
         if (alarm.ringtone == Alarm.Ringtone.CUSTOM_SOUND) {
             if (alarm.customRingtoneUriString != null) {
                 alarmRingtonePlayer.playAlarmRingtone(
-                    alarmRingtoneUri = Uri.parse(alarm.customRingtoneUriString),
+                    alarmRingtoneUri = alarm.customRingtoneUriString!!.toUri(),
                     volumeIncreaseSeconds = alarm.gentleWakeUpDurationInSeconds
                 )
             } else {

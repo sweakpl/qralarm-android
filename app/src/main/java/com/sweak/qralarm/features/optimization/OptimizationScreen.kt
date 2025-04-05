@@ -3,7 +3,6 @@ package com.sweak.qralarm.features.optimization
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
@@ -43,6 +42,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
@@ -77,7 +77,7 @@ fun OptimizationScreen(onBackClicked: () -> Unit) {
                         try {
                             context.startActivity(
                                 Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                                    data = Uri.parse("package:${context.packageName}")
+                                    data = "package:${context.packageName}".toUri()
                                 }
                             )
                         } catch (exception: ActivityNotFoundException) {
@@ -111,7 +111,7 @@ fun OptimizationScreen(onBackClicked: () -> Unit) {
                 is OptimizationScreenUserEvent.ApplicationSettingsClicked -> {
                     context.startActivity(
                         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                            data = Uri.parse("package:${context.packageName}")
+                            data = "package:${context.packageName}".toUri()
                         }
                     )
                 }
