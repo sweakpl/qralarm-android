@@ -43,7 +43,7 @@ data class AddEditAlarmFlowState(
     val availableGentleWakeUpDurationsInSeconds: List<Int> =
         AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS,
     val isChooseGentleWakeUpDurationDialogVisible: Boolean = false,
-    val temporaryMuteDurationInSeconds: Int = 15,
+    val temporaryMuteDurationInSeconds: Int = 0,
     val availableTemporaryMuteDurationsInSeconds: List<Int> =
         AVAILABLE_TEMPORARY_MUTE_DURATIONS_IN_SECONDS,
     val isChooseTemporaryMuteDurationDialogVisible: Boolean = false,
