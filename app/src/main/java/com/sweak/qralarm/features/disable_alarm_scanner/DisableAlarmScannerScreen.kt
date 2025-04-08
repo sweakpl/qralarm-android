@@ -1,12 +1,17 @@
 package com.sweak.qralarm.features.disable_alarm_scanner
 
-import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.ui.components.code_scanner.QRAlarmCodeScanner
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
+import com.sweak.qralarm.features.disable_alarm_scanner.components.Toast
 
 @Composable
 fun DisableAlarmScannerScreen(
@@ -14,8 +19,7 @@ fun DisableAlarmScannerScreen(
     onCloseClicked: () -> Unit
 ) {
     val disableAlarmScannerViewModel = hiltViewModel<DisableAlarmScannerViewModel>()
-
-    val context = LocalContext.current
+    val disableAlarmScannerScreenState by disableAlarmScannerViewModel.state.collectAsStateWithLifecycle()
 
     ObserveAsEvents(
         flow = disableAlarmScannerViewModel.backendEvents,
@@ -24,18 +28,12 @@ fun DisableAlarmScannerScreen(
                 is DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned -> {
                     onAlarmDisabled(event.uriStringToOpen)
                 }
-                is DisableAlarmScannerScreenBackendEvent.IncorrectCodeScanned -> {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.incorrect_code_scanned),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
             }
         }
     )
 
     DisableAlarmScannerScreenContent(
+        state = disableAlarmScannerScreenState,
         onEvent = { event ->
             when (event) {
                 is DisableAlarmScannerScreenUserEvent.CodeResultScanned -> {
@@ -51,6 +49,7 @@ fun DisableAlarmScannerScreen(
 
 @Composable
 fun DisableAlarmScannerScreenContent(
+    state: DisableAlarmScannerScreenState,
     onEvent: (DisableAlarmScannerScreenUserEvent) -> Unit
 ) {
     QRAlarmCodeScanner(
@@ -61,4 +60,12 @@ fun DisableAlarmScannerScreenContent(
             onEvent(DisableAlarmScannerScreenUserEvent.OnCloseClicked)
         }
     )
+
+    AnimatedVisibility(
+        visible = state.shouldShowIncorrectCodeWarning,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        Toast(stringResource(R.string.incorrect_code_scanned))
+    }
 }

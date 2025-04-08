@@ -11,7 +11,10 @@ import com.sweak.qralarm.features.disable_alarm_scanner.navigation.ID_OF_ALARM
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.IS_DISABLING_BEFORE_ALARM_FIRED
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +32,8 @@ class DisableAlarmScannerViewModel @Inject constructor(
 
     private lateinit var alarm: Alarm
     private var shouldScan = true
+
+    var state = MutableStateFlow(DisableAlarmScannerScreenState())
 
     private val backendEventsChannel = Channel<DisableAlarmScannerScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
@@ -102,10 +107,21 @@ class DisableAlarmScannerViewModel @Inject constructor(
                                 val currentTimeInMillis = System.currentTimeMillis()
 
                                 if (currentTimeInMillis - lastWrongCodeWarningMillis > wrongCodeWarningDelayMillis) {
-                                    backendEventsChannel.send(
-                                        DisableAlarmScannerScreenBackendEvent.IncorrectCodeScanned
-                                    )
+                                    state.update { currentState ->
+                                        currentState.copy(shouldShowIncorrectCodeWarning = true)
+                                    }
+
                                     lastWrongCodeWarningMillis = currentTimeInMillis
+
+                                    launch {
+                                        delay(2500)
+
+                                        state.update { currentState ->
+                                            currentState.copy(
+                                                shouldShowIncorrectCodeWarning = false
+                                            )
+                                        }
+                                    }
                                 }
 
                                 shouldScan = true
