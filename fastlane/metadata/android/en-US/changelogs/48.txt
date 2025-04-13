@@ -1,2 +1,0 @@
-* Alarms can be copied on the alarms list,
-* Usability and performance improvements.
