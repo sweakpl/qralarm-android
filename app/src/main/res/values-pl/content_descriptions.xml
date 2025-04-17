@@ -32,6 +32,7 @@
     <string name="content_description_sound_icon">Ikona dźwięku</string>
     <string name="content_description_active_system_setting">Ikona aktywnego ustawienia systemowego</string>
     <string name="content_description_copy_icon">Ikona kopiowania</string>
+    <string name="content_description_clock_icon">Ikona zegara</string>
 
     <string name="content_description_wake_up_catchphrase_image">Obraz przedstawiający przyjaznego patyczaka leżącego w łóżku po przebudzeniu.</string>
     <string name="content_description_get_up_catchphrase_image">Obraz przedstawiający uśmiechniętego patyczaka idącego z dzwoniącym telefonem.</string>

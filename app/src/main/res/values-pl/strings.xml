@@ -185,6 +185,7 @@
     <string name="power_off_guard_description">Nie pozwól sobie na wyłączenie telefonu, gdy dzwoni alarm.</string>
     <string name="lock_alarm_to_this_volume">Ustaw głośność alarmu, gdy dzwoni:</string>
     <string name="using_system_alarm_volume">Korzystanie z głośności alarmu systemowego</string>
+    <string name="ok">OK</string>
     <string name="advanced_settings">Ustawienia zaawansowane</string>
     <string name="incorrect_code_scanned">Zeskanowano nieprawidłowy kod!</string>
     <string name="copy_alarm">Skopiuj alarm</string>

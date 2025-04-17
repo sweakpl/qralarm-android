@@ -85,6 +85,7 @@ import com.sweak.qralarm.features.add_edit_alarm.components.AssignCodeBottomShee
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneConfigDialogBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseSnoozeConfigurationBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.components.DialerTimePickerDialog
 import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -421,20 +422,46 @@ private fun AddEditAlarmScreenContent(
                         .fillMaxWidth()
                 ) {
                     if (state.alarmHourOfDay != null && state.alarmMinute != null) {
-                        QRAlarmTimePicker(
-                            selectedHourOfDay = state.alarmHourOfDay,
-                            selectedMinute = state.alarmMinute,
-                            onTimeChanged = { hourOfDay, minute ->
-                                onEvent(
-                                    AddEditAlarmScreenUserEvent.AlarmTimeChanged(
-                                        newAlarmHourOfDay = hourOfDay,
-                                        newAlarmMinute = minute
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = MaterialTheme.space.mediumLarge)
+                        ) {
+                            QRAlarmTimePicker(
+                                selectedHourOfDay = state.alarmHourOfDay,
+                                selectedMinute = state.alarmMinute,
+                                onTimeChanged = { hourOfDay, minute ->
+                                    onEvent(
+                                        AddEditAlarmScreenUserEvent.AlarmTimeChanged(
+                                            newAlarmHourOfDay = hourOfDay,
+                                            newAlarmMinute = minute
+                                        )
                                     )
+                                },
+                                isEnabled = true,
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+
+                            IconButton(
+                                onClick = {
+                                    onEvent(
+                                        AddEditAlarmScreenUserEvent.DialerPickerDialogVisible(
+                                            isVisible = true
+                                        )
+                                    )
+                                },
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .padding(end = MaterialTheme.space.xSmall)
+                            ) {
+                                Icon(
+                                    imageVector = QRAlarmIcons.Clock,
+                                    contentDescription =
+                                        stringResource(R.string.content_description_clock_icon),
+                                    tint = MaterialTheme.colorScheme.onPrimary
                                 )
-                            },
-                            isEnabled = true,
-                            modifier = Modifier.padding(vertical = MaterialTheme.space.mediumLarge)
-                        )
+                            }
+                        }
                     }
 
                     QRAlarmCard(
@@ -724,7 +751,7 @@ private fun AddEditAlarmScreenContent(
                                                             .wrapContentWidth()
                                                             .background(
                                                                 color =
-                                                                MaterialTheme.colorScheme.surface
+                                                                    MaterialTheme.colorScheme.surface
                                                             )
                                                     ) {
                                                         val areSavedCodesAvailable =
@@ -1139,6 +1166,27 @@ private fun AddEditAlarmScreenContent(
             },
             positiveButtonText = stringResource(R.string.cancel),
             negativeButtonText = stringResource(R.string.discard)
+        )
+    }
+
+    if (state.isDialerPickerDialogVisible &&
+        state.alarmHourOfDay != null &&
+        state.alarmMinute != null
+    ) {
+        DialerTimePickerDialog(
+            initialHourOfDay = state.alarmHourOfDay,
+            initialMinute = state.alarmMinute,
+            onDismissRequest = {
+                onEvent(AddEditAlarmScreenUserEvent.DialerPickerDialogVisible(isVisible = false))
+            },
+            onTimeConfirmed = { hourOfDay, minute ->
+                onEvent(
+                    AddEditAlarmScreenUserEvent.AlarmTimeChanged(
+                        newAlarmHourOfDay = hourOfDay,
+                        newAlarmMinute = minute
+                    )
+                )
+            }
         )
     }
 

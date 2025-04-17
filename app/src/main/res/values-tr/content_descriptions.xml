@@ -31,6 +31,7 @@
     <string name="content_description_sound_icon">Ses simgesi</string>
     <string name="content_description_active_system_setting">Etkin sistem ayarı simgesi</string>
     <string name="content_description_copy_icon">Kopyala simgesi</string>
+    <string name="content_description_clock_icon">Saat simgesi</string>
 
     <string name="content_description_wake_up_catchphrase_image">Yatakta uzanan, uyanmış dost canlısı bir çöp adamı gösteren resim.</string>
     <string name="content_description_get_up_catchphrase_image">Telefonu çalarken yürüyen, gülümseyen bir çöp adamı gösteren resim.</string>

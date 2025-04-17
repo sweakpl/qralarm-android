@@ -243,6 +243,11 @@ class AddEditAlarmViewModel @Inject constructor(
                     )
                 }
             }
+            is AddEditAlarmScreenUserEvent.DialerPickerDialogVisible -> {
+                state.update { currentState ->
+                    currentState.copy(isDialerPickerDialogVisible = event.isVisible)
+                }
+            }
             is AddEditAlarmScreenUserEvent.AlarmTimeChanged -> {
                 if (event.newAlarmHourOfDay != state.value.alarmHourOfDay ||
                     event.newAlarmMinute != state.value.alarmMinute
@@ -253,7 +258,8 @@ class AddEditAlarmViewModel @Inject constructor(
                 state.update { currentState ->
                     currentState.copy(
                         alarmHourOfDay = event.newAlarmHourOfDay,
-                        alarmMinute = event.newAlarmMinute
+                        alarmMinute = event.newAlarmMinute,
+                        isDialerPickerDialogVisible = false
                     )
                 }
             }

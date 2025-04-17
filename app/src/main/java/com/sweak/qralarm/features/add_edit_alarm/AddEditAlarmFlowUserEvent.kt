@@ -26,6 +26,7 @@ sealed class AddEditAlarmFlowUserEvent {
         data class NotificationsPermissionDeniedDialogVisible(
             val isVisible: Boolean
         ) : AddEditAlarmScreenUserEvent()
+        data class DialerPickerDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
         data class AlarmTimeChanged(
             val newAlarmHourOfDay: Int,
             val newAlarmMinute: Int

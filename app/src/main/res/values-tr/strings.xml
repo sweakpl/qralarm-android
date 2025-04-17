@@ -173,6 +173,7 @@
     <string name="power_off_guard_description">Alarm çalarken telefonunuzu kapatmanıza izin vermeyin.</string>
     <string name="lock_alarm_to_this_volume">Alarm çaldığında bu ses seviyesine ayarla:</string>
     <string name="using_system_alarm_volume">Sistem alarm ses seviyesi kullanılıyor</string>
+    <string name="ok">TAMAM</string>
     <string name="advanced_settings">Gelişmiş ayarlar</string>
     <string name="incorrect_code_scanned">Yanlış kod tarandı!</string>
     <string name="copy_alarm">Kopya alarmı</string>
