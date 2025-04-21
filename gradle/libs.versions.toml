@@ -1,16 +1,16 @@
 [versions]
 agp = "8.9.1"
-kotlin = "1.9.25"
-hilt = "2.51"
-ksp = "1.9.25-1.0.20"
-roomKtx = "2.6.1"
-coreKtx = "1.15.0"
+kotlin = "2.1.20"
+hilt = "2.56.1"
+ksp = "2.1.20-1.0.32"
+roomKtx = "2.7.0"
+coreKtx = "1.16.0"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
 uiViewbinding = "1.7.8"
-composeBom = "2025.03.01"
+composeBom = "2025.04.00"
 navigationCompose = "2.8.9"
-media3 = "1.6.0"
+media3 = "1.6.1"
 splashscreen = "1.0.1"
 materialIconsExtended = "1.7.8"
 hiltNavigationCompose = "1.2.0"
@@ -59,6 +59,7 @@ desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", ver
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "roomKtx" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
