@@ -29,7 +29,7 @@ If you are seeking to:
 
 Then you have found the perfect alarm clock application - this is your new life hack! 📈
 
-QRAlarm is a simple and lightweight alarm clock! Don't worry about low memory in your phone - QRAlarm is only around 25 MB making it perfect fit for everyone, no matter the device! 📱
+QRAlarm is a simple and lightweight alarm clock! Don't worry about low memory in your phone - QRAlarm is only around 15 MB making it perfect fit for everyone, no matter the device! 📱
 
 QRAlarm has a simple, clean and intuitive user interface that makes the experience easy and seamless! You will feel at ease using QRAlarm as it does not overwhelm the user with bloated functions. QRAlarm is uncluttered, clear and beautiful! ✨
 
