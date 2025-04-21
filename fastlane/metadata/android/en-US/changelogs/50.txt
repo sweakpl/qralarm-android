@@ -1,0 +1,2 @@
+* Added the option of choosing alarm time with a dialer,
+* Back to using ZXing code scanning.

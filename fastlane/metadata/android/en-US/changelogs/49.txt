@@ -1,1 +1,0 @@
-* Changed the code scanner engine from ZXing to MLKit.
