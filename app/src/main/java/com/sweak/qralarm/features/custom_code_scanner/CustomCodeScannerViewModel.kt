@@ -20,7 +20,7 @@ class CustomCodeScannerViewModel @Inject constructor(
     fun onEvent(event: CustomCodeScannerScreenUserEvent) {
         when (event) {
             is CustomCodeScannerScreenUserEvent.CodeResultScanned -> viewModelScope.launch {
-                userDataRepository.setTemporaryScannedCode(code = event.codeResult)
+                userDataRepository.setTemporaryScannedCode(code = event.result.text)
                 backendEventsChannel.send(CustomCodeScannerScreenBackendEvent.CustomCodeSaved)
             }
             else -> { /* no-op */ }
