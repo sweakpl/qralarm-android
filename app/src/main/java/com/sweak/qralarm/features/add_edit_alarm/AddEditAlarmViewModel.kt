@@ -41,6 +41,8 @@ import java.time.DayOfWeek
 import java.time.ZonedDateTime
 import javax.inject.Inject
 import androidx.core.net.toUri
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class AddEditAlarmViewModel @Inject constructor(
@@ -631,10 +633,12 @@ class AddEditAlarmViewModel @Inject constructor(
 
             if (currentState.temporaryCustomAlarmRingtoneUri != null) {
                 val savedLocalAlarmSoundUri = try {
-                    copyUriContentToLocalStorage(
-                        uri = currentState.temporaryCustomAlarmRingtoneUri,
-                        alarmId = alarmId
-                    )
+                    withContext(Dispatchers.IO) {
+                        copyUriContentToLocalStorage(
+                            uri = currentState.temporaryCustomAlarmRingtoneUri,
+                            alarmId = alarmId
+                        )
+                    }
                 } catch (exception: Exception) {
                     if (exception is IOException ||
                         exception is SecurityException
