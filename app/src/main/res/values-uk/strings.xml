@@ -189,4 +189,7 @@
     <string name="advanced_settings">Розширені налаштування</string>
     <string name="incorrect_code_scanned">Відскановано невірний код!</string>
     <string name="copy_alarm">Тривога копіювання</string>
+    <string name="default_alarm_code">Код тривоги за замовчуванням</string>
+    <string name="no_assigned_code">Немає присвоєного коду</string>
+    <string name="default_alarm_code_description">Задайте код, який буде автоматично використовуватися для всіх новостворених тривог:</string>
 </resources>

@@ -177,4 +177,7 @@
     <string name="advanced_settings">Erweiterte Einstellungen</string>
     <string name="incorrect_code_scanned">Falscher Code gescannt!</string>
     <string name="copy_alarm">Alarm kopieren</string>
+    <string name="default_alarm_code">Standard-Alarmcode</string>
+    <string name="no_assigned_code">Kein zugewiesener Code</string>
+    <string name="default_alarm_code_description">Legen Sie den Code fest, der automatisch für alle neu erstellten Alarme verwendet werden soll:</string>
 </resources>

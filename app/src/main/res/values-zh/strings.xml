@@ -171,4 +171,7 @@
     <string name="advanced_settings">高级设置</string>
     <string name="incorrect_code_scanned">扫描的代码不正确！</string>
     <string name="copy_alarm">复制此闹钟</string>
+    <string name="default_alarm_code">默认警报代码</string>
+    <string name="no_assigned_code">无指定代码</string>
+    <string name="default_alarm_code_description">设置自动用于所有新建警报的代码：</string>
 </resources>

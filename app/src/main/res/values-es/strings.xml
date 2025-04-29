@@ -183,4 +183,7 @@
     <string name="advanced_settings">Configuración avanzada</string>
     <string name="incorrect_code_scanned">¡Código incorrecto escaneado!</string>
     <string name="copy_alarm">Copiar alarma</string>
+    <string name="default_alarm_code">Código de alarma por defecto</string>
+    <string name="no_assigned_code">Sin código asignado</string>
+    <string name="default_alarm_code_description">Establezca el código que se utilizará automáticamente para todas las alarmas de nueva creación:</string>
 </resources>

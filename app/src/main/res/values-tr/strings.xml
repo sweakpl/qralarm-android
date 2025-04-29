@@ -177,4 +177,7 @@
     <string name="advanced_settings">Gelişmiş ayarlar</string>
     <string name="incorrect_code_scanned">Yanlış kod tarandı!</string>
     <string name="copy_alarm">Kopya alarmı</string>
+    <string name="default_alarm_code">Varsayılan alarm kodu</string>
+    <string name="no_assigned_code">Atanmış kod yok</string>
+    <string name="default_alarm_code_description">Yeni oluşturulan tüm alarmlar için otomatik olarak kullanılacak kodu ayarlayın:</string>
 </resources>

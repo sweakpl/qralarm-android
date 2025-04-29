@@ -189,4 +189,7 @@
     <string name="advanced_settings">Ustawienia zaawansowane</string>
     <string name="incorrect_code_scanned">Zeskanowano nieprawidłowy kod!</string>
     <string name="copy_alarm">Skopiuj alarm</string>
+    <string name="default_alarm_code">Domyślny kod alarmu</string>
+    <string name="no_assigned_code">Brak przypisanego kodu</string>
+    <string name="default_alarm_code_description">Ustaw kod, który będzie automatycznie używany dla wszystkich nowo utworzonych alarmów:</string>
 </resources>
