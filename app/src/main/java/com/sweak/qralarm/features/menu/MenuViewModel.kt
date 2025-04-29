@@ -61,6 +61,13 @@ class MenuViewModel @Inject constructor(
                     currentState.copy(isAssignDefaultCodeDialogVisible = false)
                 }
             }
+            is MenuScreenUserEvent.ClearDefaultAlarmCode -> viewModelScope.launch {
+                userDataRepository.setDefaultAlarmCode(code = null)
+
+                state.update { currentState ->
+                    currentState.copy(isAssignDefaultCodeDialogVisible = false)
+                }
+            }
             else -> { /* no-op */ }
         }
     }

@@ -192,4 +192,5 @@
     <string name="default_alarm_code">Domyślny kod alarmu</string>
     <string name="no_assigned_code">Brak przypisanego kodu</string>
     <string name="default_alarm_code_description">Ustaw kod, który będzie automatycznie używany dla wszystkich nowo utworzonych alarmów:</string>
+    <string name="clear_default_code">Wyczyść kod domyślny</string>
 </resources>

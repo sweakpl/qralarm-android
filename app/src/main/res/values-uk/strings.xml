@@ -192,4 +192,5 @@
     <string name="default_alarm_code">Код тривоги за замовчуванням</string>
     <string name="no_assigned_code">Немає присвоєного коду</string>
     <string name="default_alarm_code_description">Задайте код, який буде автоматично використовуватися для всіх новостворених тривог:</string>
+    <string name="clear_default_code">Очистити код за замовчуванням</string>
 </resources>

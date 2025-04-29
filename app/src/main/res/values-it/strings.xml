@@ -186,4 +186,5 @@
     <string name="default_alarm_code">Codice di allarme predefinito</string>
     <string name="no_assigned_code">Nessun codice assegnato</string>
     <string name="default_alarm_code_description">Impostare il codice che verrà utilizzato automaticamente per tutti i nuovi allarmi creati:</string>
+    <string name="clear_default_code">Azzeramento del codice predefinito</string>
 </resources>

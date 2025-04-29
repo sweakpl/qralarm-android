@@ -76,15 +76,18 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
-    suspend fun setDefaultAlarmCode(code: String) {
+    suspend fun setDefaultAlarmCode(code: String?) {
         dataStore.edit { preferences ->
-            preferences[DEFAULT_ALARM_CODE] = code
+            preferences[DEFAULT_ALARM_CODE] = code ?: ""
         }
     }
 
     fun getDefaultAlarmCode(): Flow<String?> {
         return dataStore.data.map { preferences ->
-            preferences[DEFAULT_ALARM_CODE]
+            val code = preferences[DEFAULT_ALARM_CODE]
+
+            if (code.isNullOrEmpty()) return@map null
+            else return@map code
         }
     }
 

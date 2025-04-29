@@ -9,4 +9,5 @@ sealed class MenuScreenUserEvent {
     data class AssignDefaultCodeDialogVisible(val isVisible: Boolean) : MenuScreenUserEvent()
     data object TryScanSpecificDefaultCode : MenuScreenUserEvent()
     data class DefaultCodeChosenFromList(val code: String) : MenuScreenUserEvent()
+    data object ClearDefaultAlarmCode : MenuScreenUserEvent()
 }

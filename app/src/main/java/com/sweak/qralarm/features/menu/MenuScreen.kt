@@ -150,11 +150,15 @@ fun MenuScreenContent(
                 onEvent(MenuScreenUserEvent.TryScanSpecificDefaultCode)
             },
             availableCodes = state.previouslySavedCodes,
+            shouldAllowCodeClearance = state.defaultAlarmCode != null,
             onChooseCodeFromList = { chosenCode ->
                 onEvent(MenuScreenUserEvent.DefaultCodeChosenFromList(code = chosenCode))
             },
             onDismissRequest = {
                 onEvent(MenuScreenUserEvent.AssignDefaultCodeDialogVisible(isVisible = false))
+            },
+            onClearCodeClicked = {
+                onEvent(MenuScreenUserEvent.ClearDefaultAlarmCode)
             }
         )
     }

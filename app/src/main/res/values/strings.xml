@@ -185,4 +185,5 @@
     <string name="default_alarm_code">Default alarm code</string>
     <string name="no_assigned_code">No assigned code</string>
     <string name="default_alarm_code_description">Set the code that will be automatically used for all newly created alarms:</string>
+    <string name="clear_default_code">Clear default code</string>
 </resources>

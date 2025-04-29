@@ -19,7 +19,7 @@ interface UserDataRepository {
     suspend fun setNextRatePromptTimeInMillis(promptTime: Long?)
     val nextRatePromptTimeInMillis: Flow<Long?>
 
-    suspend fun setDefaultAlarmCode(code: String)
+    suspend fun setDefaultAlarmCode(code: String?)
     val defaultAlarmCode: Flow<String?>
 
     enum class OptimizationGuideState {
