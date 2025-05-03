@@ -68,6 +68,11 @@ class MenuViewModel @Inject constructor(
                     currentState.copy(isAssignDefaultCodeDialogVisible = false)
                 }
             }
+            is MenuScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
+                state.update { currentState ->
+                    currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
+                }
+            }
             else -> { /* no-op */ }
         }
     }

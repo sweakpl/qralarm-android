@@ -10,4 +10,6 @@ sealed class MenuScreenUserEvent {
     data object TryScanSpecificDefaultCode : MenuScreenUserEvent()
     data class DefaultCodeChosenFromList(val code: String) : MenuScreenUserEvent()
     data object ClearDefaultAlarmCode : MenuScreenUserEvent()
+    data class CameraPermissionDeniedDialogVisible(val isVisible: Boolean) : MenuScreenUserEvent()
+    data object GoToApplicationSettingsClicked : MenuScreenUserEvent()
 }
