@@ -243,6 +243,47 @@ fun SpecialAlarmSettingsScreenContent(
                             )
                         }
                     }
+
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                    )
+
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(all = MaterialTheme.space.medium)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = MaterialTheme.space.smallMedium)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.keep_ringer_on),
+                                style = MaterialTheme.typography.titleLarge,
+                                modifier = Modifier
+                                    .padding(bottom = MaterialTheme.space.xSmall)
+                            )
+
+                            Text(
+                                text = stringResource(R.string.keep_ringer_on_description),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+
+                        QRAlarmSwitch(
+                            checked = false,
+                            onCheckedChange = {
+                                onEvent(
+                                    SpecialAlarmSettingsScreenUserEvent.TryUseSpecialAlarmSettings
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }

@@ -187,4 +187,6 @@
     <string name="no_assigned_code">Nessun codice assegnato</string>
     <string name="default_alarm_code_description">Impostare il codice che verrà utilizzato automaticamente per tutti i nuovi allarmi creati:</string>
     <string name="clear_default_code">Azzeramento del codice predefinito</string>
+    <string name="keep_ringer_on">Mantenere la suoneria accesa</string>
+    <string name="keep_ringer_on_description">Non consentire le modalità di suoneria silenziosa/vibrazione che potrebbero disturbare il suono della sveglia.</string>
 </resources>

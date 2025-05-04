@@ -181,4 +181,6 @@
     <string name="no_assigned_code">Kein zugewiesener Code</string>
     <string name="default_alarm_code_description">Legen Sie den Code fest, der automatisch für alle neu erstellten Alarme verwendet werden soll:</string>
     <string name="clear_default_code">Standardcode löschen</string>
+    <string name="keep_ringer_on">Rufton anlassen</string>
+    <string name="keep_ringer_on_description">Lassen Sie keine Stumm-/Vibrations-Rufmodi zu, die den Alarmton stören könnten.</string>
 </resources>

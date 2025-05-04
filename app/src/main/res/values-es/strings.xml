@@ -187,4 +187,6 @@
     <string name="no_assigned_code">Sin código asignado</string>
     <string name="default_alarm_code_description">Establezca el código que se utilizará automáticamente para todas las alarmas de nueva creación:</string>
     <string name="clear_default_code">Borrar código por defecto</string>
+    <string name="keep_ringer_on">Mantener el timbre encendido</string>
+    <string name="keep_ringer_on_description">No permita los modos de timbre silencioso/vibración que podrían interrumpir el sonido de la alarma.</string>
 </resources>

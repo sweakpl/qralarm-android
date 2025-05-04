@@ -186,4 +186,6 @@
     <string name="no_assigned_code">No assigned code</string>
     <string name="default_alarm_code_description">Set the code that will be automatically used for all newly created alarms:</string>
     <string name="clear_default_code">Clear default code</string>
+    <string name="keep_ringer_on">Keep ringer on</string>
+    <string name="keep_ringer_on_description">Don\'t allow silent/vibration ringer modes which could disrupt the alarm sound.</string>
 </resources>
