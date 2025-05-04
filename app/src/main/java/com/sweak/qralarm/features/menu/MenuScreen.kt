@@ -1,5 +1,7 @@
 package com.sweak.qralarm.features.menu
 
+import android.content.Intent
+import android.provider.Settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,24 +19,64 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.ui.compose_util.OnResume
+import com.sweak.qralarm.features.menu.components.AssignDefaultCodeBottomSheet
+import com.sweak.qralarm.features.menu.components.DefaultCodeEntry
 import com.sweak.qralarm.features.menu.components.MenuEntry
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MenuScreen(
     onBackClicked: () -> Unit,
     onIntroductionClicked: () -> Unit,
     onOptimizationGuideClicked: () -> Unit,
     onQRAlarmProClicked: () -> Unit,
-    onRateQRAlarmClicked: () -> Unit
+    onRateQRAlarmClicked: () -> Unit,
+    onScanDefaultCodeClicked: () -> Unit
 ) {
+    val menuViewModel = hiltViewModel<MenuViewModel>()
+    val menuScreenState by menuViewModel.state.collectAsStateWithLifecycle()
+
+    var isInTheCameraPermissionFlowForDefaultCodeScan by remember { mutableStateOf(false) }
+    val cameraPermissionState = rememberPermissionState(
+        permission = android.Manifest.permission.CAMERA
+    )
+
+    OnResume {
+        if (isInTheCameraPermissionFlowForDefaultCodeScan) {
+            isInTheCameraPermissionFlowForDefaultCodeScan = false
+
+            if (cameraPermissionState.status is PermissionStatus.Granted) {
+                onScanDefaultCodeClicked()
+            }
+        }
+    }
+
+    val context = LocalContext.current
+
     MenuScreenContent(
+        state = menuScreenState,
         onEvent = { event ->
             when (event) {
                 is MenuScreenUserEvent.OnBackClicked -> onBackClicked()
@@ -42,6 +84,39 @@ fun MenuScreen(
                 is MenuScreenUserEvent.OnOptimizationGuideClicked -> onOptimizationGuideClicked()
                 is MenuScreenUserEvent.OnQRAlarmProClicked -> onQRAlarmProClicked()
                 is MenuScreenUserEvent.OnRateQRAlarmClicked -> onRateQRAlarmClicked()
+                is MenuScreenUserEvent.TryScanSpecificDefaultCode -> {
+                    menuViewModel.onEvent(
+                        MenuScreenUserEvent.AssignDefaultCodeDialogVisible(isVisible = false)
+                    )
+
+                    if (!cameraPermissionState.status.isGranted) {
+                        isInTheCameraPermissionFlowForDefaultCodeScan = true
+
+                        if (cameraPermissionState.status.shouldShowRationale) {
+                            menuViewModel.onEvent(
+                                MenuScreenUserEvent.CameraPermissionDeniedDialogVisible(
+                                    isVisible = true
+                                )
+                            )
+                        } else {
+                            cameraPermissionState.launchPermissionRequest()
+                        }
+                    } else {
+                        onScanDefaultCodeClicked()
+                    }
+                }
+                is MenuScreenUserEvent.GoToApplicationSettingsClicked -> {
+                    menuViewModel.onEvent(
+                        MenuScreenUserEvent.CameraPermissionDeniedDialogVisible(isVisible = false)
+                    )
+
+                    context.startActivity(
+                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = "package:${context.packageName}".toUri()
+                        }
+                    )
+                }
+                else -> menuViewModel.onEvent(event)
             }
         }
     )
@@ -50,6 +125,7 @@ fun MenuScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreenContent(
+    state: MenuScreenState,
     onEvent: (MenuScreenUserEvent) -> Unit
 ) {
     Scaffold(
@@ -108,6 +184,15 @@ fun MenuScreenContent(
                     onClick = { onEvent(MenuScreenUserEvent.OnOptimizationGuideClicked) }
                 )
 
+                DefaultCodeEntry(
+                    onClick = {
+                        onEvent(
+                            MenuScreenUserEvent.AssignDefaultCodeDialogVisible(isVisible = true)
+                        )
+                    },
+                    assignedCode = state.defaultAlarmCode
+                )
+
                 MenuEntry(
                     title = stringResource(R.string.qralarm_pro),
                     onClick = { onEvent(MenuScreenUserEvent.OnQRAlarmProClicked) }
@@ -120,12 +205,53 @@ fun MenuScreenContent(
             }
         }
     }
+
+    if (state.isAssignDefaultCodeDialogVisible) {
+        AssignDefaultCodeBottomSheet(
+            onScanCodeClicked = {
+                onEvent(MenuScreenUserEvent.TryScanSpecificDefaultCode)
+            },
+            availableCodes = state.previouslySavedCodes,
+            shouldAllowCodeClearance = state.defaultAlarmCode != null,
+            onChooseCodeFromList = { chosenCode ->
+                onEvent(MenuScreenUserEvent.DefaultCodeChosenFromList(code = chosenCode))
+            },
+            onDismissRequest = {
+                onEvent(MenuScreenUserEvent.AssignDefaultCodeDialogVisible(isVisible = false))
+            },
+            onClearCodeClicked = {
+                onEvent(MenuScreenUserEvent.ClearDefaultAlarmCode)
+            }
+        )
+    }
+
+    if (state.isCameraPermissionDeniedDialogVisible) {
+        QRAlarmDialog(
+            title = stringResource(R.string.camera_permission_required),
+            message = stringResource(R.string.camera_permission_required_description),
+            onDismissRequest = {
+                onEvent(
+                    MenuScreenUserEvent.CameraPermissionDeniedDialogVisible(
+                        isVisible = false
+                    )
+                )
+            },
+            onPositiveClick = {
+                onEvent(MenuScreenUserEvent.GoToApplicationSettingsClicked)
+            },
+            positiveButtonText = stringResource(R.string.settings),
+            negativeButtonText = stringResource(R.string.cancel)
+        )
+    }
 }
 
 @Preview
 @Composable
 private fun MenuScreenContentPreview() {
     QRAlarmTheme {
-        MenuScreenContent(onEvent = {})
+        MenuScreenContent(
+            state = MenuScreenState(),
+            onEvent = {}
+        )
     }
 }

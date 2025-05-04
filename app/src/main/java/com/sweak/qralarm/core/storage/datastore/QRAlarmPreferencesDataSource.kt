@@ -76,11 +76,27 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun setDefaultAlarmCode(code: String?) {
+        dataStore.edit { preferences ->
+            preferences[DEFAULT_ALARM_CODE] = code ?: ""
+        }
+    }
+
+    fun getDefaultAlarmCode(): Flow<String?> {
+        return dataStore.data.map { preferences ->
+            val code = preferences[DEFAULT_ALARM_CODE]
+
+            if (code.isNullOrEmpty()) return@map null
+            else return@map code
+        }
+    }
+
     companion object {
         val TEMPORARY_SCANNED_CODE = stringPreferencesKey("temporaryScannedCode")
         val OPTIMIZATION_GUIDE_STATE = stringPreferencesKey("optimizationGuideState")
         val INTRODUCTION_FINISHED = booleanPreferencesKey("introductionFinished")
         val ALARM_MISSED_DETECTED = booleanPreferencesKey("alarmMissedDetected")
         val NEXT_RATE_PROMPT_TIME = longPreferencesKey("nextRatePromptTime")
+        val DEFAULT_ALARM_CODE = stringPreferencesKey("defaultAlarmCode")
     }
 }

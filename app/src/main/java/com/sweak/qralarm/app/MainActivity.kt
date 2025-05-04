@@ -173,7 +173,9 @@ class MainActivity : FragmentActivity() {
                             }
                         },
                         onScanCustomCodeClicked = {
-                            navController.navigateToCustomCodeScanner()
+                            navController.navigateToCustomCodeScanner(
+                                shouldScanForDefaultCode = false
+                            )
                         },
                         onAlarmDeleted = {
                             navController.popBackStack()
@@ -220,6 +222,11 @@ class MainActivity : FragmentActivity() {
                         },
                         onRateQRAlarmClicked = {
                             navController.navigateToRate()
+                        },
+                        onScanDefaultCodeClicked = {
+                            navController.navigateToCustomCodeScanner(
+                                shouldScanForDefaultCode = true
+                            )
                         }
                     )
 

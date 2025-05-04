@@ -59,6 +59,7 @@ class AddEditAlarmViewModel @Inject constructor(
 
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM_TO_EDIT] ?: 0
     private var hasUnsavedChanges = false
+    private var initialDefaultCodeUpdate = true
 
     var state = MutableStateFlow(AddEditAlarmFlowState())
 
@@ -71,6 +72,9 @@ class AddEditAlarmViewModel @Inject constructor(
                 .map { alarms ->
                     alarms
                         .mapNotNull { alarm -> alarm.assignedCode }
+                        .let { codes ->
+                            userDataRepository.defaultAlarmCode.first()?.let { codes + it } ?: codes
+                        }
                         .distinct()
                 }
                 .first()
@@ -119,7 +123,9 @@ class AddEditAlarmViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            userDataRepository.setTemporaryScannedCode(null)
+            userDataRepository.setTemporaryScannedCode(
+                if (idOfAlarm == 0L) userDataRepository.defaultAlarmCode.first() else null
+            )
 
             userDataRepository.temporaryScannedCode.collect { temporaryScannedCode ->
                 if (temporaryScannedCode != state.value.temporaryAssignedCode) {
@@ -130,11 +136,13 @@ class AddEditAlarmViewModel @Inject constructor(
                     currentState.copy(temporaryAssignedCode = temporaryScannedCode)
                 }
 
-                if (temporaryScannedCode != null) {
+                if (temporaryScannedCode != null && !initialDefaultCodeUpdate) {
                     backendEventsChannel.send(
                         AddEditAlarmFlowBackendEvent.CustomCodeAssignmentFinished
                     )
                 }
+
+                initialDefaultCodeUpdate = false
             }
         }
     }
