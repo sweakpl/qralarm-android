@@ -28,7 +28,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.features.add_edit_alarm.components.ComboBox
+import com.sweak.qralarm.core.designsystem.component.QRAlarmComboBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,7 +96,7 @@ fun AssignDefaultCodeBottomSheet(
 
                     val context = LocalContext.current
 
-                    ComboBox(
+                    QRAlarmComboBox(
                         menuItems = listOf(
                             context.getString(R.string.click_to_choose),
                             *availableCodes.toTypedArray()

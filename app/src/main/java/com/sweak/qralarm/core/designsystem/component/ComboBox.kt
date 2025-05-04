@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm.components
+package com.sweak.qralarm.core.designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,6 +14,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,7 +32,7 @@ import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.space
 
 @Composable
-fun ComboBox(
+fun QRAlarmComboBox(
     menuItems: List<Any>,
     selectedIndex: Int,
     onMenuItemClick: (Int) -> Unit,
@@ -75,6 +76,7 @@ fun ComboBox(
                 MaterialTheme.space.xSmall,
                 -MaterialTheme.space.xSmall
             ),
+            containerColor = Color.White,
             modifier = Modifier
                 .wrapContentWidth()
                 .background(
@@ -84,6 +86,9 @@ fun ComboBox(
         ) {
             menuItems.forEachIndexed { index, content ->
                 DropdownMenuItem(
+                    colors = MenuDefaults.itemColors(
+                        textColor = Color.Black
+                    ),
                     text = {
                         Text(
                             text = content.toString(),

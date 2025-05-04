@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmComboBox
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
@@ -79,7 +80,7 @@ fun AssignCodeBottomSheet(
 
                     val context = LocalContext.current
 
-                    ComboBox(
+                    QRAlarmComboBox(
                         menuItems = listOf(
                             context.getString(R.string.click_to_choose),
                             *availableCodes.toTypedArray()

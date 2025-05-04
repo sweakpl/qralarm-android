@@ -18,6 +18,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmComboBox
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.alarm.Alarm
@@ -71,7 +72,7 @@ fun ChooseSnoozeConfigurationBottomSheet(
                 modifier = Modifier.padding(bottom = MaterialTheme.space.small)
             )
 
-            ComboBox(
+            QRAlarmComboBox(
                 menuItems = availableSnoozeNumbers.map { snoozeNumber ->
                     pluralStringResource(
                         R.plurals.number_of_snoozes_plural,
@@ -97,7 +98,7 @@ fun ChooseSnoozeConfigurationBottomSheet(
                             )
                     )
 
-                    ComboBox(
+                    QRAlarmComboBox(
                         menuItems = availableSnoozeDurationsInMinutes.map { snoozeDuration ->
                             pluralStringResource(
                                 R.plurals.snooze_duration_plural,
