@@ -1,0 +1,3 @@
+* Added the option of choosing a default code for new alarms,
+* Performance improvements,
+* Bug fixes.
