@@ -30,7 +30,7 @@ class AlarmViewModel @Inject constructor(
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM] ?: 0
     private lateinit var alarm: Alarm
     private var isAlarmBeingStopped: Boolean = false
-    private val isTransient: Boolean = savedStateHandle[IS_TRANSIENT] ?: true
+    private val isTransient: Boolean = savedStateHandle.get<Boolean>(IS_TRANSIENT) != false
 
     var state = MutableStateFlow(AlarmScreenState())
 

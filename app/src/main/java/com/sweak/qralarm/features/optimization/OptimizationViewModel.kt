@@ -30,7 +30,7 @@ class OptimizationViewModel @Inject constructor(
         state.update { currentState ->
             currentState.copy(
                 shouldDelayInstructionsTransitions =
-                !(savedStateHandle[IS_LAUNCHED_FROM_MENU] ?: true)
+                    savedStateHandle.get<Boolean>(IS_LAUNCHED_FROM_MENU) == false
             )
         }
 

@@ -48,7 +48,7 @@ class AlarmActivity : FragmentActivity() {
 
         val alarmId = intent.extras?.getLong(EXTRA_ALARM_ID) ?: 0
         isLaunchedFromMainActivity =
-            intent.extras?.getBoolean(EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY) ?: false
+            intent.extras?.getBoolean(EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY) == true
 
         setContent {
             QRAlarmTheme {
@@ -181,7 +181,7 @@ class AlarmActivity : FragmentActivity() {
         super.onNewIntent(intent)
 
         isLaunchedFromMainActivity =
-            intent.extras?.getBoolean(EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY) ?: false
+            intent.extras?.getBoolean(EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY) == true
     }
 
     companion object {

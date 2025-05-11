@@ -28,7 +28,7 @@ class DisableAlarmScannerViewModel @Inject constructor(
 
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM] ?: 0
     private val isDisablingBeforeAlarmFired: Boolean =
-        savedStateHandle[IS_DISABLING_BEFORE_ALARM_FIRED] ?: false
+        savedStateHandle.get<Boolean>(IS_DISABLING_BEFORE_ALARM_FIRED) == true
 
     private lateinit var alarm: Alarm
     private var shouldScan = true

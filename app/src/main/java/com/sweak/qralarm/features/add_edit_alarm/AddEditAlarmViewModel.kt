@@ -336,7 +336,7 @@ class AddEditAlarmViewModel @Inject constructor(
             is AddEditAlarmScreenUserEvent.ToggleAlarmRingtonePlayback -> {
                 state.update { currentState ->
                     val isPlaying = currentState
-                        .availableRingtonesWithPlaybackState[event.ringtone] ?: false
+                        .availableRingtonesWithPlaybackState[event.ringtone] == true
 
                     if (!isPlaying) {
                         if (event.ringtone == Ringtone.CUSTOM_SOUND &&

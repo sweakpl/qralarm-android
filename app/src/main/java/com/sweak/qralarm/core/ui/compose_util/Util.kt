@@ -24,14 +24,14 @@ fun getAlarmRepeatingScheduleString(
         AlarmRepeatingMode.CUSTOM -> {
             val days = alarmRepeatingScheduleWrapper.alarmDaysOfWeek
 
-            if (days.size == 1) {
-                return days.first().shortName()
+            return if (days.size == 1) {
+                days.first().shortName()
             } else if (days.size == 2) {
-                return days.joinToString { it.shortName() }
+                days.joinToString { it.shortName() }
             } else if (areAllDaysAfterOneAnother(days)) {
-                return days.first().shortName() + " - " + days.last().shortName()
+                days.first().shortName() + " - " + days.last().shortName()
             } else {
-                return days.joinToString { it.shortName() }
+                days.joinToString { it.shortName() }
             }
         }
     }

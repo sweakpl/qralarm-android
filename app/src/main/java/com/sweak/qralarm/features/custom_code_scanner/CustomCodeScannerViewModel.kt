@@ -17,7 +17,8 @@ class CustomCodeScannerViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository
 ): ViewModel() {
 
-    private val shouldScanForDefaultCode = savedStateHandle[SHOULD_SCAN_FOR_DEFAULT_CODE] ?: false
+    private val shouldScanForDefaultCode =
+        savedStateHandle.get<Boolean>(SHOULD_SCAN_FOR_DEFAULT_CODE) == true
 
     private val backendEventsChannel = Channel<CustomCodeScannerScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()

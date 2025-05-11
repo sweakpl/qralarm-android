@@ -26,7 +26,7 @@ class QRAlarmTimePicker @JvmOverloads constructor(
             inflate(context, R.layout.qralarm_time_picker, this)
         ).timePicker
 
-        timePicker.descendantFocusability = TimePicker.FOCUS_BLOCK_DESCENDANTS
+        timePicker.descendantFocusability = FOCUS_BLOCK_DESCENDANTS
     }
 
     fun setOnTimeChangedListener(onTimeChangedListener: OnTimeChangedListener) {

@@ -21,7 +21,7 @@ class QRAlarmPreferencesDataSource @Inject constructor(
 
     fun getIntroductionFinished(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
-            preferences[INTRODUCTION_FINISHED] ?: false
+            preferences[INTRODUCTION_FINISHED] == true
         }
     }
 
@@ -60,7 +60,7 @@ class QRAlarmPreferencesDataSource @Inject constructor(
 
     fun getAlarmMissedDetected(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
-            preferences[ALARM_MISSED_DETECTED] ?: false
+            preferences[ALARM_MISSED_DETECTED] == true
         }
     }
 
