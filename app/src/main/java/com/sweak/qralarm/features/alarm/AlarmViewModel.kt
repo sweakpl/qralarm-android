@@ -150,7 +150,7 @@ class AlarmViewModel @Inject constructor(
 
                     snoozeAlarm(
                         alarmId = idOfAlarm,
-                        isReschedulingCurrentSnooze = false
+                        isReschedulingCurrentOrMissedSnooze = false
                     )
 
                     backendEventsChannel.send(AlarmScreenBackendEvent.SnoozeAlarm)
@@ -184,7 +184,10 @@ class AlarmViewModel @Inject constructor(
             if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
                 disableAlarm(alarmId = alarm.alarmId)
             } else if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
-                setAlarm(alarmId = alarm.alarmId)
+                setAlarm(
+                    alarmId = alarm.alarmId,
+                    isReschedulingMissedAlarm = false
+                )
             }
         }
     }

@@ -670,7 +670,10 @@ class AddEditAlarmViewModel @Inject constructor(
 
             qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
 
-            val setAlarmResult = setAlarm(alarmId = alarmId)
+            val setAlarmResult = setAlarm(
+                alarmId = alarmId,
+                isReschedulingMissedAlarm = false
+            )
 
             if (setAlarmResult is SetAlarm.Result.Success) {
                 backendEventsChannel.send(

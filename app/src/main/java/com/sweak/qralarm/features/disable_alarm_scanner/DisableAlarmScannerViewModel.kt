@@ -139,7 +139,10 @@ class DisableAlarmScannerViewModel @Inject constructor(
             if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
                 disableAlarm(alarmId = alarm.alarmId)
             } else if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
-                setAlarm(alarmId = alarm.alarmId)
+                setAlarm(
+                    alarmId = alarm.alarmId,
+                    isReschedulingMissedAlarm = false
+                )
             }
         }
     }

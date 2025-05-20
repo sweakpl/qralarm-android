@@ -19,41 +19,79 @@ class RescheduleAlarms @Inject constructor(
                 disableAlarm(alarmId = alarm.alarmId)
             }
         } else {
+            val fiveMinutesInMillis = 5 * 60000
+            val currentTimeInMillis = System.currentTimeMillis()
+
             alarmsRepository.getAllAlarms().first().forEach { alarm ->
                 if (alarm.snoozeConfig.isAlarmSnoozed &&
                     alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis != null
                 ) {
-                    if (alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis < System.currentTimeMillis()) {
-                        qrAlarmManager.notifyAboutMissedAlarm()
-                        userDataRepository.setAlarmMissedDetected(detected = true)
+                    val snoozedAlarmTimeInMillis = alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis
 
-                        if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                            disableAlarm(alarmId = alarm.alarmId)
-                        } else {
-                            alarmsRepository.setAlarmSnoozed(
+                    // The snoozed alarm has been missed:
+                    if (snoozedAlarmTimeInMillis < currentTimeInMillis) {
+                        // If it was missed by less than five minutes - reschedule:
+                        if (snoozedAlarmTimeInMillis + fiveMinutesInMillis > currentTimeInMillis) {
+                            snoozeAlarm(
                                 alarmId = alarm.alarmId,
-                                snoozed = false
+                                isReschedulingCurrentOrMissedSnooze = true
                             )
-                            setAlarm(alarmId = alarm.alarmId)
+                        // If it was missed by more than five minutes - notify the user:
+                        } else {
+                            qrAlarmManager.notifyAboutMissedAlarm()
+                            userDataRepository.setAlarmMissedDetected(detected = true)
+
+                            if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
+                                disableAlarm(alarmId = alarm.alarmId)
+                            } else {
+                                alarmsRepository.setAlarmSnoozed(
+                                    alarmId = alarm.alarmId,
+                                    snoozed = false
+                                )
+                                setAlarm(
+                                    alarmId = alarm.alarmId,
+                                    isReschedulingMissedAlarm = false
+                                )
+                            }
                         }
+                    // The snoozed alarm is still in the future - reschedule:
                     } else {
                         snoozeAlarm(
                             alarmId = alarm.alarmId,
-                            isReschedulingCurrentSnooze = true
+                            isReschedulingCurrentOrMissedSnooze = true
                         )
                     }
                 } else if (alarm.isAlarmEnabled) {
-                    if (alarm.nextAlarmTimeInMillis < System.currentTimeMillis()) {
-                        qrAlarmManager.notifyAboutMissedAlarm()
-                        userDataRepository.setAlarmMissedDetected(detected = true)
+                    val alarmTimeInMillis = alarm.nextAlarmTimeInMillis
 
-                        if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                            disableAlarm(alarmId = alarm.alarmId)
+                    // The alarm has been missed
+                    if (alarmTimeInMillis < currentTimeInMillis) {
+                        // If it was missed by less than five minutes - reschedule:
+                        if (alarmTimeInMillis + fiveMinutesInMillis > currentTimeInMillis) {
+                            setAlarm(
+                                alarmId = alarm.alarmId,
+                                isReschedulingMissedAlarm = true
+                            )
+                        // If it was missed by more than five minutes - notify the user:
                         } else {
-                            setAlarm(alarmId = alarm.alarmId)
+                            qrAlarmManager.notifyAboutMissedAlarm()
+                            userDataRepository.setAlarmMissedDetected(detected = true)
+
+                            if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
+                                disableAlarm(alarmId = alarm.alarmId)
+                            } else {
+                                setAlarm(
+                                    alarmId = alarm.alarmId,
+                                    isReschedulingMissedAlarm = false
+                                )
+                            }
                         }
+                    // The alarm is still in the future - reschedule:
                     } else {
-                        setAlarm(alarmId = alarm.alarmId)
+                        setAlarm(
+                            alarmId = alarm.alarmId,
+                            isReschedulingMissedAlarm = false
+                        )
                     }
                 }
             }

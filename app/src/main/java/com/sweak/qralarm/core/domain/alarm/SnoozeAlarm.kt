@@ -8,10 +8,10 @@ class SnoozeAlarm @Inject constructor(
     private val qrAlarmManager: QRAlarmManager,
     private val alarmsRepository: AlarmsRepository
 ) {
-    suspend operator fun invoke(alarmId: Long, isReschedulingCurrentSnooze: Boolean) {
+    suspend operator fun invoke(alarmId: Long, isReschedulingCurrentOrMissedSnooze: Boolean) {
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return
         val snoozeAlarmTimeInMillis =
-            if (isReschedulingCurrentSnooze) alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis
+            if (isReschedulingCurrentOrMissedSnooze) alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis
             else ZonedDateTime.now()
                 .withSecond(0)
                 .withNano(0)
@@ -23,7 +23,7 @@ class SnoozeAlarm @Inject constructor(
             alarm = alarm.copy(
                 snoozeConfig = alarm.snoozeConfig.copy(
                     numberOfSnoozesLeft =
-                    if (isReschedulingCurrentSnooze) alarm.snoozeConfig.numberOfSnoozesLeft
+                    if (isReschedulingCurrentOrMissedSnooze) alarm.snoozeConfig.numberOfSnoozesLeft
                     else alarm.snoozeConfig.numberOfSnoozesLeft - 1,
                     isAlarmSnoozed = true,
                     nextSnoozedAlarmTimeInMillis = snoozeAlarmTimeInMillis

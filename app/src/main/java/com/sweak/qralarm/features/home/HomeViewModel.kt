@@ -352,7 +352,10 @@ class HomeViewModel @Inject constructor(
                     alarmId = alarmId,
                     skip = false
                 )
-                setAlarmResult = setAlarm(alarmId = alarmId)
+                setAlarmResult = setAlarm(
+                    alarmId = alarmId,
+                    isReschedulingMissedAlarm = false
+                )
             } else {
                 disableAlarm(alarmId = alarmId)
             }

@@ -8,7 +8,7 @@ class SetAlarm @Inject constructor(
     private val qrAlarmManager: QRAlarmManager,
     private val alarmsRepository: AlarmsRepository
 ) {
-    suspend operator fun invoke(alarmId: Long): Result {
+    suspend operator fun invoke(alarmId: Long, isReschedulingMissedAlarm: Boolean): Result {
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return Result.Failure
         val currentDateTime = ZonedDateTime.now()
         var alarmDateTime = ZonedDateTime.now()
@@ -17,25 +17,29 @@ class SetAlarm @Inject constructor(
             .withSecond(0)
             .withNano(0)
 
-        val alarmTimeInMillis = when (alarm.repeatingMode) {
-            is Alarm.RepeatingMode.Once -> {
-                if (alarmDateTime <= currentDateTime) {
-                    alarmDateTime = alarmDateTime.plusDays(1)
-                }
+        val alarmTimeInMillis = if (isReschedulingMissedAlarm) {
+            alarmDateTime.toInstant().toEpochMilli()
+        } else {
+            when (alarm.repeatingMode) {
+                is Alarm.RepeatingMode.Once -> {
+                    if (alarmDateTime <= currentDateTime) {
+                        alarmDateTime = alarmDateTime.plusDays(1)
+                    }
 
-                alarmDateTime.toInstant().toEpochMilli()
-            }
-            is Alarm.RepeatingMode.Days -> {
-                while (alarmDateTime <= currentDateTime ||
-                    alarmDateTime.dayOfWeek !in alarm.repeatingMode.repeatingDaysOfWeek ||
-                    alarm.skipAlarmUntilTimeInMillis?.run {
-                        return@run alarmDateTime.toInstant().toEpochMilli() <= this
-                    } == true
-                ) {
-                    alarmDateTime = alarmDateTime.plusDays(1)
+                    alarmDateTime.toInstant().toEpochMilli()
                 }
+                is Alarm.RepeatingMode.Days -> {
+                    while (alarmDateTime <= currentDateTime ||
+                        alarmDateTime.dayOfWeek !in alarm.repeatingMode.repeatingDaysOfWeek ||
+                        alarm.skipAlarmUntilTimeInMillis?.run {
+                            return@run alarmDateTime.toInstant().toEpochMilli() <= this
+                        } == true
+                    ) {
+                        alarmDateTime = alarmDateTime.plusDays(1)
+                    }
 
-                alarmDateTime.toInstant().toEpochMilli()
+                    alarmDateTime.toInstant().toEpochMilli()
+                }
             }
         }
 
@@ -56,13 +60,15 @@ class SetAlarm @Inject constructor(
             )
         }
 
-        val upcomingAlarmNotificationTimeInMillis =
-            alarmDateTime.minusHours(2).toInstant().toEpochMilli()
+        if (!isReschedulingMissedAlarm) {
+            val upcomingAlarmNotificationTimeInMillis =
+                alarmDateTime.minusHours(2).toInstant().toEpochMilli()
 
-        qrAlarmManager.scheduleUpcomingAlarmNotification(
-            alarmId = alarmId,
-            upcomingAlarmNotificationTimeInMillis = upcomingAlarmNotificationTimeInMillis
-        )
+            qrAlarmManager.scheduleUpcomingAlarmNotification(
+                alarmId = alarmId,
+                upcomingAlarmNotificationTimeInMillis = upcomingAlarmNotificationTimeInMillis
+            )
+        }
 
         return Result.Success(alarmTimInMillis = alarmTimeInMillis)
     }
