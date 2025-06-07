@@ -177,4 +177,6 @@
     <string name="clear_default_code">清除默认代码</string>
     <string name="keep_ringer_on">保持铃声开启</string>
     <string name="keep_ringer_on_description">不允许使用静音/振动响铃模式，因为这会干扰闹钟声音。</string>
+    <string name="active_alarms">活动警报</string>
+    <string name="non_active_alarms">非活动警报</string>
 </resources>

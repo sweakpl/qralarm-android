@@ -189,4 +189,6 @@
     <string name="clear_default_code">Borrar código por defecto</string>
     <string name="keep_ringer_on">Mantener el timbre encendido</string>
     <string name="keep_ringer_on_description">No permita los modos de timbre silencioso/vibración que podrían interrumpir el sonido de la alarma.</string>
+    <string name="active_alarms">Alarmas activas</string>
+    <string name="non_active_alarms">Alarmas no activas</string>
 </resources>

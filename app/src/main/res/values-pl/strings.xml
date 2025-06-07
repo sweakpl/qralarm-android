@@ -195,4 +195,6 @@
     <string name="clear_default_code">Wyczyść kod domyślny</string>
     <string name="keep_ringer_on">Włączony dzwonek</string>
     <string name="keep_ringer_on_description">Nie zezwalaj na tryby cichego/wibracyjnego dzwonka, które mogą zakłócać dźwięk alarmu.</string>
+    <string name="active_alarms">Aktywne alarmy</string>
+    <string name="non_active_alarms">Nieaktywne alarmy</string>
 </resources>

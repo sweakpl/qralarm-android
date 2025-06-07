@@ -183,4 +183,6 @@
     <string name="clear_default_code">Varsayılan kodu temizle</string>
     <string name="keep_ringer_on">Zili açık tut</string>
     <string name="keep_ringer_on_description">Alarm sesini bozabilecek sessiz/titreşimli zil modlarına izin vermeyin.</string>
+    <string name="active_alarms">Aktif alarmlar</string>
+    <string name="non_active_alarms">Aktif olmayan alarmlar</string>
 </resources>

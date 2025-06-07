@@ -3,6 +3,7 @@ package com.sweak.qralarm.features.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CanManipulateAlarm
 import com.sweak.qralarm.core.domain.alarm.CopyAlarm
@@ -59,35 +60,13 @@ class HomeViewModel @Inject constructor(
                     delay(500)
                 }
 
+                val (activeAlarms, nonActiveAlarms) = allAlarms.partition { it.isAlarmEnabled }
+
                 state.update { currentState ->
                     currentState.copy(
                         isLoading = false,
-                        alarmWrappers = allAlarms.mapNotNull { alarm ->
-                            val alarmRepeatingScheduleWrapper =
-                                convertAlarmRepeatingMode(alarm.repeatingMode)
-                                    ?: return@mapNotNull null
-
-                            AlarmWrapper(
-                                alarmId = alarm.alarmId,
-                                alarmHourOfDay = alarm.alarmHourOfDay,
-                                alarmMinute = alarm.alarmMinute,
-                                alarmLabel = alarm.alarmLabel,
-                                nextAlarmTimeInMillis = alarm.nextAlarmTimeInMillis,
-                                alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
-                                isAlarmEnabled = alarm.isAlarmEnabled,
-                                isCodeEnabled = alarm.isUsingCode,
-                                skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig(
-                                    isSkippingSupported =
-                                    alarmRepeatingScheduleWrapper.alarmRepeatingMode != ONLY_ONCE &&
-                                            alarm.isAlarmEnabled,
-                                    isSkippingNextAlarm =
-                                    alarm.skipAlarmUntilTimeInMillis != null &&
-                                            alarm.skipAlarmUntilTimeInMillis > System.currentTimeMillis()
-                                )
-                            )
-                        }.sortedWith(
-                            compareBy(AlarmWrapper::alarmHourOfDay, AlarmWrapper::alarmMinute)
-                        )
+                        activeAlarmWrappers = convertToAlarmWrappers(activeAlarms),
+                        nonActiveAlarmWrappers = convertToAlarmWrappers(nonActiveAlarms)
                     )
                 }
 
@@ -121,6 +100,34 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun convertToAlarmWrappers(alarms: List<Alarm>): List<AlarmWrapper> {
+        return alarms.mapNotNull { alarm ->
+            val alarmRepeatingScheduleWrapper =
+                convertAlarmRepeatingMode(alarm.repeatingMode) ?: return@mapNotNull null
+
+            return@mapNotNull AlarmWrapper(
+                alarmId = alarm.alarmId,
+                alarmHourOfDay = alarm.alarmHourOfDay,
+                alarmMinute = alarm.alarmMinute,
+                alarmLabel = alarm.alarmLabel,
+                nextAlarmTimeInMillis = alarm.nextAlarmTimeInMillis,
+                alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
+                isAlarmEnabled = alarm.isAlarmEnabled,
+                isCodeEnabled = alarm.isUsingCode,
+                skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig(
+                    isSkippingSupported =
+                        alarmRepeatingScheduleWrapper.alarmRepeatingMode != ONLY_ONCE &&
+                                alarm.isAlarmEnabled,
+                    isSkippingNextAlarm =
+                        alarm.skipAlarmUntilTimeInMillis != null &&
+                                alarm.skipAlarmUntilTimeInMillis > System.currentTimeMillis()
+                )
+            )
+        }.sortedWith(
+            compareBy(AlarmWrapper::alarmHourOfDay, AlarmWrapper::alarmMinute)
+        )
     }
 
     fun onEvent(event: HomeScreenUserEvent) {
@@ -214,7 +221,7 @@ class HomeViewModel @Inject constructor(
                         )
                     }
 
-                    val isCodeEnabled = currentState.alarmWrappers
+                    val isCodeEnabled = currentState.activeAlarmWrappers
                         .find { it.alarmId == event.alarmId }?.isCodeEnabled
 
                     if ((!event.cameraPermissionStatus && isCodeEnabled == true) ||

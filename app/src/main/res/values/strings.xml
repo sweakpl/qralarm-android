@@ -188,4 +188,6 @@
     <string name="clear_default_code">Clear default code</string>
     <string name="keep_ringer_on">Keep ringer on</string>
     <string name="keep_ringer_on_description">Don\'t allow silent/vibration ringer modes which could disrupt the alarm sound.</string>
+    <string name="active_alarms">Active alarms</string>
+    <string name="non_active_alarms">Non-active alarms</string>
 </resources>

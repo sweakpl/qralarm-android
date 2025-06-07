@@ -189,4 +189,6 @@
     <string name="clear_default_code">Azzeramento del codice predefinito</string>
     <string name="keep_ringer_on">Mantenere la suoneria accesa</string>
     <string name="keep_ringer_on_description">Non consentire le modalità di suoneria silenziosa/vibrazione che potrebbero disturbare il suono della sveglia.</string>
+    <string name="active_alarms">Allarmi attivi</string>
+    <string name="non_active_alarms">Allarmi non attivi</string>
 </resources>

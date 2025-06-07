@@ -189,4 +189,6 @@
     <string name="clear_default_code">Effacer le code par défaut</string>
     <string name="keep_ringer_on">Maintien de la sonnerie</string>
     <string name="keep_ringer_on_description">Ne pas autoriser les modes de sonnerie silencieux/vibration qui pourraient perturber le son de l\'alarme.</string>
+    <string name="active_alarms">Alarmes actives</string>
+    <string name="non_active_alarms">Alarmes non actives</string>
 </resources>

@@ -195,4 +195,6 @@
     <string name="clear_default_code">Очистити код за замовчуванням</string>
     <string name="keep_ringer_on">Не вимикайте дзвінок</string>
     <string name="keep_ringer_on_description">Не допускайте режимів беззвучного/вібраційного дзвінка, які можуть перебити звук будильника.</string>
+    <string name="active_alarms">Активні тривоги</string>
+    <string name="non_active_alarms">Неактивні тривоги</string>
 </resources>

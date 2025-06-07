@@ -360,9 +360,67 @@ private fun HomeScreenContent(
                         }
                     }
 
-                    if (state.alarmWrappers.isNotEmpty()) {
+                    if (state.activeAlarmWrappers.isEmpty() &&
+                        state.nonActiveAlarmWrappers.isEmpty()
+                    ) {
+                        item {
+                            OutlinedCard(
+                                colors = CardDefaults.outlinedCardColors(
+                                    containerColor = Color.Transparent,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                border = BorderStroke(
+                                    width = 1.dp,
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = MaterialTheme.space.medium)
+                            ) {
+                                Column(
+                                    verticalArrangement =
+                                        Arrangement.spacedBy(MaterialTheme.space.small),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(
+                                            horizontal = MaterialTheme.space.mediumLarge,
+                                            vertical = MaterialTheme.space.medium
+                                        )
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.no_alarms),
+                                        style = MaterialTheme.typography.titleMedium
+                                    )
+
+                                    Text(
+                                        text = stringResource(R.string.create_using_button),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (state.activeAlarmWrappers.isNotEmpty()) {
+                        item {
+                            Text(
+                                text = stringResource(R.string.active_alarms),
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier
+                                    .padding(
+                                        start = MaterialTheme.space.medium,
+                                        end = MaterialTheme.space.medium,
+                                        bottom = MaterialTheme.space.medium
+                                    )
+                                    .animateItem()
+                            )
+                        }
+
                         items(
-                            items = state.alarmWrappers,
+                            items = state.activeAlarmWrappers,
                             key = { it.alarmId }
                         ) {
                             AlarmCard(
@@ -402,44 +460,64 @@ private fun HomeScreenContent(
                                     .animateItem()
                             )
                         }
-                    } else {
+                    }
+
+                    if (state.nonActiveAlarmWrappers.isNotEmpty()) {
                         item {
-                            OutlinedCard(
-                                colors = CardDefaults.outlinedCardColors(
-                                    containerColor = Color.Transparent,
-                                    contentColor = MaterialTheme.colorScheme.onPrimary
-                                ),
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = MaterialTheme.colorScheme.onPrimary
-                                ),
+                            Text(
+                                text = stringResource(R.string.non_active_alarms),
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier
+                                    .padding(
+                                        start = MaterialTheme.space.medium,
+                                        end = MaterialTheme.space.medium,
+                                        bottom = MaterialTheme.space.medium
+                                    )
+                                    .animateItem()
+                            )
+                        }
+
+                        items(
+                            items = state.nonActiveAlarmWrappers,
+                            key = { it.alarmId }
+                        ) {
+                            AlarmCard(
+                                alarmWrapper = it,
+                                onClick = { alarmId ->
+                                    onEvent(HomeScreenUserEvent.EditAlarmClicked(alarmId = alarmId))
+                                },
+                                onAlarmEnabledChanged = { alarmId, enabled ->
+                                    onEvent(
+                                        HomeScreenUserEvent.AlarmEnabledChangeClicked(
+                                            alarmId = alarmId,
+                                            enabled = enabled
+                                        )
+                                    )
+                                },
+                                onSkipNextAlarmChanged = { alarmId, skip ->
+                                    onEvent(
+                                        HomeScreenUserEvent.SkipNextAlarmChanged(
+                                            alarmId = alarmId,
+                                            skip = skip
+                                        )
+                                    )
+                                },
+                                onCopyAlarmClick = { alarmId ->
+                                    onEvent(HomeScreenUserEvent.CopyAlarm(alarmId = alarmId))
+                                },
+                                onDeleteAlarmClick = { alarmId ->
+                                    onEvent(HomeScreenUserEvent.TryDeleteAlarm(alarmId = alarmId))
+                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(horizontal = MaterialTheme.space.medium)
-                            ) {
-                                Column(
-                                    verticalArrangement =
-                                    Arrangement.spacedBy(MaterialTheme.space.small),
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(
-                                            horizontal = MaterialTheme.space.mediumLarge,
-                                            vertical = MaterialTheme.space.medium
-                                        )
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.no_alarms),
-                                        style = MaterialTheme.typography.titleMedium
+                                    .padding(
+                                        start = MaterialTheme.space.medium,
+                                        end = MaterialTheme.space.medium,
+                                        bottom = MaterialTheme.space.medium
                                     )
-
-                                    Text(
-                                        text = stringResource(R.string.create_using_button),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                            }
+                                    .animateItem()
+                            )
                         }
                     }
 
@@ -560,7 +638,7 @@ private fun HomeScreenContentPreview() {
         HomeScreenContent(
             state = HomeScreenState(
                 isLoading = false,
-                alarmWrappers = listOf(
+                activeAlarmWrappers = listOf(
                     AlarmWrapper(
                         alarmId = 0,
                         alarmHourOfDay = 8,
@@ -569,6 +647,19 @@ private fun HomeScreenContentPreview() {
                         nextAlarmTimeInMillis = 1732604400000,
                         alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),
                         isAlarmEnabled = true,
+                        isCodeEnabled = false,
+                        skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig()
+                    )
+                ),
+                nonActiveAlarmWrappers = listOf(
+                    AlarmWrapper(
+                        alarmId = 1,
+                        alarmHourOfDay = 9,
+                        alarmMinute = 0,
+                        alarmLabel = "Weekend alarm",
+                        nextAlarmTimeInMillis = 1732604400000,
+                        alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),
+                        isAlarmEnabled = false,
                         isCodeEnabled = false,
                         skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig()
                     )
