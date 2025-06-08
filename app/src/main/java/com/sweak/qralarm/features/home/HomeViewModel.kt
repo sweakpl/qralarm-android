@@ -253,7 +253,7 @@ class HomeViewModel @Inject constructor(
                         )
                     }
 
-                    val isCodeEnabled = currentState.activeAlarmWrappers
+                    val isCodeEnabled = currentState.nonActiveAlarmWrappers
                         .find { it.alarmId == event.alarmId }?.isCodeEnabled
 
                     if ((!event.cameraPermissionStatus && isCodeEnabled == true) ||
