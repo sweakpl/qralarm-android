@@ -3,6 +3,7 @@ package com.sweak.qralarm.features.add_edit_alarm
 import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,6 @@ import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.convertAlarmRepeatingMode
-import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
@@ -25,6 +25,7 @@ import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEd
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.navigation.ID_OF_ALARM_TO_EDIT
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -32,6 +33,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -40,9 +42,6 @@ import java.io.OutputStream
 import java.time.DayOfWeek
 import java.time.ZonedDateTime
 import javax.inject.Inject
-import androidx.core.net.toUri
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class AddEditAlarmViewModel @Inject constructor(
@@ -676,13 +675,7 @@ class AddEditAlarmViewModel @Inject constructor(
             )
 
             if (setAlarmResult is SetAlarm.Result.Success) {
-                backendEventsChannel.send(
-                    AddEditAlarmFlowBackendEvent.AlarmSaved(
-                        daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
-                            alarmTimeInMillis = setAlarmResult.alarmTimInMillis
-                        )
-                    )
-                )
+                backendEventsChannel.send(AddEditAlarmFlowBackendEvent.AlarmSaved)
             }
         }
     }

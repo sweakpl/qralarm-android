@@ -54,19 +54,45 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             alarmsRepository.getAllAlarms().collect { allAlarms ->
+                val (activeAlarms, nonActiveAlarms) = allAlarms.partition { it.isAlarmEnabled }
+                var newlyEnabledAlarm: Alarm? = null
+
                 if (hasEnteredAddEditAlarmScreen) {
                     // Delay added for the alarms list animation to be visible as the Flow update
                     // Comes while the HomeScreen is still hidden behind AddEditAlarmScreen:
                     delay(500)
-                }
 
-                val (activeAlarms, nonActiveAlarms) = allAlarms.partition { it.isAlarmEnabled }
+                    // Compare the newly calculated activeAlarms and nonActiveAlarms with the
+                    // activeAlarmWrappers and nonActiveAlarmWrappers in the state to determine
+                    // which one has been just enabled to show a snackbar message:
+                    val allPreviousAlarms =
+                        state.value.activeAlarmWrappers + state.value.nonActiveAlarmWrappers
+                    newlyEnabledAlarm = activeAlarms.find { newAlarm ->
+                        allPreviousAlarms.none { prevAlarm ->
+                            prevAlarm.alarmId == newAlarm.alarmId
+                        } || allPreviousAlarms.any { prevAlarm ->
+                            prevAlarm.alarmId == newAlarm.alarmId &&
+                                    !prevAlarm.isAlarmEnabled && newAlarm.isAlarmEnabled
+                        }
+                    }
+                }
 
                 state.update { currentState ->
                     currentState.copy(
                         isLoading = false,
                         activeAlarmWrappers = convertToAlarmWrappers(activeAlarms),
-                        nonActiveAlarmWrappers = convertToAlarmWrappers(nonActiveAlarms)
+                        nonActiveAlarmWrappers = convertToAlarmWrappers(nonActiveAlarms),
+                        upcomingAlarmMessages = if (newlyEnabledAlarm != null) {
+                            currentState.upcomingAlarmMessages + HomeScreenState.UpcomingAlarmMessage(
+                                alarmId = newlyEnabledAlarm.alarmId,
+                                daysHoursAndMinutesUntilAlarm =
+                                    getDaysHoursAndMinutesUntilAlarm(
+                                        alarmTimeInMillis = newlyEnabledAlarm.nextAlarmTimeInMillis
+                                    )
+                            )
+                        } else {
+                            currentState.upcomingAlarmMessages
+                        }
                     )
                 }
 
@@ -132,11 +158,15 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeScreenUserEvent) {
         when (event) {
+            is HomeScreenUserEvent.AddNewAlarm -> viewModelScope.launch {
+                hasEnteredAddEditAlarmScreen = true
+                backendEventsChannel.send(HomeScreenBackendEvent.RedirectToAddEditAlarm())
+            }
             is HomeScreenUserEvent.EditAlarmClicked -> viewModelScope.launch {
                 if (canManipulateAlarm(alarmId = event.alarmId)) {
                     hasEnteredAddEditAlarmScreen = true
                     backendEventsChannel.send(
-                        HomeScreenBackendEvent.RedirectToEditAlarm(alarmId = event.alarmId)
+                        HomeScreenBackendEvent.RedirectToAddEditAlarm(alarmId = event.alarmId)
                     )
                 } else {
                     backendEventsChannel.send(HomeScreenBackendEvent.CanNotEditAlarm)
@@ -145,9 +175,11 @@ class HomeViewModel @Inject constructor(
             is HomeScreenUserEvent.TryChangeAlarmEnabled -> {
                 if (event.enabled == false) {
                     viewModelScope.launch {
-                        if (canManipulateAlarm(alarmId = event.alarmId!!)) {
+                        if (event.ignoreOneHourLock ||
+                            canManipulateAlarm(alarmId = event.alarmId!!)
+                        ) {
                             toggleAlarm(
-                                alarmId = event.alarmId,
+                                alarmId = event.alarmId!!,
                                 enabled = event.enabled
                             )
                         } else {
@@ -340,6 +372,15 @@ class HomeViewModel @Inject constructor(
             is HomeScreenUserEvent.CopyAlarm -> viewModelScope.launch {
                 copyAlarm(event.alarmId)
             }
+            is HomeScreenUserEvent.UpcomingAlarmMessageShown -> {
+                state.update { currentState ->
+                    currentState.copy(
+                        upcomingAlarmMessages = currentState.upcomingAlarmMessages.filter {
+                            it.alarmId != event.alarmId
+                        }
+                    )
+                }
+            }
             else -> { /* no-op */ }
         }
     }
@@ -369,13 +410,18 @@ class HomeViewModel @Inject constructor(
 
             setAlarmResult?.let { result ->
                 if (result is SetAlarm.Result.Success) {
-                    backendEventsChannel.send(
-                        HomeScreenBackendEvent.AlarmSet(
-                            daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
-                                alarmTimeInMillis = result.alarmTimInMillis
-                            )
+                    state.update { currentState ->
+                        currentState.copy(
+                            upcomingAlarmMessages = currentState.upcomingAlarmMessages +
+                                    HomeScreenState.UpcomingAlarmMessage(
+                                        alarmId = alarmId,
+                                        daysHoursAndMinutesUntilAlarm =
+                                            getDaysHoursAndMinutesUntilAlarm(
+                                                alarmTimeInMillis = result.alarmTimInMillis
+                                            )
+                                    )
                         )
-                    )
+                    }
                 }
             }
         }.invokeOnCompletion {

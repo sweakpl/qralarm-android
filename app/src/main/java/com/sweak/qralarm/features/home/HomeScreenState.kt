@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.home
 
+import androidx.compose.material3.SnackbarHostState
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 
 data class HomeScreenState(
@@ -11,7 +12,9 @@ data class HomeScreenState(
     val isCameraPermissionDeniedDialogVisible: Boolean = false,
     val isOptimizationGuideDialogVisible: Boolean = false,
     val isAlarmMissedDialogVisible: Boolean = false,
-    val deleteAlarmDialogState: DeleteAlarmDialogState = DeleteAlarmDialogState()
+    val deleteAlarmDialogState: DeleteAlarmDialogState = DeleteAlarmDialogState(),
+    val upcomingAlarmMessages: List<UpcomingAlarmMessage> = emptyList(),
+    val snackbarHostState: SnackbarHostState = SnackbarHostState()
 ) {
     data class PermissionsDialogState(
         val isVisible: Boolean = false,
@@ -24,5 +27,10 @@ data class HomeScreenState(
     data class DeleteAlarmDialogState(
         val isVisible: Boolean = false,
         val alarmId: Long? = null
+    )
+
+    data class UpcomingAlarmMessage(
+        val alarmId: Long,
+        val daysHoursAndMinutesUntilAlarm: Triple<Int, Int, Int>
     )
 }

@@ -31,15 +31,20 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -96,37 +101,13 @@ fun HomeScreen(
         flow = homeViewModel.backendEvents,
         onEvent = { event ->
             when (event) {
-                is HomeScreenBackendEvent.AlarmSet -> {
-                    val days = event.daysHoursAndMinutesUntilAlarm.first
-                    val hours = event.daysHoursAndMinutesUntilAlarm.second
-                    val minutes = event.daysHoursAndMinutesUntilAlarm.third
-                    val resources = context.resources
-
-                    Toast.makeText(
-                        context,
-                        buildString {
-                            append(context.getString(R.string.alarm_in))
-                            append(' ')
-                            if (days != 0) {
-                                append(resources.getQuantityString(R.plurals.days, days, days))
-                                append(' ')
-                            }
-                            if (hours != 0 || days != 0) {
-                                append(resources.getQuantityString(R.plurals.hours, hours, hours))
-                                append(' ')
-                            }
-                            append(
-                                resources.getQuantityString(
-                                    R.plurals.minutes,
-                                    if (minutes == 0) 1 else minutes,
-                                    if (minutes == 0) 1 else minutes
-                                )
-                            )
-                        },
-                        Toast.LENGTH_LONG
-                    ).show()
+                is HomeScreenBackendEvent.RedirectToAddEditAlarm -> {
+                    if (event.alarmId == null) {
+                        onAddNewAlarm()
+                    } else {
+                        onEditAlarm(event.alarmId)
+                    }
                 }
-                is HomeScreenBackendEvent.RedirectToEditAlarm -> onEditAlarm(event.alarmId)
                 is HomeScreenBackendEvent.CanNotEditAlarm -> {
                     Toast.makeText(
                         context,
@@ -164,12 +145,16 @@ fun HomeScreen(
         onEvent = { event ->
             when (event) {
                 is HomeScreenUserEvent.MenuClicked -> onMenuClicked()
-                is HomeScreenUserEvent.AddNewAlarm -> onAddNewAlarm()
                 is HomeScreenUserEvent.AlarmEnabledChangeClicked -> {
+                    if (homeScreenState.upcomingAlarmMessages.firstOrNull()?.alarmId == event.alarmId) {
+                        homeScreenState.snackbarHostState.currentSnackbarData?.dismiss()
+                    }
+
                     homeViewModel.onEvent(
                         event = HomeScreenUserEvent.TryChangeAlarmEnabled(
                             alarmId = event.alarmId,
                             enabled = event.enabled,
+                            ignoreOneHourLock = event.fromSnackbar,
                             cameraPermissionStatus = cameraPermissionState.status.isGranted,
                             notificationsPermissionStatus =
                             notificationsPermissionState.status.isGranted
@@ -257,6 +242,53 @@ private fun HomeScreenContent(
     state: HomeScreenState,
     onEvent: (HomeScreenUserEvent) -> Unit
 ) {
+    if (state.upcomingAlarmMessages.isNotEmpty()) {
+        val upcomingAlarmMessage = state.upcomingAlarmMessages.first()
+        val upcomingAlarmId = upcomingAlarmMessage.alarmId
+        val days = upcomingAlarmMessage.daysHoursAndMinutesUntilAlarm.first
+        val hours = upcomingAlarmMessage.daysHoursAndMinutesUntilAlarm.second
+        val minutes = upcomingAlarmMessage.daysHoursAndMinutesUntilAlarm.third
+        val upcomingAlarmMessageBody = buildString {
+            append(stringResource(R.string.alarm_in))
+            append(' ')
+            if (days != 0) {
+                append(pluralStringResource(R.plurals.days, days, days))
+                append(' ')
+            }
+            if (hours != 0 || days != 0) {
+                append(pluralStringResource(R.plurals.hours, hours, hours))
+                append(' ')
+            }
+            append(
+                pluralStringResource(
+                    R.plurals.minutes,
+                    if (minutes == 0) 1 else minutes,
+                    if (minutes == 0) 1 else minutes
+                )
+            )
+        }
+        val cancelActionLabel = stringResource(R.string.cancel)
+
+        LaunchedEffect(key1 = upcomingAlarmId) {
+            val result = state.snackbarHostState.showSnackbar(
+                message = upcomingAlarmMessageBody,
+                actionLabel = cancelActionLabel,
+                duration = SnackbarDuration.Short
+            )
+            onEvent(HomeScreenUserEvent.UpcomingAlarmMessageShown(alarmId = upcomingAlarmId))
+
+            if (result == SnackbarResult.ActionPerformed) {
+                onEvent(
+                    HomeScreenUserEvent.AlarmEnabledChangeClicked(
+                        alarmId = upcomingAlarmId,
+                        enabled = false,
+                        fromSnackbar = true
+                    )
+                )
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -296,7 +328,8 @@ private fun HomeScreenContent(
                 )
             }
         },
-        floatingActionButtonPosition = FabPosition.End
+        floatingActionButtonPosition = FabPosition.End,
+        snackbarHost = { SnackbarHost(hostState = state.snackbarHostState) }
     ) { paddingValues ->
         AnimatedContent(
             targetState = state.isLoading,
@@ -621,6 +654,10 @@ private fun HomeScreenContent(
             onDismissRequest = { onEvent(HomeScreenUserEvent.HideDeleteAlarmDialog) },
             onPositiveClick = {
                 state.deleteAlarmDialogState.alarmId?.let {
+                    if (state.upcomingAlarmMessages.firstOrNull()?.alarmId == it) {
+                        state.snackbarHostState.currentSnackbarData?.dismiss()
+                    }
+
                     onEvent(HomeScreenUserEvent.DeleteAlarm(alarmId = it))
                 }
             },

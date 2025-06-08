@@ -6,11 +6,13 @@ sealed class HomeScreenUserEvent {
     data class EditAlarmClicked(val alarmId: Long) : HomeScreenUserEvent()
     data class AlarmEnabledChangeClicked(
         val alarmId: Long? = null,
-        val enabled: Boolean? = null
+        val enabled: Boolean? = null,
+        val fromSnackbar: Boolean = false
     ) : HomeScreenUserEvent()
     data class TryChangeAlarmEnabled(
         val alarmId: Long? = null,
         val enabled: Boolean? = null,
+        val ignoreOneHourLock: Boolean = false,
         val cameraPermissionStatus: Boolean,
         val notificationsPermissionStatus: Boolean
     ) : HomeScreenUserEvent()
@@ -34,4 +36,5 @@ sealed class HomeScreenUserEvent {
     data class DeleteAlarm(val alarmId: Long) : HomeScreenUserEvent()
     data class SkipNextAlarmChanged(val alarmId: Long, val skip: Boolean) : HomeScreenUserEvent()
     data class CopyAlarm(val alarmId: Long) : HomeScreenUserEvent()
+    data class UpcomingAlarmMessageShown(val alarmId: Long) : HomeScreenUserEvent()
 }
