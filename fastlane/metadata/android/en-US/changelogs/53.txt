@@ -1,0 +1,2 @@
+* Alarms are are grouped by their enabled state on the home screen,
+* Added the snackbar with time to next alarm and option to cancel the alarm.
