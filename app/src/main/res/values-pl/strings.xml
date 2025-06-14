@@ -197,4 +197,10 @@
     <string name="keep_ringer_on_description">Nie zezwalaj na tryby cichego/wibracyjnego dzwonka, które mogą zakłócać dźwięk alarmu.</string>
     <string name="active_alarms">Aktywne alarmy</string>
     <string name="non_active_alarms">Nieaktywne alarmy</string>
+    <string name="dont_have_code">Nie masz kodu?</string>
+    <string name="download_your_qr_code">Pobierz swój kod QR</string>
+    <string name="download_your_qr_code_description">Jeśli nie masz własnego kodu QR do zeskanowania, możesz go pobrać, wydrukować i umieścić w miejscu oddalonym od łóżka.</string>
+    <string name="download_code">Pobierz kod</string>
+    <string name="saved_qr_code">Kod QR zapisany!</string>
+    <string name="could_not_save_qr_code">Nie można zapisać kodu QR.</string>
 </resources>

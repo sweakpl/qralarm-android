@@ -190,4 +190,10 @@
     <string name="keep_ringer_on_description">Don\'t allow silent/vibration ringer modes which could disrupt the alarm sound.</string>
     <string name="active_alarms">Active alarms</string>
     <string name="non_active_alarms">Non-active alarms</string>
+    <string name="dont_have_code">Don\'t have a code?</string>
+    <string name="download_your_qr_code">Download your QR code</string>
+    <string name="download_your_qr_code_description">If you don\'t have your own QR code to scan, you can download one, print it and place it in a place remote from your bed.</string>
+    <string name="download_code">Download code</string>
+    <string name="saved_qr_code">Saved QR code!</string>
+    <string name="could_not_save_qr_code">Could not save QR code.</string>
 </resources>

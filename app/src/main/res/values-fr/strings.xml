@@ -191,4 +191,10 @@
     <string name="keep_ringer_on_description">Ne pas autoriser les modes de sonnerie silencieux/vibration qui pourraient perturber le son de l\'alarme.</string>
     <string name="active_alarms">Alarmes actives</string>
     <string name="non_active_alarms">Alarmes non actives</string>
+    <string name="dont_have_code">Vous n\'avez pas de code ?</string>
+    <string name="download_your_qr_code">Téléchargez votre code QR</string>
+    <string name="download_your_qr_code_description">Si vous n\'avez pas votre propre code QR à scanner, vous pouvez en télécharger un, l\'imprimer et le placer dans un endroit éloigné de votre lit.</string>
+    <string name="download_code">Télécharger le code</string>
+    <string name="saved_qr_code">Code QR enregistré !</string>
+    <string name="could_not_save_qr_code">Impossible d\'enregistrer le code QR.</string>
 </resources>

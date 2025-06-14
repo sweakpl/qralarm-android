@@ -197,4 +197,10 @@
     <string name="keep_ringer_on_description">Не допускайте режимів беззвучного/вібраційного дзвінка, які можуть перебити звук будильника.</string>
     <string name="active_alarms">Активні тривоги</string>
     <string name="non_active_alarms">Неактивні тривоги</string>
+    <string name="dont_have_code">У вас немає коду?</string>
+    <string name="download_your_qr_code">Завантажте свій QR-код</string>
+    <string name="download_your_qr_code_description">Якщо у вас немає власного QR-коду для сканування, ви можете завантажити його, роздрукувати і розмістити в місці, віддаленому від вашого ліжка.</string>
+    <string name="download_code">Завантажити код</string>
+    <string name="saved_qr_code">Збережений QR-код!</string>
+    <string name="could_not_save_qr_code">Не вдалося зберегти QR-код.</string>
 </resources>

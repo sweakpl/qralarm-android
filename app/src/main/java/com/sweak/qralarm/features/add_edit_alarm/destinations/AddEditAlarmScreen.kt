@@ -3,6 +3,8 @@ package com.sweak.qralarm.features.add_edit_alarm.destinations
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
@@ -48,6 +50,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,7 +89,13 @@ import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeating
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneConfigDialogBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.ChooseSnoozeConfigurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.DialerTimePickerDialog
+import com.sweak.qralarm.features.add_edit_alarm.components.DownloadCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.FileOutputStream
+import java.io.IOException
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -116,6 +125,56 @@ fun AddEditAlarmScreen(
         }
     )
 
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    val saveDefaultCodeImageLauncher = rememberLauncherForActivityResult(
+        contract = object : ActivityResultContracts.CreateDocument("image/png") {},
+        onResult = { uri ->
+            coroutineScope.launch(Dispatchers.IO) {
+                if (uri == null) return@launch
+
+                try {
+                    val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, "w")
+
+                    parcelFileDescriptor?.use {
+                        val qrCodeImageBitmap =
+                            BitmapFactory.decodeResource(context.resources, R.drawable.qr_code)
+                        val fileOutputStream = FileOutputStream(it.fileDescriptor)
+
+                        if (
+                            !qrCodeImageBitmap.compress(
+                                Bitmap.CompressFormat.PNG,
+                                95,
+                                fileOutputStream
+                            )
+                        ) throw IOException()
+
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.saved_qr_code),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } ?: throw IOException()
+                } catch (e: Exception) {
+                    if (e is IOException || e is IllegalArgumentException) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.could_not_save_qr_code),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } else {
+                        throw e
+                    }
+                }
+            }
+        }
+    )
+
     var isInTheCameraPermissionFlowForCustomCodeScan by remember { mutableStateOf(false) }
     val cameraPermissionState = rememberPermissionState(
         permission = android.Manifest.permission.CAMERA
@@ -129,8 +188,6 @@ fun AddEditAlarmScreen(
             override fun launchPermissionRequest() { /* no-op */ }
         }
     }
-
-    val context = LocalContext.current
 
     ObserveAsEvents(
         flow = addEditAlarmViewModel.backendEvents,
@@ -246,7 +303,7 @@ fun AddEditAlarmScreen(
                 is AddEditAlarmScreenUserEvent.PickCustomRingtone -> {
                     try {
                         audioPickerLauncher.launch("audio/*")
-                    } catch (activityNotFoundException: ActivityNotFoundException) {
+                    } catch (_: ActivityNotFoundException) {
                         Toast.makeText(
                             context,
                             context.getString(R.string.issue_opening_the_page),
@@ -297,6 +354,13 @@ fun AddEditAlarmScreen(
                 }
                 is AddEditAlarmScreenUserEvent.SpecialSettingsClicked -> {
                     onSpecialSettingsClicked()
+                }
+                is AddEditAlarmScreenUserEvent.DownloadCode -> {
+                    addEditAlarmViewModel.onEvent(
+                        AddEditAlarmScreenUserEvent.DownloadCodeDialogVisible(isVisible = false)
+                    )
+
+                    saveDefaultCodeImageLauncher.launch("QRAlarmCode.png")
                 }
                 else -> addEditAlarmViewModel.onEvent(event)
             }
@@ -874,6 +938,49 @@ private fun AddEditAlarmScreenContent(
                                                 }
                                             }
                                         }
+
+                                        HorizontalDivider(
+                                            thickness = 1.dp,
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            modifier = Modifier
+                                                .padding(horizontal = MaterialTheme.space.medium)
+                                        )
+
+                                        Box(
+                                            modifier = Modifier
+                                                .clickable {
+                                                    onEvent(
+                                                        AddEditAlarmScreenUserEvent
+                                                            .DownloadCodeDialogVisible(
+                                                                isVisible = true
+                                                            )
+                                                    )
+                                                }
+                                        ) {
+                                            Row(
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(all = MaterialTheme.space.medium)
+                                            ) {
+                                                Text(
+                                                    text = stringResource(R.string.dont_have_code),
+                                                    style = MaterialTheme.typography.titleLarge
+                                                )
+
+                                                Icon(
+                                                    imageVector = QRAlarmIcons.ForwardArrow,
+                                                    contentDescription = stringResource(
+                                                        R.string.content_description_forward_arrow_icon
+                                                    ),
+                                                    modifier = Modifier
+                                                        .size(
+                                                            size = MaterialTheme.space.mediumLarge
+                                                        )
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -1299,6 +1406,17 @@ private fun AddEditAlarmScreenContent(
             positiveButtonText = stringResource(R.string.delete),
             positiveButtonColor = MaterialTheme.colorScheme.error,
             negativeButtonText = stringResource(R.string.cancel)
+        )
+    }
+
+    if (state.isDownloadCodeDialogVisible) {
+        DownloadCodeBottomSheet(
+            onDownloadCodeClicked = {
+                onEvent(AddEditAlarmScreenUserEvent.DownloadCode)
+            },
+            onDismissRequest = {
+                onEvent(AddEditAlarmScreenUserEvent.DownloadCodeDialogVisible(isVisible = false))
+            }
         )
     }
 }

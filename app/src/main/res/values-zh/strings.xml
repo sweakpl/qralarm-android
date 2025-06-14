@@ -179,4 +179,10 @@
     <string name="keep_ringer_on_description">不允许使用静音/振动响铃模式，因为这会干扰闹钟声音。</string>
     <string name="active_alarms">活动警报</string>
     <string name="non_active_alarms">非活动警报</string>
+    <string name="dont_have_code">没有密码？</string>
+    <string name="download_your_qr_code">下载二维码</string>
+    <string name="download_your_qr_code_description">如果你没有自己的二维码可以扫描，可以下载一个，打印出来，放在离床较远的地方。</string>
+    <string name="download_code">下载代码</string>
+    <string name="saved_qr_code">保存的 QR 码！</string>
+    <string name="could_not_save_qr_code">无法保存 QR 代码。</string>
 </resources>

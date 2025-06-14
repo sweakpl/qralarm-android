@@ -50,7 +50,8 @@ data class AddEditAlarmFlowState(
     val isChooseTemporaryMuteDurationDialogVisible: Boolean = false,
     val permissionsDialogState: PermissionsDialogState = PermissionsDialogState(),
     val isDeleteAlarmDialogVisible: Boolean = false,
-    val isDiscardAlarmChangesDialogVisible: Boolean = false
+    val isDiscardAlarmChangesDialogVisible: Boolean = false,
+    val isDownloadCodeDialogVisible: Boolean = false
 ) {
     data class PermissionsDialogState(
         val isVisible: Boolean = false,

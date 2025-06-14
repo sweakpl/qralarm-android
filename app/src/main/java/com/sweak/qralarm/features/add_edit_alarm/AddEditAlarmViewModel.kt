@@ -543,6 +543,11 @@ class AddEditAlarmViewModel @Inject constructor(
                 }
                 backendEventsChannel.send(AddEditAlarmFlowBackendEvent.AlarmDeleted)
             }
+            is AddEditAlarmScreenUserEvent.DownloadCodeDialogVisible -> {
+                state.update { currentState ->
+                    currentState.copy(isDownloadCodeDialogVisible = event.isVisible)
+                }
+            }
             else -> { /* no-op */ }
         }
     }

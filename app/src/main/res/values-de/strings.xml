@@ -185,4 +185,10 @@
     <string name="keep_ringer_on_description">Lassen Sie keine Stumm-/Vibrations-Rufmodi zu, die den Alarmton stören könnten.</string>
     <string name="active_alarms">Aktive Alarme</string>
     <string name="non_active_alarms">Nicht aktive Alarme</string>
+    <string name="dont_have_code">Sie haben keinen Code?</string>
+    <string name="download_your_qr_code">Laden Sie Ihren QR-Code herunter</string>
+    <string name="download_your_qr_code_description">Wenn Sie keinen eigenen QR-Code zum Scannen haben, können Sie einen herunterladen, ausdrucken und an einem vom Bett entfernten Ort anbringen.</string>
+    <string name="download_code">Code herunterladen</string>
+    <string name="saved_qr_code">Gespeicherter QR-Code!</string>
+    <string name="could_not_save_qr_code">Der QR-Code konnte nicht gespeichert werden.</string>
 </resources>

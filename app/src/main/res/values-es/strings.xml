@@ -191,4 +191,10 @@
     <string name="keep_ringer_on_description">No permita los modos de timbre silencioso/vibración que podrían interrumpir el sonido de la alarma.</string>
     <string name="active_alarms">Alarmas activas</string>
     <string name="non_active_alarms">Alarmas no activas</string>
+    <string name="dont_have_code">¿No tienes código?</string>
+    <string name="download_your_qr_code">Descarga tu código QR</string>
+    <string name="download_your_qr_code_description">Si no tienes tu propio código QR para escanear, puedes descargarte uno, imprimirlo y colocarlo en un lugar alejado de tu cama.</string>
+    <string name="download_code">Descargar código</string>
+    <string name="saved_qr_code">Código QR guardado</string>
+    <string name="could_not_save_qr_code">No se ha podido guardar el código QR.</string>
 </resources>

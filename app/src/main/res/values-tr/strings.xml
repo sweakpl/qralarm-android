@@ -185,4 +185,10 @@
     <string name="keep_ringer_on_description">Alarm sesini bozabilecek sessiz/titreşimli zil modlarına izin vermeyin.</string>
     <string name="active_alarms">Aktif alarmlar</string>
     <string name="non_active_alarms">Aktif olmayan alarmlar</string>
+    <string name="dont_have_code">Şifreniz yok mu?</string>
+    <string name="download_your_qr_code">QR kodunuzu indirin</string>
+    <string name="download_your_qr_code_description">Taramak için kendi QR kodunuz yoksa, bir tane indirebilir, yazdırabilir ve yatağınızdan uzak bir yere yerleştirebilirsiniz.</string>
+    <string name="download_code">Kodu indirin</string>
+    <string name="saved_qr_code">QR kodu kaydedildi!</string>
+    <string name="could_not_save_qr_code">QR kodu kaydedilemedi.</string>
 </resources>

@@ -72,6 +72,8 @@ sealed class AddEditAlarmFlowUserEvent {
         data object SpecialSettingsClicked : AddEditAlarmScreenUserEvent()
         data class DeleteAlarmDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
         data object DeleteAlarm : AddEditAlarmScreenUserEvent()
+        data class DownloadCodeDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
+        data object DownloadCode : AddEditAlarmScreenUserEvent()
     }
 
     sealed class AdvancedAlarmSettingsScreenUserEvent : AddEditAlarmFlowUserEvent() {

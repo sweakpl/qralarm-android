@@ -191,4 +191,10 @@
     <string name="keep_ringer_on_description">Non consentire le modalità di suoneria silenziosa/vibrazione che potrebbero disturbare il suono della sveglia.</string>
     <string name="active_alarms">Allarmi attivi</string>
     <string name="non_active_alarms">Allarmi non attivi</string>
+    <string name="dont_have_code">Non avete un codice?</string>
+    <string name="download_your_qr_code">Scaricare il codice QR</string>
+    <string name="download_your_qr_code_description">Se non avete un codice QR da scansionare, potete scaricarne uno, stamparlo e posizionarlo in un luogo lontano dal letto.</string>
+    <string name="download_code">Codice da scaricare</string>
+    <string name="saved_qr_code">Codice QR salvato!</string>
+    <string name="could_not_save_qr_code">Impossibile salvare il codice QR.</string>
 </resources>
