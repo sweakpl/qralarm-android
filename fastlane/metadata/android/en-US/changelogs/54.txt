@@ -1,0 +1,1 @@
+* Added the option to download a QR code in the individual alarm settings.
