@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 class AlarmActivity : FragmentActivity() {
 
     private var isLaunchedFromMainActivity: Boolean = false
+    private var lastNavigateUpTime: Long = 0L
 
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -169,7 +170,15 @@ class AlarmActivity : FragmentActivity() {
                             }
                         },
                         onCloseClicked = {
-                            navController.navigateUp()
+                            val currentTimeMillis = System.currentTimeMillis()
+
+                            // Prevent excessive back navigation (due to double close press).
+                            // We allow navigating up only if at least 3 seconds has passed since
+                            // the last navigation:
+                            if (lastNavigateUpTime + 3000L <= currentTimeMillis) {
+                                lastNavigateUpTime = currentTimeMillis
+                                navController.navigateUp()
+                            }
                         }
                     )
                 }
