@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.sweak.qralarm"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.sweak.qralarm"
