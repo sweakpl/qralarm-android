@@ -64,15 +64,14 @@ class HomeViewModel @Inject constructor(
 
                     // Compare the newly calculated activeAlarms and nonActiveAlarms with the
                     // activeAlarmWrappers and nonActiveAlarmWrappers in the state to determine
-                    // which one has been just enabled to show a snackbar message:
+                    // which one has been just enabled or edited to show a snackbar message:
                     val allPreviousAlarms =
                         state.value.activeAlarmWrappers + state.value.nonActiveAlarmWrappers
                     newlyEnabledAlarm = activeAlarms.find { newAlarm ->
                         allPreviousAlarms.none { prevAlarm ->
                             prevAlarm.alarmId == newAlarm.alarmId
                         } || allPreviousAlarms.any { prevAlarm ->
-                            prevAlarm.alarmId == newAlarm.alarmId &&
-                                    !prevAlarm.isAlarmEnabled && newAlarm.isAlarmEnabled
+                            prevAlarm.alarmId == newAlarm.alarmId && newAlarm.isAlarmEnabled
                         }
                     }
                 }
