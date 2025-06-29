@@ -267,19 +267,21 @@ class AlarmService : Service() {
 
     override fun onDestroy() {
         isRunning = false
-        
-        serviceScope.launch {
-            alarmsRepository.setAlarmRunning(
-                alarmId = alarm.alarmId,
-                running = false
-            )
+
+        if (::alarm.isInitialized) {
+            serviceScope.launch {
+                alarmsRepository.setAlarmRunning(
+                    alarmId = alarm.alarmId,
+                    running = false
+                )
+            }
         }
 
         if (::temporaryAlarmMuteJob.isInitialized) temporaryAlarmMuteJob.cancel()
 
         try {
             unregisterReceiver(temporaryAlarmMuteReceiver)
-        } catch (illegalArgumentException: IllegalArgumentException) { /* no-op */ }
+        } catch (_: IllegalArgumentException) { /* no-op */ }
 
         alarmRingtonePlayer.apply {
             stop()
