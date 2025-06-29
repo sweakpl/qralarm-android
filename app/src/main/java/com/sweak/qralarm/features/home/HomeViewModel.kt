@@ -173,12 +173,14 @@ class HomeViewModel @Inject constructor(
             }
             is HomeScreenUserEvent.TryChangeAlarmEnabled -> {
                 if (event.enabled == false) {
+                    if (event.alarmId == null) return
+
                     viewModelScope.launch {
                         if (event.ignoreOneHourLock ||
-                            canManipulateAlarm(alarmId = event.alarmId!!)
+                            canManipulateAlarm(alarmId = event.alarmId)
                         ) {
                             toggleAlarm(
-                                alarmId = event.alarmId!!,
+                                alarmId = event.alarmId,
                                 enabled = event.enabled
                             )
                         } else {
@@ -217,10 +219,14 @@ class HomeViewModel @Inject constructor(
                                 (notificationsPermissionState == null || notificationsPermissionState) &&
                                 (fullScreenIntentPermissionState == null || fullScreenIntentPermissionState)
                             ) {
-                                toggleAlarm(
-                                    alarmId = currentlyToggledAlarmId!!,
-                                    enabled = currentlyToggledAlarmEnabledState!!
-                                )
+                                currentlyToggledAlarmId?.let { alarmId ->
+                                    currentlyToggledAlarmEnabledState?.let { enabled ->
+                                        toggleAlarm(
+                                            alarmId = alarmId,
+                                            enabled = enabled
+                                        )
+                                    }
+                                }
 
                                 return@update currentState.copy(
                                     permissionsDialogState =
@@ -277,10 +283,14 @@ class HomeViewModel @Inject constructor(
                         )
                     }
 
-                    toggleAlarm(
-                        alarmId = currentlyToggledAlarmId!!,
-                        enabled = currentlyToggledAlarmEnabledState!!
-                    )
+                    currentlyToggledAlarmId?.let { alarmId ->
+                        currentlyToggledAlarmEnabledState?.let { enabled ->
+                            toggleAlarm(
+                                alarmId = alarmId,
+                                enabled = enabled
+                            )
+                        }
+                    }
 
                     return@update currentState
                 }
