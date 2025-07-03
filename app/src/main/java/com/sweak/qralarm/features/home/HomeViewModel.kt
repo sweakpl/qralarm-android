@@ -83,6 +83,7 @@ class HomeViewModel @Inject constructor(
                         nonActiveAlarmWrappers = convertToAlarmWrappers(nonActiveAlarms),
                         upcomingAlarmMessages = if (newlyEnabledAlarm != null) {
                             currentState.upcomingAlarmMessages + HomeScreenState.UpcomingAlarmMessage(
+                                alarmContentHash = newlyEnabledAlarm.hashCode(),
                                 alarmId = newlyEnabledAlarm.alarmId,
                                 daysHoursAndMinutesUntilAlarm =
                                     getDaysHoursAndMinutesUntilAlarm(
@@ -385,7 +386,7 @@ class HomeViewModel @Inject constructor(
                 state.update { currentState ->
                     currentState.copy(
                         upcomingAlarmMessages = currentState.upcomingAlarmMessages.filter {
-                            it.alarmId != event.alarmId
+                            it.alarmContentHash != event.alarmContentHash
                         }
                     )
                 }
@@ -415,15 +416,29 @@ class HomeViewModel @Inject constructor(
                 )
             } else {
                 disableAlarm(alarmId = alarmId)
+
+                state.update { currentState ->
+                    currentState.copy(
+                        upcomingAlarmMessages =
+                            currentState.upcomingAlarmMessages.filter {
+                                it.alarmId != alarmId
+                            }
+                    )
+                }
             }
 
             setAlarmResult?.let { result ->
                 if (result is SetAlarm.Result.Success) {
+                    val alarm = alarmsRepository.getAlarm(
+                        alarmId = alarmId
+                    ) ?: return@let
+
                     state.update { currentState ->
                         currentState.copy(
                             upcomingAlarmMessages = currentState.upcomingAlarmMessages +
                                     HomeScreenState.UpcomingAlarmMessage(
-                                        alarmId = alarmId,
+                                        alarmContentHash = alarm.hashCode(),
+                                        alarmId = alarm.alarmId,
                                         daysHoursAndMinutesUntilAlarm =
                                             getDaysHoursAndMinutesUntilAlarm(
                                                 alarmTimeInMillis = result.alarmTimInMillis

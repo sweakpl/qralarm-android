@@ -30,6 +30,7 @@ data class HomeScreenState(
     )
 
     data class UpcomingAlarmMessage(
+        val alarmContentHash: Int,
         val alarmId: Long,
         val daysHoursAndMinutesUntilAlarm: Triple<Int, Int, Int>
     )

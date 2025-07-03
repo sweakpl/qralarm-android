@@ -146,10 +146,6 @@ fun HomeScreen(
             when (event) {
                 is HomeScreenUserEvent.MenuClicked -> onMenuClicked()
                 is HomeScreenUserEvent.AlarmEnabledChangeClicked -> {
-                    if (homeScreenState.upcomingAlarmMessages.firstOrNull()?.alarmId == event.alarmId) {
-                        homeScreenState.snackbarHostState.currentSnackbarData?.dismiss()
-                    }
-
                     homeViewModel.onEvent(
                         event = HomeScreenUserEvent.TryChangeAlarmEnabled(
                             alarmId = event.alarmId,
@@ -244,6 +240,7 @@ private fun HomeScreenContent(
 ) {
     if (state.upcomingAlarmMessages.isNotEmpty()) {
         val upcomingAlarmMessage = state.upcomingAlarmMessages.first()
+        val alarmContentHash = upcomingAlarmMessage.alarmContentHash
         val upcomingAlarmId = upcomingAlarmMessage.alarmId
         val days = upcomingAlarmMessage.daysHoursAndMinutesUntilAlarm.first
         val hours = upcomingAlarmMessage.daysHoursAndMinutesUntilAlarm.second
@@ -269,13 +266,15 @@ private fun HomeScreenContent(
         }
         val cancelActionLabel = stringResource(R.string.cancel)
 
-        LaunchedEffect(key1 = upcomingAlarmId) {
+        LaunchedEffect(key1 = alarmContentHash) {
             val result = state.snackbarHostState.showSnackbar(
                 message = upcomingAlarmMessageBody,
                 actionLabel = cancelActionLabel,
                 duration = SnackbarDuration.Short
             )
-            onEvent(HomeScreenUserEvent.UpcomingAlarmMessageShown(alarmId = upcomingAlarmId))
+            onEvent(
+                HomeScreenUserEvent.UpcomingAlarmMessageShown(alarmContentHash = alarmContentHash)
+            )
 
             if (result == SnackbarResult.ActionPerformed) {
                 onEvent(

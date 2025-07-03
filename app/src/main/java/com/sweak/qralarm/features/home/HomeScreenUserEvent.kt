@@ -36,5 +36,5 @@ sealed class HomeScreenUserEvent {
     data class DeleteAlarm(val alarmId: Long) : HomeScreenUserEvent()
     data class SkipNextAlarmChanged(val alarmId: Long, val skip: Boolean) : HomeScreenUserEvent()
     data class CopyAlarm(val alarmId: Long) : HomeScreenUserEvent()
-    data class UpcomingAlarmMessageShown(val alarmId: Long) : HomeScreenUserEvent()
+    data class UpcomingAlarmMessageShown(val alarmContentHash: Int) : HomeScreenUserEvent()
 }
