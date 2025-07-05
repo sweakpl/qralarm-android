@@ -1,1 +1,0 @@
-* Upcoming alarm snackbar is now shown when the alarm is edited.
