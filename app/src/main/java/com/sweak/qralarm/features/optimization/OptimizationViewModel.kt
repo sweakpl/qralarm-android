@@ -20,7 +20,7 @@ import javax.inject.Named
 class OptimizationViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val powerManager: PowerManager,
-    @Named("PackageName") private val packageName: String,
+    @param:Named("PackageName") private val packageName: String,
     private val userDataRepository: UserDataRepository
 ): ViewModel() {
 
