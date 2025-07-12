@@ -46,7 +46,7 @@ class HomeViewModel @Inject constructor(
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     private var isTogglingAlarm = false
-    private var hasEnteredAddEditAlarmScreen = false
+    private var justEditedAlarmId: Long? = null
 
     private var currentlyToggledAlarmId: Long? = null
     private var currentlyToggledAlarmEnabledState: Boolean? = null
@@ -57,22 +57,23 @@ class HomeViewModel @Inject constructor(
                 val (activeAlarms, nonActiveAlarms) = allAlarms.partition { it.isAlarmEnabled }
                 var newlyEnabledAlarm: Alarm? = null
 
-                if (hasEnteredAddEditAlarmScreen) {
+                if (justEditedAlarmId != null) {
                     // Delay added for the alarms list animation to be visible as the Flow update
                     // Comes while the HomeScreen is still hidden behind AddEditAlarmScreen:
                     delay(500)
 
-                    // Compare the newly calculated activeAlarms and nonActiveAlarms with the
-                    // activeAlarmWrappers and nonActiveAlarmWrappers in the state to determine
-                    // which one has been just enabled or edited to show a snackbar message:
-                    val allPreviousAlarms =
-                        state.value.activeAlarmWrappers + state.value.nonActiveAlarmWrappers
-                    newlyEnabledAlarm = activeAlarms.find { newAlarm ->
-                        allPreviousAlarms.none { prevAlarm ->
-                            prevAlarm.alarmId == newAlarm.alarmId
-                        } || allPreviousAlarms.any { prevAlarm ->
-                            prevAlarm.alarmId == newAlarm.alarmId && newAlarm.isAlarmEnabled
+                    if (justEditedAlarmId == -1L) {
+                        val allPreviousAlarms =
+                            state.value.activeAlarmWrappers + state.value.nonActiveAlarmWrappers
+
+                        // Find the alarm in allAlarms that is not in the previousAlarms:
+                        newlyEnabledAlarm = allAlarms.find { newAlarm ->
+                            allPreviousAlarms.none { prevAlarm ->
+                                prevAlarm.alarmId == newAlarm.alarmId
+                            }
                         }
+                    } else {
+                        newlyEnabledAlarm = activeAlarms.find { it.alarmId == justEditedAlarmId }
                     }
                 }
 
@@ -96,7 +97,7 @@ class HomeViewModel @Inject constructor(
                     )
                 }
 
-                hasEnteredAddEditAlarmScreen = false
+                justEditedAlarmId = null
             }
         }
 
@@ -159,12 +160,12 @@ class HomeViewModel @Inject constructor(
     fun onEvent(event: HomeScreenUserEvent) {
         when (event) {
             is HomeScreenUserEvent.AddNewAlarm -> viewModelScope.launch {
-                hasEnteredAddEditAlarmScreen = true
+                justEditedAlarmId = -1L
                 backendEventsChannel.send(HomeScreenBackendEvent.RedirectToAddEditAlarm())
             }
             is HomeScreenUserEvent.EditAlarmClicked -> viewModelScope.launch {
                 if (canManipulateAlarm(alarmId = event.alarmId)) {
-                    hasEnteredAddEditAlarmScreen = true
+                    justEditedAlarmId = event.alarmId
                     backendEventsChannel.send(
                         HomeScreenBackendEvent.RedirectToAddEditAlarm(alarmId = event.alarmId)
                     )
