@@ -7,6 +7,8 @@ import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeat
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.SAT_SUN
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.ZoneId
@@ -84,7 +86,22 @@ fun convertAlarmRepeatingMode(
 }
 
 fun getDayString(timeInMillis: Long): String {
+    val datePattern = (DateFormat.getDateInstance(
+        DateFormat.SHORT,
+        Locale.getDefault()
+    ) as SimpleDateFormat).toPattern()
+    val datePatternWithoutYear = datePattern
+        .replace(
+            regex = Regex(pattern = "[yY]+"),
+            replacement = ""
+        )
+        .trim { it < 'A' || it > 'z' }
+
     return Instant.ofEpochMilli(timeInMillis)
         .atZone(ZoneId.systemDefault())
-        .format(DateTimeFormatter.ofPattern("EEEE d.M"))
+        .format(
+            DateTimeFormatter.ofPattern(
+                "EEEE $datePatternWithoutYear"
+            )
+        )
 }
