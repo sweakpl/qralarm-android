@@ -32,6 +32,8 @@ import androidx.compose.material.icons.outlined.SecurityUpdateGood
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Stop
+import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -73,4 +75,5 @@ object QRAlarmIcons {
     val UsingSystem = Icons.Outlined.SecurityUpdateGood
     val Copy = Icons.Outlined.ContentCopy
     val Clock = Icons.Outlined.AccessTime
+    val Emergency = Icons.Outlined.WarningAmber
 }

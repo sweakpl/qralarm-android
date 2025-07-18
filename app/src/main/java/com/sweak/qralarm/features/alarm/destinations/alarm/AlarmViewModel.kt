@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm
+package com.sweak.qralarm.features.alarm.destinations.alarm
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

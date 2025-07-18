@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm
+package com.sweak.qralarm.features.alarm.destinations.alarm
 
 import android.content.Intent
 import android.provider.Settings

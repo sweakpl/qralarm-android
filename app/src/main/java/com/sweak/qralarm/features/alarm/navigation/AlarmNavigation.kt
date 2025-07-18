@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.sweak.qralarm.features.alarm.AlarmScreen
+import com.sweak.qralarm.features.alarm.destinations.alarm.AlarmScreen
 
 const val ALARM_SCREEN_ROUTE = "alarmScreen"
 const val ID_OF_ALARM = "idOfAlarm"

@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm
+package com.sweak.qralarm.features.alarm.destinations.alarm
 
 data class AlarmScreenState(
     val currentTimeInMillis: Long = System.currentTimeMillis(),
