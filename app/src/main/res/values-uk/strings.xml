@@ -203,4 +203,9 @@
     <string name="download_code">Завантажити код</string>
     <string name="saved_qr_code">Збережений QR-код!</string>
     <string name="could_not_save_qr_code">Не вдалося зберегти QR-код.</string>
+    <string name="emergency">Надзвичайна ситуація</string>
+    <string name="emergency_task_description">Ви загубили або забули код? Ви можете завершити це довге завдання, щоб зупинити будильник. Просто пересуньте повзунок на потрібне число. Щасти вам.</string>
+    <string name="start">Старт</string>
+    <string name="target_colon">Ціль:</string>
+    <string name="remaining_colon">Залишилося:</string>
 </resources>

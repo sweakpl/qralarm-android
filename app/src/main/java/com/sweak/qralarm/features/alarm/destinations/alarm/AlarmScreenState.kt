@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm
+package com.sweak.qralarm.features.alarm.destinations.alarm
 
 data class AlarmScreenState(
     val currentTimeInMillis: Long = System.currentTimeMillis(),
@@ -7,6 +7,7 @@ data class AlarmScreenState(
     val snoozedAlarmTimeInMillis: Long? = null,
     val isSnoozeAvailable: Boolean = false,
     val isInteractionEnabled: Boolean = true,
+    val isEmergencyAvailable: Boolean = false,
     val permissionsDialogState: PermissionsDialogState = PermissionsDialogState(),
     val isCameraPermissionDeniedDialogVisible: Boolean = false
 ) {

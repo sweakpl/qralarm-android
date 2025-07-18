@@ -203,4 +203,9 @@
     <string name="download_code">Pobierz kod</string>
     <string name="saved_qr_code">Kod QR zapisany!</string>
     <string name="could_not_save_qr_code">Nie można zapisać kodu QR.</string>
+    <string name="emergency">Nagły wypadek</string>
+    <string name="emergency_task_description">Zgubiłeś lub zapomniałeś kodu? Możesz ukończyć to długie zadanie, aby zatrzymać alarm. Wystarczy przesunąć suwak, aby dopasować numer docelowy. Powodzenia.</string>
+    <string name="start">Start</string>
+    <string name="target_colon">Cel:</string>
+    <string name="remaining_colon">Pozostało:</string>
 </resources>

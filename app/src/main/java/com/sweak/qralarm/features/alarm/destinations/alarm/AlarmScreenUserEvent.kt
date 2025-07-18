@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm
+package com.sweak.qralarm.features.alarm.destinations.alarm
 
 sealed class AlarmScreenUserEvent {
     data object StopAlarmClicked : AlarmScreenUserEvent()
@@ -9,4 +9,5 @@ sealed class AlarmScreenUserEvent {
     data class CameraPermissionDeniedDialogVisible(val isVisible: Boolean) : AlarmScreenUserEvent()
     data object GoToApplicationSettingsClicked : AlarmScreenUserEvent()
     data object UpdateCurrentTime : AlarmScreenUserEvent()
+    data object OnEmergencyClicked : AlarmScreenUserEvent()
 }

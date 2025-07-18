@@ -196,4 +196,9 @@
     <string name="download_code">Download code</string>
     <string name="saved_qr_code">Saved QR code!</string>
     <string name="could_not_save_qr_code">Could not save QR code.</string>
+    <string name="emergency">Emergency</string>
+    <string name="emergency_task_description">Have you lost or forgot the code? You can finish this long task to stop the alarm. Just move the slider to match the target number. Good luck.</string>
+    <string name="start">Start</string>
+    <string name="target_colon">Target:</string>
+    <string name="remaining_colon">Remaining:</string>
 </resources>

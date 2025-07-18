@@ -33,6 +33,7 @@
     <string name="content_description_active_system_setting">Піктограма активних налаштувань системи</string>
     <string name="content_description_copy_icon">Піктограма копіювання</string>
     <string name="content_description_clock_icon">Піктограма годинника</string>
+    <string name="content_description_emergency_icon">Значок аварійного трикутника</string>
 
     <string name="content_description_wake_up_catchphrase_image">Картина із зображенням доброзичливого стікмена, що лежить у ліжку після пробудження.</string>
     <string name="content_description_get_up_catchphrase_image">Картина із зображенням усміхненого стікмена, яка йде з телефоном, що дзвонить.</string>

@@ -197,4 +197,9 @@
     <string name="download_code">Codice da scaricare</string>
     <string name="saved_qr_code">Codice QR salvato!</string>
     <string name="could_not_save_qr_code">Impossibile salvare il codice QR.</string>
+    <string name="emergency">Emergenza</string>
+    <string name="emergency_task_description">Avete perso o dimenticato il codice? Potete portare a termine questo lungo compito per fermare l\'allarme. Basta spostare il cursore per far coincidere il numero con quello dell\'obiettivo. Buona fortuna.</string>
+    <string name="start">Inizio</string>
+    <string name="target_colon">Obiettivo:</string>
+    <string name="remaining_colon">Rimanente:</string>
 </resources>

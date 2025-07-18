@@ -185,4 +185,9 @@
     <string name="download_code">导出图片</string>
     <string name="saved_qr_code">导出成功</string>
     <string name="could_not_save_qr_code">导出失败</string>
+    <string name="emergency">紧急情况</string>
+    <string name="emergency_task_description">您是否丢失或忘记了密码？ 您可以完成这项漫长的任务来停止警报。 只需移动滑块以匹配目标数字。 祝您好运</string>
+    <string name="start">开始</string>
+    <string name="target_colon">目标:</string>
+    <string name="remaining_colon">剩余:</string>
 </resources>

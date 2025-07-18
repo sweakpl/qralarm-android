@@ -197,4 +197,9 @@
     <string name="download_code">Télécharger le code</string>
     <string name="saved_qr_code">Code QR enregistré !</string>
     <string name="could_not_save_qr_code">Impossible d\'enregistrer le code QR.</string>
+    <string name="emergency">Urgence</string>
+    <string name="emergency_task_description">Avez-vous perdu ou oublié le code ? Vous pouvez terminer cette longue tâche pour arrêter l\'alarme. Déplacez simplement le curseur pour atteindre le nombre cible. Bonne chance.</string>
+    <string name="start">Démarrage</string>
+    <string name="target_colon">Cible:</string>
+    <string name="remaining_colon">Restant:</string>
 </resources>

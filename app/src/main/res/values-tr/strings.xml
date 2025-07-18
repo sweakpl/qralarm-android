@@ -191,4 +191,9 @@
     <string name="download_code">Kodu indir</string>
     <string name="saved_qr_code">QR kodu kaydedildi!</string>
     <string name="could_not_save_qr_code">QR kodu kaydedilemedi.</string>
+    <string name="emergency">Acil Durum</string>
+    <string name="emergency_task_description">Kodu mu kaybettiniz veya unuttunuz? Alarmı durdurmak için bu uzun görevi bitirebilirsiniz. Hedef numarayla eşleştirmek için kaydırıcıyı hareket ettirmeniz yeterlidir. İyi şanslar.</string>
+    <string name="start">Başlangıç</string>
+    <string name="target_colon">Hedef:</string>
+    <string name="remaining_colon">Kalan:</string>
 </resources>

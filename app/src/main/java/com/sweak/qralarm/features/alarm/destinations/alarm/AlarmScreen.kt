@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm
+package com.sweak.qralarm.features.alarm.destinations.alarm
 
 import android.content.Intent
 import android.provider.Settings
@@ -6,11 +6,14 @@ import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,20 +39,22 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.ACTION_TEMPORARY_ALARM_MUTE
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_TEMPORARY_MUTE_DURATION_SECONDS
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
+import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.getTimeString
-import com.sweak.qralarm.features.alarm.components.TimeTickReceiver
+import com.sweak.qralarm.features.alarm.destinations.alarm.components.TimeTickReceiver
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AlarmScreen(
     onStopAlarm: () -> Unit,
     onRequestCodeScan: () -> Unit,
-    onSnoozeAlarm: () -> Unit
+    onSnoozeAlarm: () -> Unit,
+    onEmergencyClicked: () -> Unit
 ) {
     val alarmViewModel = hiltViewModel<AlarmViewModel>()
     val alarmScreenState by alarmViewModel.state.collectAsStateWithLifecycle()
@@ -127,6 +132,7 @@ fun AlarmScreen(
                         }
                     )
                 }
+                is AlarmScreenUserEvent.OnEmergencyClicked -> onEmergencyClicked()
                 else -> alarmViewModel.onEvent(event)
             }
         }
@@ -139,9 +145,7 @@ private fun AlarmScreenContent(
     onEvent: (AlarmScreenUserEvent) -> Unit
 ) {
     Scaffold { paddingValues ->
-        Column(
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
@@ -155,66 +159,89 @@ private fun AlarmScreenContent(
                 .padding(paddingValues = paddingValues)
         ) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.xLarge),
-                horizontalAlignment = Alignment.CenterHorizontally
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
             ) {
-                Text(
-                    text = if (state.isAlarmSnoozed) {
-                        stringResource(R.string.alarm_snoozed_until)
-                    } else {
-                        state.alarmLabel ?: stringResource(R.string.alarm_wake_up)
-                    },
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.displayLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-
-                Text(
-                    text = getTimeString(
-                        timeInMillis =
-                        if (state.isAlarmSnoozed && state.snoozedAlarmTimeInMillis != null) {
-                            state.snoozedAlarmTimeInMillis
-                        } else {
-                            state.currentTimeInMillis
-                        },
-                        is24HourFormat = DateFormat.is24HourFormat(LocalContext.current)
-                    ),
-                    style = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    maxLines = 1
-                )
-            }
-
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Button(
-                    onClick = { onEvent(AlarmScreenUserEvent.StopAlarmClicked) },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
-                    enabled = state.isInteractionEnabled,
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.xLarge),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = stringResource(R.string.stop),
-                        style = MaterialTheme.typography.displaySmall,
-                        modifier = Modifier.padding(all = MaterialTheme.space.small)
+                        text = if (state.isAlarmSnoozed) {
+                            stringResource(R.string.alarm_snoozed_until)
+                        } else {
+                            state.alarmLabel ?: stringResource(R.string.alarm_wake_up)
+                        },
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.displayLarge,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+
+                    Text(
+                        text = getTimeString(
+                            timeInMillis =
+                                if (state.isAlarmSnoozed && state.snoozedAlarmTimeInMillis != null) {
+                                    state.snoozedAlarmTimeInMillis
+                                } else {
+                                    state.currentTimeInMillis
+                                },
+                            is24HourFormat = DateFormat.is24HourFormat(LocalContext.current)
+                        ),
+                        style = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        maxLines = 1
                     )
                 }
 
-                AnimatedVisibility(visible = !state.isAlarmSnoozed && state.isSnoozeAvailable) {
-                    TextButton(
-                        onClick = { onEvent(AlarmScreenUserEvent.SnoozeAlarmClicked) },
-                        colors = ButtonDefaults.textButtonColors(
-                            contentColor = MaterialTheme.colorScheme.onSecondary
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Button(
+                        onClick = { onEvent(AlarmScreenUserEvent.StopAlarmClicked) },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.tertiary
                         ),
                         enabled = state.isInteractionEnabled,
-                        modifier = Modifier.padding(top = MaterialTheme.space.medium)
                     ) {
                         Text(
-                            text = stringResource(R.string.snooze_capitals),
+                            text = stringResource(R.string.stop),
                             style = MaterialTheme.typography.displaySmall,
                             modifier = Modifier.padding(all = MaterialTheme.space.small)
                         )
                     }
+
+                    AnimatedVisibility(visible = !state.isAlarmSnoozed && state.isSnoozeAvailable) {
+                        TextButton(
+                            onClick = { onEvent(AlarmScreenUserEvent.SnoozeAlarmClicked) },
+                            colors = ButtonDefaults.textButtonColors(
+                                contentColor = MaterialTheme.colorScheme.onSecondary
+                            ),
+                            enabled = state.isInteractionEnabled,
+                            modifier = Modifier.padding(top = MaterialTheme.space.medium)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.snooze_capitals),
+                                style = MaterialTheme.typography.displaySmall,
+                                modifier = Modifier.padding(all = MaterialTheme.space.small)
+                            )
+                        }
+                    }
+                }
+            }
+
+            if (state.isEmergencyAvailable) {
+                IconButton(
+                    onClick = { onEvent(AlarmScreenUserEvent.OnEmergencyClicked) },
+                    enabled = state.isInteractionEnabled,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(all = MaterialTheme.space.small)
+                ) {
+                    Icon(
+                        imageVector = QRAlarmIcons.Emergency,
+                        contentDescription =
+                            stringResource(R.string.content_description_emergency_icon),
+                        tint = MaterialTheme.colorScheme.onSecondary
+                    )
                 }
             }
         }

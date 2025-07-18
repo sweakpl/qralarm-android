@@ -197,4 +197,9 @@
     <string name="download_code">Descargar código</string>
     <string name="saved_qr_code">Código QR guardado</string>
     <string name="could_not_save_qr_code">No se ha podido guardar el código QR.</string>
+    <string name="emergency">Emergencia</string>
+    <string name="emergency_task_description">¿Ha perdido u olvidado el código? Puedes terminar esta larga tarea para detener la alarma. Sólo tienes que mover el control deslizante para que coincida con el número objetivo. Buena suerte.</string>
+    <string name="start">Inicio</string>
+    <string name="target_colon">Objetivo:</string>
+    <string name="remaining_colon">Resto:</string>
 </resources>

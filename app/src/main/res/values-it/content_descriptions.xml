@@ -32,6 +32,7 @@
     <string name="content_description_active_system_setting">Icona delle impostazioni di sistema attive</string>
     <string name="content_description_copy_icon">Icona di copia</string>
     <string name="content_description_clock_icon">Icona dell\'orologio</string>
+    <string name="content_description_emergency_icon">Icona del triangolo di emergenza</string>
 
     <string name="content_description_wake_up_catchphrase_image">Immagine che mostra un amichevole omino stilizzato sdraiato sul letto, svegliato.</string>
     <string name="content_description_get_up_catchphrase_image">Immagine che mostra un omino stilizzato sorridente che cammina mentre il suo telefono squilla.</string>

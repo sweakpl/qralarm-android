@@ -191,4 +191,9 @@
     <string name="download_code">Code herunterladen</string>
     <string name="saved_qr_code">Gespeicherter QR-Code!</string>
     <string name="could_not_save_qr_code">Der QR-Code konnte nicht gespeichert werden.</string>
+    <string name="emergency">Notfall</string>
+    <string name="emergency_task_description">Haben Sie den Code verloren oder vergessen? Sie können diese lange Aufgabe beenden, um den Alarm zu stoppen. Bewegen Sie einfach den Schieberegler, um die Zielnummer zu erreichen. Viel Glück.</string>
+    <string name="start">Start</string>
+    <string name="target_colon">Ziel:</string>
+    <string name="remaining_colon">Verbleibende:</string>
 </resources>

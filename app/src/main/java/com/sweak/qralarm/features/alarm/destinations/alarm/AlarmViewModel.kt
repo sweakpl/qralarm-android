@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm
+package com.sweak.qralarm.features.alarm.destinations.alarm
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -51,7 +51,8 @@ class AlarmViewModel @Inject constructor(
                             snoozedAlarmTimeInMillis = it.snoozeConfig.nextSnoozedAlarmTimeInMillis,
                             isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0,
                             isInteractionEnabled =
-                                it.isAlarmRunning || (it.snoozeConfig.isAlarmSnoozed && !isTransient)
+                                it.isAlarmRunning || (it.snoozeConfig.isAlarmSnoozed && !isTransient),
+                            isEmergencyAvailable = it.isUsingCode
                         )
                     }
                 }
