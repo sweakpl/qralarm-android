@@ -63,7 +63,7 @@ fun EmergencyTaskCard(
                 valueRange = with(emergencyTaskConfig.valueRange) {
                     first.toFloat()..last.toFloat()
                 },
-                steps = with(emergencyTaskConfig.valueRange) { last - first - 1 },
+                steps = with(emergencyTaskConfig.valueRange) { last - first },
                 onValueChange = {
                     onValueChanged(it.toInt())
                 },

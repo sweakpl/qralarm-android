@@ -23,21 +23,32 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.features.alarm.destinations.emergency.components.EmergencyInfoCard
 import com.sweak.qralarm.features.alarm.destinations.emergency.components.EmergencyTaskCard
 
 @Composable
 fun EmergencyScreen(
-    onCancelClicked: () -> Unit,
+    onCloseClicked: () -> Unit,
+    onEmergencyTaskCompleted: () -> Unit
 ) {
     val emergencyViewModel = hiltViewModel<EmergencyViewModel>()
     val emergencyScreenState by emergencyViewModel.state.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(
+        flow = emergencyViewModel.backendEvents,
+        onEvent = { event ->
+            when (event) {
+                is EmergencyScreenBackendEvent.EmergencyTaskCompleted -> onEmergencyTaskCompleted()
+            }
+        }
+    )
 
     EmergencyScreenContent(
         state = emergencyScreenState,
         onEvent = { event ->
             when (event) {
-                is EmergencyScreenUserEvent.OnCloseClicked -> onCancelClicked
+                is EmergencyScreenUserEvent.OnCloseClicked -> onCloseClicked()
                 else -> emergencyViewModel.onEvent(event)
             }
         }
@@ -78,14 +89,16 @@ fun EmergencyScreenContent(
                 )
             }
 
-            AnimatedContent(targetState = state.isTaskStarted) { isTaskStarted ->
+            AnimatedContent(
+                targetState = state.isTaskStarted,
+                modifier = Modifier.align(alignment = Alignment.Center)
+            ) { isTaskStarted ->
                 if (!isTaskStarted) {
                     EmergencyInfoCard(
                         onStartClick = {
                             onEvent(EmergencyScreenUserEvent.OnTaskStarted)
                         },
                         modifier = Modifier
-                            .align(alignment = Alignment.Center)
                             .fillMaxWidth()
                             .padding(all = MaterialTheme.space.medium)
                     )
@@ -99,7 +112,6 @@ fun EmergencyScreenContent(
                             onEvent(EmergencyScreenUserEvent.OnTaskValueSelected)
                         },
                         modifier = Modifier
-                            .align(alignment = Alignment.Center)
                             .fillMaxWidth()
                             .padding(all = MaterialTheme.space.medium)
                     )

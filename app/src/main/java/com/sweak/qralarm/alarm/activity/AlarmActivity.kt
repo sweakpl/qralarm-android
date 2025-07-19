@@ -15,8 +15,8 @@ import androidx.navigation.compose.rememberNavController
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.app.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
-import com.sweak.qralarm.features.alarm.navigation.ALARM_SCREEN_ROUTE
-import com.sweak.qralarm.features.alarm.navigation.alarmScreen
+import com.sweak.qralarm.features.alarm.navigation.ALARM_FLOW_ROUTE
+import com.sweak.qralarm.features.alarm.navigation.alarmFlow
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmScannerScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.navigateToDisableAlarmScanner
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,9 +57,10 @@ class AlarmActivity : FragmentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = "$ALARM_SCREEN_ROUTE/$alarmId/${!isLaunchedFromMainActivity}"
+                    startDestination = "$ALARM_FLOW_ROUTE/$alarmId/${!isLaunchedFromMainActivity}"
                 ) {
-                    alarmScreen(
+                    alarmFlow(
+                        navController = navController,
                         onStopAlarm = {
                             stopService(Intent(this@AlarmActivity, AlarmService::class.java))
                             finish()
@@ -134,7 +135,7 @@ class AlarmActivity : FragmentActivity() {
                                                     startActivity(
                                                         Intent(Intent.ACTION_VIEW, uri.toUri())
                                                     )
-                                                } catch (exception: Exception) {
+                                                } catch (_: Exception) {
                                                     if (isLaunchedFromMainActivity) {
                                                         startActivity(
                                                             Intent(
@@ -159,7 +160,7 @@ class AlarmActivity : FragmentActivity() {
 
                                     try {
                                         startActivity(Intent(Intent.ACTION_VIEW, uri.toUri()))
-                                    } catch (exception: Exception) {
+                                    } catch (_: Exception) {
                                         if (isLaunchedFromMainActivity) {
                                             startActivity(
                                                 Intent(this@AlarmActivity, MainActivity::class.java)
@@ -173,7 +174,7 @@ class AlarmActivity : FragmentActivity() {
                             val currentTimeMillis = System.currentTimeMillis()
 
                             // Prevent excessive back navigation (due to double close press).
-                            // We allow navigating up only if at least 3 seconds has passed since
+                            // We allow navigating up only if at least 3 seconds have passed since
                             // the last navigation:
                             if (lastNavigateUpTime + 3000L <= currentTimeMillis) {
                                 lastNavigateUpTime = currentTimeMillis
