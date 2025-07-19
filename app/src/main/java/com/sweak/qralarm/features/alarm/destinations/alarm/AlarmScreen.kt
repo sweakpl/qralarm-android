@@ -42,7 +42,7 @@ import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.getTimeString
-import com.sweak.qralarm.features.alarm.components.TimeTickReceiver
+import com.sweak.qralarm.features.alarm.destinations.alarm.components.TimeTickReceiver
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
