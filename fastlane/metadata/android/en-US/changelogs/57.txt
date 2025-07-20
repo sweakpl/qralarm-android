@@ -1,2 +1,0 @@
-* Improved upcoming alarm snackbar reliability,
-* Bug fixes.
