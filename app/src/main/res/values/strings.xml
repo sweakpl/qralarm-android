@@ -201,4 +201,5 @@
     <string name="start">Start</string>
     <string name="target_colon">Target:</string>
     <string name="remaining_colon">Remaining:</string>
+    <string name="emergency_task_setting_description">Emergency task for situations where you can\'t scan the code.</string>
 </resources>

@@ -19,6 +19,7 @@ data class Alarm(
     val assignedCode: String?,
     val isOpenCodeLinkEnabled: Boolean,
     val isOneHourLockEnabled: Boolean,
+    val isEmergencyTaskEnabled: Boolean,
     val alarmLabel: String?,
     val gentleWakeUpDurationInSeconds: Int,
     val temporaryMuteDurationInSeconds: Int,

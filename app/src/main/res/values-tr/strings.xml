@@ -196,4 +196,5 @@
     <string name="start">Başlangıç</string>
     <string name="target_colon">Hedef:</string>
     <string name="remaining_colon">Kalan:</string>
+    <string name="emergency_task_setting_description">Kodu tarayamadığınız durumlar için acil durum görevi.</string>
 </resources>

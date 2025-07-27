@@ -190,4 +190,5 @@
     <string name="start">开始</string>
     <string name="target_colon">目标:</string>
     <string name="remaining_colon">剩余:</string>
+    <string name="emergency_task_setting_description">紧急任务，用于无法扫描代码的情况。</string>
 </resources>

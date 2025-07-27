@@ -208,4 +208,5 @@
     <string name="start">Старт</string>
     <string name="target_colon">Ціль:</string>
     <string name="remaining_colon">Залишилося:</string>
+    <string name="emergency_task_setting_description">Екстрене завдання для ситуацій, коли ви не можете відсканувати код.</string>
 </resources>

@@ -39,6 +39,7 @@ data class AddEditAlarmFlowState(
     val temporaryAssignedCode: String? = null,
     val isOpenCodeLinkEnabled: Boolean = false,
     val isOneHourLockEnabled: Boolean = true,
+    val isEmergencyTaskEnabled: Boolean = true,
     val alarmLabel: String? = null,
     val gentleWakeupDurationInSeconds: Int = 30,
     val availableGentleWakeUpDurationsInSeconds: List<Int> =

@@ -96,6 +96,9 @@ sealed class AddEditAlarmFlowUserEvent {
         data class OneHourLockEnabledChanged(
             val isEnabled: Boolean
         ) : AdvancedAlarmSettingsScreenUserEvent()
+        data class EmergencyTaskEnabledChanged(
+            val isEnabled: Boolean
+        ) : AdvancedAlarmSettingsScreenUserEvent()
     }
 
     sealed class SpecialAlarmSettingsScreenUserEvent : AddEditAlarmFlowUserEvent() {

@@ -330,9 +330,56 @@ private fun AdvancedAlarmSettingsScreenContent(
                                 checked = state.isOneHourLockEnabled,
                                 onCheckedChange = {
                                     onEvent(
-                                        AdvancedAlarmSettingsScreenUserEvent.OneHourLockEnabledChanged(
-                                            isEnabled = it
+                                        AdvancedAlarmSettingsScreenUserEvent
+                                            .OneHourLockEnabledChanged(isEnabled = it)
+                                    )
+                                }
+                            )
+                        }
+
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                        )
+
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(all = MaterialTheme.space.medium)
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(
+                                        end = MaterialTheme.space.smallMedium
+                                    )
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.emergency),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    modifier = Modifier
+                                        .padding(
+                                            bottom = MaterialTheme.space.xSmall
                                         )
+                                )
+
+                                Text(
+                                    text = stringResource(
+                                        R.string.emergency_task_setting_description
+                                    ),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+
+                            QRAlarmSwitch(
+                                checked = state.isEmergencyTaskEnabled,
+                                onCheckedChange = {
+                                    onEvent(
+                                        AdvancedAlarmSettingsScreenUserEvent
+                                            .EmergencyTaskEnabledChanged(isEnabled = it)
                                     )
                                 }
                             )

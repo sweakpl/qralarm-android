@@ -208,4 +208,5 @@
     <string name="start">Start</string>
     <string name="target_colon">Cel:</string>
     <string name="remaining_colon">Pozostało:</string>
+    <string name="emergency_task_setting_description">Zadanie awaryjne w sytuacjach, gdy nie można zeskanować kodu.</string>
 </resources>

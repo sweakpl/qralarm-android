@@ -52,7 +52,7 @@ class AlarmViewModel @Inject constructor(
                             isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0,
                             isInteractionEnabled =
                                 it.isAlarmRunning || (it.snoozeConfig.isAlarmSnoozed && !isTransient),
-                            isEmergencyAvailable = it.isUsingCode
+                            isEmergencyAvailable = it.isUsingCode && it.isEmergencyTaskEnabled
                         )
                     }
                 }

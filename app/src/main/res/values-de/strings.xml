@@ -196,4 +196,5 @@
     <string name="start">Start</string>
     <string name="target_colon">Ziel:</string>
     <string name="remaining_colon">Verbleibende:</string>
+    <string name="emergency_task_setting_description">Notfallaufgabe für Situationen, in denen Sie den Code nicht scannen können.</string>
 </resources>

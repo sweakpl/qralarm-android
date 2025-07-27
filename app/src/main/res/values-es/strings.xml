@@ -202,4 +202,5 @@
     <string name="start">Inicio</string>
     <string name="target_colon">Objetivo:</string>
     <string name="remaining_colon">Resto:</string>
+    <string name="emergency_task_setting_description">Tarea de emergencia para situaciones en las que no se puede escanear el código.</string>
 </resources>
