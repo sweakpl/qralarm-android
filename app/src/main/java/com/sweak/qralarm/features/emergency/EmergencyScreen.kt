@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm.destinations.emergency
+package com.sweak.qralarm.features.emergency
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
@@ -24,8 +24,8 @@ import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
-import com.sweak.qralarm.features.alarm.destinations.emergency.components.EmergencyInfoCard
-import com.sweak.qralarm.features.alarm.destinations.emergency.components.EmergencyTaskCard
+import com.sweak.qralarm.features.emergency.components.EmergencyInfoCard
+import com.sweak.qralarm.features.emergency.components.EmergencyTaskCard
 
 @Composable
 fun EmergencyScreen(

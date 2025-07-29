@@ -15,10 +15,12 @@ import androidx.navigation.compose.rememberNavController
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.app.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
-import com.sweak.qralarm.features.alarm.navigation.ALARM_FLOW_ROUTE
-import com.sweak.qralarm.features.alarm.navigation.alarmFlow
+import com.sweak.qralarm.features.alarm.navigation.ALARM_SCREEN_ROUTE
+import com.sweak.qralarm.features.alarm.navigation.alarmScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmScannerScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.navigateToDisableAlarmScanner
+import com.sweak.qralarm.features.emergency.navigation.emergencyScreen
+import com.sweak.qralarm.features.emergency.navigation.navigateToEmergencyScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -57,10 +59,9 @@ class AlarmActivity : FragmentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = "$ALARM_FLOW_ROUTE/$alarmId/${!isLaunchedFromMainActivity}"
+                    startDestination = "$ALARM_SCREEN_ROUTE/$alarmId/${!isLaunchedFromMainActivity}"
                 ) {
-                    alarmFlow(
-                        navController = navController,
+                    alarmScreen(
                         onStopAlarm = {
                             stopService(Intent(this@AlarmActivity, AlarmService::class.java))
                             finish()
@@ -81,6 +82,9 @@ class AlarmActivity : FragmentActivity() {
                                     finish()
                                 }
                             }
+                        },
+                        onEmergencyClicked = {
+                            navController.navigateToEmergencyScreen()
                         }
                     )
 
@@ -179,6 +183,28 @@ class AlarmActivity : FragmentActivity() {
                             if (lastNavigateUpTime + 3000L <= currentTimeMillis) {
                                 lastNavigateUpTime = currentTimeMillis
                                 navController.navigateUp()
+                            }
+                        }
+                    )
+
+                    emergencyScreen(
+                        onCloseClicked = {
+                            val currentTimeMillis = System.currentTimeMillis()
+
+                            // Prevent excessive back navigation (due to double close press).
+                            // We allow navigating up only if at least 3 seconds have passed since
+                            // the last navigation:
+                            if (lastNavigateUpTime + 3000L <= currentTimeMillis) {
+                                lastNavigateUpTime = currentTimeMillis
+                                navController.navigateUp()
+                            }
+                        },
+                        onEmergencyTaskCompleted = {
+                            stopService(Intent(this@AlarmActivity, AlarmService::class.java))
+                            finish()
+
+                            if (isLaunchedFromMainActivity) {
+                                startActivity(Intent(this@AlarmActivity, MainActivity::class.java))
                             }
                         }
                     )

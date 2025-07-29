@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm.destinations.emergency.components
+package com.sweak.qralarm.features.emergency.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,7 +18,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.features.alarm.destinations.emergency.EmergencyScreenState
+import com.sweak.qralarm.features.emergency.EmergencyScreenState
 
 @Composable
 fun EmergencyTaskCard(

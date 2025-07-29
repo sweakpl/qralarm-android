@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm.destinations.alarm.components
+package com.sweak.qralarm.features.alarm.components
 
 import android.content.BroadcastReceiver
 import android.content.Context

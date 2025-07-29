@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm.destinations.alarm
+package com.sweak.qralarm.features.alarm
 
 sealed class AlarmScreenBackendEvent {
     data object StopAlarm : AlarmScreenBackendEvent()

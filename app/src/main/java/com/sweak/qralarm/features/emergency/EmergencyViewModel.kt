@@ -1,9 +1,9 @@
-package com.sweak.qralarm.features.alarm.destinations.emergency
+package com.sweak.qralarm.features.emergency
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sweak.qralarm.features.alarm.destinations.emergency.util.EMERGENCY_TASK_INITIAL_REMAINING_MATCHES
-import com.sweak.qralarm.features.alarm.destinations.emergency.util.EMERGENCY_TASK_VALUE_RANGE
+import com.sweak.qralarm.features.emergency.util.EMERGENCY_TASK_INITIAL_REMAINING_MATCHES
+import com.sweak.qralarm.features.emergency.util.EMERGENCY_TASK_VALUE_RANGE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay

@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.alarm.destinations.emergency
+package com.sweak.qralarm.features.emergency
 
 sealed class EmergencyScreenUserEvent {
     data object OnCloseClicked : EmergencyScreenUserEvent()

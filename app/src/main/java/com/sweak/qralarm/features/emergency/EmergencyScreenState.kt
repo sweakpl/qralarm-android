@@ -1,7 +1,7 @@
-package com.sweak.qralarm.features.alarm.destinations.emergency
+package com.sweak.qralarm.features.emergency
 
-import com.sweak.qralarm.features.alarm.destinations.emergency.util.EMERGENCY_TASK_INITIAL_REMAINING_MATCHES
-import com.sweak.qralarm.features.alarm.destinations.emergency.util.EMERGENCY_TASK_VALUE_RANGE
+import com.sweak.qralarm.features.emergency.util.EMERGENCY_TASK_INITIAL_REMAINING_MATCHES
+import com.sweak.qralarm.features.emergency.util.EMERGENCY_TASK_VALUE_RANGE
 
 data class EmergencyScreenState(
     val isTaskStarted: Boolean = false,
