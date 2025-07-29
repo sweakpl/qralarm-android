@@ -77,6 +77,7 @@ fun HomeScreen(
     onEditAlarm: (Long) -> Unit,
     onMenuClicked: () -> Unit,
     onRedirectToScanner: (alarmId: Long) -> Unit,
+    onRedirectToEmergency: (alarmId: Long) -> Unit,
     onGoToOptimizationClicked: () -> Unit
 ) {
     val homeViewModel = hiltViewModel<HomeViewModel>()
@@ -226,6 +227,7 @@ fun HomeScreen(
 
                     onGoToOptimizationClicked()
                 }
+                is HomeScreenUserEvent.EmergencyClicked -> onRedirectToEmergency(event.alarmId)
                 else -> homeViewModel.onEvent(event)
             }
         }
@@ -482,6 +484,9 @@ private fun HomeScreenContent(
                                 onDeleteAlarmClick = { alarmId ->
                                     onEvent(HomeScreenUserEvent.TryDeleteAlarm(alarmId = alarmId))
                                 },
+                                onEmergencyClick = { alarmId ->
+                                    onEvent(HomeScreenUserEvent.EmergencyClicked(alarmId = alarmId))
+                                },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(
@@ -540,6 +545,9 @@ private fun HomeScreenContent(
                                 },
                                 onDeleteAlarmClick = { alarmId ->
                                     onEvent(HomeScreenUserEvent.TryDeleteAlarm(alarmId = alarmId))
+                                },
+                                onEmergencyClick = { alarmId ->
+                                    onEvent(HomeScreenUserEvent.EmergencyClicked(alarmId = alarmId))
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -684,7 +692,8 @@ private fun HomeScreenContentPreview() {
                         alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),
                         isAlarmEnabled = true,
                         isCodeEnabled = false,
-                        skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig()
+                        skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig(),
+                        isEmergencyAvailable = true
                     )
                 ),
                 nonActiveAlarmWrappers = listOf(
@@ -697,7 +706,8 @@ private fun HomeScreenContentPreview() {
                         alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),
                         isAlarmEnabled = false,
                         isCodeEnabled = false,
-                        skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig()
+                        skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig(),
+                        isEmergencyAvailable = false
                     )
                 )
             ),

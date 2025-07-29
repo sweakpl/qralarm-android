@@ -25,6 +25,8 @@ import com.sweak.qralarm.features.custom_code_scanner.navigation.customCodeScann
 import com.sweak.qralarm.features.custom_code_scanner.navigation.navigateToCustomCodeScanner
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmScannerScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.navigateToDisableAlarmScanner
+import com.sweak.qralarm.features.emergency.navigation.emergencyScreen
+import com.sweak.qralarm.features.emergency.navigation.navigateToEmergencyScreen
 import com.sweak.qralarm.features.home.navigation.HOME_SCREEN_ROUTE
 import com.sweak.qralarm.features.home.navigation.homeScreen
 import com.sweak.qralarm.features.home.navigation.navigateToHome
@@ -153,6 +155,9 @@ class MainActivity : FragmentActivity() {
                                 isDisablingBeforeAlarmFired = true
                             )
                         },
+                        onRedirectToEmergency = { alarmId ->
+                            navController.navigateToEmergencyScreen(alarmIdToCancel = alarmId)
+                        },
                         onGoToOptimizationClicked = {
                             navController.navigateToOptimization(isLaunchedFromMenu = false)
                         }
@@ -245,6 +250,15 @@ class MainActivity : FragmentActivity() {
                     rateScreen(
                         onExit = {
                             navController.navigateUp()
+                        }
+                    )
+
+                    emergencyScreen(
+                        onCloseClicked = {
+                            navController.navigateUp()
+                        },
+                        onEmergencyTaskCompleted = {
+                            navController.popBackStack()
                         }
                     )
                 }

@@ -53,6 +53,7 @@ fun AlarmCard(
     onSkipNextAlarmChanged: (alarmId: Long, skip: Boolean) -> Unit,
     onCopyAlarmClick: (alarmId: Long) -> Unit,
     onDeleteAlarmClick: (alarmId: Long) -> Unit,
+    onEmergencyClick: (alarmId: Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     QRAlarmCard(modifier = modifier.clickable { onClick(alarmWrapper.alarmId) }) {
@@ -154,6 +155,30 @@ fun AlarmCard(
                             .wrapContentWidth()
                             .background(color = MaterialTheme.colorScheme.surface)
                     ) {
+                        if (alarmWrapper.isEmergencyAvailable) {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(R.string.emergency),
+                                        style = MaterialTheme.typography.labelMedium
+                                    )
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = QRAlarmIcons.Emergency,
+                                        contentDescription = stringResource(
+                                            R.string.content_description_emergency_icon
+                                        ),
+                                        tint = MaterialTheme.colorScheme.onSurface
+                                    )
+                                },
+                                onClick = {
+                                    expanded = false
+                                    onEmergencyClick(alarmWrapper.alarmId)
+                                }
+                            )
+                        }
+
                         if (alarmWrapper.skipNextAlarmConfig.isSkippingSupported) {
                             DropdownMenuItem(
                                 text = {
@@ -269,7 +294,8 @@ private fun AlarmCardPreview() {
                     skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig(
                         isSkippingSupported = true,
                         isSkippingNextAlarm = false
-                    )
+                    ),
+                    isEmergencyAvailable = true
                 )
             )
         }
@@ -283,6 +309,7 @@ private fun AlarmCardPreview() {
             onSkipNextAlarmChanged = { _, _ -> },
             onCopyAlarmClick = {},
             onDeleteAlarmClick = {},
+            onEmergencyClick = {},
             modifier = Modifier.fillMaxWidth()
         )
     }

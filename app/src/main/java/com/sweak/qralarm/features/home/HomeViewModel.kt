@@ -129,7 +129,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun convertToAlarmWrappers(alarms: List<Alarm>): List<AlarmWrapper> {
+    private suspend fun convertToAlarmWrappers(alarms: List<Alarm>): List<AlarmWrapper> {
         return alarms.mapNotNull { alarm ->
             val alarmRepeatingScheduleWrapper =
                 convertAlarmRepeatingMode(alarm.repeatingMode) ?: return@mapNotNull null
@@ -150,7 +150,9 @@ class HomeViewModel @Inject constructor(
                     isSkippingNextAlarm =
                         alarm.skipAlarmUntilTimeInMillis != null &&
                                 alarm.skipAlarmUntilTimeInMillis > System.currentTimeMillis()
-                )
+                ),
+                isEmergencyAvailable =
+                    alarm.isEmergencyTaskEnabled && !canManipulateAlarm(alarmId = alarm.alarmId)
             )
         }.sortedWith(
             compareBy(AlarmWrapper::alarmHourOfDay, AlarmWrapper::alarmMinute)

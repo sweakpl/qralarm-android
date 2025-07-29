@@ -1,7 +1,10 @@
 package com.sweak.qralarm.features.emergency
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.core.domain.alarm.DisableAlarm
+import com.sweak.qralarm.features.emergency.navigation.ID_OF_ALARM_TO_CANCEL
 import com.sweak.qralarm.features.emergency.util.EMERGENCY_TASK_INITIAL_REMAINING_MATCHES
 import com.sweak.qralarm.features.emergency.util.EMERGENCY_TASK_VALUE_RANGE
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +19,12 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 @HiltViewModel
-class EmergencyViewModel @Inject constructor() : ViewModel() {
+class EmergencyViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val disableAlarm: DisableAlarm
+) : ViewModel() {
+
+    private val idOfAlarmToCancel: Long = savedStateHandle[ID_OF_ALARM_TO_CANCEL] ?: 0
 
     var state = MutableStateFlow(EmergencyScreenState())
 
@@ -74,6 +82,10 @@ class EmergencyViewModel @Inject constructor() : ViewModel() {
                             emergencyTaskConfig =
                                 if (remainingMatches <= 0) {
                                     viewModelScope.launch {
+                                        if (idOfAlarmToCancel != 0L) {
+                                            disableAlarm(idOfAlarmToCancel)
+                                        }
+
                                         delay(1500)
 
                                         backendEventsChannel.send(
