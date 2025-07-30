@@ -1,0 +1,2 @@
+* Added option to disable/enable the emergency task for individual alarms,
+* Emergency task is now available also before the alarm is fired.

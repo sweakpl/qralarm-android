@@ -1,2 +1,0 @@
-* Added emergency task if you forget or lose your code,
-* Bug fixes.
