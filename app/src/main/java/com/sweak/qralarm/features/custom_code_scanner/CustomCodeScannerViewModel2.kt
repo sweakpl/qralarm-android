@@ -2,6 +2,7 @@ package com.sweak.qralarm.features.custom_code_scanner
 
 import android.os.Build
 import android.util.Log
+import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -42,6 +43,7 @@ class CustomCodeScannerViewModel2 @Inject constructor(
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     private val cameraExecutor = Executors.newSingleThreadExecutor()
+    private var camera: Camera? = null
 
     private val cameraPreviewUseCase by lazy {
         Preview.Builder().build().apply {
@@ -93,7 +95,7 @@ class CustomCodeScannerViewModel2 @Inject constructor(
                 imageAnalysisUseCase.setAnalyzer(cameraExecutor, analyzer)
 
                 val processCameraProvider = ProcessCameraProvider.awaitInstance(event.appContext)
-                processCameraProvider.bindToLifecycle(
+                camera = processCameraProvider.bindToLifecycle(
                     event.lifecycleOwner,
                     DEFAULT_BACK_CAMERA,
                     cameraPreviewUseCase,
@@ -103,14 +105,29 @@ class CustomCodeScannerViewModel2 @Inject constructor(
                 try {
                     awaitCancellation()
                 } finally {
+                    if (state.value.isFlashEnabled) {
+                        camera?.cameraControl?.enableTorch(false)
+                    }
+
                     imageAnalysisUseCase.clearAnalyzer()
                     processCameraProvider.unbindAll()
+                    camera = null
 
                     if (!cameraExecutor.isShutdown) {
                         cameraExecutor.shutdownNow()
                     }
                 }
             }
+            is CustomCodeScannerScreenUserEvent2.ToggleFlash -> {
+                camera?.let {
+                    state.update { currentState ->
+                        val flashEnabled = !currentState.isFlashEnabled
+                        it.cameraControl.enableTorch(flashEnabled)
+                        currentState.copy(isFlashEnabled = flashEnabled)
+                    }
+                }
+            }
+            else -> { /* no-op */ }
         }
     }
 }
