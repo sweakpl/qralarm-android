@@ -14,7 +14,7 @@ media3 = "1.8.0"
 splashscreen = "1.0.1"
 materialIconsExtended = "1.7.8"
 hiltNavigationCompose = "1.2.0"
-cameraX = "1.4.2"
+cameraX = "1.5.0-beta02"
 zxing = "3.5.3"
 datastorePreferences = "1.1.7"
 accompanist-permissions = "0.37.3"
@@ -47,6 +47,7 @@ androidx-datastore-preferences = { group = "androidx.datastore", name = "datasto
 androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraX" }
 androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraX" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraX" }
+androidx-camera-compose = { group = "androidx.camera", name = "camera-compose", version.ref = "cameraX" }
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraX" }
 
 zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
