@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,7 +19,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
@@ -51,12 +54,14 @@ fun CustomCodeScannerScreen2(
 
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+    val windowInfo = LocalWindowInfo.current
 
     LaunchedEffect(lifecycleOwner) {
         customCodeScannerViewModel2.onEvent(
-            CustomCodeScannerScreenUserEvent2.BindToCamera(
+            CustomCodeScannerScreenUserEvent2.InitializeCamera(
                 appContext = context,
-                lifecycleOwner = lifecycleOwner
+                lifecycleOwner = lifecycleOwner,
+                windowInfo = windowInfo
             )
         )
     }
@@ -79,11 +84,12 @@ fun CustomCodeScannerScreenContent2(
     state: CustomCodeScannerScreenState2,
     onEvent: (CustomCodeScannerScreenUserEvent2) -> Unit
 ) {
-    Scaffold { paddingValues ->
+    Scaffold(containerColor = Color.White) { paddingValues ->
         Box {
             state.surfaceRequest?.let { request ->
                 CameraXViewfinder(
-                    surfaceRequest = request
+                    surfaceRequest = request,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
 
