@@ -6,7 +6,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.sweak.qralarm.features.custom_code_scanner.CustomCodeScannerScreen
-import com.sweak.qralarm.features.custom_code_scanner.CustomCodeScannerScreen2
 
 const val CUSTOM_CODE_SCANNER_SCREEN_ROUTE = "customCodeScannerScreen"
 const val SHOULD_SCAN_FOR_DEFAULT_CODE = "shouldScanForDefaultCode"
@@ -29,7 +28,7 @@ fun NavGraphBuilder.customCodeScannerScreen(
             }
         )
     ) {
-        CustomCodeScannerScreen2(
+        CustomCodeScannerScreen(
             onCustomCodeSaved = onCustomCodeSaved,
             onCloseClicked = onCloseClicked
         )
