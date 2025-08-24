@@ -197,4 +197,9 @@
     <string name="target_colon">Ziel:</string>
     <string name="remaining_colon">Verbleibende:</string>
     <string name="emergency_task_setting_description">Notfallaufgabe für Situationen, in denen Sie den Code nicht scannen können.</string>
+    <string name="emergency_task">Notfallaufgabe</string>
+    <string name="emergency_task_global_settings_description">Wenn Sie Ihren Code vergessen und ein Alarm ertönt, können Sie die Notfallaufgabe verwenden, um den Alarm zu deaktivieren.\n\nSie können die Schwierigkeit der Notfallaufgabe anpassen, indem Sie die folgenden Einstellungen ändern und eine Vorschau anzeigen:</string>
+    <string name="slider_range">Schieberegler-Bereich:</string>
+    <string name="required_matches">Erforderliche Übereinstimmungen:</string>
+    <string name="preview_emergency_task">Vorschau der Notfallaufgabe</string>
 </resources>

@@ -1,11 +1,11 @@
-package com.sweak.qralarm.features.emergency.navigation
+package com.sweak.qralarm.features.emergency.task.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.sweak.qralarm.features.emergency.EmergencyScreen
+import com.sweak.qralarm.features.emergency.task.EmergencyScreen
 
 const val EMERGENCY_SCREEN_ROUTE = "emergencyScreen"
 const val ID_OF_ALARM_TO_CANCEL = "idOfAlarmToCancel"

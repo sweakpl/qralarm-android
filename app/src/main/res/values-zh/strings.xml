@@ -191,4 +191,9 @@
     <string name="target_colon">目标:</string>
     <string name="remaining_colon">剩余:</string>
     <string name="emergency_task_setting_description">紧急任务，用于无法扫描代码的情况。</string>
+    <string name="emergency_task">紧急任务</string>
+    <string name="emergency_task_global_settings_description">如果您忘记了密码且报警器响起，您可以使用紧急任务来关闭报警器。\n\n您可以通过更改以下设置来调整紧急任务的难度，并预览其效果：</string>
+    <string name="slider_range">滑块范围</string>
+    <string name="required_matches">所需匹配：</string>
+    <string name="preview_emergency_task">预览紧急任务</string>
 </resources>

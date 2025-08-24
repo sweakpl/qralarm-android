@@ -209,4 +209,9 @@
     <string name="target_colon">Cel:</string>
     <string name="remaining_colon">Pozostało:</string>
     <string name="emergency_task_setting_description">Zadanie awaryjne w sytuacjach, gdy nie można zeskanować kodu.</string>
+    <string name="emergency_task">Zadanie awaryjne</string>
+    <string name="emergency_task_global_settings_description">Jeśli zapomnisz kodu i zadzwoni alarm, możesz użyć zadania awaryjnego, aby wyłączyć alarm.\n\nMożesz dostosować trudność zadania awaryjnego, zmieniając następujące ustawienia i wyświetlić jego podgląd:</string>
+    <string name="slider_range">Zakres suwaka:</string>
+    <string name="required_matches">Wymagane dopasowania:</string>
+    <string name="preview_emergency_task">Podgląd zadania awaryjnego</string>
 </resources>

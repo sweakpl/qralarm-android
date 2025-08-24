@@ -25,8 +25,10 @@ import com.sweak.qralarm.features.custom_code_scanner.navigation.customCodeScann
 import com.sweak.qralarm.features.custom_code_scanner.navigation.navigateToCustomCodeScanner
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmScannerScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.navigateToDisableAlarmScanner
-import com.sweak.qralarm.features.emergency.navigation.emergencyScreen
-import com.sweak.qralarm.features.emergency.navigation.navigateToEmergencyScreen
+import com.sweak.qralarm.features.emergency.settings.navigation.emergencySettingsFlow
+import com.sweak.qralarm.features.emergency.settings.navigation.navigateToEmergencySettings
+import com.sweak.qralarm.features.emergency.task.navigation.emergencyScreen
+import com.sweak.qralarm.features.emergency.task.navigation.navigateToEmergencyScreen
 import com.sweak.qralarm.features.home.navigation.HOME_SCREEN_ROUTE
 import com.sweak.qralarm.features.home.navigation.homeScreen
 import com.sweak.qralarm.features.home.navigation.navigateToHome
@@ -222,6 +224,9 @@ class MainActivity : FragmentActivity() {
                                 isLaunchedFromMenu = true
                             )
                         },
+                        onEmergencyTaskSettingsClicked = {
+                            navController.navigateToEmergencySettings()
+                        },
                         onQRAlarmProClicked = {
                             navController.navigateToQRAlarmPro()
                         },
@@ -236,6 +241,13 @@ class MainActivity : FragmentActivity() {
                     )
 
                     optimizationScreen(
+                        onBackClicked = {
+                            navController.navigateUp()
+                        }
+                    )
+
+                    emergencySettingsFlow(
+                        navController = navController,
                         onBackClicked = {
                             navController.navigateUp()
                         }

@@ -197,4 +197,9 @@
     <string name="target_colon">Hedef:</string>
     <string name="remaining_colon">Kalan:</string>
     <string name="emergency_task_setting_description">Kodu tarayamadığınız durumlar için acil durum görevi.</string>
+    <string name="emergency_task">Acil durum görevi</string>
+    <string name="emergency_task_global_settings_description">Kodunuzu unutursanız ve bir alarm çalarsa, alarmı devre dışı bırakmak için acil durum görevini kullanabilirsiniz.\n\nAşağıdaki ayarları değiştirerek acil durum görevinin zorluğunu ayarlayabilir ve nasıl görüneceğini önizleyebilirsiniz:</string>
+    <string name="slider_range">Kaydırıcı aralığı:</string>
+    <string name="required_matches">Gerekli eşleşmeler:</string>
+    <string name="preview_emergency_task">Acil durum görevini önizleme</string>
 </resources>

@@ -3,7 +3,9 @@ package com.sweak.qralarm.core.storage.datastore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.byteArrayPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
@@ -91,6 +93,37 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun setEmergencySliderRange(range: IntRange) {
+        dataStore.edit { preferences ->
+            preferences[EMERGENCY_SLIDER_RANGE] =
+                byteArrayOf(range.first.toByte(), range.last.toByte())
+        }
+    }
+
+    fun getEmergencySliderRange(): Flow<IntRange?> {
+        return dataStore.data.map { preferences ->
+            val byteArray = preferences[EMERGENCY_SLIDER_RANGE]
+
+            if (byteArray == null || byteArray.size != 2) {
+                return@map null
+            } else {
+                return@map byteArray[0].toInt()..byteArray[1].toInt()
+            }
+        }
+    }
+
+    suspend fun setEmergencyRequiredMatches(matches: Int) {
+        dataStore.edit { preferences ->
+            preferences[EMERGENCY_REQUIRED_MATCHES] = matches
+        }
+    }
+
+    fun getEmergencyRequiredMatches(): Flow<Int?> {
+        return dataStore.data.map { preferences ->
+            preferences[EMERGENCY_REQUIRED_MATCHES]
+        }
+    }
+
     companion object {
         val TEMPORARY_SCANNED_CODE = stringPreferencesKey("temporaryScannedCode")
         val OPTIMIZATION_GUIDE_STATE = stringPreferencesKey("optimizationGuideState")
@@ -98,5 +131,7 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         val ALARM_MISSED_DETECTED = booleanPreferencesKey("alarmMissedDetected")
         val NEXT_RATE_PROMPT_TIME = longPreferencesKey("nextRatePromptTime")
         val DEFAULT_ALARM_CODE = stringPreferencesKey("defaultAlarmCode")
+        val EMERGENCY_SLIDER_RANGE = byteArrayPreferencesKey("emergencySliderRange")
+        val EMERGENCY_REQUIRED_MATCHES = intPreferencesKey("emergencyRequiredMatches")
     }
 }

@@ -203,4 +203,9 @@
     <string name="target_colon">Obiettivo:</string>
     <string name="remaining_colon">Rimanente:</string>
     <string name="emergency_task_setting_description">Attività di emergenza per le situazioni in cui non è possibile eseguire la scansione del codice.</string>
+    <string name="emergency_task">Compito di emergenza</string>
+    <string name="emergency_task_global_settings_description">Se si dimentica il codice e l\'allarme suona, è possibile utilizzare l\'attività di emergenza per disattivare l\'allarme.\n\nApplicare la difficoltà dell\'attività di emergenza modificando le seguenti impostazioni e visualizzarne in anteprima l\'aspetto:</string>
+    <string name="slider_range">Gamma di cursori:</string>
+    <string name="required_matches">Corrispondenze richieste:</string>
+    <string name="preview_emergency_task">Anteprima dell\'attività di emergenza</string>
 </resources>

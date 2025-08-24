@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.emergency.components
+package com.sweak.qralarm.features.emergency.task.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -22,6 +22,12 @@ interface UserDataRepository {
     suspend fun setDefaultAlarmCode(code: String?)
     val defaultAlarmCode: Flow<String?>
 
+    suspend fun setEmergencySliderRange(range: IntRange)
+    val emergencySliderRange: Flow<IntRange>
+
+    suspend fun setEmergencyRequiredMatches(matches: Int)
+    val emergencyRequiredMatches: Flow<Int>
+
     enum class OptimizationGuideState {
         NONE, SHOULD_BE_SEEN, HAS_BEEN_SEEN
     }

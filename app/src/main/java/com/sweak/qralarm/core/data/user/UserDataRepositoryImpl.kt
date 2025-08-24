@@ -2,6 +2,8 @@ package com.sweak.qralarm.core.data.user
 
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.storage.datastore.QRAlarmPreferencesDataSource
+import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_REQUIRED_MATCHES
+import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_SLIDER_RANGE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -55,4 +57,22 @@ class UserDataRepositoryImpl @Inject constructor(
 
     override val defaultAlarmCode: Flow<String?>
         get() = qrAlarmPreferencesDataSource.getDefaultAlarmCode()
+
+    override suspend fun setEmergencySliderRange(range: IntRange) {
+        qrAlarmPreferencesDataSource.setEmergencySliderRange(range = range)
+    }
+
+    override val emergencySliderRange: Flow<IntRange>
+        get() = qrAlarmPreferencesDataSource.getEmergencySliderRange().map {
+            it ?: EMERGENCY_DEFAULT_SLIDER_RANGE
+        }
+
+    override suspend fun setEmergencyRequiredMatches(matches: Int) {
+        qrAlarmPreferencesDataSource.setEmergencyRequiredMatches(matches = matches)
+    }
+
+    override val emergencyRequiredMatches: Flow<Int>
+        get() = qrAlarmPreferencesDataSource.getEmergencyRequiredMatches().map {
+            it ?: EMERGENCY_DEFAULT_REQUIRED_MATCHES
+        }
 }

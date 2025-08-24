@@ -202,4 +202,9 @@
     <string name="target_colon">Target:</string>
     <string name="remaining_colon">Remaining:</string>
     <string name="emergency_task_setting_description">Emergency task for situations where you can\'t scan the code.</string>
+    <string name="emergency_task">Emergency task</string>
+    <string name="emergency_task_global_settings_description">If you forget your code and an alarm rings you can use the emergency task to disable the alarm.\n\nYou can adjust emergency task difficulty by changing the following settings and preview how it will look:</string>
+    <string name="slider_range">Slider range:</string>
+    <string name="required_matches">Required matches:</string>
+    <string name="preview_emergency_task">Preview emergency task</string>
 </resources>

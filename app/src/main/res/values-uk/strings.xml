@@ -209,4 +209,9 @@
     <string name="target_colon">Ціль:</string>
     <string name="remaining_colon">Залишилося:</string>
     <string name="emergency_task_setting_description">Екстрене завдання для ситуацій, коли ви не можете відсканувати код.</string>
+    <string name="emergency_task">Екстрене завдання</string>
+    <string name="emergency_task_global_settings_description">Якщо ви забули свій код, а будильник задзвонив, ви можете скористатися екстреним завданням, щоб вимкнути будильник.\n\nВи можете налаштувати складність екстреного завдання, змінивши наступні параметри, і переглянути, як воно буде виглядати:</string>
+    <string name="slider_range">Повзунок діапазону:</string>
+    <string name="required_matches">Необхідні збіги:</string>
+    <string name="preview_emergency_task">Попередній перегляд аварійного завдання</string>
 </resources>

@@ -1,16 +1,16 @@
-package com.sweak.qralarm.features.emergency
+package com.sweak.qralarm.features.emergency.task
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
-import com.sweak.qralarm.features.emergency.navigation.ID_OF_ALARM_TO_CANCEL
-import com.sweak.qralarm.features.emergency.util.EMERGENCY_TASK_INITIAL_REMAINING_MATCHES
-import com.sweak.qralarm.features.emergency.util.EMERGENCY_TASK_VALUE_RANGE
+import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.features.emergency.task.navigation.ID_OF_ALARM_TO_CANCEL
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -21,7 +21,8 @@ import kotlin.random.nextInt
 @HiltViewModel
 class EmergencyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val disableAlarm: DisableAlarm
+    private val disableAlarm: DisableAlarm,
+    private val userDataRepository: UserDataRepository
 ) : ViewModel() {
 
     private val idOfAlarmToCancel: Long = savedStateHandle[ID_OF_ALARM_TO_CANCEL] ?: 0
@@ -32,25 +33,27 @@ class EmergencyViewModel @Inject constructor(
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     init {
-        state.update { currentState ->
-            val valueRange = EMERGENCY_TASK_VALUE_RANGE
-            val targetValue = Random.nextInt(range = valueRange)
-            var currentValue = Random.nextInt(range = valueRange)
+        viewModelScope.launch {
+            state.update { currentState ->
+                val valueRange = userDataRepository.emergencySliderRange.first()
+                val targetValue = Random.nextInt(range = valueRange)
+                var currentValue = Random.nextInt(range = valueRange)
 
-            while (currentValue == targetValue) {
-                // Ensure current value is not equal to target value
-                currentValue = Random.nextInt(range = valueRange)
-            }
+                while (currentValue == targetValue) {
+                    // Ensure current value is not equal to target value
+                    currentValue = Random.nextInt(range = valueRange)
+                }
 
-            currentState.copy(
-                emergencyTaskConfig = currentState.emergencyTaskConfig.copy(
-                    valueRange = valueRange,
-                    targetValue = targetValue,
-                    currentValue = currentValue,
-                    remainingMatches = EMERGENCY_TASK_INITIAL_REMAINING_MATCHES,
-                    isCompleted = false
+                currentState.copy(
+                    emergencyTaskConfig = currentState.emergencyTaskConfig.copy(
+                        valueRange = valueRange,
+                        targetValue = targetValue,
+                        currentValue = currentValue,
+                        remainingMatches = userDataRepository.emergencyRequiredMatches.first(),
+                        isCompleted = false
+                    )
                 )
-            )
+            }
         }
     }
 

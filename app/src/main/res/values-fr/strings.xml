@@ -203,4 +203,9 @@
     <string name="target_colon">Cible:</string>
     <string name="remaining_colon">Restant:</string>
     <string name="emergency_task_setting_description">Tâche d\'urgence pour les situations où vous ne pouvez pas scanner le code.</string>
+    <string name="emergency_task">Tâche d\'urgence</string>
+    <string name="emergency_task_global_settings_description">Si vous oubliez votre code et qu\'une alarme sonne, vous pouvez utiliser la tâche d\'urgence pour désactiver l\'alarme.\n\nVous pouvez ajuster la difficulté de la tâche d\'urgence en modifiant les paramètres suivants et en prévoyant ce que cela donnera :</string>
+    <string name="slider_range">Plage du curseur :</string>
+    <string name="required_matches">Correspondances requises :</string>
+    <string name="preview_emergency_task">Prévisualisation de la tâche d\'urgence</string>
 </resources>

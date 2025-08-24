@@ -203,4 +203,9 @@
     <string name="target_colon">Objetivo:</string>
     <string name="remaining_colon">Resto:</string>
     <string name="emergency_task_setting_description">Tarea de emergencia para situaciones en las que no se puede escanear el código.</string>
+    <string name="emergency_task">Tarea de emergencia</string>
+    <string name="emergency_task_global_settings_description">Si olvida su código y suena una alarma, puede utilizar la tarea de emergencia para desactivar la alarma.\n\nPuede ajustar la dificultad de la tarea de emergencia cambiando la siguiente configuración y previsualizar cómo se verá:</string>
+    <string name="slider_range">Rango de deslizamiento:</string>
+    <string name="required_matches">Partidos necesarios:</string>
+    <string name="preview_emergency_task">Vista previa de la tarea de emergencia</string>
 </resources>

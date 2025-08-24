@@ -19,8 +19,8 @@ import com.sweak.qralarm.features.alarm.navigation.ALARM_SCREEN_ROUTE
 import com.sweak.qralarm.features.alarm.navigation.alarmScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmScannerScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.navigateToDisableAlarmScanner
-import com.sweak.qralarm.features.emergency.navigation.emergencyScreen
-import com.sweak.qralarm.features.emergency.navigation.navigateToEmergencyScreen
+import com.sweak.qralarm.features.emergency.task.navigation.emergencyScreen
+import com.sweak.qralarm.features.emergency.task.navigation.navigateToEmergencyScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

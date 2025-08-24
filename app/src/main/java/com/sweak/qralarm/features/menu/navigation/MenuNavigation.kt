@@ -13,6 +13,7 @@ fun NavGraphBuilder.menuScreen(
     onBackClicked: () -> Unit,
     onIntroductionClicked: () -> Unit,
     onOptimizationGuideClicked: () -> Unit,
+    onEmergencyTaskSettingsClicked: () -> Unit,
     onQRAlarmProClicked: () -> Unit,
     onRateQRAlarmClicked: () -> Unit,
     onScanDefaultCodeClicked: () -> Unit
@@ -22,6 +23,7 @@ fun NavGraphBuilder.menuScreen(
             onBackClicked = onBackClicked,
             onIntroductionClicked = onIntroductionClicked,
             onOptimizationGuideClicked = onOptimizationGuideClicked,
+            onEmergencyTaskSettingsClicked = onEmergencyTaskSettingsClicked,
             onQRAlarmProClicked = onQRAlarmProClicked,
             onRateQRAlarmClicked = onRateQRAlarmClicked,
             onScanDefaultCodeClicked = onScanDefaultCodeClicked
