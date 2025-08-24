@@ -16,7 +16,7 @@ interface UserDataRepository {
     suspend fun setAlarmMissedDetected(detected: Boolean)
     val isAlarmMissedDetected: Flow<Boolean>
 
-    suspend fun setNextRatePromptTimeInMillis(promptTime: Long?)
+    suspend fun setNextRatePromptTimeInMillis(promptTime: Long)
     val nextRatePromptTimeInMillis: Flow<Long?>
 
     suspend fun setDefaultAlarmCode(code: String?)

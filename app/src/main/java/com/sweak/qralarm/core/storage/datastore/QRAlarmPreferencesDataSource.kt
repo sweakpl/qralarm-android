@@ -21,9 +21,9 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
-    fun getIntroductionFinished(): Flow<Boolean> {
+    fun getIntroductionFinished(): Flow<Boolean?> {
         return dataStore.data.map { preferences ->
-            preferences[INTRODUCTION_FINISHED] == true
+            preferences[INTRODUCTION_FINISHED]
         }
     }
 
@@ -33,9 +33,9 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
-    fun getOptimizationGuideState(): Flow<String> {
+    fun getOptimizationGuideState(): Flow<String?> {
         return dataStore.data.map { preferences ->
-            preferences[OPTIMIZATION_GUIDE_STATE] ?: "NONE"
+            preferences[OPTIMIZATION_GUIDE_STATE]
         }
     }
 
@@ -60,15 +60,15 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
-    fun getAlarmMissedDetected(): Flow<Boolean> {
+    fun getAlarmMissedDetected(): Flow<Boolean?> {
         return dataStore.data.map { preferences ->
-            preferences[ALARM_MISSED_DETECTED] == true
+            preferences[ALARM_MISSED_DETECTED]
         }
     }
 
-    suspend fun setNextRatePromptTimeInMillis(promptTime: Long?) {
+    suspend fun setNextRatePromptTimeInMillis(promptTime: Long) {
         dataStore.edit { preferences ->
-            preferences[NEXT_RATE_PROMPT_TIME] = promptTime ?: 0L
+            preferences[NEXT_RATE_PROMPT_TIME] = promptTime
         }
     }
 

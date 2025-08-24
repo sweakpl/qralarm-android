@@ -17,7 +17,9 @@ class UserDataRepositoryImpl @Inject constructor(
     }
 
     override val isIntroductionFinished: Flow<Boolean>
-        get() = qrAlarmPreferencesDataSource.getIntroductionFinished()
+        get() = qrAlarmPreferencesDataSource.getIntroductionFinished().map {
+            it == true
+        }
 
     override suspend fun setOptimizationGuideState(
         state: UserDataRepository.OptimizationGuideState
@@ -26,8 +28,10 @@ class UserDataRepositoryImpl @Inject constructor(
     }
 
     override val optimizationGuideState: Flow<UserDataRepository.OptimizationGuideState>
-        get() = qrAlarmPreferencesDataSource.getOptimizationGuideState().map {
-            UserDataRepository.OptimizationGuideState.valueOf(it)
+        get() = qrAlarmPreferencesDataSource.getOptimizationGuideState().map { stateString ->
+            stateString?.let {
+                UserDataRepository.OptimizationGuideState.valueOf(it)
+            } ?: UserDataRepository.OptimizationGuideState.NONE
         }
 
     override suspend fun setTemporaryScannedCode(code: String?) {
@@ -42,9 +46,11 @@ class UserDataRepositoryImpl @Inject constructor(
     }
 
     override val isAlarmMissedDetected: Flow<Boolean>
-        get() = qrAlarmPreferencesDataSource.getAlarmMissedDetected()
+        get() = qrAlarmPreferencesDataSource.getAlarmMissedDetected().map {
+            it == true
+        }
 
-    override suspend fun setNextRatePromptTimeInMillis(promptTime: Long?) {
+    override suspend fun setNextRatePromptTimeInMillis(promptTime: Long) {
         qrAlarmPreferencesDataSource.setNextRatePromptTimeInMillis(promptTime = promptTime)
     }
 
