@@ -74,7 +74,6 @@ import com.sweak.qralarm.core.designsystem.component.QRAlarmSwitch
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
@@ -579,7 +578,7 @@ private fun AddEditAlarmScreenContent(
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(
                                         text = getAlarmSnoozeModeString(
-                                            state.alarmSnoozeMode
+                                            state.snoozeNumberToDurationPair
                                         ),
                                         style = MaterialTheme.typography.labelMedium,
                                         modifier = Modifier.padding(end = MaterialTheme.space.small)
@@ -1277,13 +1276,13 @@ private fun AddEditAlarmScreenContent(
 
     if (state.isChooseAlarmSnoozeConfigurationDialogVisible) {
         ChooseSnoozeConfigurationBottomSheet(
-            initialAlarmSnoozeMode = state.alarmSnoozeMode,
+            initialSnoozeNumberToDurationPair = state.snoozeNumberToDurationPair,
             availableSnoozeNumbers = state.availableSnoozeNumbers,
             availableSnoozeDurationsInMinutes = state.availableSnoozeDurationsInMinutes,
-            onDismissRequest = { newAlarmSnoozeConfigurationWrapper ->
+            onDismissRequest = { newSnoozeNumberToDurationPair ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmSnoozeConfigurationSelected(
-                        newAlarmSnoozeMode = newAlarmSnoozeConfigurationWrapper
+                        newSnoozeNumberToDurationPair = newSnoozeNumberToDurationPair
                     )
                 )
             }
@@ -1307,12 +1306,12 @@ private fun AddEditAlarmScreenContent(
             onPickCustomRingtone = {
                 onEvent(AddEditAlarmScreenUserEvent.PickCustomRingtone)
             },
-            alarmVolumeMode = state.alarmVolumeMode,
-            onDismissRequest = { newAlarmRingtone, newAlarmVolumeMode ->
+            alarmVolumePercentage = state.alarmVolumePercentage,
+            onDismissRequest = { newAlarmRingtone, newAlarmVolumePercentage ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmRingtoneConfigSelected(
                         newRingtone = newAlarmRingtone,
-                        newAlarmVolumeMode = newAlarmVolumeMode
+                        newAlarmVolumePercentage = newAlarmVolumePercentage
                     )
                 )
             }
@@ -1423,15 +1422,15 @@ private fun AddEditAlarmScreenContent(
 
 @Composable
 private fun getAlarmSnoozeModeString(
-    alarmSnoozeMode: Alarm.SnoozeMode
+    snoozeNumberToDurationPair: Pair<Int, Int>
 ): String {
-    if (alarmSnoozeMode.numberOfSnoozes == 0) {
+    if (snoozeNumberToDurationPair.first == 0) {
         return stringResource(R.string.no_snoozes)
     }
 
-    return alarmSnoozeMode.numberOfSnoozes.toString() +
+    return snoozeNumberToDurationPair.first.toString() +
             " x " +
-            alarmSnoozeMode.snoozeDurationInMinutes +
+            snoozeNumberToDurationPair.second +
             " " + stringResource(R.string.min)
 }
 

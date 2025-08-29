@@ -45,7 +45,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditAlarmViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val alarmRingtonePlayer: AlarmRingtonePlayer,
     private val userDataRepository: UserDataRepository,
     private val alarmsRepository: AlarmsRepository,
@@ -58,7 +58,6 @@ class AddEditAlarmViewModel @Inject constructor(
 
     private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM_TO_EDIT] ?: 0
     private var hasUnsavedChanges = false
-    private var initialDefaultCodeUpdate = true
 
     var state = MutableStateFlow(AddEditAlarmFlowState())
 
@@ -66,84 +65,117 @@ class AddEditAlarmViewModel @Inject constructor(
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     init {
+        var launchedFromSavedState = false
+        var initialDefaultCodeUpdate = true
+
         viewModelScope.launch {
-            val allSavedAlarmCodes = alarmsRepository.getAllAlarms()
-                .map { alarms ->
-                    alarms
-                        .mapNotNull { alarm -> alarm.assignedCode }
-                        .let { codes ->
-                            userDataRepository.defaultAlarmCode.first()?.let { codes + it } ?: codes
-                        }
-                        .distinct()
-                }
-                .first()
+            val savedState = savedStateHandle.get<AddEditAlarmFlowState>(
+                key = ADD_EDIT_ALARM_FLOW_STATE_KEY
+            )
 
-            if (idOfAlarm == 0L) {
-                val dateTime = ZonedDateTime.now()
-
-                state.update { currentState ->
-                    currentState.copy(
-                        isLoading = false,
-                        isEditingExistingAlarm = false,
-                        alarmHourOfDay = dateTime.hour,
-                        alarmMinute = dateTime.minute,
-                        previouslySavedCodes = allSavedAlarmCodes
-                    )
-                }
+            if (savedState != null) {
+                state.update { savedState }
+                launchedFromSavedState = true
             } else {
-                val alarm = alarmsRepository.getAlarm(alarmId = idOfAlarm) ?: return@launch
-                val alarmRepeatingScheduleWrapper = convertAlarmRepeatingMode(
-                    repeatingMode = alarm.repeatingMode
-                ) ?: return@launch
+                val allSavedAlarmCodes = alarmsRepository.getAllAlarms()
+                    .map { alarms ->
+                        alarms
+                            .mapNotNull { alarm -> alarm.assignedCode }
+                            .let { codes ->
+                                userDataRepository.defaultAlarmCode.first()?.let {
+                                    codes + it
+                                } ?: codes
+                            }
+                            .distinct()
+                    }
+                    .first()
 
-                state.update { currentState ->
-                    currentState.copy(
-                        isLoading = false,
-                        isEditingExistingAlarm = true,
-                        alarmHourOfDay = alarm.alarmHourOfDay,
-                        alarmMinute = alarm.alarmMinute,
-                        alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
-                        alarmSnoozeMode = alarm.snoozeConfig.snoozeMode,
-                        ringtone = alarm.ringtone,
-                        currentCustomAlarmRingtoneUri = alarm.customRingtoneUriString?.toUri(),
-                        alarmVolumeMode = alarm.alarmVolumeMode,
-                        areVibrationsEnabled = alarm.areVibrationsEnabled,
-                        isCodeEnabled = alarm.isUsingCode,
-                        previouslySavedCodes = allSavedAlarmCodes,
-                        currentlyAssignedCode = alarm.assignedCode,
-                        isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
-                        isOneHourLockEnabled = alarm.isOneHourLockEnabled,
-                        isEmergencyTaskEnabled = alarm.isEmergencyTaskEnabled,
-                        alarmLabel = alarm.alarmLabel,
-                        gentleWakeupDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
-                        temporaryMuteDurationInSeconds = alarm.temporaryMuteDurationInSeconds
-                    )
+                if (idOfAlarm == 0L) {
+                    val dateTime = ZonedDateTime.now()
+
+                    state.update { currentState ->
+                        currentState.copy(
+                            isLoading = false,
+                            isEditingExistingAlarm = false,
+                            alarmHourOfDay = dateTime.hour,
+                            alarmMinute = dateTime.minute,
+                            previouslySavedCodes = allSavedAlarmCodes
+                        )
+                    }
+                } else {
+                    val alarm = alarmsRepository.getAlarm(alarmId = idOfAlarm) ?: return@launch
+                    val alarmRepeatingScheduleWrapper = convertAlarmRepeatingMode(
+                        repeatingMode = alarm.repeatingMode
+                    ) ?: return@launch
+
+                    state.update { currentState ->
+                        currentState.copy(
+                            isLoading = false,
+                            isEditingExistingAlarm = true,
+                            alarmHourOfDay = alarm.alarmHourOfDay,
+                            alarmMinute = alarm.alarmMinute,
+                            alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
+                            snoozeNumberToDurationPair = Pair(
+                                first = alarm.snoozeConfig.snoozeMode.numberOfSnoozes,
+                                second = alarm.snoozeConfig.snoozeMode.snoozeDurationInMinutes
+                            ),
+                            ringtone = alarm.ringtone,
+                            currentCustomAlarmRingtoneUri = alarm.customRingtoneUriString?.toUri(),
+                            alarmVolumePercentage =
+                                if (alarm.alarmVolumeMode is Alarm.AlarmVolumeMode.Custom) {
+                                    alarm.alarmVolumeMode.volumePercentage
+                                } else {
+                                    null
+                                },
+                            areVibrationsEnabled = alarm.areVibrationsEnabled,
+                            isCodeEnabled = alarm.isUsingCode,
+                            previouslySavedCodes = allSavedAlarmCodes,
+                            currentlyAssignedCode = alarm.assignedCode,
+                            isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
+                            isOneHourLockEnabled = alarm.isOneHourLockEnabled,
+                            isEmergencyTaskEnabled = alarm.isEmergencyTaskEnabled,
+                            alarmLabel = alarm.alarmLabel,
+                            gentleWakeupDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
+                            temporaryMuteDurationInSeconds = alarm.temporaryMuteDurationInSeconds
+                        )
+                    }
                 }
             }
         }
 
         viewModelScope.launch {
             userDataRepository.setTemporaryScannedCode(
-                if (idOfAlarm == 0L) userDataRepository.defaultAlarmCode.first() else null
+                if (launchedFromSavedState) state.value.temporaryAssignedCode
+                else if (idOfAlarm == 0L) userDataRepository.defaultAlarmCode.first()
+                else null
             )
 
             userDataRepository.temporaryScannedCode.collect { temporaryScannedCode ->
-                if (temporaryScannedCode != state.value.temporaryAssignedCode) {
-                    hasUnsavedChanges = true
-                }
+                if (launchedFromSavedState) {
+                    launchedFromSavedState = false
+                    initialDefaultCodeUpdate = false
+                } else {
+                    if (temporaryScannedCode != state.value.temporaryAssignedCode) {
+                        hasUnsavedChanges = true
+                    }
 
-                state.update { currentState ->
-                    currentState.copy(temporaryAssignedCode = temporaryScannedCode)
-                }
+                    state.update { currentState ->
+                        currentState.copy(temporaryAssignedCode = temporaryScannedCode)
+                    }
 
-                if (temporaryScannedCode != null && !initialDefaultCodeUpdate) {
-                    backendEventsChannel.send(
-                        AddEditAlarmFlowBackendEvent.CustomCodeAssignmentFinished
-                    )
-                }
+                    if (temporaryScannedCode != null && !initialDefaultCodeUpdate) {
+                        backendEventsChannel.send(
+                            AddEditAlarmFlowBackendEvent.CustomCodeAssignmentFinished
+                        )
+                    }
 
-                initialDefaultCodeUpdate = false
+                    initialDefaultCodeUpdate = false
+                }
             }
+        }
+
+        viewModelScope.launch {
+            state.collect { savedStateHandle[ADD_EDIT_ALARM_FLOW_STATE_KEY] = it }
         }
     }
 
@@ -298,13 +330,13 @@ class AddEditAlarmViewModel @Inject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.AlarmSnoozeConfigurationSelected -> {
-                if (event.newAlarmSnoozeMode != state.value.alarmSnoozeMode) {
+                if (event.newSnoozeNumberToDurationPair != state.value.snoozeNumberToDurationPair) {
                     hasUnsavedChanges = true
                 }
 
                 state.update { currentState ->
                     currentState.copy(
-                        alarmSnoozeMode = event.newAlarmSnoozeMode,
+                        snoozeNumberToDurationPair = event.newSnoozeNumberToDurationPair,
                         isChooseAlarmSnoozeConfigurationDialogVisible = false
                     )
                 }
@@ -318,7 +350,7 @@ class AddEditAlarmViewModel @Inject constructor(
                 alarmRingtonePlayer.stop()
 
                 if (event.newRingtone != state.value.ringtone ||
-                    event.newAlarmVolumeMode != state.value.alarmVolumeMode
+                    event.newAlarmVolumePercentage != state.value.alarmVolumePercentage
                 ) {
                     hasUnsavedChanges = true
                 }
@@ -326,7 +358,7 @@ class AddEditAlarmViewModel @Inject constructor(
                 state.update { currentState ->
                     currentState.copy(
                         ringtone = event.newRingtone,
-                        alarmVolumeMode = event.newAlarmVolumeMode,
+                        alarmVolumePercentage = event.newAlarmVolumePercentage,
                         isChooseAlarmRingtoneConfigDialogVisible = false,
                         availableRingtonesWithPlaybackState =
                         currentState.availableRingtonesWithPlaybackState.mapValues { false }
@@ -626,14 +658,23 @@ class AddEditAlarmViewModel @Inject constructor(
                 repeatingMode = repeatingMode,
                 nextAlarmTimeInMillis = alarmTimeInMillis,
                 snoozeConfig = Alarm.SnoozeConfig(
-                    snoozeMode = currentState.alarmSnoozeMode,
-                    numberOfSnoozesLeft = currentState.alarmSnoozeMode.numberOfSnoozes,
+                    snoozeMode = Alarm.SnoozeMode(
+                        numberOfSnoozes = currentState.snoozeNumberToDurationPair.first,
+                        snoozeDurationInMinutes = currentState.snoozeNumberToDurationPair.second
+                    ),
+                    numberOfSnoozesLeft = currentState.snoozeNumberToDurationPair.first,
                     isAlarmSnoozed = false,
                     nextSnoozedAlarmTimeInMillis = null
                 ),
                 ringtone = currentState.ringtone,
                 customRingtoneUriString = currentState.currentCustomAlarmRingtoneUri?.toString(),
-                alarmVolumeMode = currentState.alarmVolumeMode,
+                alarmVolumeMode = if (currentState.alarmVolumePercentage != null) {
+                    Alarm.AlarmVolumeMode.Custom(
+                        volumePercentage = currentState.alarmVolumePercentage
+                    )
+                } else {
+                    Alarm.AlarmVolumeMode.System
+                },
                 areVibrationsEnabled = currentState.areVibrationsEnabled,
                 isUsingCode = currentState.isCodeEnabled,
                 assignedCode = currentState.temporaryAssignedCode
@@ -727,5 +768,9 @@ class AddEditAlarmViewModel @Inject constructor(
         alarmRingtonePlayer.onDestroy()
 
         super.onCleared()
+    }
+    
+    companion object {
+        private const val ADD_EDIT_ALARM_FLOW_STATE_KEY = "addEditAlarmFlowState"
     }
 }

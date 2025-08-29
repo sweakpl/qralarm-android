@@ -37,7 +37,6 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,16 +47,16 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
     isCustomRingtoneUploaded: Boolean,
     onTogglePlaybackState: (Ringtone) -> Unit,
     onPickCustomRingtone: () -> Unit,
-    alarmVolumeMode: Alarm.AlarmVolumeMode,
-    onDismissRequest: (newRingtone: Ringtone, newAlarmVolumeMode: Alarm.AlarmVolumeMode) -> Unit
+    alarmVolumePercentage: Int?,
+    onDismissRequest: (newRingtone: Ringtone, newAlarmVolumePercentage: Int?) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     var selectedAlarmRingtone by remember(initialRingtone) { mutableStateOf(initialRingtone) }
-    var selectedAlarmVolumeMode by remember(alarmVolumeMode) { mutableStateOf(alarmVolumeMode) }
+    var selectedAlarmVolumePercentage by remember(alarmVolumePercentage) { mutableStateOf(alarmVolumePercentage) }
 
     ModalBottomSheet(
-        onDismissRequest = { onDismissRequest(selectedAlarmRingtone, selectedAlarmVolumeMode) },
+        onDismissRequest = { onDismissRequest(selectedAlarmRingtone, selectedAlarmVolumePercentage) },
         sheetState = modalBottomSheetState,
         containerColor = MaterialTheme.colorScheme.surface
     ) {
@@ -85,17 +84,12 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(bottom = MaterialTheme.space.mediumLarge)
             ) {
-                val isUsingSystemVolume =
-                    selectedAlarmVolumeMode is Alarm.AlarmVolumeMode.System
+                val isUsingSystemVolume = selectedAlarmVolumePercentage == null
 
                 IconButton(
                     onClick = {
-                        selectedAlarmVolumeMode =
-                            if (selectedAlarmVolumeMode is Alarm.AlarmVolumeMode.System) {
-                                Alarm.AlarmVolumeMode.Custom(volumePercentage = 50)
-                            } else {
-                                Alarm.AlarmVolumeMode.System
-                            }
+                        selectedAlarmVolumePercentage =
+                            if (selectedAlarmVolumePercentage == null) 50 else null
                     }
                 ) {
                     Icon(
@@ -116,16 +110,14 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(start = MaterialTheme.space.medium)
                         )
-                    } else if (selectedAlarmVolumeMode is Alarm.AlarmVolumeMode.Custom) {
+                    } else if (selectedAlarmVolumePercentage != null) {
                         Slider(
-                            value = (selectedAlarmVolumeMode as Alarm.AlarmVolumeMode.Custom)
-                                .volumePercentage.toFloat(),
+                            value = selectedAlarmVolumePercentage!!.toFloat(),
                             valueRange = 0f..100f,
                             steps = 9,
                             onValueChange = { newValue ->
-                                selectedAlarmVolumeMode = Alarm.AlarmVolumeMode.Custom(
-                                    volumePercentage = if (newValue < 10f) 10 else newValue.toInt()
-                                )
+                                selectedAlarmVolumePercentage =
+                                    if (newValue < 10f) 10 else newValue.toInt()
                             },
                             colors = SliderDefaults.colors(
                                 thumbColor = MaterialTheme.colorScheme.secondary,
@@ -240,7 +232,7 @@ private fun ChooseAlarmRingtoneDialogBottomSheetPreview() {
             isCustomRingtoneUploaded = true,
             onTogglePlaybackState = {},
             onPickCustomRingtone = {},
-            alarmVolumeMode = Alarm.AlarmVolumeMode.System,
+            alarmVolumePercentage = null,
             onDismissRequest = { _, _ -> }
         )
     }

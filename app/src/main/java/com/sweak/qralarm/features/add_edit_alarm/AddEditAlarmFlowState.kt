@@ -1,14 +1,16 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
 import android.net.Uri
+import android.os.Parcelable
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_NUMBERS
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_TEMPORARY_MUTE_DURATIONS_IN_SECONDS
-import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class AddEditAlarmFlowState(
     val isLoading: Boolean = true,
     val isEditingExistingAlarm: Boolean = false,
@@ -18,7 +20,7 @@ data class AddEditAlarmFlowState(
     val alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper =
         AlarmRepeatingScheduleWrapper(),
     val isChooseAlarmRepeatingScheduleDialogVisible: Boolean = false,
-    val alarmSnoozeMode: Alarm.SnoozeMode = Alarm.SnoozeMode(3, 10),
+    val snoozeNumberToDurationPair: Pair<Int, Int> = Pair(3, 10),
     val availableSnoozeNumbers: List<Int> = AVAILABLE_SNOOZE_NUMBERS,
     val availableSnoozeDurationsInMinutes: List<Int> = AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES,
     val isChooseAlarmSnoozeConfigurationDialogVisible: Boolean = false,
@@ -27,7 +29,7 @@ data class AddEditAlarmFlowState(
         Ringtone.entries.associateWith { false },
     val currentCustomAlarmRingtoneUri: Uri? = null,
     val temporaryCustomAlarmRingtoneUri: Uri? = null,
-    val alarmVolumeMode: Alarm.AlarmVolumeMode = Alarm.AlarmVolumeMode.System,
+    val alarmVolumePercentage: Int? = null,
     val isChooseAlarmRingtoneConfigDialogVisible: Boolean = false,
     val areVibrationsEnabled: Boolean = true,
     val isCodeEnabled: Boolean = true,
@@ -53,12 +55,13 @@ data class AddEditAlarmFlowState(
     val isDeleteAlarmDialogVisible: Boolean = false,
     val isDiscardAlarmChangesDialogVisible: Boolean = false,
     val isDownloadCodeDialogVisible: Boolean = false
-) {
+) : Parcelable {
+    @Parcelize
     data class PermissionsDialogState(
         val isVisible: Boolean = false,
         val cameraPermissionState: Boolean? = null,
         val notificationsPermissionState: Boolean? = null,
         val alarmsPermissionState: Boolean? = null,
         val fullScreenIntentPermissionState: Boolean? = null
-    )
+    ) : Parcelable
 }

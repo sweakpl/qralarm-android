@@ -1,7 +1,6 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
 import android.net.Uri
-import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 
@@ -41,14 +40,14 @@ sealed class AddEditAlarmFlowUserEvent {
             val isVisible: Boolean
         ) : AddEditAlarmScreenUserEvent()
         data class AlarmSnoozeConfigurationSelected(
-            val newAlarmSnoozeMode: Alarm.SnoozeMode
+            val newSnoozeNumberToDurationPair: Pair<Int, Int>
         ) : AddEditAlarmScreenUserEvent()
         data class ChooseAlarmRingtoneDialogVisible(
             val isVisible: Boolean
         ) : AddEditAlarmScreenUserEvent()
         data class AlarmRingtoneConfigSelected(
             val newRingtone: Ringtone,
-            val newAlarmVolumeMode: Alarm.AlarmVolumeMode
+            val newAlarmVolumePercentage: Int?
         ) : AddEditAlarmScreenUserEvent()
         data class ToggleAlarmRingtonePlayback(
             val ringtone: Ringtone
