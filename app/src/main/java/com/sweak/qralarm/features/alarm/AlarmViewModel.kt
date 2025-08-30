@@ -13,6 +13,7 @@ import com.sweak.qralarm.features.alarm.navigation.IS_TRANSIENT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,7 +33,8 @@ class AlarmViewModel @Inject constructor(
     private var isAlarmBeingStopped: Boolean = false
     private val isTransient: Boolean = savedStateHandle.get<Boolean>(IS_TRANSIENT) != false
 
-    var state = MutableStateFlow(AlarmScreenState())
+    private var _state = MutableStateFlow(AlarmScreenState())
+    val state = _state.asStateFlow()
 
     private val backendEventsChannel = Channel<AlarmScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
@@ -43,7 +45,7 @@ class AlarmViewModel @Inject constructor(
                 alarm = it
 
                 if (!isAlarmBeingStopped) {
-                    state.update { currentState ->
+                    _state.update { currentState ->
                         currentState.copy(
                             currentTimeInMillis = System.currentTimeMillis(),
                             isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed,
@@ -79,7 +81,7 @@ class AlarmViewModel @Inject constructor(
                     return
                 }
 
-                state.update { currentState ->
+                _state.update { currentState ->
                     if (currentState.permissionsDialogState.isVisible) {
                         if (currentState.permissionsDialogState.cameraPermissionState == true) {
                             viewModelScope.launch {
@@ -145,7 +147,7 @@ class AlarmViewModel @Inject constructor(
             }
             is AlarmScreenUserEvent.SnoozeAlarmClicked -> {
                 viewModelScope.launch {
-                    state.update { currentState ->
+                    _state.update { currentState ->
                         currentState.copy(isInteractionEnabled = !isTransient)
                     }
 
@@ -158,7 +160,7 @@ class AlarmViewModel @Inject constructor(
                 }
             }
             is AlarmScreenUserEvent.HideMissingPermissionsDialog -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(
                         permissionsDialogState = AlarmScreenState.PermissionsDialogState(
                             isVisible = false
@@ -167,12 +169,12 @@ class AlarmViewModel @Inject constructor(
                 }
             }
             is AlarmScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
             }
             is AlarmScreenUserEvent.UpdateCurrentTime -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(currentTimeInMillis = System.currentTimeMillis())
                 }
             }

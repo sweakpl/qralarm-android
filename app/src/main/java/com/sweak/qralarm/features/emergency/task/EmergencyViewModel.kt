@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
@@ -27,14 +28,15 @@ class EmergencyViewModel @Inject constructor(
 
     private val idOfAlarmToCancel: Long = savedStateHandle[ID_OF_ALARM_TO_CANCEL] ?: 0
 
-    var state = MutableStateFlow(EmergencyScreenState())
+    private var _state = MutableStateFlow(EmergencyScreenState())
+    val state = _state.asStateFlow()
 
     private val backendEventsChannel = Channel<EmergencyScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     init {
         viewModelScope.launch {
-            state.update { currentState ->
+            _state.update { currentState ->
                 val valueRange = userDataRepository.emergencySliderRange.first()
                 val targetValue = Random.nextInt(range = valueRange)
                 var currentValue = Random.nextInt(range = valueRange)
@@ -60,12 +62,12 @@ class EmergencyViewModel @Inject constructor(
     fun onEvent(event: EmergencyScreenUserEvent) {
         when (event) {
             is EmergencyScreenUserEvent.OnTaskStarted -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(isTaskStarted = true)
                 }
             }
             is EmergencyScreenUserEvent.OnTaskValueChanged -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(
                         emergencyTaskConfig = currentState.emergencyTaskConfig.copy(
                             currentValue = event.value
@@ -80,7 +82,7 @@ class EmergencyViewModel @Inject constructor(
                 if (selectedValue == targetValue) {
                     val remainingMatches = state.value.emergencyTaskConfig.remainingMatches - 1
 
-                    state.update { currentState ->
+                    _state.update { currentState ->
                         currentState.copy(
                             emergencyTaskConfig =
                                 if (remainingMatches <= 0) {

@@ -20,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
@@ -40,7 +41,8 @@ class HomeViewModel @Inject constructor(
     private val filesDir: File
 ): ViewModel() {
 
-    var state = MutableStateFlow(HomeScreenState())
+    private var _state = MutableStateFlow(HomeScreenState())
+    val state = _state.asStateFlow()
 
     private val backendEventsChannel = Channel<HomeScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
@@ -77,7 +79,7 @@ class HomeViewModel @Inject constructor(
                     }
                 }
 
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(
                         isLoading = false,
                         activeAlarmWrappers = convertToAlarmWrappers(activeAlarms),
@@ -107,7 +109,7 @@ class HomeViewModel @Inject constructor(
             if (optimizationGuideState != OptimizationGuideState.HAS_BEEN_SEEN) {
                 viewModelScope.launch {
                     userDataRepository.optimizationGuideState.collect { optimizationGuideState ->
-                        state.update { currentState ->
+                        _state.update { currentState ->
                             currentState.copy(
                                 isOptimizationGuideDialogVisible =
                                 optimizationGuideState == OptimizationGuideState.SHOULD_BE_SEEN
@@ -121,7 +123,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             userDataRepository.isAlarmMissedDetected.collect { alarmMissedDetected ->
                 if (alarmMissedDetected) {
-                    state.update { currentState ->
+                    _state.update { currentState ->
                         currentState.copy(isAlarmMissedDialogVisible = true)
                     }
                 }
@@ -204,7 +206,7 @@ class HomeViewModel @Inject constructor(
                     if (currentlyToggledAlarmId == null || 
                         currentlyToggledAlarmEnabledState == null
                     ) {
-                        state.update { currentState ->
+                        _state.update { currentState ->
                             currentState.copy(
                                 permissionsDialogState = 
                                 currentState.permissionsDialogState.copy(isVisible = false)
@@ -215,7 +217,7 @@ class HomeViewModel @Inject constructor(
                     }
                 }
 
-                state.update { currentState ->
+                _state.update { currentState ->
                     if (currentState.permissionsDialogState.isVisible) {
                         with (currentState.permissionsDialogState) {
                             if ((cameraPermissionState == null || cameraPermissionState) &&
@@ -300,7 +302,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
             is HomeScreenUserEvent.HideMissingPermissionsDialog -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(
                         permissionsDialogState = HomeScreenState.PermissionsDialogState(
                             isVisible = false
@@ -309,32 +311,32 @@ class HomeViewModel @Inject constructor(
                 }
             }
             is HomeScreenUserEvent.NotificationsPermissionDeniedDialogVisible -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(
                         isNotificationsPermissionDeniedDialogVisible = event.isVisible
                     )
                 }
             }
             is HomeScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
             }
             is HomeScreenUserEvent.OptimizationGuideDialogVisible -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(isOptimizationGuideDialogVisible = event.isVisible)
                 }
             }
             is HomeScreenUserEvent.AlarmMissedDialogVisible -> viewModelScope.launch {
                 userDataRepository.setAlarmMissedDetected(detected = false)
 
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(isAlarmMissedDialogVisible = event.isVisible)
                 }
             }
             is HomeScreenUserEvent.TryDeleteAlarm -> viewModelScope.launch {
                 if (canManipulateAlarm(alarmId = event.alarmId)) {
-                    state.update { currentState ->
+                    _state.update { currentState ->
                         currentState.copy(
                             deleteAlarmDialogState = HomeScreenState.DeleteAlarmDialogState(
                                 isVisible = true,
@@ -347,7 +349,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
             is HomeScreenUserEvent.HideDeleteAlarmDialog -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(
                         deleteAlarmDialogState = HomeScreenState.DeleteAlarmDialogState(
                             isVisible = false
@@ -362,7 +364,7 @@ class HomeViewModel @Inject constructor(
                     if (exists()) delete()
                 }
 
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(
                         deleteAlarmDialogState = HomeScreenState.DeleteAlarmDialogState(
                             isVisible = false
@@ -386,7 +388,7 @@ class HomeViewModel @Inject constructor(
                 copyAlarm(event.alarmId)
             }
             is HomeScreenUserEvent.UpcomingAlarmMessageShown -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(
                         upcomingAlarmMessages = currentState.upcomingAlarmMessages.filter {
                             it.alarmContentHash != event.alarmContentHash
@@ -420,7 +422,7 @@ class HomeViewModel @Inject constructor(
             } else {
                 disableAlarm(alarmId = alarmId)
 
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(
                         upcomingAlarmMessages =
                             currentState.upcomingAlarmMessages.filter {
@@ -436,7 +438,7 @@ class HomeViewModel @Inject constructor(
                         alarmId = alarmId
                     ) ?: return@let
 
-                    state.update { currentState ->
+                    _state.update { currentState ->
                         currentState.copy(
                             upcomingAlarmMessages = currentState.upcomingAlarmMessages +
                                     HomeScreenState.UpcomingAlarmMessage(

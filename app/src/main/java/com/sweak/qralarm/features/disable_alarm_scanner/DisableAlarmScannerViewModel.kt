@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -33,7 +34,8 @@ class DisableAlarmScannerViewModel @Inject constructor(
     private lateinit var alarm: Alarm
     private var shouldScan = true
 
-    var state = MutableStateFlow(DisableAlarmScannerScreenState())
+    private var _state = MutableStateFlow(DisableAlarmScannerScreenState())
+    val state = _state.asStateFlow()
 
     private val backendEventsChannel = Channel<DisableAlarmScannerScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
@@ -107,7 +109,7 @@ class DisableAlarmScannerViewModel @Inject constructor(
                                 val currentTimeInMillis = System.currentTimeMillis()
 
                                 if (currentTimeInMillis - lastWrongCodeWarningMillis > wrongCodeWarningDelayMillis) {
-                                    state.update { currentState ->
+                                    _state.update { currentState ->
                                         currentState.copy(shouldShowIncorrectCodeWarning = true)
                                     }
 
@@ -116,7 +118,7 @@ class DisableAlarmScannerViewModel @Inject constructor(
                                     launch {
                                         delay(2500)
 
-                                        state.update { currentState ->
+                                        _state.update { currentState ->
                                             currentState.copy(
                                                 shouldShowIncorrectCodeWarning = false
                                             )

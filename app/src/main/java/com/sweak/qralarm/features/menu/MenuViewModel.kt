@@ -6,6 +6,7 @@ import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -18,7 +19,8 @@ class MenuViewModel @Inject constructor(
     private val alarmsRepository: AlarmsRepository
 ) : ViewModel() {
 
-    val state = MutableStateFlow(MenuScreenState())
+    private val _state = MutableStateFlow(MenuScreenState())
+    val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -30,7 +32,7 @@ class MenuViewModel @Inject constructor(
                 }
                 .first()
 
-            state.update { currentState ->
+            _state.update { currentState ->
                 currentState.copy(
                     defaultAlarmCode = userDataRepository.defaultAlarmCode.first(),
                     previouslySavedCodes = allSavedAlarmCodes
@@ -40,7 +42,7 @@ class MenuViewModel @Inject constructor(
 
         viewModelScope.launch {
             userDataRepository.defaultAlarmCode.collect { defaultAlarmCode ->
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(defaultAlarmCode = defaultAlarmCode)
                 }
             }
@@ -50,26 +52,26 @@ class MenuViewModel @Inject constructor(
     fun onEvent(event: MenuScreenUserEvent) {
         when (event) {
             is MenuScreenUserEvent.AssignDefaultCodeDialogVisible -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(isAssignDefaultCodeDialogVisible = event.isVisible)
                 }
             }
             is MenuScreenUserEvent.DefaultCodeChosenFromList -> viewModelScope.launch {
                 userDataRepository.setDefaultAlarmCode(code = event.code)
 
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(isAssignDefaultCodeDialogVisible = false)
                 }
             }
             is MenuScreenUserEvent.ClearDefaultAlarmCode -> viewModelScope.launch {
                 userDataRepository.setDefaultAlarmCode(code = null)
 
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(isAssignDefaultCodeDialogVisible = false)
                 }
             }
             is MenuScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
             }

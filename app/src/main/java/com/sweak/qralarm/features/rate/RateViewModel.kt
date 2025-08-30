@@ -6,6 +6,7 @@ import com.sweak.qralarm.core.domain.user.UserDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
@@ -18,14 +19,15 @@ class RateViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository
 ) : ViewModel() {
 
-    var state = MutableStateFlow(RateScreenState())
+    private var _state = MutableStateFlow(RateScreenState())
+    val state = _state.asStateFlow()
 
     private val backendEventsChannel = Channel<RateScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     init {
         viewModelScope.launch {
-            state.update { currentState ->
+            _state.update { currentState ->
                 val nextRatePromptTimeInMillis =
                     userDataRepository.nextRatePromptTimeInMillis.first()
 
@@ -37,7 +39,7 @@ class RateViewModel @Inject constructor(
     fun onEvent(event: RateScreenUserEvent) {
         when (event) {
             is RateScreenUserEvent.IsNeverShowAgainCheckedChanged -> {
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(isNeverShowAgainChecked = event.checked)
                 }
             }

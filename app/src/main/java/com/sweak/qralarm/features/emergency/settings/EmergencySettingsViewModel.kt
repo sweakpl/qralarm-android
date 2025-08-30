@@ -7,6 +7,7 @@ import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_RE
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_SLIDER_RANGES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,11 +18,12 @@ class EmergencySettingsViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository
 ) : ViewModel() {
 
-    var state = MutableStateFlow(EmergencySettingsScreenState())
+    private var _state = MutableStateFlow(EmergencySettingsScreenState())
+    val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
-            state.update { currentState ->
+            _state.update { currentState ->
                 currentState.copy(
                     availableSliderRanges = EMERGENCY_AVAILABLE_SLIDER_RANGES,
                     selectedSliderRangeIndex = EMERGENCY_AVAILABLE_SLIDER_RANGES.indexOf(
@@ -43,7 +45,7 @@ class EmergencySettingsViewModel @Inject constructor(
 
                 userDataRepository.setEmergencySliderRange(range = sliderRange)
 
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(selectedSliderRangeIndex = event.index)
                 }
             }
@@ -52,7 +54,7 @@ class EmergencySettingsViewModel @Inject constructor(
 
                 userDataRepository.setEmergencyRequiredMatches(matches = requiredMatches)
 
-                state.update { currentState ->
+                _state.update { currentState ->
                     currentState.copy(selectedRequiredMatchesIndex = event.index)
                 }
             }

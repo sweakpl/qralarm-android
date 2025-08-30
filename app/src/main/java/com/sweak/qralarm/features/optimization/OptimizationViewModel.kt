@@ -10,6 +10,7 @@ import com.sweak.qralarm.features.optimization.navigation.IS_LAUNCHED_FROM_MENU
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,10 +25,11 @@ class OptimizationViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository
 ): ViewModel() {
 
-    var state = MutableStateFlow(OptimizationScreenState())
+    private var _state = MutableStateFlow(OptimizationScreenState())
+    val state = _state.asStateFlow()
 
     init {
-        state.update { currentState ->
+        _state.update { currentState ->
             currentState.copy(
                 shouldDelayInstructionsTransitions =
                     savedStateHandle.get<Boolean>(IS_LAUNCHED_FROM_MENU) == false
@@ -56,7 +58,7 @@ class OptimizationViewModel @Inject constructor(
     }
 
     private fun refreshInternal() {
-        state.update { currentState ->
+        _state.update { currentState ->
             currentState.copy(
                 isIgnoringBatteryOptimizations =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
