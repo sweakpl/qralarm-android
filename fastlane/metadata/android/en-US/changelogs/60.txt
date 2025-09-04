@@ -1,2 +1,0 @@
-* Added emergency task settings (slider range, required matches),
-* Added emergency task preview.
