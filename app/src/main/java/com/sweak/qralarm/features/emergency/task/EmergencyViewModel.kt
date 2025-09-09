@@ -103,6 +103,12 @@ class EmergencyViewModel @Inject constructor(
                                         remainingMatches = 0
                                     )
                                 } else {
+                                    viewModelScope.launch {
+                                        backendEventsChannel.send(
+                                            EmergencyScreenBackendEvent.TaskValueMatched
+                                        )
+                                    }
+
                                     val currentValue = currentState.emergencyTaskConfig.currentValue
                                     var targetValue = Random.nextInt(
                                         range = currentState.emergencyTaskConfig.valueRange

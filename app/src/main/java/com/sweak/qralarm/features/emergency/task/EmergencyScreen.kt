@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.emergency.task
 
+import android.content.Intent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,11 +16,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
+import com.sweak.qralarm.alarm.service.AlarmService.Companion.ACTION_EMERGENCY_TASK_ALARM_MUTE
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
@@ -34,11 +37,19 @@ fun EmergencyScreen(
 ) {
     val emergencyViewModel = hiltViewModel<EmergencyViewModel>()
     val emergencyScreenState by emergencyViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     ObserveAsEvents(
         flow = emergencyViewModel.backendEvents,
         onEvent = { event ->
             when (event) {
+                is EmergencyScreenBackendEvent.TaskValueMatched -> {
+                    context.sendBroadcast(
+                        Intent(ACTION_EMERGENCY_TASK_ALARM_MUTE).apply {
+                            setPackage(context.packageName)
+                        }
+                    )
+                }
                 is EmergencyScreenBackendEvent.EmergencyTaskCompleted -> onEmergencyTaskCompleted()
             }
         }

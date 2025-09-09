@@ -50,14 +50,19 @@ class AlarmService : Service() {
 
     private lateinit var alarm: Alarm
 
-    private lateinit var temporaryAlarmMuteJob: Job
+    private var temporaryAlarmMuteJob: Job? = null
+    private var emergencyTaskAlarmMuteJob: Job? = null
     private var hasAlarmBeenAlreadyTemporarilyMuted = false
     private var originalSystemAlarmVolume: Int? = null
 
     private val temporaryAlarmMuteReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (hasAlarmBeenAlreadyTemporarilyMuted) return
-            else hasAlarmBeenAlreadyTemporarilyMuted = true
+            if (hasAlarmBeenAlreadyTemporarilyMuted) {
+                return
+            } else {
+                hasAlarmBeenAlreadyTemporarilyMuted = true
+                emergencyTaskAlarmMuteJob?.cancel()
+            }
 
             serviceScope.launch(Dispatchers.Main) {
                 alarmRingtonePlayer.stop()
@@ -70,6 +75,26 @@ class AlarmService : Service() {
                 temporaryAlarmMuteJob = serviceScope.launch(Dispatchers.Main) {
                     delay(muteDurationSeconds * 1000L)
                     startAlarm()
+                }.also {
+                    it.invokeOnCompletion { temporaryAlarmMuteJob = null }
+                }
+            }
+        }
+    }
+
+    private val emergencyTaskAlarmMuteReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            temporaryAlarmMuteJob?.cancel()
+            emergencyTaskAlarmMuteJob?.cancel()
+
+            serviceScope.launch(Dispatchers.Main) {
+                alarmRingtonePlayer.stop()
+
+                emergencyTaskAlarmMuteJob = serviceScope.launch(Dispatchers.Main) {
+                    delay(EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS * 1000L)
+                    startAlarm()
+                }.also {
+                    it.invokeOnCompletion { emergencyTaskAlarmMuteJob = null }
                 }
             }
         }
@@ -119,6 +144,13 @@ class AlarmService : Service() {
                 this@AlarmService,
                 temporaryAlarmMuteReceiver,
                 IntentFilter(ACTION_TEMPORARY_ALARM_MUTE),
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
+
+            ContextCompat.registerReceiver(
+                this@AlarmService,
+                emergencyTaskAlarmMuteReceiver,
+                IntentFilter(ACTION_EMERGENCY_TASK_ALARM_MUTE),
                 ContextCompat.RECEIVER_NOT_EXPORTED
             )
 
@@ -272,10 +304,12 @@ class AlarmService : Service() {
             }
         }
 
-        if (::temporaryAlarmMuteJob.isInitialized) temporaryAlarmMuteJob.cancel()
+        temporaryAlarmMuteJob?.cancel()
+        emergencyTaskAlarmMuteJob?.cancel()
 
         try {
             unregisterReceiver(temporaryAlarmMuteReceiver)
+            unregisterReceiver(emergencyTaskAlarmMuteReceiver)
         } catch (_: IllegalArgumentException) { /* no-op */ }
 
         alarmRingtonePlayer.apply {
@@ -300,8 +334,10 @@ class AlarmService : Service() {
 
         const val ACTION_TEMPORARY_ALARM_MUTE = "com.sweak.qralarm.TEMPORARY_ALARM_MUTE"
         const val EXTRA_TEMPORARY_MUTE_DURATION_SECONDS = "muteDurationSeconds"
-
         const val DEFAULT_TEMPORARY_MUTE_DURATION_SECONDS = 15
+
+        const val ACTION_EMERGENCY_TASK_ALARM_MUTE = "com.sweak.qralarm.EMERGENCY_TASK_ALARM_MUTE"
+        const val EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS = 10
 
         var isRunning = false
     }
