@@ -59,22 +59,17 @@ class AlarmService : Service() {
             if (hasAlarmBeenAlreadyTemporarilyMuted) return
             else hasAlarmBeenAlreadyTemporarilyMuted = true
 
-            serviceScope.launch {
-                withContext(Dispatchers.Main) {
-                    alarmRingtonePlayer.stop()
-                }
+            serviceScope.launch(Dispatchers.Main) {
+                alarmRingtonePlayer.stop()
 
                 val muteDurationSeconds = intent?.getIntExtra(
                     EXTRA_TEMPORARY_MUTE_DURATION_SECONDS,
-                    15
-                ) ?: 15
+                    DEFAULT_TEMPORARY_MUTE_DURATION_SECONDS
+                ) ?: DEFAULT_TEMPORARY_MUTE_DURATION_SECONDS
 
-                temporaryAlarmMuteJob = serviceScope.launch {
+                temporaryAlarmMuteJob = serviceScope.launch(Dispatchers.Main) {
                     delay(muteDurationSeconds * 1000L)
-
-                    withContext(Dispatchers.Main) {
-                        startAlarm()
-                    }
+                    startAlarm()
                 }
             }
         }
@@ -305,6 +300,8 @@ class AlarmService : Service() {
 
         const val ACTION_TEMPORARY_ALARM_MUTE = "com.sweak.qralarm.TEMPORARY_ALARM_MUTE"
         const val EXTRA_TEMPORARY_MUTE_DURATION_SECONDS = "muteDurationSeconds"
+
+        const val DEFAULT_TEMPORARY_MUTE_DURATION_SECONDS = 15
 
         var isRunning = false
     }
