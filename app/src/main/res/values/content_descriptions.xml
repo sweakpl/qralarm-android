@@ -33,6 +33,7 @@
     <string name="content_description_copy_icon">Copy icon</string>
     <string name="content_description_clock_icon">Clock icon</string>
     <string name="content_description_emergency_icon">Emergency triangle icon</string>
+    <string name="content_description_muted_sound_icon">Muted sound icon</string>
 
     <string name="content_description_wake_up_catchphrase_image">Image showing a friendly stick man lying in bed woken up.</string>
     <string name="content_description_get_up_catchphrase_image">Image showing a smiling stick man walking with their phone ringing.</string>

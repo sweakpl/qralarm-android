@@ -3,10 +3,12 @@ package com.sweak.qralarm.features.emergency.task
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.alarm.service.AlarmService.Companion.EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.features.emergency.task.navigation.ID_OF_ALARM_TO_CANCEL
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,6 +35,8 @@ class EmergencyViewModel @Inject constructor(
 
     private val backendEventsChannel = Channel<EmergencyScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
+
+    private var alarmMuteIndicationJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -82,6 +86,10 @@ class EmergencyViewModel @Inject constructor(
                 if (selectedValue == targetValue) {
                     val remainingMatches = state.value.emergencyTaskConfig.remainingMatches - 1
 
+                    if (remainingMatches > 0) {
+                        indicateAlarmMute()
+                    }
+
                     _state.update { currentState ->
                         currentState.copy(
                             emergencyTaskConfig =
@@ -103,12 +111,6 @@ class EmergencyViewModel @Inject constructor(
                                         remainingMatches = 0
                                     )
                                 } else {
-                                    viewModelScope.launch {
-                                        backendEventsChannel.send(
-                                            EmergencyScreenBackendEvent.TaskValueMatched
-                                        )
-                                    }
-
                                     val currentValue = currentState.emergencyTaskConfig.currentValue
                                     var targetValue = Random.nextInt(
                                         range = currentState.emergencyTaskConfig.valueRange
@@ -132,6 +134,38 @@ class EmergencyViewModel @Inject constructor(
                 }
             }
             else -> { /* no-op */ }
+        }
+    }
+
+    private fun indicateAlarmMute() {
+        alarmMuteIndicationJob?.cancel()
+        alarmMuteIndicationJob = viewModelScope.launch {
+            backendEventsChannel.send(
+                EmergencyScreenBackendEvent.TaskValueMatched
+            )
+
+            _state.update { currentState ->
+                currentState.copy(alarmMuteProgress = 1f)
+            }
+
+            repeat(EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS) {
+                delay(1000)
+                _state.update { currentState ->
+                    currentState.copy(
+                        alarmMuteProgress =
+                            0.1f * (EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS - it - 1)
+                    )
+                }
+            }
+
+            delay(1000)
+        }.also {
+            it.invokeOnCompletion {
+                alarmMuteIndicationJob = null
+                _state.update { currentState ->
+                    currentState.copy(alarmMuteProgress = null)
+                }
+            }
         }
     }
 }

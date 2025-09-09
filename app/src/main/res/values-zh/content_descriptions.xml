@@ -33,6 +33,7 @@
     <string name="content_description_copy_icon">复制图标</string>
     <string name="content_description_clock_icon">时钟图标</string>
     <string name="content_description_emergency_icon">紧急三角图标</string>
+    <string name="content_description_muted_sound_icon">静音图标</string>
 
     <string name="content_description_wake_up_catchphrase_image">图像显示一位躺在床上的人被唤醒了</string>
     <string name="content_description_get_up_catchphrase_image">图像显示一个人正拿着响铃的手机在走路</string>

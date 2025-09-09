@@ -6,6 +6,7 @@ import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_SLID
 data class EmergencyScreenState(
     val isTaskStarted: Boolean = false,
     val emergencyTaskConfig: EmergencyTaskConfig = EmergencyTaskConfig(),
+    val alarmMuteProgress: Float? = null
 ) {
     data class EmergencyTaskConfig(
         val valueRange: IntRange = EMERGENCY_DEFAULT_SLIDER_RANGE,

@@ -2,6 +2,7 @@ package com.sweak.qralarm.features.emergency.task
 
 import android.content.Intent
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +28,7 @@ import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
+import com.sweak.qralarm.features.emergency.task.components.AlarmMuteIndicator
 import com.sweak.qralarm.features.emergency.task.components.EmergencyInfoCard
 import com.sweak.qralarm.features.emergency.task.components.EmergencyTaskCard
 
@@ -97,6 +99,18 @@ fun EmergencyScreenContent(
                     imageVector = QRAlarmIcons.Close,
                     contentDescription = stringResource(R.string.content_description_close_icon),
                     tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+
+            AnimatedVisibility(
+                modifier = Modifier
+                    .align(alignment = Alignment.TopEnd)
+                    .padding(all = MaterialTheme.space.medium),
+                visible = state.alarmMuteProgress != null
+            ) {
+                AlarmMuteIndicator(
+                    progress = state.alarmMuteProgress ?: 0f,
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
 
