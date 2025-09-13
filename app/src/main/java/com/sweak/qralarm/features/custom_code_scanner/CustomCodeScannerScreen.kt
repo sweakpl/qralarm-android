@@ -2,7 +2,7 @@ package com.sweak.qralarm.features.custom_code_scanner
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.ui.components.code_scanner.QRAlarmCodeScanner
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
