@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.emergency.task
 
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -40,6 +41,8 @@ fun EmergencyScreen(
     val emergencyViewModel = hiltViewModel<EmergencyViewModel>()
     val emergencyScreenState by emergencyViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    BackHandler { /* no-op */ }
 
     ObserveAsEvents(
         flow = emergencyViewModel.backendEvents,
