@@ -3,7 +3,6 @@ package com.sweak.qralarm.features.optimization
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -73,22 +72,20 @@ fun OptimizationScreen(onBackClicked: () -> Unit) {
             when (event) {
                 is OptimizationScreenUserEvent.OnBackClicked -> onBackClicked()
                 is OptimizationScreenUserEvent.EnableBackgroundWork -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        try {
-                            context.startActivity(
-                                Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                                    data = "package:${context.packageName}".toUri()
-                                }
-                            )
-                        } catch (exception: ActivityNotFoundException) {
-                            Toast.makeText(
-                                context,
-                                context.getString(
-                                    R.string.setting_unavailable_refer_to_the_next_step
-                                ),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                    try {
+                        context.startActivity(
+                            Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                                data = "package:${context.packageName}".toUri()
+                            }
+                        )
+                    } catch (_: ActivityNotFoundException) {
+                        Toast.makeText(
+                            context,
+                            context.getString(
+                                R.string.setting_unavailable_refer_to_the_next_step
+                            ),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
 

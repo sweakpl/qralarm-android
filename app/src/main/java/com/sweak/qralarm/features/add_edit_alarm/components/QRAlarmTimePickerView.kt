@@ -1,7 +1,6 @@
 package com.sweak.qralarm.features.add_edit_alarm.components
 
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.TimePicker
@@ -39,12 +38,7 @@ class QRAlarmTimePicker @JvmOverloads constructor(
 
     @Suppress("DEPRECATION")
     fun setTime(hour: Int, minute: Int) = timePicker.apply {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            this.hour = hour
-            this.minute = minute
-        } else {
-            this.currentHour = hour
-            this.currentMinute = minute
-        }
+        this.hour = hour
+        this.minute = minute
     }
 }

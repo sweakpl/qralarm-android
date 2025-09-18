@@ -1,6 +1,5 @@
 package com.sweak.qralarm.features.optimization
 
-import android.os.Build
 import android.os.PowerManager
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -61,9 +60,7 @@ class OptimizationViewModel @Inject constructor(
         _state.update { currentState ->
             currentState.copy(
                 isIgnoringBatteryOptimizations =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     powerManager.isIgnoringBatteryOptimizations(packageName)
-                } else true
             )
         }
     }

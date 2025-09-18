@@ -2,7 +2,6 @@ package com.sweak.qralarm.core.ui.components.code_scanner.view
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
@@ -45,9 +44,7 @@ class CameraConfig(private val context: Context) {
     private val imageAnalysis: ImageAnalysis by lazy {
         ImageAnalysis.Builder().apply {
             setResolutionSelector(resolutionSelector)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                setOutputImageRotationEnabled(true)
-            }
+            setOutputImageRotationEnabled(true)
         }.build()
     }
 

@@ -41,10 +41,7 @@ class QRAlarmManager(
                     context,
                     alarmId.toInt(),
                     alarmIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT or
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                                PendingIntent.FLAG_IMMUTABLE
-                            else 0
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
             }
 
@@ -52,10 +49,7 @@ class QRAlarmManager(
             context,
             alarmId.toInt(),
             Intent(context, MainActivity::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT or
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        PendingIntent.FLAG_IMMUTABLE
-                    else 0
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         alarmManager.setAlarmClock(
@@ -77,9 +71,7 @@ class QRAlarmManager(
                 Intent(context, PostUpcomingAlarmNotificationReceiver::class.java).apply {
                     putExtra(PostUpcomingAlarmNotificationReceiver.EXTRA_ALARM_ID, alarmId)
                 },
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    PendingIntent.FLAG_IMMUTABLE
-                else 0
+                PendingIntent.FLAG_IMMUTABLE
             )
         )
     }
@@ -98,10 +90,7 @@ class QRAlarmManager(
                     context,
                     alarmId.toInt(),
                     Intent(context, AlarmService::class.java),
-                    PendingIntent.FLAG_NO_CREATE or
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                                PendingIntent.FLAG_IMMUTABLE
-                            else 0
+                    PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
                 )
             }
 
@@ -118,10 +107,7 @@ class QRAlarmManager(
             context,
             alarmId.toInt(),
             Intent(context, PostUpcomingAlarmNotificationReceiver::class.java),
-            PendingIntent.FLAG_NO_CREATE or
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        PendingIntent.FLAG_IMMUTABLE
-                    else 0
+            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
         )
 
         if (upcomingAlarmNotificationPendingIntent != null) {
@@ -154,10 +140,7 @@ class QRAlarmManager(
             context,
             ALARM_MISSED_NOTIFICATION_REQUEST_CODE,
             Intent(context, MainActivity::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT or
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        PendingIntent.FLAG_IMMUTABLE
-                    else 0
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val contentText = context.getString(R.string.alarm_missed_notification_text)

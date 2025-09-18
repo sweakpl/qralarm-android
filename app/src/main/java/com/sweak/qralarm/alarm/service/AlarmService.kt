@@ -190,10 +190,7 @@ class AlarmService : Service() {
                 putExtra(AlarmActivity.EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY, false)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             },
-            PendingIntent.FLAG_UPDATE_CURRENT or
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        PendingIntent.FLAG_IMMUTABLE
-                    else 0
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val alarmFullScreenPendingIntent = PendingIntent.getActivity(
@@ -204,10 +201,7 @@ class AlarmService : Service() {
                 putExtra(AlarmActivity.EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY, false)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             },
-            PendingIntent.FLAG_UPDATE_CURRENT or
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                        PendingIntent.FLAG_IMMUTABLE
-                    else 0
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         NotificationCompat.Builder(
