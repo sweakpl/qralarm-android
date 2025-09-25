@@ -27,6 +27,7 @@ import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmS
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.navigateToDisableAlarmScanner
 import com.sweak.qralarm.features.emergency.settings.navigation.emergencySettingsFlow
 import com.sweak.qralarm.features.emergency.settings.navigation.navigateToEmergencySettings
+import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_REQUIRED_MATCHES
 import com.sweak.qralarm.features.emergency.task.navigation.emergencyScreen
 import com.sweak.qralarm.features.emergency.task.navigation.navigateToEmergencyScreen
 import com.sweak.qralarm.features.home.navigation.HOME_SCREEN_ROUTE
@@ -74,14 +75,8 @@ class MainActivity : FragmentActivity() {
 
         lifecycleScope.launch {
             rescheduleAlarms()
-
-            if (userDataRepository.nextRatePromptTimeInMillis.first() == null) {
-                userDataRepository.setNextRatePromptTimeInMillis(
-                    promptTime = ZonedDateTime.now().plusDays(7).toInstant().toEpochMilli()
-                )
-            }
-
-            rateQRAlarmPromptTimeInMillis = userDataRepository.nextRatePromptTimeInMillis.first()
+            migrateToNewEmergencyRequiredMatches()
+            handleRatePromptTime()
 
             shouldShowSplashScreen = false
 
@@ -275,6 +270,26 @@ class MainActivity : FragmentActivity() {
                     )
                 }
             }
+        }
+    }
+
+    private suspend fun handleRatePromptTime() {
+        if (userDataRepository.nextRatePromptTimeInMillis.first() == null) {
+            userDataRepository.setNextRatePromptTimeInMillis(
+                promptTime = ZonedDateTime.now().plusDays(7).toInstant().toEpochMilli()
+            )
+        }
+
+        rateQRAlarmPromptTimeInMillis = userDataRepository.nextRatePromptTimeInMillis.first()
+    }
+
+    private suspend fun migrateToNewEmergencyRequiredMatches() {
+        val currentEmergencyRequiredMatches = userDataRepository.emergencyRequiredMatches.first()
+
+        if (currentEmergencyRequiredMatches !in EMERGENCY_AVAILABLE_REQUIRED_MATCHES) {
+            userDataRepository.setEmergencyRequiredMatches(
+                matches = EMERGENCY_AVAILABLE_REQUIRED_MATCHES.last()
+            )
         }
     }
 }
