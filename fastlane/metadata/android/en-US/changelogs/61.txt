@@ -1,1 +1,0 @@
-* Alarm is now muted when the emergency task is being actively solved.

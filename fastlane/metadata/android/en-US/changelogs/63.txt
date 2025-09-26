@@ -1,0 +1,2 @@
+* Allowing for lower required matches on emergency task,
+* Performance improvements.
