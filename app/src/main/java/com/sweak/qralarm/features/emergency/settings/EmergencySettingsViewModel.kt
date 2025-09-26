@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_REQUIRED_MATCHES
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_SLIDER_RANGES
+import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_REQUIRED_MATCHES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,7 +33,13 @@ class EmergencySettingsViewModel @Inject constructor(
                     availableRequiredMatches = EMERGENCY_AVAILABLE_REQUIRED_MATCHES,
                     selectedRequiredMatchesIndex = EMERGENCY_AVAILABLE_REQUIRED_MATCHES.indexOf(
                         userDataRepository.emergencyRequiredMatches.first()
-                    )
+                    ).let {
+                        if (it == -1) {
+                            EMERGENCY_AVAILABLE_REQUIRED_MATCHES.indexOf(
+                                EMERGENCY_DEFAULT_REQUIRED_MATCHES
+                            )
+                        } else it
+                    }
                 )
             }
         }
