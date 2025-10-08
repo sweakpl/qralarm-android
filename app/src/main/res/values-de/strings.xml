@@ -105,6 +105,7 @@
     <string name="alarm_snoozed_until">Alarm wurde stummgeschaltet bis:</string>
     <string name="upcoming_alarm_indication_notification_title">Bevorstehender Alarm</string>
     <string name="upcoming_alarm_indication_notification_text">Der Alarm wurde für %1$s eingestellt.</string>
+    <string name="upcoming_snoozed_alarm_indication_notification_text">Alarm wurde stummgeschaltet bis %1$s</string>
     <string name="next_step">Nächster Schritt</string>
     <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarm in weniger als 1 Stunde – zum Bearbeiten deaktivieren Sie den Alarm durch Scannen des Codes.</string>
     <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarm in weniger als 1 Stunde – scannen Sie den Code, um den Alarm zu deaktivieren.</string>

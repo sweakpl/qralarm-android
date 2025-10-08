@@ -111,6 +111,7 @@
     <string name="alarm_snoozed_until">Sveglia posticipata fino a:</string>
     <string name="upcoming_alarm_indication_notification_title">Prossimo allarme</string>
     <string name="upcoming_alarm_indication_notification_text">La sveglia è stata impostata per %1$s</string>
+    <string name="upcoming_snoozed_alarm_indication_notification_text">La sveglia è stata posticipata fino alle %1$s</string>
     <string name="next_step">Passo successivo</string>
     <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Allarme in meno di 1 ora: per modificare, disattiva l\'allarme scansionando il codice.</string>
     <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Allarme tra meno di 1 ora: scansiona il codice per disattivare l\'allarme.</string>

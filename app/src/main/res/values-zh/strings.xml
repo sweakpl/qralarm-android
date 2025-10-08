@@ -99,6 +99,7 @@
     <string name="alarm_snoozed_until">稍后再响:</string>
     <string name="upcoming_alarm_indication_notification_title">即将响起的闹钟</string>
     <string name="upcoming_alarm_indication_notification_text">闹钟时间为 %1$s</string>
+    <string name="upcoming_snoozed_alarm_indication_notification_text">闹钟响至 %1$s</string>
     <string name="next_step">下一步</string>
     <string name="alarm_in_less_than_1_hour_to_edit_scan_code">距离响铃少于1小时 - 若要更改, 请先扫码关闭闹钟</string>
     <string name="alarm_in_less_than_1_hour_scan_code_to_disable">距离响铃少于1小时 - 请扫码以关闭闹钟</string>

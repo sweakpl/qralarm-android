@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.text.format.DateFormat
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
 import com.sweak.qralarm.R
@@ -16,6 +17,7 @@ import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_ALARM_ID
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_IS_SNOOZE_ALARM
 import com.sweak.qralarm.app.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
+import com.sweak.qralarm.core.ui.getTimeString
 
 class QRAlarmManager(
     private val alarmManager: AlarmManager,
@@ -76,6 +78,54 @@ class QRAlarmManager(
         )
     }
 
+    fun showUpcomingAlarmNotification(
+        alarmId: Long,
+        alarmHourOfDay: Int,
+        alarmMinute: Int,
+        isSnoozeAlarm: Boolean
+    ) {
+        val upcomingAlarmIndicationPendingIntent = PendingIntent.getActivity(
+            context,
+            UPCOMING_ALARM_NOTIFICATION_REQUEST_CODE,
+            Intent(context, MainActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val upcomingAlarmIndicationNotification = NotificationCompat.Builder(
+            context,
+            ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
+        ).apply {
+            color = Jacarta.toArgb()
+            priority = NotificationCompat.PRIORITY_LOW
+            setOngoing(true)
+            setColorized(true)
+            setContentTitle(
+                context.getString(R.string.upcoming_alarm_indication_notification_title)
+            )
+            setContentText(
+                context.getString(
+                    if (isSnoozeAlarm) {
+                        R.string.upcoming_snoozed_alarm_indication_notification_text
+                    } else {
+                        R.string.upcoming_alarm_indication_notification_text
+                    },
+                    getTimeString(
+                        hourOfDay = alarmHourOfDay,
+                        minute = alarmMinute,
+                        is24HourFormat = DateFormat.is24HourFormat(context)
+                    )
+                )
+            )
+            setSmallIcon(R.drawable.ic_qralarm)
+            setContentIntent(upcomingAlarmIndicationPendingIntent)
+        }.build()
+
+        notificationManager.notify(
+            getUpcomingAlarmNotificationId(alarmId = alarmId),
+            upcomingAlarmIndicationNotification
+        )
+    }
+
     fun cancelAlarm(alarmId: Long) {
         val alarmPendingIntent =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -115,7 +165,7 @@ class QRAlarmManager(
             upcomingAlarmNotificationPendingIntent.cancel()
         }
 
-        notificationManager.cancel(Int.MAX_VALUE - alarmId.toInt())
+        notificationManager.cancel(getUpcomingAlarmNotificationId(alarmId = alarmId))
     }
 
     fun canScheduleExactAlarms(): Boolean =
@@ -165,4 +215,9 @@ class QRAlarmManager(
             alarmSetIndicationNotification
         )
     }
+
+    // Upcoming alarm notification has to have a different id than the notification of the
+    // foreground AlarmService (which is alarmId.toInt()) to prevent notification attributes
+    // bleeding over one another:
+    private fun getUpcomingAlarmNotificationId(alarmId: Long): Int = Int.MAX_VALUE - alarmId.toInt()
 }

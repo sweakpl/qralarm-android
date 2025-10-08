@@ -1,6 +1,7 @@
 package com.sweak.qralarm.core.domain.alarm
 
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.core.ui.getHourAndMinuteOfAlarmTimeInMillis
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
@@ -35,6 +36,16 @@ class SnoozeAlarm @Inject constructor(
             qrAlarmManager.setAlarm(
                 alarmId = alarm.alarmId,
                 alarmTimeInMillis = snoozeAlarmTimeInMillis,
+                isSnoozeAlarm = true
+            )
+
+            val (alarmHourOfDay, alarmMinute) =
+                getHourAndMinuteOfAlarmTimeInMillis(snoozeAlarmTimeInMillis)
+
+            qrAlarmManager.showUpcomingAlarmNotification(
+                alarmId = alarm.alarmId,
+                alarmHourOfDay = alarmHourOfDay,
+                alarmMinute = alarmMinute,
                 isSnoozeAlarm = true
             )
         }

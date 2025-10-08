@@ -50,6 +50,14 @@ fun getDaysHoursAndMinutesUntilAlarm(alarmTimeInMillis: Long): Triple<Int, Int, 
     }
 }
 
+fun getHourAndMinuteOfAlarmTimeInMillis(alarmTimeInMillis: Long): Pair<Int, Int> {
+    val alarmDateTime = Instant
+        .ofEpochMilli(alarmTimeInMillis)
+        .atZone(ZoneId.systemDefault())
+
+    return Pair(alarmDateTime.hour, alarmDateTime.minute)
+}
+
 fun convertAlarmRepeatingMode(
     repeatingMode: Alarm.RepeatingMode
 ): AlarmRepeatingScheduleWrapper? {

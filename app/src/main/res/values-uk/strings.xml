@@ -117,6 +117,7 @@
     <string name="alarm_snoozed_until">Будильник неактивний, доки:</string>
     <string name="upcoming_alarm_indication_notification_title">Наближається будильник</string>
     <string name="upcoming_alarm_indication_notification_text">Був встановлений будильник на %1$s</string>
+    <string name="upcoming_snoozed_alarm_indication_notification_text">Будильник відкладений до %1$s</string>
     <string name="next_step">Наступний крок</string>
     <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Будильник менше ніж за 1 годину – щоб відредагувати, вимкніть будильник, відсканувавши код.</string>
     <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Будильник менш ніж за 1 годину – відскануйте код, щоб вимкнути будильник.</string>

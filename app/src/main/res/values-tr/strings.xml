@@ -105,6 +105,7 @@
     <string name="alarm_snoozed_until">Alarm ertelendi, yeni zaman:</string>
     <string name="upcoming_alarm_indication_notification_title">Yaklaşan alarm</string>
     <string name="upcoming_alarm_indication_notification_text">Alarm %1$s için kuruldu</string>
+    <string name="upcoming_snoozed_alarm_indication_notification_text">Alarm şu saate kadar ertelendi: %1$s</string>
     <string name="next_step">Sonraki adım</string>
     <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarma 1 saatten az kaldı - düzenlemek için kodu tarayarak alarmı devre dışı bırakın.</string>
     <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarma 1 saatten az kaldı - alarmı devre dışı bırakmak için kodu tarayın.</string>

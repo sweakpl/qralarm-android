@@ -111,6 +111,7 @@
     <string name="alarm_snoozed_until">L\'alarme s\'est arrêtée jusqu\'à:</string>
     <string name="upcoming_alarm_indication_notification_title">Alarme à venir</string>
     <string name="upcoming_alarm_indication_notification_text">L\'alarme a été réglée pour %1$s</string>
+    <string name="upcoming_snoozed_alarm_indication_notification_text">L\'alarme a été suspendue jusqu\'à %1$s</string>
     <string name="next_step">Prochaine étape</string>
     <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarme dans moins d\'1 heure - pour pouvoir la modifier, désactivez l\'alarme en scannant le code.</string>
     <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarme dans moins d\'1 heure - scannez le code pour désactiver l\'alarme.</string>
