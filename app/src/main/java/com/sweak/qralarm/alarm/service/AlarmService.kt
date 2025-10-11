@@ -1,5 +1,7 @@
 package com.sweak.qralarm.alarm.service
 
+import android.annotation.SuppressLint
+import android.app.ForegroundServiceStartNotAllowedException
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
@@ -24,6 +26,7 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
+import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +36,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -47,6 +51,7 @@ class AlarmService : Service() {
     @Inject lateinit var setAlarm: SetAlarm
     @Inject lateinit var alarmRingtonePlayer: AlarmRingtonePlayer
     @Inject lateinit var audioManager: AudioManager
+    @Inject lateinit var userDataRepository: UserDataRepository
 
     private lateinit var alarm: Alarm
 
@@ -113,14 +118,25 @@ class AlarmService : Service() {
 
         qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
 
-        ServiceCompat.startForeground(
-            this,
-            alarmId.toInt(),
-            createAlarmNotification(alarmId = alarmId),
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
-            } else 0
-        )
+        try {
+            ServiceCompat.startForeground(
+                this,
+                alarmId.toInt(),
+                createAlarmNotification(alarmId = alarmId),
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                } else 0
+            )
+        } catch (exception: Exception) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                exception is ForegroundServiceStartNotAllowedException
+            ) {
+                runBlocking { userDataRepository.setAlarmMissedDetected(detected = true) }
+                shouldStopService = true
+            } else {
+                throw exception
+            }
+        }
 
         if (shouldStopService) {
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
@@ -181,6 +197,7 @@ class AlarmService : Service() {
         return START_NOT_STICKY
     }
 
+    @SuppressLint("FullScreenIntentPolicy")
     private fun createAlarmNotification(alarmId: Long): Notification {
         val alarmNotificationPendingIntent = PendingIntent.getActivity(
             applicationContext,
