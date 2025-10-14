@@ -93,8 +93,15 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                     }
                 ) {
                     Icon(
-                        imageVector =
-                        if (!isUsingSystemVolume) QRAlarmIcons.Sound else QRAlarmIcons.UsingSystem,
+                        imageVector = if (!isUsingSystemVolume) {
+                            when (selectedAlarmVolumePercentage) {
+                                in 0..33 -> QRAlarmIcons.SoundLow
+                                in 34..66 -> QRAlarmIcons.SoundMedium
+                                else -> QRAlarmIcons.Sound
+                            }
+                        } else {
+                            QRAlarmIcons.UsingSystem
+                        },
                         contentDescription = stringResource(
                             if (!isUsingSystemVolume) R.string.content_description_sound_icon
                             else R.string.content_description_active_system_setting

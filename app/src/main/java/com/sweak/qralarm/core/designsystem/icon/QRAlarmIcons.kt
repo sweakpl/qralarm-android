@@ -5,6 +5,8 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBackIos
 import androidx.compose.material.icons.automirrored.outlined.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.outlined.Label
 import androidx.compose.material.icons.automirrored.outlined.Undo
+import androidx.compose.material.icons.automirrored.outlined.VolumeDown
+import androidx.compose.material.icons.automirrored.outlined.VolumeMute
 import androidx.compose.material.icons.automirrored.outlined.VolumeOff
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material.icons.outlined.AccessTime
@@ -73,6 +75,8 @@ object QRAlarmIcons {
     val Undo = Icons.AutoMirrored.Outlined.Undo
     val Label = Icons.AutoMirrored.Outlined.Label
     val Sound = Icons.AutoMirrored.Outlined.VolumeUp
+    val SoundMedium = Icons.AutoMirrored.Outlined.VolumeDown
+    val SoundLow = Icons.AutoMirrored.Outlined.VolumeMute
     val UsingSystem = Icons.Outlined.SecurityUpdateGood
     val Copy = Icons.Outlined.ContentCopy
     val Clock = Icons.Outlined.AccessTime
