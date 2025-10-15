@@ -1,2 +1,0 @@
-* Allowing for 10 and 25 required matches on emergency task due to popular demand :)
-* Brand new, clear app icon!
