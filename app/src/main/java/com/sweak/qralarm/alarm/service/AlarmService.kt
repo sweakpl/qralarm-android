@@ -306,15 +306,6 @@ class AlarmService : Service() {
     override fun onDestroy() {
         isRunning = false
 
-        if (::alarm.isInitialized) {
-            serviceScope.launch {
-                alarmsRepository.setAlarmRunning(
-                    alarmId = alarm.alarmId,
-                    running = false
-                )
-            }
-        }
-
         temporaryAlarmMuteJob?.cancel()
         emergencyTaskAlarmMuteJob?.cancel()
 

@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.app.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.features.alarm.navigation.ALARM_SCREEN_ROUTE
 import com.sweak.qralarm.features.alarm.navigation.alarmScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmScannerScreen
@@ -24,9 +25,12 @@ import com.sweak.qralarm.features.emergency.task.navigation.navigateToEmergencyS
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AlarmActivity : FragmentActivity() {
+
+    @Inject lateinit var alarmsRepository: AlarmsRepository
 
     private var isLaunchedFromMainActivity: Boolean = false
     private var lastNavigateUpTime: Long = 0L
@@ -63,21 +67,25 @@ class AlarmActivity : FragmentActivity() {
                 ) {
                     alarmScreen(
                         onStopAlarm = {
-                            stopService(Intent(this@AlarmActivity, AlarmService::class.java))
-                            finish()
+                            lifecycleScope.launch {
+                                stopService(alarmId = alarmId)
+                                finish()
 
-                            if (isLaunchedFromMainActivity) {
-                                startActivity(Intent(this@AlarmActivity, MainActivity::class.java))
+                                if (isLaunchedFromMainActivity) {
+                                    startActivity(
+                                        Intent(this@AlarmActivity, MainActivity::class.java)
+                                    )
+                                }
                             }
                         },
                         onRequestCodeScan = {
                             navController.navigateToDisableAlarmScanner(alarmId = alarmId)
                         },
                         onSnoozeAlarm = {
-                            stopService(Intent(this@AlarmActivity, AlarmService::class.java))
+                            lifecycleScope.launch {
+                                stopService(alarmId = alarmId)
 
-                            if (!isLaunchedFromMainActivity) {
-                                lifecycleScope.launch {
+                                if (!isLaunchedFromMainActivity) {
                                     delay(1000)
                                     finish()
                                 }
@@ -93,9 +101,9 @@ class AlarmActivity : FragmentActivity() {
                             if (uriStringToTryToOpen == null ||
                                 Build.VERSION.SDK_INT < Build.VERSION_CODES.O
                             ) {
-                                stopService(Intent(this@AlarmActivity, AlarmService::class.java))
-
                                 lifecycleScope.launch {
+                                    stopService(alarmId)
+
                                     navController.popBackStack()
                                     delay(1500)
                                     finish()
@@ -127,26 +135,23 @@ class AlarmActivity : FragmentActivity() {
                                             override fun onDismissSucceeded() {
                                                 super.onDismissSucceeded()
 
-                                                stopService(
-                                                    Intent(
-                                                        this@AlarmActivity,
-                                                        AlarmService::class.java
-                                                    )
-                                                )
-                                                finish()
+                                                lifecycleScope.launch {
+                                                    stopService(alarmId = alarmId)
+                                                    finish()
 
-                                                try {
-                                                    startActivity(
-                                                        Intent(Intent.ACTION_VIEW, uri.toUri())
-                                                    )
-                                                } catch (_: Exception) {
-                                                    if (isLaunchedFromMainActivity) {
+                                                    try {
                                                         startActivity(
-                                                            Intent(
-                                                                this@AlarmActivity,
-                                                                MainActivity::class.java
-                                                            )
+                                                            Intent(Intent.ACTION_VIEW, uri.toUri())
                                                         )
+                                                    } catch (_: Exception) {
+                                                        if (isLaunchedFromMainActivity) {
+                                                            startActivity(
+                                                                Intent(
+                                                                    this@AlarmActivity,
+                                                                    MainActivity::class.java
+                                                                )
+                                                            )
+                                                        }
                                                     }
                                                 }
                                             }
@@ -157,18 +162,21 @@ class AlarmActivity : FragmentActivity() {
                                         }
                                     )
                                 } else {
-                                    stopService(
-                                        Intent(this@AlarmActivity, AlarmService::class.java)
-                                    )
-                                    finish()
+                                    lifecycleScope.launch {
+                                        stopService(alarmId = alarmId)
+                                        finish()
 
-                                    try {
-                                        startActivity(Intent(Intent.ACTION_VIEW, uri.toUri()))
-                                    } catch (_: Exception) {
-                                        if (isLaunchedFromMainActivity) {
-                                            startActivity(
-                                                Intent(this@AlarmActivity, MainActivity::class.java)
-                                            )
+                                        try {
+                                            startActivity(Intent(Intent.ACTION_VIEW, uri.toUri()))
+                                        } catch (_: Exception) {
+                                            if (isLaunchedFromMainActivity) {
+                                                startActivity(
+                                                    Intent(
+                                                        this@AlarmActivity,
+                                                        MainActivity::class.java
+                                                    )
+                                                )
+                                            }
                                         }
                                     }
                                 }
@@ -200,17 +208,31 @@ class AlarmActivity : FragmentActivity() {
                             }
                         },
                         onEmergencyTaskCompleted = {
-                            stopService(Intent(this@AlarmActivity, AlarmService::class.java))
-                            finish()
+                            lifecycleScope.launch {
+                                stopService(alarmId = alarmId)
+                                finish()
 
-                            if (isLaunchedFromMainActivity) {
-                                startActivity(Intent(this@AlarmActivity, MainActivity::class.java))
+                                if (isLaunchedFromMainActivity) {
+                                    startActivity(
+                                        Intent(this@AlarmActivity, MainActivity::class.java)
+                                    )
+                                }
                             }
                         }
                     )
                 }
             }
         }
+    }
+
+    private suspend fun stopService(alarmId: Long) {
+        alarmsRepository.setAlarmRunning(
+            alarmId = alarmId,
+            running = false
+        )
+        stopService(
+            Intent(this@AlarmActivity, AlarmService::class.java)
+        )
     }
 
     override fun onNewIntent(intent: Intent) {
