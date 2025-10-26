@@ -56,6 +56,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -126,6 +127,7 @@ fun AddEditAlarmScreen(
 
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val resources = LocalResources.current
 
     val saveDefaultCodeImageLauncher = rememberLauncherForActivityResult(
         contract = object : ActivityResultContracts.CreateDocument("image/png") {},
@@ -138,7 +140,7 @@ fun AddEditAlarmScreen(
 
                     parcelFileDescriptor?.use {
                         val qrCodeImageBitmap =
-                            BitmapFactory.decodeResource(context.resources, R.drawable.qr_code)
+                            BitmapFactory.decodeResource(resources, R.drawable.qr_code)
                         val fileOutputStream = FileOutputStream(it.fileDescriptor)
 
                         if (
@@ -359,7 +361,15 @@ fun AddEditAlarmScreen(
                         AddEditAlarmScreenUserEvent.DownloadCodeDialogVisible(isVisible = false)
                     )
 
-                    saveDefaultCodeImageLauncher.launch("QRAlarmCode.png")
+                    try {
+                        saveDefaultCodeImageLauncher.launch("QRAlarmCode.png")
+                    } catch (_: ActivityNotFoundException) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.issue_opening_the_page),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
                 else -> addEditAlarmViewModel.onEvent(event)
             }
