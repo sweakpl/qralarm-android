@@ -86,7 +86,7 @@ class AlarmActivity : FragmentActivity() {
                                 stopService(alarmId = alarmId)
 
                                 if (!isLaunchedFromMainActivity) {
-                                    delay(1000)
+                                    delay(ALARM_CONFIRMATION_DISPLAY_DURATION_MS)
                                     finish()
                                 }
                             }
@@ -105,7 +105,7 @@ class AlarmActivity : FragmentActivity() {
                                     stopService(alarmId)
 
                                     navController.popBackStack()
-                                    delay(1500)
+                                    delay(ALARM_CONFIRMATION_DISPLAY_DURATION_MS)
                                     finish()
 
                                     if (isLaunchedFromMainActivity) {
@@ -245,5 +245,7 @@ class AlarmActivity : FragmentActivity() {
     companion object {
         const val EXTRA_ALARM_ID = "alarmId"
         const val EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY = "launchedFromMainActivity"
+
+        private const val ALARM_CONFIRMATION_DISPLAY_DURATION_MS = 3000L
     }
 }
