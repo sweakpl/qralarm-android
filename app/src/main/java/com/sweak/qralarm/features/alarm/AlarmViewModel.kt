@@ -3,11 +3,13 @@ package com.sweak.qralarm.features.alarm
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.R
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.alarm.SnoozeAlarm
+import com.sweak.qralarm.core.ui.compose_util.UiText
 import com.sweak.qralarm.features.alarm.navigation.ID_OF_ALARM
 import com.sweak.qralarm.features.alarm.navigation.IS_TRANSIENT
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,15 +47,35 @@ class AlarmViewModel @Inject constructor(
                 alarm = it
 
                 if (!isAlarmBeingStopped) {
+                    val isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed
+                    val isSnoozeAvailable =
+                        it.snoozeConfig.numberOfSnoozesLeft != 0 && !isAlarmSnoozed
+                    val isAlarmRunning = it.isAlarmRunning
+                    val isInteractionEnabled = isAlarmRunning || (isAlarmSnoozed && !isTransient)
+                    val alarmLabel = if (isAlarmRunning) {
+                        if (it.alarmLabel != null) {
+                            UiText.DynamicString(it.alarmLabel)
+                        } else {
+                            UiText.StringResource(resId = R.string.alarm_wake_up)
+                        }
+                    } else if (isAlarmSnoozed) {
+                        UiText.StringResource(resId = R.string.alarm_snoozed_until)
+                    } else null
+                    val currentTimeInMillis = System.currentTimeMillis()
+                    val timeToShow =
+                        if (isAlarmSnoozed && it.snoozeConfig.nextSnoozedAlarmTimeInMillis != null) {
+                            it.snoozeConfig.nextSnoozedAlarmTimeInMillis
+                        } else {
+                            currentTimeInMillis
+                        }
+
                     _state.update { currentState ->
                         currentState.copy(
-                            currentTimeInMillis = System.currentTimeMillis(),
-                            isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed,
-                            alarmLabel = it.alarmLabel,
-                            snoozedAlarmTimeInMillis = it.snoozeConfig.nextSnoozedAlarmTimeInMillis,
-                            isSnoozeAvailable = it.snoozeConfig.numberOfSnoozesLeft != 0,
-                            isInteractionEnabled =
-                                it.isAlarmRunning || (it.snoozeConfig.isAlarmSnoozed && !isTransient),
+                            currentTimeInMillis = currentTimeInMillis,
+                            alarmLabel = alarmLabel,
+                            timeToShow = timeToShow,
+                            isSnoozeAvailable = isSnoozeAvailable,
+                            isInteractionEnabled = isInteractionEnabled,
                             isEmergencyAvailable = it.isUsingCode && it.isEmergencyTaskEnabled
                         )
                     }

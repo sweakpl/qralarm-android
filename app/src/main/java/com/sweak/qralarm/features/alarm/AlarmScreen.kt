@@ -167,25 +167,18 @@ private fun AlarmScreenContent(
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.xLarge),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = if (state.isAlarmSnoozed) {
-                            stringResource(R.string.alarm_snoozed_until)
-                        } else {
-                            state.alarmLabel ?: stringResource(R.string.alarm_wake_up)
-                        },
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.displayLarge,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
+                    AnimatedVisibility(visible = state.alarmLabel != null) {
+                        Text(
+                            text = state.alarmLabel?.asString() ?: "",
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.displayLarge,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
 
                     Text(
                         text = getTimeString(
-                            timeInMillis =
-                                if (state.isAlarmSnoozed && state.snoozedAlarmTimeInMillis != null) {
-                                    state.snoozedAlarmTimeInMillis
-                                } else {
-                                    state.currentTimeInMillis
-                                },
+                            timeInMillis = state.timeToShow,
                             is24HourFormat = DateFormat.is24HourFormat(LocalContext.current)
                         ),
                         style = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
@@ -209,7 +202,7 @@ private fun AlarmScreenContent(
                         )
                     }
 
-                    AnimatedVisibility(visible = !state.isAlarmSnoozed && state.isSnoozeAvailable) {
+                    AnimatedVisibility(visible = state.isSnoozeAvailable) {
                         TextButton(
                             onClick = { onEvent(AlarmScreenUserEvent.SnoozeAlarmClicked) },
                             colors = ButtonDefaults.textButtonColors(
@@ -280,9 +273,8 @@ private fun AlarmScreenContentPreview() {
     QRAlarmTheme {
         AlarmScreenContent(
             state = AlarmScreenState(
-//                isSnoozeAvailable = true,
-                isAlarmSnoozed = true,
-                snoozedAlarmTimeInMillis = 1729861439787
+                isSnoozeAvailable = true,
+                timeToShow = 1729861439787
             ),
             onEvent = {}
         )

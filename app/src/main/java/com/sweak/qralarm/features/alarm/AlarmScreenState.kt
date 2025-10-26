@@ -1,10 +1,11 @@
 package com.sweak.qralarm.features.alarm
 
+import com.sweak.qralarm.core.ui.compose_util.UiText
+
 data class AlarmScreenState(
     val currentTimeInMillis: Long = System.currentTimeMillis(),
-    val isAlarmSnoozed: Boolean = false,
-    val alarmLabel: String? = null,
-    val snoozedAlarmTimeInMillis: Long? = null,
+    val alarmLabel: UiText? = null,
+    val timeToShow: Long = System.currentTimeMillis(),
     val isSnoozeAvailable: Boolean = false,
     val isInteractionEnabled: Boolean = true,
     val isEmergencyAvailable: Boolean = false,
