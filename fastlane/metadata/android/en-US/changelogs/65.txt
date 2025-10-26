@@ -1,3 +1,0 @@
-* Now showing upcoming alarm notification after snoozing,
-* Clearer alarm volume adjustment UI,
-* Bug fixes and performance improvements.
