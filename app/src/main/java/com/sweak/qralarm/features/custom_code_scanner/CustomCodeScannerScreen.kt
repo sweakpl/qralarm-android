@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.custom_code_scanner
 
 import androidx.camera.compose.CameraXViewfinder
+import androidx.camera.viewfinder.core.ImplementationMode
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -88,6 +89,7 @@ fun CustomCodeScannerScreenContent(
         Box {
             state.surfaceRequest?.let { request ->
                 CameraXViewfinder(
+                    implementationMode = ImplementationMode.EMBEDDED,
                     surfaceRequest = request,
                     modifier = Modifier.fillMaxSize()
                 )

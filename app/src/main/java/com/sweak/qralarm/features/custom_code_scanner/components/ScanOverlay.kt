@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 
 @Composable
 fun ScanOverlay() {
@@ -30,15 +31,24 @@ fun ScanOverlay() {
         val bottom = top + viewfinderSize
         val rect = Rect(left, top, right, bottom)
 
-        // Draw dimmed background
-        drawRect(overlayColor)
-
-        // Cut out the viewfinder (clear rect)
+        // Draw dimmed background and cut out the viewfinder using a saved layer + CLEAR xfermode
         drawIntoCanvas { canvas ->
-            val paint = android.graphics.Paint().apply {
+            val native = canvas.nativeCanvas
+
+            val overlayPaint = android.graphics.Paint().apply {
+                color = overlayColor.toArgb()
+                style = android.graphics.Paint.Style.FILL
+            }
+            val clearPaint = android.graphics.Paint().apply {
                 xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
             }
-            canvas.nativeCanvas.drawRect(left, top, right, bottom, paint)
+
+            val saveCount = native.saveLayer(null, null)
+            // draw full-screen dim overlay on the layer
+            native.drawRect(0f, 0f, size.width, size.height, overlayPaint)
+            // cut out transparent rectangle
+            native.drawRect(left, top, right, bottom, clearPaint)
+            native.restoreToCount(saveCount)
         }
 
         // Draw corners
