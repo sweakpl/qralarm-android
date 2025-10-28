@@ -9,6 +9,8 @@ import androidx.compose.material.icons.automirrored.outlined.VolumeDown
 import androidx.compose.material.icons.automirrored.outlined.VolumeMute
 import androidx.compose.material.icons.automirrored.outlined.VolumeOff
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
+import androidx.compose.material.icons.filled.FlashOff
+import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Alarm
@@ -35,7 +37,6 @@ import androidx.compose.material.icons.outlined.SecurityUpdateGood
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Stop
-import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -81,5 +82,7 @@ object QRAlarmIcons {
     val Copy = Icons.Outlined.ContentCopy
     val Clock = Icons.Outlined.AccessTime
     val Emergency = Icons.Outlined.WarningAmber
+    val FlashOn = Icons.Filled.FlashOn
+    val FlashOff = Icons.Filled.FlashOff
     val SoundMute = Icons.AutoMirrored.Outlined.VolumeOff
 }
