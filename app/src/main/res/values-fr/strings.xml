@@ -177,7 +177,7 @@
     <string name="_1_hour_lock">Serrure de 1 heure</string>
     <string name="_1_hour_lock_description">L\'alarme ne peut pas être annulée sans code si elle a lieu dans moins d\'une heure.</string>
     <string name="power_off_guard">Protection contre l\'arrêt</string>
-    <string name="power_off_guard_description">Ne vous laissez pas aller à éteindre votre téléphone lorsque l\'alarme sonne.</string>
+    <string name="power_off_guard_description">Empêchez le menu d\'arrêt de l\'appareil d\'arrêter votre alarme.</string>
     <string name="lock_alarm_to_this_volume">Réglez l\'alarme sur ce volume lorsqu\'elle sonne :</string>
     <string name="using_system_alarm_volume">Utilisation du volume d\'alarme du système</string>
     <string name="ok">OK</string>

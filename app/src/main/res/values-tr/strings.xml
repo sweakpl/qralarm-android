@@ -171,7 +171,7 @@
     <string name="_1_hour_lock">1 saatlik kilit</string>
     <string name="_1_hour_lock_description">Alarm 1 saatten az bir süre içindeyse kod olmadan iptal edilemez.</string>
     <string name="power_off_guard">Kapatma koruması</string>
-    <string name="power_off_guard_description">Alarm çalarken telefonunuzu kapatmanıza izin verme.</string>
+    <string name="power_off_guard_description">Güç kapatma menüsünün alarmınızı durdurmasını önleyin.</string>
     <string name="lock_alarm_to_this_volume">Alarm çaldığında ses seviyesini buna ayarla:</string>
     <string name="using_system_alarm_volume">Sistem alarm sesi kullanılıyor</string>
     <string name="ok">TAMAM</string>

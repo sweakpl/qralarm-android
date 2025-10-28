@@ -183,7 +183,7 @@
     <string name="_1_hour_lock">Блокування на 1 годину</string>
     <string name="_1_hour_lock_description">Будильник не може бути скасований без коду, якщо до його спрацювання залишилося менше ніж 1 година.</string>
     <string name="power_off_guard">Захист від вимкнення</string>
-    <string name="power_off_guard_description">Не дозвольте собі вимкнути телефон, коли лунає будильник.</string>
+    <string name="power_off_guard_description">Запобігайте вимкненню будильника через меню вимкнення живлення.</string>
     <string name="lock_alarm_to_this_volume">Налаштуйте гучність будильника, коли він лунає:</string>
     <string name="using_system_alarm_volume">Використання гучності сигналу будильника</string>
     <string name="ok">OK</string>
