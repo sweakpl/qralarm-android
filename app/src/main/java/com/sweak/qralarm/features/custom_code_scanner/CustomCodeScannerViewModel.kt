@@ -1,6 +1,5 @@
 package com.sweak.qralarm.features.custom_code_scanner
 
-import android.os.Build
 import android.util.Log
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.Camera
@@ -21,7 +20,6 @@ import com.google.zxing.Result
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.AbstractCodeAnalyzer
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeAnalyzer
-import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.LegacyCodeAnalyzer
 import com.sweak.qralarm.features.custom_code_scanner.navigation.SHOULD_SCAN_FOR_DEFAULT_CODE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.awaitCancellation
@@ -99,13 +97,7 @@ class CustomCodeScannerViewModel @Inject constructor(
     }
 
     private fun getCodeAnalyzer(): AbstractCodeAnalyzer {
-        val barcodeDetector = getBarcodeDetector()
-
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            CodeAnalyzer(barcodeDetector)
-        } else {
-            LegacyCodeAnalyzer(barcodeDetector)
-        }
+        return CodeAnalyzer(getBarcodeDetector())
     }
 
     private fun getBarcodeDetector(): AbstractCodeAnalyzer.BarcodeDetector =
@@ -141,9 +133,7 @@ class CustomCodeScannerViewModel @Inject constructor(
     private fun getImageAnalysisUseCase() =
         ImageAnalysis.Builder().apply {
             setResolutionSelector(ResolutionSelector.Builder().build())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                setOutputImageRotationEnabled(true)
-            }
+            setOutputImageRotationEnabled(true)
         }.build()
 
     private fun Camera.configureAutoFocus(windowInfo: WindowInfo) {
