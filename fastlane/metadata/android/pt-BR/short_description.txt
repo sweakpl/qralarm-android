@@ -1,0 +1,1 @@
+Desative alarmes com o leitor de QR code
