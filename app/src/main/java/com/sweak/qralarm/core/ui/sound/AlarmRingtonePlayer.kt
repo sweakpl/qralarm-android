@@ -22,6 +22,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.core.net.toUri
+import androidx.media3.common.Player.COMMAND_SET_VOLUME
+import kotlin.math.pow
 
 class AlarmRingtonePlayer(
     private val context: Context,
@@ -67,15 +69,22 @@ class AlarmRingtonePlayer(
             prepare()
         }
 
-        if (volumeIncreaseSeconds > 0) {
+        if (volumeIncreaseSeconds > 0 && player?.isCommandAvailable(COMMAND_SET_VOLUME) == true) {
             player?.volume = 0f
 
-            volumeIncreaseJob = playerScope.launch {
-                for (volume in 0..100) {
-                    val scaledVolume = volume / 100f
-                    player?.volume = scaledVolume
+            val totalMilliseconds = volumeIncreaseSeconds * 1000.0
+            val steps = 100
+            val perStepDelayMilliseconds = (totalMilliseconds / steps).toLong()
+            val power = 2.0 // quadratic ease-in
 
-                    delay(volumeIncreaseSeconds * 10L)
+            if (::volumeIncreaseJob.isInitialized) volumeIncreaseJob.cancel()
+
+            volumeIncreaseJob = playerScope.launch {
+                for (i in 0..steps) {
+                    val progress = i.toDouble() / steps
+                    val scaledVolume = progress.pow(power).toFloat()
+                    player?.volume = scaledVolume
+                    if (i < steps) delay(perStepDelayMilliseconds)
                 }
             }
         }
