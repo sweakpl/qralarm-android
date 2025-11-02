@@ -1,0 +1,211 @@
+<resources>
+    <plurals name="number_of_snoozes_plural">
+        <item quantity="one">%1$d soneca</item>
+        <item quantity="other">%1$d sonecas</item>
+    </plurals>
+
+    <plurals name="snooze_duration_plural">
+        <item quantity="other">%1$d minutos</item>
+    </plurals>
+
+    <plurals name="number_of_seconds_plural">
+        <item quantity="other">%1$d segundos</item>
+    </plurals>
+
+    <plurals name="days">
+        <item quantity="one">%1$d dia</item>
+        <item quantity="other">%1$d dias</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">%1$d hora</item>
+        <item quantity="other">%1$d horas</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%1$d minuto</item>
+        <item quantity="other">%1$d minutos</item>
+    </plurals>
+
+    <string name="app_name" translatable="false">QRAlarm</string>
+    <string name="welcome_to_qralarm">Bem-vindo ao QRAlarm!</string>
+    <string name="wake_up_catchphrase">Acorde!</string>
+    <string name="wake_up_catchphrase_description">Defina seu alarme como de costume e prepare-se para ser acordado pelo QRAlarm na manhã seguinte.</string>
+    <string name="get_up_catchphrase">Levante-se!</string>
+    <string name="get_up_catchphrase_description">O QRAlarm garante que você não apenas acorde, mas também se levante e vá até o local para desativar o alarme.</string>
+    <string name="rise_up_catchphrase">Desperte!</string>
+    <string name="rise_up_catchphrase_description">Escaneie o código, desligue o alarme e diga adeus ao sono excessivo! Aproveite suas manhãs com o QRAlarm!</string>
+    <string name="lets_go">Vamos lá!</string>
+    <string name="home">Início</string>
+    <string name="alarms">Alarmes</string>
+    <string name="alarm">Alarme</string>
+    <string name="repeating">Repetir</string>
+    <string name="snooze">Soneca</string>
+    <string name="ringtone">Toque</string>
+    <string name="vibrations">Vibrações</string>
+    <string name="use_qr_bar_code">Usar QR/Código de barras</string>
+    <string name="assign_specific_code">Atribuir código específico</string>
+    <string name="assign_specific_code_description">O alarme pode ser desativado com qualquer código. Clique abaixo para definir seu próprio QR Code ou código de barras para desativar este alarme:</string>
+    <string name="scan_your_own_code">Escaneie seu próprio código</string>
+    <string name="gentle_wake_up">Acordar suavemente</string>
+    <string name="temporary_mute">Silenciar temporariamente</string>
+    <string name="gentle_wake_up_description">O volume do alarme aumentará gradualmente pelo tempo especificado.</string>
+    <string name="temporary_mute_description">O alarme será silenciado pelo tempo definido após clicar em PARAR ao usar QR/Código de barras.</string>
+    <string name="only_once">Apenas uma vez</string>
+    <string name="custom">Personalizado</string>
+    <string name="number_of_snoozes">Número de sonecas:</string>
+    <string name="snooze_duration">Duração da soneca:</string>
+    <string name="no_snoozes">Sem soneca</string>
+    <string name="gentle_guitar">Violão suave</string>
+    <string name="alarm_clock">Despertador</string>
+    <string name="air_horn">Buzina</string>
+    <string name="custom_sound">Som personalizado</string>
+    <string name="disabled">Desativado</string>
+    <string name="min">min</string>
+    <string name="sec">s</string>
+    <string name="ringtone_successfully_uploaded">Seu toque personalizado foi carregado com sucesso!</string>
+    <string name="ringtone_upload_unsuccessful">O toque personalizado não pôde ser carregado…</string>
+    <string name="code_assigned">Código atribuído!</string>
+    <string name="current_code">Código atual: %1$s</string>
+    <string name="camera_permission_required">Permissão da câmera necessária</string>
+    <string name="camera_permission_required_description">A permissão da câmera é necessária para escanear códigos. Vá para as configurações e conceda a permissão manualmente.</string>
+    <string name="settings">Configurações</string>
+    <string name="cancel">Cancelar</string>
+    <string name="code_successfully_assigned">Código atribuído com sucesso!</string>
+    <string name="assign_new_code">Atribuir novo código</string>
+    <string name="clear_assigned_code">Limpar código atribuído</string>
+    <string name="permissions_required">Permissões necessárias!</string>
+    <string name="camera">Câmera</string>
+    <string name="camera_usage">Usada para escanear QR Codes e códigos de barras.</string>
+    <string name="alarms_usage">Usado para agendar alarmes com precisão.</string>
+    <string name="notifications">Notificações</string>
+    <string name="notifications_usage">Usado para exibir notificações junto ao alarme.</string>
+    <string name="full_screen_display">Exibição em tela cheia</string>
+    <string name="full_screen_display_usage">Usado para mostrar notificações de alarme em tela cheia.</string>
+    <string name="notifications_permission_required">Permissão de notificações necessária</string>
+    <string name="notifications_permission_required_description">A permissão de notificações é necessária para alertar sobre seus alarmes. Vá para as configurações e conceda a permissão manualmente.</string>
+    <string name="delete_alarm">Excluir alarme</string>
+    <string name="delete_this_alarm">Excluir este alarme?</string>
+    <string name="delete">Excluir</string>
+    <string name="discard_changes">Descartar alterações?</string>
+    <string name="discard_changes_description">Qualquer alteração feita neste alarme será descartada e não salva. Deseja realmente descartar?</string>
+    <string name="discard">Descartar</string>
+    <string name="alarm_in">Alarme em:</string>
+    <string name="alarm_notification_channel_name">Disparo de alarmes</string>
+    <string name="alarm_notification_channel_description">Reproduz o som do alarme, exibe uma notificação e aparece na tela</string>
+    <string name="alarm_notification_title">O alarme está tocando! Acorde!</string>
+    <string name="alarm_set_indication_notification_channel_name">Notificação de alarmes</string>
+    <string name="alarm_set_indication_notification_channel_description">Notifica sobre alarmes definidos ou perdidos, permanece na barra de notificações e não emite som</string>
+    <string name="alarm_missed_notification_title">Alarme perdido!</string>
+    <string name="alarm_missed_notification_text">Seu alarme anterior não tocou, possivelmente devido a uma mudança de horário no seu celular ou porque ele estava desligado no momento do alarme.</string>
+    <string name="alarm_wake_up">Alarme - acorde!</string>
+    <string name="stop">PARAR</string>
+    <string name="snooze_capitals">SONECA</string>
+    <string name="alarm_snoozed_until">Alarme adiado até:</string>
+    <string name="upcoming_alarm_indication_notification_title">Próximo alarme</string>
+    <string name="upcoming_alarm_indication_notification_text">Alarme definido para %1$s</string>
+    <string name="upcoming_snoozed_alarm_indication_notification_text">Alarme adiado até %1$s</string>
+    <string name="next_step">Próximo passo</string>
+    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarme em menos de 1 hora - para editar, desative o alarme escaneando o código.</string>
+    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarme em menos de 1 hora - escaneie o código para desativar o alarme.</string>
+    <string name="kalimba">Kalimba</string>
+    <string name="classic_alarm">Alarme clássico</string>
+    <string name="rooster">Galo</string>
+    <string name="menu">Menu</string>
+    <string name="introduction">Introdução</string>
+    <string name="everyday">Todos os dias</string>
+    <string name="no_alarms">Nenhum alarme</string>
+    <string name="create_using_button">Crie um usando o botão + acima ou abaixo.</string>
+    <string name="optimization_guide">Guia de otimização</string>
+    <string name="optimize_qralarm">Otimizar QRAlarm</string>
+    <string name="ensure_the_best_performance">Garanta o melhor desempenho! ⏰ 🚀</string>
+    <string name="optimization_screen_description">As configurações a seguir ajudarão o QRAlarm a funcionar da melhor forma no seu sistema, garantindo manhãs perfeitas!</string>
+    <string name="enable_background_work">Permitir execução em segundo plano</string>
+    <string name="enable_background_work_description">Não permita que o sistema interfira nos seus alarmes e durma tranquilo!</string>
+    <string name="fully_optimize_for_your_system">Otimização completa para o seu sistema</string>
+    <string name="fully_optimize_for_your_system_description">Alguns sistemas Android impõem restrições a aplicativos em execução, o que pode afetar o QRAlarm. Otimize o app seguindo as instruções para o seu dispositivo:</string>
+    <string name="ensure_the_best_settings_possible">Garanta as melhores configurações possíveis</string>
+    <string name="ensure_the_best_settings_possible_description">Verifique se estas configurações também estão ativadas (se o seu sistema as suportar):</string>
+    <string name="display_on_lock_screen_description">os alarmes estarão rapidamente acessíveis quando tocarem.</string>
+    <string name="autostart">Inicialização automática</string>
+    <string name="autostart_description">os alarmes serão automaticamente ativados após reiniciar o telefone.</string>
+    <string name="display_on_lock_screen">Exibir na tela de bloqueio</string>
+    <string name="work_in_background_limited_click_to_enable">Execução em segundo plano limitada. Clique para ativar.</string>
+    <string name="work_in_background_enabled">Execução em segundo plano ativada. Bom trabalho!</string>
+    <string name="setting_unavailable_refer_to_the_next_step">Configuração indisponível - consulte as próximas etapas.</string>
+    <string name="dontkilmyapp_com" translatable="false">dontkillmyapp.com</string>
+    <string name="dontkilmyapp_com_full_uri" translatable="false">https://dontkillmyapp.com/</string>
+    <string name="select_manufacturer_and_follow_instructions">Selecione o fabricante do seu celular e siga as instruções fornecidas.</string>
+    <string name="click_to_go_to_app_settings">Clique para ir às configurações do aplicativo QRAlarm.</string>
+    <string name="issue_opening_the_page">Ocorreu um problema ao abrir a página…</string>
+    <string name="optimization_dialog_description">Faça o QRAlarm funcionar da melhor forma no seu sistema consultando nosso guia de otimização e durma tranquilo!</string>
+    <string name="qralarm_pro" translatable="false">QRAlarm PRO</string>
+    <string name="buy_once_enjoy_forever">Compre uma vez - use para sempre!</string>
+    <string name="get_it_now">Obtenha agora!</string>
+    <string name="not_now">Agora não</string>
+    <string name="qralarm_pro_package_name" translatable="false">com.sweak.qralarm.pro</string>
+    <string name="special_settings">Configurações especiais</string>
+    <string name="do_not_leave_alarm">Não sair do alarme</string>
+    <string name="do_not_leave_alarm_description">Mantém a tela do alarme visível enquanto ele está tocando.</string>
+    <string name="block_volume_down">Bloquear volume baixo</string>
+    <string name="block_volume_down_description">Impede que o volume do toque do alarme seja reduzido.</string>
+    <string name="alarm_didnt_ring">O alarme não tocou? ⏰</string>
+    <string name="alarm_didnt_ring_description">O último alarme foi perdido? Se sim, certifique-se de seguir corretamente nosso guia de otimização para garantir que o QRAlarm funcione perfeitamente no seu sistema!</string>
+    <string name="optimize_now">Otimizar agora!</string>
+    <string name="there_was_an_issue_playing_ringtone">Ocorreu um problema ao reproduzir o toque…</string>
+    <string name="skip_next_alarm">Pular próximo alarme</string>
+    <string name="undo_skipping_next_alarm">Desfazer pulo do próximo alarme</string>
+    <string name="next_alarm_date">Próximo: %1$s</string>
+    <string name="alarm_label">Rótulo do alarme</string>
+    <string name="enter_your_alarm_label">Digite o rótulo do alarme…</string>
+    <string name="open_code_link">Abrir link do código</string>
+    <string name="open_code_link_description">Se o código contiver uma URL válida, o app a abrirá automaticamente após o escaneamento.</string>
+    <string name="do_you_enjoy_qralarm">Você gosta do QRAlarm? 🚀 ⏰</string>
+    <string name="im_working_hard">Estou trabalhando duro para deixar suas manhãs o mais tranquilas possível! 🙂</string>
+    <string name="i_love_it_rate_me">Adorei - avalie o app! ❤️</string>
+    <string name="did_something_go_wrong">Algo deu errado?\nPodemos resolver isso juntos!</string>
+    <string name="tell_me_what_is_wrong">Diga o que há de errado</string>
+    <string name="do_not_show_again">Não mostrar esta tela novamente.</string>
+    <string name="qralarm_github_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android</string>
+    <string name="qralarm_github_issues_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android/issues</string>
+    <string name="rate_qralarm">Avaliar QRAlarm</string>
+    <string name="previous">Anterior</string>
+    <string name="scan_code">Escanear código</string>
+    <string name="or_use_already_used_code">Ou usar código já utilizado</string>
+    <string name="click_to_choose">*Clique para escolher*</string>
+    <string name="_1_hour_lock">Bloqueio de 1 hora</string>
+    <string name="_1_hour_lock_description">O alarme não pode ser cancelado sem o código se faltar menos de 1 hora.</string>
+    <string name="power_off_guard">Proteção contra desligamento</string>
+    <string name="power_off_guard_description">Impede que o menu de desligamento interrompa o alarme.</string>
+    <string name="lock_alarm_to_this_volume">Defina o alarme para tocar neste volume:</string>
+    <string name="using_system_alarm_volume">Usando o volume de alarme do sistema</string>
+    <string name="ok">OK</string>
+    <string name="advanced_settings">Configurações avançadas</string>
+    <string name="incorrect_code_scanned">Código incorreto escaneado!</string>
+    <string name="copy_alarm">Copiar alarme</string>
+    <string name="default_alarm_code">Código padrão do alarme</string>
+    <string name="no_assigned_code">Nenhum código atribuído</string>
+    <string name="default_alarm_code_description">Defina o código que será usado automaticamente em novos alarmes:</string>
+    <string name="clear_default_code">Limpar código padrão</string>
+    <string name="keep_ringer_on">Manter toque ativo</string>
+    <string name="keep_ringer_on_description">Impede que os modos silencioso/vibração interrompam o som do alarme.</string>
+    <string name="active_alarms">Alarmes ativos</string>
+    <string name="non_active_alarms">Alarmes inativos</string>
+    <string name="dont_have_code">Não tem um código?</string>
+    <string name="download_your_qr_code">Baixe seu QR Code</string>
+    <string name="download_your_qr_code_description">Se você não tiver um QR Code para escanear, pode baixar um, imprimir e colocá-lo longe da cama.</string>
+    <string name="download_code">Baixar código</string>
+    <string name="saved_qr_code">QR Code salvo!</string>
+    <string name="could_not_save_qr_code">Não foi possível salvar o QR Code.</string>
+    <string name="emergency">Emergência</string>
+    <string name="emergency_task_description">Perdeu ou esqueceu o código? Você pode concluir esta tarefa para parar o alarme. Basta mover o controle deslizante até o número-alvo. Boa sorte.</string>
+    <string name="start">Iniciar</string>
+    <string name="target_colon">Alvo:</string>
+    <string name="remaining_colon">Restando:</string>
+    <string name="emergency_task_setting_description">Tarefa de emergência para situações em que não seja possível escanear o código.</string>
+    <string name="emergency_task">Tarefa de emergência</string>
+    <string name="emergency_task_global_settings_description">Se você esquecer seu código e um alarme tocar, poderá usar a tarefa de emergência para desativá-lo.\n\nVocê pode ajustar a dificuldade alterando as seguintes configurações e ver uma prévia de como ficará:</string>
+    <string name="slider_range">Faixa do controle deslizante:</string>
+    <string name="required_matches">Correspondências necessárias:</string>
+    <string name="preview_emergency_task">Visualizar tarefa de emergência</string>
+</resources>
