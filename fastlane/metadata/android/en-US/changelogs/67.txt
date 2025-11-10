@@ -1,0 +1,3 @@
+* Added Portuguese (Brazil) language support,
+* Gentle wake up volume increase is now less abrupt,
+* Performance improvements.
