@@ -11,8 +11,11 @@ Say goodbye to oversleeping with QRAlarm! 🚀
 QRAlarm - QR Code Alarm Clock is an effective and smart alarm clock that gets you out of bed by making you scan the QR or Barcode to turn off the alarm! This makes it perfect for both heavy sleepers and productive early risers! 🔝
 
 Have you ever...
+
 ⏰ ...found yourself caught in the “snooze loop” where you kept snoozing the alarm while never getting up?
+
 😴 ...turned off your alarm giving yourself those mythical “5 more minutes” just to fall back asleep again and oversleep?
+
 📝 ...wanted to start off the day earlier to get your tasks done but you simply couldn’t leave your bed in the morning?
 
 Then QRAlarm is perfect for you! 🫵
