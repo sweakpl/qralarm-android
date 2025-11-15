@@ -27,7 +27,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/Theme.QRAlarm.Splash"
         tools:ignore="DiscouragedApi,LockedOrientationActivity"
         tools:targetApi="35">
 
@@ -36,7 +35,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.QRAlarm">
+            android:theme="@style/Theme.QRAlarm.Splash">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
