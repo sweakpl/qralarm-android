@@ -61,19 +61,18 @@ class AlarmViewModel @Inject constructor(
                     } else if (isAlarmSnoozed) {
                         UiText.StringResource(resId = R.string.alarm_snoozed_until)
                     } else null
-                    val currentTimeInMillis = System.currentTimeMillis()
                     val timeToShow =
                         if (isAlarmSnoozed && it.snoozeConfig.nextSnoozedAlarmTimeInMillis != null) {
                             it.snoozeConfig.nextSnoozedAlarmTimeInMillis
                         } else {
-                            currentTimeInMillis
+                            System.currentTimeMillis()
                         }
 
                     _state.update { currentState ->
                         currentState.copy(
-                            currentTimeInMillis = currentTimeInMillis,
                             alarmLabel = alarmLabel,
                             timeToShow = timeToShow,
+                            isAlarmSnoozed = isAlarmSnoozed,
                             isSnoozeAvailable = isSnoozeAvailable,
                             isInteractionEnabled = isInteractionEnabled,
                             isEmergencyAvailable = it.isUsingCode && it.isEmergencyTaskEnabled
@@ -196,8 +195,10 @@ class AlarmViewModel @Inject constructor(
                 }
             }
             is AlarmScreenUserEvent.UpdateCurrentTime -> {
-                _state.update { currentState ->
-                    currentState.copy(currentTimeInMillis = System.currentTimeMillis())
+                if (!_state.value.isAlarmSnoozed) {
+                    _state.update { currentState ->
+                        currentState.copy(timeToShow = System.currentTimeMillis())
+                    }
                 }
             }
             else -> { /* no-op */ }
