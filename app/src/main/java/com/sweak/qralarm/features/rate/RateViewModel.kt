@@ -38,7 +38,8 @@ class RateViewModel @Inject constructor(
 
     fun onEvent(event: RateScreenUserEvent) {
         when (event) {
-            is RateScreenUserEvent.IsNeverShowAgainCheckedChanged -> {
+            is RateScreenUserEvent.IsNeverShowAgainCheckedChanged -> viewModelScope.launch {
+                userDataRepository.setNextRatePromptTimeInMillis(promptTime = 0L)
                 _state.update { currentState ->
                     currentState.copy(isNeverShowAgainChecked = event.checked)
                 }
@@ -52,13 +53,11 @@ class RateViewModel @Inject constructor(
                 backendEventsChannel.send(RateScreenBackendEvent.SomethingWrongClickProcessed)
             }
             is RateScreenUserEvent.NotNowClicked -> viewModelScope.launch {
-                userDataRepository.setNextRatePromptTimeInMillis(
-                    promptTime =  if (!state.value.isNeverShowAgainChecked) {
-                        ZonedDateTime.now().plusMonths(1).toInstant().toEpochMilli()
-                    } else {
-                        0L
-                    }
-                )
+                if (!state.value.isNeverShowAgainChecked) {
+                    userDataRepository.setNextRatePromptTimeInMillis(
+                        promptTime = ZonedDateTime.now().plusMonths(1).toInstant().toEpochMilli()
+                    )
+                }
 
                 backendEventsChannel.send(RateScreenBackendEvent.NotNowClickProcessed)
             }
