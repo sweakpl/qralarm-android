@@ -60,7 +60,9 @@ class CustomCodeScannerViewModel @Inject constructor(
                     ProcessCameraProvider.configureInstance(Camera2Config.defaultConfig())
                 } catch (_: IllegalStateException) { /* no-op */ }
 
-                val processCameraProvider = ProcessCameraProvider.awaitInstance(event.appContext)
+                val processCameraProvider =
+                    ProcessCameraProvider.awaitInstance(event.appContext).also { it.unbindAll() }
+
                 camera = processCameraProvider.bindToLifecycle(
                     event.lifecycleOwner,
                     DEFAULT_BACK_CAMERA,
