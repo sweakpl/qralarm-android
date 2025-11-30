@@ -7,6 +7,9 @@ import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_NUMBERS
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_TEMPORARY_MUTE_DURATIONS_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
+import com.sweak.qralarm.core.domain.alarm.DEFAULT_GENTLE_WAKE_UP_DURATION_IN_SECONDS
+import com.sweak.qralarm.core.domain.alarm.DEFAULT_SNOOZE_NUMBER_TO_DURATION_PAIR
+import com.sweak.qralarm.core.domain.alarm.DEFAULT_TEMPORARY_MUTE_DURATION_IN_SECONDS
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import kotlinx.parcelize.Parcelize
 
@@ -20,7 +23,7 @@ data class AddEditAlarmFlowState(
     val alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper =
         AlarmRepeatingScheduleWrapper(),
     val isChooseAlarmRepeatingScheduleDialogVisible: Boolean = false,
-    val snoozeNumberToDurationPair: Pair<Int, Int> = Pair(3, 10),
+    val snoozeNumberToDurationPair: Pair<Int, Int> = DEFAULT_SNOOZE_NUMBER_TO_DURATION_PAIR,
     val availableSnoozeNumbers: List<Int> = AVAILABLE_SNOOZE_NUMBERS,
     val availableSnoozeDurationsInMinutes: List<Int> = AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES,
     val isChooseAlarmSnoozeConfigurationDialogVisible: Boolean = false,
@@ -43,11 +46,11 @@ data class AddEditAlarmFlowState(
     val isOneHourLockEnabled: Boolean = true,
     val isEmergencyTaskEnabled: Boolean = true,
     val alarmLabel: String? = null,
-    val gentleWakeupDurationInSeconds: Int = 30,
+    val gentleWakeupDurationInSeconds: Int = DEFAULT_GENTLE_WAKE_UP_DURATION_IN_SECONDS,
     val availableGentleWakeUpDurationsInSeconds: List<Int> =
         AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS,
     val isChooseGentleWakeUpDurationDialogVisible: Boolean = false,
-    val temporaryMuteDurationInSeconds: Int = 0,
+    val temporaryMuteDurationInSeconds: Int = DEFAULT_TEMPORARY_MUTE_DURATION_IN_SECONDS,
     val availableTemporaryMuteDurationsInSeconds: List<Int> =
         AVAILABLE_TEMPORARY_MUTE_DURATIONS_IN_SECONDS,
     val isChooseTemporaryMuteDurationDialogVisible: Boolean = false,
