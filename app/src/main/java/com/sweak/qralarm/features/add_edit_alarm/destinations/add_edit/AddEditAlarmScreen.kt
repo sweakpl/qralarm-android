@@ -1,5 +1,6 @@
-package com.sweak.qralarm.features.add_edit_alarm.destinations
+package com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit
 
+import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -84,13 +85,13 @@ import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowBackendEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
-import com.sweak.qralarm.features.add_edit_alarm.components.AssignCodeBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRepeatingScheduleBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.components.ChooseAlarmRingtoneConfigDialogBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.components.ChooseSnoozeConfigurationBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.components.DialerTimePickerDialog
-import com.sweak.qralarm.features.add_edit_alarm.components.DownloadCodeBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.components.QRAlarmTimePicker
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AssignCodeBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseAlarmRepeatingScheduleBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseAlarmRingtoneConfigDialogBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseSnoozeConfigurationBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.DialerTimePickerDialog
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.DownloadCodeBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.QRAlarmTimePicker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -178,10 +179,10 @@ fun AddEditAlarmScreen(
 
     var isInTheCameraPermissionFlowForCustomCodeScan by remember { mutableStateOf(false) }
     val cameraPermissionState = rememberPermissionState(
-        permission = android.Manifest.permission.CAMERA
+        permission = Manifest.permission.CAMERA
     )
     val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS)
+        rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
     } else {
         object : PermissionState {
             override val permission: String get() = "android.permission.POST_NOTIFICATIONS"

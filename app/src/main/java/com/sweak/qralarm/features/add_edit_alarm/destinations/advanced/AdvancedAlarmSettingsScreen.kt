@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm.destinations
+package com.sweak.qralarm.features.add_edit_alarm.destinations.advanced
 
 import android.os.Build
 import androidx.compose.foundation.background
@@ -40,8 +40,9 @@ import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
-import com.sweak.qralarm.features.add_edit_alarm.components.ChooseGentleWakeUpDurationBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.components.ChooseTemporaryMuteDurationBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseGentleWakeUpDurationBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseTemporaryMuteDurationBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getSecondsDurationString
 
 @Composable
 fun AdvancedAlarmSettingsScreen(

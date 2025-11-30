@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm.components
+package com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,17 +13,21 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmComboBox
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DownloadCodeBottomSheet(
-    onDownloadCodeClicked: () -> Unit,
+fun AssignCodeBottomSheet(
+    onScanCodeClicked: () -> Unit,
+    availableCodes: List<String>,
+    onChooseCodeFromList: (code: String) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -42,19 +46,13 @@ fun DownloadCodeBottomSheet(
                 )
         ) {
             Text(
-                text = stringResource(R.string.download_your_qr_code),
-                style = MaterialTheme.typography.displaySmall,
-                modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
-            )
-
-            Text(
-                text = stringResource(R.string.download_your_qr_code_description),
-                style = MaterialTheme.typography.bodyLarge,
+                text = stringResource(R.string.scan_your_own_code),
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
             )
 
             Button(
-                onClick = onDownloadCodeClicked,
+                onClick = onScanCodeClicked,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
@@ -63,9 +61,40 @@ fun DownloadCodeBottomSheet(
                     .height(56.dp)
             ) {
                 Text(
-                    text = stringResource(R.string.download_code),
+                    text = stringResource(R.string.scan_code),
                     style = MaterialTheme.typography.titleLarge
                 )
+            }
+
+            if (availableCodes.isNotEmpty()) {
+                Column {
+                    Text(
+                        text = stringResource(R.string.or_use_already_used_code),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier
+                            .padding(
+                                top = MaterialTheme.space.mediumLarge,
+                                bottom = MaterialTheme.space.small
+                            )
+                    )
+
+                    val context = LocalContext.current
+
+                    QRAlarmComboBox(
+                        menuItems = listOf(
+                            context.getString(R.string.click_to_choose),
+                            *availableCodes.toTypedArray()
+                        ),
+                        selectedIndex = 0,
+                        onMenuItemClick = { index ->
+                            if (index != 0) {
+                                availableCodes.getOrNull(index - 1)?.let {
+                                    onChooseCodeFromList(it)
+                                }
+                            }
+                        }
+                    )
+                }
             }
         }
     }
@@ -73,10 +102,12 @@ fun DownloadCodeBottomSheet(
 
 @Preview
 @Composable
-private fun DownloadCodeBottomSheetPreview() {
+private fun AssignCodeBottomSheetPreview() {
     QRAlarmTheme {
-        DownloadCodeBottomSheet(
-            onDownloadCodeClicked = {},
+        AssignCodeBottomSheet(
+            onScanCodeClicked = {},
+            availableCodes = listOf("StopAlarm", "472839472890421341"),
+            onChooseCodeFromList = {},
             onDismissRequest = {}
         )
     }

@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm.components
+package com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

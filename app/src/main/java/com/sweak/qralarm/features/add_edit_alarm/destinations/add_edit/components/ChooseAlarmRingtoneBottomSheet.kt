@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm.components
+package com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement

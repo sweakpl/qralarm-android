@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm.components
+package com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components
 
 import android.text.format.DateFormat
 import androidx.compose.runtime.Composable
