@@ -1,10 +1,8 @@
 package com.sweak.qralarm.features.add_edit_alarm.destinations
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,7 +18,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
@@ -28,11 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
-import com.sweak.qralarm.core.designsystem.component.QRAlarmSwitch
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.SpecialAlarmSettingsScreenUserEvent
+import com.sweak.qralarm.features.add_edit_alarm.components.ToggleSetting
 
 @Composable
 fun SpecialAlarmSettingsScreen(
@@ -75,7 +72,7 @@ fun SpecialAlarmSettingsScreenContent(
                         Icon(
                             imageVector = QRAlarmIcons.BackArrow,
                             contentDescription =
-                            stringResource(R.string.content_description_back_arrow_icon)
+                                stringResource(R.string.content_description_back_arrow_icon)
                         )
                     }
                 },
@@ -109,137 +106,14 @@ fun SpecialAlarmSettingsScreenContent(
                             vertical = MaterialTheme.space.mediumLarge
                         )
                 ) {
-                    Column {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = MaterialTheme.space.medium)
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = MaterialTheme.space.smallMedium)
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.do_not_leave_alarm),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    modifier = Modifier
-                                        .padding(bottom = MaterialTheme.space.xSmall)
-                                )
-
-                                Text(
-                                    text = stringResource(
-                                        R.string.do_not_leave_alarm_description
-                                    ),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-
-                            QRAlarmSwitch(
-                                checked = false,
-                                onCheckedChange = {
-                                    onEvent(
-                                        SpecialAlarmSettingsScreenUserEvent
-                                            .TryUseSpecialAlarmSettings
-                                    )
-                                }
-                            )
-                        }
-
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
-                        )
-                    }
-
-                    Column {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = MaterialTheme.space.medium)
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = MaterialTheme.space.smallMedium)
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.power_off_guard),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    modifier = Modifier
-                                        .padding(bottom = MaterialTheme.space.xSmall)
-                                )
-
-                                Text(
-                                    text = stringResource(
-                                        R.string.power_off_guard_description
-                                    ),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-
-                            QRAlarmSwitch(
-                                checked = false,
-                                onCheckedChange = {
-                                    onEvent(
-                                        SpecialAlarmSettingsScreenUserEvent
-                                            .TryUseSpecialAlarmSettings
-                                    )
-                                }
-                            )
-                        }
-
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
-                        )
-                    }
-
-                    Column {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = MaterialTheme.space.medium)
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = MaterialTheme.space.smallMedium)
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.block_volume_down),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    modifier = Modifier
-                                        .padding(bottom = MaterialTheme.space.xSmall)
-                                )
-
-                                Text(
-                                    text = stringResource(
-                                        R.string.block_volume_down_description
-                                    ),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-
-                            QRAlarmSwitch(
-                                checked = false,
-                                onCheckedChange = {
-                                    onEvent(
-                                        SpecialAlarmSettingsScreenUserEvent
-                                            .TryUseSpecialAlarmSettings
-                                    )
-                                }
-                            )
-                        }
-                    }
+                    ToggleSetting(
+                        isChecked = false,
+                        onCheckedChange = {
+                            onEvent(SpecialAlarmSettingsScreenUserEvent.TryUseSpecialAlarmSettings)
+                        },
+                        title = stringResource(R.string.do_not_leave_alarm),
+                        description = stringResource(R.string.do_not_leave_alarm_description)
+                    )
 
                     HorizontalDivider(
                         thickness = 1.dp,
@@ -247,40 +121,44 @@ fun SpecialAlarmSettingsScreenContent(
                         modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                     )
 
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(all = MaterialTheme.space.medium)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(end = MaterialTheme.space.smallMedium)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.keep_ringer_on),
-                                style = MaterialTheme.typography.titleLarge,
-                                modifier = Modifier
-                                    .padding(bottom = MaterialTheme.space.xSmall)
-                            )
+                    ToggleSetting(
+                        isChecked = false,
+                        onCheckedChange = {
+                            onEvent(SpecialAlarmSettingsScreenUserEvent.TryUseSpecialAlarmSettings)
+                        },
+                        title = stringResource(R.string.power_off_guard),
+                        description = stringResource(R.string.power_off_guard_description)
+                    )
 
-                            Text(
-                                text = stringResource(R.string.keep_ringer_on_description),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                    )
 
-                        QRAlarmSwitch(
-                            checked = false,
-                            onCheckedChange = {
-                                onEvent(
-                                    SpecialAlarmSettingsScreenUserEvent.TryUseSpecialAlarmSettings
-                                )
-                            }
-                        )
-                    }
+                    ToggleSetting(
+                        isChecked = false,
+                        onCheckedChange = {
+                            onEvent(SpecialAlarmSettingsScreenUserEvent.TryUseSpecialAlarmSettings)
+                        },
+                        title = stringResource(R.string.block_volume_down),
+                        description = stringResource(R.string.block_volume_down_description)
+                    )
+
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                    )
+
+                    ToggleSetting(
+                        isChecked = false,
+                        onCheckedChange = {
+                            onEvent(SpecialAlarmSettingsScreenUserEvent.TryUseSpecialAlarmSettings)
+                        },
+                        title = stringResource(R.string.keep_ringer_on),
+                        description = stringResource(R.string.keep_ringer_on_description)
+                    )
                 }
             }
         }

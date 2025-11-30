@@ -2,15 +2,11 @@ package com.sweak.qralarm.features.add_edit_alarm.destinations.advanced
 
 import android.os.Build
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -24,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
@@ -33,16 +28,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
-import com.sweak.qralarm.core.designsystem.component.QRAlarmSwitch
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
+import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
+import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
+import com.sweak.qralarm.features.add_edit_alarm.components.ToggleSetting
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getSecondsDurationString
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseGentleWakeUpDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseTemporaryMuteDurationBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getSecondsDurationString
 
 @Composable
 fun AdvancedAlarmSettingsScreen(
@@ -119,59 +115,19 @@ private fun AdvancedAlarmSettingsScreenContent(
                             vertical = MaterialTheme.space.mediumLarge
                         )
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .clickable {
-                                onEvent(
-                                    AdvancedAlarmSettingsScreenUserEvent
-                                        .ChooseGentleWakeUpDurationDialogVisible(isVisible = true)
-                                )
-                            }
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = MaterialTheme.space.medium)
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = MaterialTheme.space.smallMedium)
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.gentle_wake_up),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    modifier = Modifier
-                                        .padding(bottom = MaterialTheme.space.xSmall)
-                                )
-
-                                Text(
-                                    text = stringResource(R.string.gentle_wake_up_description),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = getSecondsDurationString(
-                                        state.gentleWakeupDurationInSeconds
-                                    ),
-                                    style = MaterialTheme.typography.labelMedium,
-                                    modifier = Modifier.padding(end = MaterialTheme.space.small)
-                                )
-
-                                Icon(
-                                    imageVector = QRAlarmIcons.ForwardArrow,
-                                    contentDescription = stringResource(
-                                        R.string.content_description_forward_arrow_icon
-                                    ),
-                                    modifier = Modifier.size(size = MaterialTheme.space.medium)
-                                )
-                            }
-                        }
-                    }
+                    ChoiceSetting(
+                        onClick = {
+                            onEvent(
+                                AdvancedAlarmSettingsScreenUserEvent
+                                    .ChooseGentleWakeUpDurationDialogVisible(isVisible = true)
+                            )
+                        },
+                        title = stringResource(R.string.gentle_wake_up),
+                        description = stringResource(R.string.gentle_wake_up_description),
+                        choiceName = getSecondsDurationString(
+                            state.gentleWakeupDurationInSeconds
+                        )
+                    )
 
                     HorizontalDivider(
                         thickness = 1.dp,
@@ -179,59 +135,19 @@ private fun AdvancedAlarmSettingsScreenContent(
                         modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                     )
 
-                    Box(
-                        modifier = Modifier
-                            .clickable {
-                                onEvent(
-                                    AdvancedAlarmSettingsScreenUserEvent
-                                        .ChooseTemporaryMuteDurationDialogVisible(isVisible = true)
-                                )
-                            }
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = MaterialTheme.space.medium)
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = MaterialTheme.space.smallMedium)
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.temporary_mute),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    modifier = Modifier
-                                        .padding(bottom = MaterialTheme.space.xSmall)
-                                )
-
-                                Text(
-                                    text = stringResource(R.string.temporary_mute_description),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = getSecondsDurationString(
-                                        state.temporaryMuteDurationInSeconds
-                                    ),
-                                    style = MaterialTheme.typography.labelMedium,
-                                    modifier = Modifier.padding(end = MaterialTheme.space.small)
-                                )
-
-                                Icon(
-                                    imageVector = QRAlarmIcons.ForwardArrow,
-                                    contentDescription = stringResource(
-                                        R.string.content_description_forward_arrow_icon
-                                    ),
-                                    modifier = Modifier.size(size = MaterialTheme.space.medium)
-                                )
-                            }
-                        }
-                    }
+                    ChoiceSetting(
+                        onClick = {
+                            onEvent(
+                                AdvancedAlarmSettingsScreenUserEvent
+                                    .ChooseTemporaryMuteDurationDialogVisible(isVisible = true)
+                            )
+                        },
+                        title = stringResource(R.string.temporary_mute),
+                        description = stringResource(R.string.temporary_mute_description),
+                        choiceName = getSecondsDurationString(
+                            state.temporaryMuteDurationInSeconds
+                        )
+                    )
                 }
 
                 if (state.isCodeEnabled) {
@@ -245,96 +161,16 @@ private fun AdvancedAlarmSettingsScreenContent(
                             )
                     ) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(all = MaterialTheme.space.medium)
-                            ) {
-                                Column(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(
-                                            end = MaterialTheme.space.smallMedium
-                                        )
-                                ) {
-                                    Text(
-                                        text = stringResource(
-                                            R.string.open_code_link
-                                        ),
-                                        style = MaterialTheme.typography.titleLarge,
-                                        modifier = Modifier
-                                            .padding(
-                                                bottom = MaterialTheme.space.xSmall
-                                            )
-                                    )
-
-                                    Text(
-                                        text = stringResource(
-                                            R.string.open_code_link_description
-                                        ),
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
-
-                                QRAlarmSwitch(
-                                    checked = state.isOpenCodeLinkEnabled,
-                                    onCheckedChange = {
-                                        onEvent(
-                                            AdvancedAlarmSettingsScreenUserEvent
-                                                .OpenCodeLinkEnabledChanged(isEnabled = it)
-                                        )
-                                    }
-                                )
-                            }
-                        }
-
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
-                        )
-
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = MaterialTheme.space.medium)
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(
-                                        end = MaterialTheme.space.smallMedium
-                                    )
-                            ) {
-                                Text(
-                                    text = stringResource(R.string._1_hour_lock),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    modifier = Modifier
-                                        .padding(
-                                            bottom = MaterialTheme.space.xSmall
-                                        )
-                                )
-
-                                Text(
-                                    text = stringResource(
-                                        R.string._1_hour_lock_description
-                                    ),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-
-                            QRAlarmSwitch(
-                                checked = state.isOneHourLockEnabled,
+                            ToggleSetting(
+                                isChecked = state.isOpenCodeLinkEnabled,
                                 onCheckedChange = {
                                     onEvent(
                                         AdvancedAlarmSettingsScreenUserEvent
-                                            .OneHourLockEnabledChanged(isEnabled = it)
+                                            .OpenCodeLinkEnabledChanged(isEnabled = it)
                                     )
-                                }
+                                },
+                                title = stringResource(R.string.open_code_link),
+                                description = stringResource(R.string.open_code_link_description)
                             )
                         }
 
@@ -343,48 +179,38 @@ private fun AdvancedAlarmSettingsScreenContent(
                             color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
-
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(all = MaterialTheme.space.medium)
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(
-                                        end = MaterialTheme.space.smallMedium
-                                    )
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.emergency),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    modifier = Modifier
-                                        .padding(
-                                            bottom = MaterialTheme.space.xSmall
-                                        )
+                        
+                        ToggleSetting(
+                            isChecked = state.isOneHourLockEnabled,
+                            onCheckedChange = {
+                                onEvent(
+                                    AdvancedAlarmSettingsScreenUserEvent
+                                        .OneHourLockEnabledChanged(isEnabled = it)
                                 )
+                            },
+                            title = stringResource(R.string._1_hour_lock),
+                            description = stringResource(R.string._1_hour_lock_description)
+                        )
 
-                                Text(
-                                    text = stringResource(
-                                        R.string.emergency_task_setting_description
-                                    ),
-                                    style = MaterialTheme.typography.bodyMedium
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                        )
+
+                        ToggleSetting(
+                            isChecked = state.isEmergencyTaskEnabled,
+                            onCheckedChange = {
+                                onEvent(
+                                    AdvancedAlarmSettingsScreenUserEvent
+                                        .EmergencyTaskEnabledChanged(isEnabled = it)
                                 )
-                            }
-
-                            QRAlarmSwitch(
-                                checked = state.isEmergencyTaskEnabled,
-                                onCheckedChange = {
-                                    onEvent(
-                                        AdvancedAlarmSettingsScreenUserEvent
-                                            .EmergencyTaskEnabledChanged(isEnabled = it)
-                                    )
-                                }
+                            },
+                            title = stringResource(R.string.emergency),
+                            description = stringResource(
+                                R.string.emergency_task_setting_description
                             )
-                        }
+                        )
                     }
                 }
             }
