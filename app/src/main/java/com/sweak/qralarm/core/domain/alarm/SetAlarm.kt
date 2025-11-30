@@ -61,13 +61,24 @@ class SetAlarm @Inject constructor(
         }
 
         if (!isReschedulingMissedAlarm) {
-            val upcomingAlarmNotificationTimeInMillis =
-                alarmDateTime.minusHours(2).toInstant().toEpochMilli()
+            val twoHoursBeforeAlarm = alarmDateTime.minusHours(2)
 
-            qrAlarmManager.scheduleUpcomingAlarmNotification(
-                alarmId = alarmId,
-                upcomingAlarmNotificationTimeInMillis = upcomingAlarmNotificationTimeInMillis
-            )
+            if (twoHoursBeforeAlarm <= currentDateTime) {
+                qrAlarmManager.showUpcomingAlarmNotification(
+                    alarmId = alarmId,
+                    alarmHourOfDay = alarm.alarmHourOfDay,
+                    alarmMinute = alarm.alarmMinute,
+                    isSnoozeAlarm = false
+                )
+            } else {
+                val upcomingAlarmNotificationTimeInMillis =
+                    twoHoursBeforeAlarm.toInstant().toEpochMilli()
+
+                qrAlarmManager.scheduleUpcomingAlarmNotification(
+                    alarmId = alarmId,
+                    upcomingAlarmNotificationTimeInMillis = upcomingAlarmNotificationTimeInMillis
+                )
+            }
         }
 
         return Result.Success(alarmTimInMillis = alarmTimeInMillis)
