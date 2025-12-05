@@ -92,7 +92,7 @@ class AlarmActivity : FragmentActivity() {
                             }
                         },
                         onEmergencyClicked = {
-                            navController.navigateToEmergencyScreen()
+                            navController.navigateToEmergencyScreen(alarmIdToCancel = alarmId)
                         }
                     )
 
