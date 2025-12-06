@@ -215,4 +215,5 @@
     <string name="slider_range">Zakres suwaka:</string>
     <string name="required_matches">Wymagane dopasowania:</string>
     <string name="preview_emergency_task">Podgląd zadania awaryjnego</string>
+    <string name="alarms_chain">Łańcuch alarmów</string>
 </resources>

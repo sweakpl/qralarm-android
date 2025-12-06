@@ -209,4 +209,5 @@
     <string name="slider_range">Gamma di cursori:</string>
     <string name="required_matches">Corrispondenze richieste:</string>
     <string name="preview_emergency_task">Anteprima dell\'attività di emergenza</string>
+    <string name="alarms_chain">Catena di allarmi</string>
 </resources>

@@ -34,6 +34,7 @@
     <string name="content_description_clock_icon">Uhr-Symbol</string>
     <string name="content_description_emergency_icon">Notfall-Dreieckssymbol</string>
     <string name="content_description_muted_sound_icon">Symbol für stummgeschalteten Ton</string>
+    <string name="content_description_chain_icon">Ketten-Symbol</string>
 
     <string name="content_description_wake_up_catchphrase_image">Bild, das ein freundliches Strichmännchen zeigt, der aufgewacht im Bett liegt.</string>
     <string name="content_description_get_up_catchphrase_image">Bild, das ein lächelndes Strichmännchen zeigt, während sein Telefon klingelt.</string>

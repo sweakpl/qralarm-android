@@ -203,4 +203,5 @@
     <string name="slider_range">Kaydırıcı aralığı:</string>
     <string name="required_matches">Gerekli eşleşmeler:</string>
     <string name="preview_emergency_task">Acil durum görevini önizleme</string>
+    <string name="alarms_chain">Alarm zinciri</string>
 </resources>

@@ -208,4 +208,5 @@
     <string name="slider_range">Slider range:</string>
     <string name="required_matches">Required matches:</string>
     <string name="preview_emergency_task">Preview emergency task</string>
+    <string name="alarms_chain">Alarms chain</string>
 </resources>

@@ -215,4 +215,5 @@
     <string name="slider_range">Повзунок діапазону:</string>
     <string name="required_matches">Необхідні збіги:</string>
     <string name="preview_emergency_task">Попередній перегляд аварійного завдання</string>
+    <string name="alarms_chain">Ланцюг сигналізації</string>
 </resources>

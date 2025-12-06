@@ -35,7 +35,6 @@
         <item quantity="other">%1$d minutos</item>
     </plurals>
 
-    <string name="app_name" translatable="false">QRAlarm</string>
     <string name="welcome_to_qralarm">Bem-vindo ao QRAlarm!</string>
     <string name="wake_up_catchphrase">Acorde!</string>
     <string name="wake_up_catchphrase_description">Defina seu alarme como de costume e prepare-se para ser acordado pelo QRAlarm na manhã seguinte.</string>
@@ -216,4 +215,5 @@
     <string name="slider_range">Faixa do controle deslizante:</string>
     <string name="required_matches">Correspondências necessárias:</string>
     <string name="preview_emergency_task">Visualizar tarefa de emergência</string>
+    <string name="alarms_chain">Cadeia de alarmes</string>
 </resources>

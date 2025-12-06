@@ -47,6 +47,7 @@ object QRAlarmIcons {
     val QRAlarm @Composable get() = ImageVector.vectorResource(R.drawable.ic_qralarm)
     val NoQRCode @Composable get() = ImageVector.vectorResource(R.drawable.ic_no_qr_code)
     val SkipNextAlarm @Composable get() = ImageVector.vectorResource(R.drawable.ic_skip_next_alarm)
+    val Chain @Composable get() = ImageVector.vectorResource(R.drawable.ic_chain)
 
     val Add = Icons.Outlined.Add
     val Menu = Icons.Outlined.Menu

@@ -50,9 +50,9 @@ fun QRAlarmProFeaturesList(modifier: Modifier = Modifier) {
         )
 
         QRAlarmProFeature(
-            title = stringResource(R.string.no_ads_experience),
-            imageVector = QRAlarmIcons.NoAds,
-            contentDescription = stringResource(R.string.content_description_no_ads_icon)
+            title = stringResource(R.string.buy_once_enjoy_forever),
+            imageVector = QRAlarmIcons.AccessForever,
+            contentDescription = stringResource(R.string.content_description_access_forever_icon)
         )
     }
 }

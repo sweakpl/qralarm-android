@@ -34,6 +34,7 @@
     <string name="content_description_clock_icon">Saat simgesi</string>
     <string name="content_description_emergency_icon">Acil durum üçgen simgesi</string>
     <string name="content_description_muted_sound_icon">Sessiz ses simgesi</string>
+    <string name="content_description_chain_icon">Zincir simgesi</string>
 
     <string name="content_description_wake_up_catchphrase_image">Yatakta uzanan, uyanmış dost canlısı bir çöp adamı gösteren resim.</string>
     <string name="content_description_get_up_catchphrase_image">Telefonu çalarken yürüyen, gülümseyen bir çöp adamı gösteren resim.</string>

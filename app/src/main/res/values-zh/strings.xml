@@ -197,4 +197,5 @@
     <string name="slider_range">滑块范围</string>
     <string name="required_matches">所需匹配：</string>
     <string name="preview_emergency_task">预览紧急任务</string>
+    <string name="alarms_chain">警报链</string>
 </resources>

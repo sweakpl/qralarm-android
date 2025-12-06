@@ -209,4 +209,5 @@
     <string name="slider_range">Rango de deslizamiento:</string>
     <string name="required_matches">Partidos necesarios:</string>
     <string name="preview_emergency_task">Vista previa de la tarea de emergencia</string>
+    <string name="alarms_chain">Cadena de alarmas</string>
 </resources>
