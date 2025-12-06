@@ -41,6 +41,13 @@
         <item quantity="other">%1$d хвилин</item>
     </plurals>
 
+    <plurals name="alarms_active">
+        <item quantity="one">%1$d сигнал тривоги активний</item>
+        <item quantity="few">%1$d сигнали тривоги активні</item>
+        <item quantity="many">%1$d активних будильників</item>
+        <item quantity="other">%1$d активних тривог</item>
+    </plurals>
+
     <string name="welcome_to_qralarm">Ласкаво просимо до QRAlarm!</string>
     <string name="wake_up_catchphrase">Прокиньтеся!</string>
     <string name="wake_up_catchphrase_description">Встановіть будильник як завжди, і підготуйтеся до того, що QRAlarm прокине вас наступного ранку.</string>

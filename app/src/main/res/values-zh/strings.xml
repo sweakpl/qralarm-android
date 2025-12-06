@@ -23,6 +23,10 @@
         <item quantity="other">%1$d 分钟</item>
     </plurals>
 
+    <plurals name="alarms_active">
+        <item quantity="other">%1$d个警报激活</item>
+    </plurals>
+
     <string name="welcome_to_qralarm">欢迎使用 QRAlarm!</string>
     <string name="wake_up_catchphrase">梦醒!</string>
     <string name="wake_up_catchphrase_description">使用QRAlarm设置闹钟，你将在次日早晨被唤醒。</string>

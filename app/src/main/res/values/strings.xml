@@ -27,6 +27,11 @@
         <item quantity="other">%1$d minutes</item>
     </plurals>
 
+    <plurals name="alarms_active">
+        <item quantity="one">%1$d alarm active</item>
+        <item quantity="other">%1$d alarms active</item>
+    </plurals>
+
     <string name="app_name" translatable="false">QRAlarm</string>
     <string name="welcome_to_qralarm">Welcome to QRAlarm!</string>
     <string name="wake_up_catchphrase">Wake UP!</string>

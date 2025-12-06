@@ -29,6 +29,11 @@
         <item quantity="other">%1$d dakika</item>
     </plurals>
 
+    <plurals name="alarms_active">
+        <item quantity="one">%1$d alarm aktif</item>
+        <item quantity="other">%1$d alarm aktif</item>
+    </plurals>
+
     <string name="welcome_to_qralarm">QRAlarm\'a hoş geldiniz!</string>
     <string name="wake_up_catchphrase">UYAN!</string>
     <string name="wake_up_catchphrase_description">Alarmınızı her zamanki gibi kurun ve ertesi sabah QRAlarm ile uyanmaya hazırlanın.</string>

@@ -35,6 +35,12 @@
         <item quantity="other">%1$d minuti</item>
     </plurals>
 
+    <plurals name="alarms_active">
+        <item quantity="one">%1$d allarme attivo</item>
+        <item quantity="many">%1$d allarmi attivi</item>
+        <item quantity="other">%1$d allarmi attivi</item>
+    </plurals>
+
     <string name="welcome_to_qralarm">Benvenuti su QRAlarm!</string>
     <string name="wake_up_catchphrase">Svegliati!</string>
     <string name="wake_up_catchphrase_description">Imposta la sveglia come fai sempre e preparati a essere svegliato da QRAlarm la mattina dopo.</string>
