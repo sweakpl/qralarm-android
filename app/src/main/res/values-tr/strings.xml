@@ -209,4 +209,7 @@
     <string name="required_matches">Gerekli eşleşmeler:</string>
     <string name="preview_emergency_task">Acil durum görevini önizleme</string>
     <string name="alarms_chain">Alarm zinciri</string>
+    <string name="alarms_chain_description">Alarmları birbirine bağlayarak uyanık ve aktif kalın - farklı yerlerdeki kodları tarayarak her birini devre dışı bırakın.</string>
+    <string name="this_alarm">Bu alarm</string>
+    <string name="add_next_alarm_in_chain">+ Zincirde bir sonraki alarmı ekle</string>
 </resources>

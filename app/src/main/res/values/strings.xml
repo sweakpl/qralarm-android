@@ -214,4 +214,7 @@
     <string name="required_matches">Required matches:</string>
     <string name="preview_emergency_task">Preview emergency task</string>
     <string name="alarms_chain">Alarms chain</string>
+    <string name="alarms_chain_description">Link alarms together to stay awake and active - disable each one by scanning codes in different places.</string>
+    <string name="this_alarm">This alarm</string>
+    <string name="add_next_alarm_in_chain">+ Add next alarm in chain</string>
 </resources>

@@ -73,6 +73,7 @@ sealed class AddEditAlarmFlowUserEvent {
         data object DeleteAlarm : AddEditAlarmScreenUserEvent()
         data class DownloadCodeDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
         data object DownloadCode : AddEditAlarmScreenUserEvent()
+        data object AlarmsChainSettingsClicked : AddEditAlarmScreenUserEvent()
     }
 
     sealed class AdvancedAlarmSettingsScreenUserEvent : AddEditAlarmFlowUserEvent() {
@@ -103,5 +104,10 @@ sealed class AddEditAlarmFlowUserEvent {
     sealed class SpecialAlarmSettingsScreenUserEvent : AddEditAlarmFlowUserEvent() {
         data object OnCancelClicked : SpecialAlarmSettingsScreenUserEvent()
         data object TryUseSpecialAlarmSettings : SpecialAlarmSettingsScreenUserEvent()
+    }
+
+    sealed class AlarmsChainSettingsScreenUserEvent : AddEditAlarmFlowUserEvent() {
+        data object OnCancelClicked : AlarmsChainSettingsScreenUserEvent()
+        data object AddNewChainedAlarmClicked : AlarmsChainSettingsScreenUserEvent()
     }
 }

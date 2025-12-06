@@ -11,7 +11,8 @@ import androidx.navigation.navArgument
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.AddEditAlarmScreen
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.AdvancedAlarmSettingsScreen
-import com.sweak.qralarm.features.add_edit_alarm.destinations.SpecialAlarmSettingsScreen
+import com.sweak.qralarm.features.add_edit_alarm.destinations.alarms_chain.AlarmsChainSettingsScreen
+import com.sweak.qralarm.features.add_edit_alarm.destinations.special.SpecialAlarmSettingsScreen
 
 const val ADD_EDIT_ALARM_FLOW_ROUTE = "addEditAlarmFlow"
 const val ID_OF_ALARM_TO_EDIT = "idOfAlarmToEdit"
@@ -19,6 +20,7 @@ const val ID_OF_ALARM_TO_EDIT = "idOfAlarmToEdit"
 const val ADD_EDIT_ALARM_SCREEN_ROUTE = "addEditAlarmScreen"
 const val ADVANCED_ALARM_SETTINGS_SCREEN_ROUTE = "advancedAlarmSettingsScreen"
 const val SPECIAL_ALARM_SETTINGS_SCREEN_ROUTE = "specialAlarmSettingsScreen"
+const val ALARMS_CHAIN_SETTINGS_SCREEN_ROUTE = "alarmsChainSettingsScreen"
 
 fun NavController.navigateToAddEditAlarm(
     alarmId: Long = 0
@@ -60,6 +62,9 @@ fun NavGraphBuilder.addEditAlarmFlow(
                 onSpecialSettingsClicked = {
                     navController.navigate(SPECIAL_ALARM_SETTINGS_SCREEN_ROUTE)
                 },
+                onAlarmsChainSettingsClicked = {
+                    navController.navigate(ALARMS_CHAIN_SETTINGS_SCREEN_ROUTE)
+                },
                 onAlarmDeleted = onAlarmDeleted
             )
         }
@@ -80,6 +85,21 @@ fun NavGraphBuilder.addEditAlarmFlow(
 
         composable(route = SPECIAL_ALARM_SETTINGS_SCREEN_ROUTE) {
             SpecialAlarmSettingsScreen(
+                onCancelClicked = {
+                    navController.navigateUp()
+                },
+                onRedirectToQRAlarmPro = onRedirectToQRAlarmPro
+            )
+        }
+
+        composable(route = ALARMS_CHAIN_SETTINGS_SCREEN_ROUTE) {
+            val parentEntry = remember(it) {
+                navController.getBackStackEntry("$ADD_EDIT_ALARM_FLOW_ROUTE/{$ID_OF_ALARM_TO_EDIT}")
+            }
+            val addEditAlarmViewModel = hiltViewModel<AddEditAlarmViewModel>(parentEntry)
+
+            AlarmsChainSettingsScreen(
+                addEditAlarmViewModel = addEditAlarmViewModel,
                 onCancelClicked = {
                     navController.navigateUp()
                 },

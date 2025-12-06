@@ -223,4 +223,7 @@
     <string name="required_matches">Wymagane dopasowania:</string>
     <string name="preview_emergency_task">Podgląd zadania awaryjnego</string>
     <string name="alarms_chain">Łańcuch alarmów</string>
+    <string name="alarms_chain_description">Połącz alarmy, aby pozostać czujnym i aktywnym – wyłączaj je, skanując kody w różnych miejscach.</string>
+    <string name="this_alarm">Ten alarm</string>
+    <string name="add_next_alarm_in_chain">+ Dodaj następny alarm w łańcuchu</string>
 </resources>

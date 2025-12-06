@@ -222,4 +222,7 @@
     <string name="required_matches">Correspondências necessárias:</string>
     <string name="preview_emergency_task">Visualizar tarefa de emergência</string>
     <string name="alarms_chain">Cadeia de alarmes</string>
+    <string name="alarms_chain_description">Conecte os alarmes para permanecer acordado e ativo - desative cada um deles digitalizando os códigos em locais diferentes.</string>
+    <string name="this_alarm">Este alarme</string>
+    <string name="add_next_alarm_in_chain">+ Adicionar próximo alarme na cadeia</string>
 </resources>

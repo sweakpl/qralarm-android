@@ -216,4 +216,7 @@
     <string name="required_matches">Correspondances requises :</string>
     <string name="preview_emergency_task">Prévisualisation de la tâche d\'urgence</string>
     <string name="alarms_chain">Chaîne d\'alarmes</string>
+    <string name="alarms_chain_description">Reliez les alarmes entre elles pour rester éveillé et actif - désactivez chacune d\'elles en scannant les codes à différents endroits.</string>
+    <string name="this_alarm">Cette alarme</string>
+    <string name="add_next_alarm_in_chain">+ Ajouter l\'alarme suivante dans la chaîne</string>
 </resources>

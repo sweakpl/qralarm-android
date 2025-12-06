@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm.destinations
+package com.sweak.qralarm.features.add_edit_alarm.destinations.special
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

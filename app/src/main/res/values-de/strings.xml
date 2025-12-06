@@ -209,4 +209,7 @@
     <string name="required_matches">Erforderliche Übereinstimmungen:</string>
     <string name="preview_emergency_task">Vorschau der Notfallaufgabe</string>
     <string name="alarms_chain">Alarmketten</string>
+    <string name="alarms_chain_description">Verknüpfen Sie Alarme miteinander, um wach und aktiv zu bleiben – deaktivieren Sie jeden einzelnen, indem Sie Codes an verschiedenen Orten scannen.</string>
+    <string name="this_alarm">Dieser Alarm</string>
+    <string name="add_next_alarm_in_chain">+ Nächsten Alarm in der Kette hinzufügen</string>
 </resources>

@@ -110,6 +110,7 @@ fun AddEditAlarmScreen(
     onScanCustomCodeClicked: () -> Unit,
     onAdvancedSettingsClicked: () -> Unit,
     onSpecialSettingsClicked: () -> Unit,
+    onAlarmsChainSettingsClicked: () -> Unit,
     onAlarmDeleted: () -> Unit
 ) {
     val addEditAlarmScreenState by addEditAlarmViewModel.state.collectAsStateWithLifecycle()
@@ -374,6 +375,9 @@ fun AddEditAlarmScreen(
                             Toast.LENGTH_SHORT
                         ).show()
                     }
+                }
+                is AddEditAlarmScreenUserEvent.AlarmsChainSettingsClicked -> {
+                    onAlarmsChainSettingsClicked()
                 }
                 else -> addEditAlarmViewModel.onEvent(event)
             }
@@ -838,7 +842,9 @@ private fun AddEditAlarmScreenContent(
 
                                         SimpleSetting(
                                             onClick = {
-                                                // TODO
+                                                onEvent(
+                                                    AddEditAlarmScreenUserEvent.AlarmsChainSettingsClicked
+                                                )
                                             },
                                             title = stringResource(R.string.alarms_chain),
                                             description =

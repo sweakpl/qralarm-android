@@ -216,4 +216,7 @@
     <string name="required_matches">Partidos necesarios:</string>
     <string name="preview_emergency_task">Vista previa de la tarea de emergencia</string>
     <string name="alarms_chain">Cadena de alarmas</string>
+    <string name="alarms_chain_description">Conecta las alarmas entre sí para mantenerte despierto y activo: desactiva cada una de ellas escaneando códigos en diferentes lugares.</string>
+    <string name="this_alarm">Esta alarma</string>
+    <string name="add_next_alarm_in_chain">+ Añadir la siguiente alarma en la cadena</string>
 </resources>
