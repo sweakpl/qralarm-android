@@ -47,6 +47,7 @@ class SetAlarm @Inject constructor(
             alarm = alarm.copy(nextAlarmTimeInMillis = alarmTimeInMillis)
         )
 
+        qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
         qrAlarmManager.setAlarm(
             alarmId = alarmId,
             alarmTimeInMillis = alarmTimeInMillis,
