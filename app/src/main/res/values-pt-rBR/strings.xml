@@ -146,17 +146,13 @@
     <string name="work_in_background_limited_click_to_enable">Execução em segundo plano limitada. Clique para ativar.</string>
     <string name="work_in_background_enabled">Execução em segundo plano ativada. Bom trabalho!</string>
     <string name="setting_unavailable_refer_to_the_next_step">Configuração indisponível - consulte as próximas etapas.</string>
-    <string name="dontkilmyapp_com" translatable="false">dontkillmyapp.com</string>
-    <string name="dontkilmyapp_com_full_uri" translatable="false">https://dontkillmyapp.com/</string>
     <string name="select_manufacturer_and_follow_instructions">Selecione o fabricante do seu celular e siga as instruções fornecidas.</string>
     <string name="click_to_go_to_app_settings">Clique para ir às configurações do aplicativo QRAlarm.</string>
     <string name="issue_opening_the_page">Ocorreu um problema ao abrir a página…</string>
     <string name="optimization_dialog_description">Faça o QRAlarm funcionar da melhor forma no seu sistema consultando nosso guia de otimização e durma tranquilo!</string>
-    <string name="qralarm_pro" translatable="false">QRAlarm PRO</string>
     <string name="buy_once_enjoy_forever">Compre uma vez - use para sempre!</string>
     <string name="get_it_now">Obtenha agora!</string>
     <string name="not_now">Agora não</string>
-    <string name="qralarm_pro_package_name" translatable="false">com.sweak.qralarm.pro</string>
     <string name="special_settings">Configurações especiais</string>
     <string name="do_not_leave_alarm">Não sair do alarme</string>
     <string name="do_not_leave_alarm_description">Mantém a tela do alarme visível enquanto ele está tocando.</string>
@@ -179,8 +175,6 @@
     <string name="did_something_go_wrong">Algo deu errado?\nPodemos resolver isso juntos!</string>
     <string name="tell_me_what_is_wrong">Diga o que há de errado</string>
     <string name="do_not_show_again">Não mostrar esta tela novamente.</string>
-    <string name="qralarm_github_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android</string>
-    <string name="qralarm_github_issues_full_uri" translatable="false">https://github.com/sweakpl/qralarm-android/issues</string>
     <string name="rate_qralarm">Avaliar QRAlarm</string>
     <string name="previous">Anterior</string>
     <string name="scan_code">Escanear código</string>
