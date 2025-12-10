@@ -226,4 +226,5 @@
     <string name="alarms_chain_description">Połącz alarmy, aby pozostać czujnym i aktywnym – wyłączaj je, skanując kody w różnych miejscach.</string>
     <string name="this_alarm">Ten alarm</string>
     <string name="add_next_alarm_in_chain">+ Dodaj następny alarm w łańcuchu</string>
+    <string name="failed_to_initialize_camera">Nie udało się zainicjować kamery</string>
 </resources>

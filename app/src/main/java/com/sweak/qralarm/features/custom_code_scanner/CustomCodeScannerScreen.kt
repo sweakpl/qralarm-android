@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.custom_code_scanner
 
+import android.widget.Toast
 import androidx.camera.compose.CameraXViewfinder
 import androidx.camera.viewfinder.core.ImplementationMode
 import androidx.compose.foundation.layout.Arrangement
@@ -44,16 +45,25 @@ fun CustomCodeScannerScreen(
     val customCodeScannerViewModel = hiltViewModel<CustomCodeScannerViewModel>()
     val customCodeScannerScreenState by customCodeScannerViewModel.state.collectAsStateWithLifecycle()
 
+    val context = LocalContext.current
+
     ObserveAsEvents(
         flow = customCodeScannerViewModel.backendEvents,
         onEvent = { event ->
             when (event) {
                 CustomCodeScannerScreenBackendEvent.CustomCodeSaved -> onCustomCodeSaved()
+                CustomCodeScannerScreenBackendEvent.CameraInitializationError -> {
+                    Toast.makeText(
+                        context,
+                        R.string.failed_to_initialize_camera,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    onCloseClicked()
+                }
             }
         }
     )
 
-    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val windowInfo = LocalWindowInfo.current
 

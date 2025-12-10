@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -63,26 +64,34 @@ class CustomCodeScannerViewModel @Inject constructor(
                 val processCameraProvider =
                     ProcessCameraProvider.awaitInstance(event.appContext).also { it.unbindAll() }
 
-                camera = processCameraProvider.bindToLifecycle(
-                    event.lifecycleOwner,
-                    DEFAULT_BACK_CAMERA,
-                    getCameraPreviewUseCase(),
-                    imageAnalysisUseCase
-                ).apply {
-                    configureAutoFocus(event.windowInfo)
+                try {
+                    camera = processCameraProvider.bindToLifecycle(
+                        event.lifecycleOwner,
+                        DEFAULT_BACK_CAMERA,
+                        getCameraPreviewUseCase(),
+                        imageAnalysisUseCase
+                    ).apply {
+                        configureAutoFocus(event.windowInfo)
+                    }
+                } catch (_: Exception) {
+                    cleanUpCameraResources(
+                        imageAnalysisUseCase,
+                        processCameraProvider,
+                        cameraExecutor
+                    )
+                    backendEventsChannel.send(
+                        CustomCodeScannerScreenBackendEvent.CameraInitializationError
+                    )
                 }
 
                 try {
                     awaitCancellation()
                 } finally {
-                    turnOffFlash()
-                    imageAnalysisUseCase.clearAnalyzer()
-                    processCameraProvider.unbindAll()
-                    camera = null
-
-                    if (!cameraExecutor.isShutdown) {
-                        cameraExecutor.shutdownNow()
-                    }
+                    cleanUpCameraResources(
+                        imageAnalysisUseCase,
+                        processCameraProvider,
+                        cameraExecutor
+                    )
                 }
             }
             is CustomCodeScannerScreenUserEvent.ToggleFlash -> {
@@ -96,6 +105,18 @@ class CustomCodeScannerViewModel @Inject constructor(
             }
             else -> { /* no-op */ }
         }
+    }
+
+    private fun cleanUpCameraResources(
+        imageAnalysisUseCase: ImageAnalysis,
+        processCameraProvider: ProcessCameraProvider,
+        cameraExecutor: ExecutorService?
+    ) {
+        turnOffFlash()
+        imageAnalysisUseCase.clearAnalyzer()
+        processCameraProvider.unbindAll()
+        camera = null
+        cameraExecutor?.let { if (!it.isShutdown) it.shutdownNow() }
     }
 
     private fun getCodeAnalyzer(): AbstractCodeAnalyzer {

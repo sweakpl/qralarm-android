@@ -205,4 +205,5 @@
     <string name="alarms_chain_description">将闹钟联动起来保持清醒和活跃——通过扫描不同地点的代码来关闭每个闹钟。</string>
     <string name="this_alarm">这个警报</string>
     <string name="add_next_alarm_in_chain">+ 添加下一个连锁闹钟</string>
+    <string name="failed_to_initialize_camera">初始化相机失败</string>
 </resources>

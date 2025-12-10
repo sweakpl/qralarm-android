@@ -219,4 +219,5 @@
     <string name="alarms_chain_description">Collega gli allarmi tra loro per rimanere sveglio e attivo: disattiva ciascuno di essi scansionando i codici in luoghi diversi.</string>
     <string name="this_alarm">Questo allarme</string>
     <string name="add_next_alarm_in_chain">+ Aggiungi il prossimo allarme nella catena</string>
+    <string name="failed_to_initialize_camera">Impossibile inizializzare la fotocamera</string>
 </resources>

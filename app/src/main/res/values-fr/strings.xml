@@ -219,4 +219,5 @@
     <string name="alarms_chain_description">Reliez les alarmes entre elles pour rester éveillé et actif - désactivez chacune d\'elles en scannant les codes à différents endroits.</string>
     <string name="this_alarm">Cette alarme</string>
     <string name="add_next_alarm_in_chain">+ Ajouter l\'alarme suivante dans la chaîne</string>
+    <string name="failed_to_initialize_camera">Échec de l\'initialisation de la caméra</string>
 </resources>
