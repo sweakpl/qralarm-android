@@ -15,7 +15,7 @@ import com.sweak.qralarm.alarm.receiver.PostUpcomingAlarmNotificationReceiver
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_ALARM_ID
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_IS_SNOOZE_ALARM
-import com.sweak.qralarm.app.MainActivity
+import com.sweak.qralarm.app.activity.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.ui.getTimeString
 

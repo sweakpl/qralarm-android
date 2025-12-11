@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.sweak.qralarm.alarm.service.AlarmService
-import com.sweak.qralarm.app.MainActivity
+import com.sweak.qralarm.app.activity.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.features.alarm.navigation.ALARM_SCREEN_ROUTE
