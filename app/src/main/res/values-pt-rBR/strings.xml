@@ -220,4 +220,6 @@
     <string name="this_alarm">Este alarme</string>
     <string name="add_next_alarm_in_chain">+ Adicionar próximo alarme na cadeia</string>
     <string name="failed_to_initialize_camera">Falha ao inicializar a câmara</string>
+    <string name="emergency_disabled_repeating_alarm_notification_title">Alarme repetitivo desativado!</string>
+    <string name="emergency_disabled_repeating_alarm_notification_text">A tarefa de emergência desativou seu alarme repetitivo. Para programá-lo novamente, acesse a página de alarmes.</string>
 </resources>

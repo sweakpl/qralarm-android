@@ -220,4 +220,6 @@
     <string name="this_alarm">Questo allarme</string>
     <string name="add_next_alarm_in_chain">+ Aggiungi il prossimo allarme nella catena</string>
     <string name="failed_to_initialize_camera">Impossibile inizializzare la fotocamera</string>
+    <string name="emergency_disabled_repeating_alarm_notification_title">Allarme ripetuto disattivato!</string>
+    <string name="emergency_disabled_repeating_alarm_notification_text">L\'attività di emergenza ha disattivato la tua sveglia ripetitiva. Per programmarla nuovamente, visita la pagina delle sveglie.</string>
 </resources>

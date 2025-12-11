@@ -218,4 +218,6 @@
     <string name="this_alarm">This alarm</string>
     <string name="add_next_alarm_in_chain">+ Add next alarm in chain</string>
     <string name="failed_to_initialize_camera">Failed to initialize camera</string>
+    <string name="emergency_disabled_repeating_alarm_notification_title">Repeating alarm disabled!</string>
+    <string name="emergency_disabled_repeating_alarm_notification_text">Emergency task has disabled your repeating alarm. In order to schedule it again visit the alarms page.</string>
 </resources>

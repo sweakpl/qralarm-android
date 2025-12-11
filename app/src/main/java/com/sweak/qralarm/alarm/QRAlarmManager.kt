@@ -216,6 +216,40 @@ class QRAlarmManager(
         )
     }
 
+    fun notifyAboutEmergencyDisabledRepeatingAlarm() {
+        val emergencyDisabledAlarmPendingIntent = PendingIntent.getActivity(
+            context,
+            EMERGENCY_DISABLED_REPEATING_ALARM_NOTIFICATION_REQUEST_CODE,
+            Intent(context, MainActivity::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val contentText =
+            context.getString(R.string.emergency_disabled_repeating_alarm_notification_text)
+        val alarmDisabledNotification = NotificationCompat.Builder(
+            context,
+            ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
+        ).apply {
+            color = Jacarta.toArgb()
+            priority = NotificationCompat.PRIORITY_HIGH
+            setOngoing(false)
+            setAutoCancel(true)
+            setColorized(true)
+            setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
+            setContentTitle(
+                context.getString(R.string.emergency_disabled_repeating_alarm_notification_title)
+            )
+            setContentText(contentText)
+            setSmallIcon(R.drawable.ic_qralarm)
+            setContentIntent(emergencyDisabledAlarmPendingIntent)
+        }.build()
+
+        notificationManager.notify(
+            EMERGENCY_DISABLED_REPEATING_ALARM_NOTIFICATION_ID,
+            alarmDisabledNotification
+        )
+    }
+
     // Upcoming alarm notification has to have a different id than the notification of the
     // foreground AlarmService (which is alarmId.toInt()) to prevent notification attributes
     // bleeding over one another:

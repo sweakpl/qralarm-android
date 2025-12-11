@@ -3,7 +3,10 @@ package com.sweak.qralarm.features.emergency.task
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS
+import com.sweak.qralarm.core.domain.alarm.Alarm
+import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.features.emergency.task.navigation.ID_OF_ALARM_TO_CANCEL
@@ -25,10 +28,13 @@ import kotlin.random.nextInt
 class EmergencyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val disableAlarm: DisableAlarm,
-    private val userDataRepository: UserDataRepository
+    private val alarmsRepository: AlarmsRepository,
+    private val userDataRepository: UserDataRepository,
+    private val qrAlarmManager: QRAlarmManager
 ) : ViewModel() {
 
     private val idOfAlarmToCancel: Long = savedStateHandle[ID_OF_ALARM_TO_CANCEL] ?: 0
+    private lateinit var alarm: Alarm
 
     private var _state = MutableStateFlow(EmergencyScreenState())
     val state = _state.asStateFlow()
@@ -40,6 +46,10 @@ class EmergencyViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            alarmsRepository.getAlarm(alarmId = idOfAlarmToCancel)?.let {
+                alarm = it
+            }
+
             _state.update { currentState ->
                 val valueRange = userDataRepository.emergencySliderRange.first()
                 val targetValue = Random.nextInt(range = valueRange)
@@ -100,6 +110,10 @@ class EmergencyViewModel @Inject constructor(
                                         }
 
                                         delay(1500)
+
+                                        if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
+                                            qrAlarmManager.notifyAboutEmergencyDisabledRepeatingAlarm()
+                                        }
 
                                         backendEventsChannel.send(
                                             EmergencyScreenBackendEvent.EmergencyTaskCompleted

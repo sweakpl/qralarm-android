@@ -206,4 +206,6 @@
     <string name="this_alarm">这个警报</string>
     <string name="add_next_alarm_in_chain">+ 添加下一个连锁闹钟</string>
     <string name="failed_to_initialize_camera">初始化相机失败</string>
+    <string name="emergency_disabled_repeating_alarm_notification_title">重复闹钟已禁用！</string>
+    <string name="emergency_disabled_repeating_alarm_notification_text">紧急任务已禁用您的重复闹钟。如需重新设置，请访问闹钟页面。</string>
 </resources>

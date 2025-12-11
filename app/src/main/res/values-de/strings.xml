@@ -213,4 +213,6 @@
     <string name="this_alarm">Dieser Alarm</string>
     <string name="add_next_alarm_in_chain">+ Nächsten Alarm in der Kette hinzufügen</string>
     <string name="failed_to_initialize_camera">Die Kamera konnte nicht initialisiert werden</string>
+    <string name="emergency_disabled_repeating_alarm_notification_title">Wiederholungsalarm deaktiviert!</string>
+    <string name="emergency_disabled_repeating_alarm_notification_text">Die Notfallaufgabe hat Ihren wiederkehrenden Alarm deaktiviert. Um ihn erneut zu planen, besuchen Sie bitte die Alarmseite.</string>
 </resources>

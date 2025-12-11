@@ -213,4 +213,6 @@
     <string name="this_alarm">Bu alarm</string>
     <string name="add_next_alarm_in_chain">+ Zincirde bir sonraki alarmı ekle</string>
     <string name="failed_to_initialize_camera">Kamerayı başlatılamadı</string>
+    <string name="emergency_disabled_repeating_alarm_notification_title">Tekrar eden alarm devre dışı bırakıldı!</string>
+    <string name="emergency_disabled_repeating_alarm_notification_text">Acil durum görevi, tekrar eden alarmınızı devre dışı bırakmıştır. Tekrar programlamak için alarmlar sayfasına gidin.</string>
 </resources>
