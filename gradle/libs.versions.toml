@@ -2,7 +2,7 @@
 agp = "8.13.2"
 kotlin = "2.2.21"
 hilt = "2.57.2"
-ksp = "2.3.0"
+ksp = "2.3.3"
 roomKtx = "2.8.4"
 coreKtx = "1.17.0"
 lifecycleRuntimeKtx = "2.10.0"
