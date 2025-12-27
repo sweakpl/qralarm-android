@@ -111,7 +111,9 @@ class EmergencyViewModel @Inject constructor(
 
                                         delay(1500)
 
-                                        if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
+                                        if (::alarm.isInitialized &&
+                                            alarm.repeatingMode is Alarm.RepeatingMode.Days
+                                        ) {
                                             qrAlarmManager.notifyAboutEmergencyDisabledRepeatingAlarm()
                                         }
 
