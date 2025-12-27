@@ -1,4 +1,4 @@
 /build
 /release
-/src/main/res/values/secrets.xml
-/google-services.json
+/src/free/res/values/secrets.xml
+/src/free/google-services.json

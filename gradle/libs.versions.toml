@@ -10,7 +10,8 @@ activityCompose = "1.12.1"
 uiViewbinding = "1.10.0"
 composeBom = "2025.12.00"
 navigationCompose = "2.9.6"
-media3 = "1.8.0"
+media3 = "1.9.0"
+coil = "2.7.0"
 splashscreen = "1.2.0"
 materialIconsExtended = "1.7.8"
 hiltNavigationCompose = "1.3.0"
@@ -54,6 +55,8 @@ zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" 
 
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 google-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permissions"}
+io-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+io-coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
 
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 

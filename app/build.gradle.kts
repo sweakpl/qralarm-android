@@ -98,6 +98,8 @@ dependencies {
 
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.google.accompanist.permissions)
+    implementation(libs.io.coil.compose)
+    implementation(libs.io.coil.gif)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

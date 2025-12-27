@@ -34,7 +34,8 @@ import androidx.core.net.toUri
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.features.qralarm_pro.components.QRAlarmProFeaturesList
+import com.sweak.qralarm.features.qralarm_pro.components.QRAlarmProFeaturesCarousel
+import com.sweak.qralarm.features.qralarm_pro.components.QRAlarmProFeaturesRows
 
 @Composable
 fun QRAlarmProScreen(
@@ -55,7 +56,7 @@ fun QRAlarmProScreen(
                                 "market://details?id=$qralarmProPackageName".toUri()
                             )
                         )
-                    } catch (activityNotFoundException: ActivityNotFoundException) {
+                    } catch (_: ActivityNotFoundException) {
                         try {
                             context.startActivity(
                                 Intent(
@@ -63,7 +64,7 @@ fun QRAlarmProScreen(
                                     "https://play.google.com/store/apps/details?id=$qralarmProPackageName".toUri()
                                 )
                             )
-                        } catch (activityNotFoundException: ActivityNotFoundException) {
+                        } catch (_: ActivityNotFoundException) {
                             Toast.makeText(
                                 context,
                                 context.getString(R.string.issue_opening_the_page),
@@ -100,7 +101,7 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                     .fillMaxWidth()
                     .align(Alignment.Center)
             ) {
-                Spacer(modifier = Modifier.height(height = MaterialTheme.space.xxLarge))
+                Spacer(modifier = Modifier.height(height = MaterialTheme.space.large))
 
                 Image(
                     painter = painterResource(R.drawable.img_qralarm_pro),
@@ -123,17 +124,20 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                             start = MaterialTheme.space.large,
                             top = MaterialTheme.space.medium,
                             end = MaterialTheme.space.large,
-                            bottom = MaterialTheme.space.xxLarge
+                            bottom = MaterialTheme.space.large
                         )
                 )
 
-                QRAlarmProFeaturesList(
-                    modifier = Modifier
-                        .padding(
-                            start = MaterialTheme.space.large,
-                            end = MaterialTheme.space.large,
-                            bottom = MaterialTheme.space.xxLarge,
-                        )
+                QRAlarmProFeaturesCarousel(
+                    modifier = Modifier.padding(
+                        start = MaterialTheme.space.medium,
+                        end = MaterialTheme.space.medium,
+                        bottom = MaterialTheme.space.medium
+                    )
+                )
+
+                QRAlarmProFeaturesRows(
+                    modifier = Modifier.padding(bottom = MaterialTheme.space.xLarge)
                 )
 
                 Button(
