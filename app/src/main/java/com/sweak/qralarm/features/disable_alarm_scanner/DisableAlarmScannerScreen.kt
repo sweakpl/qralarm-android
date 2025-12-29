@@ -3,13 +3,19 @@ package com.sweak.qralarm.features.disable_alarm_scanner
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
-import com.sweak.qralarm.core.ui.components.code_scanner.QRAlarmCodeScanner
+import com.sweak.qralarm.core.ui.components.code_scanner.compose.CodeScanner
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.features.disable_alarm_scanner.components.Toast
 
@@ -32,16 +38,28 @@ fun DisableAlarmScannerScreen(
         }
     )
 
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val windowInfo = LocalWindowInfo.current
+
+    LaunchedEffect(lifecycleOwner) {
+        disableAlarmScannerViewModel.onEvent(
+            DisableAlarmScannerScreenUserEvent.InitializeCamera(
+                appContext = context,
+                lifecycleOwner = lifecycleOwner,
+                windowInfo = windowInfo
+            )
+        )
+    }
+
     DisableAlarmScannerScreenContent(
         state = disableAlarmScannerScreenState,
         onEvent = { event ->
             when (event) {
-                is DisableAlarmScannerScreenUserEvent.CodeResultScanned -> {
-                    disableAlarmScannerViewModel.onEvent(event)
-                }
                 is DisableAlarmScannerScreenUserEvent.OnCloseClicked -> {
                     onCloseClicked()
                 }
+                else -> disableAlarmScannerViewModel.onEvent(event)
             }
         }
     )
@@ -52,14 +70,15 @@ fun DisableAlarmScannerScreenContent(
     state: DisableAlarmScannerScreenState,
     onEvent: (DisableAlarmScannerScreenUserEvent) -> Unit
 ) {
-    QRAlarmCodeScanner(
-        decodeCallback = { result ->
-            onEvent(DisableAlarmScannerScreenUserEvent.CodeResultScanned(result = result))
-        },
-        closeCallback = {
-            onEvent(DisableAlarmScannerScreenUserEvent.OnCloseClicked)
-        }
-    )
+    Scaffold(containerColor = Color.White) { paddingValues ->
+        CodeScanner(
+            surfaceRequest = state.surfaceRequest,
+            isFlashEnabled = state.isFlashEnabled,
+            onCloseClicked = { onEvent(DisableAlarmScannerScreenUserEvent.OnCloseClicked) },
+            onToggleFlash = { onEvent(DisableAlarmScannerScreenUserEvent.ToggleFlash) },
+            paddingValues = paddingValues
+        )
+    }
 
     AnimatedVisibility(
         visible = state.shouldShowIncorrectCodeWarning,

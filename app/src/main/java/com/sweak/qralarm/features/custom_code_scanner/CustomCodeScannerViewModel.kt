@@ -16,15 +16,15 @@ import androidx.compose.ui.platform.WindowInfo
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.zxing.Result
 import com.sweak.qralarm.core.domain.user.UserDataRepository
-import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.AbstractCodeAnalyzer
-import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeAnalyzer
+import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeDetector
+import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
 import com.sweak.qralarm.features.custom_code_scanner.navigation.SHOULD_SCAN_FOR_DEFAULT_CODE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -42,7 +42,8 @@ class CustomCodeScannerViewModel @Inject constructor(
     private val shouldScanForDefaultCode =
         savedStateHandle.get<Boolean>(SHOULD_SCAN_FOR_DEFAULT_CODE) == true
 
-    var state = MutableStateFlow(CustomCodeScannerScreenState())
+    private var _state = MutableStateFlow(CustomCodeScannerScreenState())
+    var state = _state.asStateFlow()
 
     private val backendEventsChannel = Channel<CustomCodeScannerScreenBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
@@ -96,7 +97,7 @@ class CustomCodeScannerViewModel @Inject constructor(
             }
             is CustomCodeScannerScreenUserEvent.ToggleFlash -> {
                 camera?.let {
-                    state.update { currentState ->
+                    _state.update { currentState ->
                         val flashEnabled = !currentState.isFlashEnabled
                         it.cameraControl.enableTorch(flashEnabled)
                         currentState.copy(isFlashEnabled = flashEnabled)
@@ -119,18 +120,18 @@ class CustomCodeScannerViewModel @Inject constructor(
         cameraExecutor?.let { if (!it.isShutdown) it.shutdownNow() }
     }
 
-    private fun getCodeAnalyzer(): AbstractCodeAnalyzer {
-        return CodeAnalyzer(getBarcodeDetector())
+    private fun getCodeAnalyzer(): ZXingCodeAnalyzer {
+        return ZXingCodeAnalyzer(getBarcodeDetector())
     }
 
-    private fun getBarcodeDetector(): AbstractCodeAnalyzer.BarcodeDetector =
-        object : AbstractCodeAnalyzer.BarcodeDetector {
-            override fun onBarcodeFound(result: Result) {
+    private fun getBarcodeDetector(): CodeDetector =
+        object : CodeDetector {
+            override fun onCodeFound(codeValue: String) {
                 viewModelScope.launch {
                     if (shouldScanForDefaultCode) {
-                        userDataRepository.setDefaultAlarmCode(code = result.text)
+                        userDataRepository.setDefaultAlarmCode(code = codeValue)
                     } else {
-                        userDataRepository.setTemporaryScannedCode(code = result.text)
+                        userDataRepository.setTemporaryScannedCode(code = codeValue)
                     }
 
                     backendEventsChannel.send(
@@ -139,16 +140,16 @@ class CustomCodeScannerViewModel @Inject constructor(
                 }
             }
 
-            override fun onError(msg: String) {
-                Log.e("BarcodeDetector", msg)
+            override fun onError(exception: Exception) {
+                Log.e("BarcodeDetector", exception.toString())
             }
         }
 
     private fun getCameraPreviewUseCase() =
         Preview.Builder().build().apply {
             setSurfaceProvider { newSurfaceRequest ->
-                state.update {
-                    it.copy(surfaceRequest = newSurfaceRequest)
+                _state.update { currentState ->
+                    currentState.copy(surfaceRequest = newSurfaceRequest)
                 }
             }
         }
