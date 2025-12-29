@@ -1,0 +1,3 @@
+* New QRAlarmProScreen,
+* Performance improvements,
+* Bug fixes.
