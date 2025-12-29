@@ -143,7 +143,6 @@
     <string name="click_to_go_to_app_settings">QRAlarm uygulama ayarlarına gitmek için tıklayın.</string>
     <string name="issue_opening_the_page">Sayfayı açarken bir sorun oluştu…</string>
     <string name="optimization_dialog_description">Optimizasyon rehberimizi kontrol ederek QRAlarm\'ın sisteminizde en iyi şekilde çalışmasını sağlayın ve içiniz rahat uyuyun!</string>
-    <string name="buy_once_enjoy_forever">Bir kez satın alın - sonsuza dek keyfini çıkarın!</string>
     <string name="get_it_now">Hemen alın!</string>
     <string name="not_now">Şimdi değil</string>
     <string name="special_settings">Özel ayarlar</string>

@@ -25,10 +25,10 @@ import com.sweak.qralarm.core.designsystem.theme.space
 fun SimpleSetting(
     onClick: () -> Unit,
     title: String,
+    modifier: Modifier = Modifier,
     description: String? = null,
     icon: ImageVector? = null,
-    iconContentDescription: String? = null,
-    modifier: Modifier = Modifier
+    iconContentDescription: String? = null
 ) {
     Box(modifier = modifier.clickable { onClick() }) {
         Row(

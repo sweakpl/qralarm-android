@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Alarm
-import androidx.compose.material.icons.outlined.AllInclusive
 import androidx.compose.material.icons.outlined.AppSettingsAlt
 import androidx.compose.material.icons.outlined.AppShortcut
 import androidx.compose.material.icons.outlined.ArrowDropDown
@@ -73,7 +72,6 @@ object QRAlarmIcons {
     val Star = Icons.Outlined.Star
     val DoNotLeaveAlarm = Icons.Outlined.PhonelinkLock
     val PowerOffGuard = Icons.Outlined.GppGood
-    val AccessForever = Icons.Outlined.AllInclusive
     val Undo = Icons.AutoMirrored.Outlined.Undo
     val Label = Icons.AutoMirrored.Outlined.Label
     val Sound = Icons.AutoMirrored.Outlined.VolumeUp

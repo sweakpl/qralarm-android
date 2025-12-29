@@ -20,15 +20,15 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmComboBox
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.designsystem.component.QRAlarmComboBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,11 +94,11 @@ fun AssignDefaultCodeBottomSheet(
                             )
                     )
 
-                    val context = LocalContext.current
+                    val resources = LocalResources.current
 
                     QRAlarmComboBox(
                         menuItems = listOf(
-                            context.getString(R.string.click_to_choose),
+                            resources.getString(R.string.click_to_choose),
                             *availableCodes.toTypedArray()
                         ),
                         selectedIndex = 0,

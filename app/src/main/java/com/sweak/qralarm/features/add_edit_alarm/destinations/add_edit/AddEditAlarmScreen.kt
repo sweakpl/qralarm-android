@@ -159,7 +159,7 @@ fun AddEditAlarmScreen(
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 context,
-                                context.getString(R.string.saved_qr_code),
+                                resources.getString(R.string.saved_qr_code),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -169,7 +169,7 @@ fun AddEditAlarmScreen(
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 context,
-                                context.getString(R.string.could_not_save_qr_code),
+                                resources.getString(R.string.could_not_save_qr_code),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -312,7 +312,7 @@ fun AddEditAlarmScreen(
                     } catch (_: ActivityNotFoundException) {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.issue_opening_the_page),
+                            resources.getString(R.string.issue_opening_the_page),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -371,7 +371,7 @@ fun AddEditAlarmScreen(
                     } catch (_: ActivityNotFoundException) {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.issue_opening_the_page),
+                            resources.getString(R.string.issue_opening_the_page),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

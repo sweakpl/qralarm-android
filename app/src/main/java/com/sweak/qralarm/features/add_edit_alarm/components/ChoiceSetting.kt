@@ -25,9 +25,9 @@ import com.sweak.qralarm.core.designsystem.theme.space
 fun ChoiceSetting(
     onClick: () -> Unit,
     title: String,
-    description: String? = null,
     choiceName: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    description: String? = null
 ) {
     Box(modifier = modifier.clickable { onClick() }) {
         Row(

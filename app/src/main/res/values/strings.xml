@@ -145,7 +145,6 @@
     <string name="issue_opening_the_page">There was and issue opening the page…</string>
     <string name="optimization_dialog_description">Make QRAlarm work best in your system by checking our optimization guide and sleep assured!</string>
     <string name="qralarm_pro" translatable="false">QRAlarm PRO</string>
-    <string name="buy_once_enjoy_forever">Buy once - enjoy forever!</string>
     <string name="get_it_now">Get it now!</string>
     <string name="not_now">Not now</string>
     <string name="qralarm_pro_package_name" translatable="false">com.sweak.qralarm.pro</string>

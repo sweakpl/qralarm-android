@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -55,6 +56,7 @@ fun RateScreen(
     }
 
     val context = LocalContext.current
+    val resources = LocalResources.current
     val uriHandler = LocalUriHandler.current
 
     ObserveAsEvents(
@@ -63,7 +65,7 @@ fun RateScreen(
             when (event) {
                 is RateScreenBackendEvent.RateMeClickProcessed -> {
                     try {
-                        uriHandler.openUri(context.getString(R.string.qralarm_github_full_uri))
+                        uriHandler.openUri(resources.getString(R.string.qralarm_github_full_uri))
                         onExit()
                     } catch (exception: Exception) {
                         if (exception is ActivityNotFoundException ||
@@ -71,7 +73,7 @@ fun RateScreen(
                         ) {
                             Toast.makeText(
                                 context,
-                                context.getString(R.string.issue_opening_the_page),
+                                resources.getString(R.string.issue_opening_the_page),
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -80,7 +82,7 @@ fun RateScreen(
                 is RateScreenBackendEvent.SomethingWrongClickProcessed -> {
                     try {
                         uriHandler.openUri(
-                            context.getString(R.string.qralarm_github_issues_full_uri)
+                            resources.getString(R.string.qralarm_github_issues_full_uri)
                         )
                         onExit()
                     } catch (exception: Exception) {
@@ -89,7 +91,7 @@ fun RateScreen(
                         ) {
                             Toast.makeText(
                                 context,
-                                context.getString(R.string.issue_opening_the_page),
+                                resources.getString(R.string.issue_opening_the_page),
                                 Toast.LENGTH_LONG
                             ).show()
                         }

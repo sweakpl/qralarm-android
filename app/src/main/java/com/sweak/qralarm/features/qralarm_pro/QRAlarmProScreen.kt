@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -42,12 +43,13 @@ fun QRAlarmProScreen(
     onNotNowClicked: () -> Unit
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
 
     QRAlarmProScreenContent(
         onEvent = { event ->
             when (event) {
                 is QRAlarmProScreenUserEvent.GetQRAlarmProClicked -> {
-                    val qralarmProPackageName = context.getString(R.string.qralarm_pro_package_name)
+                    val qralarmProPackageName = resources.getString(R.string.qralarm_pro_package_name)
 
                     try {
                         context.startActivity(
@@ -67,7 +69,7 @@ fun QRAlarmProScreen(
                         } catch (_: ActivityNotFoundException) {
                             Toast.makeText(
                                 context,
-                                context.getString(R.string.issue_opening_the_page),
+                                resources.getString(R.string.issue_opening_the_page),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }

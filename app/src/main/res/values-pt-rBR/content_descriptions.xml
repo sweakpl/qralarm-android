@@ -22,9 +22,6 @@
     <string name="content_description_app_settings_icon">Ícone de configurações do aplicativo</string>
     <string name="content_description_special_app_settings_icon">Ícone de configurações especiais do aplicativo</string>
     <string name="content_description_star_icon">Ícone de estrela</string>
-    <string name="content_description_do_not_leave_alarm_icon">Ícone da função “não sair do alarme”</string>
-    <string name="content_description_power_off_guard_icon">Ícone da função de proteção contra desligamento</string>
-    <string name="content_description_access_forever_icon">Ícone de acesso permanente</string>
     <string name="content_description_flash_icon">Ícone do flash</string>
     <string name="content_description_skip_next_alarm_icon">Ícone de pular próximo alarme</string>
     <string name="content_description_label_icon">Ícone de etiqueta</string>

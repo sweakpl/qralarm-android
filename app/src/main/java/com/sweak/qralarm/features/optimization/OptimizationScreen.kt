@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,6 +63,7 @@ fun OptimizationScreen(onBackClicked: () -> Unit) {
     val optimizationScreenState by optimizationViewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
+    val resources = LocalResources.current
     val uriHandler = LocalUriHandler.current
 
     OnResume { optimizationViewModel.refresh() }
@@ -81,7 +83,7 @@ fun OptimizationScreen(onBackClicked: () -> Unit) {
                     } catch (_: ActivityNotFoundException) {
                         Toast.makeText(
                             context,
-                            context.getString(
+                            resources.getString(
                                 R.string.setting_unavailable_refer_to_the_next_step
                             ),
                             Toast.LENGTH_LONG
@@ -91,14 +93,14 @@ fun OptimizationScreen(onBackClicked: () -> Unit) {
 
                 is OptimizationScreenUserEvent.BackgroundWorkWebsiteClicked -> {
                     try {
-                        uriHandler.openUri(context.getString(R.string.dontkilmyapp_com_full_uri))
+                        uriHandler.openUri(resources.getString(R.string.dontkilmyapp_com_full_uri))
                     } catch (exception: Exception) {
                         if (exception is ActivityNotFoundException ||
                             exception is IllegalArgumentException
                         ) {
                             Toast.makeText(
                                 context,
-                                context.getString(R.string.issue_opening_the_page),
+                                resources.getString(R.string.issue_opening_the_page),
                                 Toast.LENGTH_LONG
                             ).show()
                         }

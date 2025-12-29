@@ -22,9 +22,6 @@
     <string name="content_description_app_settings_icon">Uygulama ayarları simgesi</string>
     <string name="content_description_special_app_settings_icon">Özel uygulama ayarları simgesi</string>
     <string name="content_description_star_icon">Yıldız simgesi</string>
-    <string name="content_description_do_not_leave_alarm_icon">Alarm işlevi simgesinden ayrılmayın</string>
-    <string name="content_description_power_off_guard_icon">Güç kapatma koruması işlevsellik simgesi</string>
-    <string name="content_description_access_forever_icon">Kalıcı erişim simgesi</string>
     <string name="content_description_flash_icon">Flaş simgesi</string>
     <string name="content_description_skip_next_alarm_icon">Sonraki alarmı atla simgesi</string>
     <string name="content_description_label_icon">Etiket simgesi</string>

@@ -20,9 +20,9 @@ fun ToggleSetting(
     isChecked: Boolean,
     onCheckedChange: (checked: Boolean) -> Unit,
     title: String,
+    modifier: Modifier = Modifier,
     description: String? = null,
-    compactHeight: Boolean = false,
-    modifier: Modifier = Modifier
+    compactHeight: Boolean = false
 ) {
     Box(modifier = modifier) {
         Row(

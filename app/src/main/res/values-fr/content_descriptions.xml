@@ -22,9 +22,6 @@
     <string name="content_description_app_settings_icon">Icône des paramètres de l\'application</string>
     <string name="content_description_special_app_settings_icon">Icône de paramètres d\'application spéciaux</string>
     <string name="content_description_star_icon">Icône étoile</string>
-    <string name="content_description_do_not_leave_alarm_icon">Icône de fonctionnalité de l\'alarme Ne pas quitter</string>
-    <string name="content_description_power_off_guard_icon">Icône de fonctionnalité de la protection contre la mise hors tension</string>
-    <string name="content_description_access_forever_icon">Icône d\'accès permanent</string>
     <string name="content_description_flash_icon">Icône Flash</string>
     <string name="content_description_skip_next_alarm_icon">Ignorer l\'icône d\'alarme suivante</string>
     <string name="content_description_label_icon">Icône d\'étiquette</string>
