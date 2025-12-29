@@ -4,4 +4,5 @@ sealed class DisableAlarmScannerScreenBackendEvent {
     data class CorrectCodeScanned(
         val uriStringToOpen: String?
     ) : DisableAlarmScannerScreenBackendEvent()
+    data object CameraInitializationError : DisableAlarmScannerScreenBackendEvent()
 }

@@ -20,8 +20,8 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
-import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeDetector
+import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.ID_OF_ALARM
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.IS_DISABLING_BEFORE_ALARM_FIRED
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -88,26 +89,34 @@ class DisableAlarmScannerViewModel @Inject constructor(
                 val processCameraProvider =
                     ProcessCameraProvider.awaitInstance(event.appContext).also { it.unbindAll() }
 
-                camera = processCameraProvider.bindToLifecycle(
-                    event.lifecycleOwner,
-                    DEFAULT_BACK_CAMERA,
-                    getCameraPreviewUseCase(),
-                    imageAnalysisUseCase
-                ).apply {
-                    configureAutoFocus(event.windowInfo)
+                try {
+                    camera = processCameraProvider.bindToLifecycle(
+                        event.lifecycleOwner,
+                        DEFAULT_BACK_CAMERA,
+                        getCameraPreviewUseCase(),
+                        imageAnalysisUseCase
+                    ).apply {
+                        configureAutoFocus(event.windowInfo)
+                    }
+                } catch (_: Exception) {
+                    cleanUpCameraResources(
+                        imageAnalysisUseCase,
+                        processCameraProvider,
+                        cameraExecutor
+                    )
+                    backendEventsChannel.send(
+                        DisableAlarmScannerScreenBackendEvent.CameraInitializationError
+                    )
                 }
 
                 try {
                     awaitCancellation()
                 } finally {
-                    turnOffFlash()
-                    imageAnalysisUseCase.clearAnalyzer()
-                    processCameraProvider.unbindAll()
-                    camera = null
-
-                    if (!cameraExecutor.isShutdown) {
-                        cameraExecutor.shutdownNow()
-                    }
+                    cleanUpCameraResources(
+                        imageAnalysisUseCase,
+                        processCameraProvider,
+                        cameraExecutor
+                    )
                 }
             }
             is DisableAlarmScannerScreenUserEvent.ToggleFlash -> {
@@ -121,6 +130,18 @@ class DisableAlarmScannerViewModel @Inject constructor(
             }
             else -> { /* no-op */ }
         }
+    }
+
+    private fun cleanUpCameraResources(
+        imageAnalysisUseCase: ImageAnalysis,
+        processCameraProvider: ProcessCameraProvider,
+        cameraExecutor: ExecutorService?
+    ) {
+        turnOffFlash()
+        imageAnalysisUseCase.clearAnalyzer()
+        processCameraProvider.unbindAll()
+        camera = null
+        cameraExecutor?.let { if (!it.isShutdown) it.shutdownNow() }
     }
 
     private fun getCodeAnalyzer(): ImageAnalysis.Analyzer {

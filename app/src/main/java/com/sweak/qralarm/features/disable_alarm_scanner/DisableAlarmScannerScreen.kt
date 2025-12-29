@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.disable_alarm_scanner
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -27,6 +28,8 @@ fun DisableAlarmScannerScreen(
     val disableAlarmScannerViewModel = hiltViewModel<DisableAlarmScannerViewModel>()
     val disableAlarmScannerScreenState by disableAlarmScannerViewModel.state.collectAsStateWithLifecycle()
 
+    val context = LocalContext.current
+
     ObserveAsEvents(
         flow = disableAlarmScannerViewModel.backendEvents,
         onEvent = { event ->
@@ -34,11 +37,18 @@ fun DisableAlarmScannerScreen(
                 is DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned -> {
                     onAlarmDisabled(event.uriStringToOpen)
                 }
+                is DisableAlarmScannerScreenBackendEvent.CameraInitializationError -> {
+                    Toast.makeText(
+                        context,
+                        R.string.failed_to_initialize_camera,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    onCloseClicked()
+                }
             }
         }
     )
 
-    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val windowInfo = LocalWindowInfo.current
 
