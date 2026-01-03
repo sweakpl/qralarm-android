@@ -116,8 +116,6 @@ class AlarmService : Service() {
             }
         }
 
-        qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
-
         try {
             ServiceCompat.startForeground(
                 this,
@@ -140,6 +138,7 @@ class AlarmService : Service() {
 
         if (shouldStopService) {
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+            qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
             return START_NOT_STICKY
         }
 
@@ -151,6 +150,7 @@ class AlarmService : Service() {
                     this@AlarmService,
                     ServiceCompat.STOP_FOREGROUND_REMOVE
                 )
+                qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
                 return@launch
             }
 
