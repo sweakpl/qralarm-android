@@ -32,6 +32,8 @@
     <string name="content_description_emergency_icon">Icône du triangle d\'urgence</string>
     <string name="content_description_muted_sound_icon">Icône de son coupé</string>
     <string name="content_description_chain_icon">Icône chaîne</string>
+    <string name="content_description_checked_circle_icon">Icône de cercle coché</string>
+    <string name="content_description_unchecked_circle_icon">Icône de cercle non cochée</string>
 
     <string name="content_description_wake_up_catchphrase_image">Image montrant un bonhomme allumette sympathique allongé dans son lit et réveillé.</string>
     <string name="content_description_get_up_catchphrase_image">Image montrant un bonhomme allumette souriant marchant avec son téléphone qui sonne.</string>

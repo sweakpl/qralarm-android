@@ -32,6 +32,8 @@
     <string name="content_description_emergency_icon">Icona del triangolo di emergenza</string>
     <string name="content_description_muted_sound_icon">Icona audio disattivato</string>
     <string name="content_description_chain_icon">Icona catena</string>
+    <string name="content_description_checked_circle_icon">Icona del cerchio controllato</string>
+    <string name="content_description_unchecked_circle_icon">Icona del cerchio non selezionata</string>
 
     <string name="content_description_wake_up_catchphrase_image">Immagine che mostra un amichevole omino stilizzato sdraiato sul letto, svegliato.</string>
     <string name="content_description_get_up_catchphrase_image">Immagine che mostra un omino stilizzato sorridente che cammina mentre il suo telefono squilla.</string>

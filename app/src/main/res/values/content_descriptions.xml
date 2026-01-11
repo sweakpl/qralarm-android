@@ -32,6 +32,8 @@
     <string name="content_description_emergency_icon">Emergency triangle icon</string>
     <string name="content_description_muted_sound_icon">Muted sound icon</string>
     <string name="content_description_chain_icon">Chain icon</string>
+    <string name="content_description_checked_circle_icon">Checked circle icon</string>
+    <string name="content_description_unchecked_circle_icon">Unchecked circle icon</string>
 
     <string name="content_description_wake_up_catchphrase_image">Image showing a friendly stick man lying in bed woken up.</string>
     <string name="content_description_get_up_catchphrase_image">Image showing a smiling stick man walking with their phone ringing.</string>

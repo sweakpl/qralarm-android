@@ -228,4 +228,5 @@
     <string name="failed_to_initialize_camera">Nie udało się zainicjować kamery</string>
     <string name="emergency_disabled_repeating_alarm_notification_title">Powtarzający się alarm został wyłączony!</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">Zadanie awaryjne wyłączyło powtarzający się alarm. Aby ponownie go zaplanować, przejdź do strony alarmów.</string>
+    <string name="standalone_app">Samodzielna aplikacja</string>
 </resources>

@@ -228,4 +228,5 @@
     <string name="failed_to_initialize_camera">Не вдалося ініціалізувати камеру</string>
     <string name="emergency_disabled_repeating_alarm_notification_title">Повторний будильник вимкнено!</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">Екстрене завдання вимкнуло ваш повторюваний будильник. Щоб знову його налаштувати, перейдіть на сторінку будильників.</string>
+    <string name="standalone_app">Автономний додаток</string>
 </resources>

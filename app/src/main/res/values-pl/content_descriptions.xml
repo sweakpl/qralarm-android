@@ -33,6 +33,8 @@
     <string name="content_description_emergency_icon">Ikona trójkąta awaryjnego</string>
     <string name="content_description_muted_sound_icon">Ikona wyciszonego dźwięku</string>
     <string name="content_description_chain_icon">Ikona łańcucha</string>
+    <string name="content_description_checked_circle_icon">Ikona zaznaczonego kółka</string>
+    <string name="content_description_unchecked_circle_icon">Ikona niezaznaczonego kółka</string>
 
     <string name="content_description_wake_up_catchphrase_image">Obraz przedstawiający przyjaznego patyczaka leżącego w łóżku po przebudzeniu.</string>
     <string name="content_description_get_up_catchphrase_image">Obraz przedstawiający uśmiechniętego patyczaka idącego z dzwoniącym telefonem.</string>

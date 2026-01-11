@@ -32,6 +32,8 @@
     <string name="content_description_emergency_icon">紧急三角图标</string>
     <string name="content_description_muted_sound_icon">静音图标</string>
     <string name="content_description_chain_icon">链条图标</string>
+    <string name="content_description_checked_circle_icon">选中的圆圈图标</string>
+    <string name="content_description_unchecked_circle_icon">未选中的圆圈图标</string>
 
     <string name="content_description_wake_up_catchphrase_image">图像显示一位躺在床上的人被唤醒了</string>
     <string name="content_description_get_up_catchphrase_image">图像显示一个人正拿着响铃的手机在走路</string>

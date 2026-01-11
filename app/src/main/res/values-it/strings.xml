@@ -221,4 +221,5 @@
     <string name="failed_to_initialize_camera">Impossibile inizializzare la fotocamera</string>
     <string name="emergency_disabled_repeating_alarm_notification_title">Allarme ripetuto disattivato!</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">L\'attività di emergenza ha disattivato la tua sveglia ripetitiva. Per programmarla nuovamente, visita la pagina delle sveglie.</string>
+    <string name="standalone_app">App indipendente</string>
 </resources>

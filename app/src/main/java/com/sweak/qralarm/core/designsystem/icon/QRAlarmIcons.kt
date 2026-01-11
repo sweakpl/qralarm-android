@@ -19,6 +19,8 @@ import androidx.compose.material.icons.outlined.AppShortcut
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material.icons.outlined.CameraAlt
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
@@ -72,6 +74,8 @@ object QRAlarmIcons {
     val Star = Icons.Outlined.Star
     val DoNotLeaveAlarm = Icons.Outlined.PhonelinkLock
     val PowerOffGuard = Icons.Outlined.GppGood
+    val CheckedCircle = Icons.Outlined.CheckCircle
+    val UncheckedCircle = Icons.Outlined.Circle
     val Undo = Icons.AutoMirrored.Outlined.Undo
     val Label = Icons.AutoMirrored.Outlined.Label
     val Sound = Icons.AutoMirrored.Outlined.VolumeUp

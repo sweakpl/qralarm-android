@@ -32,6 +32,8 @@
     <string name="content_description_emergency_icon">Ícone de triângulo de emergência</string>
     <string name="content_description_muted_sound_icon">Ícone de som mudo</string>
     <string name="content_description_chain_icon">Ícone da cadeia</string>
+    <string name="content_description_checked_circle_icon">Ícone de círculo marcado</string>
+    <string name="content_description_unchecked_circle_icon">Ícone de círculo desmarcado</string>
 
     <string name="content_description_wake_up_catchphrase_image">Imagem mostrando um boneco sorridente deitado na cama acordando.</string>
     <string name="content_description_get_up_catchphrase_image">Imagem mostrando um boneco sorridente caminhando enquanto o telefone toca.</string>

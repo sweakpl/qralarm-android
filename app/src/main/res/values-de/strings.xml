@@ -214,4 +214,5 @@
     <string name="failed_to_initialize_camera">Die Kamera konnte nicht initialisiert werden</string>
     <string name="emergency_disabled_repeating_alarm_notification_title">Wiederholungsalarm deaktiviert!</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">Die Notfallaufgabe hat Ihren wiederkehrenden Alarm deaktiviert. Um ihn erneut zu planen, besuchen Sie bitte die Alarmseite.</string>
+    <string name="standalone_app">Eigenständige App</string>
 </resources>

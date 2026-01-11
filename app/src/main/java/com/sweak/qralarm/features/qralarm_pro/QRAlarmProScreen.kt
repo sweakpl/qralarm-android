@@ -5,6 +5,7 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -35,8 +40,10 @@ import androidx.core.net.toUri
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.features.qralarm_pro.components.ProductPlanCard
 import com.sweak.qralarm.features.qralarm_pro.components.QRAlarmProFeaturesCarousel
 import com.sweak.qralarm.features.qralarm_pro.components.QRAlarmProFeaturesRows
+import com.sweak.qralarm.features.qralarm_pro.model.QRAlarmProDistributionSource
 
 @Composable
 fun QRAlarmProScreen(
@@ -49,21 +56,15 @@ fun QRAlarmProScreen(
         onEvent = { event ->
             when (event) {
                 is QRAlarmProScreenUserEvent.GetQRAlarmProClicked -> {
-                    val qralarmProPackageName = resources.getString(R.string.qralarm_pro_package_name)
+                    if (event.qrAlarmProDistributionSource is QRAlarmProDistributionSource.ItchIo) {
+                        val qralarmProItchIoUrl =
+                            resources.getString(R.string.qralarm_pro_itch_io_url)
 
-                    try {
-                        context.startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                "market://details?id=$qralarmProPackageName".toUri()
-                            )
-                        )
-                    } catch (_: ActivityNotFoundException) {
                         try {
                             context.startActivity(
                                 Intent(
                                     Intent.ACTION_VIEW,
-                                    "https://play.google.com/store/apps/details?id=$qralarmProPackageName".toUri()
+                                    qralarmProItchIoUrl.toUri()
                                 )
                             )
                         } catch (_: ActivityNotFoundException) {
@@ -72,6 +73,33 @@ fun QRAlarmProScreen(
                                 resources.getString(R.string.issue_opening_the_page),
                                 Toast.LENGTH_SHORT
                             ).show()
+                        }
+                    } else if (event.qrAlarmProDistributionSource is QRAlarmProDistributionSource.GooglePlay) {
+                        val qralarmProPackageName =
+                            resources.getString(R.string.qralarm_pro_package_name)
+
+                        try {
+                            context.startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    "market://details?id=$qralarmProPackageName".toUri()
+                                )
+                            )
+                        } catch (_: ActivityNotFoundException) {
+                            try {
+                                context.startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        "https://play.google.com/store/apps/details?id=$qralarmProPackageName".toUri()
+                                    )
+                                )
+                            } catch (_: ActivityNotFoundException) {
+                                Toast.makeText(
+                                    context,
+                                    resources.getString(R.string.issue_opening_the_page),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
                 }
@@ -142,8 +170,58 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                     modifier = Modifier.padding(bottom = MaterialTheme.space.xLarge)
                 )
 
+                var selectedQRAlarmProDistributionSource by remember {
+                    mutableStateOf<QRAlarmProDistributionSource>(QRAlarmProDistributionSource.GooglePlay)
+                }
+
+                ProductPlanCard(
+                    title = stringResource(R.string.standalone_app),
+                    price = {
+                        Text(
+                            text = stringResource(R.string.google_play),
+                            style = MaterialTheme.typography.displaySmall,
+                            modifier = Modifier.basicMarquee()
+                        )
+                    },
+                    selected = selectedQRAlarmProDistributionSource is QRAlarmProDistributionSource.GooglePlay,
+                    enabled = true,
+                    onClick = { selectedQRAlarmProDistributionSource = QRAlarmProDistributionSource.GooglePlay },
+                    modifier = Modifier
+                        .padding(
+                            start = MaterialTheme.space.medium,
+                            end = MaterialTheme.space.medium,
+                            bottom = MaterialTheme.space.medium
+                        )
+                )
+
+                ProductPlanCard(
+                    title = stringResource(R.string.standalone_app),
+                    price = {
+                        Text(
+                            text = stringResource(R.string.itch_io),
+                            style = MaterialTheme.typography.displaySmall,
+                            modifier = Modifier.basicMarquee()
+                        )
+                    },
+                    selected = selectedQRAlarmProDistributionSource is QRAlarmProDistributionSource.ItchIo,
+                    enabled = true,
+                    onClick = { selectedQRAlarmProDistributionSource = QRAlarmProDistributionSource.ItchIo },
+                    modifier = Modifier
+                        .padding(
+                            start = MaterialTheme.space.medium,
+                            end = MaterialTheme.space.medium,
+                            bottom = MaterialTheme.space.xLarge
+                        )
+                )
+
                 Button(
-                    onClick = { onEvent(QRAlarmProScreenUserEvent.GetQRAlarmProClicked) },
+                    onClick = {
+                        onEvent(
+                            QRAlarmProScreenUserEvent.GetQRAlarmProClicked(
+                                qrAlarmProDistributionSource = selectedQRAlarmProDistributionSource
+                            )
+                        )
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiary
                     ),

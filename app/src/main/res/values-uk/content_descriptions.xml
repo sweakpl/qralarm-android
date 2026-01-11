@@ -33,6 +33,8 @@
     <string name="content_description_emergency_icon">Значок аварійного трикутника</string>
     <string name="content_description_muted_sound_icon">Значок приглушеного звуку</string>
     <string name="content_description_chain_icon">Значок ланцюга</string>
+    <string name="content_description_checked_circle_icon">Піктограма з позначкою у вигляді кружечка</string>
+    <string name="content_description_unchecked_circle_icon">Невідмічена піктограма кола</string>
 
     <string name="content_description_wake_up_catchphrase_image">Картина із зображенням доброзичливого стікмена, що лежить у ліжку після пробудження.</string>
     <string name="content_description_get_up_catchphrase_image">Картина із зображенням усміхненого стікмена, яка йде з телефоном, що дзвонить.</string>
