@@ -81,4 +81,13 @@ class UserDataRepositoryImpl @Inject constructor(
         get() = qrAlarmPreferencesDataSource.getEmergencyRequiredMatches().map {
             it ?: EMERGENCY_DEFAULT_REQUIRED_MATCHES
         }
+
+    override suspend fun setUseDynamicTheming(enabled: Boolean) {
+        qrAlarmPreferencesDataSource.setUseDynamicTheming(enabled = enabled)
+    }
+
+    override val useDynamicTheming: Flow<Boolean>
+        get() = qrAlarmPreferencesDataSource.getUseDynamicTheming().map {
+            it ?: false // Default to true (enabled) on supported devices
+        }
 }

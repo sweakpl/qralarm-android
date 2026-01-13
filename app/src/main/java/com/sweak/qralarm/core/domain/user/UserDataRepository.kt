@@ -28,6 +28,9 @@ interface UserDataRepository {
     suspend fun setEmergencyRequiredMatches(matches: Int)
     val emergencyRequiredMatches: Flow<Int>
 
+    suspend fun setUseDynamicTheming(enabled: Boolean)
+    val useDynamicTheming: Flow<Boolean>
+
     enum class OptimizationGuideState {
         NONE, SHOULD_BE_SEEN, HAS_BEEN_SEEN
     }

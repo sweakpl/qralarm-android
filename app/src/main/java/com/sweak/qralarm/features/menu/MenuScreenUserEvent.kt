@@ -13,4 +13,5 @@ sealed class MenuScreenUserEvent {
     data object ClearDefaultAlarmCode : MenuScreenUserEvent()
     data class CameraPermissionDeniedDialogVisible(val isVisible: Boolean) : MenuScreenUserEvent()
     data object GoToApplicationSettingsClicked : MenuScreenUserEvent()
+    data class DynamicThemingToggled(val enabled: Boolean) : MenuScreenUserEvent()
 }

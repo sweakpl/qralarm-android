@@ -124,6 +124,18 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun setUseDynamicTheming(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[USE_DYNAMIC_THEMING] = enabled
+        }
+    }
+
+    fun getUseDynamicTheming(): Flow<Boolean?> {
+        return dataStore.data.map { preferences ->
+            preferences[USE_DYNAMIC_THEMING]
+        }
+    }
+
     companion object {
         val TEMPORARY_SCANNED_CODE = stringPreferencesKey("temporaryScannedCode")
         val OPTIMIZATION_GUIDE_STATE = stringPreferencesKey("optimizationGuideState")
@@ -133,5 +145,6 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         val DEFAULT_ALARM_CODE = stringPreferencesKey("defaultAlarmCode")
         val EMERGENCY_SLIDER_RANGE = byteArrayPreferencesKey("emergencySliderRange")
         val EMERGENCY_REQUIRED_MATCHES = intPreferencesKey("emergencyRequiredMatches")
+        val USE_DYNAMIC_THEMING = booleanPreferencesKey("useDynamicTheming")
     }
 }

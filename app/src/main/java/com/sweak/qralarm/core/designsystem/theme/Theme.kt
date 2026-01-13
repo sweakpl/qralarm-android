@@ -64,14 +64,19 @@ private val DarkContentColor = Color(0xFF222222)
 private val LightOutlineColor = Color(0xFFCCCCCC)
 private val DarkOutlineColor = Color(0xFF3B3B3B)
 
+fun supportsDynamicTheming(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QRAlarmTheme(content: @Composable () -> Unit) {
+fun QRAlarmTheme(
+    useDynamicTheming: Boolean = supportsDynamicTheming(),
+    content: @Composable () -> Unit
+) {
     val darkTheme = isSystemInDarkTheme()
-    val useDynamicTheming = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val effectiveUseDynamicTheming = useDynamicTheming && supportsDynamicTheming()
 
     val colorScheme = when {
-        useDynamicTheming -> {
+        effectiveUseDynamicTheming -> {
             val context = LocalContext.current
             val dynamicScheme = if (darkTheme) {
                 dynamicDarkColorScheme(context)
@@ -105,7 +110,7 @@ fun QRAlarmTheme(content: @Composable () -> Unit) {
     }
 
     // Compute component colors based on theming mode
-    val switchColors = if (useDynamicTheming) {
+    val switchColors = if (effectiveUseDynamicTheming) {
         SwitchDefaults.colors(
             checkedThumbColor = colorScheme.primary,
             checkedTrackColor = colorScheme.tertiary,
@@ -120,7 +125,7 @@ fun QRAlarmTheme(content: @Composable () -> Unit) {
     }
 
     val radioButtonColors = RadioButtonDefaults.colors(
-        selectedColor = if (useDynamicTheming) {
+        selectedColor = if (effectiveUseDynamicTheming) {
             colorScheme.onSurface
         } else {
             colorScheme.secondary
@@ -128,7 +133,7 @@ fun QRAlarmTheme(content: @Composable () -> Unit) {
         unselectedColor = colorScheme.onSurface
     )
 
-    val timePickerColors = if (useDynamicTheming) {
+    val timePickerColors = if (effectiveUseDynamicTheming) {
         TimePickerDefaults.colors(
             clockDialColor = colorScheme.secondary,
             clockDialSelectedContentColor = colorScheme.onTertiary,
@@ -162,14 +167,14 @@ fun QRAlarmTheme(content: @Composable () -> Unit) {
     // Alarm label text color:
     // - Dynamic theme: dark in light mode, light in dark mode
     // - Static theme: always light (white)
-    val alarmLabelTextColor = if (useDynamicTheming) {
+    val alarmLabelTextColor = if (effectiveUseDynamicTheming) {
         if (darkTheme) LightContentColor else DarkContentColor
     } else {
         LightContentColor
     }
 
     CompositionLocalProvider(
-        LocalUseDynamicTheming provides useDynamicTheming,
+        LocalUseDynamicTheming provides effectiveUseDynamicTheming,
         LocalQRAlarmSwitchColors provides switchColors,
         LocalQRAlarmRadioButtonColors provides radioButtonColors,
         LocalQRAlarmTimePickerColors provides timePickerColors,

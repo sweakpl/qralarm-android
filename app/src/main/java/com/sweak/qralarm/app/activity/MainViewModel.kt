@@ -40,8 +40,17 @@ class MainViewModel @Inject constructor(
             _state.update { currentState ->
                 currentState.copy(
                     shouldShowSplashScreen = false,
-                    isIntroductionFinished = userDataRepository.isIntroductionFinished.first()
+                    isIntroductionFinished = userDataRepository.isIntroductionFinished.first(),
+                    useDynamicTheming = userDataRepository.useDynamicTheming.first()
                 )
+            }
+        }
+
+        viewModelScope.launch {
+            userDataRepository.useDynamicTheming.collect { useDynamicTheming ->
+                _state.update { currentState ->
+                    currentState.copy(useDynamicTheming = useDynamicTheming)
+                }
             }
         }
     }
