@@ -88,6 +88,6 @@ class UserDataRepositoryImpl @Inject constructor(
 
     override val useDynamicTheming: Flow<Boolean>
         get() = qrAlarmPreferencesDataSource.getUseDynamicTheming().map {
-            it ?: false // Default to true (enabled) on supported devices
+            it ?: false
         }
 }
