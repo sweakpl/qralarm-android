@@ -90,7 +90,7 @@ class MainActivity : FragmentActivity() {
                 }
             )
 
-            QRAlarmTheme {
+            QRAlarmTheme(useDynamicTheming = state.useDynamicTheming) {
                 val isIntroductionFinished = state.isIntroductionFinished
 
                 if (isIntroductionFinished != null) {

@@ -41,9 +41,11 @@ import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.ui.compose_util.OnResume
+import com.sweak.qralarm.core.designsystem.theme.supportsDynamicTheming
 import com.sweak.qralarm.features.menu.components.AssignDefaultCodeBottomSheet
 import com.sweak.qralarm.features.menu.components.DefaultCodeEntry
 import com.sweak.qralarm.features.menu.components.MenuEntry
+import com.sweak.qralarm.features.menu.components.MenuToggleEntry
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -210,6 +212,16 @@ fun MenuScreenContent(
                     title = stringResource(R.string.rate_qralarm),
                     onClick = { onEvent(MenuScreenUserEvent.OnRateQRAlarmClicked) }
                 )
+
+                if (supportsDynamicTheming()) {
+                    MenuToggleEntry(
+                        title = stringResource(R.string.dynamic_theme),
+                        isChecked = state.isDynamicThemingEnabled,
+                        onCheckedChange = { enabled ->
+                            onEvent(MenuScreenUserEvent.DynamicThemingToggled(enabled = enabled))
+                        }
+                    )
+                }
             }
         }
     }

@@ -193,7 +193,7 @@ fun OptimizationScreenContent(
 
             HorizontalDivider(
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = MaterialTheme.colorScheme.outline,
                 modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
             )
 
@@ -232,7 +232,7 @@ fun OptimizationScreenContent(
 
             HorizontalDivider(
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = MaterialTheme.colorScheme.outline,
                 modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
             )
 
@@ -291,7 +291,8 @@ fun OptimizationScreenContent(
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary
                     ),
                     enabled = buttonsDisabledTimeout <= 0,
                     modifier = Modifier.weight(1f)

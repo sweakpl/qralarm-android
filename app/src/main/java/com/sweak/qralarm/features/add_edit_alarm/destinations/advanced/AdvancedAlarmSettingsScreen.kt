@@ -131,7 +131,7 @@ private fun AdvancedAlarmSettingsScreenContent(
 
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                     )
 
@@ -176,7 +176,7 @@ private fun AdvancedAlarmSettingsScreenContent(
 
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.outline,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
                         
@@ -194,7 +194,7 @@ private fun AdvancedAlarmSettingsScreenContent(
 
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.outline,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
 

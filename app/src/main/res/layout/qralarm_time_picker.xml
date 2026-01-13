@@ -7,7 +7,6 @@
         android:id="@+id/time_picker"
         android:layout_width="match_parent"
         android:layout_height="212dp"
-        android:theme="@style/TimePickerStyle"
         android:timePickerMode="spinner" />
 
 </FrameLayout>

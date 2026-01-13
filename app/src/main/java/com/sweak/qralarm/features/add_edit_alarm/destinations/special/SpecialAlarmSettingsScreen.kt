@@ -117,7 +117,7 @@ fun SpecialAlarmSettingsScreenContent(
 
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                     )
 
@@ -132,7 +132,7 @@ fun SpecialAlarmSettingsScreenContent(
 
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                     )
 
@@ -147,7 +147,7 @@ fun SpecialAlarmSettingsScreenContent(
 
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                     )
 

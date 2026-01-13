@@ -1,67 +1,52 @@
 package com.sweak.qralarm.features.menu.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sweak.qralarm.R
-import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.LocalQRAlarmSwitchColors
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
 @Composable
-fun DefaultCodeEntry(
-    onClick: () -> Unit,
-    assignedCode: String?,
+fun MenuToggleEntry(
+    title: String,
+    isChecked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.clickable { onClick() }
-    ) {
+    Column(modifier = modifier) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    vertical = MaterialTheme.space.smallMedium,
+                    vertical = MaterialTheme.space.medium,
                     horizontal = MaterialTheme.space.medium
                 )
         ) {
-            Column(
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = stringResource(R.string.default_alarm_code),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.padding(bottom = MaterialTheme.space.xSmall)
-                )
+            )
 
-                Text(
-                    text = assignedCode ?: stringResource(R.string.no_assigned_code),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-
-            Icon(
-                imageVector = QRAlarmIcons.ForwardArrow,
-                contentDescription =
-                    stringResource(R.string.content_description_forward_arrow_icon),
-                tint = MaterialTheme.colorScheme.onPrimary
+            Switch(
+                checked = isChecked,
+                onCheckedChange = onCheckedChange,
+                colors = LocalQRAlarmSwitchColors.current
             )
         }
 
@@ -75,11 +60,12 @@ fun DefaultCodeEntry(
 
 @Preview
 @Composable
-private fun DefaultCodeEntryPreview() {
+private fun MenuToggleEntryPreview() {
     QRAlarmTheme {
-        DefaultCodeEntry(
-            onClick = {},
-            assignedCode = null
+        MenuToggleEntry(
+            title = "Dynamic Theme",
+            isChecked = true,
+            onCheckedChange = {}
         )
     }
 }

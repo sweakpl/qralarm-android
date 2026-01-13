@@ -16,6 +16,7 @@ import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.app.activity.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.features.alarm.navigation.ALARM_SCREEN_ROUTE
 import com.sweak.qralarm.features.alarm.navigation.alarmScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmScannerScreen
@@ -24,13 +25,16 @@ import com.sweak.qralarm.features.emergency.task.navigation.emergencyScreen
 import com.sweak.qralarm.features.emergency.task.navigation.navigateToEmergencyScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class AlarmActivity : FragmentActivity() {
 
     @Inject lateinit var alarmsRepository: AlarmsRepository
+    @Inject lateinit var userDataRepository: UserDataRepository
 
     private var isLaunchedFromMainActivity: Boolean = false
     private var lastNavigateUpTime: Long = 0L
@@ -57,8 +61,10 @@ class AlarmActivity : FragmentActivity() {
         isLaunchedFromMainActivity =
             intent.extras?.getBoolean(EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY) == true
 
+        val useDynamicTheming = runBlocking { userDataRepository.useDynamicTheming.first() }
+
         setContent {
-            QRAlarmTheme {
+            QRAlarmTheme(useDynamicTheming = useDynamicTheming) {
                 val navController = rememberNavController()
 
                 NavHost(

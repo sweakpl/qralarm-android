@@ -7,6 +7,7 @@ import android.widget.TimePicker
 import android.widget.TimePicker.OnTimeChangedListener
 import com.sweak.qralarm.R
 import com.sweak.qralarm.databinding.QralarmTimePickerBinding
+import com.sweak.qralarm.core.designsystem.theme.LocalUseDynamicTheming
 
 class QRAlarmTimePicker @JvmOverloads constructor(
     context: Context,

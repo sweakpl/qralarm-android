@@ -35,7 +35,8 @@ class MenuViewModel @Inject constructor(
             _state.update { currentState ->
                 currentState.copy(
                     defaultAlarmCode = userDataRepository.defaultAlarmCode.first(),
-                    previouslySavedCodes = allSavedAlarmCodes
+                    previouslySavedCodes = allSavedAlarmCodes,
+                    isDynamicThemingEnabled = userDataRepository.useDynamicTheming.first()
                 )
             }
         }
@@ -44,6 +45,14 @@ class MenuViewModel @Inject constructor(
             userDataRepository.defaultAlarmCode.collect { defaultAlarmCode ->
                 _state.update { currentState ->
                     currentState.copy(defaultAlarmCode = defaultAlarmCode)
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            userDataRepository.useDynamicTheming.collect { useDynamicTheming ->
+                _state.update { currentState ->
+                    currentState.copy(isDynamicThemingEnabled = useDynamicTheming)
                 }
             }
         }
@@ -74,6 +83,9 @@ class MenuViewModel @Inject constructor(
                 _state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
+            }
+            is MenuScreenUserEvent.DynamicThemingToggled -> viewModelScope.launch {
+                userDataRepository.setUseDynamicTheming(enabled = event.enabled)
             }
             else -> { /* no-op */ }
         }

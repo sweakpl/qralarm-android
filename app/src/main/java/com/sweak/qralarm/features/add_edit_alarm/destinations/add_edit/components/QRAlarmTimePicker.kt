@@ -1,9 +1,12 @@
 package com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components
 
 import android.text.format.DateFormat
+import android.view.ContextThemeWrapper
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.theme.LocalUseDynamicTheming
 
 @Composable
 fun QRAlarmTimePicker(
@@ -13,10 +16,18 @@ fun QRAlarmTimePicker(
     isEnabled: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val useDynamicTheming = LocalUseDynamicTheming.current
+
     AndroidView(
         modifier = modifier,
-        factory = {
-            QRAlarmTimePicker(it).apply {
+        factory = { context ->
+            val themeRes = if (useDynamicTheming) {
+                R.style.TimePickerStyle
+            } else {
+                R.style.TimePickerStyleStatic
+            }
+            val themedContext = ContextThemeWrapper(context, themeRes)
+            QRAlarmTimePicker(themedContext).apply {
                 // Right after composing the TimePicker the internal TimePicker(View) calls the
                 // timeChangedListener with the current time which breaks the uiState - we have to
                 // prevent the uiState update after this initial timeChangedListener call:

@@ -1,10 +1,9 @@
 package com.sweak.qralarm.core.designsystem.component
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.sweak.qralarm.core.designsystem.theme.LocalQRAlarmSwitchColors
 
 @Composable
 fun QRAlarmSwitch(
@@ -15,9 +14,7 @@ fun QRAlarmSwitch(
     Switch(
         checked = checked,
         onCheckedChange = onCheckedChange,
-        colors = SwitchDefaults.colors(
-            checkedTrackColor = MaterialTheme.colorScheme.secondary
-        ),
+        colors = LocalQRAlarmSwitchColors.current,
         modifier = modifier
     )
 }

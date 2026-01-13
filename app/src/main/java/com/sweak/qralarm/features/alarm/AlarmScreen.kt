@@ -191,7 +191,8 @@ private fun AlarmScreenContent(
                     Button(
                         onClick = { onEvent(AlarmScreenUserEvent.StopAlarmClicked) },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary
+                            containerColor = MaterialTheme.colorScheme.tertiary,
+                            contentColor = MaterialTheme.colorScheme.onTertiary
                         ),
                         enabled = state.isInteractionEnabled,
                     ) {
