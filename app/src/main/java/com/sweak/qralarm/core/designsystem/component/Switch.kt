@@ -16,7 +16,10 @@ fun QRAlarmSwitch(
         checked = checked,
         onCheckedChange = onCheckedChange,
         colors = SwitchDefaults.colors(
-            checkedTrackColor = MaterialTheme.colorScheme.secondary
+            checkedThumbColor = MaterialTheme.colorScheme.onTertiary,
+            checkedTrackColor = MaterialTheme.colorScheme.tertiary,
+            uncheckedThumbColor = MaterialTheme.colorScheme.outline,
+            uncheckedTrackColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
         modifier = modifier
     )

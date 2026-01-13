@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.QRAlarm" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.QRAlarm" parent="android:Theme.Material.NoActionBar" />
 
     <style name="Theme.QRAlarm.Splash" parent="Theme.SplashScreen">
         <item name="postSplashScreenTheme">@style/Theme.QRAlarm</item>
@@ -11,8 +11,8 @@
         https://github.com/sweakpl/qralarm-android/issues/28 -->
         <item name="android:textSize" tools:ignore="SpUsage">52dp</item>
         <item name="android:fontFamily">@font/amiko_regular</item>
-        <item name="android:textColorPrimary">@android:color/black</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:colorControlNormal">@android:color/transparent</item>
     </style>
 

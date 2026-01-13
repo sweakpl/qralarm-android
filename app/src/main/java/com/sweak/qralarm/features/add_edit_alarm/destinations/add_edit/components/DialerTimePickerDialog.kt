@@ -57,16 +57,18 @@ fun DialerTimePickerDialog(
                 TimePicker(
                     state = timePickerState,
                     colors = TimePickerDefaults.colors(
-                        clockDialColor = MaterialTheme.colorScheme.onSurface,
-                        clockDialUnselectedContentColor = MaterialTheme.colorScheme.primary,
-                        periodSelectorBorderColor = MaterialTheme.colorScheme.primary,
-                        periodSelectorSelectedContainerColor = MaterialTheme.colorScheme.primary,
-                        periodSelectorSelectedContentColor = MaterialTheme.colorScheme.onPrimary,
-                        periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSurface,
-                        timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.primary,
-                        timeSelectorSelectedContentColor = MaterialTheme.colorScheme.onPrimary,
-                        timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.tertiary,
-                        timeSelectorUnselectedContentColor = MaterialTheme.colorScheme.onTertiary
+                        clockDialColor = MaterialTheme.colorScheme.secondary,
+                        clockDialSelectedContentColor = MaterialTheme.colorScheme.onTertiary,
+                        clockDialUnselectedContentColor = MaterialTheme.colorScheme.onSecondary,
+                        selectorColor = MaterialTheme.colorScheme.tertiary,
+                        periodSelectorBorderColor = MaterialTheme.colorScheme.secondary,
+                        periodSelectorSelectedContainerColor = MaterialTheme.colorScheme.tertiary,
+                        periodSelectorSelectedContentColor = MaterialTheme.colorScheme.onTertiary,
+                        periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSecondary,
+                        timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.tertiary,
+                        timeSelectorSelectedContentColor = MaterialTheme.colorScheme.onTertiary,
+                        timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.secondary,
+                        timeSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSecondary
                     ),
                     layoutType = TimePickerLayoutType.Vertical,
                     modifier = Modifier

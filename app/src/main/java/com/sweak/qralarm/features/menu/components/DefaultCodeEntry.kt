@@ -67,7 +67,7 @@ fun DefaultCodeEntry(
 
         HorizontalDivider(
             thickness = 1.dp,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = MaterialTheme.colorScheme.outline,
             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
         )
     }

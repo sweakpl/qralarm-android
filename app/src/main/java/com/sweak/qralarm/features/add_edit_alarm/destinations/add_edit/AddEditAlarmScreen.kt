@@ -534,7 +534,7 @@ private fun AddEditAlarmScreenContent(
 
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.outline,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
 
@@ -553,7 +553,7 @@ private fun AddEditAlarmScreenContent(
 
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.outline,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
 
@@ -570,7 +570,7 @@ private fun AddEditAlarmScreenContent(
 
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.outline,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
 
@@ -612,7 +612,7 @@ private fun AddEditAlarmScreenContent(
                             Column {
                                 HorizontalDivider(
                                     thickness = 1.dp,
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = MaterialTheme.colorScheme.outline,
                                     modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                                 )
 
@@ -835,7 +835,7 @@ private fun AddEditAlarmScreenContent(
 
                                         HorizontalDivider(
                                             thickness = 1.dp,
-                                            color = MaterialTheme.colorScheme.onSurface,
+                                            color = MaterialTheme.colorScheme.outline,
                                             modifier = Modifier
                                                 .padding(horizontal = MaterialTheme.space.medium)
                                         )
@@ -857,7 +857,7 @@ private fun AddEditAlarmScreenContent(
 
                                         HorizontalDivider(
                                             thickness = 1.dp,
-                                            color = MaterialTheme.colorScheme.onSurface,
+                                            color = MaterialTheme.colorScheme.outline,
                                             modifier = Modifier
                                                 .padding(horizontal = MaterialTheme.space.medium)
                                         )
@@ -890,6 +890,7 @@ private fun AddEditAlarmScreenContent(
                             Text(
                                 text = stringResource(R.string.alarm_label),
                                 style = MaterialTheme.typography.titleLarge,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
                             )
 
@@ -916,7 +917,7 @@ private fun AddEditAlarmScreenContent(
                                         )
                                     },
                                     textStyle = MaterialTheme.typography.titleMedium.copy(
-                                        color = MaterialTheme.colorScheme.onTertiary
+                                        color = MaterialTheme.colorScheme.onPrimary
                                     ),
                                     singleLine = true,
                                     decorationBox = { innerTextField ->
@@ -926,8 +927,8 @@ private fun AddEditAlarmScreenContent(
                                                 stringResource(R.string.enter_your_alarm_label),
                                                 style = MaterialTheme.typography.titleMedium.copy(
                                                     color =
-                                                    MaterialTheme.colorScheme.onTertiary.copy(
-                                                        alpha = 0.25f
+                                                    MaterialTheme.colorScheme.onPrimary.copy(
+                                                        alpha = 0.4f
                                                     )
                                                 )
                                             )
@@ -964,7 +965,7 @@ private fun AddEditAlarmScreenContent(
 
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.outline,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
 

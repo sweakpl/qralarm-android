@@ -162,7 +162,8 @@ private fun IntroductionScreenContent(
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
                 ),
                 modifier = Modifier
                     .fillMaxWidth()

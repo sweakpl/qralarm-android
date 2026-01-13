@@ -78,7 +78,7 @@ fun ChooseGentleWakeUpDurationBottomSheet(
                             selected = selectedGentleWakeUpDurationInSeconds == duration,
                             onClick = null,
                             colors = RadioButtonDefaults.colors(
-                                selectedColor = MaterialTheme.colorScheme.secondary,
+                                selectedColor = MaterialTheme.colorScheme.onSurface,
                                 unselectedColor = MaterialTheme.colorScheme.onSurface
                             )
                         )

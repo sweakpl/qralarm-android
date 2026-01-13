@@ -101,7 +101,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.ONLY_ONCE,
                         onClick = null,
                         colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.secondary,
+                            selectedColor = MaterialTheme.colorScheme.onSurface,
                             unselectedColor = MaterialTheme.colorScheme.onSurface
                         )
                     )
@@ -125,7 +125,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.MON_FRI,
                         onClick = null,
                         colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.secondary,
+                            selectedColor = MaterialTheme.colorScheme.onSurface,
                             unselectedColor = MaterialTheme.colorScheme.onSurface
                         )
                     )
@@ -149,7 +149,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.SAT_SUN,
                         onClick = null,
                         colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.secondary,
+                            selectedColor = MaterialTheme.colorScheme.onSurface,
                             unselectedColor = MaterialTheme.colorScheme.onSurface
                         )
                     )
@@ -173,7 +173,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.EVERYDAY,
                         onClick = null,
                         colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.secondary,
+                            selectedColor = MaterialTheme.colorScheme.onSurface,
                             unselectedColor = MaterialTheme.colorScheme.onSurface
                         )
                     )
@@ -198,7 +198,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                             selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.CUSTOM,
                             onClick = null,
                             colors = RadioButtonDefaults.colors(
-                                selectedColor = MaterialTheme.colorScheme.secondary,
+                                selectedColor = MaterialTheme.colorScheme.onSurface,
                                 unselectedColor = MaterialTheme.colorScheme.onSurface
                             )
                         )
