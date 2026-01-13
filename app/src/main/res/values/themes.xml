@@ -16,4 +16,13 @@
         <item name="android:colorControlNormal">@android:color/transparent</item>
     </style>
 
+    <style name="TimePickerStyleStatic">
+        <!-- Static theme style with white text (for purple background) -->
+        <item name="android:textSize" tools:ignore="SpUsage">52dp</item>
+        <item name="android:fontFamily">@font/amiko_regular</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:colorControlNormal">@android:color/transparent</item>
+    </style>
+
 </resources>

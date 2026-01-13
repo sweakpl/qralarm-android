@@ -11,7 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -25,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.theme.LocalQRAlarmRadioButtonColors
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
@@ -40,6 +40,8 @@ fun ChooseTemporaryMuteDurationBottomSheet(
     var selectedTemporaryMuteDurationInSeconds by remember {
         mutableIntStateOf(initialTemporaryMuteDurationInSeconds)
     }
+
+    val radioButtonColors = LocalQRAlarmRadioButtonColors.current
 
     ModalBottomSheet(
         onDismissRequest = { onDismissRequest(selectedTemporaryMuteDurationInSeconds) },
@@ -77,10 +79,7 @@ fun ChooseTemporaryMuteDurationBottomSheet(
                         RadioButton(
                             selected = selectedTemporaryMuteDurationInSeconds == duration,
                             onClick = null,
-                            colors = RadioButtonDefaults.colors(
-                                selectedColor = MaterialTheme.colorScheme.onSurface,
-                                unselectedColor = MaterialTheme.colorScheme.onSurface
-                            )
+                            colors = radioButtonColors
                         )
 
                         Text(

@@ -18,7 +18,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
@@ -35,6 +34,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.LocalQRAlarmRadioButtonColors
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
@@ -54,6 +54,8 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
 
     var selectedAlarmRingtone by remember(initialRingtone) { mutableStateOf(initialRingtone) }
     var selectedAlarmVolumePercentage by remember(alarmVolumePercentage) { mutableStateOf(alarmVolumePercentage) }
+
+    val radioButtonColors = LocalQRAlarmRadioButtonColors.current
 
     ModalBottomSheet(
         onDismissRequest = { onDismissRequest(selectedAlarmRingtone, selectedAlarmVolumePercentage) },
@@ -171,10 +173,7 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                             RadioButton(
                                 selected = selectedAlarmRingtone == alarmRingtone,
                                 onClick = null,
-                                colors = RadioButtonDefaults.colors(
-                                    selectedColor = MaterialTheme.colorScheme.onSurface,
-                                    unselectedColor = MaterialTheme.colorScheme.onSurface
-                                )
+                                colors = radioButtonColors
                             )
 
                             Text(

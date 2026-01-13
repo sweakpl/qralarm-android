@@ -15,7 +15,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
-import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -28,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.theme.LocalQRAlarmTimePickerColors
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
@@ -56,20 +56,7 @@ fun DialerTimePickerDialog(
 
                 TimePicker(
                     state = timePickerState,
-                    colors = TimePickerDefaults.colors(
-                        clockDialColor = MaterialTheme.colorScheme.secondary,
-                        clockDialSelectedContentColor = MaterialTheme.colorScheme.onTertiary,
-                        clockDialUnselectedContentColor = MaterialTheme.colorScheme.onSecondary,
-                        selectorColor = MaterialTheme.colorScheme.tertiary,
-                        periodSelectorBorderColor = MaterialTheme.colorScheme.secondary,
-                        periodSelectorSelectedContainerColor = MaterialTheme.colorScheme.tertiary,
-                        periodSelectorSelectedContentColor = MaterialTheme.colorScheme.onTertiary,
-                        periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSecondary,
-                        timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.tertiary,
-                        timeSelectorSelectedContentColor = MaterialTheme.colorScheme.onTertiary,
-                        timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.secondary,
-                        timeSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSecondary
-                    ),
+                    colors = LocalQRAlarmTimePickerColors.current,
                     layoutType = TimePickerLayoutType.Vertical,
                     modifier = Modifier
                         .padding(top = MaterialTheme.space.medium)

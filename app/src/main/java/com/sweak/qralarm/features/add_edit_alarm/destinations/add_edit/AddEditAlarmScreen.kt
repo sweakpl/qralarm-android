@@ -74,6 +74,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.LocalAlarmLabelTextColor
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
@@ -890,7 +891,6 @@ private fun AddEditAlarmScreenContent(
                             Text(
                                 text = stringResource(R.string.alarm_label),
                                 style = MaterialTheme.typography.titleLarge,
-                                color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
                             )
 
@@ -917,7 +917,7 @@ private fun AddEditAlarmScreenContent(
                                         )
                                     },
                                     textStyle = MaterialTheme.typography.titleMedium.copy(
-                                        color = MaterialTheme.colorScheme.onPrimary
+                                        color = LocalAlarmLabelTextColor.current
                                     ),
                                     singleLine = true,
                                     decorationBox = { innerTextField ->
@@ -927,8 +927,8 @@ private fun AddEditAlarmScreenContent(
                                                 stringResource(R.string.enter_your_alarm_label),
                                                 style = MaterialTheme.typography.titleMedium.copy(
                                                     color =
-                                                    MaterialTheme.colorScheme.onPrimary.copy(
-                                                        alpha = 0.4f
+                                                    LocalAlarmLabelTextColor.current.copy(
+                                                        alpha = 0.25f
                                                     )
                                                 )
                                             )

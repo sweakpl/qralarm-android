@@ -15,7 +15,6 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -29,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.theme.LocalQRAlarmRadioButtonColors
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.shortName
@@ -52,6 +52,8 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
     val selectedAlarmDaysOfWeek = remember {
         mutableStateListOf(*initialAlarmRepeatingScheduleWrapper.alarmDaysOfWeek.toTypedArray())
     }
+
+    val radioButtonColors = LocalQRAlarmRadioButtonColors.current
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -100,10 +102,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                     RadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.ONLY_ONCE,
                         onClick = null,
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.onSurface,
-                            unselectedColor = MaterialTheme.colorScheme.onSurface
-                        )
+                        colors = radioButtonColors
                     )
 
                     Text(
@@ -124,10 +123,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                     RadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.MON_FRI,
                         onClick = null,
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.onSurface,
-                            unselectedColor = MaterialTheme.colorScheme.onSurface
-                        )
+                        colors = radioButtonColors
                     )
 
                     Text(
@@ -148,10 +144,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                     RadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.SAT_SUN,
                         onClick = null,
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.onSurface,
-                            unselectedColor = MaterialTheme.colorScheme.onSurface
-                        )
+                        colors = radioButtonColors
                     )
 
                     Text(
@@ -172,10 +165,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                     RadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.EVERYDAY,
                         onClick = null,
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.onSurface,
-                            unselectedColor = MaterialTheme.colorScheme.onSurface
-                        )
+                        colors = radioButtonColors
                     )
 
                     Text(
@@ -197,10 +187,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                         RadioButton(
                             selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.CUSTOM,
                             onClick = null,
-                            colors = RadioButtonDefaults.colors(
-                                selectedColor = MaterialTheme.colorScheme.onSurface,
-                                unselectedColor = MaterialTheme.colorScheme.onSurface
-                            )
+                            colors = radioButtonColors
                         )
 
                         Text(
