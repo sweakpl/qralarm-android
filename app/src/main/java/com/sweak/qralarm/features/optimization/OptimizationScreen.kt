@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.provider.Settings
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,17 +15,16 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,7 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalUriHandler
@@ -131,8 +128,7 @@ fun OptimizationScreenContent(
                 title = {
                     Text(
                         text = stringResource(R.string.optimize_qralarm),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        style = MaterialTheme.typography.titleLarge
                     )
                 },
                 navigationIcon = {
@@ -145,27 +141,13 @@ fun OptimizationScreenContent(
                             stringResource(R.string.content_description_back_arrow_icon)
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                }
             )
-        },
-        contentColor = MaterialTheme.colorScheme.onPrimary
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.secondary
-                        )
-                    )
-                )
                 .padding(paddingValues = paddingValues)
         ) {
             Text(
@@ -193,7 +175,7 @@ fun OptimizationScreenContent(
 
             HorizontalDivider(
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = LocalContentColor.current,
                 modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
             )
 
@@ -232,7 +214,7 @@ fun OptimizationScreenContent(
 
             HorizontalDivider(
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = LocalContentColor.current,
                 modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
             )
 
@@ -260,9 +242,6 @@ fun OptimizationScreenContent(
                             }
                         }
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSecondary
-                    ),
                     enabled = pagerState.currentPage != 0 && buttonsDisabledTimeout <= 0,
                     modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                 ) {
@@ -290,9 +269,6 @@ fun OptimizationScreenContent(
                             }
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
                     enabled = buttonsDisabledTimeout <= 0,
                     modifier = Modifier.weight(1f)
                 ) {

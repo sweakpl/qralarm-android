@@ -102,9 +102,6 @@ fun BestSettingsPage(
 
         ElevatedCard(
             onClick = onClick,
-            colors = CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            ),
             elevation = CardDefaults.elevatedCardElevation(
                 defaultElevation = MaterialTheme.space.xSmall
             ),
