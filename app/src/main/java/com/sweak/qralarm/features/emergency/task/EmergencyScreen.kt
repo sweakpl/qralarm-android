@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -80,14 +78,6 @@ fun EmergencyScreenContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.secondary
-                        )
-                    )
-                )
                 .padding(paddingValues = paddingValues)
         ) {
             IconButton(
@@ -100,8 +90,7 @@ fun EmergencyScreenContent(
             ) {
                 Icon(
                     imageVector = QRAlarmIcons.Close,
-                    contentDescription = stringResource(R.string.content_description_close_icon),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    contentDescription = stringResource(R.string.content_description_close_icon)
                 )
             }
 
@@ -112,8 +101,7 @@ fun EmergencyScreenContent(
                 visible = state.alarmMuteProgress != null
             ) {
                 AlarmMuteIndicator(
-                    progress = state.alarmMuteProgress ?: 0f,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    progress = state.alarmMuteProgress ?: 0f
                 )
             }
 
