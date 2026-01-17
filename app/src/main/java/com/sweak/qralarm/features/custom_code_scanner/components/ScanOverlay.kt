@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.toArgb
 @Composable
 fun ScanOverlay() {
     val ratio = SCAN_OVERLAY_RATIO
-    val overlayColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)
-    val cornerColor = MaterialTheme.colorScheme.tertiary
+    val overlayColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.25f)
+    val cornerColor = MaterialTheme.colorScheme.primary
     val cornerStrokeDp = 2f
     val cornerLengthDp = 48f
 

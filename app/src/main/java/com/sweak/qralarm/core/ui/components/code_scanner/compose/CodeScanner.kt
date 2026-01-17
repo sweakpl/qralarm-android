@@ -63,7 +63,7 @@ fun CodeScanner(
                 Icon(
                     imageVector = QRAlarmIcons.Close,
                     contentDescription = stringResource(R.string.content_description_close_icon),
-                    tint = MaterialTheme.colorScheme.tertiary,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(MaterialTheme.space.large)
                 )
             }
@@ -74,7 +74,7 @@ fun CodeScanner(
                         if (isFlashEnabled) QRAlarmIcons.FlashOff
                         else QRAlarmIcons.FlashOn,
                     contentDescription = stringResource(R.string.content_description_flash_icon),
-                    tint = MaterialTheme.colorScheme.tertiary,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(MaterialTheme.space.large)
                 )
             }
