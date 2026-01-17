@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -18,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import com.sweak.qralarm.R
@@ -29,12 +31,13 @@ fun QRAlarmComboBox(
     menuItems: List<Any>,
     selectedIndex: Int,
     onMenuItemClick: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    containerColor: Color = Color.Unspecified
 ) {
     Column(modifier = modifier) {
         var expanded by remember { mutableStateOf(false) }
 
-        Card {
+        Card(colors = CardDefaults.cardColors(containerColor = containerColor)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier

@@ -1,6 +1,5 @@
 package com.sweak.qralarm.features.emergency.settings
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,22 +17,20 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
-import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
 import com.sweak.qralarm.core.designsystem.component.QRAlarmComboBox
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
@@ -78,8 +75,7 @@ fun EmergencySettingsScreenContent(
                 title = {
                     Text(
                         text = stringResource(R.string.emergency_task),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        style = MaterialTheme.typography.titleLarge
                     )
                 },
                 navigationIcon = {
@@ -92,11 +88,7 @@ fun EmergencySettingsScreenContent(
                                 stringResource(R.string.content_description_back_arrow_icon)
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                }
             )
         },
     ) { paddingValues ->
@@ -104,14 +96,6 @@ fun EmergencySettingsScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .background(
-                    brush = Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.secondary
-                        )
-                    )
-                )
         ) {
             Column(
                 modifier = Modifier
@@ -121,7 +105,6 @@ fun EmergencySettingsScreenContent(
                 Text(
                     text = stringResource(R.string.emergency_task_global_settings_description),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
                         .padding(
                             start = MaterialTheme.space.medium,
@@ -131,7 +114,7 @@ fun EmergencySettingsScreenContent(
                         )
                 )
 
-                QRAlarmCard(
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -161,6 +144,7 @@ fun EmergencySettingsScreenContent(
                             onMenuItemClick = { index ->
                                 onEvent(EmergencySettingsScreenUserEvent.SliderRangeSelected(index))
                             },
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                             modifier = Modifier
                                 .padding(
                                     start = MaterialTheme.space.medium,
@@ -172,7 +156,7 @@ fun EmergencySettingsScreenContent(
 
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = LocalContentColor.current,
                         modifier = Modifier.padding(horizontal = MaterialTheme.space.smallMedium)
                     )
 
@@ -197,6 +181,7 @@ fun EmergencySettingsScreenContent(
                                     EmergencySettingsScreenUserEvent.RequiredMatchesSelected(index)
                                 )
                             },
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                             modifier = Modifier
                                 .padding(
                                     start = MaterialTheme.space.medium,
@@ -208,7 +193,7 @@ fun EmergencySettingsScreenContent(
 
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = LocalContentColor.current,
                         modifier = Modifier.padding(horizontal = MaterialTheme.space.smallMedium)
                     )
 
