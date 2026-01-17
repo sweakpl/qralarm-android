@@ -23,6 +23,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -51,7 +52,7 @@ fun AddNewChainedAlarmCard(
 
         val borderWidth = MaterialTheme.space.xSmall
         val cornerRadius = MaterialTheme.space.smallMedium
-        val borderColor = MaterialTheme.colorScheme.tertiary
+        val borderColor = LocalContentColor.current
 
         OutlinedCard(
             modifier = Modifier
@@ -90,7 +91,6 @@ fun AddNewChainedAlarmCard(
                 Text(
                     text = stringResource(R.string.add_next_alarm_in_chain),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(horizontal = MaterialTheme.space.small)
