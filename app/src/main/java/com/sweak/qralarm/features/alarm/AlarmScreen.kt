@@ -1,17 +1,16 @@
 package com.sweak.qralarm.features.alarm
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.provider.Settings
 import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -148,14 +146,6 @@ private fun AlarmScreenContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.secondary
-                        )
-                    )
-                )
                 .padding(paddingValues = paddingValues)
         ) {
             Column(
@@ -171,8 +161,7 @@ private fun AlarmScreenContent(
                         Text(
                             text = state.alarmLabel?.asString() ?: "",
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.displayLarge,
-                            color = MaterialTheme.colorScheme.onPrimary
+                            style = MaterialTheme.typography.displayLarge
                         )
                     }
 
@@ -182,7 +171,6 @@ private fun AlarmScreenContent(
                             is24HourFormat = DateFormat.is24HourFormat(LocalContext.current)
                         ),
                         style = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
-                        color = MaterialTheme.colorScheme.onPrimary,
                         maxLines = 1
                     )
                 }
@@ -190,9 +178,6 @@ private fun AlarmScreenContent(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Button(
                         onClick = { onEvent(AlarmScreenUserEvent.StopAlarmClicked) },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary
-                        ),
                         enabled = state.isInteractionEnabled,
                     ) {
                         Text(
@@ -205,9 +190,6 @@ private fun AlarmScreenContent(
                     AnimatedVisibility(visible = state.isSnoozeAvailable) {
                         TextButton(
                             onClick = { onEvent(AlarmScreenUserEvent.SnoozeAlarmClicked) },
-                            colors = ButtonDefaults.textButtonColors(
-                                contentColor = MaterialTheme.colorScheme.onSecondary
-                            ),
                             enabled = state.isInteractionEnabled,
                             modifier = Modifier.padding(top = MaterialTheme.space.medium)
                         ) {
@@ -232,8 +214,7 @@ private fun AlarmScreenContent(
                     Icon(
                         imageVector = QRAlarmIcons.Emergency,
                         contentDescription =
-                            stringResource(R.string.content_description_emergency_icon),
-                        tint = MaterialTheme.colorScheme.onSecondary
+                            stringResource(R.string.content_description_emergency_icon)
                     )
                 }
             }
@@ -267,7 +248,7 @@ private fun AlarmScreenContent(
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_TYPE_NORMAL)
 @Composable
 private fun AlarmScreenContentPreview() {
     QRAlarmTheme {
