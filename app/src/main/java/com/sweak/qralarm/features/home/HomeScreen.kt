@@ -6,7 +6,6 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +27,7 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -35,13 +35,11 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
@@ -296,8 +294,7 @@ private fun HomeScreenContent(
                 title = {
                     Text(
                         text = stringResource(R.string.home),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        style = MaterialTheme.typography.titleLarge
                     )
                 },
                 navigationIcon = {
@@ -310,17 +307,12 @@ private fun HomeScreenContent(
                             stringResource(R.string.content_description_menu_icon)
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                }
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { onEvent(HomeScreenUserEvent.AddNewAlarm) },
-                containerColor = MaterialTheme.colorScheme.tertiary
+                onClick = { onEvent(HomeScreenUserEvent.AddNewAlarm) }
             ) {
                 Icon(
                     imageVector = QRAlarmIcons.Add,
@@ -336,16 +328,7 @@ private fun HomeScreenContent(
             targetState = state.isLoading,
             contentAlignment = Alignment.Center,
             label = "homeScreenLoadingAnimation",
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.secondary
-                        )
-                    )
-                )
+            modifier = Modifier.fillMaxSize()
         ) { isLoading ->
             if (isLoading) {
                 Box(
@@ -354,7 +337,6 @@ private fun HomeScreenContent(
                         .padding(paddingValues = paddingValues)
                 ) {
                     CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(MaterialTheme.space.xLarge)
                             .align(alignment = Alignment.Center)
@@ -377,8 +359,7 @@ private fun HomeScreenContent(
                         ) {
                             Text(
                                 text = stringResource(R.string.alarms),
-                                style = MaterialTheme.typography.displaySmall,
-                                color = MaterialTheme.colorScheme.onPrimary
+                                style = MaterialTheme.typography.displaySmall
                             )
 
                             IconButton(
@@ -387,7 +368,6 @@ private fun HomeScreenContent(
                                 Icon(
                                     imageVector = QRAlarmIcons.Add,
                                     contentDescription = stringResource(R.string.content_description_add_icon),
-                                    tint = MaterialTheme.colorScheme.onPrimary,
                                     modifier = Modifier.size(size = MaterialTheme.space.large)
                                 )
                             }
@@ -400,12 +380,11 @@ private fun HomeScreenContent(
                         item {
                             OutlinedCard(
                                 colors = CardDefaults.outlinedCardColors(
-                                    containerColor = Color.Transparent,
-                                    contentColor = MaterialTheme.colorScheme.onPrimary
+                                    containerColor = Color.Transparent
                                 ),
                                 border = BorderStroke(
                                     width = 1.dp,
-                                    color = MaterialTheme.colorScheme.onPrimary
+                                    color = LocalContentColor.current
                                 ),
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -442,7 +421,6 @@ private fun HomeScreenContent(
                             Text(
                                 text = stringResource(R.string.active_alarms),
                                 style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier
                                     .padding(
                                         start = MaterialTheme.space.medium,
@@ -504,7 +482,6 @@ private fun HomeScreenContent(
                             Text(
                                 text = stringResource(R.string.non_active_alarms),
                                 style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier
                                     .padding(
                                         start = MaterialTheme.space.medium,

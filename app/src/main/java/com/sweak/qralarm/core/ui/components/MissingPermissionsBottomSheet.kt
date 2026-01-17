@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -61,8 +62,7 @@ fun MissingPermissionsBottomSheet(
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
-        sheetState = modalBottomSheetState,
-        containerColor = MaterialTheme.colorScheme.surface
+        sheetState = modalBottomSheetState
     ) {
         Column(
             modifier = Modifier
@@ -80,7 +80,7 @@ fun MissingPermissionsBottomSheet(
 
             HorizontalDivider(
                 thickness = 1.dp,
-                color = MaterialTheme.colorScheme.onSurface
+                color = LocalContentColor.current
             )
 
             cameraPermissionState?.let {
@@ -127,7 +127,7 @@ fun MissingPermissionsBottomSheet(
 
                 HorizontalDivider(
                     thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = LocalContentColor.current
                 )
             }
 
@@ -173,7 +173,7 @@ fun MissingPermissionsBottomSheet(
 
                 HorizontalDivider(
                     thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = LocalContentColor.current
                 )
             }
 
@@ -221,7 +221,7 @@ fun MissingPermissionsBottomSheet(
 
                 HorizontalDivider(
                     thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = LocalContentColor.current
                 )
             }
 
@@ -269,7 +269,7 @@ fun MissingPermissionsBottomSheet(
 
                 HorizontalDivider(
                     thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = LocalContentColor.current
                 )
             }
         }

@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
@@ -36,7 +37,7 @@ fun QRAlarmDialog(
 ) {
     val onlyPositiveButton = negativeButtonText == null
 
-    androidx.compose.ui.window.Dialog(
+    Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
             dismissOnBackPress = true,
@@ -78,10 +79,7 @@ fun QRAlarmDialog(
                             onClick = onNegativeClick ?: onDismissRequest,
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text(
-                                text = negativeButtonText!!,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
+                            Text(text = negativeButtonText)
                         }
 
                         Spacer(modifier = Modifier.width(MaterialTheme.space.medium))

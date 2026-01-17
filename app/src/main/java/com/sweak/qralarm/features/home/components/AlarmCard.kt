@@ -2,7 +2,6 @@ package com.sweak.qralarm.features.home.components
 
 import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -32,7 +31,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
-import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
 import com.sweak.qralarm.core.designsystem.component.QRAlarmSwitch
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
@@ -56,7 +54,7 @@ fun AlarmCard(
     onEmergencyClick: (alarmId: Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    QRAlarmCard(modifier = modifier.clickable { onClick(alarmWrapper.alarmId) }) {
+    Card(modifier = modifier.clickable { onClick(alarmWrapper.alarmId) }) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
@@ -73,7 +71,6 @@ fun AlarmCard(
                     Text(
                         text = alarmWrapper.alarmLabel ?: "",
                         style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -93,10 +90,7 @@ fun AlarmCard(
                         textDecoration =
                         if (indicateSkippingNextAlarm) TextDecoration.LineThrough
                         else TextDecoration.None
-                    ),
-                    color =
-                    if (indicateSkippingNextAlarm) MaterialTheme.colorScheme.onSurfaceVariant
-                    else MaterialTheme.colorScheme.onSurface
+                    )
                 )
 
                 Text(
@@ -115,8 +109,7 @@ fun AlarmCard(
                             R.string.next_alarm_date,
                             getDayString(alarmWrapper.nextAlarmTimeInMillis)
                         ),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
             }
@@ -150,10 +143,7 @@ fun AlarmCard(
 
                     DropdownMenu(
                         expanded = expanded,
-                        onDismissRequest = { expanded = false },
-                        modifier = Modifier
-                            .wrapContentWidth()
-                            .background(color = MaterialTheme.colorScheme.surface)
+                        onDismissRequest = { expanded = false }
                     ) {
                         if (alarmWrapper.isEmergencyAvailable) {
                             DropdownMenuItem(
@@ -168,8 +158,7 @@ fun AlarmCard(
                                         imageVector = QRAlarmIcons.Emergency,
                                         contentDescription = stringResource(
                                             R.string.content_description_emergency_icon
-                                        ),
-                                        tint = MaterialTheme.colorScheme.onSurface
+                                        )
                                     )
                                 },
                                 onClick = {
@@ -207,8 +196,7 @@ fun AlarmCard(
                                             } else {
                                                 R.string.content_description_skip_next_alarm_icon
                                             }
-                                        ),
-                                        tint = MaterialTheme.colorScheme.onSurface
+                                        )
                                     )
                                 },
                                 onClick = {
@@ -233,8 +221,7 @@ fun AlarmCard(
                                     imageVector = QRAlarmIcons.Copy,
                                     contentDescription = stringResource(
                                         R.string.content_description_copy_icon
-                                    ),
-                                    tint = MaterialTheme.colorScheme.onSurface
+                                    )
                                 )
                             },
                             onClick = {
