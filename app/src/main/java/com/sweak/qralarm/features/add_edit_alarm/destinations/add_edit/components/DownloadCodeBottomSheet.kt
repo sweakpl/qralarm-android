@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -30,8 +29,7 @@ fun DownloadCodeBottomSheet(
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
-        sheetState = modalBottomSheetState,
-        containerColor = MaterialTheme.colorScheme.surface
+        sheetState = modalBottomSheetState
     ) {
         Column(
             modifier = Modifier
@@ -55,9 +53,6 @@ fun DownloadCodeBottomSheet(
 
             Button(
                 onClick = onDownloadCodeClicked,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)

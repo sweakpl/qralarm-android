@@ -48,8 +48,7 @@ fun ChooseSnoozeConfigurationBottomSheet(
                 )
             )
         },
-        sheetState = modalBottomSheetState,
-        containerColor = MaterialTheme.colorScheme.surface
+        sheetState = modalBottomSheetState
     ) {
         Column(
             modifier = Modifier

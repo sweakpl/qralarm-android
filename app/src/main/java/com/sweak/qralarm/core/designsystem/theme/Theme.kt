@@ -18,7 +18,9 @@ private val ColorScheme = lightColorScheme(
     onSecondary = Color.White,
     tertiary = ButterflyBush,
     onTertiary = Color.White,
-    surface = ButterflyBush,
+    background = BlueZodiac,
+    onBackground = Color.White,
+    surface = Color(0xFF1A1F3A),
     onSurface = Color.White,
     onSurfaceVariant = Nobel,
     error = Monza,
@@ -36,7 +38,7 @@ fun QRAlarmTheme(content: @Composable () -> Unit) {
             } else {
                 dynamicLightColorScheme(context)
             }
-        } else ColorScheme // For now ColorScheme will not look good
+        } else ColorScheme
 
         MaterialTheme(
             colorScheme = colorScheme,

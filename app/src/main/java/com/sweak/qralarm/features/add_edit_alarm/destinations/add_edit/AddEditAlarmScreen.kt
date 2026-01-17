@@ -15,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,7 +27,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
@@ -42,11 +40,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,7 +53,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
@@ -71,7 +68,6 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
-import com.sweak.qralarm.core.designsystem.component.QRAlarmCard
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
@@ -397,8 +393,7 @@ private fun AddEditAlarmScreenContent(
                 title = {
                     Text(
                         text = stringResource(R.string.alarm),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        style = MaterialTheme.typography.titleLarge
                     )
                 },
                 navigationIcon = {
@@ -422,12 +417,7 @@ private fun AddEditAlarmScreenContent(
                             stringResource(R.string.content_description_done_icon)
                         )
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                }
             )
         }
     ) { paddingValues ->
@@ -438,14 +428,6 @@ private fun AddEditAlarmScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .background(
-                    brush = Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.secondary
-                        )
-                    )
-                )
         ) { isLoading ->
             if (isLoading) {
                 Box(
@@ -454,7 +436,6 @@ private fun AddEditAlarmScreenContent(
                         .padding(paddingValues = paddingValues)
                 ) {
                     CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(MaterialTheme.space.xLarge)
                             .align(alignment = Alignment.Center)
@@ -503,14 +484,13 @@ private fun AddEditAlarmScreenContent(
                                 Icon(
                                     imageVector = QRAlarmIcons.Clock,
                                     contentDescription =
-                                        stringResource(R.string.content_description_clock_icon),
-                                    tint = MaterialTheme.colorScheme.onPrimary
+                                        stringResource(R.string.content_description_clock_icon)
                                 )
                             }
                         }
                     }
 
-                    QRAlarmCard(
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
@@ -534,7 +514,7 @@ private fun AddEditAlarmScreenContent(
 
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = LocalContentColor.current,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
 
@@ -553,7 +533,7 @@ private fun AddEditAlarmScreenContent(
 
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = LocalContentColor.current,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
 
@@ -570,7 +550,7 @@ private fun AddEditAlarmScreenContent(
 
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = LocalContentColor.current,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
 
@@ -588,7 +568,7 @@ private fun AddEditAlarmScreenContent(
                         )
                     }
 
-                    QRAlarmCard(
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
@@ -612,7 +592,7 @@ private fun AddEditAlarmScreenContent(
                             Column {
                                 HorizontalDivider(
                                     thickness = 1.dp,
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = LocalContentColor.current,
                                     modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                                 )
 
@@ -669,13 +649,7 @@ private fun AddEditAlarmScreenContent(
 
                                                     DropdownMenu(
                                                         expanded = expanded,
-                                                        onDismissRequest = { expanded = false },
-                                                        modifier = Modifier
-                                                            .wrapContentWidth()
-                                                            .background(
-                                                                color =
-                                                                    MaterialTheme.colorScheme.surface
-                                                            )
+                                                        onDismissRequest = { expanded = false }
                                                     ) {
                                                         val areSavedCodesAvailable =
                                                             state.previouslySavedCodes.isNotEmpty()
@@ -696,9 +670,7 @@ private fun AddEditAlarmScreenContent(
                                                                     QRAlarmIcons.QrCodeScanner,
                                                                     contentDescription = stringResource(
                                                                         R.string.content_description_qr_code_scanner_icon
-                                                                    ),
-                                                                    tint =
-                                                                    MaterialTheme.colorScheme.onSurface
+                                                                    )
                                                                 )
                                                             },
                                                             onClick = {
@@ -783,7 +755,7 @@ private fun AddEditAlarmScreenContent(
                                                 Card(
                                                     colors = CardDefaults.cardColors(
                                                         containerColor =
-                                                        MaterialTheme.colorScheme.secondary
+                                                            MaterialTheme.colorScheme.secondary
                                                     ),
                                                     modifier = Modifier
                                                         .padding(all = MaterialTheme.space.medium)
@@ -802,8 +774,8 @@ private fun AddEditAlarmScreenContent(
                                                         }
                                                 ) {
                                                     Row(
-                                                        horizontalArrangement =
-                                                        Arrangement.SpaceBetween,
+                                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                                        verticalAlignment = Alignment.CenterVertically,
                                                         modifier = Modifier
                                                             .fillMaxWidth()
                                                             .padding(
@@ -835,7 +807,7 @@ private fun AddEditAlarmScreenContent(
 
                                         HorizontalDivider(
                                             thickness = 1.dp,
-                                            color = MaterialTheme.colorScheme.onSurface,
+                                            color = LocalContentColor.current,
                                             modifier = Modifier
                                                 .padding(horizontal = MaterialTheme.space.medium)
                                         )
@@ -857,7 +829,7 @@ private fun AddEditAlarmScreenContent(
 
                                         HorizontalDivider(
                                             thickness = 1.dp,
-                                            color = MaterialTheme.colorScheme.onSurface,
+                                            color = LocalContentColor.current,
                                             modifier = Modifier
                                                 .padding(horizontal = MaterialTheme.space.medium)
                                         )
@@ -877,7 +849,7 @@ private fun AddEditAlarmScreenContent(
                         }
                     }
 
-                    QRAlarmCard(
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
@@ -915,9 +887,7 @@ private fun AddEditAlarmScreenContent(
                                             )
                                         )
                                     },
-                                    textStyle = MaterialTheme.typography.titleMedium.copy(
-                                        color = MaterialTheme.colorScheme.onTertiary
-                                    ),
+                                    textStyle = MaterialTheme.typography.titleMedium,
                                     singleLine = true,
                                     decorationBox = { innerTextField ->
                                         if (state.alarmLabel.isNullOrBlank()) {
@@ -925,9 +895,8 @@ private fun AddEditAlarmScreenContent(
                                                 text =
                                                 stringResource(R.string.enter_your_alarm_label),
                                                 style = MaterialTheme.typography.titleMedium.copy(
-                                                    color =
-                                                    MaterialTheme.colorScheme.onTertiary.copy(
-                                                        alpha = 0.25f
+                                                    color = LocalContentColor.current.copy(
+                                                        alpha = 0.6f
                                                     )
                                                 )
                                             )
@@ -941,7 +910,7 @@ private fun AddEditAlarmScreenContent(
                         }
                     }
 
-                    QRAlarmCard(
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
@@ -964,7 +933,7 @@ private fun AddEditAlarmScreenContent(
 
                         HorizontalDivider(
                             thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = LocalContentColor.current,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
 

@@ -15,7 +15,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
-import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -56,18 +55,6 @@ fun DialerTimePickerDialog(
 
                 TimePicker(
                     state = timePickerState,
-                    colors = TimePickerDefaults.colors(
-                        clockDialColor = MaterialTheme.colorScheme.onSurface,
-                        clockDialUnselectedContentColor = MaterialTheme.colorScheme.primary,
-                        periodSelectorBorderColor = MaterialTheme.colorScheme.primary,
-                        periodSelectorSelectedContainerColor = MaterialTheme.colorScheme.primary,
-                        periodSelectorSelectedContentColor = MaterialTheme.colorScheme.onPrimary,
-                        periodSelectorUnselectedContentColor = MaterialTheme.colorScheme.onSurface,
-                        timeSelectorSelectedContainerColor = MaterialTheme.colorScheme.primary,
-                        timeSelectorSelectedContentColor = MaterialTheme.colorScheme.onPrimary,
-                        timeSelectorUnselectedContainerColor = MaterialTheme.colorScheme.tertiary,
-                        timeSelectorUnselectedContentColor = MaterialTheme.colorScheme.onTertiary
-                    ),
                     layoutType = TimePickerLayoutType.Vertical,
                     modifier = Modifier
                         .padding(top = MaterialTheme.space.medium)
@@ -85,8 +72,7 @@ fun DialerTimePickerDialog(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = stringResource(R.string.cancel),
-                            color = MaterialTheme.colorScheme.onSurface
+                            text = stringResource(R.string.cancel)
                         )
                     }
 

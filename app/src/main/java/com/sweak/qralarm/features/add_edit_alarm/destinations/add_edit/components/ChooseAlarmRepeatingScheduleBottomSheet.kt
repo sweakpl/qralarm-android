@@ -11,11 +11,9 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -68,8 +66,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                 )
             )
         },
-        sheetState = modalBottomSheetState,
-        containerColor = MaterialTheme.colorScheme.surface
+        sheetState = modalBottomSheetState
     ) {
         Column(
             modifier = Modifier
@@ -99,11 +96,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                 ) {
                     RadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.ONLY_ONCE,
-                        onClick = null,
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.secondary,
-                            unselectedColor = MaterialTheme.colorScheme.onSurface
-                        )
+                        onClick = null
                     )
 
                     Text(
@@ -123,11 +116,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                 ) {
                     RadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.MON_FRI,
-                        onClick = null,
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.secondary,
-                            unselectedColor = MaterialTheme.colorScheme.onSurface
-                        )
+                        onClick = null
                     )
 
                     Text(
@@ -147,11 +136,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                 ) {
                     RadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.SAT_SUN,
-                        onClick = null,
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.secondary,
-                            unselectedColor = MaterialTheme.colorScheme.onSurface
-                        )
+                        onClick = null
                     )
 
                     Text(
@@ -171,11 +156,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                 ) {
                     RadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.EVERYDAY,
-                        onClick = null,
-                        colors = RadioButtonDefaults.colors(
-                            selectedColor = MaterialTheme.colorScheme.secondary,
-                            unselectedColor = MaterialTheme.colorScheme.onSurface
-                        )
+                        onClick = null
                     )
 
                     Text(
@@ -196,11 +177,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                     ) {
                         RadioButton(
                             selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.CUSTOM,
-                            onClick = null,
-                            colors = RadioButtonDefaults.colors(
-                                selectedColor = MaterialTheme.colorScheme.secondary,
-                                unselectedColor = MaterialTheme.colorScheme.onSurface
-                            )
+                            onClick = null
                         )
 
                         Text(
@@ -235,16 +212,6 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                                             )
                                         )
                                     },
-                                    colors = FilterChipDefaults.filterChipColors(
-                                        selectedContainerColor = MaterialTheme.colorScheme.secondary,
-                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
-                                        labelColor = MaterialTheme.colorScheme.onPrimary
-                                    ),
-                                    border = FilterChipDefaults.filterChipBorder(
-                                        enabled = true,
-                                        selected = dayOfWeek in selectedAlarmDaysOfWeek,
-                                        borderColor = MaterialTheme.colorScheme.onPrimary
-                                    )
                                 )
                             }
                         }

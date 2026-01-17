@@ -18,9 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -57,8 +55,7 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
 
     ModalBottomSheet(
         onDismissRequest = { onDismissRequest(selectedAlarmRingtone, selectedAlarmVolumePercentage) },
-        sheetState = modalBottomSheetState,
-        containerColor = MaterialTheme.colorScheme.surface
+        sheetState = modalBottomSheetState
     ) {
         Column(
             modifier = Modifier
@@ -126,13 +123,6 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                                 selectedAlarmVolumePercentage =
                                     if (newValue < 10f) 10 else newValue.toInt()
                             },
-                            colors = SliderDefaults.colors(
-                                thumbColor = MaterialTheme.colorScheme.secondary,
-                                activeTrackColor = MaterialTheme.colorScheme.secondary,
-                                activeTickColor = MaterialTheme.colorScheme.secondary,
-                                inactiveTrackColor = MaterialTheme.colorScheme.onTertiary,
-                                inactiveTickColor = MaterialTheme.colorScheme.onTertiary
-                            ),
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(horizontal = MaterialTheme.space.medium)
@@ -170,11 +160,7 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                         Row {
                             RadioButton(
                                 selected = selectedAlarmRingtone == alarmRingtone,
-                                onClick = null,
-                                colors = RadioButtonDefaults.colors(
-                                    selectedColor = MaterialTheme.colorScheme.secondary,
-                                    unselectedColor = MaterialTheme.colorScheme.onSurface
-                                )
+                                onClick = null
                             )
 
                             Text(
