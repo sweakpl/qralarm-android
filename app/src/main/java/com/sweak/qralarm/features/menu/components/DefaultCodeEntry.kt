@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,28 +47,25 @@ fun DefaultCodeEntry(
                 Text(
                     text = stringResource(R.string.default_alarm_code),
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.padding(bottom = MaterialTheme.space.xSmall)
                 )
 
                 Text(
                     text = assignedCode ?: stringResource(R.string.no_assigned_code),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
 
             Icon(
                 imageVector = QRAlarmIcons.ForwardArrow,
                 contentDescription =
-                    stringResource(R.string.content_description_forward_arrow_icon),
-                tint = MaterialTheme.colorScheme.onPrimary
+                    stringResource(R.string.content_description_forward_arrow_icon)
             )
         }
 
         HorizontalDivider(
             thickness = 1.dp,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = LocalContentColor.current,
             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
         )
     }
