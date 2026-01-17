@@ -1,8 +1,15 @@
 package com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Paint
+import android.os.Build
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.NumberPicker
+import android.widget.TextView
 import android.widget.TimePicker
 import android.widget.TimePicker.OnTimeChangedListener
 import com.sweak.qralarm.R
@@ -40,5 +47,40 @@ class QRAlarmTimePicker @JvmOverloads constructor(
     fun setTime(hour: Int, minute: Int) = timePicker.apply {
         this.hour = hour
         this.minute = minute
+    }
+
+    fun setTextColor(color: Int) {
+        setTextColorRecursive(timePicker, color)
+    }
+
+    private fun setTextColorRecursive(view: View, color: Int) {
+        when (view) {
+            is NumberPicker -> setNumberPickerTextColor(view, color)
+            is TextView -> view.setTextColor(color)
+            is ViewGroup -> {
+                for (i in 0 until view.childCount) {
+                    setTextColorRecursive(view.getChildAt(i), color)
+                }
+            }
+        }
+    }
+
+    @SuppressLint("DiscouragedPrivateApi")
+    private fun setNumberPickerTextColor(numberPicker: NumberPicker, color: Int) {
+        // For API 29+, use the public API
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            numberPicker.textColor = color
+        } else {
+            // For older APIs, use reflection to set mSelectorWheelPaint
+            try {
+                val wheelPaintField =
+                    NumberPicker::class.java.getDeclaredField("mSelectorWheelPaint")
+                wheelPaintField.isAccessible = true
+                val paint = wheelPaintField.get(numberPicker) as? Paint
+                paint?.color = color
+                numberPicker.invalidate()
+            } catch (_: Exception) { /* no-op */
+            }
+        }
     }
 }
