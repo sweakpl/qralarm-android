@@ -16,8 +16,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -26,8 +26,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,14 +71,6 @@ private fun IntroductionScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.secondary
-                        )
-                    )
-                )
                 .padding(paddingValues = paddingValues)
         ) {
             val pagerState = rememberPagerState(pageCount = { 3 })
@@ -97,14 +87,12 @@ private fun IntroductionScreenContent(
                 Icon(
                     imageVector = QRAlarmIcons.QRAlarm,
                     contentDescription = stringResource(R.string.content_description_qralarm_icon),
-                    tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(size = MaterialTheme.space.xxLarge)
                 )
 
                 Text(
                     text = stringResource(R.string.welcome_to_qralarm),
                     style = MaterialTheme.typography.displayLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(
                         start = MaterialTheme.space.mediumLarge,
@@ -138,8 +126,8 @@ private fun IntroductionScreenContent(
             Row(modifier = Modifier.padding(bottom = MaterialTheme.space.medium)) {
                 repeat(pagerState.pageCount) {
                     val color =
-                        if (pagerState.currentPage == it) MaterialTheme.colorScheme.tertiary
-                        else Color.White.copy(alpha = 0.5f)
+                        if (pagerState.currentPage == it) LocalContentColor.current
+                        else LocalContentColor.current.copy(alpha = 0.5f)
 
                     Box(
                         modifier = Modifier
@@ -161,9 +149,6 @@ private fun IntroductionScreenContent(
                         }
                     }
                 },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
-                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(

@@ -29,14 +29,12 @@ fun IntroductionPage2(modifier: Modifier = Modifier) {
         Text(
             text = stringResource(R.string.get_up_catchphrase),
             style = MaterialTheme.typography.displaySmall,
-            color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.padding(bottom = MaterialTheme.space.xSmall)
         )
 
         Text(
             text = stringResource(R.string.get_up_catchphrase_description),
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onPrimary,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
         )
