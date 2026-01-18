@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
@@ -38,6 +39,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
+import com.sweak.qralarm.core.designsystem.theme.ButterflyBush
+import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.features.qralarm_pro.components.ProductPlanCard
@@ -118,10 +122,7 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                 .verticalScroll(rememberScrollState())
                 .background(
                     brush = Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.secondary
-                        )
+                        listOf(Jacarta, BlueZodiac)
                     )
                 )
         ) {
@@ -146,7 +147,7 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                 Text(
                     text = stringResource(R.string.qralarm_pro),
                     style = MaterialTheme.typography.displayLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = Color.White,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
@@ -180,6 +181,7 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                         Text(
                             text = stringResource(R.string.google_play),
                             style = MaterialTheme.typography.displaySmall,
+                            color = Color.White,
                             modifier = Modifier.basicMarquee()
                         )
                     },
@@ -200,6 +202,7 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                         Text(
                             text = stringResource(R.string.itch_io),
                             style = MaterialTheme.typography.displaySmall,
+                            color = Color.White,
                             modifier = Modifier.basicMarquee()
                         )
                     },
@@ -223,7 +226,8 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                         )
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
+                        containerColor = ButterflyBush,
+                        contentColor = Color.White
                     ),
                     modifier = Modifier
                         .height(height = MaterialTheme.space.xxLarge)
@@ -239,9 +243,7 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
 
                 TextButton(
                     onClick = { onEvent(QRAlarmProScreenUserEvent.NotNowClicked) },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSecondary
-                    ),
+                    colors = ButtonDefaults.textButtonColors(contentColor = Color.White),
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(

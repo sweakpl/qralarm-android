@@ -15,11 +15,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
+import com.sweak.qralarm.core.designsystem.theme.ButterflyBush
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
@@ -34,12 +37,11 @@ fun ProductPlanCard(
 ) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor =
-                if (selected) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.secondary
+            containerColor = if (selected) ButterflyBush else BlueZodiac
         ),
         border = BorderStroke(
             width = 2.dp,
-            color = MaterialTheme.colorScheme.surface
+            color = ButterflyBush
         ),
         modifier = modifier
             .clickable(
@@ -62,6 +64,7 @@ fun ProductPlanCard(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge,
+                    color = Color.White,
                     modifier = Modifier.padding(bottom = MaterialTheme.space.small)
                 )
 
@@ -71,6 +74,7 @@ fun ProductPlanCard(
             Icon(
                 imageVector =
                     if (selected) QRAlarmIcons.CheckedCircle else QRAlarmIcons.UncheckedCircle,
+                tint = Color.White,
                 contentDescription = stringResource(
                     if (selected) R.string.content_description_checked_circle_icon
                     else R.string.content_description_unchecked_circle_icon
@@ -89,6 +93,7 @@ private fun ProductPlanCardPreview() {
             price = {
                 Text(
                     text = "itch.io",
+                    color = Color.White,
                     style = MaterialTheme.typography.displaySmall
                 )
             },

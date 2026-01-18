@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalUriHandler
@@ -40,6 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
+import com.sweak.qralarm.core.designsystem.theme.ButterflyBush
+import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
@@ -120,10 +124,7 @@ fun RateScreenContent(
                 .verticalScroll(rememberScrollState())
                 .background(
                     brush = Brush.verticalGradient(
-                        listOf(
-                            MaterialTheme.colorScheme.primary,
-                            MaterialTheme.colorScheme.secondary
-                        )
+                        listOf(Jacarta, BlueZodiac)
                     )
                 )
         ) {
@@ -137,7 +138,7 @@ fun RateScreenContent(
                 Text(
                     text = stringResource(R.string.do_you_enjoy_qralarm),
                     style = MaterialTheme.typography.displayLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = Color.White,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(
@@ -151,7 +152,7 @@ fun RateScreenContent(
                 Text(
                     text = stringResource(R.string.im_working_hard),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = Color.White,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(
@@ -173,9 +174,7 @@ fun RateScreenContent(
 
                 Button(
                     onClick = { onEvent(RateScreenUserEvent.RateMeClicked) },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
+                    colors = ButtonDefaults.buttonColors(containerColor = ButterflyBush),
                     modifier = Modifier
                         .height(height = MaterialTheme.space.xxLarge)
                         .fillMaxWidth()
@@ -184,6 +183,7 @@ fun RateScreenContent(
                     Text(
                         text = stringResource(R.string.i_love_it_rate_me),
                         style = MaterialTheme.typography.titleLarge,
+                        color = Color.White,
                         textAlign = TextAlign.Center
                     )
                 }
@@ -191,7 +191,7 @@ fun RateScreenContent(
                 Text(
                     text = stringResource(R.string.did_something_go_wrong),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = Color.White,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(
@@ -204,12 +204,10 @@ fun RateScreenContent(
 
                 OutlinedButton(
                     onClick = { onEvent(RateScreenUserEvent.SomethingWrongClicked) },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSecondary
-                    ),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
                     border = BorderStroke(
                         width = 1.dp,
-                        color = MaterialTheme.colorScheme.onSecondary
+                        color = Color.White
                     ),
                     modifier = Modifier.padding(horizontal = MaterialTheme.space.large)
                 ) {
@@ -236,25 +234,25 @@ fun RateScreenContent(
                             )
                         },
                         colors = CheckboxDefaults.colors(
-                            checkedColor = MaterialTheme.colorScheme.tertiary
+                            checkedColor = ButterflyBush,
+                            uncheckedColor = Color.White,
+                            checkmarkColor = Color.White
                         )
                     )
 
                     Text(
                         text = stringResource(R.string.do_not_show_again),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSecondary
+                        color = Color.White
                     )
                 }
 
                 OutlinedButton(
                     onClick = { onEvent(RateScreenUserEvent.NotNowClicked) },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSecondary
-                    ),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
                     border = BorderStroke(
                         width = 1.dp,
-                        color = MaterialTheme.colorScheme.onSecondary
+                        color = Color.White
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
