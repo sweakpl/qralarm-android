@@ -17,8 +17,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Slider
+import com.sweak.qralarm.core.designsystem.component.QRAlarmRadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmSlider
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
@@ -115,7 +116,7 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                             modifier = Modifier.padding(start = MaterialTheme.space.medium)
                         )
                     } else if (selectedAlarmVolumePercentage != null) {
-                        Slider(
+                        QRAlarmSlider(
                             value = selectedAlarmVolumePercentage!!.toFloat(),
                             valueRange = 0f..100f,
                             steps = 9,
@@ -158,7 +159,7 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                             )
                     ) {
                         Row {
-                            RadioButton(
+                            QRAlarmRadioButton(
                                 selected = selectedAlarmRingtone == alarmRingtone,
                                 onClick = null
                             )

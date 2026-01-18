@@ -11,6 +11,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
 @Composable
@@ -32,12 +34,18 @@ fun QRAlarmComboBox(
     selectedIndex: Int,
     onMenuItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    containerColor: Color = Color.Unspecified
+    containerColor: Color = if (MaterialTheme.isQRAlarmTheme) Color.White else Color.Unspecified,
+    contentColor: Color = if (MaterialTheme.isQRAlarmTheme) Color.Black else Color.Unspecified
 ) {
     Column(modifier = modifier) {
         var expanded by remember { mutableStateOf(false) }
 
-        Card(colors = CardDefaults.cardColors(containerColor = containerColor)) {
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = containerColor,
+                contentColor = contentColor
+            )
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -69,8 +77,15 @@ fun QRAlarmComboBox(
             offset = DpOffset(
                 MaterialTheme.space.xSmall,
                 -MaterialTheme.space.xSmall
-            )
+            ),
+            containerColor = with (MaterialTheme) {
+                if (isQRAlarmTheme) Color.White else colorScheme.surfaceContainer
+            }
         ) {
+            val itemContentColor =
+                if (MaterialTheme.isQRAlarmTheme) Color.Black
+                else Color.Unspecified
+
             menuItems.forEachIndexed { index, content ->
                 DropdownMenuItem(
                     text = {
@@ -82,7 +97,11 @@ fun QRAlarmComboBox(
                     onClick = {
                         onMenuItemClick(index)
                         expanded = false
-                    }
+                    },
+                    colors = MenuDefaults.itemColors(
+                        textColor = itemContentColor,
+                        leadingIconColor = itemContentColor
+                    )
                 )
             }
         }

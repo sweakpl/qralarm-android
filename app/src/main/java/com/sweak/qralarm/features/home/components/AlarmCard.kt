@@ -17,7 +17,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,14 +26,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmSwitch
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
 import com.sweak.qralarm.core.ui.getDayString
@@ -126,7 +129,7 @@ fun AlarmCard(
                     Spacer(modifier = Modifier.width(width = MaterialTheme.space.medium))
                 }
 
-                Switch(
+                QRAlarmSwitch(
                     checked = alarmWrapper.isAlarmEnabled,
                     onCheckedChange = {
                         onAlarmEnabledChanged(alarmWrapper.alarmId, it)
@@ -143,8 +146,21 @@ fun AlarmCard(
 
                     DropdownMenu(
                         expanded = expanded,
-                        onDismissRequest = { expanded = false }
+                        onDismissRequest = { expanded = false },
+                        containerColor = with (MaterialTheme) {
+                            if (isQRAlarmTheme) colorScheme.surfaceContainerHighest
+                            else colorScheme.surfaceContainer
+                        }
                     ) {
+                        val itemContentColor = with(MaterialTheme) {
+                            if (isQRAlarmTheme) colorScheme.onSurface
+                            else Color.Unspecified
+                        }
+                        val defaultMenuItemColors = MenuDefaults.itemColors(
+                            textColor = itemContentColor,
+                            leadingIconColor = itemContentColor
+                        )
+
                         if (alarmWrapper.isEmergencyAvailable) {
                             DropdownMenuItem(
                                 text = {
@@ -164,7 +180,8 @@ fun AlarmCard(
                                 onClick = {
                                     expanded = false
                                     onEmergencyClick(alarmWrapper.alarmId)
-                                }
+                                },
+                                colors = defaultMenuItemColors
                             )
                         }
 
@@ -205,7 +222,8 @@ fun AlarmCard(
                                         alarmWrapper.alarmId,
                                         !alarmWrapper.skipNextAlarmConfig.isSkippingNextAlarm
                                     )
-                                }
+                                },
+                                colors = defaultMenuItemColors
                             )
                         }
 
@@ -227,15 +245,15 @@ fun AlarmCard(
                             onClick = {
                                 expanded = false
                                 onCopyAlarmClick(alarmWrapper.alarmId)
-                            }
+                            },
+                            colors = defaultMenuItemColors
                         )
 
                         DropdownMenuItem(
                             text = {
                                 Text(
                                     text = stringResource(R.string.delete_alarm),
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.error
+                                    style = MaterialTheme.typography.labelMedium
                                 )
                             },
                             leadingIcon = {
@@ -243,14 +261,17 @@ fun AlarmCard(
                                     imageVector = QRAlarmIcons.Delete,
                                     contentDescription = stringResource(
                                         R.string.content_description_delete_icon
-                                    ),
-                                    tint = MaterialTheme.colorScheme.error
+                                    )
                                 )
                             },
                             onClick = {
                                 expanded = false
                                 onDeleteAlarmClick(alarmWrapper.alarmId)
-                            }
+                            },
+                            colors = MenuDefaults.itemColors(
+                                textColor = MaterialTheme.colorScheme.error,
+                                leadingIconColor = MaterialTheme.colorScheme.error
+                            )
                         )
                     }
                 }

@@ -6,17 +6,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmSlider
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.features.emergency.task.EmergencyScreenState
@@ -58,7 +56,7 @@ fun EmergencyTaskCard(
                 modifier = Modifier.padding(bottom = MaterialTheme.space.xSmall)
             )
 
-            Slider(
+            QRAlarmSlider(
                 enabled = !emergencyTaskConfig.isCompleted,
                 value = emergencyTaskConfig.currentValue.toFloat(),
                 valueRange = with(emergencyTaskConfig.valueRange) {
@@ -68,11 +66,7 @@ fun EmergencyTaskCard(
                 onValueChange = {
                     onValueChanged(it.toInt())
                 },
-                onValueChangeFinished = onValueSelected,
-                colors = SliderDefaults.colors(
-                    activeTickColor = Color.Transparent,
-                    inactiveTickColor = Color.Transparent
-                )
+                onValueChangeFinished = onValueSelected
             )
 
             Row(

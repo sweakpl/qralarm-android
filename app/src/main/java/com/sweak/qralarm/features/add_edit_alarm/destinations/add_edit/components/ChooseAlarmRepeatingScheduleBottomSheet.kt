@@ -13,8 +13,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
+import com.sweak.qralarm.core.designsystem.component.QRAlarmRadioButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -94,7 +94,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                             role = Role.RadioButton
                         )
                 ) {
-                    RadioButton(
+                    QRAlarmRadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.ONLY_ONCE,
                         onClick = null
                     )
@@ -114,7 +114,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                             role = Role.RadioButton
                         )
                 ) {
-                    RadioButton(
+                    QRAlarmRadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.MON_FRI,
                         onClick = null
                     )
@@ -134,7 +134,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                             role = Role.RadioButton
                         )
                 ) {
-                    RadioButton(
+                    QRAlarmRadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.SAT_SUN,
                         onClick = null
                     )
@@ -154,7 +154,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                             role = Role.RadioButton
                         )
                 ) {
-                    RadioButton(
+                    QRAlarmRadioButton(
                         selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.EVERYDAY,
                         onClick = null
                     )
@@ -175,7 +175,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                                 role = Role.RadioButton
                             )
                     ) {
-                        RadioButton(
+                        QRAlarmRadioButton(
                             selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.CUSTOM,
                             onClick = null
                         )

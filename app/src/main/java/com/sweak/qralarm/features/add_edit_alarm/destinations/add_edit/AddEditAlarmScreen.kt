@@ -42,6 +42,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -53,6 +54,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
@@ -70,7 +72,9 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
@@ -413,6 +417,10 @@ private fun AddEditAlarmScreenContent(
                     ) {
                         Icon(
                             imageVector = QRAlarmIcons.Done,
+                            tint = with (MaterialTheme) {
+                                if (isQRAlarmTheme) colorScheme.onSurface
+                                else LocalContentColor.current
+                            },
                             contentDescription =
                             stringResource(R.string.content_description_done_icon)
                         )
@@ -649,7 +657,11 @@ private fun AddEditAlarmScreenContent(
 
                                                     DropdownMenu(
                                                         expanded = expanded,
-                                                        onDismissRequest = { expanded = false }
+                                                        onDismissRequest = { expanded = false },
+                                                        containerColor = with (MaterialTheme) {
+                                                            if (isQRAlarmTheme) colorScheme.surfaceContainerHighest
+                                                            else colorScheme.surfaceContainer
+                                                        }
                                                     ) {
                                                         val areSavedCodesAvailable =
                                                             state.previouslySavedCodes.isNotEmpty()
@@ -686,6 +698,14 @@ private fun AddEditAlarmScreenContent(
                                                                             .TryScanSpecificCode
                                                                     }
                                                                 )
+                                                            },
+                                                            colors = with (MaterialTheme) {
+                                                                if (isQRAlarmTheme)
+                                                                    MenuDefaults.itemColors(
+                                                                        textColor = colorScheme.onSurface,
+                                                                        leadingIconColor = colorScheme.onSurface
+                                                                    )
+                                                                else MenuDefaults.itemColors()
                                                             }
                                                         )
 
@@ -696,9 +716,7 @@ private fun AddEditAlarmScreenContent(
                                                                         R.string.clear_assigned_code
                                                                     ),
                                                                     style =
-                                                                    MaterialTheme.typography.labelMedium,
-                                                                    color =
-                                                                    MaterialTheme.colorScheme.error
+                                                                    MaterialTheme.typography.labelMedium
                                                                 )
                                                             },
                                                             leadingIcon = {
@@ -706,9 +724,7 @@ private fun AddEditAlarmScreenContent(
                                                                     imageVector = QRAlarmIcons.Delete,
                                                                     contentDescription = stringResource(
                                                                         R.string.content_description_delete_icon
-                                                                    ),
-                                                                    tint =
-                                                                    MaterialTheme.colorScheme.error
+                                                                    )
                                                                 )
                                                             },
                                                             onClick = {
@@ -717,7 +733,11 @@ private fun AddEditAlarmScreenContent(
                                                                     AddEditAlarmScreenUserEvent
                                                                         .ClearAssignedCode
                                                                 )
-                                                            }
+                                                            },
+                                                            colors = MenuDefaults.itemColors(
+                                                                textColor = MaterialTheme.colorScheme.error,
+                                                                leadingIconColor = MaterialTheme.colorScheme.error
+                                                            )
                                                         )
                                                     }
                                                 }
@@ -752,10 +772,14 @@ private fun AddEditAlarmScreenContent(
                                                 val areSavedCodesAvailable =
                                                     state.previouslySavedCodes.isNotEmpty()
 
+                                                val scanButtonColor = with (MaterialTheme) {
+                                                    if (isQRAlarmTheme) BlueZodiac
+                                                    else colorScheme.secondary
+                                                }
+
                                                 Card(
                                                     colors = CardDefaults.cardColors(
-                                                        containerColor =
-                                                            MaterialTheme.colorScheme.secondary
+                                                        containerColor = scanButtonColor
                                                     ),
                                                     modifier = Modifier
                                                         .padding(all = MaterialTheme.space.medium)
@@ -887,7 +911,9 @@ private fun AddEditAlarmScreenContent(
                                             )
                                         )
                                     },
-                                    textStyle = MaterialTheme.typography.titleMedium,
+                                    textStyle = MaterialTheme.typography.titleMedium.copy(
+                                        color = LocalContentColor.current
+                                    ),
                                     singleLine = true,
                                     decorationBox = { innerTextField ->
                                         if (state.alarmLabel.isNullOrBlank()) {
@@ -904,6 +930,7 @@ private fun AddEditAlarmScreenContent(
 
                                         innerTextField()
                                     },
+                                    cursorBrush = SolidColor(LocalContentColor.current),
                                     modifier = Modifier.fillMaxWidth()
                                 )
                             }

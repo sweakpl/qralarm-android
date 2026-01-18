@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
 @Composable
@@ -31,7 +34,10 @@ fun QRAlarmDialog(
     onDismissRequest: () -> Unit,
     onPositiveClick: () -> Unit,
     positiveButtonText: String,
-    positiveButtonColor: Color = MaterialTheme.colorScheme.primary,
+    positiveButtonColor: Color = with (MaterialTheme) {
+        if (isQRAlarmTheme) Jacarta
+        else Color.Unspecified
+    },
     onNegativeClick: (() -> Unit)? = null,
     negativeButtonText: String? = null
 ) {
@@ -44,7 +50,13 @@ fun QRAlarmDialog(
             dismissOnClickOutside = false
         )
     ) {
-        Surface(modifier = Modifier.clip(MaterialTheme.shapes.medium)) {
+        Surface(
+            color = with (MaterialTheme) {
+                if (isQRAlarmTheme) colorScheme.surfaceContainerHighest
+                else colorScheme.surface
+            },
+            modifier = Modifier.clip(MaterialTheme.shapes.medium)
+        ) {
             Column(modifier = Modifier.wrapContentSize()) {
                 Text(
                     text = title,
@@ -79,7 +91,12 @@ fun QRAlarmDialog(
                             onClick = onNegativeClick ?: onDismissRequest,
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text(text = negativeButtonText)
+                            Text(
+                                text = negativeButtonText,
+                                color = with (MaterialTheme) {
+                                    if (isQRAlarmTheme) colorScheme.onSurface else Color.Unspecified
+                                }
+                            )
                         }
 
                         Spacer(modifier = Modifier.width(MaterialTheme.space.medium))
@@ -88,7 +105,10 @@ fun QRAlarmDialog(
                     Button(
                         onClick = onPositiveClick,
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = positiveButtonColor
+                            containerColor = positiveButtonColor,
+                            contentColor = MaterialTheme.colorScheme.contentColorFor(
+                                backgroundColor = positiveButtonColor
+                            )
                         ),
                         modifier = Modifier.weight(1f)
                     ) {
