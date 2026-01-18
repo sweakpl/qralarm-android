@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.NumberPicker
 import android.widget.TextView
@@ -79,7 +80,14 @@ class QRAlarmTimePicker @JvmOverloads constructor(
                 val paint = wheelPaintField.get(numberPicker) as? Paint
                 paint?.color = color
                 numberPicker.invalidate()
-            } catch (_: Exception) { /* no-op */
+            } catch (_: Exception) { /* no-op */ }
+
+            // Also set EditText (center) color separately
+            for (i in 0 until numberPicker.childCount) {
+                val child = numberPicker.getChildAt(i)
+                if (child is EditText) {
+                    child.setTextColor(color)
+                }
             }
         }
     }
