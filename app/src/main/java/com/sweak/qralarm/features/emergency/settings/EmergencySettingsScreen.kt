@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmComboBox
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_REQUIRED_MATCHES
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_SLIDER_RANGES
@@ -135,6 +138,10 @@ fun EmergencySettingsScreenContent(
                             )
                     )
 
+                    val comboBoxContainerColor =
+                        if (MaterialTheme.isQRAlarmTheme) Color.White
+                        else MaterialTheme.colorScheme.surfaceContainerHigh
+
                     if (state.selectedSliderRangeIndex != null) {
                         QRAlarmComboBox(
                             menuItems = state.availableSliderRanges.map {
@@ -144,7 +151,7 @@ fun EmergencySettingsScreenContent(
                             onMenuItemClick = { index ->
                                 onEvent(EmergencySettingsScreenUserEvent.SliderRangeSelected(index))
                             },
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            containerColor = comboBoxContainerColor,
                             modifier = Modifier
                                 .padding(
                                     start = MaterialTheme.space.medium,
@@ -181,7 +188,7 @@ fun EmergencySettingsScreenContent(
                                     EmergencySettingsScreenUserEvent.RequiredMatchesSelected(index)
                                 )
                             },
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            containerColor = comboBoxContainerColor,
                             modifier = Modifier
                                 .padding(
                                     start = MaterialTheme.space.medium,
@@ -199,7 +206,10 @@ fun EmergencySettingsScreenContent(
 
                     Card(
                         colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.secondary
+                            containerColor = with (MaterialTheme) {
+                                if (isQRAlarmTheme) BlueZodiac
+                                else colorScheme.secondary
+                            }
                         ),
                         modifier = Modifier
                             .padding(all = MaterialTheme.space.medium)

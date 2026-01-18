@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
@@ -26,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmComboBox
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,8 +69,14 @@ fun AssignDefaultCodeBottomSheet(
                 modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
             )
 
+            val buttonColors =
+                if (MaterialTheme.isQRAlarmTheme)
+                    ButtonDefaults.buttonColors(containerColor = Jacarta)
+                else ButtonDefaults.buttonColors()
+
             Button(
                 onClick = onScanCodeClicked,
+                colors = buttonColors,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
@@ -111,6 +121,7 @@ fun AssignDefaultCodeBottomSheet(
             if (shouldAllowCodeClearance) {
                 Column {
                     HorizontalDivider(
+                        color = LocalContentColor.current,
                         modifier = Modifier.padding(vertical = MaterialTheme.space.large)
                     )
 

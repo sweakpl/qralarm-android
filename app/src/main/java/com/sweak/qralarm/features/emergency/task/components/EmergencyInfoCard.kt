@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -17,7 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
 @Composable
@@ -56,8 +59,14 @@ fun EmergencyInfoCard(
                 modifier = Modifier.padding(bottom = MaterialTheme.space.large)
             )
 
+            val buttonColors =
+                if (MaterialTheme.isQRAlarmTheme)
+                    ButtonDefaults.buttonColors(containerColor = Jacarta)
+                else ButtonDefaults.buttonColors()
+
             Button(
                 onClick = onStartClick,
+                colors = buttonColors,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = stringResource(R.string.start))

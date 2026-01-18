@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
 @Composable
@@ -44,7 +45,10 @@ fun AddNewChainedAlarmCard(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-        val borderColor = LocalContentColor.current
+        val borderColor = with (MaterialTheme) {
+            if (isQRAlarmTheme) colorScheme.surfaceContainerHighest
+            else LocalContentColor.current
+        }
 
         Image(
             painter = painterResource(R.drawable.ic_arrow_down_dashed),

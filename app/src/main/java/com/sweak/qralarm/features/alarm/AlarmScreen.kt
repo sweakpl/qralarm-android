@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -39,10 +41,12 @@ import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_TEMPORARY_MU
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
+import com.sweak.qralarm.core.ui.compose_util.UiText
 import com.sweak.qralarm.core.ui.getTimeString
 import com.sweak.qralarm.features.alarm.components.TimeTickReceiver
 
@@ -193,9 +197,13 @@ private fun AlarmScreenContent(
                             enabled = state.isInteractionEnabled,
                             modifier = Modifier.padding(top = MaterialTheme.space.medium)
                         ) {
+                            val snoozeButtonColor =
+                                if (MaterialTheme.isQRAlarmTheme) Color.White
+                                else LocalContentColor.current
                             Text(
                                 text = stringResource(R.string.snooze_capitals),
                                 style = MaterialTheme.typography.displaySmall,
+                                color = snoozeButtonColor,
                                 modifier = Modifier.padding(all = MaterialTheme.space.small)
                             )
                         }
@@ -254,6 +262,7 @@ private fun AlarmScreenContentPreview() {
     QRAlarmTheme {
         AlarmScreenContent(
             state = AlarmScreenState(
+                alarmLabel = UiText.DynamicString("Alarm label"),
                 isSnoozeAvailable = true,
                 timeToShow = 1729861439787
             ),
