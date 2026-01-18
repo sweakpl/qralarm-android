@@ -21,7 +21,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.foundation.background
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,7 +38,10 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
+import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
+import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.features.menu.components.AssignDefaultCodeBottomSheet
 import com.sweak.qralarm.features.menu.components.DefaultCodeEntry
@@ -154,6 +159,13 @@ fun MenuScreenContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .then(
+                    if (MaterialTheme.isQRAlarmTheme)
+                        Modifier.background(
+                            brush = Brush.verticalGradient(listOf(Jacarta, BlueZodiac))
+                        )
+                    else Modifier
+                )
                 .verticalScroll(rememberScrollState())
         ) {
             Column(

@@ -20,8 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.foundation.background
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -40,6 +42,8 @@ import com.sweak.qralarm.alarm.service.AlarmService.Companion.ACTION_TEMPORARY_A
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_TEMPORARY_MUTE_DURATION_SECONDS
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
+import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
+import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
@@ -150,6 +154,13 @@ private fun AlarmScreenContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .then(
+                    if (MaterialTheme.isQRAlarmTheme)
+                        Modifier.background(
+                            brush = Brush.verticalGradient(listOf(Jacarta, BlueZodiac))
+                        )
+                    else Modifier
+                )
                 .padding(paddingValues = paddingValues)
         ) {
             Column(
