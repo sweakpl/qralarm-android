@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,16 +44,18 @@ fun AddNewChainedAlarmCard(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
+        val borderColor = LocalContentColor.current
+
         Image(
-            painter = painterResource(R.drawable.img_arrow_down_dashed),
+            painter = painterResource(R.drawable.ic_arrow_down_dashed),
             contentDescription = null,
             contentScale = ContentScale.FillHeight,
+            colorFilter = ColorFilter.tint(color = borderColor),
             modifier = Modifier.height(MaterialTheme.space.xLarge)
         )
 
         val borderWidth = MaterialTheme.space.xSmall
         val cornerRadius = MaterialTheme.space.smallMedium
-        val borderColor = LocalContentColor.current
 
         OutlinedCard(
             modifier = Modifier
