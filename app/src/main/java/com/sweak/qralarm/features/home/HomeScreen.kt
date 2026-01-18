@@ -679,10 +679,15 @@ private fun HomeScreenContentPreview() {
                         alarmMinute = 0,
                         alarmLabel = "Work alarm",
                         nextAlarmTimeInMillis = 1732604400000,
-                        alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(),
+                        alarmRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper(
+                            alarmRepeatingMode = AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
+                        ),
                         isAlarmEnabled = true,
-                        isCodeEnabled = false,
-                        skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig(),
+                        isCodeEnabled = true,
+                        skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig(
+                            isSkippingNextAlarm = true,
+                            isSkippingSupported = true
+                        ),
                         isEmergencyAvailable = true
                     )
                 ),

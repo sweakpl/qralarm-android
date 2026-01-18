@@ -59,7 +59,8 @@ fun OriginalAlarmCard(
                     minute = alarmMinute,
                     is24HourFormat = DateFormat.is24HourFormat(LocalContext.current)
                 ),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

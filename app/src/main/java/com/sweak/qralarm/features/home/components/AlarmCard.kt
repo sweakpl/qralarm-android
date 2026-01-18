@@ -74,6 +74,7 @@ fun AlarmCard(
                     Text(
                         text = alarmWrapper.alarmLabel ?: "",
                         style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -93,7 +94,10 @@ fun AlarmCard(
                         textDecoration =
                         if (indicateSkippingNextAlarm) TextDecoration.LineThrough
                         else TextDecoration.None
-                    )
+                    ),
+                    color =
+                        if (indicateSkippingNextAlarm) MaterialTheme.colorScheme.onSurfaceVariant
+                        else MaterialTheme.colorScheme.onSurface
                 )
 
                 Text(
@@ -112,7 +116,8 @@ fun AlarmCard(
                             R.string.next_alarm_date,
                             getDayString(alarmWrapper.nextAlarmTimeInMillis)
                         ),
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
