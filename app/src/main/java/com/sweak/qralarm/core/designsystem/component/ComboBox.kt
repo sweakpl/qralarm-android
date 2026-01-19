@@ -79,7 +79,7 @@ fun QRAlarmComboBox(
                 -MaterialTheme.space.xSmall
             ),
             containerColor = with (MaterialTheme) {
-                if (isQRAlarmTheme) Color.White else colorScheme.surfaceContainer
+                if (isQRAlarmTheme) Color.White else colorScheme.surfaceContainerHighest
             }
         ) {
             val itemContentColor =
