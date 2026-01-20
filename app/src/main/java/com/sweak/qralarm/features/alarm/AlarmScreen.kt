@@ -21,6 +21,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.foundation.background
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -203,18 +204,21 @@ private fun AlarmScreenContent(
                     }
 
                     AnimatedVisibility(visible = state.isSnoozeAvailable) {
+                        val snoozeButtonColor =
+                            if (MaterialTheme.isQRAlarmTheme) Color.White
+                            else LocalContentColor.current
+
                         TextButton(
                             onClick = { onEvent(AlarmScreenUserEvent.SnoozeAlarmClicked) },
                             enabled = state.isInteractionEnabled,
+                            colors = ButtonDefaults.textButtonColors(
+                                contentColor = snoozeButtonColor
+                            ),
                             modifier = Modifier.padding(top = MaterialTheme.space.medium)
                         ) {
-                            val snoozeButtonColor =
-                                if (MaterialTheme.isQRAlarmTheme) Color.White
-                                else LocalContentColor.current
                             Text(
                                 text = stringResource(R.string.snooze_capitals),
                                 style = MaterialTheme.typography.displaySmall,
-                                color = snoozeButtonColor,
                                 modifier = Modifier.padding(all = MaterialTheme.space.small)
                             )
                         }
