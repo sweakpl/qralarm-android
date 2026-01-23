@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
 import com.sweak.qralarm.features.optimization.navigation.IS_LAUNCHED_FROM_MENU
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -38,9 +39,9 @@ class OptimizationViewModel @Inject constructor(
         viewModelScope.launch {
             val optimizationGuideState = userDataRepository.optimizationGuideState.first()
 
-            if (optimizationGuideState == UserDataRepository.OptimizationGuideState.SHOULD_BE_SEEN) {
+            if (optimizationGuideState == OptimizationGuideState.SHOULD_BE_SEEN) {
                 userDataRepository.setOptimizationGuideState(
-                    state = UserDataRepository.OptimizationGuideState.HAS_BEEN_SEEN
+                    state = OptimizationGuideState.HAS_BEEN_SEEN
                 )
             }
 

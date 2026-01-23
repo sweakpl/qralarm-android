@@ -1,5 +1,7 @@
 package com.sweak.qralarm.core.domain.user
 
+import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
+import com.sweak.qralarm.core.domain.user.model.Theme
 import kotlinx.coroutines.flow.Flow
 
 interface UserDataRepository {
@@ -28,7 +30,6 @@ interface UserDataRepository {
     suspend fun setEmergencyRequiredMatches(matches: Int)
     val emergencyRequiredMatches: Flow<Int>
 
-    enum class OptimizationGuideState {
-        NONE, SHOULD_BE_SEEN, HAS_BEEN_SEEN
-    }
+    suspend fun setTheme(theme: Theme)
+    val theme: Flow<Theme>
 }

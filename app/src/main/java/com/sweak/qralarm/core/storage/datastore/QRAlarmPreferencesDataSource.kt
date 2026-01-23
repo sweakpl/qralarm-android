@@ -8,8 +8,10 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.sweak.qralarm.core.domain.user.model.Theme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class QRAlarmPreferencesDataSource @Inject constructor(
@@ -124,6 +126,30 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
+    private val json = Json {
+        classDiscriminator = "type"
+        ignoreUnknownKeys = true
+        encodeDefaults = true
+    }
+
+    suspend fun setTheme(theme: Theme) {
+        dataStore.edit { preferences ->
+            preferences[THEME] = json.encodeToString(theme)
+        }
+    }
+
+    fun getTheme(): Flow<Theme?> {
+        return dataStore.data.map { preferences ->
+            preferences[THEME]?.let {
+                try {
+                    json.decodeFromString<Theme>(it)
+                } catch (_: Exception) {
+                    null
+                }
+            }
+        }
+    }
+
     companion object {
         val TEMPORARY_SCANNED_CODE = stringPreferencesKey("temporaryScannedCode")
         val OPTIMIZATION_GUIDE_STATE = stringPreferencesKey("optimizationGuideState")
@@ -133,5 +159,6 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         val DEFAULT_ALARM_CODE = stringPreferencesKey("defaultAlarmCode")
         val EMERGENCY_SLIDER_RANGE = byteArrayPreferencesKey("emergencySliderRange")
         val EMERGENCY_REQUIRED_MATCHES = intPreferencesKey("emergencyRequiredMatches")
+        val THEME = stringPreferencesKey("theme")
     }
 }

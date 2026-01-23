@@ -14,6 +14,7 @@ import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
 import com.sweak.qralarm.core.ui.convertAlarmRepeatingMode
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
@@ -601,9 +602,9 @@ class AddEditAlarmViewModel @Inject constructor(
         viewModelScope.launch {
             val optimizationGuideState = userDataRepository.optimizationGuideState.first()
 
-            if (optimizationGuideState == UserDataRepository.OptimizationGuideState.NONE) {
+            if (optimizationGuideState == OptimizationGuideState.NONE) {
                 userDataRepository.setOptimizationGuideState(
-                    state = UserDataRepository.OptimizationGuideState.SHOULD_BE_SEEN
+                    state = OptimizationGuideState.SHOULD_BE_SEEN
                 )
             }
 
@@ -637,7 +638,6 @@ class AddEditAlarmViewModel @Inject constructor(
                             SAT_SUN -> listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
                             EVERYDAY -> DayOfWeek.entries
                             CUSTOM -> currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
-                            else -> emptyList()
                         }
 
                     while (alarmDateTime <= currentDateTime ||

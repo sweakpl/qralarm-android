@@ -1,6 +1,8 @@
 package com.sweak.qralarm.core.data.user
 
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
+import com.sweak.qralarm.core.domain.user.model.Theme
 import com.sweak.qralarm.core.storage.datastore.QRAlarmPreferencesDataSource
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_REQUIRED_MATCHES
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_SLIDER_RANGE
@@ -21,17 +23,15 @@ class UserDataRepositoryImpl @Inject constructor(
             it == true
         }
 
-    override suspend fun setOptimizationGuideState(
-        state: UserDataRepository.OptimizationGuideState
-    ) {
+    override suspend fun setOptimizationGuideState(state: OptimizationGuideState) {
         qrAlarmPreferencesDataSource.setOptimizationGuideState(state = state.name)
     }
 
-    override val optimizationGuideState: Flow<UserDataRepository.OptimizationGuideState>
+    override val optimizationGuideState: Flow<OptimizationGuideState>
         get() = qrAlarmPreferencesDataSource.getOptimizationGuideState().map { stateString ->
             stateString?.let {
-                UserDataRepository.OptimizationGuideState.valueOf(it)
-            } ?: UserDataRepository.OptimizationGuideState.NONE
+                OptimizationGuideState.valueOf(it)
+            } ?: OptimizationGuideState.NONE
         }
 
     override suspend fun setTemporaryScannedCode(code: String?) {
@@ -80,5 +80,14 @@ class UserDataRepositoryImpl @Inject constructor(
     override val emergencyRequiredMatches: Flow<Int>
         get() = qrAlarmPreferencesDataSource.getEmergencyRequiredMatches().map {
             it ?: EMERGENCY_DEFAULT_REQUIRED_MATCHES
+        }
+
+    override suspend fun setTheme(theme: Theme) {
+        qrAlarmPreferencesDataSource.setTheme(theme = theme)
+    }
+
+    override val theme: Flow<Theme>
+        get() = qrAlarmPreferencesDataSource.getTheme().map {
+            it ?: Theme.Default
         }
 }
