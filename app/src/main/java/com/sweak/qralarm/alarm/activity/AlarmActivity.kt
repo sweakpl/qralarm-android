@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.getValue
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -16,6 +18,8 @@ import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.app.activity.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.domain.user.model.Theme
 import com.sweak.qralarm.features.alarm.navigation.ALARM_SCREEN_ROUTE
 import com.sweak.qralarm.features.alarm.navigation.alarmScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.navigation.disableAlarmScannerScreen
@@ -31,6 +35,7 @@ import javax.inject.Inject
 class AlarmActivity : FragmentActivity() {
 
     @Inject lateinit var alarmsRepository: AlarmsRepository
+    @Inject lateinit var userDataRepository: UserDataRepository
 
     private var isLaunchedFromMainActivity: Boolean = false
     private var lastNavigateUpTime: Long = 0L
@@ -58,7 +63,9 @@ class AlarmActivity : FragmentActivity() {
             intent.extras?.getBoolean(EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY) == true
 
         setContent {
-            QRAlarmTheme {
+            val theme by userDataRepository.theme.collectAsStateWithLifecycle(Theme.Default)
+            
+            QRAlarmTheme(theme = theme) {
                 val navController = rememberNavController()
 
                 NavHost(

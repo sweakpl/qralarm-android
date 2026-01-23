@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
@@ -42,6 +43,14 @@ class MainViewModel @Inject constructor(
                     shouldShowSplashScreen = false,
                     isIntroductionFinished = userDataRepository.isIntroductionFinished.first()
                 )
+            }
+        }
+
+        viewModelScope.launch {
+            userDataRepository.theme.collect { theme ->
+                _state.update { currentState ->
+                    currentState.copy(theme = theme)
+                }
             }
         }
     }

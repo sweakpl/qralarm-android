@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.domain.user.model.Theme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,6 +48,14 @@ class MenuViewModel @Inject constructor(
                 }
             }
         }
+
+        viewModelScope.launch {
+            userDataRepository.theme.collect { theme ->
+                _state.update { currentState ->
+                    currentState.copy(theme = theme)
+                }
+            }
+        }
     }
 
     fun onEvent(event: MenuScreenUserEvent) {
@@ -74,6 +83,13 @@ class MenuViewModel @Inject constructor(
                 _state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
+            }
+            is MenuScreenUserEvent.ThemeToggleClicked -> viewModelScope.launch {
+                val newTheme = when (_state.value.theme) {
+                    is Theme.Default -> Theme.Dynamic
+                    is Theme.Dynamic -> Theme.Default
+                }
+                userDataRepository.setTheme(theme = newTheme)
             }
             else -> { /* no-op */ }
         }

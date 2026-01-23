@@ -12,6 +12,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.sweak.qralarm.core.domain.user.model.Theme
 
 private val QRAlarmTheme = darkColorScheme(
     primary = ButterflyBush,
@@ -35,22 +36,26 @@ val MaterialTheme.isQRAlarmTheme: Boolean
     get() = LocalIsQRAlarmTheme.current
 
 @Composable
-fun QRAlarmTheme(content: @Composable () -> Unit) {
-    val isUsingQRAlarmTheme = Build.VERSION.SDK_INT < Build.VERSION_CODES.S
+fun QRAlarmTheme(
+    theme: Theme? = null,
+    content: @Composable () -> Unit
+) {
+    val isUsingQRAlarmTheme = theme is Theme.Default
 
     CompositionLocalProvider(
         LocalSpace provides Space(),
         LocalIsQRAlarmTheme provides isUsingQRAlarmTheme
     ) {
-        val colorScheme = if (!isUsingQRAlarmTheme) {
-            val darkTheme = isSystemInDarkTheme()
-            val context = LocalContext.current
-            if (darkTheme) {
-                dynamicDarkColorScheme(context)
-            } else {
-                dynamicLightColorScheme(context)
-            }
-        } else QRAlarmTheme
+        val colorScheme =
+            if (theme is Theme.Dynamic && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val darkTheme = isSystemInDarkTheme()
+                val context = LocalContext.current
+                if (darkTheme) {
+                    dynamicDarkColorScheme(context)
+                } else {
+                    dynamicLightColorScheme(context)
+                }
+            } else QRAlarmTheme
 
         MaterialTheme(
             colorScheme = colorScheme,

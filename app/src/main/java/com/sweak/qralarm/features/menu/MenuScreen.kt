@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.menu
 
 import android.content.Intent
+import android.os.Build
 import android.provider.Settings
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,6 +47,7 @@ import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.features.menu.components.AssignDefaultCodeBottomSheet
 import com.sweak.qralarm.features.menu.components.DefaultCodeEntry
 import com.sweak.qralarm.features.menu.components.MenuEntry
+import com.sweak.qralarm.features.menu.components.ThemeToggleEntry
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -206,6 +208,13 @@ fun MenuScreenContent(
                     title = stringResource(R.string.rate_qralarm),
                     onClick = { onEvent(MenuScreenUserEvent.OnRateQRAlarmClicked) }
                 )
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    ThemeToggleEntry(
+                        theme = state.theme,
+                        onThemeToggle = { onEvent(MenuScreenUserEvent.ThemeToggleClicked) }
+                    )
+                }
             }
         }
     }
