@@ -125,6 +125,7 @@
     <string name="classic_alarm">Alarme classique</string>
     <string name="rooster">Coq</string>
     <string name="menu">Menu</string>
+    <string name="dynamic_theme">Thème dynamique</string>
     <string name="introduction">Introduction</string>
     <string name="everyday">Tous les jours</string>
     <string name="no_alarms">Pas d\'alarme</string>

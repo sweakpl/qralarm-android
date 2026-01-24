@@ -125,6 +125,7 @@
     <string name="classic_alarm">Sveglia classica</string>
     <string name="rooster">Gallo</string>
     <string name="menu">Menu</string>
+    <string name="dynamic_theme">Tema dinamico</string>
     <string name="introduction">Introduzione</string>
     <string name="everyday">Ogni giorno</string>
     <string name="no_alarms">Nessun allarme</string>

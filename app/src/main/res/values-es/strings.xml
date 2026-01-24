@@ -125,6 +125,7 @@
     <string name="classic_alarm">Alarma clásica</string>
     <string name="rooster">Gallo</string>
     <string name="menu">Menú</string>
+    <string name="dynamic_theme">Tema dinámico</string>
     <string name="introduction">Introducción</string>
     <string name="everyday">Cada día</string>
     <string name="no_alarms">Sin alarmas</string>

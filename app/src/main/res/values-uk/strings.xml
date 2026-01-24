@@ -132,6 +132,7 @@
     <string name="classic_alarm">Класичний будильник</string>
     <string name="rooster">Півень</string>
     <string name="menu">Меню</string>
+    <string name="dynamic_theme">Динамічна тема</string>
     <string name="introduction">Вступ</string>
     <string name="everyday">Щодня</string>
     <string name="no_alarms">Ніяких будильників</string>

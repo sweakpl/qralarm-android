@@ -132,6 +132,7 @@
     <string name="classic_alarm">Klasyczny alarm</string>
     <string name="rooster">Kogut</string>
     <string name="menu">Menu</string>
+    <string name="dynamic_theme">Motyw dynamiczny</string>
     <string name="introduction">Wprowadzenie</string>
     <string name="everyday">Codziennie</string>
     <string name="no_alarms">Brak alarmów</string>
