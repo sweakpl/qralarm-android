@@ -36,7 +36,9 @@ fun QRAlarmSlider(
             activeTrackColor =
                 if (MaterialTheme.isQRAlarmTheme) BlueZodiac else Color.Unspecified,
             inactiveTrackColor =
-                if (MaterialTheme.isQRAlarmTheme) Color.White else Color.Unspecified
+                if (MaterialTheme.isQRAlarmTheme) Color.White else Color.Unspecified,
+            disabledActiveTickColor = Color.Transparent,
+            disabledInactiveTickColor = Color.Transparent
         ),
         modifier = modifier
     )
