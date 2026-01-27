@@ -13,7 +13,7 @@ class RescheduleAlarms @Inject constructor(
     private val disableAlarm: DisableAlarm,
     private val snoozeAlarm: SnoozeAlarm
 ) {
-    suspend operator fun invoke() {
+    suspend operator fun invoke(rescheduleAlarmsIfMissedByFiveMinutes: Boolean = true) {
         if (!qrAlarmManager.canScheduleExactAlarms()) {
             alarmsRepository.getAllAlarms().first().forEach { alarm ->
                 disableAlarm(alarmId = alarm.alarmId)
@@ -31,7 +31,9 @@ class RescheduleAlarms @Inject constructor(
                     // The snoozed alarm has been missed:
                     if (snoozedAlarmTimeInMillis < currentTimeInMillis) {
                         // If it was missed by less than five minutes - reschedule:
-                        if (snoozedAlarmTimeInMillis + fiveMinutesInMillis > currentTimeInMillis) {
+                        if (rescheduleAlarmsIfMissedByFiveMinutes &&
+                            snoozedAlarmTimeInMillis + fiveMinutesInMillis > currentTimeInMillis
+                        ) {
                             snoozeAlarm(
                                 alarmId = alarm.alarmId,
                                 isReschedulingCurrentOrMissedSnooze = true
@@ -67,7 +69,9 @@ class RescheduleAlarms @Inject constructor(
                     // The alarm has been missed
                     if (alarmTimeInMillis < currentTimeInMillis) {
                         // If it was missed by less than five minutes - reschedule:
-                        if (alarmTimeInMillis + fiveMinutesInMillis > currentTimeInMillis) {
+                        if (rescheduleAlarmsIfMissedByFiveMinutes &&
+                            alarmTimeInMillis + fiveMinutesInMillis > currentTimeInMillis
+                        ) {
                             setAlarm(
                                 alarmId = alarm.alarmId,
                                 isReschedulingMissedAlarm = true
