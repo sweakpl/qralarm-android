@@ -36,7 +36,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -129,20 +128,23 @@ class AlarmService : Service() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 exception is ForegroundServiceStartNotAllowedException
             ) {
-                runBlocking { userDataRepository.setAlarmMissedDetected(detected = true) }
                 shouldStopService = true
             } else {
                 throw exception
             }
         }
 
-        if (shouldStopService) {
-            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
-            qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
-            return START_NOT_STICKY
-        }
-
         serviceScope.launch {
+            if (shouldStopService) {
+                userDataRepository.setAlarmMissedDetected(detected = true)
+                ServiceCompat.stopForeground(
+                    this@AlarmService,
+                    ServiceCompat.STOP_FOREGROUND_REMOVE
+                )
+                qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
+                return@launch
+            }
+
             alarmsRepository.getAlarm(alarmId = alarmId)?.let {
                 alarm = it
             } ?: run {
