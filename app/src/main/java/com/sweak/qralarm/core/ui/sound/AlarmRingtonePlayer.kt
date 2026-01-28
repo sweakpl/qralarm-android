@@ -7,23 +7,24 @@ import android.os.VibrationAttributes
 import android.os.VibrationEffect
 import android.os.Vibrator
 import androidx.annotation.RawRes
+import androidx.core.net.toUri
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.Player.COMMAND_SET_VOLUME
 import androidx.media3.exoplayer.ExoPlayer
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
+import kotlin.math.pow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import androidx.core.net.toUri
-import androidx.media3.common.Player.COMMAND_SET_VOLUME
-import kotlin.math.pow
 
 class AlarmRingtonePlayer(
     private val context: Context,
@@ -34,7 +35,7 @@ class AlarmRingtonePlayer(
     private var player: ExoPlayer? = null
 
     lateinit var volumeIncreaseJob: Job
-    lateinit var vibrationDelayJob: Job
+    lateinit var vibrationJob: Job
 
     private fun initializePlayer() {
         if (player == null) {
@@ -135,7 +136,7 @@ class AlarmRingtonePlayer(
 
     fun stop() {
         if (::volumeIncreaseJob.isInitialized) volumeIncreaseJob.cancel()
-        if (::vibrationDelayJob.isInitialized) vibrationDelayJob.cancel()
+        if (::vibrationJob.isInitialized) vibrationJob.cancel()
 
         vibrator.cancel()
 
@@ -146,46 +147,46 @@ class AlarmRingtonePlayer(
     }
 
     fun startVibration(delaySeconds: Int) {
-        if (delaySeconds > 0) {
-            vibrationDelayJob = playerScope.launch {
+        if (::vibrationJob.isInitialized) vibrationJob.cancel()
+
+        vibrationJob = playerScope.launch {
+            if (delaySeconds > 0) {
                 delay(delaySeconds * 1000L)
-                startVibrationInternal()
             }
-        } else {
-            startVibrationInternal()
+
+            while (isActive) {
+                startVibrationInternal()
+                delay(2000L)
+            }
         }
     }
 
     @Suppress("DEPRECATION")
     private fun startVibrationInternal() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val vibrationAttributes = VibrationAttributes.Builder()
-                .setUsage(VibrationAttributes.USAGE_ALARM)
-                .build()
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val vibrationEffect = VibrationEffect.createWaveform(
                 longArrayOf(1000, 1000),
                 intArrayOf(255, 0),
-                0
+                -1
             )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val vibrationAttributes = VibrationAttributes.Builder()
+                    .setUsage(VibrationAttributes.USAGE_ALARM)
+                    .build()
 
-            vibrator.vibrate(vibrationEffect, vibrationAttributes)
+                vibrator.vibrate(vibrationEffect, vibrationAttributes)
+            } else {
+                val vibrationAudioAttributes = android.media.AudioAttributes.Builder()
+                    .setUsage(android.media.AudioAttributes.USAGE_ALARM)
+                    .build()
+                vibrator.vibrate(vibrationEffect, vibrationAudioAttributes)
+            }
         } else {
             val vibrationAudioAttributes = android.media.AudioAttributes.Builder()
                 .setUsage(android.media.AudioAttributes.USAGE_ALARM)
                 .build()
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val vibrationEffect = VibrationEffect.createWaveform(
-                    longArrayOf(1000, 1000),
-                    intArrayOf(255, 0),
-                    0
-                )
-
-                vibrator.vibrate(vibrationEffect, vibrationAudioAttributes)
-            } else {
-                vibrator.vibrate(longArrayOf(0, 1000, 1000), 0, vibrationAudioAttributes)
-            }
+            vibrator.vibrate(longArrayOf(0, 1000, 1000), -1, vibrationAudioAttributes)
         }
     }
 
