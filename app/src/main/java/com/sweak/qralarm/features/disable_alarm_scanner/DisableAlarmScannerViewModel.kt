@@ -52,7 +52,6 @@ class DisableAlarmScannerViewModel @Inject constructor(
         savedStateHandle.get<Boolean>(IS_DISABLING_BEFORE_ALARM_FIRED) == true
 
     private lateinit var alarm: Alarm
-    private var assignedCode: String? = null
 
     private var camera: Camera? = null
     private var shouldScan = true
@@ -155,10 +154,10 @@ class DisableAlarmScannerViewModel @Inject constructor(
                     shouldScan = false
 
                     viewModelScope.launch {
-                        if (assignedCode == null) {
+                        if (alarm.assignedCode == null) {
                             disableAlarm(codeValue)
                         } else {
-                            if (codeValue == assignedCode) {
+                            if (codeValue == alarm.assignedCode) {
                                 disableAlarm(codeValue)
                             } else {
                                 showIncorrectCodeWarning()
