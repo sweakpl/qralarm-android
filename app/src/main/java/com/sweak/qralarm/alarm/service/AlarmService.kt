@@ -135,24 +135,22 @@ class AlarmService : Service() {
         }
 
         serviceScope.launch {
+            val isSnoozeAlarm = intent.extras?.getBoolean(EXTRA_IS_SNOOZE_ALARM)
+
             if (shouldStopService) {
                 userDataRepository.setAlarmMissedDetected(detected = true)
-                ServiceCompat.stopForeground(
-                    this@AlarmService,
-                    ServiceCompat.STOP_FOREGROUND_REMOVE
-                )
-                qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
+                stopForegroundAndCancelNotification(alarmId)
                 return@launch
             }
 
             alarmsRepository.getAlarm(alarmId = alarmId)?.let {
                 alarm = it
+                if (isAbnormalLaunch(alarm, isSnoozeAlarm)) {
+                    stopForegroundAndCancelNotification(alarmId)
+                    return@launch
+                }
             } ?: run {
-                ServiceCompat.stopForeground(
-                    this@AlarmService,
-                    ServiceCompat.STOP_FOREGROUND_REMOVE
-                )
-                qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
+                stopForegroundAndCancelNotification(alarmId)
                 return@launch
             }
 
@@ -172,10 +170,8 @@ class AlarmService : Service() {
                 ContextCompat.RECEIVER_NOT_EXPORTED
             )
 
-            intent.extras?.getBoolean(EXTRA_IS_SNOOZE_ALARM)?.let { isSnoozeAlarm ->
-                if (!isSnoozeAlarm) {
-                    resetAvailableSnoozes()
-                }
+            if (isSnoozeAlarm == false) {
+                resetAvailableSnoozes()
             }
 
             alarmsRepository.setAlarmRunning(
@@ -238,6 +234,20 @@ class AlarmService : Service() {
             setFullScreenIntent(alarmFullScreenPendingIntent, true)
             return build()
         }
+    }
+
+    private fun stopForegroundAndCancelNotification(alarmId: Long) {
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+        qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
+    }
+
+    private fun isAbnormalLaunch(alarm: Alarm, isSnoozeAlarm: Boolean?): Boolean {
+        val scheduledTimeInMillis = when {
+            isSnoozeAlarm == true -> alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis
+            else -> alarm.nextAlarmTimeInMillis
+        }
+        return scheduledTimeInMillis != null &&
+            System.currentTimeMillis() - scheduledTimeInMillis > ABNORMAL_LAUNCH_TOLERANCE_MS
     }
 
     private suspend fun resetAvailableSnoozes() {
@@ -344,5 +354,7 @@ class AlarmService : Service() {
         const val EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS = 10
 
         var isRunning = false
+
+        private const val ABNORMAL_LAUNCH_TOLERANCE_MS = 10 * 60 * 1000L
     }
 }
