@@ -21,6 +21,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.ALARM_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.activity.AlarmActivity
+import com.sweak.qralarm.alarm.util.setAlarmVolume
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
@@ -286,7 +287,7 @@ class AlarmService : Service() {
             val volumeLevel = (minVolume + (volumeRange * (volumePercentage / 100.0))).toInt()
                 .coerceAtLeast(minVolume + 1)
 
-            audioManager.setStreamVolume(AudioManager.STREAM_ALARM, volumeLevel, 0)
+            audioManager.setAlarmVolume(volumeLevel)
         }
     }
 
@@ -332,7 +333,7 @@ class AlarmService : Service() {
         }
 
         originalSystemAlarmVolume?.let {
-            audioManager.setStreamVolume(AudioManager.STREAM_ALARM, it, 0)
+            audioManager.setAlarmVolume(it)
         }
 
         serviceScope.cancel()
