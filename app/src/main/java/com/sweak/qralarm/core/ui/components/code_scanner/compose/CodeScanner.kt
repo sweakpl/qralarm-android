@@ -53,10 +53,10 @@ fun CodeScanner(
                 .fillMaxWidth()
                 .padding(
                     start = paddingValues.calculateStartPadding(LayoutDirection.Ltr) +
-                            MaterialTheme.space.medium,
-                    top = paddingValues.calculateTopPadding() + MaterialTheme.space.medium,
+                            MaterialTheme.space.mediumLarge,
+                    top = paddingValues.calculateTopPadding() + MaterialTheme.space.mediumLarge,
                     end = paddingValues.calculateEndPadding(LayoutDirection.Ltr) +
-                            MaterialTheme.space.medium
+                            MaterialTheme.space.mediumLarge
                 )
         ) {
             IconButton(onClick = onCloseClicked) {
@@ -64,7 +64,7 @@ fun CodeScanner(
                     imageVector = QRAlarmIcons.Close,
                     contentDescription = stringResource(R.string.content_description_close_icon),
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(MaterialTheme.space.large)
+                    modifier = Modifier.size(MaterialTheme.space.xLarge)
                 )
             }
 
@@ -75,7 +75,7 @@ fun CodeScanner(
                         else QRAlarmIcons.FlashOn,
                     contentDescription = stringResource(R.string.content_description_flash_icon),
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(MaterialTheme.space.large)
+                    modifier = Modifier.size(MaterialTheme.space.xLarge)
                 )
             }
         }
