@@ -74,7 +74,15 @@ class CustomCodeScannerViewModel @Inject constructor(
                     ).apply {
                         configureAutoFocus(event.windowInfo)
                     }
-                } catch (_: Exception) {
+                } catch (exception: Exception) {
+                    if (exception !is IllegalStateException &&
+                        exception !is IllegalArgumentException &&
+                        exception !is UnsupportedOperationException &&
+                        exception !is CameraInfoUnavailableException
+                    ) {
+                        throw exception
+                    }
+
                     cleanUpCameraResources(
                         imageAnalysisUseCase,
                         processCameraProvider,
@@ -168,16 +176,12 @@ class CustomCodeScannerViewModel @Inject constructor(
             windowHeight
         ).createPoint(windowWidth / 2, windowHeight / 2)
 
-        try {
-            cameraControl.startFocusAndMetering(
-                FocusMeteringAction
-                    .Builder(autoFocusPoint, FocusMeteringAction.FLAG_AF)
-                    .setAutoCancelDuration(2, TimeUnit.SECONDS)
-                    .build()
-            )
-        } catch (exception: CameraInfoUnavailableException) {
-            Log.d("AutoFocus", "Cannot access camera", exception)
-        }
+        cameraControl.startFocusAndMetering(
+            FocusMeteringAction
+                .Builder(autoFocusPoint, FocusMeteringAction.FLAG_AF)
+                .setAutoCancelDuration(2, TimeUnit.SECONDS)
+                .build()
+        )
     }
 
     private fun turnOffFlash() {
