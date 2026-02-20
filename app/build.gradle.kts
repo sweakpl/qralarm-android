@@ -18,8 +18,8 @@ android {
         applicationId = "com.sweak.qralarm"
         minSdk = 23
         targetSdk = 36
-        versionCode = 72
-        versionName = "2.7.8"
+        versionCode = 73
+        versionName = "2.7.9"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -41,6 +41,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    //noinspection WrongGradleMethod
     kotlin {
         compilerOptions {
             languageVersion = KotlinVersion.KOTLIN_2_3
