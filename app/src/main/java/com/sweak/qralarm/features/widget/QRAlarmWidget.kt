@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.widget
 
 import android.content.Context
+import android.text.format.DateFormat
 import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
@@ -42,7 +43,12 @@ class QRAlarmWidget : GlanceAppWidget() {
 
         val nextAlarm = getNextAlarm(alarmAsList)
 
-        val nextAlarmTimeString = getNextAlarmTimeAsString(nextAlarm)
+        // get next alarm time as a String
+
+        val hourOfDay = nextAlarm!!.alarmHourOfDay
+        val minute = nextAlarm.alarmMinute ?: 0
+        val is24HourFormat = DateFormat.is24HourFormat(context)
+        val nextAlarmTimeString = getTimeString(hourOfDay, minute, is24HourFormat)
 
         provideContent {
             Column(
@@ -50,7 +56,6 @@ class QRAlarmWidget : GlanceAppWidget() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text("Hello World")
-                // Text(anAlarmList[0].alarmLabel.toString())
 
                 // displays the next alarm time!!
                 Text(nextAlarmTimeString)
@@ -65,10 +70,5 @@ class QRAlarmWidget : GlanceAppWidget() {
             .filter { it.isAlarmEnabled }
             .minByOrNull { it.nextAlarmTimeInMillis }
         return nextAlarm
-    }
-
-    // TODO: find out how to see if an alarm is 24HourFormat or not?
-    fun getNextAlarmTimeAsString(alarm: Alarm?): String {
-        return getTimeString(alarm?.nextAlarmTimeInMillis ?: 0, is24HourFormat = false)
     }
 }
