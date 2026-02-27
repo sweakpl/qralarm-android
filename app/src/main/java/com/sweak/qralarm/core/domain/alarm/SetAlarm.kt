@@ -1,12 +1,17 @@
 package com.sweak.qralarm.core.domain.alarm
 
+import android.content.Context
+import androidx.glance.appwidget.updateAll
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.features.widget.QRAlarmWidget
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class SetAlarm @Inject constructor(
     private val qrAlarmManager: QRAlarmManager,
-    private val alarmsRepository: AlarmsRepository
+    private val alarmsRepository: AlarmsRepository,
+    @ApplicationContext private val context: Context
 ) {
     suspend operator fun invoke(alarmId: Long, isReschedulingMissedAlarm: Boolean): Result {
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return Result.Failure
@@ -81,6 +86,8 @@ class SetAlarm @Inject constructor(
                 )
             }
         }
+
+        QRAlarmWidget().updateAll(context)
 
         return Result.Success(alarmTimInMillis = alarmTimeInMillis)
     }

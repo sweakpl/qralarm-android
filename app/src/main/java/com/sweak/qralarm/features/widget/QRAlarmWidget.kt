@@ -2,6 +2,8 @@ package com.sweak.qralarm.features.widget
 
 import android.content.Context
 import android.text.format.DateFormat
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
@@ -15,7 +17,6 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.first
 
 @EntryPoint
 @InstallIn(SingletonComponent::class)
@@ -37,28 +38,25 @@ class QRAlarmWidget : GlanceAppWidget() {
 
         val alarmsRepository = entryPoint.alarmsRepository()
 
-        val allAlarmsFlow = alarmsRepository.getAllAlarms()
-
-        val alarmAsList = allAlarmsFlow.first()
-
-        val nextAlarm = getNextAlarm(alarmAsList)
-
-        // get next alarm time as a String
-
-        val hourOfDay = nextAlarm!!.alarmHourOfDay
-        val minute = nextAlarm.alarmMinute ?: 0
-        val is24HourFormat = DateFormat.is24HourFormat(context)
-        val nextAlarmTimeString = getTimeString(hourOfDay, minute, is24HourFormat)
-
         provideContent {
+            val alarms by alarmsRepository.getAllAlarms().collectAsState(
+                initial = emptyList()
+            )
+
+            val nextAlarm = getNextAlarm(alarms)
+
             Column(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Hello World")
-
-                // displays the next alarm time!!
-                Text(nextAlarmTimeString)
+                if (nextAlarm != null) {
+                    val hourOfDay = nextAlarm.alarmHourOfDay
+                    val minute = nextAlarm.alarmMinute ?: 0
+                    val is24HourFormat = DateFormat.is24HourFormat(context)
+                    Text(getTimeString(hourOfDay, minute, is24HourFormat))
+                } else {
+                    Text("No alarms set")
+                }
             }
 
 
