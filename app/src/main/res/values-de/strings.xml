@@ -216,4 +216,7 @@
     <string name="emergency_disabled_repeating_alarm_notification_title">Wiederholungsalarm deaktiviert!</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">Die Notfallaufgabe hat Ihren wiederkehrenden Alarm deaktiviert. Um ihn erneut zu planen, besuchen Sie bitte die Alarmseite.</string>
     <string name="standalone_app">Eigenständige App</string>
+    <string name="theme">Design</string>
+    <string name="custom_theme">Benutzerdefiniertes Design</string>
+    <string name="custom_color">Benutzerdefinierte Farbe</string>
 </resources>

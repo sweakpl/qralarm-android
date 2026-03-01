@@ -230,4 +230,7 @@
     <string name="emergency_disabled_repeating_alarm_notification_title">Powtarzający się alarm został wyłączony!</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">Zadanie awaryjne wyłączyło powtarzający się alarm. Aby ponownie go zaplanować, przejdź do strony alarmów.</string>
     <string name="standalone_app">Samodzielna aplikacja</string>
+    <string name="theme">Motyw</string>
+    <string name="custom_theme">Motyw niestandardowy</string>
+    <string name="custom_color">Niestandardowy kolor</string>
 </resources>

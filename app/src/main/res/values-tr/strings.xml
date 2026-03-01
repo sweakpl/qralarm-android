@@ -216,4 +216,7 @@
     <string name="emergency_disabled_repeating_alarm_notification_title">Tekrar eden alarm devre dışı bırakıldı!</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">Acil durum görevi, tekrar eden alarmınızı devre dışı bırakmıştır. Tekrar programlamak için alarmlar sayfasına gidin.</string>
     <string name="standalone_app">Bağımsız uygulama</string>
+    <string name="theme">Tema</string>
+    <string name="custom_theme">Özel tema</string>
+    <string name="custom_color">Özel renk</string>
 </resources>

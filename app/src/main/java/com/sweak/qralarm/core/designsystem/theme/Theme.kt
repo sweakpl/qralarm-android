@@ -37,7 +37,7 @@ val MaterialTheme.isQRAlarmTheme: Boolean
 
 @Composable
 fun QRAlarmTheme(
-    theme: Theme? = null,
+    theme: Theme = Theme.Default,
     content: @Composable () -> Unit
 ) {
     val isUsingQRAlarmTheme = theme is Theme.Default

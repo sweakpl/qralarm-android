@@ -1,8 +1,8 @@
 package com.sweak.qralarm.features.menu
 
 import android.content.Intent
-import android.os.Build
 import android.provider.Settings
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.foundation.background
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
@@ -47,7 +46,6 @@ import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.features.menu.components.AssignDefaultCodeBottomSheet
 import com.sweak.qralarm.features.menu.components.DefaultCodeEntry
 import com.sweak.qralarm.features.menu.components.MenuEntry
-import com.sweak.qralarm.features.menu.components.ThemeToggleEntry
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -58,7 +56,8 @@ fun MenuScreen(
     onEmergencyTaskSettingsClicked: () -> Unit,
     onQRAlarmProClicked: () -> Unit,
     onRateQRAlarmClicked: () -> Unit,
-    onScanDefaultCodeClicked: () -> Unit
+    onScanDefaultCodeClicked: () -> Unit,
+    onThemeClicked: () -> Unit
 ) {
     val menuViewModel = hiltViewModel<MenuViewModel>()
     val menuScreenState by menuViewModel.state.collectAsStateWithLifecycle()
@@ -91,6 +90,7 @@ fun MenuScreen(
                     onEmergencyTaskSettingsClicked()
                 is MenuScreenUserEvent.OnQRAlarmProClicked -> onQRAlarmProClicked()
                 is MenuScreenUserEvent.OnRateQRAlarmClicked -> onRateQRAlarmClicked()
+                is MenuScreenUserEvent.OnThemeClicked -> onThemeClicked()
                 is MenuScreenUserEvent.TryScanSpecificDefaultCode -> {
                     menuViewModel.onEvent(
                         MenuScreenUserEvent.AssignDefaultCodeDialogVisible(isVisible = false)
@@ -209,12 +209,10 @@ fun MenuScreenContent(
                     onClick = { onEvent(MenuScreenUserEvent.OnRateQRAlarmClicked) }
                 )
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    ThemeToggleEntry(
-                        theme = state.theme,
-                        onThemeToggle = { onEvent(MenuScreenUserEvent.ThemeToggleClicked) }
-                    )
-                }
+                MenuEntry(
+                    title = stringResource(R.string.theme),
+                    onClick = { onEvent(MenuScreenUserEvent.OnThemeClicked) }
+                )
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.add_edit_alarm.components
+package com.sweak.qralarm.core.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

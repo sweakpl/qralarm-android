@@ -223,4 +223,7 @@
     <string name="emergency_disabled_repeating_alarm_notification_title">Alarme repetitivo desativado!</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">A tarefa de emergência desativou seu alarme repetitivo. Para programá-lo novamente, acesse a página de alarmes.</string>
     <string name="standalone_app">Aplicativo independente</string>
+    <string name="theme">Tema</string>
+    <string name="custom_theme">Tema personalizado</string>
+    <string name="custom_color">Cor personalizada</string>
 </resources>

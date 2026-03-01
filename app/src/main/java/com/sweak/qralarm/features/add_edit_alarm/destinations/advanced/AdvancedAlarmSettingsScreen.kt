@@ -38,7 +38,7 @@ import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
-import com.sweak.qralarm.features.add_edit_alarm.components.ToggleSetting
+import com.sweak.qralarm.core.ui.components.ToggleSetting
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getSecondsDurationString
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseGentleWakeUpDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseTemporaryMuteDurationBottomSheet

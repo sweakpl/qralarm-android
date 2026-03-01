@@ -209,4 +209,7 @@
     <string name="emergency_disabled_repeating_alarm_notification_title">重复闹钟已禁用！</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">紧急任务已禁用您的重复闹钟。如需重新设置，请访问闹钟页面。</string>
     <string name="standalone_app">独立应用程序</string>
+    <string name="theme">主题</string>
+    <string name="custom_theme">自定义主题</string>
+    <string name="custom_color">自定义颜色</string>
 </resources>

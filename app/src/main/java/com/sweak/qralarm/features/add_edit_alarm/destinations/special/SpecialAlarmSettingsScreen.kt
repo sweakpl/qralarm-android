@@ -32,7 +32,7 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.SpecialAlarmSettingsScreenUserEvent
-import com.sweak.qralarm.features.add_edit_alarm.components.ToggleSetting
+import com.sweak.qralarm.core.ui.components.ToggleSetting
 
 @Composable
 fun SpecialAlarmSettingsScreen(

@@ -15,7 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,11 +28,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
@@ -81,6 +79,8 @@ import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
+import com.sweak.qralarm.core.ui.components.NavigationButton
+import com.sweak.qralarm.core.ui.components.ToggleSetting
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
@@ -90,7 +90,6 @@ import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEd
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
 import com.sweak.qralarm.features.add_edit_alarm.components.SimpleSetting
-import com.sweak.qralarm.features.add_edit_alarm.components.ToggleSetting
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AssignCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseAlarmRepeatingScheduleBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseAlarmRingtoneConfigDialogBottomSheet
@@ -782,60 +781,24 @@ private fun AddEditAlarmScreenContent(
                                                 val areSavedCodesAvailable =
                                                     state.previouslySavedCodes.isNotEmpty()
 
-                                                val scanButtonColor = with (MaterialTheme) {
-                                                    if (isQRAlarmTheme) BlueZodiac
-                                                    else colorScheme.secondary
-                                                }
-
-                                                Card(
-                                                    colors = CardDefaults.cardColors(
-                                                        containerColor = scanButtonColor
-                                                    ),
+                                                NavigationButton(
+                                                    text = stringResource(R.string.scan_your_own_code),
+                                                    onClick = {
+                                                        onEvent(
+                                                            if (areSavedCodesAvailable) {
+                                                                AddEditAlarmScreenUserEvent
+                                                                    .AssignCodeDialogVisible(
+                                                                        isVisible = true
+                                                                    )
+                                                            } else {
+                                                                AddEditAlarmScreenUserEvent
+                                                                    .TryScanSpecificCode
+                                                            }
+                                                        )
+                                                    },
                                                     modifier = Modifier
                                                         .padding(all = MaterialTheme.space.medium)
-                                                        .clickable {
-                                                            onEvent(
-                                                                if (areSavedCodesAvailable) {
-                                                                    AddEditAlarmScreenUserEvent
-                                                                        .AssignCodeDialogVisible(
-                                                                            isVisible = true
-                                                                        )
-                                                                } else {
-                                                                    AddEditAlarmScreenUserEvent
-                                                                        .TryScanSpecificCode
-                                                                }
-                                                            )
-                                                        }
-                                                ) {
-                                                    Row(
-                                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                                        verticalAlignment = Alignment.CenterVertically,
-                                                        modifier = Modifier
-                                                            .fillMaxWidth()
-                                                            .padding(
-                                                                all = MaterialTheme.space.medium
-                                                            )
-                                                    ) {
-                                                        Text(
-                                                            text = stringResource(
-                                                                if (areSavedCodesAvailable) {
-                                                                    R.string.assign_specific_code
-                                                                } else {
-                                                                    R.string.scan_your_own_code
-                                                                }
-                                                            ),
-                                                            style =
-                                                            MaterialTheme.typography.labelLarge
-                                                        )
-
-                                                        Icon(
-                                                            imageVector = QRAlarmIcons.ForwardArrow,
-                                                            contentDescription = stringResource(
-                                                                R.string.content_description_forward_arrow_icon
-                                                            )
-                                                        )
-                                                    }
-                                                }
+                                                )
                                             }
                                         }
 

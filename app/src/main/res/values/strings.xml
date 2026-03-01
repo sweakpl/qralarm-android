@@ -224,4 +224,7 @@
     <string name="google_play" translatable="false">Google Play</string>
     <string name="itch_io" translatable="false">itch.io</string>
     <string name="standalone_app">Standalone app</string>
+    <string name="theme">Theme</string>
+    <string name="custom_theme">Custom theme</string>
+    <string name="custom_color">Custom color</string>
 </resources>

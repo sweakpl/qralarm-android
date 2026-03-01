@@ -42,6 +42,8 @@ import com.sweak.qralarm.features.qralarm_pro.navigation.navigateToQRAlarmPro
 import com.sweak.qralarm.features.qralarm_pro.navigation.qralarmProScreen
 import com.sweak.qralarm.features.rate.navigation.navigateToRate
 import com.sweak.qralarm.features.rate.navigation.rateScreen
+import com.sweak.qralarm.features.theme.navigation.navigateToTheme
+import com.sweak.qralarm.features.theme.navigation.themeScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -209,12 +211,24 @@ class MainActivity : FragmentActivity() {
                                 navController.navigateToCustomCodeScanner(
                                     shouldScanForDefaultCode = true
                                 )
+                            },
+                            onThemeClicked = {
+                                navController.navigateToTheme()
                             }
                         )
 
                         optimizationScreen(
                             onBackClicked = {
                                 navController.navigateUp()
+                            }
+                        )
+
+                        themeScreen(
+                            onBackClicked = {
+                                navController.navigateUp()
+                            },
+                            onGoToQRAlarmProCheckout = {
+                                navController.navigateToQRAlarmPro()
                             }
                         )
 
