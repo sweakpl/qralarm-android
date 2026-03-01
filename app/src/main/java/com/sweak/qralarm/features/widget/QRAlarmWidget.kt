@@ -18,55 +18,16 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 
-@EntryPoint
-@InstallIn(SingletonComponent::class)
-interface QRAlarmWidgetEntryPoint {
-    fun alarmsRepository(): AlarmsRepository
-}
-
 class QRAlarmWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
 
-        // In this method, load data needed to render the AppWidget.
-        // Use `withContext` to switch to another thread for long running
-        // operations.
-
-        val entryPoint = EntryPointAccessors.fromApplication(
-            context.applicationContext,
-            QRAlarmWidgetEntryPoint::class.java
-        )
-
-        val alarmsRepository = entryPoint.alarmsRepository()
-
         provideContent {
-            val alarms by alarmsRepository.getAllAlarms().collectAsState(
-                initial = emptyList()
-            )
-
-            val nextAlarm = getNextAlarm(alarms)
-
             Column(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (nextAlarm != null) {
-                    val hourOfDay = nextAlarm.alarmHourOfDay
-                    val minute = nextAlarm.alarmMinute ?: 0
-                    val is24HourFormat = DateFormat.is24HourFormat(context)
-                    Text(getTimeString(hourOfDay, minute, is24HourFormat))
-                } else {
-                    Text("No alarms set")
-                }
+                Text("DUMMY - No alarms set")
             }
-
-
         }
-    }
-
-    fun getNextAlarm(alarmsList: List<Alarm>): Alarm? {
-        val nextAlarm: Alarm? = alarmsList
-            .filter { it.isAlarmEnabled }
-            .minByOrNull { it.nextAlarmTimeInMillis }
-        return nextAlarm
     }
 }
