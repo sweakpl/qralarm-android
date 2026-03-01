@@ -233,4 +233,5 @@
     <string name="theme">Motyw</string>
     <string name="custom_theme">Motyw niestandardowy</string>
     <string name="custom_color">Niestandardowy kolor</string>
+    <string name="custom_theme_description">Stwórz własny motyw z niestandardowymi kolorami.</string>
 </resources>

@@ -41,6 +41,12 @@ val qrAlarmProCarouselFeatures = listOf(
         descriptionResourceId = R.string.keep_ringer_on_description,
         animatedResourceId = R.drawable.keep_ringer_on,
         animationDurationMillis = 6310L
+    ),
+    CarouselFeature(
+        titleResourceId = R.string.custom_theme,
+        descriptionResourceId = R.string.custom_theme_description,
+        animatedResourceId = R.drawable.custom_theme,
+        animationDurationMillis = 3000L
     )
 )
 // Note: animationDurationMillis have 400ms subtracted for proper fad-out between carousel items.

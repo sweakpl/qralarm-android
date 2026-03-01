@@ -31,5 +31,9 @@ val qrAlarmProChipFeatures = listOf(
     ChipFeature(
         titleResourceId = R.string.keep_ringer_on,
         icon = { QRAlarmIcons.Sound }
+    ),
+    ChipFeature(
+        titleResourceId = R.string.custom_theme,
+        icon = { QRAlarmIcons.Theme }
     )
 )

@@ -227,4 +227,5 @@
     <string name="theme">Theme</string>
     <string name="custom_theme">Custom theme</string>
     <string name="custom_color">Custom color</string>
+    <string name="custom_theme_description">Create your own theme with custom colors.</string>
 </resources>

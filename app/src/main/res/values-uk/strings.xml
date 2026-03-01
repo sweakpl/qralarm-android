@@ -233,4 +233,5 @@
     <string name="theme">Тема</string>
     <string name="custom_theme">Користувацька тема</string>
     <string name="custom_color">Нестандартний колір</string>
+    <string name="custom_theme_description">Створіть власну тему з користувацькими кольорами.</string>
 </resources>

@@ -226,4 +226,5 @@
     <string name="theme">Thème</string>
     <string name="custom_theme">Thème personnalisé</string>
     <string name="custom_color">Couleur personnalisée</string>
+    <string name="custom_theme_description">Créez votre propre thème avec des couleurs personnalisées.</string>
 </resources>

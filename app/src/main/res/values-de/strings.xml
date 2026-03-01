@@ -219,4 +219,5 @@
     <string name="theme">Design</string>
     <string name="custom_theme">Benutzerdefiniertes Design</string>
     <string name="custom_color">Benutzerdefinierte Farbe</string>
+    <string name="custom_theme_description">Erstellen Sie Ihr eigenes Design mit benutzerdefinierten Farben.</string>
 </resources>

@@ -22,6 +22,7 @@ import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
@@ -88,4 +89,5 @@ object QRAlarmIcons {
     val FlashOn = Icons.Filled.FlashOn
     val FlashOff = Icons.Filled.FlashOff
     val SoundMute = Icons.AutoMirrored.Outlined.VolumeOff
+    val Theme = Icons.Outlined.ColorLens
 }
