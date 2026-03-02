@@ -114,6 +114,7 @@ class AlarmsRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAlarm(alarmId: Long) {
         alarmsDao.deleteAlarm(alarmId = alarmId)
+        // broadcast the intent for updating widget
     }
 
     private fun convertAlarmEntity(alarmEntity: AlarmEntity): Alarm {

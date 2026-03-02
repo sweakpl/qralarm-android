@@ -1,10 +1,10 @@
 package com.sweak.qralarm.features.widget
 
 import android.content.Context
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import android.icu.text.DateFormat
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.ui.getTimeString
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -12,7 +12,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
-import kotlin.collections.emptyList
 
 @EntryPoint
 @InstallIn(SingletonComponent::class)
