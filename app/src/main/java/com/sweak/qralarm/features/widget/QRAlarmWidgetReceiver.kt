@@ -22,6 +22,8 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
+        // TODO: get Intent extras from broadcast (Updater class)
+
         // this is where the intent from QRAlarmWidgetUpdater gets processed!
         if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
             // TO DO: get glanceIds
@@ -35,7 +37,7 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
                     updateAppWidgetState(context, it) { preferences ->
                         // TODO: update with real data below
                         preferences[ALARM_TIME_PREFERENCES_KEY] = "00:00"
-                        preferences[ALARM_LABEL_PREFERENCES_KEY] = "dummy alarm label"
+                        preferences[ALARM_LABEL_PREFERENCES_KEY] = "dummy"
                     }
                     // TO DO: call glanceAppWidget.update() at end with (context, glanceId)
                     glanceAppWidget.update(context, it)

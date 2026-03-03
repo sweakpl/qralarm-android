@@ -1,6 +1,7 @@
 package com.sweak.qralarm.core.domain.alarm
 
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.features.widget.QRAlarmWidgetUpdater
 import java.time.ZonedDateTime
 import javax.inject.Inject
 

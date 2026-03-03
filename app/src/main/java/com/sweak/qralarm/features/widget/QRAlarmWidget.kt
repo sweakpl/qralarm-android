@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
+import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.text.Text
@@ -27,7 +28,11 @@ class QRAlarmWidget : GlanceAppWidget() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("DUMMY - No alarms set")
+                val alarmTime = currentState(ALARM_TIME_PREFERENCES_KEY)
+                val alarmLabel = currentState(ALARM_LABEL_PREFERENCES_KEY)
+
+                Text("AlarmTime: $alarmTime")
+                Text("AlarmLabel: $alarmLabel")
             }
         }
     }
