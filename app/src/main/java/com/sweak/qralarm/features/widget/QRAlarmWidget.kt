@@ -1,38 +1,53 @@
 package com.sweak.qralarm.features.widget
 
 import android.content.Context
-import android.text.format.DateFormat
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
+import androidx.glance.GlanceModifier
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
+import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.padding
 import androidx.glance.text.Text
-import com.sweak.qralarm.core.domain.alarm.Alarm
-import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
-import com.sweak.qralarm.core.ui.getTimeString
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.components.SingletonComponent
+import com.sweak.qralarm.R
+import androidx.glance.background
+import com.sweak.qralarm.R.drawable.widget_background
 
 class QRAlarmWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
 
         provideContent {
+
+            val preferences = currentState<androidx.datastore.preferences.core.Preferences>()
+
+            val alarmTime =
+                preferences[ALARM_TIME_PREFERENCES_KEY] ?: "No alarm set"
+
+            val alarmLabel =
+                preferences[ALARM_LABEL_PREFERENCES_KEY] ?: ""
+
             Column(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = GlanceModifier
+                    .fillMaxSize()
+                    .padding(12.dp)
+                    .background(
+                        androidx.glance.ImageProvider(R.drawable.widget_background)
+                    )
             ) {
-                val alarmTime = currentState(ALARM_TIME_PREFERENCES_KEY)
-                val alarmLabel = currentState(ALARM_LABEL_PREFERENCES_KEY)
-
-                Text("AlarmTime: $alarmTime")
-                Text("AlarmLabel: $alarmLabel")
+                Text(
+                    text = alarmTime,
+                    style = WidgetStyles.time
+                )
+                Text(
+                    text = alarmLabel,
+                    style = WidgetStyles.title
+                )
             }
         }
     }
