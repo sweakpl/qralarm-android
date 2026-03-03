@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.format.DateFormat
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
@@ -29,5 +30,10 @@ class QRAlarmWidget : GlanceAppWidget() {
                 Text("DUMMY - No alarms set")
             }
         }
+    }
+
+    companion object {
+        val ALARM_TIME_PREFERENCES_KEY = stringPreferencesKey("alarmTimeKey")
+        val ALARM_LABEL_PREFERENCES_KEY = stringPreferencesKey("alarmLabelKey")
     }
 }
