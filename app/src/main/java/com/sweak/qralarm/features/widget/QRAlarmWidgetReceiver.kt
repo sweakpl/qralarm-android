@@ -3,6 +3,7 @@ package com.sweak.qralarm.features.widget
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
@@ -28,6 +29,13 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
         if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
             // TO DO: get glanceIds
             receiverScope.launch {
+
+                val time: String? = intent.getStringExtra("time")
+                val label: String? = intent.getStringExtra("label")
+
+                Log.d("time", time.toString())
+                Log.d("label", label.toString())
+
                 val glanceIds = GlanceAppWidgetManager(context)
                     .getGlanceIds(QRAlarmWidget::class.java).also {
                         it.ifEmpty { return@launch }
@@ -36,8 +44,8 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
                 glanceIds.forEach {
                     updateAppWidgetState(context, it) { preferences ->
                         // TODO: update with real data below
-                        preferences[ALARM_TIME_PREFERENCES_KEY] = "00:00"
-                        preferences[ALARM_LABEL_PREFERENCES_KEY] = "dummy"
+                        preferences[ALARM_TIME_PREFERENCES_KEY] = time ?: "null"
+                        preferences[ALARM_LABEL_PREFERENCES_KEY] = label ?: "null"
                     }
                     // TO DO: call glanceAppWidget.update() at end with (context, glanceId)
                     glanceAppWidget.update(context, it)
