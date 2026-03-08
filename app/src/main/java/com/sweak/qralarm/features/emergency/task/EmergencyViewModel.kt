@@ -1,6 +1,5 @@
 package com.sweak.qralarm.features.emergency.task
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
@@ -9,7 +8,9 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
-import com.sweak.qralarm.features.emergency.task.navigation.ID_OF_ALARM_TO_CANCEL
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -20,20 +21,23 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-@HiltViewModel
-class EmergencyViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+@HiltViewModel(assistedFactory = EmergencyViewModel.Factory::class)
+class EmergencyViewModel @AssistedInject constructor(
+    @Assisted private val idOfAlarmToCancel: Long,
     private val disableAlarm: DisableAlarm,
     private val alarmsRepository: AlarmsRepository,
     private val userDataRepository: UserDataRepository,
     private val qrAlarmManager: QRAlarmManager
 ) : ViewModel() {
 
-    private val idOfAlarmToCancel: Long = savedStateHandle[ID_OF_ALARM_TO_CANCEL] ?: 0
+    @AssistedFactory
+    interface Factory {
+        fun create(idOfAlarmToCancel: Long): EmergencyViewModel
+    }
+
     private lateinit var alarm: Alarm
 
     private var _state = MutableStateFlow(EmergencyScreenState())

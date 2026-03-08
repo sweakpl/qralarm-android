@@ -1,6 +1,5 @@
 package com.sweak.qralarm.features.alarm
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.R
@@ -10,8 +9,9 @@ import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.alarm.SnoozeAlarm
 import com.sweak.qralarm.core.ui.compose_util.UiText
-import com.sweak.qralarm.features.alarm.navigation.ID_OF_ALARM
-import com.sweak.qralarm.features.alarm.navigation.IS_TRANSIENT
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,21 +19,24 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AlarmViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+@HiltViewModel(assistedFactory = AlarmViewModel.Factory::class)
+class AlarmViewModel @AssistedInject constructor(
+    @Assisted private val idOfAlarm: Long,
+    @Assisted private val isTransient: Boolean,
     private val alarmsRepository: AlarmsRepository,
     private val snoozeAlarm: SnoozeAlarm,
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm
 ) : ViewModel() {
 
-    private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM] ?: 0
     private lateinit var alarm: Alarm
     private var isAlarmBeingStopped: Boolean = false
-    private val isTransient: Boolean = savedStateHandle.get<Boolean>(IS_TRANSIENT) != false
+
+    @AssistedFactory
+    interface Factory {
+        fun create(idOfAlarm: Long, isTransient: Boolean): AlarmViewModel
+    }
 
     private var _state = MutableStateFlow(AlarmScreenState())
     val state = _state.asStateFlow()

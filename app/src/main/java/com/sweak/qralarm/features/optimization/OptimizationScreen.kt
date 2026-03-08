@@ -60,8 +60,14 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("BatteryLife")
 @Composable
-fun OptimizationScreen(onBackClicked: () -> Unit) {
-    val optimizationViewModel = hiltViewModel<OptimizationViewModel>()
+fun OptimizationScreen(
+    isLaunchedFromMenu: Boolean,
+    onBackClicked: () -> Unit
+) {
+    val optimizationViewModel =
+        hiltViewModel<OptimizationViewModel, OptimizationViewModel.Factory> { factory ->
+            factory.create(isLaunchedFromMenu = isLaunchedFromMenu)
+        }
     val optimizationScreenState by optimizationViewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current

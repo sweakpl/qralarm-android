@@ -13,7 +13,6 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.lifecycle.awaitInstance
 import androidx.compose.ui.platform.WindowInfo
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.alarm.Alarm
@@ -22,8 +21,9 @@ import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeDetector
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
-import com.sweak.qralarm.features.disable_alarm_scanner.navigation.ID_OF_ALARM
-import com.sweak.qralarm.features.disable_alarm_scanner.navigation.IS_DISABLING_BEFORE_ALARM_FIRED
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
@@ -37,19 +37,23 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-@HiltViewModel
-class DisableAlarmScannerViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+@HiltViewModel(assistedFactory = DisableAlarmScannerViewModel.Factory::class)
+class DisableAlarmScannerViewModel @AssistedInject constructor(
+    @Assisted private val idOfAlarm: Long,
+    @Assisted private val isDisablingBeforeAlarmFired: Boolean,
     private val alarmsRepository: AlarmsRepository,
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm
 ) : ViewModel() {
 
-    private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM] ?: 0
-    private val isDisablingBeforeAlarmFired: Boolean =
-        savedStateHandle.get<Boolean>(IS_DISABLING_BEFORE_ALARM_FIRED) == true
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            idOfAlarm: Long,
+            isDisablingBeforeAlarmFired: Boolean
+        ): DisableAlarmScannerViewModel
+    }
 
     private lateinit var alarm: Alarm
 

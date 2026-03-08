@@ -19,10 +19,14 @@ import com.sweak.qralarm.R
 
 @Composable
 fun CustomCodeScannerScreen(
+    shouldScanForDefaultCode: Boolean,
     onCustomCodeSaved: () -> Unit,
     onCloseClicked: () -> Unit
 ) {
-    val customCodeScannerViewModel = hiltViewModel<CustomCodeScannerViewModel>()
+    val customCodeScannerViewModel =
+        hiltViewModel<CustomCodeScannerViewModel, CustomCodeScannerViewModel.Factory> { factory ->
+            factory.create(shouldScanForDefaultCode = shouldScanForDefaultCode)
+        }
     val customCodeScannerScreenState by customCodeScannerViewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current

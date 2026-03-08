@@ -13,13 +13,14 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.lifecycle.awaitInstance
 import androidx.compose.ui.platform.WindowInfo
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeDetector
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
-import com.sweak.qralarm.features.custom_code_scanner.navigation.SHOULD_SCAN_FOR_DEFAULT_CODE
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
@@ -31,16 +32,17 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-@HiltViewModel
-class CustomCodeScannerViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+@HiltViewModel(assistedFactory = CustomCodeScannerViewModel.Factory::class)
+class CustomCodeScannerViewModel @AssistedInject constructor(
+    @Assisted private val shouldScanForDefaultCode: Boolean,
     private val userDataRepository: UserDataRepository
 ) : ViewModel() {
 
-    private val shouldScanForDefaultCode =
-        savedStateHandle.get<Boolean>(SHOULD_SCAN_FOR_DEFAULT_CODE) == true
+    @AssistedFactory
+    interface Factory {
+        fun create(shouldScanForDefaultCode: Boolean): CustomCodeScannerViewModel
+    }
 
     private var _state = MutableStateFlow(CustomCodeScannerScreenState())
     var state = _state.asStateFlow()

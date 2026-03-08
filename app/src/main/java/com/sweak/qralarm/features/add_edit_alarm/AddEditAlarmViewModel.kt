@@ -24,7 +24,9 @@ import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeat
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
-import com.sweak.qralarm.features.add_edit_alarm.navigation.ID_OF_ALARM_TO_EDIT
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -43,10 +45,10 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.time.DayOfWeek
 import java.time.ZonedDateTime
-import javax.inject.Inject
 
-@HiltViewModel
-class AddEditAlarmViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = AddEditAlarmViewModel.Factory::class)
+class AddEditAlarmViewModel @AssistedInject constructor(
+    @Assisted private val idOfAlarm: Long,
     private val savedStateHandle: SavedStateHandle,
     private val alarmRingtonePlayer: AlarmRingtonePlayer,
     private val userDataRepository: UserDataRepository,
@@ -58,7 +60,11 @@ class AddEditAlarmViewModel @Inject constructor(
     private val filesDir: File
 ): ViewModel() {
 
-    private val idOfAlarm: Long = savedStateHandle[ID_OF_ALARM_TO_EDIT] ?: 0
+    @AssistedFactory
+    interface Factory {
+        fun create(idOfAlarmToEdit: Long): AddEditAlarmViewModel
+    }
+
     private var hasUnsavedChanges = false
 
     private var _state = MutableStateFlow(AddEditAlarmFlowState())

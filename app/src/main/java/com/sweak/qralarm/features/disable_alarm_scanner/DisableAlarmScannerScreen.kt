@@ -22,10 +22,18 @@ import com.sweak.qralarm.features.disable_alarm_scanner.components.Toast
 
 @Composable
 fun DisableAlarmScannerScreen(
+    idOfAlarm: Long,
+    isDisablingBeforeAlarmFired: Boolean,
     onAlarmDisabled: (uriStringToTryToOpen: String?) -> Unit,
     onCloseClicked: () -> Unit
 ) {
-    val disableAlarmScannerViewModel = hiltViewModel<DisableAlarmScannerViewModel>()
+    val disableAlarmScannerViewModel =
+        hiltViewModel<DisableAlarmScannerViewModel, DisableAlarmScannerViewModel.Factory> {
+            factory -> factory.create(
+                idOfAlarm = idOfAlarm,
+                isDisablingBeforeAlarmFired = isDisablingBeforeAlarmFired
+            )
+        }
     val disableAlarmScannerScreenState by disableAlarmScannerViewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current

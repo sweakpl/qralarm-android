@@ -38,10 +38,14 @@ import com.sweak.qralarm.features.emergency.task.components.EmergencyTaskCard
 
 @Composable
 fun EmergencyScreen(
+    idOfAlarmToCancel: Long,
     onCloseClicked: () -> Unit,
     onEmergencyTaskCompleted: () -> Unit
 ) {
-    val emergencyViewModel = hiltViewModel<EmergencyViewModel>()
+    val emergencyViewModel =
+        hiltViewModel<EmergencyViewModel, EmergencyViewModel.Factory> { factory ->
+            factory.create(idOfAlarmToCancel = idOfAlarmToCancel)
+        }
     val emergencyScreenState by emergencyViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 

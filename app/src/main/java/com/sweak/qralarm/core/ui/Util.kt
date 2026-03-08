@@ -103,7 +103,7 @@ fun getDayString(timeInMillis: Long): String {
             regex = Regex(pattern = "[yY]+"),
             replacement = ""
         )
-        .trim { it < 'A' || it > 'z' }
+        .trim { it !in 'A'..'z' }
 
     return Instant.ofEpochMilli(timeInMillis)
         .atZone(ZoneId.systemDefault())

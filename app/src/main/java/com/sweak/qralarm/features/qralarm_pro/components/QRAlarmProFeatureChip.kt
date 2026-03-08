@@ -2,7 +2,6 @@ package com.sweak.qralarm.features.qralarm_pro.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text

@@ -58,12 +58,16 @@ import com.sweak.qralarm.features.alarm.components.TimeTickReceiver
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AlarmScreen(
+    idOfAlarm: Long,
+    isTransient: Boolean,
     onStopAlarm: () -> Unit,
     onRequestCodeScan: () -> Unit,
     onSnoozeAlarm: () -> Unit,
     onEmergencyClicked: () -> Unit
 ) {
-    val alarmViewModel = hiltViewModel<AlarmViewModel>()
+    val alarmViewModel = hiltViewModel<AlarmViewModel, AlarmViewModel.Factory> { factory ->
+        factory.create(idOfAlarm = idOfAlarm, isTransient = isTransient)
+    }
     val alarmScreenState by alarmViewModel.state.collectAsStateWithLifecycle()
 
     val cameraPermissionState = rememberPermissionState(
