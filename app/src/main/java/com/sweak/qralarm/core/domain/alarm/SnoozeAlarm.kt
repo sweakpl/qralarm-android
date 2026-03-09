@@ -54,7 +54,7 @@ class SnoozeAlarm @Inject constructor(
             )
         }
 
-        QRAlarmWidgetUpdater(appContext).update()
+        QRAlarmWidgetUpdater(appContext).updateImmediately()
 
     }
 }

@@ -19,6 +19,18 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
 
     private val receiverScope = CoroutineScope(Dispatchers.IO)
 
+    override fun onUpdate(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray
+    ) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds)
+        receiverScope.launch {
+            val updater = QRAlarmWidgetUpdater(context)
+            updater.updateImmediately()
+        }
+    }
+
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
@@ -40,8 +52,8 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
                 glanceIds.forEach {
                     updateAppWidgetState(context, it) { preferences ->
                         // TODO: update with real data below
-                        preferences[ALARM_TIME_PREFERENCES_KEY] = timeOfNextAlarm ?: "null"
-                        preferences[ALARM_LABEL_PREFERENCES_KEY] = labelOfNextAlarm ?: "null"
+                        preferences[ALARM_TIME_PREFERENCES_KEY] = timeOfNextAlarm ?: "--:--"
+                        preferences[ALARM_LABEL_PREFERENCES_KEY] = labelOfNextAlarm ?: "No alarm set"
                     }
                     glanceAppWidget.update(context, it)
                 }

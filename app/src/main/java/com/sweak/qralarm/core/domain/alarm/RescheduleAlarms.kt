@@ -105,7 +105,7 @@ class RescheduleAlarms @Inject constructor(
             }
         }
 
-        QRAlarmWidgetUpdater(appContext).update()
+        QRAlarmWidgetUpdater(appContext).requestUpdate()
 
     }
 }

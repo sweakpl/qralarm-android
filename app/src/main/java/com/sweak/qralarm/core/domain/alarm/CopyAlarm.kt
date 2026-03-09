@@ -20,6 +20,6 @@ class CopyAlarm @Inject constructor(
                 )
             )
         }
-        QRAlarmWidgetUpdater(appContext).update()
+        QRAlarmWidgetUpdater(appContext).requestUpdate()
     }
 }

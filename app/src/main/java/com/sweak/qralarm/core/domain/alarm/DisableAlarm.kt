@@ -30,7 +30,7 @@ class DisableAlarm @Inject constructor(
             )
         }
 
-        QRAlarmWidgetUpdater(appContext).update()
+        QRAlarmWidgetUpdater(appContext).requestUpdate()
 
     }
 }
