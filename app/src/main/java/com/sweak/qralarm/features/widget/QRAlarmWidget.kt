@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
 import androidx.glance.currentState
@@ -15,7 +16,10 @@ import androidx.glance.layout.padding
 import androidx.glance.text.Text
 import com.sweak.qralarm.R
 import androidx.glance.background
+import androidx.glance.layout.Box
 import com.sweak.qralarm.R.drawable.widget_background
+import androidx.glance.action.actionStartActivity
+import com.sweak.qralarm.app.activity.MainActivity
 
 class QRAlarmWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -29,25 +33,30 @@ class QRAlarmWidget : GlanceAppWidget() {
 
             val alarmLabel =
                 preferences[ALARM_LABEL_PREFERENCES_KEY] ?: ""
-
-            Column(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = GlanceModifier
-                    .fillMaxSize()
-                    .padding(12.dp)
-                    .background(
-                        androidx.glance.ImageProvider(R.drawable.widget_background)
-                    )
+            Box(
+                GlanceModifier.clickable(
+                    actionStartActivity<MainActivity>()
+                ), contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = alarmTime,
-                    style = WidgetStyles.time
-                )
-                Text(
-                    text = alarmLabel,
-                    style = WidgetStyles.title
-                )
+                Column(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = GlanceModifier
+                        .fillMaxSize()
+                        .padding(12.dp)
+                        .background(
+                            androidx.glance.ImageProvider(R.drawable.widget_background)
+                        )
+                ) {
+                    Text(
+                        text = alarmTime,
+                        style = WidgetStyles.time
+                    )
+                    Text(
+                        text = alarmLabel,
+                        style = WidgetStyles.title
+                    )
+                }
             }
         }
     }

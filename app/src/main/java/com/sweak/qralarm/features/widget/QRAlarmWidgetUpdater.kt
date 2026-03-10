@@ -38,7 +38,7 @@ class QRAlarmWidgetUpdater(appContext: Context) {
 
     private var updateJob: Job? = null
 
-    private val debounceDelayMs = 3000L
+    private val debounceDelayMs = 1500L
 
     fun requestUpdate() {
         updateJob?.cancel()
