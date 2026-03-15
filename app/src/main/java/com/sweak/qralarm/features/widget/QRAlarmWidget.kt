@@ -29,33 +29,43 @@ class QRAlarmWidget : GlanceAppWidget() {
             val preferences = currentState<androidx.datastore.preferences.core.Preferences>()
 
             val alarmTime =
-                preferences[ALARM_TIME_PREFERENCES_KEY] ?: "No alarm set"
+                //preferences[ALARM_TIME_PREFERENCES_KEY] ?: "No alarm set"
+                preferences[ALARM_TIME_PREFERENCES_KEY] ?: "--:--"
+
 
             val alarmLabel =
                 preferences[ALARM_LABEL_PREFERENCES_KEY] ?: ""
             Box(
-                GlanceModifier.clickable(
-                    actionStartActivity<MainActivity>()
-                ), contentAlignment = Alignment.Center
+                modifier = GlanceModifier
+                    .fillMaxSize()
+                    .clickable(actionStartActivity<MainActivity>())
+                    .background(androidx.glance.ImageProvider(R.drawable.widget_background))
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+
+
             ) {
                 Column(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = GlanceModifier
-                        .fillMaxSize()
-                        .padding(12.dp)
-                        .background(
-                            androidx.glance.ImageProvider(R.drawable.widget_background)
-                        )
+                    modifier = GlanceModifier.fillMaxSize()
+                    //    .fillMaxSize()
+                      //  .padding(12.dp)
+
                 ) {
-                    Text(
-                        text = alarmTime,
-                        style = WidgetStyles.time
-                    )
-                    Text(
-                        text = alarmLabel,
-                        style = WidgetStyles.title
-                    )
+                    Text(text = "Next Alarm at" , style = WidgetStyles.header)
+                    Text(text = alarmTime, style = WidgetStyles.time)
+                    if (alarmLabel.isNotEmpty()) {
+                        Text(text = alarmLabel, style = WidgetStyles.title)
+                    }
+                    //Text(
+                       // text = alarmTime,
+                       // style = WidgetStyles.time
+                    //)
+                   // Text(
+                       // text = alarmLabel,
+                       // style = WidgetStyles.title
+                  //  )
                 }
             }
         }
