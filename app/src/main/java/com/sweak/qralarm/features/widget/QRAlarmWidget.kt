@@ -61,6 +61,7 @@ class QRAlarmWidget : GlanceAppWidget() {
                     //Text(
                        // text = alarmTime,
                        // style = WidgetStyles.time
+                    //
                     //)
                    // Text(
                        // text = alarmLabel,
