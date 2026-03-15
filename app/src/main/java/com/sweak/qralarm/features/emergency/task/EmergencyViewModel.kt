@@ -3,6 +3,7 @@ package com.sweak.qralarm.features.emergency.task
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
@@ -100,7 +101,7 @@ class EmergencyViewModel @AssistedInject constructor(
                 if (selectedValue == targetValue) {
                     val remainingMatches = state.value.emergencyTaskConfig.remainingMatches - 1
 
-                    if (remainingMatches > 0) {
+                    if (remainingMatches > 0 && AlarmService.isRunning) {
                         indicateAlarmMute()
                     }
 
