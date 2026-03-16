@@ -32,9 +32,9 @@ class QRAlarmWidget : GlanceAppWidget() {
                 //preferences[ALARM_TIME_PREFERENCES_KEY] ?: "No alarm set"
                 preferences[ALARM_TIME_PREFERENCES_KEY] ?: "--:--"
 
-
             val alarmLabel =
                 preferences[ALARM_LABEL_PREFERENCES_KEY] ?: ""
+
             Box(
                 modifier = GlanceModifier
                     .fillMaxSize()
@@ -42,31 +42,27 @@ class QRAlarmWidget : GlanceAppWidget() {
                     .background(androidx.glance.ImageProvider(R.drawable.widget_background))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
-
-
             ) {
                 Column(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = GlanceModifier.fillMaxSize()
                     //    .fillMaxSize()
-                      //  .padding(12.dp)
-
+                    //  .padding(12.dp)
                 ) {
-                    Text(text = "Next Alarm at" , style = WidgetStyles.header)
+                    Text(text = "Next Alarm at", style = WidgetStyles.header)
                     Text(text = alarmTime, style = WidgetStyles.time)
                     if (alarmLabel.isNotEmpty()) {
                         Text(text = alarmLabel, style = WidgetStyles.title)
                     }
                     //Text(
-                       // text = alarmTime,
-                       // style = WidgetStyles.time
-                    //
+                    //    text = alarmTime,
+                    //    style = WidgetStyles.time
                     //)
-                   // Text(
-                       // text = alarmLabel,
-                       // style = WidgetStyles.title
-                  //  )
+                    //Text(
+                    //    text = alarmLabel,
+                    //    style = WidgetStyles.title
+                    //)
                 }
             }
         }
