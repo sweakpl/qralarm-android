@@ -50,7 +50,7 @@ class QRAlarmWidget : GlanceAppWidget() {
                     //    .fillMaxSize()
                     //  .padding(12.dp)
                 ) {
-                    Text(text = "Next Alarm at", style = WidgetStyles.header)
+                    Text(text = "Next alarm at:", style = WidgetStyles.header)
                     Text(text = alarmTime, style = WidgetStyles.time)
                     if (alarmLabel.isNotEmpty()) {
                         Text(text = alarmLabel, style = WidgetStyles.title)
