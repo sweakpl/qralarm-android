@@ -115,14 +115,14 @@ fun HomeScreen(
                 is HomeScreenBackendEvent.CanNotEditAlarm -> {
                     Toast.makeText(
                         context,
-                        R.string.alarm_in_less_than_1_hour_to_edit_scan_code,
+                        R.string.cancel_lock_active_to_edit_scan_code,
                         Toast.LENGTH_LONG
                     ).show()
                 }
                 is HomeScreenBackendEvent.CanNotDisableAlarm -> {
                     Toast.makeText(
                         context,
-                        R.string.alarm_in_less_than_1_hour_scan_code_to_disable,
+                        R.string.cancel_lock_active_scan_code_to_disable,
                         Toast.LENGTH_LONG
                     ).show()
 
@@ -154,7 +154,7 @@ fun HomeScreen(
                         event = HomeScreenUserEvent.TryChangeAlarmEnabled(
                             alarmId = event.alarmId,
                             enabled = event.enabled,
-                            ignoreOneHourLock = event.fromSnackbar,
+                            ignoreCancelLock = event.fromSnackbar,
                             cameraPermissionStatus = cameraPermissionState.status.isGranted,
                             notificationsPermissionStatus =
                             notificationsPermissionState.status.isGranted

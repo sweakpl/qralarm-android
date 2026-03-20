@@ -105,8 +105,8 @@
     <string name="upcoming_alarm_indication_notification_text">闹钟时间为 %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">闹钟响至 %1$s</string>
     <string name="next_step">下一步</string>
-    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">距离响铃少于1小时 - 若要更改, 请先扫码关闭闹钟</string>
-    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">距离响铃少于1小时 - 请扫码以关闭闹钟</string>
+    <string name="cancel_lock_active_to_edit_scan_code">距离响铃少于1小时 - 若要更改, 请先扫码关闭闹钟</string>
+    <string name="cancel_lock_active_scan_code_to_disable">距离响铃少于1小时 - 请扫码以关闭闹钟</string>
     <string name="kalimba">卡林巴琴</string>
     <string name="classic_alarm">经典闹钟</string>
     <string name="rooster">公鸡</string>
@@ -166,8 +166,6 @@
     <string name="scan_code">扫码</string>
     <string name="or_use_already_used_code">或使用已录入的码</string>
     <string name="click_to_choose">*点击以选择*</string>
-    <string name="_1_hour_lock">1 小时内响铃锁定</string>
-    <string name="_1_hour_lock_description">开启后，若本闹钟距离响铃不足一小时，则只能通过扫码提前关闭。</string>
     <string name="power_off_guard">关机保护</string>
     <string name="power_off_guard_description">防止关机菜单停止闹钟。</string>
     <string name="lock_alarm_to_this_volume">设置闹钟响起时的音量：</string>

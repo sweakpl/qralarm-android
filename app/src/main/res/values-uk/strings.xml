@@ -126,8 +126,8 @@
     <string name="upcoming_alarm_indication_notification_text">Був встановлений будильник на %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">Будильник відкладений до %1$s</string>
     <string name="next_step">Наступний крок</string>
-    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Будильник менше ніж за 1 годину – щоб відредагувати, вимкніть будильник, відсканувавши код.</string>
-    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Будильник менш ніж за 1 годину – відскануйте код, щоб вимкнути будильник.</string>
+    <string name="cancel_lock_active_to_edit_scan_code">Будильник менше ніж за 1 годину – щоб відредагувати, вимкніть будильник, відсканувавши код.</string>
+    <string name="cancel_lock_active_scan_code_to_disable">Будильник менш ніж за 1 годину – відскануйте код, щоб вимкнути будильник.</string>
     <string name="kalimba">Калімба</string>
     <string name="classic_alarm">Класичний будильник</string>
     <string name="rooster">Півень</string>
@@ -187,8 +187,6 @@
     <string name="scan_code">Відскануйте код</string>
     <string name="or_use_already_used_code">Або використовуйте вже наявний код</string>
     <string name="click_to_choose">*Натисніть, щоб вибрати*</string>
-    <string name="_1_hour_lock">Блокування на 1 годину</string>
-    <string name="_1_hour_lock_description">Будильник не може бути скасований без коду, якщо до його спрацювання залишилося менше ніж 1 година.</string>
     <string name="power_off_guard">Захист від вимкнення</string>
     <string name="power_off_guard_description">Запобігайте вимкненню будильника через меню вимкнення живлення.</string>
     <string name="lock_alarm_to_this_volume">Налаштуйте гучність будильника, коли він лунає:</string>

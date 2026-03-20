@@ -93,8 +93,11 @@ sealed class AddEditAlarmFlowUserEvent {
         data class OpenCodeLinkEnabledChanged(
             val isEnabled: Boolean
         ) : AdvancedAlarmSettingsScreenUserEvent()
-        data class OneHourLockEnabledChanged(
-            val isEnabled: Boolean
+        data class ChooseCancelLockDurationDialogVisible(
+            val isVisible: Boolean
+        ) : AdvancedAlarmSettingsScreenUserEvent()
+        data class CancelLockDurationSelected(
+            val newCancelLockDurationInHours: Int
         ) : AdvancedAlarmSettingsScreenUserEvent()
         data class EmergencyTaskEnabledChanged(
             val isEnabled: Boolean

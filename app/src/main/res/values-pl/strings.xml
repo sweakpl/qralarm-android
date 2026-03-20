@@ -126,8 +126,8 @@
     <string name="upcoming_alarm_indication_notification_text">Ustawiono alarm na %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">Alarm został uśpiony do godziny %1$s</string>
     <string name="next_step">Następny krok</string>
-    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarm za mniej niż 1 godzinę - aby edytować, wyłącz alarm, skanując kod.</string>
-    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarm za mniej niż 1 godzinę - zeskanuj kod, aby wyłączyć alarm.</string>
+    <string name="cancel_lock_active_to_edit_scan_code">Alarm za mniej niż 1 godzinę - aby edytować, wyłącz alarm, skanując kod.</string>
+    <string name="cancel_lock_active_scan_code_to_disable">Alarm za mniej niż 1 godzinę - zeskanuj kod, aby wyłączyć alarm.</string>
     <string name="kalimba">Kalimba</string>
     <string name="classic_alarm">Klasyczny alarm</string>
     <string name="rooster">Kogut</string>
@@ -187,8 +187,6 @@
     <string name="scan_code">Skanuj kod</string>
     <string name="or_use_already_used_code">Lub użyj już używanego kodu</string>
     <string name="click_to_choose">*Kliknij by wybrać*</string>
-    <string name="_1_hour_lock">Blokada 1 godziny</string>
-    <string name="_1_hour_lock_description">Alarm nie może być anulowany bez kodu, jeśli jest za mniej niż 1 godzinę.</string>
     <string name="power_off_guard">Ochrona wyłączania</string>
     <string name="power_off_guard_description">Zapobiegaj wyłączeniu alarmu przez menu wyłączania zasilania.</string>
     <string name="lock_alarm_to_this_volume">Ustaw głośność alarmu, gdy dzwoni:</string>

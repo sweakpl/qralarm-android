@@ -1240,6 +1240,15 @@ fun getSecondsDurationString(durationInSeconds: Int): String {
     }
 }
 
+@Composable
+fun getCancelLockDurationString(durationInHours: Int): String {
+    return if (durationInHours == 0) {
+        stringResource(R.string.disabled)
+    } else {
+        pluralStringResource(R.plurals.hours, durationInHours, durationInHours)
+    }
+}
+
 @Preview
 @Composable
 private fun AddEditAlarmScreenContentPreview() {

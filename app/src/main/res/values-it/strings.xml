@@ -119,8 +119,8 @@
     <string name="upcoming_alarm_indication_notification_text">La sveglia è stata impostata per %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">La sveglia è stata posticipata fino alle %1$s</string>
     <string name="next_step">Passo successivo</string>
-    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Allarme in meno di 1 ora: per modificare, disattiva l\'allarme scansionando il codice.</string>
-    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Allarme tra meno di 1 ora: scansiona il codice per disattivare l\'allarme.</string>
+    <string name="cancel_lock_active_to_edit_scan_code">Allarme in meno di 1 ora: per modificare, disattiva l\'allarme scansionando il codice.</string>
+    <string name="cancel_lock_active_scan_code_to_disable">Allarme tra meno di 1 ora: scansiona il codice per disattivare l\'allarme.</string>
     <string name="kalimba">Il kalimba</string>
     <string name="classic_alarm">Sveglia classica</string>
     <string name="rooster">Gallo</string>
@@ -180,8 +180,6 @@
     <string name="scan_code">Codice di scansione</string>
     <string name="or_use_already_used_code">Oppure usa il codice già utilizzato</string>
     <string name="click_to_choose">*Clicca per scegliere*</string>
-    <string name="_1_hour_lock">Blocco di 1 ora</string>
-    <string name="_1_hour_lock_description">L\'allarme non può essere annullato senza codice se si verifica in meno di un\'ora.</string>
     <string name="power_off_guard">Protezione spegnimento</string>
     <string name="power_off_guard_description">Impedisci al menu di spegnimento di disattivare la sveglia.</string>
     <string name="lock_alarm_to_this_volume">Impostare la sveglia su questo volume quando suona:</string>

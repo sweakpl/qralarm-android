@@ -112,8 +112,8 @@
     <string name="upcoming_alarm_indication_notification_text">Alarm %1$s için kuruldu</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">Alarm şu saate kadar ertelendi: %1$s</string>
     <string name="next_step">Sonraki adım</string>
-    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarma 1 saatten az kaldı - düzenlemek için kodu tarayarak alarmı devre dışı bırakın.</string>
-    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarma 1 saatten az kaldı - alarmı devre dışı bırakmak için kodu tarayın.</string>
+    <string name="cancel_lock_active_to_edit_scan_code">Alarma 1 saatten az kaldı - düzenlemek için kodu tarayarak alarmı devre dışı bırakın.</string>
+    <string name="cancel_lock_active_scan_code_to_disable">Alarma 1 saatten az kaldı - alarmı devre dışı bırakmak için kodu tarayın.</string>
     <string name="kalimba">Kalimba</string>
     <string name="classic_alarm">Klasik alarm</string>
     <string name="rooster">Horoz</string>
@@ -173,8 +173,6 @@
     <string name="scan_code">Kodu tara</string>
     <string name="or_use_already_used_code">Veya daha önce kullanılmış bir kodu kullan</string>
     <string name="click_to_choose">*Seçmek için tıklayın*</string>
-    <string name="_1_hour_lock">1 saatlik kilit</string>
-    <string name="_1_hour_lock_description">Alarm 1 saatten az bir süre içindeyse kod olmadan iptal edilemez.</string>
     <string name="power_off_guard">Kapatma koruması</string>
     <string name="power_off_guard_description">Güç kapatma menüsünün alarmınızı durdurmasını önleyin.</string>
     <string name="lock_alarm_to_this_volume">Alarm çaldığında ses seviyesini buna ayarla:</string>

@@ -12,7 +12,7 @@ sealed class HomeScreenUserEvent {
     data class TryChangeAlarmEnabled(
         val alarmId: Long? = null,
         val enabled: Boolean? = null,
-        val ignoreOneHourLock: Boolean = false,
+        val ignoreCancelLock: Boolean = false,
         val cameraPermissionStatus: Boolean,
         val notificationsPermissionStatus: Boolean
     ) : HomeScreenUserEvent()

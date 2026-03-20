@@ -119,8 +119,8 @@
     <string name="upcoming_alarm_indication_notification_text">L\'alarme a été réglée pour %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">L\'alarme a été suspendue jusqu\'à %1$s</string>
     <string name="next_step">Prochaine étape</string>
-    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarme dans moins d\'1 heure - pour pouvoir la modifier, désactivez l\'alarme en scannant le code.</string>
-    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarme dans moins d\'1 heure - scannez le code pour désactiver l\'alarme.</string>
+    <string name="cancel_lock_active_to_edit_scan_code">Alarme dans moins d\'1 heure - pour pouvoir la modifier, désactivez l\'alarme en scannant le code.</string>
+    <string name="cancel_lock_active_scan_code_to_disable">Alarme dans moins d\'1 heure - scannez le code pour désactiver l\'alarme.</string>
     <string name="kalimba">Kalimba</string>
     <string name="classic_alarm">Alarme classique</string>
     <string name="rooster">Coq</string>
@@ -180,8 +180,6 @@
     <string name="scan_code">Code de numérisation</string>
     <string name="or_use_already_used_code">Ou utilisez le code déjà utilisé</string>
     <string name="click_to_choose">*Cliquez pour choisir*</string>
-    <string name="_1_hour_lock">Serrure de 1 heure</string>
-    <string name="_1_hour_lock_description">L\'alarme ne peut pas être annulée sans code si elle a lieu dans moins d\'une heure.</string>
     <string name="power_off_guard">Protection contre l\'arrêt</string>
     <string name="power_off_guard_description">Empêchez le menu d\'arrêt de l\'appareil d\'arrêter votre alarme.</string>
     <string name="lock_alarm_to_this_volume">Réglez l\'alarme sur ce volume lorsqu\'elle sonne :</string>

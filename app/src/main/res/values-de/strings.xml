@@ -112,8 +112,8 @@
     <string name="upcoming_alarm_indication_notification_text">Der Alarm wurde für %1$s eingestellt.</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">Alarm wurde stummgeschaltet bis %1$s</string>
     <string name="next_step">Nächster Schritt</string>
-    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarm in weniger als 1 Stunde – zum Bearbeiten deaktivieren Sie den Alarm durch Scannen des Codes.</string>
-    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarm in weniger als 1 Stunde – scannen Sie den Code, um den Alarm zu deaktivieren.</string>
+    <string name="cancel_lock_active_to_edit_scan_code">Alarm in weniger als 1 Stunde – zum Bearbeiten deaktivieren Sie den Alarm durch Scannen des Codes.</string>
+    <string name="cancel_lock_active_scan_code_to_disable">Alarm in weniger als 1 Stunde – scannen Sie den Code, um den Alarm zu deaktivieren.</string>
     <string name="kalimba">Kalimba</string>
     <string name="classic_alarm">Klassischer Wecker</string>
     <string name="rooster">Hahn</string>
@@ -173,8 +173,6 @@
     <string name="scan_code">Code scannen</string>
     <string name="or_use_already_used_code">Oder verwenden Sie bereits verwendeten Code</string>
     <string name="click_to_choose">*Zum Auswählen anklicken*</string>
-    <string name="_1_hour_lock">1 Stunde Sperre</string>
-    <string name="_1_hour_lock_description">Der Alarm kann nicht ohne Code abgebrochen werden, wenn er in weniger als 1 Stunde erfolgt.</string>
     <string name="power_off_guard">Abschaltschutz</string>
     <string name="power_off_guard_description">Verhindern Sie, dass das Ausschaltmenü Ihren Alarm stoppt.</string>
     <string name="lock_alarm_to_this_volume">Stellen Sie den Alarm auf diese Lautstärke ein, wenn er klingelt:</string>

@@ -182,7 +182,7 @@ class HomeViewModel @Inject constructor(
                     if (event.alarmId == null) return
 
                     viewModelScope.launch {
-                        if (event.ignoreOneHourLock ||
+                        if (event.ignoreCancelLock ||
                             canManipulateAlarm(alarmId = event.alarmId)
                         ) {
                             toggleAlarm(

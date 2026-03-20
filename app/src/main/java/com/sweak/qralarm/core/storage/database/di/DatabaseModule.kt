@@ -28,7 +28,10 @@ object DatabaseModule {
             QRAlarmDatabase::class.java,
             "QRAlarmDatabase"
         )
-            .addMigrations(QRAlarmDatabase.MIGRATION_3_4)
+            .addMigrations(
+                QRAlarmDatabase.MIGRATION_3_4,
+                QRAlarmDatabase.MIGRATION_7_8
+            )
             .build()
 
     @Provides

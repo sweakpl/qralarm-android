@@ -39,7 +39,9 @@ import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.Advan
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
 import com.sweak.qralarm.core.ui.components.ToggleSetting
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getCancelLockDurationString
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getSecondsDurationString
+import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseCancelLockDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseGentleWakeUpDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseTemporaryMuteDurationBottomSheet
 
@@ -156,36 +158,18 @@ private fun AdvancedAlarmSettingsScreenContent(
                                 bottom = MaterialTheme.space.mediumLarge
                             )
                     ) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            ToggleSetting(
-                                isChecked = state.isOpenCodeLinkEnabled,
-                                onCheckedChange = {
-                                    onEvent(
-                                        AdvancedAlarmSettingsScreenUserEvent
-                                            .OpenCodeLinkEnabledChanged(isEnabled = it)
-                                    )
-                                },
-                                title = stringResource(R.string.open_code_link),
-                                description = stringResource(R.string.open_code_link_description)
-                            )
-                        }
-
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = LocalContentColor.current,
-                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
-                        )
-
-                        ToggleSetting(
-                            isChecked = state.isOneHourLockEnabled,
-                            onCheckedChange = {
+                        ChoiceSetting(
+                            onClick = {
                                 onEvent(
                                     AdvancedAlarmSettingsScreenUserEvent
-                                        .OneHourLockEnabledChanged(isEnabled = it)
+                                        .ChooseCancelLockDurationDialogVisible(isVisible = true)
                                 )
                             },
-                            title = stringResource(R.string._1_hour_lock),
-                            description = stringResource(R.string._1_hour_lock_description)
+                            title = stringResource(R.string.cancel_lock),
+                            description = stringResource(R.string.cancel_lock_description),
+                            choiceName = getCancelLockDurationString(
+                                state.cancelLockDurationInHours
+                            )
                         )
 
                         HorizontalDivider(
@@ -207,6 +191,26 @@ private fun AdvancedAlarmSettingsScreenContent(
                                 R.string.emergency_task_setting_description
                             )
                         )
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            HorizontalDivider(
+                                thickness = 1.dp,
+                                color = LocalContentColor.current,
+                                modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                            )
+
+                            ToggleSetting(
+                                isChecked = state.isOpenCodeLinkEnabled,
+                                onCheckedChange = {
+                                    onEvent(
+                                        AdvancedAlarmSettingsScreenUserEvent
+                                            .OpenCodeLinkEnabledChanged(isEnabled = it)
+                                    )
+                                },
+                                title = stringResource(R.string.open_code_link),
+                                description = stringResource(R.string.open_code_link_description)
+                            )
+                        }
                     }
                 }
             }
@@ -236,6 +240,20 @@ private fun AdvancedAlarmSettingsScreenContent(
                 onEvent(
                     AdvancedAlarmSettingsScreenUserEvent.TemporaryMuteDurationSelected(
                         newTemporaryMuteDurationInSeconds = newTemporaryMuteDurationInSeconds
+                    )
+                )
+            }
+        )
+    }
+
+    if (state.isChooseCancelLockDurationDialogVisible) {
+        ChooseCancelLockDurationBottomSheet(
+            initialCancelLockDurationInHours = state.cancelLockDurationInHours,
+            availableCancelLockDurationsInHours = state.availableCancelLockDurationsInHours,
+            onDismissRequest = { newCancelLockDurationInHours ->
+                onEvent(
+                    AdvancedAlarmSettingsScreenUserEvent.CancelLockDurationSelected(
+                        newCancelLockDurationInHours = newCancelLockDurationInHours
                     )
                 )
             }

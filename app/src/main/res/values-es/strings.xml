@@ -119,8 +119,8 @@
     <string name="upcoming_alarm_indication_notification_text">Se ha establecido la alarma para %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">La alarma se ha pospuesto hasta las %1$s</string>
     <string name="next_step">Próximo paso</string>
-    <string name="alarm_in_less_than_1_hour_to_edit_scan_code">Alarma en menos de 1 hora: para editar, desactive la alarma escaneando el código.</string>
-    <string name="alarm_in_less_than_1_hour_scan_code_to_disable">Alarma en menos de 1 hora: escanee el código para desactivar la alarma.</string>
+    <string name="cancel_lock_active_to_edit_scan_code">Alarma en menos de 1 hora: para editar, desactive la alarma escaneando el código.</string>
+    <string name="cancel_lock_active_scan_code_to_disable">Alarma en menos de 1 hora: escanee el código para desactivar la alarma.</string>
     <string name="kalimba">Kalimba</string>
     <string name="classic_alarm">Alarma clásica</string>
     <string name="rooster">Gallo</string>
@@ -180,8 +180,6 @@
     <string name="scan_code">Escanear código</string>
     <string name="or_use_already_used_code">O utilizar código ya utilizado</string>
     <string name="click_to_choose">*Haga clic para elegir*</string>
-    <string name="_1_hour_lock">Bloqueo de 1 hora</string>
-    <string name="_1_hour_lock_description">La alarma no se puede cancelar sin código si es queda 1 hora.</string>
     <string name="power_off_guard">Protección contra apagado</string>
     <string name="power_off_guard_description">Evita que el menú de apagado detenga tu alarma.</string>
     <string name="lock_alarm_to_this_volume">Ajuste la alarma a este volumen cuando suene:</string>

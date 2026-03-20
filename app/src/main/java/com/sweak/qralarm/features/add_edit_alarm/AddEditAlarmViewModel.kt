@@ -141,7 +141,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                             previouslySavedCodes = allSavedAlarmCodes,
                             currentlyAssignedCode = alarm.assignedCode,
                             isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
-                            isOneHourLockEnabled = alarm.isOneHourLockEnabled,
+                            cancelLockDurationInHours = alarm.cancelLockDurationInHours,
                             isEmergencyTaskEnabled = alarm.isEmergencyTaskEnabled,
                             alarmLabel = alarm.alarmLabel,
                             gentleWakeupDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
@@ -522,10 +522,23 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     currentState.copy(isOpenCodeLinkEnabled = event.isEnabled)
                 }
             }
-            is AdvancedAlarmSettingsScreenUserEvent.OneHourLockEnabledChanged -> {
-                hasUnsavedChanges = true
+            is AdvancedAlarmSettingsScreenUserEvent.ChooseCancelLockDurationDialogVisible -> {
                 _state.update { currentState ->
-                    currentState.copy(isOneHourLockEnabled = event.isEnabled)
+                    currentState.copy(
+                        isChooseCancelLockDurationDialogVisible = event.isVisible
+                    )
+                }
+            }
+            is AdvancedAlarmSettingsScreenUserEvent.CancelLockDurationSelected -> {
+                if (event.newCancelLockDurationInHours != state.value.cancelLockDurationInHours) {
+                    hasUnsavedChanges = true
+                }
+
+                _state.update { currentState ->
+                    currentState.copy(
+                        cancelLockDurationInHours = event.newCancelLockDurationInHours,
+                        isChooseCancelLockDurationDialogVisible = false
+                    )
                 }
             }
             is AdvancedAlarmSettingsScreenUserEvent.EmergencyTaskEnabledChanged -> {
@@ -688,7 +701,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 assignedCode = currentState.temporaryAssignedCode
                     ?: currentState.currentlyAssignedCode,
                 isOpenCodeLinkEnabled = currentState.isOpenCodeLinkEnabled,
-                isOneHourLockEnabled = currentState.isOneHourLockEnabled,
+                cancelLockDurationInHours = currentState.cancelLockDurationInHours,
                 isEmergencyTaskEnabled = currentState.isEmergencyTaskEnabled,
                 alarmLabel = currentState.alarmLabel,
                 gentleWakeUpDurationInSeconds = currentState.gentleWakeupDurationInSeconds,
