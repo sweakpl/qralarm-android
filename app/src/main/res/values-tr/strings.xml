@@ -1,34 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="number_of_snoozes_plural">
         <item quantity="one">%1$d erteleme</item>
         <item quantity="other">%1$d erteleme</item>
     </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d saniye</item>
         <item quantity="other">%1$d saniye</item>
     </plurals>
-
     <plurals name="days">
         <item quantity="one">%1$d gün</item>
         <item quantity="other">%1$d gün</item>
     </plurals>
-
     <plurals name="hours">
         <item quantity="one">%1$d saat</item>
         <item quantity="other">%1$d saat</item>
     </plurals>
-
     <plurals name="minutes">
         <item quantity="one">%1$d dakika</item>
         <item quantity="other">%1$d dakika</item>
     </plurals>
-
     <plurals name="alarms_active">
         <item quantity="one">%1$d alarm aktif</item>
         <item quantity="other">%1$d alarm aktif</item>
     </plurals>
-
     <string name="welcome_to_qralarm">QRAlarm\'a hoş geldiniz!</string>
     <string name="wake_up_catchphrase">UYAN!</string>
     <string name="wake_up_catchphrase_description">Alarmınızı her zamanki gibi kurun ve ertesi sabah QRAlarm ile uyanmaya hazırlanın.</string>
@@ -211,4 +206,8 @@
     <string name="custom_theme">Özel tema</string>
     <string name="custom_color">Özel renk</string>
     <string name="custom_theme_description">Özel renklerle kendi temanızı oluşturun.</string>
+    <string name="cancellation_lock_active_to_edit_scan_code">İptal kilidi aktif — düzenlemek için kodu tarayarak alarmı devre dışı bırakın.</string>
+    <string name="cancellation_lock_active_scan_code_to_disable">İptal kilidi aktif — alarmı durdurmak için kodu tarayın.</string>
+    <string name="cancellation_lock">İptal kilidi</string>
+    <string name="cancellation_lock_description">Alarmı çalmadan önce seçilen süre içinde kodu taramadan iptal edilemez veya düzenlenemez.</string>
 </resources>
