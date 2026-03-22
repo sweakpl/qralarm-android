@@ -5,12 +5,6 @@
         <item quantity="other">%1$d posticipa</item>
     </plurals>
 
-    <plurals name="snooze_duration_plural">
-        <item quantity="one">%1$d minuto</item>
-        <item quantity="many">%1$d minuti</item>
-        <item quantity="other">%1$d minuti</item>
-    </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d secondo</item>
         <item quantity="many">%1$d secondi</item>
@@ -119,8 +113,6 @@
     <string name="upcoming_alarm_indication_notification_text">La sveglia è stata impostata per %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">La sveglia è stata posticipata fino alle %1$s</string>
     <string name="next_step">Passo successivo</string>
-    <string name="cancel_lock_active_to_edit_scan_code">Allarme in meno di 1 ora: per modificare, disattiva l\'allarme scansionando il codice.</string>
-    <string name="cancel_lock_active_scan_code_to_disable">Allarme tra meno di 1 ora: scansiona il codice per disattivare l\'allarme.</string>
     <string name="kalimba">Il kalimba</string>
     <string name="classic_alarm">Sveglia classica</string>
     <string name="rooster">Gallo</string>

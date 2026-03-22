@@ -165,8 +165,8 @@ private fun AdvancedAlarmSettingsScreenContent(
                                         .ChooseCancelLockDurationDialogVisible(isVisible = true)
                                 )
                             },
-                            title = stringResource(R.string.cancel_lock),
-                            description = stringResource(R.string.cancel_lock_description),
+                            title = stringResource(R.string.cancellation_lock),
+                            description = stringResource(R.string.cancellation_lock_description),
                             choiceName = getCancelLockDurationString(
                                 state.cancelLockDurationInHours
                             )

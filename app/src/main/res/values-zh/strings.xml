@@ -3,10 +3,6 @@
         <item quantity="other">%1$d 次</item>
     </plurals>
 
-    <plurals name="snooze_duration_plural">
-        <item quantity="other">%1$d 分钟</item>
-    </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="other">%1$d 秒</item>
     </plurals>
@@ -105,8 +101,6 @@
     <string name="upcoming_alarm_indication_notification_text">闹钟时间为 %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">闹钟响至 %1$s</string>
     <string name="next_step">下一步</string>
-    <string name="cancel_lock_active_to_edit_scan_code">距离响铃少于1小时 - 若要更改, 请先扫码关闭闹钟</string>
-    <string name="cancel_lock_active_scan_code_to_disable">距离响铃少于1小时 - 请扫码以关闭闹钟</string>
     <string name="kalimba">卡林巴琴</string>
     <string name="classic_alarm">经典闹钟</string>
     <string name="rooster">公鸡</string>

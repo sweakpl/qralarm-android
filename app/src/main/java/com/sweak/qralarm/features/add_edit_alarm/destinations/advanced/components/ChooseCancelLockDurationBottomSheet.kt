@@ -53,7 +53,7 @@ fun ChooseCancelLockDurationBottomSheet(
                 )
         ) {
             Text(
-                text = stringResource(R.string.cancel_lock),
+                text = stringResource(R.string.cancellation_lock),
                 style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.padding(bottom = MaterialTheme.space.mediumLarge)
             )

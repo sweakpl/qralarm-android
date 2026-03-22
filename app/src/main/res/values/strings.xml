@@ -4,10 +4,6 @@
         <item quantity="other">%1$d snoozes</item>
     </plurals>
 
-    <plurals name="snooze_duration_plural">
-        <item quantity="other">%1$d minutes</item>
-    </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="other">%1$d seconds</item>
     </plurals>
@@ -111,8 +107,6 @@
     <string name="upcoming_alarm_indication_notification_text">Alarm has been set for %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">Alarm has been snoozed until %1$s</string>
     <string name="next_step">Next step</string>
-    <string name="cancel_lock_active_to_edit_scan_code">Cancel lock is active — to edit, disable the alarm by scanning the code.</string>
-    <string name="cancel_lock_active_scan_code_to_disable">Cancel lock is active — scan the code to disable the alarm.</string>
     <string name="kalimba">Kalimba</string>
     <string name="classic_alarm">Classic alarm</string>
     <string name="rooster">Rooster</string>
@@ -178,8 +172,6 @@
     <string name="scan_code">Scan code</string>
     <string name="or_use_already_used_code">Or use already used code</string>
     <string name="click_to_choose">*Click to choose*</string>
-    <string name="cancel_lock">Cancel lock</string>
-    <string name="cancel_lock_description">The alarm can\'t be canceled or edited without scanning the code within the selected time before it rings.</string>
     <string name="power_off_guard">Power-off guard</string>
     <string name="power_off_guard_description">Prevent the power-off menu from stopping your alarm.</string>
     <string name="lock_alarm_to_this_volume">Set the alarm to this volume when it rings:</string>
@@ -228,4 +220,8 @@
     <string name="custom_theme">Custom theme</string>
     <string name="custom_color">Custom color</string>
     <string name="custom_theme_description">Create your own theme with custom colors.</string>
+    <string name="cancellation_lock">Cancellation lock</string>
+    <string name="cancellation_lock_description">The alarm can\'t be canceled or edited without scanning the code within the selected time before it rings.</string>
+    <string name="cancellation_lock_active_to_edit_scan_code">Cancellation lock is active — to edit, disable the alarm by scanning the code.</string>
+    <string name="cancellation_lock_active_scan_code_to_disable">Cancellation lock is active — scan the code to disable the alarm.</string>
 </resources>

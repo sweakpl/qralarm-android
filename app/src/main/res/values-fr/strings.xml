@@ -5,12 +5,6 @@
         <item quantity="other">%1$d siestes</item>
     </plurals>
 
-    <plurals name="snooze_duration_plural">
-        <item quantity="one">%1$d minute</item>
-        <item quantity="many">%1$d minutes</item>
-        <item quantity="other">%1$d minutes</item>
-    </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d seconde</item>
         <item quantity="many">%1$d secondes</item>
@@ -119,8 +113,6 @@
     <string name="upcoming_alarm_indication_notification_text">L\'alarme a été réglée pour %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">L\'alarme a été suspendue jusqu\'à %1$s</string>
     <string name="next_step">Prochaine étape</string>
-    <string name="cancel_lock_active_to_edit_scan_code">Alarme dans moins d\'1 heure - pour pouvoir la modifier, désactivez l\'alarme en scannant le code.</string>
-    <string name="cancel_lock_active_scan_code_to_disable">Alarme dans moins d\'1 heure - scannez le code pour désactiver l\'alarme.</string>
     <string name="kalimba">Kalimba</string>
     <string name="classic_alarm">Alarme classique</string>
     <string name="rooster">Coq</string>

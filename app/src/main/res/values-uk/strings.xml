@@ -6,13 +6,6 @@
         <item quantity="other">%1$d снів</item>
     </plurals>
 
-    <plurals name="snooze_duration_plural">
-        <item quantity="one">%1$d хвилина</item>
-        <item quantity="few">%1$d хвилини</item>
-        <item quantity="many">%1$d хвилин</item>
-        <item quantity="other">%1$d хвилин</item>
-    </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d секунда</item>
         <item quantity="few">%1$d секунди</item>
@@ -126,8 +119,6 @@
     <string name="upcoming_alarm_indication_notification_text">Був встановлений будильник на %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">Будильник відкладений до %1$s</string>
     <string name="next_step">Наступний крок</string>
-    <string name="cancel_lock_active_to_edit_scan_code">Будильник менше ніж за 1 годину – щоб відредагувати, вимкніть будильник, відсканувавши код.</string>
-    <string name="cancel_lock_active_scan_code_to_disable">Будильник менш ніж за 1 годину – відскануйте код, щоб вимкнути будильник.</string>
     <string name="kalimba">Калімба</string>
     <string name="classic_alarm">Класичний будильник</string>
     <string name="rooster">Півень</string>

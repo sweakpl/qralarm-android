@@ -99,7 +99,7 @@ fun ChooseSnoozeConfigurationBottomSheet(
                     QRAlarmComboBox(
                         menuItems = availableSnoozeDurationsInMinutes.map { snoozeDuration ->
                             pluralStringResource(
-                                R.plurals.snooze_duration_plural,
+                                R.plurals.minutes,
                                 snoozeDuration,
                                 snoozeDuration
                             )
