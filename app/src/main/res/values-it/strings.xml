@@ -1,40 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="number_of_snoozes_plural">
         <item quantity="one">%1$d posticipa</item>
         <item quantity="many">%1$d posticipa</item>
         <item quantity="other">%1$d posticipa</item>
     </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d secondo</item>
         <item quantity="many">%1$d secondi</item>
         <item quantity="other">%1$d secondi</item>
     </plurals>
-
     <plurals name="days">
         <item quantity="one">%1$d giorno</item>
         <item quantity="many">%1$d giorni</item>
         <item quantity="other">%1$d giorni</item>
     </plurals>
-
     <plurals name="hours">
         <item quantity="one">%1$d ora</item>
         <item quantity="many">%1$d ore</item>
         <item quantity="other">%1$d ore</item>
     </plurals>
-
     <plurals name="minutes">
         <item quantity="one">%1$d minuto</item>
         <item quantity="many">%1$d minuti</item>
         <item quantity="other">%1$d minuti</item>
     </plurals>
-
     <plurals name="alarms_active">
         <item quantity="one">%1$d allarme attivo</item>
         <item quantity="many">%1$d allarmi attivi</item>
         <item quantity="other">%1$d allarmi attivi</item>
     </plurals>
-
     <string name="welcome_to_qralarm">Benvenuti su QRAlarm!</string>
     <string name="wake_up_catchphrase">Svegliati!</string>
     <string name="wake_up_catchphrase_description">Imposta la sveglia come fai sempre e preparati a essere svegliato da QRAlarm la mattina dopo.</string>
@@ -217,4 +212,8 @@
     <string name="custom_theme">Tema personalizzato</string>
     <string name="custom_color">Colore personalizzato</string>
     <string name="custom_theme_description">Crea il tuo tema con colori personalizzati.</string>
+    <string name="cancellation_lock_active_to_edit_scan_code">Blocco di annullamento attivo — per modificare, disabilita l\'allarme scansionando il codice.</string>
+    <string name="cancellation_lock_active_scan_code_to_disable">Blocco di annullamento attivo — scansiona il codice per disabilitare l\'allarme.</string>
+    <string name="cancellation_lock">Blocco di annullamento</string>
+    <string name="cancellation_lock_description">L\'allarme non può essere annullato o modificato senza scansionare il codice entro il tempo selezionato prima che suoni.</string>
 </resources>
