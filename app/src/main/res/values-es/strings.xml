@@ -1,40 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="number_of_snoozes_plural">
         <item quantity="one">%1$d siesta</item>
         <item quantity="many">%1$d siestas</item>
         <item quantity="other">%1$d siestas</item>
     </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d segundo</item>
         <item quantity="many">%1$d segundos</item>
         <item quantity="other">%1$d segundos</item>
     </plurals>
-
     <plurals name="days">
         <item quantity="one">%1$d día</item>
         <item quantity="many">%1$d días</item>
         <item quantity="other">%1$d días</item>
     </plurals>
-
     <plurals name="hours">
         <item quantity="one">%1$d hora</item>
         <item quantity="many">%1$d horas</item>
         <item quantity="other">%1$d horas</item>
     </plurals>
-
     <plurals name="minutes">
         <item quantity="one">%1$d minuto</item>
         <item quantity="many">%1$d minutos</item>
         <item quantity="other">%1$d minutos</item>
     </plurals>
-
     <plurals name="alarms_active">
         <item quantity="one">%1$d alarma activa</item>
         <item quantity="many">%1$d alarmas activas</item>
         <item quantity="other">%1$d alarmas activas</item>
     </plurals>
-
     <string name="welcome_to_qralarm">¡Bienvenido a QRAlarm!</string>
     <string name="wake_up_catchphrase">¡Despertar!</string>
     <string name="wake_up_catchphrase_description">Configura tu alarma como lo harías siempre y prepárate para que QRAlarm te despierte a la mañana siguiente.</string>
@@ -217,4 +212,8 @@
     <string name="custom_theme">Tema personalizado</string>
     <string name="custom_color">Color personalizado</string>
     <string name="custom_theme_description">Crea tu propio tema con colores personalizados.</string>
+    <string name="cancellation_lock_active_to_edit_scan_code">Bloqueo de cancelación activo: para editar, desactiva la alarma escaneando el código.</string>
+    <string name="cancellation_lock_active_scan_code_to_disable">Bloqueo de cancelación activo: escanea el código para desactivar la alarma.</string>
+    <string name="cancellation_lock">Bloqueo de cancelación</string>
+    <string name="cancellation_lock_description">La alarma no se puede cancelar ni editar sin escanear el código dentro del tiempo seleccionado antes de que suene.</string>
 </resources>
