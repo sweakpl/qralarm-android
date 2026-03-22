@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="number_of_snoozes_plural">
         <item quantity="one">%1$d drzemka</item>
@@ -5,42 +6,36 @@
         <item quantity="many">%1$d drzemek</item>
         <item quantity="other">%1$d drzemek</item>
     </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d sekunda</item>
         <item quantity="few">%1$d sekundy</item>
         <item quantity="many">%1$d sekund</item>
         <item quantity="other">%1$d sekund</item>
     </plurals>
-
     <plurals name="days">
         <item quantity="one">%1$d dzień</item>
         <item quantity="few">%1$d dni</item>
         <item quantity="many">%1$d dni</item>
         <item quantity="other">%1$d dni</item>
     </plurals>
-
     <plurals name="hours">
         <item quantity="one">%1$d godzina</item>
         <item quantity="few">%1$d godziny</item>
         <item quantity="many">%1$d godzin</item>
         <item quantity="other">%1$d godzin</item>
     </plurals>
-
     <plurals name="minutes">
         <item quantity="one">%1$d minuta</item>
         <item quantity="few">%1$d minuty</item>
         <item quantity="many">%1$d minut</item>
         <item quantity="other">%1$d minut</item>
     </plurals>
-
     <plurals name="alarms_active">
         <item quantity="one">%1$d alarm aktywny</item>
         <item quantity="few">%1$d alarmy aktywne</item>
         <item quantity="many">%1$d alarmów aktywnych</item>
         <item quantity="other">%1$d alarmów aktywnych</item>
     </plurals>
-
     <string name="welcome_to_qralarm">Witamy w QRAlarm!</string>
     <string name="wake_up_catchphrase">Obudź się!</string>
     <string name="wake_up_catchphrase_description">Ustaw budzik jak zawsze i przygotuj się na pobudkę z QRAlarm następnego ranka.</string>
@@ -223,4 +218,8 @@
     <string name="custom_theme">Motyw niestandardowy</string>
     <string name="custom_color">Niestandardowy kolor</string>
     <string name="custom_theme_description">Stwórz własny motyw z niestandardowymi kolorami.</string>
+    <string name="cancellation_lock_active_to_edit_scan_code">Blokada anulowania jest aktywna — aby edytować, wyłącz alarm, skanując kod.</string>
+    <string name="cancellation_lock_active_scan_code_to_disable">Blokada anulowania jest aktywna — aby wyłączyć alarm, zeskanuj kod.</string>
+    <string name="cancellation_lock">Blokada anulowania</string>
+    <string name="cancellation_lock_description">Nie można anulować ani edytować alarmu bez zeskanowania kodu w wybranym czasie przed jego dźwiękiem.</string>
 </resources>
