@@ -1,40 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="number_of_snoozes_plural">
         <item quantity="one">%1$d sieste</item>
         <item quantity="many">%1$d siestes</item>
         <item quantity="other">%1$d siestes</item>
     </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d seconde</item>
         <item quantity="many">%1$d secondes</item>
         <item quantity="other">%1$d secondes</item>
     </plurals>
-
     <plurals name="days">
         <item quantity="one">%1$d jour</item>
         <item quantity="many">%1$d jours</item>
         <item quantity="other">%1$d jours</item>
     </plurals>
-
     <plurals name="hours">
         <item quantity="one">%1$d heure</item>
         <item quantity="many">%1$d heures</item>
         <item quantity="other">%1$d heures</item>
     </plurals>
-
     <plurals name="minutes">
         <item quantity="one">%1$d minute</item>
         <item quantity="many">%1$d minutes</item>
         <item quantity="other">%1$d minutes</item>
     </plurals>
-
     <plurals name="alarms_active">
         <item quantity="one">%1$d alarme active</item>
         <item quantity="many">%1$d alarmes actives</item>
         <item quantity="other">%1$d alarmes actives</item>
     </plurals>
-
     <string name="welcome_to_qralarm">Bienvenue sur QRAlarm !</string>
     <string name="wake_up_catchphrase">Réveillez-vous!</string>
     <string name="wake_up_catchphrase_description">Réglez votre alarme comme vous le feriez normalement et préparez-vous à être réveillé par QRAlarm le lendemain matin.</string>
@@ -217,4 +212,8 @@
     <string name="custom_theme">Thème personnalisé</string>
     <string name="custom_color">Couleur personnalisée</string>
     <string name="custom_theme_description">Créez votre propre thème avec des couleurs personnalisées.</string>
+    <string name="cancellation_lock_active_to_edit_scan_code">Le verrouillage d\'annulation est actif — pour modifier, désactivez l\'alarme en scannant le code.</string>
+    <string name="cancellation_lock_active_scan_code_to_disable">Le verrouillage d\'annulation est actif — scannez le code pour désactiver l\'alarme.</string>
+    <string name="cancellation_lock">Verrouillage d\'annulation</string>
+    <string name="cancellation_lock_description">L\'alarme ne peut pas être annulée ou modifiée sans scanner le code dans le délai sélectionné avant qu\'elle ne sonne.</string>
 </resources>
