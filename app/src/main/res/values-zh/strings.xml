@@ -1,28 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="number_of_snoozes_plural">
         <item quantity="other">%1$d 次</item>
     </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="other">%1$d 秒</item>
     </plurals>
-
     <plurals name="days">
         <item quantity="other">%1$d 天</item>
     </plurals>
-
     <plurals name="hours">
         <item quantity="other">%1$d 小时</item>
     </plurals>
-
     <plurals name="minutes">
         <item quantity="other">%1$d 分钟</item>
     </plurals>
-
     <plurals name="alarms_active">
         <item quantity="other">%1$d个警报激活</item>
     </plurals>
-
     <string name="welcome_to_qralarm">欢迎使用 QRAlarm!</string>
     <string name="wake_up_catchphrase">梦醒!</string>
     <string name="wake_up_catchphrase_description">使用QRAlarm设置闹钟，你将在次日早晨被唤醒。</string>
@@ -205,4 +200,8 @@
     <string name="custom_theme">自定义主题</string>
     <string name="custom_color">自定义颜色</string>
     <string name="custom_theme_description">使用自定义颜色创建您自己的主题。</string>
+    <string name="cancellation_lock_active_to_edit_scan_code">取消锁定已激活 —— 要编辑，请扫描代码停用闹钟。</string>
+    <string name="cancellation_lock_active_scan_code_to_disable">取消锁定已激活 —— 扫描代码即可停用闹钟。</string>
+    <string name="cancellation_lock">取消锁定</string>
+    <string name="cancellation_lock_description">在选定时间内未扫描代码，无法取消或编辑闹钟。</string>
 </resources>
