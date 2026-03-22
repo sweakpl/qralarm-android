@@ -1,34 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="number_of_snoozes_plural">
         <item quantity="one">%1$d Schlummern</item>
         <item quantity="other">%1$d Schlummern</item>
     </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d Sekunde</item>
         <item quantity="other">%1$d Sekunden</item>
     </plurals>
-
     <plurals name="days">
         <item quantity="one">%1$d Tag</item>
         <item quantity="other">%1$d Tage</item>
     </plurals>
-
     <plurals name="hours">
         <item quantity="one">%1$d Stunde</item>
         <item quantity="other">%1$d Stunden</item>
     </plurals>
-
     <plurals name="minutes">
         <item quantity="one">%1$d Minute</item>
         <item quantity="other">%1$d Minuten</item>
     </plurals>
-
     <plurals name="alarms_active">
         <item quantity="one">%1$d Alarm aktiv</item>
         <item quantity="other">%1$d Alarme aktiv</item>
     </plurals>
-
     <string name="welcome_to_qralarm">Willkommen bei QRAlarm!</string>
     <string name="wake_up_catchphrase">Aufwachen!</string>
     <string name="wake_up_catchphrase_description">Stellen Sie Ihren Wecker wie gewohnt ein und lassen Sie sich am nächsten Morgen von QRAlarm wecken.</string>
@@ -211,4 +206,8 @@
     <string name="custom_theme">Benutzerdefiniertes Design</string>
     <string name="custom_color">Benutzerdefinierte Farbe</string>
     <string name="custom_theme_description">Erstellen Sie Ihr eigenes Design mit benutzerdefinierten Farben.</string>
+    <string name="cancellation_lock_active_to_edit_scan_code">Sperre gegen Beenden aktiv — zum Bearbeiten scanne den Code, um den Alarm zu deaktivieren.</string>
+    <string name="cancellation_lock_active_scan_code_to_disable">Sperre gegen Beenden aktiv — scanne den Code, um den Alarm zu deaktivieren.</string>
+    <string name="cancellation_lock">Sperre gegen Beenden</string>
+    <string name="cancellation_lock_description">Der Alarm kann nicht abgebrochen oder bearbeitet werden, ohne den Code innerhalb der ausgewählten Zeit vor dem Klingeln zu scannen.</string>
 </resources>
