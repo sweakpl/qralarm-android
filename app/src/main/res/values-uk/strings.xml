@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="number_of_snoozes_plural">
         <item quantity="one">%1$d сон</item>
@@ -5,42 +6,36 @@
         <item quantity="many">%1$d снів</item>
         <item quantity="other">%1$d снів</item>
     </plurals>
-
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d секунда</item>
         <item quantity="few">%1$d секунди</item>
         <item quantity="many">%1$d секунд</item>
         <item quantity="other">%1$d секунд</item>
     </plurals>
-
     <plurals name="days">
         <item quantity="one">%1$d день</item>
         <item quantity="few">%1$d дні</item>
         <item quantity="many">%1$d днів</item>
         <item quantity="other">%1$d днів</item>
     </plurals>
-
     <plurals name="hours">
         <item quantity="one">%1$d година</item>
         <item quantity="few">%1$d години</item>
         <item quantity="many">%1$d годин</item>
         <item quantity="other">%1$d годин</item>
     </plurals>
-
     <plurals name="minutes">
         <item quantity="one">%1$d хвилина</item>
         <item quantity="few">%1$d хвилини</item>
         <item quantity="many">%1$d хвилин</item>
         <item quantity="other">%1$d хвилин</item>
     </plurals>
-
     <plurals name="alarms_active">
         <item quantity="one">%1$d сигнал тривоги активний</item>
         <item quantity="few">%1$d сигнали тривоги активні</item>
         <item quantity="many">%1$d активних будильників</item>
         <item quantity="other">%1$d активних тривог</item>
     </plurals>
-
     <string name="welcome_to_qralarm">Ласкаво просимо до QRAlarm!</string>
     <string name="wake_up_catchphrase">Прокиньтеся!</string>
     <string name="wake_up_catchphrase_description">Встановіть будильник як завжди, і підготуйтеся до того, що QRAlarm прокине вас наступного ранку.</string>
@@ -223,4 +218,8 @@
     <string name="custom_theme">Користувацька тема</string>
     <string name="custom_color">Нестандартний колір</string>
     <string name="custom_theme_description">Створіть власну тему з користувацькими кольорами.</string>
+    <string name="cancellation_lock_active_to_edit_scan_code">Блокування відміни активне — для редагування відключіть будильник шляхом сканування коду.</string>
+    <string name="cancellation_lock_active_scan_code_to_disable">Блокування відміни активне — скануйте код, щоб відключити будильник.</string>
+    <string name="cancellation_lock">Блокування відміни</string>
+    <string name="cancellation_lock_description">Будильник не можна скасувати або редагувати без сканування коду за вибраний час до його спрацювання.</string>
 </resources>
