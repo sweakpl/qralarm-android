@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_qralarm_icon">QRAlarm-pictogram</string>
+    <string name="content_description_add_icon">Toevoegen (plus)-pictogram</string>
+    <string name="content_description_menu_icon">Menu-pictogram</string>
+    <string name="content_description_close_icon">Sluiten-pictogram</string>
+    <string name="content_description_done_icon">Gereed-pictogram</string>
+    <string name="content_description_forward_arrow_icon">Rechts (vooruit) pijltje-pictogram</string>
+    <string name="content_description_back_arrow_icon">Links (terug) pijltje-pictogram</string>
+    <string name="content_description_drop_down_arrow_icon">Uitklap-pictogram</string>
+    <string name="content_description_play_icon">Afspelen-pictogram</string>
+    <string name="content_description_stop_icon">Stop-pictogram</string>
+    <string name="content_description_edit_icon">Bewerken-pictogram</string>
+    <string name="content_description_more_icon">Meer opties-pictogram</string>
+    <string name="content_description_qr_code_scanner_icon">QR-code scanner-pictogram</string>
+    <string name="content_description_delete_icon">Verwijderen-pictogram</string>
+    <string name="content_description_camera_icon">Camera-pictogram</string>
+    <string name="content_description_alarm_icon">Alarm-pictogram</string>
+    <string name="content_description_notification_icon">Melding-pictogram</string>
+    <string name="content_description_full_screen_icon">Volledig scherm-pictogram</string>
+    <string name="content_description_no_qr_code_icon">Uitgeschakelde QR-code-pictogram</string>
+    <string name="content_description_automatic_settings_icon">Automatische instellingen-pictogram</string>
+    <string name="content_description_app_settings_icon">Pictogram app-instellingen</string>
+    <string name="content_description_special_app_settings_icon">Pictogram speciale app-instellingen</string>
+    <string name="content_description_star_icon">Ster-icoon</string>
+    <string name="content_description_flash_icon">Flits-icoon</string>
+    <string name="content_description_skip_next_alarm_icon">Volgende alarm overslaan-icoon</string>
+    <string name="content_description_label_icon">Label-icoon</string>
+    <string name="content_description_sound_icon">Geluid-icoon</string>
+    <string name="content_description_active_system_setting">Actieve systeeminstelling-icoon</string>
+    <string name="content_description_copy_icon">Kopieer-icoon</string>
+    <string name="content_description_clock_icon">Klok-icoon</string>
+    <string name="content_description_emergency_icon">Nooddriehoek-icoon</string>
+    <string name="content_description_muted_sound_icon">Gedempt geluid-icoon</string>
+    <string name="content_description_chain_icon">Ketting-icoon</string>
+    <string name="content_description_wake_up_catchphrase_image">Afbeelding met een vriendelijke stickman die in bed wakker wordt.</string>
+    <string name="content_description_get_up_catchphrase_image">Afbeelding van een glimlachende stickman die loopt met zijn telefoon die rinkelt.</string>
+    <string name="content_description_rise_up_catchphrase_image">Afbeelding van een blije stickman nadat hij de QR-code met zijn telefoon heeft gescand.</string>
+    <string name="content_description_five_stars_image">Afbeelding van vijf gouden sterren</string>
+    <string name="content_description_checked_circle_icon">Geselecteerd cirkelicoon</string>
+    <string name="content_description_unchecked_circle_icon">Ongeselecteerd cirkelicoon</string>
+    <string name="content_description_qralarm_pro_image">QRAlarm PRO app-icoon afbeelding</string>
+</resources>
