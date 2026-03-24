@@ -43,6 +43,7 @@ Download the app now, set up and configure your alarms and let QRAlarm work its 
    <a href="https://f-droid.org/packages/com.sweak.qralarm/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-en.svg" alt="Get it on F-Droid" height=80/></a>
    <a href="https://apt.izzysoft.de/fdroid/index/apk/com.sweak.qralarm/"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height=80/></a>
    <a href="https://sweakpl.itch.io/qralarm"><img src="https://static.itch.io/images/badge.svg" alt="Get it on itch.io" height=80/></a>
+[![Hypercommit](https://img.shields.io/badge/Hypercommit-DB2475)](https://hypercommit.com/qralarm-android)
 </p>
 
 ## Screenshots
