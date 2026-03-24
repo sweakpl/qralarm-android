@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_qralarm_icon">Значок QRAlarm</string>
+    <string name="content_description_add_icon">Значок добавления (плюс)</string>
+    <string name="content_description_menu_icon">Значок меню</string>
+    <string name="content_description_close_icon">Значок закрытия</string>
+    <string name="content_description_done_icon">Значок готово</string>
+    <string name="content_description_forward_arrow_icon">Значок вперед</string>
+    <string name="content_description_back_arrow_icon">Значок назад</string>
+    <string name="content_description_drop_down_arrow_icon">Значок раскрывающегося списка</string>
+    <string name="content_description_play_icon">Значок воспроизведения</string>
+    <string name="content_description_stop_icon">Значок остановки</string>
+    <string name="content_description_edit_icon">Значок редактирования</string>
+    <string name="content_description_more_icon">Значок дополнительных опций</string>
+    <string name="content_description_qr_code_scanner_icon">Значок сканера QR-кодов</string>
+    <string name="content_description_delete_icon">Значок удаления</string>
+    <string name="content_description_camera_icon">Значок камеры</string>
+    <string name="content_description_alarm_icon">Значок будильника</string>
+    <string name="content_description_notification_icon">Значок уведомлений</string>
+    <string name="content_description_full_screen_icon">Значок полноэкранного режима</string>
+    <string name="content_description_no_qr_code_icon">Значок отключенного QR-кода</string>
+    <string name="content_description_automatic_settings_icon">Значок автоматических настроек</string>
+    <string name="content_description_app_settings_icon">Иконка настроек приложения</string>
+    <string name="content_description_special_app_settings_icon">Иконка специальных настроек приложения</string>
+    <string name="content_description_star_icon">Иконка звезды</string>
+    <string name="content_description_flash_icon">Иконка вспышки</string>
+    <string name="content_description_skip_next_alarm_icon">Иконка пропустить следующий будильник</string>
+    <string name="content_description_label_icon">Иконка ярлыка</string>
+    <string name="content_description_sound_icon">Иконка звука</string>
+    <string name="content_description_active_system_setting">Иконка активной системной настройки</string>
+    <string name="content_description_copy_icon">Иконка копирования</string>
+    <string name="content_description_clock_icon">Иконка часов</string>
+    <string name="content_description_emergency_icon">Иконка аварийного треугольника</string>
+    <string name="content_description_muted_sound_icon">Иконка отключенного звука</string>
+    <string name="content_description_chain_icon">Иконка цепи</string>
+    <string name="content_description_wake_up_catchphrase_image">Изображение, показывающее дружелюбного человечка, лежащего в постели и просыпающегося.</string>
+    <string name="content_description_get_up_catchphrase_image">Изображение, показывающее улыбающегося человечка, идущего с звонящим телефоном.</string>
+    <string name="content_description_rise_up_catchphrase_image">Изображение, показывающее счастливого человечка после сканирования QR-кода с помощью телефона.</string>
+    <string name="content_description_five_stars_image">Изображение с пятью золотыми звездами</string>
+    <string name="content_description_checked_circle_icon">Иконка с отмеченным кругом</string>
+    <string name="content_description_unchecked_circle_icon">Иконка с неотмеченным кругом</string>
+    <string name="content_description_qralarm_pro_image">Изображение иконки приложения QRAlarm PRO</string>
+</resources>

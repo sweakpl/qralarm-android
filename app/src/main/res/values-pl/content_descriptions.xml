@@ -35,10 +35,9 @@
     <string name="content_description_chain_icon">Ikona łańcucha</string>
     <string name="content_description_checked_circle_icon">Ikona zaznaczonego kółka</string>
     <string name="content_description_unchecked_circle_icon">Ikona niezaznaczonego kółka</string>
-
     <string name="content_description_wake_up_catchphrase_image">Obraz przedstawiający przyjaznego patyczaka leżącego w łóżku po przebudzeniu.</string>
     <string name="content_description_get_up_catchphrase_image">Obraz przedstawiający uśmiechniętego patyczaka idącego z dzwoniącym telefonem.</string>
-    <string name="content_description_rise_up_catchphrase_image">Image showing a happy stick man after they scanned the QR Code with their phone.</string>
+    <string name="content_description_rise_up_catchphrase_image">Obrazek przedstawiający szczęśliwego ludzika po zeskanowaniu kodu QR telefonem.</string>
     <string name="content_description_qralarm_pro_image">Obraz ikony aplikacji QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Obraz pięciu złotych gwiazdek</string>
 </resources>
