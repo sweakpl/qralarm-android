@@ -29,7 +29,6 @@ class QRAlarmWidget : GlanceAppWidget() {
             val preferences = currentState<androidx.datastore.preferences.core.Preferences>()
 
             val alarmTime =
-                //preferences[ALARM_TIME_PREFERENCES_KEY] ?: "No alarm set"
                 preferences[ALARM_TIME_PREFERENCES_KEY] ?: "--:--"
 
             val alarmLabel =
@@ -39,7 +38,7 @@ class QRAlarmWidget : GlanceAppWidget() {
                 modifier = GlanceModifier
                     .fillMaxSize()
                     .clickable(actionStartActivity<MainActivity>())
-                    .background(androidx.glance.ImageProvider(R.drawable.widget_background))
+                    .background(androidx.glance.ImageProvider(widget_background))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -47,22 +46,12 @@ class QRAlarmWidget : GlanceAppWidget() {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = GlanceModifier.fillMaxSize()
-                    //    .fillMaxSize()
-                    //  .padding(12.dp)
                 ) {
                     Text(text = "Next alarm at:", style = WidgetStyles.header)
                     Text(text = alarmTime, style = WidgetStyles.time)
                     if (alarmLabel.isNotEmpty()) {
                         Text(text = alarmLabel, style = WidgetStyles.title)
                     }
-                    //Text(
-                    //    text = alarmTime,
-                    //    style = WidgetStyles.time
-                    //)
-                    //Text(
-                    //    text = alarmLabel,
-                    //    style = WidgetStyles.title
-                    //)
                 }
             }
         }

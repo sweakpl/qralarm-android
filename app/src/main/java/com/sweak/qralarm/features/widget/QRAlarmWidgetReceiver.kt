@@ -41,9 +41,6 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
                 val timeOfNextAlarm: String? = intent.getStringExtra("time")
                 val labelOfNextAlarm: String? = intent.getStringExtra("label")
 
-                // Log.d("timeOfNextAlarm", timeOfNextAlarm.toString())
-                // Log.d("labelOfNextAlarm", labelOfNextAlarm.toString())
-
                 val glanceIds = GlanceAppWidgetManager(context)
                     .getGlanceIds(QRAlarmWidget::class.java).also {
                         it.ifEmpty { return@launch }
@@ -51,7 +48,6 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
 
                 glanceIds.forEach {
                     updateAppWidgetState(context, it) { preferences ->
-                        // TODO: update with real data below
                         preferences[ALARM_TIME_PREFERENCES_KEY] = timeOfNextAlarm ?: "--:--"
                         preferences[ALARM_LABEL_PREFERENCES_KEY] = labelOfNextAlarm ?: "No alarm set"
                     }

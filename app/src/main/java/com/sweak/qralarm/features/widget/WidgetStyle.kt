@@ -9,7 +9,6 @@ import androidx.glance.unit.ColorProvider
 
 object WidgetStyles {
     val header = TextStyle(
-//        color = ColorProvider(Color(0xFFB0BEC5)),
         color = ColorProvider(Color(0xFFFFFFFF)),
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium
@@ -23,8 +22,6 @@ object WidgetStyles {
     )
 
     val time = TextStyle(
-        //color = ColorProvider(Color(0xFFB0BEC5)),
-        //fontSize = 18.sp,
         color = ColorProvider(Color(0xFFFFFFFF)),
         fontSize = 36.sp,
         fontWeight = FontWeight.Bold
