@@ -10,6 +10,7 @@ import android.os.Build
 import android.text.format.DateFormat
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
+import androidx.glance.appwidget.updateAll
 import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.receiver.PostUpcomingAlarmNotificationReceiver
 import com.sweak.qralarm.alarm.service.AlarmService
@@ -18,6 +19,7 @@ import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_IS_SNOOZE_AL
 import com.sweak.qralarm.app.activity.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.ui.getTimeString
+import com.sweak.qralarm.features.widget.QRAlarmWidget
 
 class QRAlarmManager(
     private val alarmManager: AlarmManager,
