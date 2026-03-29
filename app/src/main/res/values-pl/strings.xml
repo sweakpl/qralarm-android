@@ -144,7 +144,7 @@
     <string name="click_to_go_to_app_settings">Kliknij, aby przejść do ustawień aplikacji QRAlarm.</string>
     <string name="issue_opening_the_page">Wystąpił problem podczas otwierania strony…</string>
     <string name="optimization_dialog_description">Spraw, aby QRAlarm działał jak najlepiej w Twoim systemie, sprawdzając nasz przewodnik optymalizacji i śpij spokojnie!</string>
-    <string name="get_it_now">Pobierz teraz!</string>
+    <string name="get_it_now">Ulepsz teraz!</string>
     <string name="not_now">Nie teraz</string>
     <string name="special_settings">Ustawienia specjalne</string>
     <string name="do_not_leave_alarm">Nie opuszczaj alarmu</string>
