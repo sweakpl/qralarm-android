@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.introduction.pages
+package com.sweak.qralarm.features.onboarding.introduction.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -21,27 +21,27 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
 @Composable
-fun IntroductionPage1(modifier: Modifier = Modifier) {
+fun IntroductionPage3(modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
         Text(
-            text = stringResource(R.string.wake_up_catchphrase),
-            style = MaterialTheme.typography.displaySmall,
-            modifier = Modifier.padding(bottom = MaterialTheme.space.xSmall)
+            text = stringResource(R.string.rise_up_catchphrase),
+            style = MaterialTheme.typography.displayLarge,
+            modifier = Modifier.padding(bottom = MaterialTheme.space.mediumLarge)
         )
 
         Text(
-            text = stringResource(R.string.wake_up_catchphrase_description),
+            text = stringResource(R.string.rise_up_catchphrase_description),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
+            modifier = Modifier.padding(bottom = MaterialTheme.space.large)
         )
 
         Image(
-            painter = painterResource(R.drawable.img_wake_up_catchphrase),
-            contentDescription = stringResource(R.string.content_description_wake_up_catchphrase_image),
+            painter = painterResource(R.drawable.img_rise_up_catchphrase),
+            contentDescription = stringResource(R.string.content_description_rise_up_catchphrase_image),
             contentScale = ContentScale.FillHeight,
             modifier = Modifier.height(256.dp)
         )
@@ -50,8 +50,8 @@ fun IntroductionPage1(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun IntroductionPage1Preview() {
+private fun IntroductionPage3Preview() {
     QRAlarmTheme {
-        IntroductionPage1(modifier = Modifier.fillMaxWidth())
+        IntroductionPage3(modifier = Modifier.fillMaxWidth())
     }
 }

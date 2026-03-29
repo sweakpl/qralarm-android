@@ -21,8 +21,8 @@ import com.sweak.qralarm.core.navigation.routes.EmergencyRoute
 import com.sweak.qralarm.core.navigation.routes.EmergencySettingsRoute
 import com.sweak.qralarm.core.navigation.routes.EmergencyTaskPreviewRoute
 import com.sweak.qralarm.core.navigation.routes.HomeRoute
-import com.sweak.qralarm.core.navigation.routes.IntroductionRoute
 import com.sweak.qralarm.core.navigation.routes.MenuRoute
+import com.sweak.qralarm.core.navigation.routes.OnboardingRoute
 import com.sweak.qralarm.core.navigation.routes.OptimizationRoute
 import com.sweak.qralarm.core.navigation.routes.QRAlarmProRoute
 import com.sweak.qralarm.core.navigation.routes.RateRoute
@@ -39,8 +39,8 @@ import com.sweak.qralarm.features.disable_alarm_scanner.DisableAlarmScannerScree
 import com.sweak.qralarm.features.emergency.settings.EmergencySettingsScreen
 import com.sweak.qralarm.features.emergency.task.EmergencyScreen
 import com.sweak.qralarm.features.home.HomeScreen
-import com.sweak.qralarm.features.introduction.IntroductionScreen
 import com.sweak.qralarm.features.menu.MenuScreen
+import com.sweak.qralarm.features.onboarding.OnboardingScreen
 import com.sweak.qralarm.features.optimization.OptimizationScreen
 import com.sweak.qralarm.features.qralarm_pro.QRAlarmProScreen
 import com.sweak.qralarm.features.rate.RateScreen
@@ -115,14 +115,10 @@ fun MainNavContent(
             )
         }
 
-        entry<IntroductionRoute> { route ->
-            IntroductionScreen(
-                onContinueClicked = {
-                    if (route.isLaunchedFromMenu) {
-                        navigator.goBack()
-                    } else {
-                        navigator.navigateToTopLevelAndClear(HomeRoute)
-                    }
+        entry<OnboardingRoute> {
+            OnboardingScreen(
+                onOnboardingFinished = {
+                    navigator.navigateToTopLevelAndClear(HomeRoute)
                 }
             )
         }
@@ -176,9 +172,6 @@ fun MainNavContent(
         entry<MenuRoute> {
             MenuScreen(
                 onBackClicked = { navigator.goBack() },
-                onIntroductionClicked = {
-                    navigator.navigate(IntroductionRoute(isLaunchedFromMenu = true))
-                },
                 onOptimizationGuideClicked = {
                     navigator.navigate(OptimizationRoute(isLaunchedFromMenu = true))
                 },
