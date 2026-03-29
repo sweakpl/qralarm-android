@@ -1,0 +1,3 @@
+* Added more flexible "Cancellation lock" setting instead of "1-hour lock",
+* Added Dutch, Indonesian and Russian translations,
+* Performance improvements.
