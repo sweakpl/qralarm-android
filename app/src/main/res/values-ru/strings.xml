@@ -144,7 +144,7 @@
     <string name="click_to_go_to_app_settings">Нажмите, чтобы перейти к настройкам приложения QRAlarm.</string>
     <string name="issue_opening_the_page">Произошла ошибка при открытии страницы…</string>
     <string name="optimization_dialog_description">Сделайте QRAlarm максимально эффективным в вашей системе, ознакомьтесь с нашим руководством по оптимизации и спите спокойно!</string>
-    <string name="get_it_now">Получить сейчас!</string>
+    <string name="get_it_now">Обновитесь сейчас!</string>
     <string name="not_now">Не сейчас</string>
     <string name="special_settings">Особые настройки</string>
     <string name="do_not_leave_alarm">Не покидать будильник</string>
