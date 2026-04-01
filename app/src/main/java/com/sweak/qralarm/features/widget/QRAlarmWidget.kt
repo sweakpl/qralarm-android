@@ -26,13 +26,11 @@ class QRAlarmWidget : GlanceAppWidget() {
 
         provideContent {
 
-            val preferences = currentState<androidx.datastore.preferences.core.Preferences>()
-
             val alarmTime =
-                preferences[ALARM_TIME_PREFERENCES_KEY] ?: "--:--"
+                currentState<androidx.datastore.preferences.core.Preferences>()[ALARM_TIME_PREFERENCES_KEY] ?: "--:--"
 
             val alarmLabel =
-                preferences[ALARM_LABEL_PREFERENCES_KEY] ?: ""
+                currentState<androidx.datastore.preferences.core.Preferences>()[ALARM_LABEL_PREFERENCES_KEY] ?: ""
 
             Box(
                 modifier = GlanceModifier

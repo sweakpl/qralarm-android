@@ -86,7 +86,7 @@ class SetAlarm @Inject constructor(
             }
         }
 
-        QRAlarmWidgetUpdater(appContext).requestUpdate()
+        //inject here
 
         return Result.Success(alarmTimInMillis = alarmTimeInMillis)
     }

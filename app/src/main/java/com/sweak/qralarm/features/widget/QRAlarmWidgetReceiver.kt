@@ -19,22 +19,9 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
 
     private val receiverScope = CoroutineScope(Dispatchers.IO)
 
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
-    ) {
-        super.onUpdate(context, appWidgetManager, appWidgetIds)
-        receiverScope.launch {
-            val updater = QRAlarmWidgetUpdater(context)
-            updater.updateImmediately()
-        }
-    }
-
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
-        // this is where the intent from QRAlarmWidgetUpdater gets processed!
         if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
             receiverScope.launch {
 

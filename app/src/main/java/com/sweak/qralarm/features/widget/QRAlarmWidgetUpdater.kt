@@ -40,20 +40,15 @@ class QRAlarmWidgetUpdater(appContext: Context) {
 
     private val debounceDelayMs = 1500L
 
+
+
+    //work on injection, potentially redo the updater functions!
+
     fun requestUpdate() {
         updateJob?.cancel()
 
         updateJob = scope.launch {
             delay(debounceDelayMs)
-            performUpdate()
-        }
-    }
-
-    fun updateImmediately() {
-        updateJob?.cancel()
-
-        scope.launch {
-            delay(300L)
             performUpdate()
         }
     }
@@ -97,6 +92,7 @@ class QRAlarmWidgetUpdater(appContext: Context) {
 
         return alarmsList
             .filter { it.isAlarmEnabled }
+            //check to filter snoozed alarms as well!
             .minByOrNull { it.nextAlarmTimeInMillis }
     }
 

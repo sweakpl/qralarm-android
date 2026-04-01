@@ -54,7 +54,7 @@ class SnoozeAlarm @Inject constructor(
             )
         }
 
-        QRAlarmWidgetUpdater(appContext).updateImmediately()
+        //inject here -> need snooze logic reworked!
 
     }
 }
