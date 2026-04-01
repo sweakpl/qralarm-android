@@ -5,24 +5,24 @@ import androidx.compose.ui.unit.sp
 import androidx.glance.text.FontFamily
 import androidx.glance.text.FontWeight
 import androidx.glance.text.TextStyle
-import androidx.glance.unit.ColorProvider
+import androidx.glance.color.ColorProvider
 
 object WidgetStyles {
     val header = TextStyle(
-        color = ColorProvider(Color(0xFFFFFFFF)),
+        color = ColorProvider(day = Color(0xFFFFFFFF), night = Color(0xFFFFFFFF)),
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium
     )
 
     val title = TextStyle(
-        color = ColorProvider(Color.White),
+        color = ColorProvider(day = Color(0xFFFFFFFF), night = Color(0xFFFFFFFF)),
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.Monospace
     )
 
     val time = TextStyle(
-        color = ColorProvider(Color(0xFFFFFFFF)),
+        color = ColorProvider(day = Color(0xFFFFFFFF), night = Color(0xFFFFFFFF)),
         fontSize = 36.sp,
         fontWeight = FontWeight.Bold
     )
