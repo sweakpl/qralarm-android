@@ -1,7 +1,10 @@
 package com.sweak.qralarm.core.domain.alarm
 
+import android.content.Context
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.features.widget.QRAlarmWidgetUpdater
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -12,6 +15,7 @@ class RescheduleAlarms @Inject constructor(
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
     private val snoozeAlarm: SnoozeAlarm,
+    private val widgetUpdater: QRAlarmWidgetUpdater
 ) {
     suspend operator fun invoke(rescheduleAlarmsIfMissedByFiveMinutes: Boolean = true) {
         if (!qrAlarmManager.canScheduleExactAlarms()) {
@@ -100,5 +104,8 @@ class RescheduleAlarms @Inject constructor(
                 }
             }
         }
+
+        widgetUpdater.requestUpdate()
+
     }
 }

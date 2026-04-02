@@ -7,10 +7,12 @@ import android.text.format.DateFormat
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.ui.getTimeString
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
+//import dagger.hilt.EntryPoint
+//import dagger.hilt.InstallIn
+//import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,20 +21,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-@EntryPoint
-@InstallIn(SingletonComponent::class)
-interface QRAlarmWidgetEntryPoint {
-    fun alarmsRepository(): AlarmsRepository
-}
 
-class QRAlarmWidgetUpdater(appContext: Context) {
 
-    private val appContext: Context = appContext.applicationContext
-    private val entryPoint = EntryPointAccessors.fromApplication(
-        this.appContext,
-        QRAlarmWidgetEntryPoint::class.java
-    )
-    private val alarmsRepository = entryPoint.alarmsRepository()
+class QRAlarmWidgetUpdater @Inject constructor(
+    private val alarmsRepository: AlarmsRepository,
+    @ApplicationContext private val appContext: Context)
+{
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 

@@ -10,7 +10,7 @@ import javax.inject.Inject
 class SetAlarm @Inject constructor(
     private val qrAlarmManager: QRAlarmManager,
     private val alarmsRepository: AlarmsRepository,
-    @ApplicationContext private val appContext: Context
+    private val widgetUpdater: QRAlarmWidgetUpdater
 ) {
     suspend operator fun invoke(alarmId: Long, isReschedulingMissedAlarm: Boolean): Result {
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return Result.Failure
@@ -86,7 +86,7 @@ class SetAlarm @Inject constructor(
             }
         }
 
-        //inject here
+        widgetUpdater.requestUpdate()
 
         return Result.Success(alarmTimInMillis = alarmTimeInMillis)
     }

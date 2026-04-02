@@ -11,7 +11,7 @@ import javax.inject.Inject
 class SnoozeAlarm @Inject constructor(
     private val qrAlarmManager: QRAlarmManager,
     private val alarmsRepository: AlarmsRepository,
-    @ApplicationContext private val appContext: Context
+    private val widgetUpdater: QRAlarmWidgetUpdater
 ) {
     suspend operator fun invoke(alarmId: Long, isReschedulingCurrentOrMissedSnooze: Boolean) {
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return
@@ -54,7 +54,7 @@ class SnoozeAlarm @Inject constructor(
             )
         }
 
-        //inject here -> need snooze logic reworked!
+        widgetUpdater.requestUpdate()
 
     }
 }
