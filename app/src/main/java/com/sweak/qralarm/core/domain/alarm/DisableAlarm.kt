@@ -1,9 +1,7 @@
 package com.sweak.qralarm.core.domain.alarm
 
-//import android.content.Context
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.features.widget.QRAlarmWidgetUpdater
-//import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class DisableAlarm @Inject constructor(

@@ -1,10 +1,7 @@
 package com.sweak.qralarm.core.domain.alarm
 
-import android.content.Context
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.user.UserDataRepository
-import com.sweak.qralarm.features.widget.QRAlarmWidgetUpdater
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
@@ -15,7 +12,6 @@ class RescheduleAlarms @Inject constructor(
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
     private val snoozeAlarm: SnoozeAlarm,
-    private val widgetUpdater: QRAlarmWidgetUpdater
 ) {
     suspend operator fun invoke(rescheduleAlarmsIfMissedByFiveMinutes: Boolean = true) {
         if (!qrAlarmManager.canScheduleExactAlarms()) {
@@ -42,7 +38,7 @@ class RescheduleAlarms @Inject constructor(
                                 alarmId = alarm.alarmId,
                                 isReschedulingCurrentOrMissedSnooze = true
                             )
-                        // If it was missed by more than five minutes - notify the user:
+                            // If it was missed by more than five minutes - notify the user:
                         } else {
                             qrAlarmManager.notifyAboutMissedAlarm()
                             userDataRepository.setAlarmMissedDetected(detected = true)
@@ -60,7 +56,7 @@ class RescheduleAlarms @Inject constructor(
                                 )
                             }
                         }
-                    // The snoozed alarm is still in the future - reschedule:
+                        // The snoozed alarm is still in the future - reschedule:
                     } else {
                         snoozeAlarm(
                             alarmId = alarm.alarmId,
@@ -80,7 +76,7 @@ class RescheduleAlarms @Inject constructor(
                                 alarmId = alarm.alarmId,
                                 isReschedulingMissedAlarm = true
                             )
-                        // If it was missed by more than five minutes - notify the user:
+                            // If it was missed by more than five minutes - notify the user:
                         } else {
                             qrAlarmManager.notifyAboutMissedAlarm()
                             userDataRepository.setAlarmMissedDetected(detected = true)
@@ -94,7 +90,7 @@ class RescheduleAlarms @Inject constructor(
                                 )
                             }
                         }
-                    // The alarm is still in the future - reschedule:
+                        // The alarm is still in the future - reschedule:
                     } else {
                         setAlarm(
                             alarmId = alarm.alarmId,
@@ -104,8 +100,5 @@ class RescheduleAlarms @Inject constructor(
                 }
             }
         }
-
-        widgetUpdater.requestUpdate()
-
     }
 }
