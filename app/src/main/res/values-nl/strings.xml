@@ -210,4 +210,15 @@
     <string name="cancellation_lock_active_to_edit_scan_code">Annuleringsslot is actief — om te bewerken, schakel het alarm uit door de code te scannen.</string>
     <string name="cancellation_lock_active_scan_code_to_disable">Annuleringsslot is actief — scan de code om het alarm uit te schakelen.</string>
     <string name="standalone_app">Zelfstandige app</string>
+    <string name="get_out_of_bed_get_ahead">Uit bed komen. Vooruitgang boeken.</string>
+    <string name="get_started">Aan de slag</string>
+    <string name="almost_ready_to_go">Bijna klaar om te gaan!</string>
+    <string name="permissions_screen_description">Om je uit bed te krijgen, heeft QRAlarm enkele toestemmingen nodig. We gebruiken ze alleen om ervoor te zorgen dat je alarm altijd werkt.</string>
+    <string name="background_work">Achtergrondwerk</string>
+    <string name="thousands_of_mornings_changed">Duizenden ochtenden veranderd!</string>
+    <string name="review_1">Heeft mijn leven veranderd! Ik sta op, altijd op tijd, dankzij dit! Ik heb de QR-code in een andere kamer geplaatst, dus ik moet uit bed om het alarm uit te zetten, werkt geweldig!</string>
+    <string name="review_2">Een eenvoudige en functionele oplossing voor mensen die hun alarm regelmatig verslapen. Ochtenden zijn niet langer een paniekerige snelkookpan, ik heb genoeg tijd vrijgemaakt om van mijn ochtenddouche, ontbijt te genieten en toch vroeg op mijn werk te verschijnen. 5 sterren zijn niet genoeg, dit is een game changer en meer dan de tijd, geld en moeite waard.</string>
+    <string name="review_3">Eenvoudig maar effectief, het maakt het onmogelijk voor mij om in bed te blijven liggen wanneer het afgaat. In plaats van 20 alarmen elke 5 minuten die ik half slapend toch uitzet, dwingt deze app me om uit bed te gaan en een barcode in een andere kamer te scannen.</string>
+    <string name="review_4">Dit Alarm is een levens-/baansaver, dit is letterlijk de enige manier om me uit bed te krijgen door een QR-code te scannen om het alarm te deactiveren. Vroeger was mijn lichaam zo getraind om mijn alarm UIT MIJN SLAAP uit te zetten dat ik wakker werd zonder dat ik het wist. Dit alarm heeft me tegengehouden van verslapen voor werk, en ik ben dankbaar!</string>
+    <string name="review_5">Uitstekende app met regelmatige updates die tonnen nieuwe functies brengen! Het is zeer eenvoudig in gebruik en een enorme tijdbesparing voor mij.</string>
 </resources>

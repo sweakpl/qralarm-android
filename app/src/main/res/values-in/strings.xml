@@ -204,4 +204,15 @@
     <string name="cancellation_lock_active_to_edit_scan_code">Kunci pembatalan aktif — untuk mengedit, nonaktifkan alarm dengan memindai kode.</string>
     <string name="cancellation_lock_active_scan_code_to_disable">Kunci pembatalan aktif — pindai kode untuk menonaktifkan alarm.</string>
     <string name="standalone_app">Aplikasi mandiri</string>
+    <string name="get_out_of_bed_get_ahead">Bangun dari tempat tidur. Maju ke depan.</string>
+    <string name="get_started">Mulai</string>
+    <string name="almost_ready_to_go">Hampir siap!</string>
+    <string name="permissions_screen_description">Agar dapat membangunkan Anda, QRAlarm memerlukan beberapa izin. Kami hanya menggunakannya untuk memastikan alarm Anda selalu berfungsi.</string>
+    <string name="background_work">Pekerjaan latar belakang</string>
+    <string name="thousands_of_mornings_changed">Ribuan pagi berubah!</string>
+    <string name="review_1">Mengubah hidupku! Saya bangun tepat waktu setiap kali berkat ini! Saya menempatkan kode QR di ruangan lain, jadi saya harus bangun dari tempat tidur untuk mematikan alarm, hasilnya sangat baik!</string>
+    <string name="review_2">Solusi sederhana dan fungsional bagi orang yang biasa tidur terlalu nyenyak melalui alarm mereka. Pagi tidak lagi berantakan, saya punya cukup waktu untuk menikmati mandi pagi, sarapan, dan tetap datang ke kantor lebih awal. 5 bintang tidak cukup, ini adalah pengubah permainan dan sangat berharga untuk waktu, uang, dan usaha.</string>
+    <string name="review_3">Sederhana tapi efektif, membuat saya tidak mungkin tetap di tempat tidur ketika berbunyi. Alih-alih memiliki 20 alarm setiap 5 menit yang saya matikan setengah tidur, aplikasi ini memaksa saya bangun dari tempat tidur dan memindai barcode di ruangan lain.</string>
+    <string name="review_4">Alarm ini penyelamat hidup/pekerjaan, ini benar-benar satu-satunya cara untuk membuat saya bangun dari tempat tidur dengan memindai kode QR untuk menonaktifkan alarm, sebelumnya tubuh saya sangat terlatih untuk mematikan alarm DALAM TIDUR sehingga saya bangun tanpa tahu itu berbunyi. Alarm ini menghentikan saya dari terlalu tidur untuk bekerja, dan saya bersyukur!</string>
+    <string name="review_5">Aplikasi hebat dengan pembaruan rutin yang membawa banyak fitur baru! Sangat mudah digunakan dan sangat menghemat waktu bagi saya.</string>
 </resources>
