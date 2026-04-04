@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.text.format.DateFormat
+import android.util.Log
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.ui.getTimeString
@@ -20,7 +21,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-
+import kotlin.math.min
 
 
 class QRAlarmWidgetUpdater @Inject constructor(
@@ -34,10 +35,6 @@ class QRAlarmWidgetUpdater @Inject constructor(
 
     private val debounceDelayMs = 1500L
 
-
-
-    //work on injection, potentially redo the updater functions!
-
     fun requestUpdate() {
         updateJob?.cancel()
 
@@ -48,15 +45,26 @@ class QRAlarmWidgetUpdater @Inject constructor(
     }
 
     private suspend fun performUpdate() {
-        val nextAlarm = getNextAlarm(alarmsRepository)
+        val nextAlarm: Pair<Alarm?, Boolean> = getNextAlarm(alarmsRepository)
         broadcastToReceiver(nextAlarm)
     }
 
-    private fun broadcastToReceiver(nextAlarm: Alarm?) {
-        val time: String
-        val label: String
+    private fun broadcastToReceiver(alarmPair: Pair<Alarm?, Boolean>) {
+        var time = "--:--"
+        var label: String
 
-        if (nextAlarm != null) {
+        val nextAlarm = alarmPair.first
+        val isNextAlarmSnoozed = alarmPair.second
+
+        if (nextAlarm != null && isNextAlarmSnoozed) {
+            nextAlarm.snoozeConfig.nextSnoozedAlarmTimeInMillis?.let {
+                time = getTimeString(
+                    it,
+                    DateFormat.is24HourFormat(appContext)
+                )
+            }
+            label = "Snoozed: ${nextAlarm.alarmLabel ?: "No label"}"
+        } else if (nextAlarm != null) {
             time = getTimeString(
                 nextAlarm.nextAlarmTimeInMillis,
                 DateFormat.is24HourFormat(appContext)
@@ -81,13 +89,28 @@ class QRAlarmWidgetUpdater @Inject constructor(
 
     private suspend fun getNextAlarm(
         alarmsRepository: AlarmsRepository
-    ): Alarm? {
+    ): Pair<Alarm?, Boolean> {
         val alarmsList = alarmsRepository.getAllAlarms().first()
 
-        return alarmsList
-            .filter { it.isAlarmEnabled }
-            //check to filter snoozed alarms as well!
+        val enabledNextAlarm: Alarm? = alarmsList
+            .filter { it.isAlarmEnabled}
             .minByOrNull { it.nextAlarmTimeInMillis }
-    }
 
+        val snoozedNextAlarm = alarmsList
+            .filter { it.snoozeConfig.nextSnoozedAlarmTimeInMillis != null }
+            .minByOrNull { it.snoozeConfig.nextSnoozedAlarmTimeInMillis!! }
+
+        val enabledNextAlarmTime = enabledNextAlarm?.nextAlarmTimeInMillis ?: Long.MAX_VALUE
+
+        val snoozedNextAlarmTime = snoozedNextAlarm?.snoozeConfig?.nextSnoozedAlarmTimeInMillis
+            ?: Long.MAX_VALUE
+
+        if (enabledNextAlarm == null && snoozedNextAlarm == null) {
+            return Pair(null, false)
+        } else if (enabledNextAlarmTime < snoozedNextAlarmTime) {
+            return Pair(enabledNextAlarm, false)
+        } else {
+            return Pair(snoozedNextAlarm, true)
+        }
+    }
 }
