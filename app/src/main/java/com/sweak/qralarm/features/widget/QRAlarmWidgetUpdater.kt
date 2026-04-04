@@ -4,15 +4,10 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.text.format.DateFormat
-import android.util.Log
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.ui.getTimeString
-//import dagger.hilt.EntryPoint
-//import dagger.hilt.InstallIn
-//import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +16,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlin.math.min
 
 
 class QRAlarmWidgetUpdater @Inject constructor(
