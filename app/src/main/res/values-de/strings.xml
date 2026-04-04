@@ -210,4 +210,15 @@
     <string name="cancellation_lock_active_scan_code_to_disable">Sperre gegen Beenden aktiv — scanne den Code, um den Alarm zu deaktivieren.</string>
     <string name="cancellation_lock">Sperre gegen Beenden</string>
     <string name="cancellation_lock_description">Der Alarm kann nicht abgebrochen oder bearbeitet werden, ohne den Code innerhalb der ausgewählten Zeit vor dem Klingeln zu scannen.</string>
+    <string name="get_out_of_bed_get_ahead">Raus aus dem Bett. Vorauskommen.</string>
+    <string name="get_started">Los geht\'s</string>
+    <string name="almost_ready_to_go">Fast bereit zu starten!</string>
+    <string name="permissions_screen_description">Um dich aus dem Bett zu holen, benötigt QRAlarm einige Berechtigungen. Wir verwenden sie nur, um sicherzustellen, dass dein Alarm immer funktioniert.</string>
+    <string name="background_work">Hintergrundaktivität</string>
+    <string name="thousands_of_mornings_changed">Tausende Morgen verändert!</string>
+    <string name="review_1">Hat mein Leben verändert! Ich stehe pünktlich auf, jedes Mal dank dieser App! Ich habe den QR-Code in einen anderen Raum gelegt, sodass ich aus dem Bett muss, um den Alarm auszuschalten, funktioniert wunderbar!</string>
+    <string name="review_2">Eine einfache und funktionale Lösung für Menschen, die ständig ihre Alarme verschlafen. Die Morgen sind kein panisches Durcheinander mehr, ich habe genug Zeit freigeschaufelt, um meine morgendliche Dusche, mein Frühstück zu genießen und trotzdem früh zur Arbeit zu erscheinen. 5 Sterne sind nicht genug, dies ist ein echter Gamechanger und absolut die Zeit, das Geld und die Mühe wert.</string>
+    <string name="review_3">Einfach, aber effektiv, macht es unmöglich, im Bett zu bleiben, wenn es klingelt. Anstatt 20 Alarme im 5-Minuten-Takt, die ich im Halbschlaf sowieso ausschalte, zwingt mich diese App, aus dem Bett zu kommen und einen Barcode in einem anderen Raum zu scannen.</string>
+    <string name="review_4">Dieser Alarm ist ein Lebens- und Jobretter, dies ist buchstäblich der einzige Weg, um mich aus dem Bett zu bekommen, indem ich einen QR-Code scanne, um den Alarm zu deaktivieren. Früher war mein Körper so darauf trainiert, den Alarm im SCHLAF auszuschalten, dass ich aufwachte, ohne zu wissen, dass er ausgelöst wurde. Dieser Alarm hat mich davon abgehalten, zu lange zu schlafen und ich bin dankbar!</string>
+    <string name="review_5">Ausgezeichnete App mit regelmäßigen Updates, die viele neue Funktionen bringen! Sie ist sehr einfach zu bedienen und spart mir viel Zeit.</string>
 </resources>

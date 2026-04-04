@@ -216,4 +216,15 @@
     <string name="cancellation_lock_active_scan_code_to_disable">Bloqueo de cancelación activo: escanea el código para desactivar la alarma.</string>
     <string name="cancellation_lock">Bloqueo de cancelación</string>
     <string name="cancellation_lock_description">La alarma no se puede cancelar ni editar sin escanear el código dentro del tiempo seleccionado antes de que suene.</string>
+    <string name="get_out_of_bed_get_ahead">Sal de la cama. Avanza.</string>
+    <string name="get_started">Comenzar</string>
+    <string name="almost_ready_to_go">¡Casi listo para empezar!</string>
+    <string name="permissions_screen_description">Para sacarte de la cama, QRAlarm necesita algunos permisos. Solo los usamos para asegurar que tu alarma siempre funcione.</string>
+    <string name="background_work">Trabajo en segundo plano</string>
+    <string name="thousands_of_mornings_changed">¡Miles de mañanas cambiadas!</string>
+    <string name="review_1">¡Cambió mi vida! Me levanto a tiempo, siempre, gracias a esto. Puse el código QR en otra habitación, así que tengo que salir de la cama para desactivar la alarma, ¡funciona de maravilla!</string>
+    <string name="review_2">Una solución simple y funcional para las personas que habitualmente duermen a través de sus alarmas. Las mañanas ya no son una carrera frenética, ahora tengo tiempo suficiente para disfrutar de mi ducha matutina, desayuno, y aún llegar temprano al trabajo. 5 estrellas no son suficientes, este es un cambio de juego y vale más que el tiempo, dinero y esfuerzo.</string>
+    <string name="review_3">Simple pero efectivo, hace imposible que me quede en la cama cuando suena. En lugar de tener 20 alarmas cada 5 minutos que apago medio dormido, esta app me obliga a salir de la cama y escanear un código de barras en otra habitación.</string>
+    <string name="review_4">Esta alarma salva mi vida/empleo, esta es literalmente la única forma de sacarme de la cama escaneando un código QR para desactivar la alarma, antes mi cuerpo estaba tan entrenado para apagar mi alarma DURMIENDO que me despertaba sin saber siquiera que había sonado. Esta alarma me ha impedido dormir de más y faltar al trabajo, ¡y estoy agradecido!</string>
+    <string name="review_5">¡Excelente app con actualizaciones regulares que traen un montón de nuevas funciones! Es muy fácil de usar y me ahorra mucho tiempo.</string>
 </resources>

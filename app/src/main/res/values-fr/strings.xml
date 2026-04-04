@@ -216,4 +216,15 @@
     <string name="cancellation_lock_active_scan_code_to_disable">Le verrouillage d\'annulation est actif — scannez le code pour désactiver l\'alarme.</string>
     <string name="cancellation_lock">Verrouillage d\'annulation</string>
     <string name="cancellation_lock_description">L\'alarme ne peut pas être annulée ou modifiée sans scanner le code dans le délai sélectionné avant qu\'elle ne sonne.</string>
+    <string name="get_out_of_bed_get_ahead">Sortez du lit. Prenez de l\'avance.</string>
+    <string name="get_started">Commencer</string>
+    <string name="almost_ready_to_go">Presque prêt à partir !</string>
+    <string name="permissions_screen_description">Pour vous sortir du lit, QRAlarm a besoin de quelques autorisations. Nous les utilisons uniquement pour assurer le bon fonctionnement de votre alarme.</string>
+    <string name="background_work">Travail en arrière-plan</string>
+    <string name="thousands_of_mornings_changed">Des milliers de matins changés !</string>
+    <string name="review_1">A changé ma vie ! Je me lève à temps, à chaque fois grâce à ça ! J\'ai mis le QR code dans une autre pièce, donc je dois sortir du lit pour arrêter l\'alarme, ça marche à merveille !</string>
+    <string name="review_2">Une solution simple et fonctionnelle pour les personnes qui dorment habituellement à travers leurs alarmes. Les matins ne sont plus une course effrénée, j\'ai maintenant suffisamment de temps pour apprécier ma douche du matin, mon petit déjeuner, et arriver au travail en avance. 5 étoiles ne suffisent pas, c\'est un changement radical qui vaut bien le temps, l\'argent et l\'effort.</string>
+    <string name="review_3">Simple mais efficace, ça me rend impossible de rester au lit quand ça sonne. Au lieu d\'avoir 20 alarmes toutes les 5 minutes que j\'éteins à moitié endormi, cette appli me force à sortir du lit et scanner un code-barres dans une autre pièce.</string>
+    <string name="review_4">Cette alarme sauve ma vie/mon travail, c\'est littéralement le seul moyen de me sortir du lit en scannant un QR code pour désactiver l\'alarme. Avant, mon corps était tellement entraîné à éteindre mon alarme DANS MON SOMMEIL que je me réveillais sans même savoir qu\'elle avait sonné. Cette alarme m\'a empêché de trop dormir pour le travail, et j\'en suis reconnaissant !</string>
+    <string name="review_5">Excellente application avec des mises à jour régulières apportant de nombreuses nouvelles fonctionnalités ! Elle est très facile à utiliser et me fait gagner énormément de temps.</string>
 </resources>
