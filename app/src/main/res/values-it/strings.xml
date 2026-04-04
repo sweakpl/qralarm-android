@@ -138,7 +138,7 @@
     <string name="click_to_go_to_app_settings">Fare clic per accedere alle impostazioni dell\'applicazione QRAlarm.</string>
     <string name="issue_opening_the_page">C\'è stato un problema nell\'aprire la pagina…</string>
     <string name="optimization_dialog_description">Per far sì che QRAlarm funzioni al meglio nel tuo sistema, consulta la nostra guida all\'ottimizzazione e dormi sonni tranquilli!</string>
-    <string name="get_it_now">Acquistalo subito!</string>
+    <string name="get_it_now">Aggiorna ora!</string>
     <string name="not_now">Non adesso</string>
     <string name="special_settings">Impostazioni speciali</string>
     <string name="do_not_leave_alarm">Non lasciare l\'allarme</string>
@@ -216,4 +216,15 @@
     <string name="cancellation_lock_active_scan_code_to_disable">Blocco di annullamento attivo — scansiona il codice per disabilitare l\'allarme.</string>
     <string name="cancellation_lock">Blocco di annullamento</string>
     <string name="cancellation_lock_description">L\'allarme non può essere annullato o modificato senza scansionare il codice entro il tempo selezionato prima che suoni.</string>
+    <string name="get_out_of_bed_get_ahead">Alzati dal letto. Vai avanti.</string>
+    <string name="get_started">Inizia</string>
+    <string name="almost_ready_to_go">Quasi pronto per partire!</string>
+    <string name="permissions_screen_description">Per farti alzare dal letto, QRAlarm ha bisogno di alcune autorizzazioni. Le usiamo solo per garantire che il tuo allarme funzioni sempre.</string>
+    <string name="background_work">Lavoro in background</string>
+    <string name="thousands_of_mornings_changed">Migliaia di mattine cambiate!</string>
+    <string name="review_1">Mi ha cambiato la vita! Mi alzo sempre in tempo grazie a questo! Ho messo il codice QR in un\'altra stanza, così devo alzarmi dal letto per fermare l\'allarme, funziona a meraviglia!</string>
+    <string name="review_2">Una soluzione semplice e funzionale per persone che abitualmente dormono attraverso gli allarmi. Le mattine non sono più una corsa frenetica, ho liberato abbastanza tempo per godermi la doccia mattutina, la colazione e arrivare ancora a lavoro in anticipo. 5 stelle non bastano, è un punto di svolta che vale oltre il tempo, il denaro e lo sforzo.</string>
+    <string name="review_3">Semplice ma efficace, mi rende impossibile restare a letto quando suona. Invece di avere 20 allarmi ogni 5 minuti che comunque spengo mezzo addormentato, questa app mi costringe ad alzarmi dal letto e a scansionare un codice a barre in un\'altra stanza.</string>
+    <string name="review_4">Questa sveglia salva la vita/lavoro, è letteralmente l\'unico modo per costringermi a uscire dal letto scansionando un codice QR per disattivare l\'allarme, prima il mio corpo era così abituato a spegnere l\'allarme nel sonno che mi svegliavo senza nemmeno sapere che era suonato. Questa sveglia mi ha impedito di dormire troppo per lavoro, e ne sono grato!</string>
+    <string name="review_5">App eccellente con aggiornamenti regolari che portano tante nuove funzionalità! È molto facile da usare e mi fa risparmiare un sacco di tempo.</string>
 </resources>

@@ -144,7 +144,7 @@
     <string name="click_to_go_to_app_settings">Kliknij, aby przejść do ustawień aplikacji QRAlarm.</string>
     <string name="issue_opening_the_page">Wystąpił problem podczas otwierania strony…</string>
     <string name="optimization_dialog_description">Spraw, aby QRAlarm działał jak najlepiej w Twoim systemie, sprawdzając nasz przewodnik optymalizacji i śpij spokojnie!</string>
-    <string name="get_it_now">Pobierz teraz!</string>
+    <string name="get_it_now">Ulepsz teraz!</string>
     <string name="not_now">Nie teraz</string>
     <string name="special_settings">Ustawienia specjalne</string>
     <string name="do_not_leave_alarm">Nie opuszczaj alarmu</string>
@@ -222,4 +222,15 @@
     <string name="cancellation_lock_active_scan_code_to_disable">Blokada anulowania jest aktywna — aby wyłączyć alarm, zeskanuj kod.</string>
     <string name="cancellation_lock">Blokada anulowania</string>
     <string name="cancellation_lock_description">Nie można anulować ani edytować alarmu bez zeskanowania kodu w wybranym czasie przed jego dźwiękiem.</string>
+    <string name="get_out_of_bed_get_ahead">Wstań z łóżka. Działaj.</string>
+    <string name="get_started">Zaczynaj</string>
+    <string name="almost_ready_to_go">Prawie gotowe do działania!</string>
+    <string name="permissions_screen_description">Aby cię obudzić, QRAlarm potrzebuje kilku pozwoleń. Używamy ich tylko, aby upewnić się, że alarm zawsze działa.</string>
+    <string name="background_work">Praca w tle</string>
+    <string name="thousands_of_mornings_changed">Tysiące poranków zmienionych!</string>
+    <string name="review_1">Zmieniło moje życie! Wstaję, na czas, za każdym razem dzięki temu! Umieszczam kod QR w innym pokoju, więc muszę wstać z łóżka, aby wyłączyć alarm, działa cudownie!</string>
+    <string name="review_2">Proste i funkcjonalne rozwiązanie dla osób, które zwykle przesypiają alarmy. Poranki nie są już panicznym pośpiechem, mam wystarczająco dużo czasu, aby cieszyć się porannym prysznicem, śniadaniem, a nawet przybyć do pracy wcześnie. 5 gwiazdek to za mało, to prawdziwa rewolucja i absolutnie warte mojego czasu, pieniędzy i wysiłku.</string>
+    <string name="review_3">Proste, ale skuteczne, sprawia, że nie mogę zostać w łóżku, gdy dzwoni. Zamiast mieć 20 alarmów co 5 minut, które i tak wyłączam na pół śpiąco, ta aplikacja zmusza mnie do wstania z łóżka i zeskanowania kodu kreskowego w innym pokoju.</string>
+    <string name="review_4">Ten alarm ratuje życie/karierę, to dosłownie jedyny sposób, aby mnie obudzić poprzez skanowanie kodu QR w celu wyłączenia alarmu, wcześniej moje ciało było tak wytrenowane, by wyłączać alarm W ŚNIE, że budziłem się, nawet nie wiedząc, że dzwonił. Ten alarm powstrzymał mnie przed zaspaniem do pracy i jestem wdzięczny!</string>
+    <string name="review_5">Świetna aplikacja z regularnymi aktualizacjami przynoszącymi mnóstwo nowych funkcji! Jest bardzo łatwa w użyciu i oszczędza mi dużo czasu.</string>
 </resources>

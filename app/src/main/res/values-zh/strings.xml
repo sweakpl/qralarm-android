@@ -126,7 +126,7 @@
     <string name="click_to_go_to_app_settings">点击进入 QRAlarm 应用设置</string>
     <string name="issue_opening_the_page">打开页面时出现问题…</string>
     <string name="optimization_dialog_description">查看我们的优化指南，让 QRAlarm 在您的系统中运转如飞，助您食甘寝宁！</string>
-    <string name="get_it_now">买了!</string>
+    <string name="get_it_now">立即升级！</string>
     <string name="not_now">暂且不了</string>
     <string name="special_settings">特殊设置</string>
     <string name="do_not_leave_alarm">留在闹钟界面</string>
@@ -204,4 +204,15 @@
     <string name="cancellation_lock_active_scan_code_to_disable">取消锁定已激活 —— 扫描代码即可停用闹钟。</string>
     <string name="cancellation_lock">取消锁定</string>
     <string name="cancellation_lock_description">在选定时间内未扫描代码，无法取消或编辑闹钟。</string>
+    <string name="get_out_of_bed_get_ahead">起床。向前迈进。</string>
+    <string name="get_started">开始</string>
+    <string name="almost_ready_to_go">几乎准备就绪！</string>
+    <string name="permissions_screen_description">为了让你起床，QRAlarm 需要一些权限。我们只使用它们以确保你的闹钟总是有效。</string>
+    <string name="background_work">后台工作</string>
+    <string name="thousands_of_mornings_changed">数千个早晨已改变！</string>
+    <string name="review_1">改变了我的生活！我能准时起床，多亏了这个！我把二维码放在另一个房间，所以我必须起床去关闭闹钟，效果奇佳！</string>
+    <string name="review_2">对于习惯睡过头的人来说，这是一个简单而实用的解决方案。早晨不再是惊慌失措的骚动，我有足够的时间享受早晨的淋浴、早餐，并且还能早点到公司。5 星评价都不够，这是个颠覆性的改变，绝对值得投入时间和金钱。</string>
+    <string name="review_3">简单但有效，让我在铃声响起时不可能继续留在床上。相较于每5分钟设置一个响了也会半睡半醒关掉的20个闹钟，这个应用强迫我起床并在另一个房间扫描条码。</string>
+    <string name="review_4">这个闹钟是我的生命/工作的拯救者，这是唯一能让我起床的方法，通过扫描二维码来关闭闹钟，以前我的身体习惯在睡梦中关闭闹钟，以至于醒来时都不知道它响了。这个闹钟阻止了我因迟到而过度睡眠，我很感激它！</string>
+    <string name="review_5">优秀的应用程序，定期更新带来许多新功能！使用非常简单，并且为我节省大量时间。</string>
 </resources>

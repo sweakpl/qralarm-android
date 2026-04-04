@@ -16,7 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.sweak.qralarm.alarm.activity.AlarmActivity
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.navigation.routes.HomeRoute
-import com.sweak.qralarm.core.navigation.routes.IntroductionRoute
+import com.sweak.qralarm.core.navigation.routes.OnboardingRoute
 import com.sweak.qralarm.core.navigation.Navigator
 import com.sweak.qralarm.core.navigation.routes.RateRoute
 import com.sweak.qralarm.core.navigation.rememberNavigationState
@@ -50,11 +50,11 @@ class MainActivity : FragmentActivity() {
 
             if (isIntroductionFinished != null) {
                 val startRoute = remember(isIntroductionFinished) {
-                    if (isIntroductionFinished) HomeRoute else IntroductionRoute(false)
+                    if (isIntroductionFinished) HomeRoute else OnboardingRoute
                 }
                 val navigationState = rememberNavigationState(
                     startRoute = startRoute,
-                    topLevelRoutes = setOf(HomeRoute, IntroductionRoute(false))
+                    topLevelRoutes = setOf(HomeRoute, OnboardingRoute)
                 )
                 val navigator = remember(navigationState) { Navigator(navigationState) }
 

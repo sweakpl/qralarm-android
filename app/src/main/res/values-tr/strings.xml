@@ -132,7 +132,7 @@
     <string name="click_to_go_to_app_settings">QRAlarm uygulama ayarlarına gitmek için tıklayın.</string>
     <string name="issue_opening_the_page">Sayfayı açarken bir sorun oluştu…</string>
     <string name="optimization_dialog_description">Optimizasyon rehberimizi kontrol ederek QRAlarm\'ın sisteminizde en iyi şekilde çalışmasını sağlayın ve içiniz rahat uyuyun!</string>
-    <string name="get_it_now">Hemen alın!</string>
+    <string name="get_it_now">Şimdi yükseltin!</string>
     <string name="not_now">Şimdi değil</string>
     <string name="special_settings">Özel ayarlar</string>
     <string name="do_not_leave_alarm">Alarmdan ayrılma</string>
@@ -210,4 +210,15 @@
     <string name="cancellation_lock_active_scan_code_to_disable">İptal kilidi aktif — alarmı durdurmak için kodu tarayın.</string>
     <string name="cancellation_lock">İptal kilidi</string>
     <string name="cancellation_lock_description">Alarmı çalmadan önce seçilen süre içinde kodu taramadan iptal edilemez veya düzenlenemez.</string>
+    <string name="get_out_of_bed_get_ahead">Yataktan kalk, öne geç.</string>
+    <string name="get_started">Başlayın</string>
+    <string name="almost_ready_to_go">Neredeyse hazır!</string>
+    <string name="permissions_screen_description">Sizi yataktan kaldırmak için QRAlarm\'ın birkaç izne ihtiyacı var. Bunları sadece alarmınızın her zaman çalışmasını sağlamak için kullanıyoruz.</string>
+    <string name="background_work">Arka plan çalışması</string>
+    <string name="thousands_of_mornings_changed">Binlerce sabah değişti!</string>
+    <string name="review_1">Hayatımı değiştirdi! Sayesinde her zaman zamanında kalkıyorum. QR kodunu başka bir odaya koydum, böylece alarmı kapatmak için yataktan kalkmak zorunda kalıyorum, harika çalışıyor!</string>
+    <string name="review_2">Alarmlarını sürekli duymayarak uyuyanlar için basit ve işlevsel bir çözüm. Sabahlar artık panik dolu bir koşuşturma değil, sabah duşumun, kahvaltımın keyfini çıkaracak kadar zamanım oluyor ve işe erkenden gitmeye devam ediyorum. 5 yıldız yeterli değil, bu bir oyun değiştirici ve zamanı, parası ve çabayı fazlasıyla değer kılıyor.</string>
+    <string name="review_3">Basit ama etkili, çaldığında yatakta kalmamı imkansız hale getiriyor. Yarı uykulu halde kapattığım 20 alarm yerine, bu uygulama beni yataktan kalkıp başka bir odadaki barkodu taramaya mecbur bırakıyor.</string>
+    <string name="review_4">Bu Alarm bir hayat/iş kurtarıcısı, beni yataktan kaldırmanın tek yolu, alarmı devre dışı bırakmak için bir QR kodu taratmak. Önceden, vücudum alarmı UYURKEN kapatmaya öyle alışmıştı ki uyandığımda çaldığını bile bilmiyordum. Bu alarm işe geç kalmamı engelledi ve minnettarım!</string>
+    <string name="review_5">Tonlarca yeni özellik getiren düzenli güncellemelerle mükemmel bir uygulama! Kullanımı çok kolay ve benim için büyük bir zaman tasarrufu sağlıyor.</string>
 </resources>

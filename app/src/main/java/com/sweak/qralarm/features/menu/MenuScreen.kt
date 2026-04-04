@@ -51,7 +51,6 @@ import com.sweak.qralarm.features.menu.components.MenuEntry
 @Composable
 fun MenuScreen(
     onBackClicked: () -> Unit,
-    onIntroductionClicked: () -> Unit,
     onOptimizationGuideClicked: () -> Unit,
     onEmergencyTaskSettingsClicked: () -> Unit,
     onQRAlarmProClicked: () -> Unit,
@@ -84,7 +83,6 @@ fun MenuScreen(
         onEvent = { event ->
             when (event) {
                 is MenuScreenUserEvent.OnBackClicked -> onBackClicked()
-                is MenuScreenUserEvent.OnIntroductionClicked -> onIntroductionClicked()
                 is MenuScreenUserEvent.OnOptimizationGuideClicked -> onOptimizationGuideClicked()
                 is MenuScreenUserEvent.OnEmergencyTaskSettingsClicked ->
                     onEmergencyTaskSettingsClicked()
@@ -175,11 +173,6 @@ fun MenuScreenContent(
                     .padding(paddingValues = paddingValues)
                     .fillMaxWidth()
             ) {
-                MenuEntry(
-                    title = stringResource(R.string.introduction),
-                    onClick = { onEvent(MenuScreenUserEvent.OnIntroductionClicked) }
-                )
-
                 MenuEntry(
                     title = stringResource(R.string.optimization_guide),
                     onClick = { onEvent(MenuScreenUserEvent.OnOptimizationGuideClicked) }
