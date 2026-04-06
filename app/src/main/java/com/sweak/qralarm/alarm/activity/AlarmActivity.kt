@@ -77,10 +77,7 @@ class AlarmActivity : FragmentActivity() {
             val theme by userDataRepository.theme.collectAsStateWithLifecycle(Theme.Default)
 
             QRAlarmTheme(theme = theme) {
-                val startRoute = AlarmRoute(
-                    idOfAlarm = alarmId,
-                    isTransient = !isLaunchedFromMainActivity
-                )
+                val startRoute = AlarmRoute(idOfAlarm = alarmId)
 
                 val navigationState = rememberNavigationState(
                     startRoute = startRoute,
@@ -94,7 +91,7 @@ class AlarmActivity : FragmentActivity() {
                     entry<AlarmRoute> { route ->
                         AlarmScreen(
                             idOfAlarm = route.idOfAlarm,
-                            isTransient = route.isTransient,
+                            isTransient = !isLaunchedFromMainActivity,
                             onStopAlarm = {
                                 lifecycleScope.launch {
                                     stopService(alarmId = alarmId)

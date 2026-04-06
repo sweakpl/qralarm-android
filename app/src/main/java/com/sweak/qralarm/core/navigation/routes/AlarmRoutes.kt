@@ -4,10 +4,7 @@ import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AlarmRoute(
-    val idOfAlarm: Long,
-    val isTransient: Boolean
-) : NavKey
+data class AlarmRoute(val idOfAlarm: Long) : NavKey
 
 @Serializable
 data class DisableAlarmScannerRoute(
