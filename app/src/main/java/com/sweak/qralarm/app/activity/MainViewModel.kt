@@ -7,6 +7,7 @@ import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_REQUIRED_MATCHES
+import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_REQUIRED_MATCHES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +60,7 @@ class MainViewModel @Inject constructor(
 
         if (currentEmergencyRequiredMatches !in EMERGENCY_AVAILABLE_REQUIRED_MATCHES) {
             userDataRepository.setEmergencyRequiredMatches(
-                matches = EMERGENCY_AVAILABLE_REQUIRED_MATCHES.last()
+                matches = EMERGENCY_DEFAULT_REQUIRED_MATCHES
             )
         }
     }
