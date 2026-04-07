@@ -10,7 +10,7 @@ import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 
 @Database(
     entities = [AlarmEntity::class],
-    version = 8,
+    version = 9,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -205,6 +205,106 @@ abstract class QRAlarmDatabase : RoomDatabase() {
                         assignedCode,
                         isOpenCodeLinkEnabled,
                         CASE WHEN isOneHourLockEnabled = 1 THEN 1 ELSE 0 END,
+                        isEmergencyTaskEnabled,
+                        alarmLabel,
+                        gentleWakeUpDurationInSeconds,
+                        temporaryMuteDurationInSeconds,
+                        skipAlarmUntilTimeInMillis
+                    FROM alarm
+                    """.trimIndent()
+                )
+
+                db.execSQL("DROP TABLE alarm")
+                db.execSQL("ALTER TABLE alarm_new RENAME TO alarm")
+            }
+        }
+
+        val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // This migration replaces cancelLockDurationInHours with cancelLockDurationInMinutes.
+
+                db.execSQL(
+                    """
+                    CREATE TABLE alarm_new (
+                        alarmId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        alarmHourOfDay INTEGER NOT NULL,
+                        alarmMinute INTEGER NOT NULL,
+                        isAlarmEnabled INTEGER NOT NULL,
+                        isAlarmRunning INTEGER NOT NULL,
+                        nextAlarmTimeInMillis INTEGER NOT NULL,
+                        repeatingAlarmDays TEXT,
+                        numberOfSnoozes INTEGER NOT NULL,
+                        snoozeDurationInMinutes INTEGER NOT NULL,
+                        numberOfSnoozesLeft INTEGER NOT NULL,
+                        isAlarmSnoozed INTEGER NOT NULL,
+                        nextSnoozedAlarmTimeInMillis INTEGER,
+                        ringtone TEXT NOT NULL,
+                        customRingtoneUriString TEXT,
+                        alarmVolumePercentage INTEGER NOT NULL DEFAULT 0,
+                        areVibrationsEnabled INTEGER NOT NULL,
+                        isUsingCode INTEGER NOT NULL,
+                        assignedCode TEXT,
+                        isOpenCodeLinkEnabled INTEGER NOT NULL DEFAULT FALSE,
+                        cancelLockDurationInMinutes INTEGER NOT NULL DEFAULT 60,
+                        isEmergencyTaskEnabled INTEGER NOT NULL DEFAULT TRUE,
+                        alarmLabel TEXT,
+                        gentleWakeUpDurationInSeconds INTEGER NOT NULL,
+                        temporaryMuteDurationInSeconds INTEGER NOT NULL,
+                        skipAlarmUntilTimeInMillis INTEGER
+                    )
+                    """.trimIndent()
+                )
+
+                db.execSQL(
+                    """
+                    INSERT INTO alarm_new (
+                        alarmId,
+                        alarmHourOfDay,
+                        alarmMinute,
+                        isAlarmEnabled,
+                        isAlarmRunning,
+                        nextAlarmTimeInMillis,
+                        repeatingAlarmDays,
+                        numberOfSnoozes,
+                        snoozeDurationInMinutes,
+                        numberOfSnoozesLeft,
+                        isAlarmSnoozed,
+                        nextSnoozedAlarmTimeInMillis,
+                        ringtone,
+                        customRingtoneUriString,
+                        alarmVolumePercentage,
+                        areVibrationsEnabled,
+                        isUsingCode,
+                        assignedCode,
+                        isOpenCodeLinkEnabled,
+                        cancelLockDurationInMinutes,
+                        isEmergencyTaskEnabled,
+                        alarmLabel,
+                        gentleWakeUpDurationInSeconds,
+                        temporaryMuteDurationInSeconds,
+                        skipAlarmUntilTimeInMillis
+                    )
+                    SELECT
+                        alarmId,
+                        alarmHourOfDay,
+                        alarmMinute,
+                        isAlarmEnabled,
+                        isAlarmRunning,
+                        nextAlarmTimeInMillis,
+                        repeatingAlarmDays,
+                        numberOfSnoozes,
+                        snoozeDurationInMinutes,
+                        numberOfSnoozesLeft,
+                        isAlarmSnoozed,
+                        nextSnoozedAlarmTimeInMillis,
+                        ringtone,
+                        customRingtoneUriString,
+                        alarmVolumePercentage,
+                        areVibrationsEnabled,
+                        isUsingCode,
+                        assignedCode,
+                        isOpenCodeLinkEnabled,
+                        cancelLockDurationInHours * 60,
                         isEmergencyTaskEnabled,
                         alarmLabel,
                         gentleWakeUpDurationInSeconds,

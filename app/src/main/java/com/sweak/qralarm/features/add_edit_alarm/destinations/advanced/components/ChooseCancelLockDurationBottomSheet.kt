@@ -18,7 +18,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,22 +25,23 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmRadioButton
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getCancelLockDurationString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseCancelLockDurationBottomSheet(
-    initialCancelLockDurationInHours: Int,
-    availableCancelLockDurationsInHours: List<Int>,
-    onDismissRequest: (newCancelLockDurationInHours: Int) -> Unit
+    initialCancelLockDurationInMinutes: Int,
+    availableCancelLockDurationsInMinutes: List<Int>,
+    onDismissRequest: (newCancelLockDurationInMinutes: Int) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    var selectedCancelLockDurationInHours by remember {
-        mutableIntStateOf(initialCancelLockDurationInHours)
+    var selectedCancelLockDurationInMinutes by remember {
+        mutableIntStateOf(initialCancelLockDurationInMinutes)
     }
 
     ModalBottomSheet(
-        onDismissRequest = { onDismissRequest(selectedCancelLockDurationInHours) },
+        onDismissRequest = { onDismissRequest(selectedCancelLockDurationInMinutes) },
         sheetState = modalBottomSheetState
     ) {
         Column(
@@ -62,33 +62,25 @@ fun ChooseCancelLockDurationBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.mediumLarge),
                 modifier = Modifier.selectableGroup()
             ) {
-                availableCancelLockDurationsInHours.forEach { durationInHours ->
+                availableCancelLockDurationsInMinutes.forEach { durationInMinutes ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .selectable(
-                                selected = selectedCancelLockDurationInHours == durationInHours,
+                                selected = selectedCancelLockDurationInMinutes == durationInMinutes,
                                 onClick = {
-                                    selectedCancelLockDurationInHours = durationInHours
+                                    selectedCancelLockDurationInMinutes = durationInMinutes
                                 },
                                 role = Role.RadioButton
                             )
                     ) {
                         QRAlarmRadioButton(
-                            selected = selectedCancelLockDurationInHours == durationInHours,
+                            selected = selectedCancelLockDurationInMinutes == durationInMinutes,
                             onClick = null
                         )
 
                         Text(
-                            text = if (durationInHours != 0) {
-                                pluralStringResource(
-                                    R.plurals.hours,
-                                    durationInHours,
-                                    durationInHours
-                                )
-                            } else {
-                                stringResource(R.string.disabled)
-                            },
+                            text = getCancelLockDurationString(durationInMinutes),
                             style = MaterialTheme.typography.titleLarge,
                             modifier = Modifier.padding(start = MaterialTheme.space.medium)
                         )
@@ -104,8 +96,8 @@ fun ChooseCancelLockDurationBottomSheet(
 private fun ChooseCancelLockDurationBottomSheetPreview() {
     QRAlarmTheme {
         ChooseCancelLockDurationBottomSheet(
-            initialCancelLockDurationInHours = 1,
-            availableCancelLockDurationsInHours = listOf(3, 2, 1, 0),
+            initialCancelLockDurationInMinutes = 60,
+            availableCancelLockDurationsInMinutes = listOf(180, 120, 60, 30, 15, 0),
             onDismissRequest = {}
         )
     }

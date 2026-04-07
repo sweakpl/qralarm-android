@@ -39,7 +39,7 @@ import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.Advan
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
 import com.sweak.qralarm.core.ui.components.ToggleSetting
-import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getCancelLockDurationString
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getCancelLockDurationAbbreviatedString
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getSecondsDurationString
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseCancelLockDurationBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseGentleWakeUpDurationBottomSheet
@@ -167,8 +167,8 @@ private fun AdvancedAlarmSettingsScreenContent(
                             },
                             title = stringResource(R.string.cancellation_lock),
                             description = stringResource(R.string.cancellation_lock_description),
-                            choiceName = getCancelLockDurationString(
-                                state.cancelLockDurationInHours
+                            choiceName = getCancelLockDurationAbbreviatedString(
+                                state.cancelLockDurationInMinutes
                             )
                         )
 
@@ -248,12 +248,12 @@ private fun AdvancedAlarmSettingsScreenContent(
 
     if (state.isChooseCancelLockDurationDialogVisible) {
         ChooseCancelLockDurationBottomSheet(
-            initialCancelLockDurationInHours = state.cancelLockDurationInHours,
-            availableCancelLockDurationsInHours = state.availableCancelLockDurationsInHours,
-            onDismissRequest = { newCancelLockDurationInHours ->
+            initialCancelLockDurationInMinutes = state.cancelLockDurationInMinutes,
+            availableCancelLockDurationsInMinutes = state.availableCancelLockDurationsInMinutes,
+            onDismissRequest = { newCancelLockDurationInMinutes ->
                 onEvent(
                     AdvancedAlarmSettingsScreenUserEvent.CancelLockDurationSelected(
-                        newCancelLockDurationInHours = newCancelLockDurationInHours
+                        newCancelLockDurationInMinutes = newCancelLockDurationInMinutes
                     )
                 )
             }

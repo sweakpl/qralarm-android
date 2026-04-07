@@ -64,6 +64,7 @@
     <string name="custom_sound">Som personalizado</string>
     <string name="disabled">Desativado</string>
     <string name="min">min</string>
+    <string name="h">h</string>
     <string name="sec">s</string>
     <string name="ringtone_successfully_uploaded">Seu toque personalizado foi carregado com sucesso!</string>
     <string name="ringtone_upload_unsuccessful">O toque personalizado não pôde ser carregado…</string>

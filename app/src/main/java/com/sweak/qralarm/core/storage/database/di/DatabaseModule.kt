@@ -30,7 +30,8 @@ object DatabaseModule {
         )
             .addMigrations(
                 QRAlarmDatabase.MIGRATION_3_4,
-                QRAlarmDatabase.MIGRATION_7_8
+                QRAlarmDatabase.MIGRATION_7_8,
+                QRAlarmDatabase.MIGRATION_8_9
             )
             .build()
 

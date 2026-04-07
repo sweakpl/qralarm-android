@@ -58,6 +58,7 @@
     <string name="custom_sound">Özel ses</string>
     <string name="disabled">Devre dışı</string>
     <string name="min">dk</string>
+    <string name="h">sa</string>
     <string name="sec">sn</string>
     <string name="ringtone_successfully_uploaded">Özel zil sesiniz başarıyla yüklendi!</string>
     <string name="ringtone_upload_unsuccessful">Özel zil sesi yüklenemedi…</string>

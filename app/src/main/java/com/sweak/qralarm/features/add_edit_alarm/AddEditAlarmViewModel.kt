@@ -141,7 +141,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                             previouslySavedCodes = allSavedAlarmCodes,
                             currentlyAssignedCode = alarm.assignedCode,
                             isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
-                            cancelLockDurationInHours = alarm.cancelLockDurationInHours,
+                            cancelLockDurationInMinutes = alarm.cancelLockDurationInMinutes,
                             isEmergencyTaskEnabled = alarm.isEmergencyTaskEnabled,
                             alarmLabel = alarm.alarmLabel,
                             gentleWakeupDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
@@ -530,13 +530,13 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
             }
             is AdvancedAlarmSettingsScreenUserEvent.CancelLockDurationSelected -> {
-                if (event.newCancelLockDurationInHours != state.value.cancelLockDurationInHours) {
+                if (event.newCancelLockDurationInMinutes != state.value.cancelLockDurationInMinutes) {
                     hasUnsavedChanges = true
                 }
 
                 _state.update { currentState ->
                     currentState.copy(
-                        cancelLockDurationInHours = event.newCancelLockDurationInHours,
+                        cancelLockDurationInMinutes = event.newCancelLockDurationInMinutes,
                         isChooseCancelLockDurationDialogVisible = false
                     )
                 }
@@ -701,7 +701,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 assignedCode = currentState.temporaryAssignedCode
                     ?: currentState.currentlyAssignedCode,
                 isOpenCodeLinkEnabled = currentState.isOpenCodeLinkEnabled,
-                cancelLockDurationInHours = currentState.cancelLockDurationInHours,
+                cancelLockDurationInMinutes = currentState.cancelLockDurationInMinutes,
                 isEmergencyTaskEnabled = currentState.isEmergencyTaskEnabled,
                 alarmLabel = currentState.alarmLabel,
                 gentleWakeUpDurationInSeconds = currentState.gentleWakeupDurationInSeconds,

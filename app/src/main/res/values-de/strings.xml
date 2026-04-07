@@ -58,6 +58,7 @@
     <string name="custom_sound">Benutzerdefinierter Sound</string>
     <string name="disabled">Deaktiviert</string>
     <string name="min">Min</string>
+    <string name="h">Std</string>
     <string name="sec">Sek</string>
     <string name="ringtone_successfully_uploaded">Ihr benutzerdefinierter Klingelton wurde erfolgreich hochgeladen!</string>
     <string name="ringtone_upload_unsuccessful">Benutzerdefinierter Klingelton wurde nicht hochgeladen…</string>

@@ -58,6 +58,7 @@
     <string name="custom_sound">Aangepast geluid</string>
     <string name="disabled">Uitgeschakeld</string>
     <string name="min">minuten</string>
+    <string name="h">u</string>
     <string name="sec">sec</string>
     <string name="ringtone_successfully_uploaded">Je aangepaste ringtone is succesvol geüpload!</string>
     <string name="ringtone_upload_unsuccessful">Aangepaste ringtone is niet geüpload…</string>

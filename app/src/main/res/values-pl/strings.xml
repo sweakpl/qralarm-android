@@ -70,6 +70,7 @@
     <string name="custom_sound">Własny dźwięk</string>
     <string name="disabled">Wyłączona</string>
     <string name="min">min</string>
+    <string name="h">h</string>
     <string name="sec">sek</string>
     <string name="ringtone_successfully_uploaded">Twój własny dzwonek został pomyślnie przesłany!</string>
     <string name="ringtone_upload_unsuccessful">Własny dzwonek nie został przesłany…</string>

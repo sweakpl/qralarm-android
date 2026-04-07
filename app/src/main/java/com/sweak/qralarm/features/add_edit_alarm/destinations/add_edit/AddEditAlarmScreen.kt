@@ -1241,11 +1241,30 @@ fun getSecondsDurationString(durationInSeconds: Int): String {
 }
 
 @Composable
-fun getCancelLockDurationString(durationInHours: Int): String {
-    return if (durationInHours == 0) {
-        stringResource(R.string.disabled)
-    } else {
-        pluralStringResource(R.plurals.hours, durationInHours, durationInHours)
+fun getCancelLockDurationString(durationInMinutes: Int): String {
+    return when {
+        durationInMinutes == 0 -> stringResource(R.string.disabled)
+        durationInMinutes >= 60 && durationInMinutes % 60 == 0 -> {
+            val hours = durationInMinutes / 60
+            pluralStringResource(R.plurals.hours, hours, hours)
+        }
+        else -> {
+            pluralStringResource(R.plurals.minutes, durationInMinutes, durationInMinutes)
+        }
+    }
+}
+
+@Composable
+fun getCancelLockDurationAbbreviatedString(durationInMinutes: Int): String {
+    return when {
+        durationInMinutes == 0 -> stringResource(R.string.disabled)
+        durationInMinutes >= 60 && durationInMinutes % 60 == 0 -> {
+            val hours = durationInMinutes / 60
+            hours.toString() + " " + stringResource(R.string.h)
+        }
+        else -> {
+            durationInMinutes.toString() + " " + stringResource(R.string.min)
+        }
     }
 }
 

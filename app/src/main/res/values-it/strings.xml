@@ -64,6 +64,7 @@
     <string name="custom_sound">Suono personalizzato</string>
     <string name="disabled">Disabilitato</string>
     <string name="min">min</string>
+    <string name="h">h</string>
     <string name="sec">sec</string>
     <string name="ringtone_successfully_uploaded">La tua suoneria personalizzata è stata caricata con successo!</string>
     <string name="ringtone_upload_unsuccessful">La suoneria personalizzata non è stata caricata…</string>

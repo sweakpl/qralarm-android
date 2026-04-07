@@ -2,13 +2,13 @@ package com.sweak.qralarm.features.add_edit_alarm
 
 import android.net.Uri
 import android.os.Parcelable
-import com.sweak.qralarm.core.domain.alarm.AVAILABLE_CANCEL_LOCK_DURATIONS_IN_HOURS
+import com.sweak.qralarm.core.domain.alarm.AVAILABLE_CANCEL_LOCK_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_NUMBERS
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_TEMPORARY_MUTE_DURATIONS_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
-import com.sweak.qralarm.core.domain.alarm.DEFAULT_CANCEL_LOCK_DURATION_IN_HOURS
+import com.sweak.qralarm.core.domain.alarm.DEFAULT_CANCEL_LOCK_DURATION_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.DEFAULT_GENTLE_WAKE_UP_DURATION_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.DEFAULT_SNOOZE_NUMBER_TO_DURATION_PAIR
 import com.sweak.qralarm.core.domain.alarm.DEFAULT_TEMPORARY_MUTE_DURATION_IN_SECONDS
@@ -45,9 +45,9 @@ data class AddEditAlarmFlowState(
     val currentlyAssignedCode: String? = null,
     val temporaryAssignedCode: String? = null,
     val isOpenCodeLinkEnabled: Boolean = false,
-    val cancelLockDurationInHours: Int = DEFAULT_CANCEL_LOCK_DURATION_IN_HOURS,
-    val availableCancelLockDurationsInHours: List<Int> =
-        AVAILABLE_CANCEL_LOCK_DURATIONS_IN_HOURS,
+    val cancelLockDurationInMinutes: Int = DEFAULT_CANCEL_LOCK_DURATION_IN_MINUTES,
+    val availableCancelLockDurationsInMinutes: List<Int> =
+        AVAILABLE_CANCEL_LOCK_DURATIONS_IN_MINUTES,
     val isChooseCancelLockDurationDialogVisible: Boolean = false,
     val isEmergencyTaskEnabled: Boolean = true,
     val alarmLabel: String? = null,

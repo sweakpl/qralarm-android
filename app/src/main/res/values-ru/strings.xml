@@ -70,6 +70,7 @@
     <string name="custom_sound">Пользовательский звук</string>
     <string name="disabled">Отключено</string>
     <string name="min">мин</string>
+    <string name="h">ч</string>
     <string name="sec">сек</string>
     <string name="ringtone_successfully_uploaded">Ваш пользовательский рингтон успешно загружен!</string>
     <string name="ringtone_upload_unsuccessful">Пользовательский рингтон не загружен…</string>

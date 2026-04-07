@@ -97,7 +97,7 @@ sealed class AddEditAlarmFlowUserEvent {
             val isVisible: Boolean
         ) : AdvancedAlarmSettingsScreenUserEvent()
         data class CancelLockDurationSelected(
-            val newCancelLockDurationInHours: Int
+            val newCancelLockDurationInMinutes: Int
         ) : AdvancedAlarmSettingsScreenUserEvent()
         data class EmergencyTaskEnabledChanged(
             val isEnabled: Boolean

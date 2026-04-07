@@ -52,6 +52,7 @@
     <string name="custom_sound">自定义铃声</string>
     <string name="disabled">未启用</string>
     <string name="min">分钟</string>
+    <string name="h">小时</string>
     <string name="sec">秒</string>
     <string name="ringtone_successfully_uploaded">自定义铃声设置成功</string>
     <string name="ringtone_upload_unsuccessful">自定义铃声设置失败</string>

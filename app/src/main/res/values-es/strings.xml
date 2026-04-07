@@ -64,6 +64,7 @@
     <string name="custom_sound">Sonido personalizado</string>
     <string name="disabled">Desactivado</string>
     <string name="min">mín</string>
+    <string name="h">h</string>
     <string name="sec">seg</string>
     <string name="ringtone_successfully_uploaded">¡Tu tono de llamada personalizado se ha cargado correctamente!</string>
     <string name="ringtone_upload_unsuccessful">El tono de llamada personalizado no se cargó…</string>
