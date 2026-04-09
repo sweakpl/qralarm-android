@@ -1,3 +1,4 @@
-* Added more flexible "Cancellation lock" setting instead of "1-hour lock",
-* Added Dutch, Indonesian and Russian translations,
-* Performance improvements.
+* Cancellation lock supports 30 and 15 minutes options,
+* Emergency task required matches setting allows 250, 500 and 1000,
+* Added new onboarding flow,
+* Bug fixes.
