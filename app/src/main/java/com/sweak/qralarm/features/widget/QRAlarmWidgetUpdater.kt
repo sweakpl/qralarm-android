@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 
 class QRAlarmWidgetUpdater @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
-    @ApplicationContext private val appContext: Context)
-{
+    @ApplicationContext private val appContext: Context
+) {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -39,7 +39,7 @@ class QRAlarmWidgetUpdater @Inject constructor(
     }
 
     private suspend fun performUpdate() {
-        val nextAlarm: Pair<Alarm?, Boolean> = getNextAlarm(alarmsRepository)
+        val nextAlarm: Pair<Alarm?, Boolean> = getNextAlarm()
         broadcastToReceiver(nextAlarm)
     }
 
@@ -81,17 +81,18 @@ class QRAlarmWidgetUpdater @Inject constructor(
         appContext.sendBroadcast(intent)
     }
 
-    private suspend fun getNextAlarm(
-        alarmsRepository: AlarmsRepository
-    ): Pair<Alarm?, Boolean> {
+    private suspend fun getNextAlarm(): Pair<Alarm?, Boolean> {
         val alarmsList = alarmsRepository.getAllAlarms().first()
 
         val enabledNextAlarm: Alarm? = alarmsList
-            .filter { it.isAlarmEnabled}
+            .filter { it.isAlarmEnabled }
             .minByOrNull { it.nextAlarmTimeInMillis }
 
         val snoozedNextAlarm = alarmsList
-            .filter { it.snoozeConfig.nextSnoozedAlarmTimeInMillis != null }
+            .filter {
+                it.snoozeConfig.nextSnoozedAlarmTimeInMillis != null &&
+                it.snoozeConfig.isAlarmSnoozed
+            }
             .minByOrNull { it.snoozeConfig.nextSnoozedAlarmTimeInMillis!! }
 
         val enabledNextAlarmTime = enabledNextAlarm?.nextAlarmTimeInMillis ?: Long.MAX_VALUE
