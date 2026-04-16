@@ -105,5 +105,8 @@ dependencies {
     implementation(libs.io.coil.compose)
     implementation(libs.io.coil.gif)
 
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material3)
+
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

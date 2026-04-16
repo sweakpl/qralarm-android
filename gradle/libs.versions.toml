@@ -1,5 +1,6 @@
 [versions]
 agp = "9.1.0"
+glanceAppwidget = "1.1.1"
 kotlin = "2.3.20"
 hilt = "2.59.2"
 ksp = "2.3.6"
@@ -62,7 +63,8 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 google-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permissions"}
 io-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 io-coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
-
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceAppwidget" }
+androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceAppwidget" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 [plugins]
