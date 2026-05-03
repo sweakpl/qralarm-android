@@ -1,4 +1,0 @@
-* Cancellation lock supports 30 and 15 minutes options,
-* Emergency task required matches setting allows 250, 500 and 1000,
-* Added new onboarding flow,
-* Bug fixes.

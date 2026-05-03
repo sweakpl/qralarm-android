@@ -1,0 +1,2 @@
+* Added new onboarding flow,
+* Bug fixes.
