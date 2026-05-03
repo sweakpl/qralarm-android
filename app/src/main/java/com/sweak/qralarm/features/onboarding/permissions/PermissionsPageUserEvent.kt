@@ -13,4 +13,5 @@ sealed class PermissionsPageUserEvent {
         val cameraPermissionGranted: Boolean,
         val notificationsPermissionGranted: Boolean
     ) : PermissionsPageUserEvent()
+    data object LetsGoClicked : PermissionsPageUserEvent()
 }
