@@ -24,24 +24,33 @@
         <item quantity="other">%1$d alarms active</item>
     </plurals>
     <string name="app_name" translatable="false">QRAlarm</string>
-    <string name="welcome_to_qralarm">Welcome to QRAlarm!</string>
-    <string name="get_out_of_bed_get_ahead">Get out of bed. Get ahead.</string>
+    <string name="welcome_title">Tomorrow\'s alarm shouldn\'t lose to last night.</string>
+    <string name="welcome_subtitle">Most alarms only ask you to tap.\nQRAlarm makes you get up.</string>
     <string name="get_started">Get started</string>
-    <string name="almost_ready_to_go">Almost ready to go!</string>
+    <string name="the_cure_isnt_louder">The cure isn\'t louder.</string>
+    <string name="its_further_away">It\'s further away.</string>
+    <string name="how_it_works_subtitle">Place a QR code where you actually need to be in the morning. The alarm only stops when you scan it — so you\'re already up.</string>
+    <string name="how_it_works_step_1_title">Set your alarm</string>
+    <string name="how_it_works_step_1_description">Pick a time, a sound, and the days. Just like always.</string>
+    <string name="how_it_works_step_2_title">Pin a QR code somewhere</string>
+    <string name="how_it_works_step_2_description">Kitchen, bathroom, front door — wherever you need to be.</string>
+    <string name="how_it_works_step_3_title">Scan in the morning</string>
+    <string name="how_it_works_step_3_description">Walk over, scan, alarm stops. You\'re vertical.</string>
+    <string name="almost_ready">Almost ready.</string>
     <string name="permissions_screen_description">To get you out of bed, QRAlarm needs a few permissions. We only use them to make sure your alarm always works.</string>
     <string name="background_work">Background work</string>
-    <string name="thousands_of_mornings_changed">Thousands of mornings changed!</string>
+    <string name="thousands_of_mornings_changed">Thousands of mornings, changed.</string>
+    <string name="verified_user">Verified user</string>
     <string name="review_1">Changed my life! I get up, in time, every time thanks to this! I put the QR code in a different room, so I have to get out of bed to turn the alarm off, works wonders!</string>
+    <string name="review_1_author" translatable="false">Stuart</string>
     <string name="review_2">A simple and functional solution for people who habitually sleep through their alarms. Mornings are no longer a panicked scramble, I\'ve freed up enough time to where I can enjoy my morning shower, breakfast, and still show up to work early. 5 stars isn\'t enough, this is a game changer and beyond worth the time money and effort.</string>
+    <string name="review_2_author" translatable="false">Joey</string>
     <string name="review_3">Simple but effective, makes it impossible for me to stay in bed when it rings. Instead of having 20 alarms every 5 minutes that I turn of half sleeping anyway, this app forces me to get out of bed and scan a barcode in another room.</string>
+    <string name="review_3_author" translatable="false">Deni</string>
     <string name="review_4">This Alarm is a life/job saver, this is literally the only way to get me out of bed by scanning a QR code to deactivate the alarm, previously my body was so trained to turn off my alarm IN MY SLEEP that I would wake up not even knowing it went off. This alarm has stopped me from over sleeping for work, and I am grateful!</string>
+    <string name="review_4_author" translatable="false">Nathan</string>
     <string name="review_5">Excellent app with regular updates that bring tons of new features! It\'s very easy to use and a huge time saver for me.</string>
-    <string name="wake_up_catchphrase">Wake UP!</string>
-    <string name="wake_up_catchphrase_description">Set your alarm like you always would and prepare to be woken up by QRAlarm the next morning.</string>
-    <string name="get_up_catchphrase">Get UP!</string>
-    <string name="get_up_catchphrase_description">QRAlarm will make sure you did not only wake up but also get up and on the way to disable the alarm.</string>
-    <string name="rise_up_catchphrase">Rise UP!</string>
-    <string name="rise_up_catchphrase_description">Scan the code, disable the alarm and say goodbye to oversleeping! Enjoy your mornings with QRAlarm!</string>
+    <string name="review_5_author" translatable="false">Pauloux</string>
     <string name="lets_go">Let\'s go!</string>
     <string name="home">Home</string>
     <string name="alarms">Alarms</string>
@@ -114,12 +123,15 @@
     <string name="upcoming_alarm_indication_notification_text">Alarm has been set for %1$s</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">Alarm has been snoozed until %1$s</string>
     <string name="next_step">Next step</string>
+    <string name="of_people_oversleep">of people oversleep at least once a week</string>
+    <string name="survey_source">Survey 2019, 1,000+ respondents</string>
+    <string name="sounds_familiar">Sounds familiar?</string>
+    <string name="sounds_familiar_description">You set the alarm with good intentions. Then the morning comes and your half-asleep hand finds the snooze before your brain even wakes up. Another rushed morning. Again.</string>
     <string name="kalimba">Kalimba</string>
     <string name="classic_alarm">Classic alarm</string>
     <string name="rooster">Rooster</string>
     <string name="menu">Menu</string>
     <string name="dynamic_theme">Dynamic theme</string>
-    <string name="introduction">Introduction</string>
     <string name="everyday">Everyday</string>
     <string name="no_alarms">No alarms</string>
     <string name="create_using_button">Create one using the + button above or below.</string>

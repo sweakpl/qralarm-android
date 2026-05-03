@@ -6,10 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.user.UserDataRepository
-import com.sweak.qralarm.features.onboarding.permissions.util.OnboardingPermissionKey
+import com.sweak.qralarm.features.onboarding.permissions.util.PermissionsPagePermissionKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -26,10 +25,10 @@ class PermissionsViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(PermissionsScreenState())
+    private val _state = MutableStateFlow(PermissionsPageState())
     val state = _state.asStateFlow()
 
-    private val backendEventsChannel = Channel<PermissionsScreenBackendEvent>()
+    private val backendEventsChannel = Channel<PermissionsPageBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     init {
@@ -51,10 +50,7 @@ class PermissionsViewModel @Inject constructor(
     }
 
     fun refresh() {
-        viewModelScope.launch {
-            delay(timeMillis = 1000L)
-            refreshSystemPermissionsOnly()
-        }
+        refreshSystemPermissionsOnly()
     }
 
     private fun refreshSystemPermissionsOnly() {
@@ -78,9 +74,9 @@ class PermissionsViewModel @Inject constructor(
         recomputePermissionsRequiringInteraction()
     }
 
-    fun onEvent(event: PermissionsScreenUserEvent) {
+    fun onEvent(event: PermissionsPageUserEvent) {
         when (event) {
-            is PermissionsScreenUserEvent.PermissionsUpdated -> {
+            is PermissionsPageUserEvent.PermissionsUpdated -> {
                 _state.update { current ->
                     current.copy(
                         cameraPermissionGranted = event.cameraPermissionGranted,
@@ -91,58 +87,55 @@ class PermissionsViewModel @Inject constructor(
                 recomputePermissionsRequiringInteraction()
             }
 
-            is PermissionsScreenUserEvent.CameraPermissionClicked -> {
-                addInteraction(OnboardingPermissionKey.CAMERA)
-            }
+            is PermissionsPageUserEvent.CameraPermissionClicked ->
+                addInteraction(PermissionsPagePermissionKey.CAMERA)
 
-            is PermissionsScreenUserEvent.AlarmsPermissionClicked -> {
-                addInteraction(OnboardingPermissionKey.ALARMS)
-            }
+            is PermissionsPageUserEvent.AlarmsPermissionClicked ->
+                addInteraction(PermissionsPagePermissionKey.ALARMS)
 
-            is PermissionsScreenUserEvent.NotificationsPermissionClicked -> {
-                addInteraction(OnboardingPermissionKey.NOTIFICATIONS)
-            }
+            is PermissionsPageUserEvent.NotificationsPermissionClicked ->
+                addInteraction(PermissionsPagePermissionKey.NOTIFICATIONS)
 
-            is PermissionsScreenUserEvent.FullScreenIntentPermissionClicked -> {
-                addInteraction(OnboardingPermissionKey.FULL_SCREEN_INTENT)
-            }
+            is PermissionsPageUserEvent.FullScreenIntentPermissionClicked ->
+                addInteraction(PermissionsPagePermissionKey.FULL_SCREEN_INTENT)
 
-            is PermissionsScreenUserEvent.BackgroundWorkPermissionClicked -> {
-                addInteraction(OnboardingPermissionKey.BACKGROUND_WORK)
-            }
+            is PermissionsPageUserEvent.BackgroundWorkPermissionClicked ->
+                addInteraction(PermissionsPagePermissionKey.BACKGROUND_WORK)
 
-            is PermissionsScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
+            is PermissionsPageUserEvent.CameraPermissionDeniedDialogVisible ->
                 _state.update { current ->
                     current.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
-            }
 
-            is PermissionsScreenUserEvent.NotificationsPermissionDeniedDialogVisible -> {
+            is PermissionsPageUserEvent.NotificationsPermissionDeniedDialogVisible ->
                 _state.update { current ->
                     current.copy(isNotificationsPermissionDeniedDialogVisible = event.isVisible)
                 }
-            }
 
-            is PermissionsScreenUserEvent.LetsGoClicked -> {
-                viewModelScope.launch {
-                    userDataRepository.setIntroductionFinished(finished = true)
-                    backendEventsChannel.send(
-                        PermissionsScreenBackendEvent.OnboardingFinished
+            is PermissionsPageUserEvent.GoToApplicationSettingsClicked ->
+                _state.update { current ->
+                    current.copy(
+                        isCameraPermissionDeniedDialogVisible = false,
+                        isNotificationsPermissionDeniedDialogVisible = false
                     )
                 }
-            }
 
-            is PermissionsScreenUserEvent.GoToApplicationSettingsClicked -> Unit
+            is PermissionsPageUserEvent.LetsGoClicked -> {
+                viewModelScope.launch {
+                    userDataRepository.setIntroductionFinished(finished = true)
+                    backendEventsChannel.send(PermissionsPageBackendEvent.OnboardingFinished)
+                }
+            }
         }
     }
 
-    private fun addInteraction(key: String) {
+    private fun addInteraction(key: PermissionsPagePermissionKey) {
         _state.update { current ->
             val newInteracted = current.interactedPermissions + key
 
             current.copy(
                 interactedPermissions = newInteracted,
-                isLetsGoButtonEnabled = current.permissionsRequiringInteraction.all {
+                areAllRequiredPermissionsHandled = current.permissionsRequiringInteraction.all {
                     it in newInteracted
                 }
             )
@@ -159,25 +152,25 @@ class PermissionsViewModel @Inject constructor(
 
             val requiring = buildSet {
                 if (!current.cameraPermissionGranted) {
-                    add(OnboardingPermissionKey.CAMERA)
+                    add(PermissionsPagePermissionKey.CAMERA)
                 }
 
                 if (current.alarmsPermissionVisible && !current.alarmsPermissionGranted) {
-                    add(OnboardingPermissionKey.ALARMS)
+                    add(PermissionsPagePermissionKey.ALARMS)
                 }
 
                 if (current.notificationsPermissionVisible && !notificationsEffective) {
-                    add(OnboardingPermissionKey.NOTIFICATIONS)
+                    add(PermissionsPagePermissionKey.NOTIFICATIONS)
                 }
 
                 if (current.fullScreenIntentPermissionVisible &&
                     !current.fullScreenIntentPermissionGranted
                 ) {
-                    add(OnboardingPermissionKey.FULL_SCREEN_INTENT)
+                    add(PermissionsPagePermissionKey.FULL_SCREEN_INTENT)
                 }
 
                 if (!current.backgroundWorkPermissionGranted) {
-                    add(OnboardingPermissionKey.BACKGROUND_WORK)
+                    add(PermissionsPagePermissionKey.BACKGROUND_WORK)
                 }
             }
 
@@ -186,7 +179,7 @@ class PermissionsViewModel @Inject constructor(
             current.copy(
                 permissionsRequiringInteraction = requiring,
                 interactedPermissions = newInteracted,
-                isLetsGoButtonEnabled = requiring.all { it in newInteracted }
+                areAllRequiredPermissionsHandled = requiring.all { it in newInteracted }
             )
         }
     }

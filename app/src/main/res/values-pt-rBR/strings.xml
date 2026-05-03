@@ -30,13 +30,6 @@
         <item quantity="many">%1$d alarmes ativos</item>
         <item quantity="other">%1$d alarmes ativos</item>
     </plurals>
-    <string name="welcome_to_qralarm">Bem-vindo ao QRAlarm!</string>
-    <string name="wake_up_catchphrase">Acorde!</string>
-    <string name="wake_up_catchphrase_description">Defina seu alarme como de costume e prepare-se para ser acordado pelo QRAlarm na manhã seguinte.</string>
-    <string name="get_up_catchphrase">Levante-se!</string>
-    <string name="get_up_catchphrase_description">O QRAlarm garante que você não apenas acorde, mas também se levante e vá até o local para desativar o alarme.</string>
-    <string name="rise_up_catchphrase">Desperte!</string>
-    <string name="rise_up_catchphrase_description">Escaneie o código, desligue o alarme e diga adeus ao sono excessivo! Aproveite suas manhãs com o QRAlarm!</string>
     <string name="lets_go">Vamos lá!</string>
     <string name="home">Início</string>
     <string name="alarms">Alarmes</string>
@@ -114,7 +107,6 @@
     <string name="rooster">Galo</string>
     <string name="menu">Menu</string>
     <string name="dynamic_theme">Tema dinâmico</string>
-    <string name="introduction">Introdução</string>
     <string name="everyday">Todos os dias</string>
     <string name="no_alarms">Nenhum alarme</string>
     <string name="create_using_button">Crie um usando o botão + acima ou abaixo.</string>
@@ -217,15 +209,30 @@
     <string name="cancellation_lock_active_scan_code_to_disable">Bloqueio de cancelamento está ativo — escaneie o código para desativar o alarme.</string>
     <string name="cancellation_lock">Bloqueio de cancelamento</string>
     <string name="cancellation_lock_description">O alarme não pode ser cancelado ou editado sem escanear o código no tempo selecionado antes de tocar.</string>
-    <string name="get_out_of_bed_get_ahead">Saia da cama. Vá em frente.</string>
     <string name="get_started">Começar</string>
-    <string name="almost_ready_to_go">Quase pronto para ir!</string>
     <string name="permissions_screen_description">Para tirar você da cama, o QRAlarm precisa de algumas permissões. Usamos apenas para garantir que seu alarme sempre funcione.</string>
     <string name="background_work">Trabalho em segundo plano</string>
-    <string name="thousands_of_mornings_changed">Milhares de manhãs transformadas!</string>
+    <string name="thousands_of_mornings_changed">Milhares de manhãs, transformadas.</string>
     <string name="review_1">Mudou minha vida! Eu me levanto sempre a tempo, graças a isso! Coloquei o QR code em outro cômodo, então tenho que sair da cama para desligar o alarme, funciona maravilhas!</string>
     <string name="review_2">Uma solução simples e funcional para pessoas que costumam dormir durante os alarmes. As manhãs não são mais uma correria desesperada, ganhei tempo suficiente para aproveitar meu banho matinal, café da manhã e ainda chegar cedo ao trabalho. 5 estrelas não são suficientes, isso é um divisor de águas e vale cada centavo, tempo e esforço.</string>
     <string name="review_3">Simples, mas eficaz, torna impossível eu ficar na cama quando toca. Em vez de ter 20 alarmes a cada 5 minutos que desligo meio dormindo de qualquer forma, este app me obriga a sair da cama e escanear um código de barras em outro cômodo.</string>
     <string name="review_4">Este alarme salva vidas/empregos, esse é literalmente o único jeito de me tirar da cama escaneando um QR code para desativar o alarme, antes meu corpo estava tão treinado para desligar meu alarme DURANTE O SONO que acordava sem nem saber que ele havia tocado. Este alarme me impediu de perder a hora para o trabalho, e sou grato!</string>
     <string name="review_5">Excelente app com atualizações regulares que trazem muitas novas funcionalidades! É muito fácil de usar e um enorme poupador de tempo para mim.</string>
+    <string name="welcome_title">O alarme de amanhã não deve perder para a noite passada.</string>
+    <string name="welcome_subtitle">A maioria dos alarmes só pede para você tocar. \nQRAlarm faz você levantar.</string>
+    <string name="the_cure_isnt_louder">A cura não é mais barulho.</string>
+    <string name="its_further_away">É mais longe.</string>
+    <string name="how_it_works_subtitle">Coloque um código QR onde você realmente precisa estar de manhã. O alarme só para quando você o escaneia — assim você já está de pé.</string>
+    <string name="how_it_works_step_1_title">Configurar alarme</string>
+    <string name="how_it_works_step_1_description">Escolha um horário, um som e os dias. Como sempre.</string>
+    <string name="how_it_works_step_2_title">Fixar um código QR em algum lugar</string>
+    <string name="how_it_works_step_2_description">Cozinha, banheiro, porta de entrada — onde você precisar estar.</string>
+    <string name="how_it_works_step_3_title">Escanear de manhã</string>
+    <string name="how_it_works_step_3_description">Caminhe, escaneie, alarme pára. Você está de pé.</string>
+    <string name="almost_ready">Quase pronto.</string>
+    <string name="verified_user">Usuário verificado</string>
+    <string name="of_people_oversleep">de pessoas perdem a hora pelo menos uma vez por semana</string>
+    <string name="survey_source">Pesquisa 2019, mais de 1.000 entrevistados</string>
+    <string name="sounds_familiar">Soa familiar?</string>
+    <string name="sounds_familiar_description">Você configura o alarme com boas intenções. Então, a manhã chega e sua mão meio adormecida encontra o soneca antes de seu cérebro sequer acordar. Outra manhã apressada. De novo.</string>
 </resources>

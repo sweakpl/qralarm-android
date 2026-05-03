@@ -36,13 +36,6 @@
         <item quantity="many">%1$d активных будильников</item>
         <item quantity="other">%1$d активных будильников</item>
     </plurals>
-    <string name="welcome_to_qralarm">Добро пожаловать в QRAlarm!</string>
-    <string name="wake_up_catchphrase">Просыпайся!</string>
-    <string name="wake_up_catchphrase_description">Установите будильник, как обычно, и приготовьтесь к пробуждению с QRAlarm на следующее утро.</string>
-    <string name="get_up_catchphrase">Вставай!</string>
-    <string name="get_up_catchphrase_description">QRAlarm позаботится о том, чтобы вы не только проснулись, но и встали, чтобы отключить будильник.</string>
-    <string name="rise_up_catchphrase">Воспрянь!</string>
-    <string name="rise_up_catchphrase_description">Сканируйте код, отключите будильник и забудьте о пересыпе! Наслаждайтесь утрами с QRAlarm!</string>
     <string name="lets_go">Поехали!</string>
     <string name="home">Главная</string>
     <string name="alarms">Будильники</string>
@@ -120,7 +113,6 @@
     <string name="rooster">Петух</string>
     <string name="menu">Меню</string>
     <string name="dynamic_theme">Динамическая тема</string>
-    <string name="introduction">Введение</string>
     <string name="everyday">Ежедневно</string>
     <string name="no_alarms">Нет будильников</string>
     <string name="create_using_button">Создайте его, используя кнопку + выше или ниже.</string>
@@ -223,15 +215,30 @@
     <string name="cancellation_lock_active_to_edit_scan_code">Блокировка отмены активна — для редактирования отключите будильник, отсканировав код.</string>
     <string name="cancellation_lock_active_scan_code_to_disable">Блокировка отмены активна — отсканируйте код, чтобы отключить будильник.</string>
     <string name="standalone_app">Автономное приложение</string>
-    <string name="get_out_of_bed_get_ahead">Вставай с постели, достигай целей.</string>
     <string name="get_started">Начать</string>
-    <string name="almost_ready_to_go">Почти готово к работе!</string>
     <string name="permissions_screen_description">Чтобы поднять вас с постели, QRAlarm нужны некоторые разрешения. Мы используем их только для обеспечения работоспособности вашего будильника.</string>
     <string name="background_work">Фоновая работа</string>
-    <string name="thousands_of_mornings_changed">Тысячи утр изменены!</string>
+    <string name="thousands_of_mornings_changed">Тысячи измененных утр.</string>
     <string name="review_1">Изменила мою жизнь! Теперь я встаю вовремя каждый раз благодаря этому приложению! Я разместил QR-код в другой комнате, так что мне приходится вставать с постели, чтобы отключить будильник, прекрасно работает!</string>
     <string name="review_2">Простое и функциональное решение для тех, кто привык проспать будильники. Утро больше не начинается с паники, у меня достаточно времени, чтобы насладиться душем, завтраком, и все равно прийти на работу заранее. 5 звезд недостаточно, это игра меняющая жизнь и безусловно стоит затраченного времени, денег и усилий.</string>
     <string name="review_3">Простое, но эффективное приложение, невозможно остаться в постели, когда оно звонит. Вместо того чтобы иметь 20 будильников каждые 5 минут и отключать их полусонным, это приложение заставляет меня встать и сканировать штрих-код в другой комнате.</string>
     <string name="review_4">Этот будильник спасает жизнь/работу, это буквально единственный способ поднять меня с постели, требуя сканировать QR код, чтобы деактивировать будильник, раньше мое тело было так натренировано отключать будильник ВО СНЕ, что я просыпался, даже не осознавая, что он звонил. Этот будильник спас меня от пересыпания для работы, и я благодарен!</string>
     <string name="review_5">Отличное приложение с регулярными обновлениями, приносящими массу новых функций! Очень легко пользоваться и экономит мне кучу времени.</string>
+    <string name="welcome_title">Будильник завтрашнего утра не должен уступать прошлой ночи.</string>
+    <string name="welcome_subtitle">Большинство будильников просят вас просто нажать.\nQRAlarm заставляет вас встать.</string>
+    <string name="the_cure_isnt_louder">Лекарство не в громкости.</string>
+    <string name="its_further_away">Оно дальше.</string>
+    <string name="how_it_works_subtitle">Разместите QR-код там, где вам действительно нужно быть утром. Будильник отключится только когда вы его сканируете — так что вы уже встали.</string>
+    <string name="how_it_works_step_1_title">Установите будильник</string>
+    <string name="how_it_works_step_1_description">Выберите время, звук и дни. Все как всегда.</string>
+    <string name="how_it_works_step_2_title">Закрепите QR-код где угодно</string>
+    <string name="how_it_works_step_2_description">Кухня, ванная, входная дверь — где вам нужно быть.</string>
+    <string name="how_it_works_step_3_title">Сканируйте утром</string>
+    <string name="how_it_works_step_3_description">Дойдите, сканируйте, будильник отключится. Вы вертикальны.</string>
+    <string name="almost_ready">Почти готово.</string>
+    <string name="verified_user">Проверенный пользователь</string>
+    <string name="of_people_oversleep">процентов людей проспят хотя бы раз в неделю</string>
+    <string name="survey_source">Опрос 2019 года, более 1000 респондентов</string>
+    <string name="sounds_familiar">Звучит знакомо?</string>
+    <string name="sounds_familiar_description">Вы устанавливаете будильник с благими намерениями. Затем наступает утро, и ваша сонная рука находит кнопку повтора, еще до того как мозг проснется. Еще одно спешное утро. Снова.</string>
 </resources>

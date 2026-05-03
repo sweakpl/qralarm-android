@@ -33,9 +33,6 @@
     <string name="content_description_emergency_icon">Nooddriehoek-icoon</string>
     <string name="content_description_muted_sound_icon">Gedempt geluid-icoon</string>
     <string name="content_description_chain_icon">Ketting-icoon</string>
-    <string name="content_description_wake_up_catchphrase_image">Afbeelding met een vriendelijke stickman die in bed wakker wordt.</string>
-    <string name="content_description_get_up_catchphrase_image">Afbeelding van een glimlachende stickman die loopt met zijn telefoon die rinkelt.</string>
-    <string name="content_description_rise_up_catchphrase_image">Afbeelding van een blije stickman nadat hij de QR-code met zijn telefoon heeft gescand.</string>
     <string name="content_description_five_stars_image">Afbeelding van vijf gouden sterren</string>
     <string name="content_description_checked_circle_icon">Geselecteerd cirkelicoon</string>
     <string name="content_description_unchecked_circle_icon">Ongeselecteerd cirkelicoon</string>

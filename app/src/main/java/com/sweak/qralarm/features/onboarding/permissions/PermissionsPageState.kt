@@ -1,6 +1,8 @@
 package com.sweak.qralarm.features.onboarding.permissions
 
-data class PermissionsScreenState(
+import com.sweak.qralarm.features.onboarding.permissions.util.PermissionsPagePermissionKey
+
+data class PermissionsPageState(
     val cameraPermissionGranted: Boolean = false,
     val alarmsPermissionVisible: Boolean = false,
     val alarmsPermissionGranted: Boolean = true,
@@ -9,9 +11,9 @@ data class PermissionsScreenState(
     val fullScreenIntentPermissionVisible: Boolean = false,
     val fullScreenIntentPermissionGranted: Boolean = true,
     val backgroundWorkPermissionGranted: Boolean = false,
-    val permissionsRequiringInteraction: Set<String> = emptySet(),
-    val interactedPermissions: Set<String> = emptySet(),
-    val isLetsGoButtonEnabled: Boolean = false,
+    val permissionsRequiringInteraction: Set<PermissionsPagePermissionKey> = emptySet(),
+    val interactedPermissions: Set<PermissionsPagePermissionKey> = emptySet(),
+    val areAllRequiredPermissionsHandled: Boolean = false,
     val isCameraPermissionDeniedDialogVisible: Boolean = false,
-    val isNotificationsPermissionDeniedDialogVisible: Boolean = false,
+    val isNotificationsPermissionDeniedDialogVisible: Boolean = false
 )

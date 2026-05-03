@@ -35,9 +35,6 @@
     <string name="content_description_checked_circle_icon">İşaretli daire simgesi</string>
     <string name="content_description_unchecked_circle_icon">İşaretlenmemiş daire simgesi</string>
 
-    <string name="content_description_wake_up_catchphrase_image">Yatakta uzanan, uyanmış dost canlısı bir çöp adamı gösteren resim.</string>
-    <string name="content_description_get_up_catchphrase_image">Telefonu çalarken yürüyen, gülümseyen bir çöp adamı gösteren resim.</string>
-    <string name="content_description_rise_up_catchphrase_image">Telefonuyla QR Kodu taradıktan sonra mutlu bir çöp adamı gösteren resim.</string>
     <string name="content_description_qralarm_pro_image">QRAlarm PRO uygulama simgesi resmi</string>
     <string name="content_description_five_stars_image">Beş altın yıldız resmi</string>
 </resources>

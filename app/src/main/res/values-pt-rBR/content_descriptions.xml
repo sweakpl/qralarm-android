@@ -35,9 +35,6 @@
     <string name="content_description_checked_circle_icon">Ícone de círculo marcado</string>
     <string name="content_description_unchecked_circle_icon">Ícone de círculo desmarcado</string>
 
-    <string name="content_description_wake_up_catchphrase_image">Imagem mostrando um boneco sorridente deitado na cama acordando.</string>
-    <string name="content_description_get_up_catchphrase_image">Imagem mostrando um boneco sorridente caminhando enquanto o telefone toca.</string>
-    <string name="content_description_rise_up_catchphrase_image">Imagem mostrando um boneco feliz após escanear o QR Code com o telefone.</string>
     <string name="content_description_qralarm_pro_image">Imagem do ícone do app QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Imagem de cinco estrelas douradas</string>
 </resources>

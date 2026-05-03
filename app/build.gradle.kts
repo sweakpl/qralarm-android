@@ -12,14 +12,14 @@ plugins {
 
 android {
     namespace = "com.sweak.qralarm"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.sweak.qralarm"
         minSdk = 23
         targetSdk = 36
-        versionCode = 76
-        versionName = "2.9.0"
+        versionCode = 77
+        versionName = "2.9.1"
 
         vectorDrawables {
             useSupportLibrary = true

@@ -723,7 +723,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     }
                 } catch (exception: Exception) {
                     if (exception is IOException ||
-                        exception is SecurityException
+                        exception is SecurityException ||
+                        exception is NullPointerException
                     ) {
                         backendEventsChannel.send(
                             AddEditAlarmFlowBackendEvent

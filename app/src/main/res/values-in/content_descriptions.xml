@@ -33,9 +33,6 @@
     <string name="content_description_emergency_icon">Ikon segitiga darurat</string>
     <string name="content_description_muted_sound_icon">Ikon suara dibisukan</string>
     <string name="content_description_chain_icon">Ikon rantai</string>
-    <string name="content_description_wake_up_catchphrase_image">Gambar menunjukkan seorang pria stik ramah berbaring di tempat tidur terbangun.</string>
-    <string name="content_description_get_up_catchphrase_image">Gambar menunjukkan seorang pria stik tersenyum berjalan dengan ponsel berdering.</string>
-    <string name="content_description_rise_up_catchphrase_image">Gambar menunjukkan seorang pria stik bahagia setelah memindai QR Code dengan ponsel.</string>
     <string name="content_description_five_stars_image">Gambar lima bintang emas</string>
     <string name="content_description_checked_circle_icon">Ikon lingkaran tercentang</string>
     <string name="content_description_unchecked_circle_icon">Ikon lingkaran tidak tercentang</string>

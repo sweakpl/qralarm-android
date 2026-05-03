@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.onboarding.components
+package com.sweak.qralarm.features.onboarding.permissions.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -30,13 +30,18 @@ fun PermissionCard(
     isGranted: Boolean,
     onClick: () -> Unit,
     isClickable: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showDivider: Boolean = true
 ) {
     Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .clickable(enabled = isClickable) { onClick() }
+                .clickable(
+                    enabled = isClickable,
+                    onClick = onClick
+                )
+                .padding(horizontal = MaterialTheme.space.medium)
         ) {
             Icon(
                 imageVector = icon,
@@ -50,7 +55,7 @@ fun PermissionCard(
             ) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = MaterialTheme.space.xSmall)
                 )
 
@@ -61,8 +66,7 @@ fun PermissionCard(
             }
 
             Icon(
-                imageVector =
-                    if (isGranted) QRAlarmIcons.Done else QRAlarmIcons.ForwardArrow,
+                imageVector = if (isGranted) QRAlarmIcons.Done else QRAlarmIcons.ForwardArrow,
                 contentDescription = stringResource(
                     if (isGranted) R.string.content_description_done_icon
                     else R.string.content_description_forward_arrow_icon
@@ -70,10 +74,13 @@ fun PermissionCard(
             )
         }
 
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = LocalContentColor.current
-        )
+        if (showDivider) {
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = LocalContentColor.current,
+                modifier = Modifier.padding(horizontal = MaterialTheme.space.smallMedium)
+            )
+        }
     }
 }
 
@@ -85,7 +92,7 @@ private fun PermissionCardPreview() {
             icon = QRAlarmIcons.Camera,
             iconContentDescription = "Camera",
             title = "Camera",
-            subtitle = "Used for scanning.",
+            subtitle = "Used for scanning the QR/Bar codes.",
             isGranted = false,
             onClick = {},
             isClickable = true

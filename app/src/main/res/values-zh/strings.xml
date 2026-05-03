@@ -18,13 +18,6 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d个警报激活</item>
     </plurals>
-    <string name="welcome_to_qralarm">欢迎使用 QRAlarm!</string>
-    <string name="wake_up_catchphrase">梦醒!</string>
-    <string name="wake_up_catchphrase_description">使用QRAlarm设置闹钟，你将在次日早晨被唤醒。</string>
-    <string name="get_up_catchphrase">起身!</string>
-    <string name="get_up_catchphrase_description">QRAlarm 将你唤醒后，你需要起床并且准备关闭闹钟。</string>
-    <string name="rise_up_catchphrase">振奋!</string>
-    <string name="rise_up_catchphrase_description">使用 QRAlarm 扫描二维码/条形码才能关闭闹钟，不再赖床！一日之计在于晨！</string>
     <string name="lets_go">开始使用!</string>
     <string name="home">主页</string>
     <string name="alarms">我的闹钟</string>
@@ -102,7 +95,6 @@
     <string name="rooster">公鸡</string>
     <string name="menu">菜单</string>
     <string name="dynamic_theme">动态主题</string>
-    <string name="introduction">欢迎介绍页</string>
     <string name="everyday">每天</string>
     <string name="no_alarms">没有闹钟</string>
     <string name="create_using_button">点击右上角或右下角的“+”以创建闹钟</string>
@@ -205,15 +197,30 @@
     <string name="cancellation_lock_active_scan_code_to_disable">取消锁定已激活 —— 扫描代码即可停用闹钟。</string>
     <string name="cancellation_lock">取消锁定</string>
     <string name="cancellation_lock_description">在选定时间内未扫描代码，无法取消或编辑闹钟。</string>
-    <string name="get_out_of_bed_get_ahead">起床。向前迈进。</string>
     <string name="get_started">开始</string>
-    <string name="almost_ready_to_go">几乎准备就绪！</string>
     <string name="permissions_screen_description">为了让你起床，QRAlarm 需要一些权限。我们只使用它们以确保你的闹钟总是有效。</string>
     <string name="background_work">后台工作</string>
-    <string name="thousands_of_mornings_changed">数千个早晨已改变！</string>
+    <string name="thousands_of_mornings_changed">无数个早晨，改变。</string>
     <string name="review_1">改变了我的生活！我能准时起床，多亏了这个！我把二维码放在另一个房间，所以我必须起床去关闭闹钟，效果奇佳！</string>
     <string name="review_2">对于习惯睡过头的人来说，这是一个简单而实用的解决方案。早晨不再是惊慌失措的骚动，我有足够的时间享受早晨的淋浴、早餐，并且还能早点到公司。5 星评价都不够，这是个颠覆性的改变，绝对值得投入时间和金钱。</string>
     <string name="review_3">简单但有效，让我在铃声响起时不可能继续留在床上。相较于每5分钟设置一个响了也会半睡半醒关掉的20个闹钟，这个应用强迫我起床并在另一个房间扫描条码。</string>
     <string name="review_4">这个闹钟是我的生命/工作的拯救者，这是唯一能让我起床的方法，通过扫描二维码来关闭闹钟，以前我的身体习惯在睡梦中关闭闹钟，以至于醒来时都不知道它响了。这个闹钟阻止了我因迟到而过度睡眠，我很感激它！</string>
     <string name="review_5">优秀的应用程序，定期更新带来许多新功能！使用非常简单，并且为我节省大量时间。</string>
+    <string name="of_people_oversleep">的人每周至少会睡过头一次</string>
+    <string name="survey_source">2019年调查，1000多名受访者</string>
+    <string name="sounds_familiar">听起来熟悉吗？</string>
+    <string name="sounds_familiar_description">你本意是设定闹钟。然后早晨到来，你迷糊的手在大脑醒来前就按下了暂时静音。又一个慌忙的早晨。再一次。</string>
+    <string name="welcome_title">明天的闹钟不该输给昨夜。</string>
+    <string name="welcome_subtitle">大多数闹钟只需你轻按一下。\nQRAlarm 让你起床。</string>
+    <string name="the_cure_isnt_louder">解决方案不是声调更大。</string>
+    <string name="its_further_away">而是更远。</string>
+    <string name="how_it_works_subtitle">在早晨你需要去的地方放置一个 QR 码。闹钟只有在你扫描后才会停止——所以你已经起床了。</string>
+    <string name="how_it_works_step_1_title">设定闹钟</string>
+    <string name="how_it_works_step_1_description">选择时间、声音和日期。就像往常一样。</string>
+    <string name="how_it_works_step_2_title">将 QR 码固定在某处</string>
+    <string name="how_it_works_step_2_description">厨房、浴室、前门——你需要去的地方。</string>
+    <string name="how_it_works_step_3_title">早上扫描</string>
+    <string name="how_it_works_step_3_description">走过去，扫描，闹钟停止。你已经起身。</string>
+    <string name="almost_ready">差不多准备好了。</string>
+    <string name="verified_user">已验证用户</string>
 </resources>

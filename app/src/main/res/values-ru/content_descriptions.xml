@@ -33,9 +33,6 @@
     <string name="content_description_emergency_icon">Иконка аварийного треугольника</string>
     <string name="content_description_muted_sound_icon">Иконка отключенного звука</string>
     <string name="content_description_chain_icon">Иконка цепи</string>
-    <string name="content_description_wake_up_catchphrase_image">Изображение, показывающее дружелюбного человечка, лежащего в постели и просыпающегося.</string>
-    <string name="content_description_get_up_catchphrase_image">Изображение, показывающее улыбающегося человечка, идущего с звонящим телефоном.</string>
-    <string name="content_description_rise_up_catchphrase_image">Изображение, показывающее счастливого человечка после сканирования QR-кода с помощью телефона.</string>
     <string name="content_description_five_stars_image">Изображение с пятью золотыми звездами</string>
     <string name="content_description_checked_circle_icon">Иконка с отмеченным кругом</string>
     <string name="content_description_unchecked_circle_icon">Иконка с неотмеченным кругом</string>

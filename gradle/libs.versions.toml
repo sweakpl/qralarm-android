@@ -1,20 +1,20 @@
 [versions]
-agp = "9.1.0"
-glanceAppwidget = "1.1.1"
-kotlin = "2.3.20"
+agp = "9.2.0"
+kotlin = "2.3.21"
 hilt = "2.59.2"
-ksp = "2.3.6"
-serialization-json = "1.10.0"
+ksp = "2.3.7"
+serialization-json = "1.11.0"
 roomKtx = "2.8.4"
 coreKtx = "1.18.0"
 lifecycleRuntimeKtx = "2.10.0"
 activityCompose = "1.13.0"
-uiViewbinding = "1.10.6"
-composeBom = "2026.03.01"
-nav3Core = "1.1.0"
+uiViewbinding = "1.11.0"
+composeBom = "2026.04.01"
+nav3Core = "1.1.1"
 lifecycleViewmodelNav3 = "2.10.0"
 media3 = "1.10.0"
 coil = "2.7.0"
+glanceAppwidget = "1.1.1"
 splashscreen = "1.2.0"
 materialIconsExtended = "1.7.8"
 hiltNavigationCompose = "1.3.0"
@@ -65,6 +65,7 @@ io-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "
 io-coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceAppwidget" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceAppwidget" }
+
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 [plugins]
