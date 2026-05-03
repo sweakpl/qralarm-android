@@ -52,6 +52,7 @@ private const val ADD_EDIT_ALARM_CONTENT_KEY = "AddEditAlarm"
 fun MainNavContent(
     navigationState: NavigationState,
     navigator: Navigator,
+    onOnboardingFinished: () -> Unit,
     onAlarmSaved: () -> Unit
 ) {
     val mainEntryProvider = entryProvider {
@@ -118,6 +119,7 @@ fun MainNavContent(
         entry<OnboardingRoute> {
             OnboardingScreen(
                 onOnboardingFinished = {
+                    onOnboardingFinished()
                     navigator.navigateToTopLevelAndClear(HomeRoute)
                 }
             )

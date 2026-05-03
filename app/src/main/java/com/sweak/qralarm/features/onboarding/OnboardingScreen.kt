@@ -30,20 +30,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.features.onboarding.how_it_works.HowItWorksPage
 import com.sweak.qralarm.features.onboarding.oversleeping_problem.OversleepingProblemPage
 import com.sweak.qralarm.features.onboarding.permissions.PermissionsPage
-import com.sweak.qralarm.features.onboarding.permissions.PermissionsPageBackendEvent
-import com.sweak.qralarm.features.onboarding.permissions.PermissionsPageUserEvent
-import com.sweak.qralarm.features.onboarding.permissions.PermissionsViewModel
 import com.sweak.qralarm.features.onboarding.social_proof.SocialProofPage
 import com.sweak.qralarm.features.onboarding.welcome.WelcomePage
 import kotlinx.coroutines.launch
@@ -61,14 +55,6 @@ fun OnboardingScreen(
     onOnboardingFinished: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val permissionsViewModel = hiltViewModel<PermissionsViewModel>()
-
-    ObserveAsEvents(flow = permissionsViewModel.backendEvents) { event ->
-        when (event) {
-            is PermissionsPageBackendEvent.OnboardingFinished -> onOnboardingFinished()
-        }
-    }
-
     Scaffold(modifier = modifier) { paddingValues ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -138,7 +124,7 @@ fun OnboardingScreen(
                 enabled = currentPage != OnboardingPage.PERMISSIONS || areAllRequiredPermissionsHandled,
                 onClick = {
                     if (currentPage == OnboardingPage.PERMISSIONS) {
-                        permissionsViewModel.onEvent(PermissionsPageUserEvent.LetsGoClicked)
+                        onOnboardingFinished()
                     } else {
                         composableScope.launch {
                             pagerState.animateScrollToPage(page = pagerState.currentPage + 1)

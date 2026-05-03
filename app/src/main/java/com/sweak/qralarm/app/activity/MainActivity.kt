@@ -87,6 +87,9 @@ class MainActivity : FragmentActivity() {
                     MainNavContent(
                         navigationState = navigationState,
                         navigator = navigator,
+                        onOnboardingFinished = {
+                            viewModel.onEvent(MainActivityUserEvent.OnOnboardingFinished)
+                        },
                         onAlarmSaved = { viewModel.onEvent(MainActivityUserEvent.OnAlarmSaved) }
                     )
                 }

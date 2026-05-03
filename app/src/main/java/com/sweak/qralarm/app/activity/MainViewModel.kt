@@ -111,6 +111,9 @@ class MainViewModel @Inject constructor(
                     }
                 }
             }
+            is MainActivityUserEvent.OnOnboardingFinished -> viewModelScope.launch {
+                userDataRepository.setIntroductionFinished(finished = true)
+            }
         }
     }
 }
