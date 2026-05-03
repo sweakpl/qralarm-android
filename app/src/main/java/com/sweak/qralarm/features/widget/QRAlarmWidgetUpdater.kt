@@ -1,12 +1,14 @@
 package com.sweak.qralarm.features.widget
 
-import android.appwidget.AppWidgetManager
 import android.content.Context
-import android.content.Intent
-import android.text.format.DateFormat
+import androidx.glance.appwidget.GlanceAppWidgetManager
+import androidx.glance.appwidget.state.updateAppWidgetState
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
-import com.sweak.qralarm.core.ui.getTimeString
+import com.sweak.qralarm.features.widget.QRAlarmWidget.Companion.ALARM_LABEL_KEY
+import com.sweak.qralarm.features.widget.QRAlarmWidget.Companion.ALARM_TIME_MILLIS_KEY
+import com.sweak.qralarm.features.widget.QRAlarmWidget.Companion.WIDGET_STATE_KEY
+import com.sweak.qralarm.features.widget.QRAlarmWidget.WidgetState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -17,21 +19,17 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-
 class QRAlarmWidgetUpdater @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
-    @ApplicationContext private val appContext: Context
+    @param:ApplicationContext private val appContext: Context
 ) {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-
     private var updateJob: Job? = null
-
     private val debounceDelayMs = 1500L
 
     fun requestUpdate() {
         updateJob?.cancel()
-
         updateJob = scope.launch {
             delay(debounceDelayMs)
             performUpdate()
@@ -39,46 +37,38 @@ class QRAlarmWidgetUpdater @Inject constructor(
     }
 
     private suspend fun performUpdate() {
-        val nextAlarm: Pair<Alarm?, Boolean> = getNextAlarm()
-        broadcastToReceiver(nextAlarm)
-    }
+        val glanceIds = GlanceAppWidgetManager(appContext)
+            .getGlanceIds(QRAlarmWidget::class.java)
+        if (glanceIds.isEmpty()) return
 
-    private fun broadcastToReceiver(alarmPair: Pair<Alarm?, Boolean>) {
-        var time = "--:--"
-        var label: String
+        val widget = QRAlarmWidget()
+        val (nextAlarm, isSnoozed) = getNextAlarm()
 
-        val nextAlarm = alarmPair.first
-        val isNextAlarmSnoozed = alarmPair.second
-
-        if (nextAlarm != null && isNextAlarmSnoozed) {
-            nextAlarm.snoozeConfig.nextSnoozedAlarmTimeInMillis?.let {
-                time = getTimeString(
-                    it,
-                    DateFormat.is24HourFormat(appContext)
-                )
+        glanceIds.forEach { id ->
+            updateAppWidgetState(appContext, id) { prefs ->
+                when {
+                    nextAlarm == null -> {
+                        prefs[WIDGET_STATE_KEY] = WidgetState.NO_ALARM.name
+                        prefs.remove(ALARM_TIME_MILLIS_KEY)
+                        prefs.remove(ALARM_LABEL_KEY)
+                    }
+                    isSnoozed -> {
+                        prefs[WIDGET_STATE_KEY] = WidgetState.SNOOZED.name
+                        prefs[ALARM_TIME_MILLIS_KEY] =
+                            nextAlarm.snoozeConfig.nextSnoozedAlarmTimeInMillis ?: 0L
+                        prefs.remove(ALARM_LABEL_KEY)
+                    }
+                    else -> {
+                        prefs[WIDGET_STATE_KEY] = WidgetState.NORMAL.name
+                        prefs[ALARM_TIME_MILLIS_KEY] = nextAlarm.nextAlarmTimeInMillis
+                        val label = nextAlarm.alarmLabel
+                        if (label != null) prefs[ALARM_LABEL_KEY] = label
+                        else prefs.remove(ALARM_LABEL_KEY)
+                    }
+                }
             }
-            label = "Snoozed: ${nextAlarm.alarmLabel ?: "No label"}"
-        } else if (nextAlarm != null) {
-            time = getTimeString(
-                nextAlarm.nextAlarmTimeInMillis,
-                DateFormat.is24HourFormat(appContext)
-            )
-            label = nextAlarm.alarmLabel ?: "No label"
-        } else {
-            time = "--:--"
-            label = "No alarm set"
+            widget.update(appContext, id)
         }
-
-        val intent = Intent(
-            appContext,
-            QRAlarmWidgetReceiver::class.java
-        ).apply {
-            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-            putExtra("time", time)
-            putExtra("label", label)
-        }
-
-        appContext.sendBroadcast(intent)
     }
 
     private suspend fun getNextAlarm(): Pair<Alarm?, Boolean> {
@@ -96,16 +86,15 @@ class QRAlarmWidgetUpdater @Inject constructor(
             .minByOrNull { it.snoozeConfig.nextSnoozedAlarmTimeInMillis!! }
 
         val enabledNextAlarmTime = enabledNextAlarm?.nextAlarmTimeInMillis ?: Long.MAX_VALUE
-
         val snoozedNextAlarmTime = snoozedNextAlarm?.snoozeConfig?.nextSnoozedAlarmTimeInMillis
             ?: Long.MAX_VALUE
 
-        if (enabledNextAlarm == null && snoozedNextAlarm == null) {
-            return Pair(null, false)
+        return if (enabledNextAlarm == null && snoozedNextAlarm == null) {
+            Pair(null, false)
         } else if (enabledNextAlarmTime < snoozedNextAlarmTime) {
-            return Pair(enabledNextAlarm, false)
+            Pair(enabledNextAlarm, false)
         } else {
-            return Pair(snoozedNextAlarm, true)
+            Pair(snoozedNextAlarm, true)
         }
     }
 }

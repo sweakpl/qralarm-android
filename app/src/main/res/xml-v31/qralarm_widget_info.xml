@@ -3,5 +3,7 @@
     android:initialLayout="@layout/glance_default_loading_layout"
     android:minWidth="128dp"
     android:minHeight="48dp"
+    android:targetCellWidth="2"
+    android:targetCellHeight="1"
     android:updatePeriodMillis="0">
 </appwidget-provider>
