@@ -18,13 +18,6 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d alarm aktif</item>
     </plurals>
-    <string name="welcome_to_qralarm">Selamat datang di QRAlarm!</string>
-    <string name="wake_up_catchphrase">Bangun!</string>
-    <string name="wake_up_catchphrase_description">Atur alarm Anda seperti biasa dan bersiaplah dibangunkan oleh QRAlarm keesokan paginya.</string>
-    <string name="get_up_catchphrase">Bangkit!</string>
-    <string name="get_up_catchphrase_description">QRAlarm akan memastikan Anda tidak hanya bangun tetapi juga benar-benar bangkit dan dalam perjalanan untuk mematikan alarm.</string>
-    <string name="rise_up_catchphrase">Bangun!</string>
-    <string name="rise_up_catchphrase_description">Pindai kodenya, matikan alarm dan katakan selamat tinggal pada kebiasaan bangun kesiangan! Nikmati pagi Anda dengan QRAlarm!</string>
     <string name="lets_go">Ayo pergi!</string>
     <string name="home">Beranda</string>
     <string name="alarms">Alarm</string>
@@ -102,7 +95,6 @@
     <string name="rooster">Ayam jantan</string>
     <string name="menu">Menu</string>
     <string name="dynamic_theme">Tema dinamis</string>
-    <string name="introduction">Pengenalan</string>
     <string name="everyday">Setiap hari</string>
     <string name="no_alarms">Tidak ada alarm</string>
     <string name="create_using_button">Buat satu dengan tombol + di atas atau di bawah.</string>
@@ -205,9 +197,7 @@
     <string name="cancellation_lock_active_to_edit_scan_code">Kunci pembatalan aktif — untuk mengedit, nonaktifkan alarm dengan memindai kode.</string>
     <string name="cancellation_lock_active_scan_code_to_disable">Kunci pembatalan aktif — pindai kode untuk menonaktifkan alarm.</string>
     <string name="standalone_app">Aplikasi mandiri</string>
-    <string name="get_out_of_bed_get_ahead">Bangun dari tempat tidur. Maju ke depan.</string>
     <string name="get_started">Mulai</string>
-    <string name="almost_ready_to_go">Hampir siap!</string>
     <string name="permissions_screen_description">Agar dapat membangunkan Anda, QRAlarm memerlukan beberapa izin. Kami hanya menggunakannya untuk memastikan alarm Anda selalu berfungsi.</string>
     <string name="background_work">Pekerjaan latar belakang</string>
     <string name="thousands_of_mornings_changed">Ribuan pagi berubah!</string>

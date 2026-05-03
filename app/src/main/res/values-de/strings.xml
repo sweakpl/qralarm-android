@@ -24,13 +24,6 @@
         <item quantity="one">%1$d Alarm aktiv</item>
         <item quantity="other">%1$d Alarme aktiv</item>
     </plurals>
-    <string name="welcome_to_qralarm">Willkommen bei QRAlarm!</string>
-    <string name="wake_up_catchphrase">Aufwachen!</string>
-    <string name="wake_up_catchphrase_description">Stellen Sie Ihren Wecker wie gewohnt ein und lassen Sie sich am nächsten Morgen von QRAlarm wecken.</string>
-    <string name="get_up_catchphrase">Aufstehen!</string>
-    <string name="get_up_catchphrase_description">QRAlarm stellt sicher, dass Sie nicht nur aufgewacht sind, sondern auch aufgestanden sind und den Alarm deaktiviert haben.</string>
-    <string name="rise_up_catchphrase">Erhebt euch!</string>
-    <string name="rise_up_catchphrase_description">Scannen Sie den Code, deaktivieren Sie den Alarm und verabschieden Sie sich vom Verschlafen! Genießen Sie Ihren Morgen mit QRAlarm!</string>
     <string name="lets_go">Lass uns loslegen!</string>
     <string name="home">Übersicht</string>
     <string name="alarms">Alarm</string>
@@ -108,7 +101,6 @@
     <string name="rooster">Hahn</string>
     <string name="menu">Menü</string>
     <string name="dynamic_theme">Dynamisches Design</string>
-    <string name="introduction">Einführung</string>
     <string name="everyday">Täglich</string>
     <string name="no_alarms">Keine Alarme</string>
     <string name="create_using_button">Erstellen Sie eins mit der Schaltfläche „+“ oben oder unten.</string>
@@ -211,9 +203,7 @@
     <string name="cancellation_lock_active_scan_code_to_disable">Sperre gegen Beenden aktiv — scanne den Code, um den Alarm zu deaktivieren.</string>
     <string name="cancellation_lock">Sperre gegen Beenden</string>
     <string name="cancellation_lock_description">Der Alarm kann nicht abgebrochen oder bearbeitet werden, ohne den Code innerhalb der ausgewählten Zeit vor dem Klingeln zu scannen.</string>
-    <string name="get_out_of_bed_get_ahead">Raus aus dem Bett. Vorauskommen.</string>
     <string name="get_started">Los geht\'s</string>
-    <string name="almost_ready_to_go">Fast bereit zu starten!</string>
     <string name="permissions_screen_description">Um dich aus dem Bett zu holen, benötigt QRAlarm einige Berechtigungen. Wir verwenden sie nur, um sicherzustellen, dass dein Alarm immer funktioniert.</string>
     <string name="background_work">Hintergrundaktivität</string>
     <string name="thousands_of_mornings_changed">Tausende Morgen verändert!</string>

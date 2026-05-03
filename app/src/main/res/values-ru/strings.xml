@@ -36,13 +36,6 @@
         <item quantity="many">%1$d активных будильников</item>
         <item quantity="other">%1$d активных будильников</item>
     </plurals>
-    <string name="welcome_to_qralarm">Добро пожаловать в QRAlarm!</string>
-    <string name="wake_up_catchphrase">Просыпайся!</string>
-    <string name="wake_up_catchphrase_description">Установите будильник, как обычно, и приготовьтесь к пробуждению с QRAlarm на следующее утро.</string>
-    <string name="get_up_catchphrase">Вставай!</string>
-    <string name="get_up_catchphrase_description">QRAlarm позаботится о том, чтобы вы не только проснулись, но и встали, чтобы отключить будильник.</string>
-    <string name="rise_up_catchphrase">Воспрянь!</string>
-    <string name="rise_up_catchphrase_description">Сканируйте код, отключите будильник и забудьте о пересыпе! Наслаждайтесь утрами с QRAlarm!</string>
     <string name="lets_go">Поехали!</string>
     <string name="home">Главная</string>
     <string name="alarms">Будильники</string>
@@ -120,7 +113,6 @@
     <string name="rooster">Петух</string>
     <string name="menu">Меню</string>
     <string name="dynamic_theme">Динамическая тема</string>
-    <string name="introduction">Введение</string>
     <string name="everyday">Ежедневно</string>
     <string name="no_alarms">Нет будильников</string>
     <string name="create_using_button">Создайте его, используя кнопку + выше или ниже.</string>
@@ -223,9 +215,7 @@
     <string name="cancellation_lock_active_to_edit_scan_code">Блокировка отмены активна — для редактирования отключите будильник, отсканировав код.</string>
     <string name="cancellation_lock_active_scan_code_to_disable">Блокировка отмены активна — отсканируйте код, чтобы отключить будильник.</string>
     <string name="standalone_app">Автономное приложение</string>
-    <string name="get_out_of_bed_get_ahead">Вставай с постели, достигай целей.</string>
     <string name="get_started">Начать</string>
-    <string name="almost_ready_to_go">Почти готово к работе!</string>
     <string name="permissions_screen_description">Чтобы поднять вас с постели, QRAlarm нужны некоторые разрешения. Мы используем их только для обеспечения работоспособности вашего будильника.</string>
     <string name="background_work">Фоновая работа</string>
     <string name="thousands_of_mornings_changed">Тысячи утр изменены!</string>

@@ -18,13 +18,6 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d个警报激活</item>
     </plurals>
-    <string name="welcome_to_qralarm">欢迎使用 QRAlarm!</string>
-    <string name="wake_up_catchphrase">梦醒!</string>
-    <string name="wake_up_catchphrase_description">使用QRAlarm设置闹钟，你将在次日早晨被唤醒。</string>
-    <string name="get_up_catchphrase">起身!</string>
-    <string name="get_up_catchphrase_description">QRAlarm 将你唤醒后，你需要起床并且准备关闭闹钟。</string>
-    <string name="rise_up_catchphrase">振奋!</string>
-    <string name="rise_up_catchphrase_description">使用 QRAlarm 扫描二维码/条形码才能关闭闹钟，不再赖床！一日之计在于晨！</string>
     <string name="lets_go">开始使用!</string>
     <string name="home">主页</string>
     <string name="alarms">我的闹钟</string>
@@ -102,7 +95,6 @@
     <string name="rooster">公鸡</string>
     <string name="menu">菜单</string>
     <string name="dynamic_theme">动态主题</string>
-    <string name="introduction">欢迎介绍页</string>
     <string name="everyday">每天</string>
     <string name="no_alarms">没有闹钟</string>
     <string name="create_using_button">点击右上角或右下角的“+”以创建闹钟</string>
@@ -205,9 +197,7 @@
     <string name="cancellation_lock_active_scan_code_to_disable">取消锁定已激活 —— 扫描代码即可停用闹钟。</string>
     <string name="cancellation_lock">取消锁定</string>
     <string name="cancellation_lock_description">在选定时间内未扫描代码，无法取消或编辑闹钟。</string>
-    <string name="get_out_of_bed_get_ahead">起床。向前迈进。</string>
     <string name="get_started">开始</string>
-    <string name="almost_ready_to_go">几乎准备就绪！</string>
     <string name="permissions_screen_description">为了让你起床，QRAlarm 需要一些权限。我们只使用它们以确保你的闹钟总是有效。</string>
     <string name="background_work">后台工作</string>
     <string name="thousands_of_mornings_changed">数千个早晨已改变！</string>

@@ -24,13 +24,6 @@
         <item quantity="one">%1$d alarm aktif</item>
         <item quantity="other">%1$d alarm aktif</item>
     </plurals>
-    <string name="welcome_to_qralarm">QRAlarm\'a hoş geldiniz!</string>
-    <string name="wake_up_catchphrase">UYAN!</string>
-    <string name="wake_up_catchphrase_description">Alarmınızı her zamanki gibi kurun ve ertesi sabah QRAlarm ile uyanmaya hazırlanın.</string>
-    <string name="get_up_catchphrase">KALK!</string>
-    <string name="get_up_catchphrase_description">QRAlarm sadece uyanmanızı değil, aynı zamanda kalkıp alarmı kapatmak için yola çıkmanızı da sağlayacaktır.</string>
-    <string name="rise_up_catchphrase">GÜNE BAŞLA!</string>
-    <string name="rise_up_catchphrase_description">Kodu tarayın, alarmı kapatın ve fazla uyumaya veda edin! QRAlarm ile sabahlarınızın tadını çıkarın!</string>
     <string name="lets_go">Hadi Gidelim!</string>
     <string name="home">Ana Sayfa</string>
     <string name="alarms">Alarmlar</string>
@@ -108,7 +101,6 @@
     <string name="rooster">Horoz</string>
     <string name="menu">Menü</string>
     <string name="dynamic_theme">Dinamik tema</string>
-    <string name="introduction">Tanıtım</string>
     <string name="everyday">Her gün</string>
     <string name="no_alarms">Alarm yok</string>
     <string name="create_using_button">Yukarıdaki veya aşağıdaki + düğmesini kullanarak bir tane oluşturun.</string>
@@ -211,9 +203,7 @@
     <string name="cancellation_lock_active_scan_code_to_disable">İptal kilidi aktif — alarmı durdurmak için kodu tarayın.</string>
     <string name="cancellation_lock">İptal kilidi</string>
     <string name="cancellation_lock_description">Alarmı çalmadan önce seçilen süre içinde kodu taramadan iptal edilemez veya düzenlenemez.</string>
-    <string name="get_out_of_bed_get_ahead">Yataktan kalk, öne geç.</string>
     <string name="get_started">Başlayın</string>
-    <string name="almost_ready_to_go">Neredeyse hazır!</string>
     <string name="permissions_screen_description">Sizi yataktan kaldırmak için QRAlarm\'ın birkaç izne ihtiyacı var. Bunları sadece alarmınızın her zaman çalışmasını sağlamak için kullanıyoruz.</string>
     <string name="background_work">Arka plan çalışması</string>
     <string name="thousands_of_mornings_changed">Binlerce sabah değişti!</string>

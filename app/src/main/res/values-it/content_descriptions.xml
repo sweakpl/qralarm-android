@@ -35,9 +35,6 @@
     <string name="content_description_checked_circle_icon">Icona del cerchio controllato</string>
     <string name="content_description_unchecked_circle_icon">Icona del cerchio non selezionata</string>
 
-    <string name="content_description_wake_up_catchphrase_image">Immagine che mostra un amichevole omino stilizzato sdraiato sul letto, svegliato.</string>
-    <string name="content_description_get_up_catchphrase_image">Immagine che mostra un omino stilizzato sorridente che cammina mentre il suo telefono squilla.</string>
-    <string name="content_description_rise_up_catchphrase_image">Immagine che mostra un omino stilizzato felice dopo aver scansionato il codice QR con il telefono.</string>
     <string name="content_description_qralarm_pro_image">Immagine dell\'icona dell\'app QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Immagine di cinque stelle dorate</string>
 </resources>

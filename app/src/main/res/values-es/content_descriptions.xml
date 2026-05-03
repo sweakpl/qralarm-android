@@ -35,9 +35,6 @@
     <string name="content_description_checked_circle_icon">Icono de círculo marcado</string>
     <string name="content_description_unchecked_circle_icon">Icono de círculo sin marcar</string>
 
-    <string name="content_description_wake_up_catchphrase_image">Imagen que muestra a un simpático hombre de palo acostado en la cama, despertado.</string>
-    <string name="content_description_get_up_catchphrase_image">Imagen que muestra a un hombre de palo sonriente caminando con su teléfono sonando.</string>
-    <string name="content_description_rise_up_catchphrase_image">Imagen que muestra a un hombre de palo feliz después de escanear el código QR con su teléfono.</string>
     <string name="content_description_qralarm_pro_image">Imagen del icono de la aplicación QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Imagen de cinco estrellas doradas</string>
 </resources>

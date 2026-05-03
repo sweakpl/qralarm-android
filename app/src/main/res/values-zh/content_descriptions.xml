@@ -35,9 +35,6 @@
     <string name="content_description_checked_circle_icon">选中的圆圈图标</string>
     <string name="content_description_unchecked_circle_icon">未选中的圆圈图标</string>
 
-    <string name="content_description_wake_up_catchphrase_image">图像显示一位躺在床上的人被唤醒了</string>
-    <string name="content_description_get_up_catchphrase_image">图像显示一个人正拿着响铃的手机在走路</string>
-    <string name="content_description_rise_up_catchphrase_image">图像显示一个人用手机扫描二维码后开心地笑着</string>
     <string name="content_description_qralarm_pro_image">QRAlarm 高级版应用图标</string>
     <string name="content_description_five_stars_image">五星好评图标</string>
 </resources>

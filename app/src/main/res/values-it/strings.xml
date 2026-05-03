@@ -30,13 +30,6 @@
         <item quantity="many">%1$d allarmi attivi</item>
         <item quantity="other">%1$d allarmi attivi</item>
     </plurals>
-    <string name="welcome_to_qralarm">Benvenuti su QRAlarm!</string>
-    <string name="wake_up_catchphrase">Svegliati!</string>
-    <string name="wake_up_catchphrase_description">Imposta la sveglia come fai sempre e preparati a essere svegliato da QRAlarm la mattina dopo.</string>
-    <string name="get_up_catchphrase">Alzarsi!</string>
-    <string name="get_up_catchphrase_description">QRAlarm si assicurerà non solo che tu ti sia svegliato, ma anche che tu ti sia alzato e sia pronto a disattivare l\'allarme.</string>
-    <string name="rise_up_catchphrase">ALZATI!</string>
-    <string name="rise_up_catchphrase_description">Scansiona il codice, disattiva l\'allarme e di\' addio ai risvegli notturni! Goditi le tue mattine con QRAlarm!</string>
     <string name="lets_go">Andiamo!</string>
     <string name="home">Casa</string>
     <string name="alarms">Allarmi</string>
@@ -114,7 +107,6 @@
     <string name="rooster">Gallo</string>
     <string name="menu">Menu</string>
     <string name="dynamic_theme">Tema dinamico</string>
-    <string name="introduction">Introduzione</string>
     <string name="everyday">Ogni giorno</string>
     <string name="no_alarms">Nessun allarme</string>
     <string name="create_using_button">Creane uno utilizzando il pulsante + in alto o in basso.</string>
@@ -217,9 +209,7 @@
     <string name="cancellation_lock_active_scan_code_to_disable">Blocco di annullamento attivo — scansiona il codice per disabilitare l\'allarme.</string>
     <string name="cancellation_lock">Blocco di annullamento</string>
     <string name="cancellation_lock_description">L\'allarme non può essere annullato o modificato senza scansionare il codice entro il tempo selezionato prima che suoni.</string>
-    <string name="get_out_of_bed_get_ahead">Alzati dal letto. Vai avanti.</string>
     <string name="get_started">Inizia</string>
-    <string name="almost_ready_to_go">Quasi pronto per partire!</string>
     <string name="permissions_screen_description">Per farti alzare dal letto, QRAlarm ha bisogno di alcune autorizzazioni. Le usiamo solo per garantire che il tuo allarme funzioni sempre.</string>
     <string name="background_work">Lavoro in background</string>
     <string name="thousands_of_mornings_changed">Migliaia di mattine cambiate!</string>

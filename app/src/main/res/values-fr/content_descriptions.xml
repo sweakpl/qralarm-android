@@ -35,9 +35,6 @@
     <string name="content_description_checked_circle_icon">Icône de cercle coché</string>
     <string name="content_description_unchecked_circle_icon">Icône de cercle non cochée</string>
 
-    <string name="content_description_wake_up_catchphrase_image">Image montrant un bonhomme allumette sympathique allongé dans son lit et réveillé.</string>
-    <string name="content_description_get_up_catchphrase_image">Image montrant un bonhomme allumette souriant marchant avec son téléphone qui sonne.</string>
-    <string name="content_description_rise_up_catchphrase_image">Image montrant un bonhomme allumette heureux après avoir scanné le code QR avec son téléphone.</string>
     <string name="content_description_qralarm_pro_image">Image de l\'icône de l\'application QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Image de cinq étoiles dorées</string>
 </resources>

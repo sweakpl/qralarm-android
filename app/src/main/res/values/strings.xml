@@ -24,10 +24,8 @@
         <item quantity="other">%1$d alarms active</item>
     </plurals>
     <string name="app_name" translatable="false">QRAlarm</string>
-    <string name="welcome_to_qralarm">Welcome to QRAlarm!</string>
     <string name="welcome_title">Tomorrow\'s alarm shouldn\'t lose to last night.</string>
     <string name="welcome_subtitle">Most alarms only ask you to tap.\nQRAlarm makes you get up.</string>
-    <string name="get_out_of_bed_get_ahead">Get out of bed. Get ahead.</string>
     <string name="get_started">Get started</string>
     <string name="the_cure_isnt_louder">The cure isn\'t louder.</string>
     <string name="its_further_away">It\'s further away.</string>
