@@ -235,4 +235,8 @@
     <string name="survey_source">Enquête 2019, 1 000+ répondants</string>
     <string name="sounds_familiar">Ça vous dit quelque chose ?</string>
     <string name="sounds_familiar_description">Vous réglez l\'alarme avec de bonnes intentions. Puis le matin arrive et votre main à moitié endormie trouve le bouton de répétition avant même que votre cerveau ne se réveille. Un autre matin précipité. Encore.</string>
+    <string name="widget_tomorrow">Demain</string>
+    <string name="widget_next_alarm">Prochain réveil</string>
+    <string name="widget_today">Aujourd\'hui</string>
+    <string name="widget_tap_to_add">Appuyez pour ajouter</string>
 </resources>

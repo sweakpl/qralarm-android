@@ -235,4 +235,8 @@
     <string name="survey_source">Encuesta 2019, más de 1,000 encuestados</string>
     <string name="sounds_familiar">¿Te suena familiar?</string>
     <string name="sounds_familiar_description">Pones la alarma con buenas intenciones. Luego llega la mañana y tu mano medio dormida encuentra el temporal antes de que tu cerebro siquiera despierte. Otra mañana apresurada. De nuevo.</string>
+    <string name="widget_next_alarm">Próxima alarma</string>
+    <string name="widget_today">Hoy</string>
+    <string name="widget_tomorrow">Mañana</string>
+    <string name="widget_tap_to_add">Toca para añadir una</string>
 </resources>

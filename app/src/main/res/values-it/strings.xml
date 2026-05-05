@@ -235,4 +235,8 @@
     <string name="survey_source">Sondaggio 2019, oltre 1.000 intervistati</string>
     <string name="sounds_familiar">Suona familiare?</string>
     <string name="sounds_familiar_description">Imposti la sveglia con buone intenzioni. Poi arriva il mattino e la tua mano mezzo addormentata trova il pulsante di snooze prima ancora che il tuo cervello si svegli. Un\'altra mattina frenetica. Di nuovo.</string>
+    <string name="widget_next_alarm">Prossima sveglia</string>
+    <string name="widget_today">Oggi</string>
+    <string name="widget_tomorrow">Domani</string>
+    <string name="widget_tap_to_add">Tocca per aggiungerne una</string>
 </resources>

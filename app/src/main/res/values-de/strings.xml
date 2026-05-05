@@ -229,4 +229,8 @@
     <string name="survey_source">Umfrage 2019, über 1.000 Befragte</string>
     <string name="sounds_familiar">Kommt dir bekannt vor?</string>
     <string name="sounds_familiar_description">Du stellst den Alarm mit guten Absichten ein. Dann kommt der Morgen und deine halb schlafende Hand findet die Schlummertaste, bevor dein Gehirn überhaupt aufwacht. Ein weiterer hektischer Morgen. Schon wieder.</string>
+    <string name="widget_next_alarm">Nächster Alarm</string>
+    <string name="widget_tap_to_add">Tippen, um einen hinzuzufügen</string>
+    <string name="widget_today">Heute</string>
+    <string name="widget_tomorrow">Morgen</string>
 </resources>
