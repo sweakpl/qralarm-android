@@ -223,4 +223,8 @@
     <string name="how_it_works_step_3_description">走过去，扫描，闹钟停止。你已经起身。</string>
     <string name="almost_ready">差不多准备好了。</string>
     <string name="verified_user">已验证用户</string>
+    <string name="widget_today">今天</string>
+    <string name="widget_tomorrow">明天</string>
+    <string name="widget_tap_to_add">点击添加</string>
+    <string name="widget_next_alarm">下一个闹钟</string>
 </resources>

@@ -241,4 +241,8 @@
     <string name="survey_source">Опрос 2019 года, более 1000 респондентов</string>
     <string name="sounds_familiar">Звучит знакомо?</string>
     <string name="sounds_familiar_description">Вы устанавливаете будильник с благими намерениями. Затем наступает утро, и ваша сонная рука находит кнопку повтора, еще до того как мозг проснется. Еще одно спешное утро. Снова.</string>
+    <string name="widget_next_alarm">Следующий будильник</string>
+    <string name="widget_today">Сегодня</string>
+    <string name="widget_tomorrow">Завтра</string>
+    <string name="widget_tap_to_add">Нажмите, чтобы добавить</string>
 </resources>

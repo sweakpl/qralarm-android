@@ -235,4 +235,8 @@
     <string name="survey_source">Pesquisa 2019, mais de 1.000 entrevistados</string>
     <string name="sounds_familiar">Soa familiar?</string>
     <string name="sounds_familiar_description">Você configura o alarme com boas intenções. Então, a manhã chega e sua mão meio adormecida encontra o soneca antes de seu cérebro sequer acordar. Outra manhã apressada. De novo.</string>
+    <string name="widget_tomorrow">Amanhã</string>
+    <string name="widget_next_alarm">Próximo alarme</string>
+    <string name="widget_tap_to_add">Toque para adicionar um</string>
+    <string name="widget_today">Hoje</string>
 </resources>

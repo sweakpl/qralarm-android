@@ -229,4 +229,8 @@
     <string name="survey_source">Enquête 2019, 1.000+ respondenten</string>
     <string name="sounds_familiar">Klinkt bekend?</string>
     <string name="sounds_familiar_description">Je stelt de alarm in met goede bedoelingen. Dan komt de ochtend en je half slapende hand vindt de snooze voordat je hersenen zelfs wakker zijn. Weer een gehaaste ochtend. Opnieuw.</string>
+    <string name="widget_next_alarm">Volgende alarm</string>
+    <string name="widget_today">Vandaag</string>
+    <string name="widget_tomorrow">Morgen</string>
+    <string name="widget_tap_to_add">Tik om toe te voegen</string>
 </resources>

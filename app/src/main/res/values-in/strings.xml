@@ -223,4 +223,8 @@
     <string name="survey_source">Survei 2019, lebih dari 1.000 responden</string>
     <string name="sounds_familiar">Kedengarannya familiar?</string>
     <string name="sounds_familiar_description">Anda menyetel alarm dengan niat baik. Kemudian pagi datang dan tangan setengah tidur Anda menemukan tombol snooze sebelum otak Anda terbangun. Pagi terburu-buru lagi.</string>
+    <string name="widget_today">Hari ini</string>
+    <string name="widget_next_alarm">Alarm berikutnya</string>
+    <string name="widget_tomorrow">Besok</string>
+    <string name="widget_tap_to_add">Ketuk untuk menambah satu</string>
 </resources>

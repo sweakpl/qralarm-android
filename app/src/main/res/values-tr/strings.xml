@@ -229,4 +229,8 @@
     <string name="survey_source">Anket 2019, 1.000+ katılımcı</string>
     <string name="sounds_familiar">Tanıdık geliyor mu?</string>
     <string name="sounds_familiar_description">Alarmı iyi niyetlerle kurarsınız. Sonra sabah gelir ve yarı uykulu eliniz, beyniniz uyanmadan önce ertelemeyi bulur. Yine aceleyle bir sabah daha. Yine.</string>
+    <string name="widget_today">Bugün</string>
+    <string name="widget_next_alarm">Sonraki alarm</string>
+    <string name="widget_tap_to_add">Eklemek için dokunun</string>
+    <string name="widget_tomorrow">Yarın</string>
 </resources>
