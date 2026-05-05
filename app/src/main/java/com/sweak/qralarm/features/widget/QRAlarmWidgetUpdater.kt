@@ -10,7 +10,8 @@ import com.sweak.qralarm.features.widget.QRAlarmWidget.Companion.ALARM_TIME_MILL
 import com.sweak.qralarm.features.widget.QRAlarmWidget.Companion.WIDGET_STATE_KEY
 import com.sweak.qralarm.features.widget.QRAlarmWidget.WidgetState
 import dagger.hilt.android.qualifiers.ApplicationContext
-import jakarta.inject.Inject
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,6 +20,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+@Singleton
 class QRAlarmWidgetUpdater @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
     @param:ApplicationContext private val appContext: Context
@@ -83,7 +85,7 @@ class QRAlarmWidgetUpdater @Inject constructor(
                 it.snoozeConfig.nextSnoozedAlarmTimeInMillis != null &&
                 it.snoozeConfig.isAlarmSnoozed
             }
-            .minByOrNull { it.snoozeConfig.nextSnoozedAlarmTimeInMillis!! }
+            .minByOrNull { it.snoozeConfig.nextSnoozedAlarmTimeInMillis ?: Long.MAX_VALUE }
 
         val enabledNextAlarmTime = enabledNextAlarm?.nextAlarmTimeInMillis ?: Long.MAX_VALUE
         val snoozedNextAlarmTime = snoozedNextAlarm?.snoozeConfig?.nextSnoozedAlarmTimeInMillis

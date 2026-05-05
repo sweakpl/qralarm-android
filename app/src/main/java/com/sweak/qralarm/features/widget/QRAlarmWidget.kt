@@ -63,6 +63,8 @@ class QRAlarmWidget : GlanceAppWidget() {
     enum class WidgetState { NORMAL, SNOOZED, NO_ALARM }
 }
 
+private val nobelColorProvider = ColorProvider(day = Nobel, night = Nobel)
+
 @Composable
 private fun WidgetContent(
     state: QRAlarmWidget.WidgetState,
@@ -70,7 +72,6 @@ private fun WidgetContent(
     alarmLabel: String?
 ) {
     val context = LocalContext.current
-    val nobelColorProvider = ColorProvider(day = Nobel, night = Nobel)
 
     Box(
         modifier = GlanceModifier
