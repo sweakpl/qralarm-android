@@ -1,11 +1,11 @@
 package com.sweak.qralarm.core.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -35,13 +35,12 @@ fun WhatsNewDialog(onDismissRequest: () -> Unit) {
     val entries = listOf(
         WhatsNewEntry(
             text = stringResource(R.string.whats_new_entry_1),
-            notes = listOf(stringResource(R.string.whats_new_entry_1_note_1))
+            notes = listOf(
+                stringResource(R.string.whats_new_entry_1_note_1),
+                stringResource(R.string.whats_new_entry_1_note_2)
+            )
         ),
-        WhatsNewEntry(text = stringResource(R.string.whats_new_entry_2)),
-        WhatsNewEntry(
-            text = stringResource(R.string.whats_new_entry_3),
-            notes = listOf(stringResource(R.string.whats_new_entry_3_note_1))
-        )
+        WhatsNewEntry(text = stringResource(R.string.whats_new_entry_2))
     )
 
     Dialog(
@@ -57,22 +56,18 @@ fun WhatsNewDialog(onDismissRequest: () -> Unit) {
             Column(modifier = Modifier.wrapContentSize()) {
                 Text(
                     text = stringResource(R.string.whats_new_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(
-                        start = MaterialTheme.space.medium,
-                        top = MaterialTheme.space.medium,
-                        end = MaterialTheme.space.medium
-                    )
+                    style = MaterialTheme.typography.displaySmall,
+                    modifier = Modifier.padding(all = MaterialTheme.space.medium)
                 )
 
                 Column(
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.small),
                     modifier = Modifier
                         .padding(
                             start = MaterialTheme.space.medium,
                             top = MaterialTheme.space.small,
                             end = MaterialTheme.space.medium
                         )
-                        .verticalScroll(rememberScrollState())
                 ) {
                     entries.forEach { entry ->
                         WhatsNewEntryItem(entry = entry)
@@ -106,20 +101,32 @@ fun WhatsNewDialog(onDismissRequest: () -> Unit) {
 
 @Composable
 private fun WhatsNewEntryItem(entry: WhatsNewEntry) {
-    Column(modifier = Modifier.padding(vertical = MaterialTheme.space.xSmall)) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.space.small),
+        modifier = Modifier.padding(vertical = MaterialTheme.space.xSmall)
+    ) {
         Text(
-            text = entry.text,
-            style = MaterialTheme.typography.bodyMedium
+            text = "✅",
+            style = MaterialTheme.typography.titleLarge
         )
 
-        if (entry.notes.isNotEmpty()) {
-            Column(modifier = Modifier.padding(start = MaterialTheme.space.medium)) {
-                entry.notes.forEach { note ->
-                    Text(
-                        text = note,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+        Column {
+            Text(
+                text = entry.text,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(bottom = MaterialTheme.space.xSmall)
+            )
+
+            if (entry.notes.isNotEmpty()) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.xSmall)
+                ) {
+                    entry.notes.forEach { note ->
+                        Text(
+                            text = "• $note",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
                 }
             }
         }
