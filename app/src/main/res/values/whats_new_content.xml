@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- What's new for version 2.9.1 (versionCode 77) — remove when bumping version -->
+    <string name="whats_new_title">What\'s new?</string>
+    <string name="whats_new_entry_1">Example new feature</string>
+    <string name="whats_new_entry_1_note_1">Access this in Special Settings</string>
+    <string name="whats_new_entry_2">Performance improvements</string>
+    <string name="whats_new_entry_3">Bug fixes and stability improvements</string>
+    <string name="whats_new_entry_3_note_1">Fixed crash on first launch</string>
+</resources>

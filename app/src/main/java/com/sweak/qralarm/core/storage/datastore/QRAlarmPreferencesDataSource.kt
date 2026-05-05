@@ -132,6 +132,18 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         encodeDefaults = true
     }
 
+    suspend fun setWhatsNewLastShownVersionCode(versionCode: Int) {
+        dataStore.edit { preferences ->
+            preferences[WHATS_NEW_LAST_SHOWN_VERSION_CODE] = versionCode
+        }
+    }
+
+    fun getWhatsNewLastShownVersionCode(): Flow<Int?> {
+        return dataStore.data.map { preferences ->
+            preferences[WHATS_NEW_LAST_SHOWN_VERSION_CODE]
+        }
+    }
+
     suspend fun setTheme(theme: Theme) {
         dataStore.edit { preferences ->
             preferences[THEME] = json.encodeToString(theme)
@@ -160,5 +172,6 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         val EMERGENCY_SLIDER_RANGE = byteArrayPreferencesKey("emergencySliderRange")
         val EMERGENCY_REQUIRED_MATCHES = intPreferencesKey("emergencyRequiredMatches")
         val THEME = stringPreferencesKey("theme")
+        val WHATS_NEW_LAST_SHOWN_VERSION_CODE = intPreferencesKey("whatsNewLastShownVersionCode")
     }
 }
