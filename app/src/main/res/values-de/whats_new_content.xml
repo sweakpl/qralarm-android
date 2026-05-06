@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="whats_new_title">Was ist neu?</string>
+    <string name="whats_new_entry_1">QRAlarm-Widget hinzugefügt</string>
+    <string name="whats_new_entry_1_note_1">Anzeigen, welcher Alarm als Nächstes aktiviert wird</string>
+    <string name="whats_new_entry_2">Leistungsverbesserungen</string>
+    <string name="whats_new_entry_1_note_2">Zum Startbildschirm hinzufügen</string>
 </resources>
