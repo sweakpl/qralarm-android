@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
+import com.sweak.qralarm.core.domain.user.ShouldShowWhatsNew
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.domain.user.WHATS_NEW_VERSION_CODE
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_REQUIRED_MATCHES
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_REQUIRED_MATCHES
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +25,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val alarmsRepository: AlarmsRepository,
-    private val rescheduleAlarms: RescheduleAlarms
+    private val rescheduleAlarms: RescheduleAlarms,
+    private val shouldShowWhatsNew: ShouldShowWhatsNew
 ) : ViewModel() {
 
     private var _state = MutableStateFlow(MainActivityState())
@@ -41,7 +44,8 @@ class MainViewModel @Inject constructor(
             _state.update { currentState ->
                 currentState.copy(
                     shouldShowSplashScreen = false,
-                    isIntroductionFinished = userDataRepository.isIntroductionFinished.first()
+                    isIntroductionFinished = userDataRepository.isIntroductionFinished.first(),
+                    isWhatsNewDialogVisible = shouldShowWhatsNew()
                 )
             }
         }
@@ -113,6 +117,10 @@ class MainViewModel @Inject constructor(
             }
             is MainActivityUserEvent.OnOnboardingFinished -> viewModelScope.launch {
                 userDataRepository.setIntroductionFinished(finished = true)
+            }
+            is MainActivityUserEvent.OnWhatsNewDialogDismissed -> viewModelScope.launch {
+                userDataRepository.setWhatsNewLastShownVersionCode(WHATS_NEW_VERSION_CODE)
+                _state.update { it.copy(isWhatsNewDialogVisible = false) }
             }
         }
     }

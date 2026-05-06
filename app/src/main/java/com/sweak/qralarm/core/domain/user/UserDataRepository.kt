@@ -32,4 +32,7 @@ interface UserDataRepository {
 
     suspend fun setTheme(theme: Theme)
     val theme: Flow<Theme>
+
+    suspend fun setWhatsNewLastShownVersionCode(versionCode: Int)
+    val whatsNewLastShownVersionCode: Flow<Int?>
 }
