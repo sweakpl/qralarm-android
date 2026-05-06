@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="whats_new_title">O que há de novo?</string>
+    <string name="whats_new_entry_1">Widget QRAlarm adicionado</string>
+    <string name="whats_new_entry_1_note_1">Veja qual é o próximo alarme</string>
+    <string name="whats_new_entry_2">Melhorias de desempenho</string>
+    <string name="whats_new_entry_1_note_2">Adicione à sua tela inicial</string>
 </resources>
