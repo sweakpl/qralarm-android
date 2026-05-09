@@ -24,7 +24,6 @@ import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
 import androidx.glance.layout.Row
-import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
@@ -78,9 +77,12 @@ private fun WidgetContent(
             .fillMaxSize()
             .clickable(actionStartActivity<MainActivity>())
             .background(ImageProvider(R.drawable.widget_background))
-            .padding(12.dp)
+            .padding(horizontal = 8.dp)
     ) {
-        Column(modifier = GlanceModifier.fillMaxSize()) {
+        Column(
+            modifier = GlanceModifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Row(
                 modifier = GlanceModifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Vertical.CenterVertically
@@ -116,27 +118,31 @@ private fun WidgetContent(
                 }
             }
 
-            Spacer(GlanceModifier.defaultWeight())
+            val noAlarmSet = state == QRAlarmWidget.WidgetState.NO_ALARM
 
-            if (state == QRAlarmWidget.WidgetState.NO_ALARM) {
-                Box(
-                    modifier = GlanceModifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        provider = ImageProvider(R.drawable.ic_alarm_off),
-                        contentDescription = null,
-                        modifier = GlanceModifier.size(24.dp),
-                        colorFilter = ColorFilter.tint(nobelColorProvider)
+            Box(
+                modifier = GlanceModifier.fillMaxWidth(),
+                contentAlignment = if (noAlarmSet) Alignment.Center else Alignment.CenterStart
+            ) {
+                if (noAlarmSet) {
+                    Box(modifier = GlanceModifier.padding(vertical = 4.dp)) {
+                        Image(
+                            provider = ImageProvider(R.drawable.ic_alarm_off),
+                            contentDescription = null,
+                            modifier = GlanceModifier.size(24.dp),
+                            colorFilter = ColorFilter.tint(nobelColorProvider)
+                        )
+                    }
+                } else {
+                    val is24h = DateFormat.is24HourFormat(context)
+                    val timeString = alarmMillis?.let { getTimeString(it, is24h) } ?: "--:--"
+
+                    Text(
+                        text = timeString,
+                        style = WidgetStyles.time,
                     )
                 }
-            } else {
-                val is24h = DateFormat.is24HourFormat(context)
-                val timeString = alarmMillis?.let { getTimeString(it, is24h) } ?: "--:--"
-                Text(text = timeString, style = WidgetStyles.time)
             }
-
-            Spacer(GlanceModifier.defaultWeight())
 
             Text(
                 text = buildBottomText(context, state, alarmMillis),
