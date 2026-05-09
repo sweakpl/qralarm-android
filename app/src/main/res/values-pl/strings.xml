@@ -241,4 +241,8 @@
     <string name="survey_source">Badanie 2019, ponad 1000 respondentów</string>
     <string name="sounds_familiar">Brzmi znajomo?</string>
     <string name="sounds_familiar_description">Ustawiasz alarm z dobrymi intencjami. A potem przychodzi poranek, a twoja zaspana ręka znajduje drzemkę, zanim twój mózg się obudzi. Kolejny pośpieszny poranek. Znowu.</string>
+    <string name="widget_next_alarm">Następny alarm</string>
+    <string name="widget_today">Dzisiaj</string>
+    <string name="widget_tap_to_add">Stuknij, aby dodać jeden</string>
+    <string name="widget_tomorrow">Jutro</string>
 </resources>

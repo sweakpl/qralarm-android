@@ -241,4 +241,8 @@
     <string name="survey_source">Опитування 2019, понад 1,000 респондентів</string>
     <string name="sounds_familiar">Звучить знайомо?</string>
     <string name="sounds_familiar_description">Ви встановлюєте будильник з добрими намірами. Потім приходить ранок, і ваша напівсонна рука знаходить \"відкласти\" перш ніж мозок навіть прокинеться. Ще один поспішний ранок. Знову.</string>
+    <string name="widget_next_alarm">Наступний будильник</string>
+    <string name="widget_today">Сьогодні</string>
+    <string name="widget_tomorrow">Завтра</string>
+    <string name="widget_tap_to_add">Торкніться, щоб додати</string>
 </resources>

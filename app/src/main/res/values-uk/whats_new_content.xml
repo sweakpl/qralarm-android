@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">Що нового?</string>
+    <string name="whats_new_entry_1">Додано віджет QRAlarm</string>
+    <string name="whats_new_entry_1_note_1">Подивіться, який будильник наступний</string>
+    <string name="whats_new_entry_2">Покращення продуктивності</string>
+    <string name="whats_new_entry_1_note_2">Додайте на головний екран</string>
+</resources>

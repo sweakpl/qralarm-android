@@ -20,6 +20,7 @@ import com.sweak.qralarm.core.navigation.routes.OnboardingRoute
 import com.sweak.qralarm.core.navigation.Navigator
 import com.sweak.qralarm.core.navigation.routes.RateRoute
 import com.sweak.qralarm.core.navigation.rememberNavigationState
+import com.sweak.qralarm.core.ui.components.WhatsNewDialog
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -92,6 +93,14 @@ class MainActivity : FragmentActivity() {
                         },
                         onAlarmSaved = { viewModel.onEvent(MainActivityUserEvent.OnAlarmSaved) }
                     )
+
+                    if (state.isWhatsNewDialogVisible) {
+                        WhatsNewDialog(
+                            onDismissRequest = {
+                                viewModel.onEvent(MainActivityUserEvent.OnWhatsNewDialogDismissed)
+                            }
+                        )
+                    }
                 }
             }
         }

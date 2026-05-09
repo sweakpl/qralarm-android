@@ -90,4 +90,11 @@ class UserDataRepositoryImpl @Inject constructor(
         get() = qrAlarmPreferencesDataSource.getTheme().map {
             it ?: Theme.Default
         }
+
+    override suspend fun setWhatsNewLastShownVersionCode(versionCode: Int) {
+        qrAlarmPreferencesDataSource.setWhatsNewLastShownVersionCode(versionCode = versionCode)
+    }
+
+    override val whatsNewLastShownVersionCode: Flow<Int?>
+        get() = qrAlarmPreferencesDataSource.getWhatsNewLastShownVersionCode()
 }
