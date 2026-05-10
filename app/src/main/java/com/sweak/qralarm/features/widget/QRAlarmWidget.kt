@@ -1,18 +1,15 @@
 package com.sweak.qralarm.features.widget
 
 import android.content.Context
-import android.text.format.DateFormat
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.ColorFilter
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.Image
 import androidx.glance.ImageProvider
-import androidx.glance.LocalContext
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
@@ -32,11 +29,6 @@ import androidx.glance.text.Text
 import com.sweak.qralarm.R
 import com.sweak.qralarm.app.activity.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.Nobel
-import com.sweak.qralarm.core.ui.getDayString
-import com.sweak.qralarm.core.ui.getTimeString
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
 
 class QRAlarmWidget : GlanceAppWidget() {
 
@@ -46,17 +38,19 @@ class QRAlarmWidget : GlanceAppWidget() {
             val stateString = prefs[WIDGET_STATE_KEY] ?: WidgetState.NO_ALARM.name
             val state = runCatching { WidgetState.valueOf(stateString) }
                 .getOrDefault(WidgetState.NO_ALARM)
-            val alarmMillis = prefs[ALARM_TIME_MILLIS_KEY]
-            val alarmLabel = prefs[ALARM_LABEL_KEY]
+            val topLabel = prefs[TOP_LABEL_KEY].orEmpty()
+            val timeText = prefs[TIME_TEXT_KEY] ?: "--:--"
+            val bottomText = prefs[BOTTOM_TEXT_KEY].orEmpty()
 
-            WidgetContent(state, alarmMillis, alarmLabel)
+            WidgetContent(state, topLabel, timeText, bottomText)
         }
     }
 
     companion object {
         val WIDGET_STATE_KEY = stringPreferencesKey("widgetStateKey")
-        val ALARM_TIME_MILLIS_KEY = longPreferencesKey("alarmTimeMillisKey")
-        val ALARM_LABEL_KEY = stringPreferencesKey("alarmLabelKey")
+        val TOP_LABEL_KEY = stringPreferencesKey("topLabelKey")
+        val TIME_TEXT_KEY = stringPreferencesKey("timeTextKey")
+        val BOTTOM_TEXT_KEY = stringPreferencesKey("bottomTextKey")
     }
 
     enum class WidgetState { NORMAL, SNOOZED, NO_ALARM }
@@ -67,11 +61,10 @@ private val nobelColorProvider = ColorProvider(day = Nobel, night = Nobel)
 @Composable
 private fun WidgetContent(
     state: QRAlarmWidget.WidgetState,
-    alarmMillis: Long?,
-    alarmLabel: String?
+    topLabel: String,
+    timeText: String,
+    bottomText: String
 ) {
-    val context = LocalContext.current
-
     Box(
         modifier = GlanceModifier
             .fillMaxSize()
@@ -87,14 +80,6 @@ private fun WidgetContent(
                 modifier = GlanceModifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Vertical.CenterVertically
             ) {
-                val topLabel = when (state) {
-                    QRAlarmWidget.WidgetState.NORMAL ->
-                        alarmLabel ?: context.getString(R.string.widget_next_alarm)
-                    QRAlarmWidget.WidgetState.SNOOZED ->
-                        context.getString(R.string.snooze)
-                    QRAlarmWidget.WidgetState.NO_ALARM ->
-                        context.getString(R.string.no_alarms)
-                }
                 Text(
                     text = topLabel,
                     style = WidgetStyles.label,
@@ -134,45 +119,17 @@ private fun WidgetContent(
                         )
                     }
                 } else {
-                    val is24h = DateFormat.is24HourFormat(context)
-                    val timeString = alarmMillis?.let { getTimeString(it, is24h) } ?: "--:--"
-
                     Text(
-                        text = timeString,
+                        text = timeText,
                         style = WidgetStyles.time,
                     )
                 }
             }
 
             Text(
-                text = buildBottomText(context, state, alarmMillis),
+                text = bottomText,
                 style = WidgetStyles.body
             )
-        }
-    }
-}
-
-private fun buildBottomText(
-    context: Context,
-    state: QRAlarmWidget.WidgetState,
-    alarmMillis: Long?
-): String {
-    return when (state) {
-        QRAlarmWidget.WidgetState.NO_ALARM ->
-            context.getString(R.string.widget_tap_to_add)
-
-        QRAlarmWidget.WidgetState.NORMAL,
-        QRAlarmWidget.WidgetState.SNOOZED -> {
-            if (alarmMillis == null) return ""
-            val alarmDate = Instant.ofEpochMilli(alarmMillis)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate()
-            val today = LocalDate.now()
-            when (alarmDate) {
-                today -> context.getString(R.string.widget_today)
-                today.plusDays(1) -> context.getString(R.string.widget_tomorrow)
-                else -> getDayString(alarmMillis)
-            }
         }
     }
 }
