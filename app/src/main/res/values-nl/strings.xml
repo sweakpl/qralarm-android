@@ -34,7 +34,7 @@
     <string name="vibrations">Trillingen</string>
     <string name="use_qr_bar_code">Gebruik QR-/streepjescode</string>
     <string name="assign_specific_code">Specifieke code toewijzen</string>
-    <string name="assign_specific_code_description">De alarm kan met elke code worden uitgeschakeld. Klik hieronder om je eigen QR- of streepjescode toe te wijzen om dit alarm te stoppen:</string>
+    <string name="assign_specific_code_description">Het alarm kan met elke code worden uitgeschakeld. Klik hieronder om je eigen QR- of streepjescode toe te wijzen om dit alarm te stoppen:</string>
     <string name="scan_your_own_code">Scan je eigen code</string>
     <string name="gentle_wake_up">Zachtjes wakker worden</string>
     <string name="temporary_mute">Tijdelijk dempen</string>
@@ -216,7 +216,7 @@
     <string name="welcome_subtitle">De meeste wekkers vragen alleen om een tikje.\nQRAlarm laat je opstaan.</string>
     <string name="the_cure_isnt_louder">De oplossing is niet harder.</string>
     <string name="its_further_away">Het is verder weg.</string>
-    <string name="how_it_works_subtitle">Plaats een QR-code waar je \'s ochtends echt moet zijn. De alarm stopt pas als je het scant — dus je bent al opgestaan.</string>
+    <string name="how_it_works_subtitle">Plaats een QR-code waar je \'s ochtends echt moet zijn. Het alarm stopt pas als je het scant — dus je bent al opgestaan.</string>
     <string name="how_it_works_step_1_title">Stel je alarm in</string>
     <string name="how_it_works_step_1_description">Kies een tijd, een geluid en de dagen. Net als altijd.</string>
     <string name="how_it_works_step_2_title">Pin een QR-code ergens</string>
@@ -228,7 +228,7 @@
     <string name="of_people_oversleep">van de mensen verslaapt zich minstens één keer per week</string>
     <string name="survey_source">Enquête 2019, 1.000+ respondenten</string>
     <string name="sounds_familiar">Klinkt bekend?</string>
-    <string name="sounds_familiar_description">Je stelt de alarm in met goede bedoelingen. Dan komt de ochtend en je half slapende hand vindt de snooze voordat je hersenen zelfs wakker zijn. Weer een gehaaste ochtend. Opnieuw.</string>
+    <string name="sounds_familiar_description">Je stelt het alarm in met goede bedoelingen. Dan komt de ochtend en je half slapende hand vindt de snooze voordat je hersenen zelfs wakker zijn. Weer een gehaaste ochtend. Opnieuw.</string>
     <string name="widget_next_alarm">Volgende alarm</string>
     <string name="widget_today">Vandaag</string>
     <string name="widget_tomorrow">Morgen</string>
