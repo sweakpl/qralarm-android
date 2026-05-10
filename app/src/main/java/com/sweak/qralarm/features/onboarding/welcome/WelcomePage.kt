@@ -1,10 +1,15 @@
 package com.sweak.qralarm.features.onboarding.welcome
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,31 +25,55 @@ import com.sweak.qralarm.features.onboarding.welcome.components.RingingAlarmPhon
 
 @Composable
 fun WelcomePage(modifier: Modifier = Modifier) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(horizontal = MaterialTheme.space.mediumLarge)
-    ) {
-        Text(
-            text = stringResource(R.string.welcome_title),
-            style = MaterialTheme.typography.displayLarge,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(bottom = MaterialTheme.space.mediumLarge)
-        )
+    val typography = MaterialTheme.typography
+    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+        val imageMaxHeight = maxHeight * 0.5f
 
-        Text(
-            text = stringResource(R.string.welcome_subtitle),
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center
-        )
-
-        Box(
-            contentAlignment = Alignment.Center,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = MaterialTheme.space.large)
-                .weight(1f)
+                .fillMaxSize()
+                .padding(
+                    start = MaterialTheme.space.medium,
+                    top = MaterialTheme.space.mediumLarge,
+                    end = MaterialTheme.space.medium,
+                    bottom = MaterialTheme.space.small
+                )
         ) {
-            RingingAlarmPhone(modifier = Modifier.fillMaxSize())
+            Text(
+                text = stringResource(R.string.welcome_title),
+                style = typography.displayMedium,
+                textAlign = TextAlign.Center,
+                autoSize = TextAutoSize.StepBased(
+                    minFontSize = typography.bodyLarge.fontSize,
+                    maxFontSize = typography.displayMedium.fontSize
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(MaterialTheme.space.medium))
+
+            Text(
+                text = stringResource(R.string.welcome_subtitle),
+                style = typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                autoSize = TextAutoSize.StepBased(
+                    minFontSize = typography.labelLarge.fontSize,
+                    maxFontSize = typography.bodyLarge.fontSize
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = MaterialTheme.space.mediumLarge)
+                    .heightIn(max = imageMaxHeight)
+                    .weight(1f)
+            ) {
+                RingingAlarmPhone(modifier = Modifier.fillMaxSize())
+            }
         }
     }
 }

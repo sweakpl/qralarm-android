@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +28,12 @@ fun SocialProofPage(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(
+                top = MaterialTheme.space.xLarge,
+                bottom = MaterialTheme.space.small
+            )
     ) {
         Text(
             text = stringResource(R.string.thousands_of_mornings_changed),
@@ -42,9 +50,7 @@ fun SocialProofPage(
 
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
             ReviewsCarousel(isActive = isActive)
         }

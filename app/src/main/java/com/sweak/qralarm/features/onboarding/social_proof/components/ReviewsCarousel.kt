@@ -46,7 +46,7 @@ fun ReviewsCarousel(
 
     HorizontalPager(
         state = pagerState,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
         modifier = modifier.fillMaxWidth()
     ) { page ->
         val index = page % reviewItemsCount

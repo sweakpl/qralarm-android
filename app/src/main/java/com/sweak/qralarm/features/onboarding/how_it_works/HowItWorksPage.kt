@@ -23,7 +23,12 @@ fun HowItWorksPage(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = MaterialTheme.space.medium)
+            .padding(
+                start = MaterialTheme.space.medium,
+                top = MaterialTheme.space.xLarge,
+                end = MaterialTheme.space.medium,
+                bottom = MaterialTheme.space.small
+            )
     ) {
         Text(
             text = stringResource(R.string.the_cure_isnt_louder),

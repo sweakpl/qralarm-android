@@ -20,6 +20,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp
     ),
+    displayMedium = TextStyle(
+        fontFamily = amikoFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp
+    ),
     displaySmall = TextStyle(
         fontFamily = amikoFamily,
         fontWeight = FontWeight.SemiBold,

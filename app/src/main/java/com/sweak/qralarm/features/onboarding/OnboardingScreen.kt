@@ -4,7 +4,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -77,10 +76,6 @@ fun OnboardingScreen(
                 state = pagerState,
                 userScrollEnabled = false,
                 verticalAlignment = Alignment.CenterVertically,
-                contentPadding = PaddingValues(
-                    top = MaterialTheme.space.xLarge,
-                    bottom = MaterialTheme.space.mediumLarge
-                ),
                 modifier = Modifier.weight(1f)
             ) { page ->
                 when (OnboardingPage.entries[page]) {
@@ -96,7 +91,7 @@ fun OnboardingScreen(
                 }
             }
 
-            Row(modifier = Modifier.padding(bottom = MaterialTheme.space.medium)) {
+            Row(modifier = Modifier.padding(vertical = MaterialTheme.space.medium)) {
                 repeat(pagerState.pageCount) {
                     val color =
                         if (pagerState.currentPage == it) LocalContentColor.current
