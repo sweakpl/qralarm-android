@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_qralarm_icon">QRAlarm アイコン</string>
+    <string name="content_description_add_icon">追加 (プラス) アイコン</string>
+    <string name="content_description_menu_icon">メニューアイコン</string>
+    <string name="content_description_close_icon">閉じるアイコン</string>
+    <string name="content_description_done_icon">完了アイコン</string>
+    <string name="content_description_forward_arrow_icon">進む矢印アイコン</string>
+    <string name="content_description_back_arrow_icon">戻る矢印アイコン</string>
+    <string name="content_description_drop_down_arrow_icon">ドロップダウン矢印アイコン</string>
+    <string name="content_description_play_icon">再生アイコン</string>
+    <string name="content_description_stop_icon">停止アイコン</string>
+    <string name="content_description_edit_icon">編集アイコン</string>
+    <string name="content_description_more_icon">その他のオプションアイコン</string>
+    <string name="content_description_qr_code_scanner_icon">QRコードスキャナーアイコン</string>
+    <string name="content_description_delete_icon">削除アイコン</string>
+    <string name="content_description_camera_icon">カメラアイコン</string>
+    <string name="content_description_alarm_icon">アラームアイコン</string>
+    <string name="content_description_notification_icon">通知アイコン</string>
+    <string name="content_description_full_screen_icon">全画面表示アイコン</string>
+    <string name="content_description_no_qr_code_icon">無効なQRコードアイコン</string>
+    <string name="content_description_automatic_settings_icon">自動設定アイコン</string>
+    <string name="content_description_app_settings_icon">アプリ設定アイコン</string>
+    <string name="content_description_special_app_settings_icon">特別アプリ設定アイコン</string>
+    <string name="content_description_star_icon">星アイコン</string>
+    <string name="content_description_flash_icon">フラッシュアイコン</string>
+    <string name="content_description_skip_next_alarm_icon">次のアラームをスキップアイコン</string>
+    <string name="content_description_label_icon">ラベルアイコン</string>
+    <string name="content_description_sound_icon">サウンドアイコン</string>
+    <string name="content_description_active_system_setting">有効なシステム設定アイコン</string>
+    <string name="content_description_copy_icon">コピーアイコン</string>
+    <string name="content_description_clock_icon">時計アイコン</string>
+    <string name="content_description_emergency_icon">緊急用三角アイコン</string>
+    <string name="content_description_muted_sound_icon">ミュートサウンドアイコン</string>
+    <string name="content_description_chain_icon">チェーンアイコン</string>
+    <string name="content_description_checked_circle_icon">チェック済みサークルアイコン</string>
+    <string name="content_description_unchecked_circle_icon">未チェックのサークルアイコン</string>
+    <string name="content_description_qralarm_pro_image">QRAlarm PROアプリアイコン画像</string>
+    <string name="content_description_five_stars_image">五つ星画像</string>
+</resources>
