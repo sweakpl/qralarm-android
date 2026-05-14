@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,11 +22,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
-import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.features.qralarm_pro.components.util.AnimatedWebPDecoder
 import com.sweak.qralarm.features.qralarm_pro.model.qrAlarmProCarouselFeatures
 import kotlinx.coroutines.delay
 
@@ -52,26 +53,27 @@ fun QRAlarmProFeaturesCarousel(modifier: Modifier = Modifier) {
         pagerState.animateScrollToPage(page = nextPage)
     }
 
+    val context = LocalContext.current
+    val animatedImageLoader = remember(context) {
+        ImageLoader.Builder(context)
+            .components {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    add(ImageDecoderDecoder.Factory())
+                } else {
+                    add(AnimatedWebPDecoder.Factory())
+                }
+            }
+            .build()
+    }
+
     HorizontalPager(
         state = pagerState,
         modifier = modifier
     ) {
-        val context = LocalContext.current
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
-            val gifLoader = ImageLoader.Builder(context)
-                .components {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        add(ImageDecoderDecoder.Factory())
-                    } else {
-                        add(GifDecoder.Factory())
-                    }
-                }
-                .build()
-
             val resolvedPageContentIndex = it % featureItemsCount
             val carouselFeature = qrAlarmProCarouselFeatures[resolvedPageContentIndex]
 
@@ -80,7 +82,7 @@ fun QRAlarmProFeaturesCarousel(modifier: Modifier = Modifier) {
                     ImageRequest.Builder(context)
                         .data(data = carouselFeature.animatedResourceId)
                         .build(),
-                    imageLoader = gifLoader
+                    imageLoader = animatedImageLoader
                 ),
                 contentDescription = null,
                 modifier = Modifier

@@ -104,6 +104,9 @@ dependencies {
     implementation(libs.google.accompanist.permissions)
     implementation(libs.io.coil.compose)
     implementation(libs.io.coil.gif)
+    implementation(libs.penfeizhou.frameanimation)
+    implementation(libs.penfeizhou.awebp)
+    implementation(libs.androidx.vectordrawable.animated)
 
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material3)

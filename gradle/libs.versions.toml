@@ -14,6 +14,8 @@ nav3Core = "1.1.1"
 lifecycleViewmodelNav3 = "2.10.0"
 media3 = "1.10.0"
 coil = "2.7.0"
+penfeizhouAnimation = "3.0.5"
+vectordrawableAnimated = "1.2.0"
 glanceAppwidget = "1.1.1"
 splashscreen = "1.2.0"
 materialIconsExtended = "1.7.8"
@@ -63,6 +65,9 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 google-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permissions"}
 io-coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 io-coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
+penfeizhou-frameanimation = { group = "com.github.penfeizhou.android.animation", name = "frameanimation", version.ref = "penfeizhouAnimation" }
+penfeizhou-awebp = { group = "com.github.penfeizhou.android.animation", name = "awebp", version.ref = "penfeizhouAnimation" }
+androidx-vectordrawable-animated = { group = "androidx.vectordrawable", name = "vectordrawable-animated", version.ref = "vectordrawableAnimated" }
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceAppwidget" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceAppwidget" }
 
