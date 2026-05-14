@@ -109,4 +109,7 @@ dependencies {
     implementation(libs.androidx.glance.material3)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(libs.penfeizhou.frameanimation)
+    implementation(libs.penfeizhou.awebp)
 }
