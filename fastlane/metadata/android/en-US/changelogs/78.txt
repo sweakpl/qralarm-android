@@ -1,2 +1,0 @@
-* Added QRAlarm widget,
-* Performance improvements.

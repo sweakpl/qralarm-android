@@ -18,8 +18,8 @@ android {
         applicationId = "com.sweak.qralarm"
         minSdk = 23
         targetSdk = 37
-        versionCode = 78
-        versionName = "2.9.2"
+        versionCode = 79
+        versionName = "2.9.3"
 
         vectorDrawables {
             useSupportLibrary = true
