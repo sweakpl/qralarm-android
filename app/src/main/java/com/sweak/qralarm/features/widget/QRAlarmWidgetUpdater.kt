@@ -1,6 +1,8 @@
 package com.sweak.qralarm.features.widget
 
 import android.content.Context
+import android.os.Build
+import android.os.UserManager
 import android.text.format.DateFormat
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
@@ -47,6 +49,12 @@ class QRAlarmWidgetUpdater @Inject constructor(
     }
 
     private suspend fun performUpdate() {
+        // AppWidgetManager throws IllegalStateException before user unlock (Direct Boot).
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val userManager = appContext.getSystemService(Context.USER_SERVICE) as UserManager
+            if (!userManager.isUserUnlocked) return
+        }
+
         val glanceIds = GlanceAppWidgetManager(appContext)
             .getGlanceIds(QRAlarmWidget::class.java)
         if (glanceIds.isEmpty()) return
