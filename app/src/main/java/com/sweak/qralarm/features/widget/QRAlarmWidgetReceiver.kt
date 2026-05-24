@@ -3,6 +3,8 @@ package com.sweak.qralarm.features.widget
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.os.UserManager
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import com.sweak.qralarm.alarm.ACTION_WIDGET_MIDNIGHT_UPDATE
@@ -21,6 +23,12 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
+        // Glance's super.onUpdate() calls WorkManager internally, which crashes before user unlock.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
+            if (!userManager.isUserUnlocked) return
+        }
+
         super.onUpdate(context, appWidgetManager, appWidgetIds)
         widgetUpdater.requestUpdate()
         widgetUpdater.scheduleMidnightWidgetUpdate()

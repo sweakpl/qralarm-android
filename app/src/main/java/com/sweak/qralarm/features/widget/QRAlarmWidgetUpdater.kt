@@ -47,6 +47,12 @@ class QRAlarmWidgetUpdater @Inject constructor(
     private val debounceDelayMs = 1500L
 
     fun requestUpdate() {
+        // AppWidgetManager throws IllegalStateException before user unlock (Direct Boot).
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val userManager = appContext.getSystemService(Context.USER_SERVICE) as UserManager
+            if (!userManager.isUserUnlocked) return
+        }
+
         updateJob?.cancel()
         updateJob = scope.launch {
             delay(debounceDelayMs)
@@ -55,12 +61,6 @@ class QRAlarmWidgetUpdater @Inject constructor(
     }
 
     private suspend fun performUpdate() {
-        // AppWidgetManager throws IllegalStateException before user unlock (Direct Boot).
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val userManager = appContext.getSystemService(Context.USER_SERVICE) as UserManager
-            if (!userManager.isUserUnlocked) return
-        }
-
         val glanceIds = GlanceAppWidgetManager(appContext)
             .getGlanceIds(QRAlarmWidget::class.java)
         if (glanceIds.isEmpty()) return
