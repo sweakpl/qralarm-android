@@ -1,6 +1,11 @@
 package com.sweak.qralarm.features.widget
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import com.sweak.qralarm.alarm.ACTION_WIDGET_MIDNIGHT_UPDATE
+import com.sweak.qralarm.alarm.WIDGET_MIDNIGHT_UPDATE_REQUEST_CODE
 import android.os.Build
 import android.os.UserManager
 import android.text.format.DateFormat
@@ -17,11 +22,6 @@ import com.sweak.qralarm.features.widget.QRAlarmWidget.Companion.TOP_LABEL_KEY
 import com.sweak.qralarm.features.widget.QRAlarmWidget.Companion.WIDGET_STATE_KEY
 import com.sweak.qralarm.features.widget.QRAlarmWidget.WidgetState
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -29,10 +29,16 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class QRAlarmWidgetUpdater @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
+    private val alarmManager: AlarmManager,
     @param:ApplicationContext private val appContext: Context
 ) {
 
@@ -153,6 +159,40 @@ class QRAlarmWidgetUpdater @Inject constructor(
         val timeText: String,
         val bottomText: String
     )
+
+    fun scheduleMidnightWidgetUpdate() {
+        val nextMidnightMillis = LocalDate.now()
+            .plusDays(1)
+            .atStartOfDay(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
+
+        val intent = Intent(appContext, QRAlarmWidgetReceiver::class.java).apply {
+            action = ACTION_WIDGET_MIDNIGHT_UPDATE
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            appContext,
+            WIDGET_MIDNIGHT_UPDATE_REQUEST_CODE,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP, nextMidnightMillis, pendingIntent
+                )
+            } else {
+                alarmManager.setAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP, nextMidnightMillis, pendingIntent
+                )
+            }
+        } else {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP, nextMidnightMillis, pendingIntent
+            )
+        }
+    }
 
     companion object {
         private const val NO_TIME_PLACEHOLDER = "--:--"
