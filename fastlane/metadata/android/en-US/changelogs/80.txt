@@ -1,2 +1,1 @@
-* Added Japanese and Korean languages,
 * Bug fixes.
