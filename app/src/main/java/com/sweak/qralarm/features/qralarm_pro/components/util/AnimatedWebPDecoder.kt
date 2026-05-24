@@ -8,19 +8,21 @@ import coil.fetch.SourceResult
 import coil.request.Options
 import com.github.penfeizhou.animation.loader.ByteBufferLoader
 import com.github.penfeizhou.animation.webp.WebPDrawable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okio.BufferedSource
 import okio.ByteString.Companion.encodeUtf8
 import java.nio.ByteBuffer
 
 class AnimatedWebPDecoder(private val source: ImageSource) : Decoder {
 
-    override suspend fun decode(): DecodeResult {
+    override suspend fun decode(): DecodeResult = withContext(Dispatchers.IO) {
         val bytes = source.source().use { it.readByteArray() }
         val loader = object : ByteBufferLoader() {
             override fun getByteBuffer(): ByteBuffer = ByteBuffer.wrap(bytes)
         }
         val drawable = WebPDrawable(loader).apply { setAutoPlay(false) }
-        return DecodeResult(drawable = drawable, isSampled = false)
+        DecodeResult(drawable = drawable, isSampled = false)
     }
 
     class Factory : Decoder.Factory {
