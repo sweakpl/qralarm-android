@@ -2,7 +2,9 @@ package com.sweak.qralarm.core.data.alarm
 
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.Code
 import com.sweak.qralarm.core.storage.database.dao.AlarmsDao
+import com.sweak.qralarm.core.storage.database.dao.CodesDao
 import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -12,7 +14,8 @@ import java.time.DayOfWeek
 import javax.inject.Inject
 
 class AlarmsRepositoryImpl @Inject constructor(
-    private val alarmsDao: AlarmsDao
+    private val alarmsDao: AlarmsDao,
+    private val codesDao: CodesDao
 ) : AlarmsRepository {
 
     override suspend fun addOrEditAlarm(alarm: Alarm): Long {
@@ -41,7 +44,7 @@ class AlarmsRepositoryImpl @Inject constructor(
                 } else 0,
                 areVibrationsEnabled = alarm.areVibrationsEnabled,
                 isUsingCode = alarm.isUsingCode,
-                assignedCode = alarm.assignedCode,
+                assignedCodeId = alarm.assignedCode?.codeId,
                 isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
                 cancelLockDurationInMinutes = alarm.cancelLockDurationInMinutes,
                 isEmergencyTaskEnabled = alarm.isEmergencyTaskEnabled,
@@ -92,6 +95,22 @@ class AlarmsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun setAvailableSnoozes(alarmId: Long, availableSnoozes: Int) {
+        alarmsDao.getAlarm(alarmId = alarmId).firstOrNull()?.let { alarmEntity ->
+            alarmsDao.upsertAlarm(
+                alarmEntity = alarmEntity.copy(numberOfSnoozesLeft = availableSnoozes)
+            )
+        }
+    }
+
+    override suspend fun setAlarmRingtoneUri(alarmId: Long, uri: String?) {
+        alarmsDao.getAlarm(alarmId = alarmId).firstOrNull()?.let { alarmEntity ->
+            alarmsDao.upsertAlarm(
+                alarmEntity = alarmEntity.copy(customRingtoneUriString = uri)
+            )
+        }
+    }
+
     override suspend fun getAlarm(alarmId: Long): Alarm? {
         return alarmsDao.getAlarm(alarmId = alarmId).firstOrNull()?.let { alarmEntity ->
             convertAlarmEntity(alarmEntity = alarmEntity)
@@ -116,7 +135,7 @@ class AlarmsRepositoryImpl @Inject constructor(
         alarmsDao.deleteAlarm(alarmId = alarmId)
     }
 
-    private fun convertAlarmEntity(alarmEntity: AlarmEntity): Alarm {
+    private suspend fun convertAlarmEntity(alarmEntity: AlarmEntity): Alarm {
         val repeatingMode = if (alarmEntity.repeatingAlarmDays != null) {
             Alarm.RepeatingMode.Days(
                 repeatingDaysOfWeek = alarmEntity.repeatingAlarmDays.split(", ").map {
@@ -152,7 +171,7 @@ class AlarmsRepositoryImpl @Inject constructor(
             },
             areVibrationsEnabled = alarmEntity.areVibrationsEnabled,
             isUsingCode = alarmEntity.isUsingCode,
-            assignedCode = alarmEntity.assignedCode,
+            assignedCode = resolveCode(alarmEntity.assignedCodeId),
             isOpenCodeLinkEnabled = alarmEntity.isOpenCodeLinkEnabled,
             cancelLockDurationInMinutes = alarmEntity.cancelLockDurationInMinutes,
             isEmergencyTaskEnabled = alarmEntity.isEmergencyTaskEnabled,
@@ -162,4 +181,9 @@ class AlarmsRepositoryImpl @Inject constructor(
             skipAlarmUntilTimeInMillis = alarmEntity.skipAlarmUntilTimeInMillis
         )
     }
+
+    private suspend fun resolveCode(codeId: Long?): Code? =
+        codeId?.let { id ->
+            codesDao.getCode(id)?.let { Code(codeId = it.codeId, value = it.value, name = it.name) }
+        }
 }

@@ -16,7 +16,7 @@ data class Alarm(
     val alarmVolumeMode: AlarmVolumeMode,
     val areVibrationsEnabled: Boolean,
     val isUsingCode: Boolean,
-    val assignedCode: String?,
+    val assignedCode: Code?,
     val isOpenCodeLinkEnabled: Boolean,
     val cancelLockDurationInMinutes: Int,
     val isEmergencyTaskEnabled: Boolean,

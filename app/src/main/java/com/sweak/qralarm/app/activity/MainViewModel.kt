@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.CodesRepository
 import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import com.sweak.qralarm.core.domain.user.ShouldShowWhatsNew
 import com.sweak.qralarm.core.domain.user.UserDataRepository
@@ -25,6 +26,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val alarmsRepository: AlarmsRepository,
+    private val codesRepository: CodesRepository,
     private val rescheduleAlarms: RescheduleAlarms,
     private val shouldShowWhatsNew: ShouldShowWhatsNew
 ) : ViewModel() {
@@ -38,6 +40,7 @@ class MainViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             rescheduleAlarms(rescheduleAlarmsIfMissedByFiveMinutes = false)
+            codesRepository.migrateLegacyDefaultAlarmCode()
             migrateToNewEmergencyRequiredMatches()
             handleRatePromptTime()
 

@@ -7,6 +7,7 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CanManipulateAlarm
 import com.sweak.qralarm.core.domain.alarm.CopyAlarm
+import com.sweak.qralarm.core.domain.alarm.DeleteAlarm
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
@@ -37,6 +38,7 @@ class HomeViewModel @Inject constructor(
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
     private val canManipulateAlarm: CanManipulateAlarm,
+    private val deleteAlarm: DeleteAlarm,
     private val copyAlarm: CopyAlarm,
     private val filesDir: File
 ): ViewModel() {
@@ -358,8 +360,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
             is HomeScreenUserEvent.DeleteAlarm -> viewModelScope.launch {
-                disableAlarm(alarmId = event.alarmId)
-                alarmsRepository.deleteAlarm(alarmId = event.alarmId)
+                deleteAlarm(alarmId = event.alarmId)
                 File(filesDir, event.alarmId.toString()).apply {
                     if (exists()) delete()
                 }

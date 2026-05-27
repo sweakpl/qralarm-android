@@ -12,4 +12,6 @@ interface AlarmsRepository {
     fun getAlarmFlow(alarmId: Long): Flow<Alarm>
     fun getAllAlarms(): Flow<List<Alarm>>
     suspend fun deleteAlarm(alarmId: Long)
+    suspend fun setAvailableSnoozes(alarmId: Long, availableSnoozes: Int)
+    suspend fun setAlarmRingtoneUri(alarmId: Long, uri: String?)
 }

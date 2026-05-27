@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.sweak.qralarm.core.domain.user.model.Theme
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
@@ -80,18 +81,44 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
-    suspend fun setDefaultAlarmCode(code: String?) {
+    suspend fun getLegacyDefaultAlarmCodeValue(): String? {
+        return dataStore.data.map { preferences ->
+            val code = preferences[DEFAULT_ALARM_CODE]
+            if (code.isNullOrEmpty()) null else code
+        }.first()
+    }
+
+    suspend fun clearLegacyDefaultAlarmCode() {
         dataStore.edit { preferences ->
-            preferences[DEFAULT_ALARM_CODE] = code ?: ""
+            preferences.remove(DEFAULT_ALARM_CODE)
         }
     }
 
-    fun getDefaultAlarmCode(): Flow<String?> {
-        return dataStore.data.map { preferences ->
-            val code = preferences[DEFAULT_ALARM_CODE]
+    suspend fun setDefaultAlarmCodeId(codeId: Long?) {
+        dataStore.edit { preferences ->
+            if (codeId == null) {
+                preferences.remove(DEFAULT_ALARM_CODE_ID)
+            } else {
+                preferences[DEFAULT_ALARM_CODE_ID] = codeId
+            }
+        }
+    }
 
-            if (code.isNullOrEmpty()) return@map null
-            else return@map code
+    fun getDefaultAlarmCodeId(): Flow<Long?> {
+        return dataStore.data.map { preferences ->
+            preferences[DEFAULT_ALARM_CODE_ID]
+        }
+    }
+
+    suspend fun setHasMigratedDefaultAlarmCode(migrated: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[HAS_MIGRATED_DEFAULT_ALARM_CODE] = migrated
+        }
+    }
+
+    fun getHasMigratedDefaultAlarmCode(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[HAS_MIGRATED_DEFAULT_ALARM_CODE] == true
         }
     }
 
@@ -169,6 +196,8 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         val ALARM_MISSED_DETECTED = booleanPreferencesKey("alarmMissedDetected")
         val NEXT_RATE_PROMPT_TIME = longPreferencesKey("nextRatePromptTime")
         val DEFAULT_ALARM_CODE = stringPreferencesKey("defaultAlarmCode")
+        val DEFAULT_ALARM_CODE_ID = longPreferencesKey("defaultAlarmCodeId")
+        val HAS_MIGRATED_DEFAULT_ALARM_CODE = booleanPreferencesKey("hasMigratedDefaultAlarmCode")
         val EMERGENCY_SLIDER_RANGE = byteArrayPreferencesKey("emergencySliderRange")
         val EMERGENCY_REQUIRED_MATCHES = intPreferencesKey("emergencyRequiredMatches")
         val THEME = stringPreferencesKey("theme")

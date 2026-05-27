@@ -252,12 +252,9 @@ class AlarmService : Service() {
     }
 
     private suspend fun resetAvailableSnoozes() {
-        alarmsRepository.addOrEditAlarm(
-            alarm = alarm.copy(
-                snoozeConfig = alarm.snoozeConfig.copy(
-                    numberOfSnoozesLeft = alarm.snoozeConfig.snoozeMode.numberOfSnoozes
-                )
-            )
+        alarmsRepository.setAvailableSnoozes(
+            alarmId = alarm.alarmId,
+            availableSnoozes = alarm.snoozeConfig.snoozeMode.numberOfSnoozes
         )
     }
 

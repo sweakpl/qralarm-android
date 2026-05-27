@@ -6,11 +6,13 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.sweak.qralarm.core.storage.database.dao.AlarmsDao
+import com.sweak.qralarm.core.storage.database.dao.CodesDao
 import com.sweak.qralarm.core.storage.database.model.AlarmEntity
+import com.sweak.qralarm.core.storage.database.model.CodeEntity
 
 @Database(
-    entities = [AlarmEntity::class],
-    version = 9,
+    entities = [AlarmEntity::class, CodeEntity::class],
+    version = 10,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -22,6 +24,7 @@ import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 )
 abstract class QRAlarmDatabase : RoomDatabase() {
     abstract fun alarmsDao(): AlarmsDao
+    abstract fun codesDao(): CodesDao
 
     companion object {
         val MIGRATION_3_4 = object : Migration(3, 4) {
@@ -305,6 +308,131 @@ abstract class QRAlarmDatabase : RoomDatabase() {
                         assignedCode,
                         isOpenCodeLinkEnabled,
                         cancelLockDurationInHours * 60,
+                        isEmergencyTaskEnabled,
+                        alarmLabel,
+                        gentleWakeUpDurationInSeconds,
+                        temporaryMuteDurationInSeconds,
+                        skipAlarmUntilTimeInMillis
+                    FROM alarm
+                    """.trimIndent()
+                )
+
+                db.execSQL("DROP TABLE alarm")
+                db.execSQL("ALTER TABLE alarm_new RENAME TO alarm")
+            }
+        }
+
+        val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Introduces the code table (codeId, value UNIQUE, name) and replaces the raw
+                // assignedCode TEXT column on alarm with an assignedCodeId FK.
+                // Existing distinct code values are seeded into the code table with name = NULL
+                // and alarms point at the matching row via the new FK column.
+
+                db.execSQL(
+                    """
+                    CREATE TABLE code (
+                        codeId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        value TEXT NOT NULL,
+                        name TEXT
+                    )
+                    """.trimIndent()
+                )
+
+                db.execSQL("CREATE UNIQUE INDEX index_code_value ON code(value)")
+
+                db.execSQL(
+                    """
+                    INSERT INTO code (value, name)
+                    SELECT DISTINCT assignedCode, NULL FROM alarm WHERE assignedCode IS NOT NULL
+                    """.trimIndent()
+                )
+
+                db.execSQL(
+                    """
+                    CREATE TABLE alarm_new (
+                        alarmId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        alarmHourOfDay INTEGER NOT NULL,
+                        alarmMinute INTEGER NOT NULL,
+                        isAlarmEnabled INTEGER NOT NULL,
+                        isAlarmRunning INTEGER NOT NULL,
+                        nextAlarmTimeInMillis INTEGER NOT NULL,
+                        repeatingAlarmDays TEXT,
+                        numberOfSnoozes INTEGER NOT NULL,
+                        snoozeDurationInMinutes INTEGER NOT NULL,
+                        numberOfSnoozesLeft INTEGER NOT NULL,
+                        isAlarmSnoozed INTEGER NOT NULL,
+                        nextSnoozedAlarmTimeInMillis INTEGER,
+                        ringtone TEXT NOT NULL,
+                        customRingtoneUriString TEXT,
+                        alarmVolumePercentage INTEGER NOT NULL DEFAULT 0,
+                        areVibrationsEnabled INTEGER NOT NULL,
+                        isUsingCode INTEGER NOT NULL,
+                        assignedCodeId INTEGER,
+                        isOpenCodeLinkEnabled INTEGER NOT NULL DEFAULT FALSE,
+                        cancelLockDurationInMinutes INTEGER NOT NULL DEFAULT 60,
+                        isEmergencyTaskEnabled INTEGER NOT NULL DEFAULT TRUE,
+                        alarmLabel TEXT,
+                        gentleWakeUpDurationInSeconds INTEGER NOT NULL,
+                        temporaryMuteDurationInSeconds INTEGER NOT NULL,
+                        skipAlarmUntilTimeInMillis INTEGER,
+                        FOREIGN KEY(assignedCodeId) REFERENCES code(codeId) ON DELETE SET NULL
+                    )
+                    """.trimIndent()
+                )
+
+                db.execSQL("CREATE INDEX index_alarm_new_assignedCodeId ON alarm_new(assignedCodeId)")
+
+                db.execSQL(
+                    """
+                    INSERT INTO alarm_new (
+                        alarmId,
+                        alarmHourOfDay,
+                        alarmMinute,
+                        isAlarmEnabled,
+                        isAlarmRunning,
+                        nextAlarmTimeInMillis,
+                        repeatingAlarmDays,
+                        numberOfSnoozes,
+                        snoozeDurationInMinutes,
+                        numberOfSnoozesLeft,
+                        isAlarmSnoozed,
+                        nextSnoozedAlarmTimeInMillis,
+                        ringtone,
+                        customRingtoneUriString,
+                        alarmVolumePercentage,
+                        areVibrationsEnabled,
+                        isUsingCode,
+                        assignedCodeId,
+                        isOpenCodeLinkEnabled,
+                        cancelLockDurationInMinutes,
+                        isEmergencyTaskEnabled,
+                        alarmLabel,
+                        gentleWakeUpDurationInSeconds,
+                        temporaryMuteDurationInSeconds,
+                        skipAlarmUntilTimeInMillis
+                    )
+                    SELECT
+                        alarmId,
+                        alarmHourOfDay,
+                        alarmMinute,
+                        isAlarmEnabled,
+                        isAlarmRunning,
+                        nextAlarmTimeInMillis,
+                        repeatingAlarmDays,
+                        numberOfSnoozes,
+                        snoozeDurationInMinutes,
+                        numberOfSnoozesLeft,
+                        isAlarmSnoozed,
+                        nextSnoozedAlarmTimeInMillis,
+                        ringtone,
+                        customRingtoneUriString,
+                        alarmVolumePercentage,
+                        areVibrationsEnabled,
+                        isUsingCode,
+                        (SELECT codeId FROM code WHERE value = alarm.assignedCode),
+                        isOpenCodeLinkEnabled,
+                        cancelLockDurationInMinutes,
                         isEmergencyTaskEnabled,
                         alarmLabel,
                         gentleWakeUpDurationInSeconds,

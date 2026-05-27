@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.room.Room
 import com.sweak.qralarm.core.storage.database.QRAlarmDatabase
 import com.sweak.qralarm.core.storage.database.dao.AlarmsDao
+import com.sweak.qralarm.core.storage.database.dao.CodesDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +32,8 @@ object DatabaseModule {
             .addMigrations(
                 QRAlarmDatabase.MIGRATION_3_4,
                 QRAlarmDatabase.MIGRATION_7_8,
-                QRAlarmDatabase.MIGRATION_8_9
+                QRAlarmDatabase.MIGRATION_8_9,
+                QRAlarmDatabase.MIGRATION_9_10
             )
             .build()
 
@@ -39,4 +41,9 @@ object DatabaseModule {
     fun provideAlarmsDao(
         qrAlarmDatabase: QRAlarmDatabase
     ): AlarmsDao = qrAlarmDatabase.alarmsDao()
+
+    @Provides
+    fun provideCodesDao(
+        qrAlarmDatabase: QRAlarmDatabase
+    ): CodesDao = qrAlarmDatabase.codesDao()
 }

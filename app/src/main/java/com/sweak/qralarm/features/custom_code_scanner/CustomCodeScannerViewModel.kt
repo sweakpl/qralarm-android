@@ -15,6 +15,7 @@ import androidx.camera.lifecycle.awaitInstance
 import androidx.compose.ui.platform.WindowInfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.core.domain.alarm.CodesRepository
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeDetector
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
@@ -36,7 +37,8 @@ import java.util.concurrent.TimeUnit
 @HiltViewModel(assistedFactory = CustomCodeScannerViewModel.Factory::class)
 class CustomCodeScannerViewModel @AssistedInject constructor(
     @Assisted private val shouldScanForDefaultCode: Boolean,
-    private val userDataRepository: UserDataRepository
+    private val userDataRepository: UserDataRepository,
+    private val codesRepository: CodesRepository
 ) : ViewModel() {
 
     @AssistedFactory
@@ -139,7 +141,7 @@ class CustomCodeScannerViewModel @AssistedInject constructor(
             override fun onCodeFound(codeValue: String) {
                 viewModelScope.launch {
                     if (shouldScanForDefaultCode) {
-                        userDataRepository.setDefaultAlarmCode(code = codeValue)
+                        codesRepository.setDefaultAlarmCode(value = codeValue, name = null)
                     } else {
                         userDataRepository.setTemporaryScannedCode(code = codeValue)
                     }

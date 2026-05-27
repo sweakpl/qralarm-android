@@ -2,9 +2,22 @@ package com.sweak.qralarm.core.storage.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "alarm")
+@Entity(
+    tableName = "alarm",
+    foreignKeys = [
+        ForeignKey(
+            entity = CodeEntity::class,
+            parentColumns = ["codeId"],
+            childColumns = ["assignedCodeId"],
+            onDelete = ForeignKey.SET_NULL
+        )
+    ],
+    indices = [Index("assignedCodeId")]
+)
 data class AlarmEntity(
     @PrimaryKey(autoGenerate = true)
     val alarmId: Long = 0,
@@ -24,7 +37,7 @@ data class AlarmEntity(
     @ColumnInfo(defaultValue = "0") val alarmVolumePercentage: Int,
     val areVibrationsEnabled: Boolean,
     val isUsingCode: Boolean,
-    val assignedCode: String?,
+    val assignedCodeId: Long?,
     @ColumnInfo(defaultValue = "FALSE") val isOpenCodeLinkEnabled: Boolean,
     @ColumnInfo(defaultValue = "60") val cancelLockDurationInMinutes: Int,
     @ColumnInfo(defaultValue = "TRUE") val isEmergencyTaskEnabled: Boolean,

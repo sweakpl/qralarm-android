@@ -21,9 +21,6 @@ interface UserDataRepository {
     suspend fun setNextRatePromptTimeInMillis(promptTime: Long)
     val nextRatePromptTimeInMillis: Flow<Long?>
 
-    suspend fun setDefaultAlarmCode(code: String?)
-    val defaultAlarmCode: Flow<String?>
-
     suspend fun setEmergencySliderRange(range: IntRange)
     val emergencySliderRange: Flow<IntRange>
 

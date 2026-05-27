@@ -169,7 +169,7 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
                         if (alarm.assignedCode == null) {
                             disableAlarm(codeValue)
                         } else {
-                            if (codeValue == alarm.assignedCode) {
+                            if (codeValue == alarm.assignedCode?.value) {
                                 disableAlarm(codeValue)
                             } else {
                                 showIncorrectCodeWarning()
