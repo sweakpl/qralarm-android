@@ -3,6 +3,7 @@ package com.sweak.qralarm.features.add_edit_alarm
 import android.net.Uri
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
+import com.sweak.qralarm.core.ui.model.Code
 
 sealed class AddEditAlarmFlowUserEvent {
 
@@ -59,11 +60,13 @@ sealed class AddEditAlarmFlowUserEvent {
         data class VibrationsEnabledChanged(val areEnabled: Boolean) : AddEditAlarmScreenUserEvent()
         data class CodeEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()
         data class AssignCodeDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
+        data class EditCodeNameDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
         data object TryScanSpecificCode : AddEditAlarmScreenUserEvent()
         data class CameraPermissionDeniedDialogVisible(
             val isVisible: Boolean
         ) : AddEditAlarmScreenUserEvent()
-        data class CodeChosenFromList(val code: String) : AddEditAlarmScreenUserEvent()
+        data class CodeChosenFromList(val code: Code) : AddEditAlarmScreenUserEvent()
+        data class CodeNameEdited(val newName: String?) : AddEditAlarmScreenUserEvent()
         data object ClearAssignedCode : AddEditAlarmScreenUserEvent()
         data object GoToApplicationSettingsClicked : AddEditAlarmScreenUserEvent()
         data class AlarmLabelChanged(val newAlarmLabel: String) : AddEditAlarmScreenUserEvent()

@@ -34,6 +34,7 @@ import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.PhonelinkLock
 import androidx.compose.material.icons.outlined.PlayArrow
+import androidx.compose.material.icons.outlined.QrCode
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material.icons.outlined.SecurityUpdateGood
 import androidx.compose.material.icons.outlined.SettingsSuggest
@@ -63,6 +64,7 @@ object QRAlarmIcons {
     val Stop = Icons.Outlined.Stop
     val Edit = Icons.Outlined.Edit
     val More = Icons.Outlined.MoreVert
+    val QrCode = Icons.Outlined.QrCode
     val QrCodeScanner = Icons.Outlined.QrCodeScanner
     val Delete = Icons.Outlined.Delete
     val Camera = Icons.Outlined.CameraAlt

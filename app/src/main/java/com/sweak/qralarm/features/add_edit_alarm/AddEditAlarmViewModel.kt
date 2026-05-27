@@ -8,9 +8,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.core.domain.alarm.AddOrEditAlarm
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.CodesRepository
+import com.sweak.qralarm.core.domain.alarm.DeleteAlarm
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
@@ -21,9 +24,11 @@ import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeat
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.SAT_SUN
+import com.sweak.qralarm.core.ui.model.Code
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
+import com.sweak.qralarm.core.domain.alarm.Code as DomainCode
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -53,7 +58,10 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     private val alarmRingtonePlayer: AlarmRingtonePlayer,
     private val userDataRepository: UserDataRepository,
     private val alarmsRepository: AlarmsRepository,
+    private val codesRepository: CodesRepository,
     private val qrAlarmManager: QRAlarmManager,
+    private val addOrEditAlarm: AddOrEditAlarm,
+    private val deleteAlarm: DeleteAlarm,
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
     private val contentResolver: ContentResolver,
@@ -86,18 +94,9 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 _state.update { savedState }
                 launchedFromSavedState = true
             } else {
-                val allSavedAlarmCodes = alarmsRepository.getAllAlarms()
-                    .map { alarms ->
-                        alarms
-                            .mapNotNull { alarm -> alarm.assignedCode }
-                            .let { codes ->
-                                userDataRepository.defaultAlarmCode.first()?.let {
-                                    codes + it
-                                } ?: codes
-                            }
-                            .distinct()
-                    }
+                val allSavedAlarmCodes = codesRepository.getCodesFlow()
                     .first()
+                    .map { Code(id = it.codeId, value = it.value, name = it.name) }
 
                 if (idOfAlarm == 0L) {
                     val dateTime = ZonedDateTime.now()
@@ -139,7 +138,9 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                             areVibrationsEnabled = alarm.areVibrationsEnabled,
                             isCodeEnabled = alarm.isUsingCode,
                             previouslySavedCodes = allSavedAlarmCodes,
-                            currentlyAssignedCode = alarm.assignedCode,
+                            currentlyAssignedCode = alarm.assignedCode?.let {
+                                Code(id = it.codeId, value = it.value, name = it.name)
+                            },
                             isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
                             cancelLockDurationInMinutes = alarm.cancelLockDurationInMinutes,
                             isEmergencyTaskEnabled = alarm.isEmergencyTaskEnabled,
@@ -154,8 +155,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
         viewModelScope.launch {
             userDataRepository.setTemporaryScannedCode(
-                if (launchedFromSavedState) state.value.temporaryAssignedCode
-                else if (idOfAlarm == 0L) userDataRepository.defaultAlarmCode.first()
+                if (launchedFromSavedState) state.value.temporaryAssignedCode?.value
+                else if (idOfAlarm == 0L) codesRepository.getDefaultAlarmCodeFlow().first()?.value
                 else null
             )
 
@@ -164,12 +165,19 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     launchedFromSavedState = false
                     initialDefaultCodeUpdate = false
                 } else {
-                    if (temporaryScannedCode != state.value.temporaryAssignedCode) {
+                    if (temporaryScannedCode != state.value.temporaryAssignedCode?.value) {
                         hasUnsavedChanges = true
                     }
 
+                    val existingCode = state.value.previouslySavedCodes
+                        .find { it.value == temporaryScannedCode }
+
                     _state.update { currentState ->
-                        currentState.copy(temporaryAssignedCode = temporaryScannedCode)
+                        currentState.copy(
+                            temporaryAssignedCode = temporaryScannedCode?.let {
+                                Code(id = existingCode?.id ?: 0L, value = it, name = existingCode?.name)
+                            }
+                        )
                     }
 
                     if (temporaryScannedCode != null && !initialDefaultCodeUpdate) {
@@ -489,13 +497,31 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     currentState.copy(isAssignCodeDialogVisible = event.isVisible)
                 }
             }
+            is AddEditAlarmScreenUserEvent.EditCodeNameDialogVisible -> {
+                _state.update { currentState ->
+                    currentState.copy(isEditCodeNameDialogVisible = event.isVisible)
+                }
+            }
+            is AddEditAlarmScreenUserEvent.CodeNameEdited -> {
+                hasUnsavedChanges = true
+                _state.update { currentState ->
+                    val updatedCode = (currentState.temporaryAssignedCode
+                        ?: currentState.currentlyAssignedCode)?.copy(name = event.newName)
+                    currentState.copy(
+                        temporaryAssignedCode = if (currentState.temporaryAssignedCode != null) updatedCode
+                            else currentState.temporaryAssignedCode,
+                        currentlyAssignedCode = if (currentState.temporaryAssignedCode == null) updatedCode
+                            else currentState.currentlyAssignedCode
+                    )
+                }
+            }
             is AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
                 _state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
             }
             is AddEditAlarmScreenUserEvent.CodeChosenFromList -> viewModelScope.launch {
-                userDataRepository.setTemporaryScannedCode(code = event.code)
+                userDataRepository.setTemporaryScannedCode(code = event.code.value)
 
                 _state.update { currentState ->
                     currentState.copy(isAssignCodeDialogVisible = false)
@@ -597,8 +623,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.DeleteAlarm -> viewModelScope.launch {
-                disableAlarm(alarmId = idOfAlarm)
-                alarmsRepository.deleteAlarm(alarmId = idOfAlarm)
+                deleteAlarm(alarmId = idOfAlarm)
                 File(filesDir, idOfAlarm.toString()).apply {
                     if (exists()) delete()
                 }
@@ -698,8 +723,10 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 },
                 areVibrationsEnabled = currentState.areVibrationsEnabled,
                 isUsingCode = currentState.isCodeEnabled,
-                assignedCode = currentState.temporaryAssignedCode
-                    ?: currentState.currentlyAssignedCode,
+                assignedCode = (currentState.temporaryAssignedCode
+                    ?: currentState.currentlyAssignedCode)?.let {
+                    DomainCode(codeId = it.id, value = it.value, name = it.name)
+                },
                 isOpenCodeLinkEnabled = currentState.isOpenCodeLinkEnabled,
                 cancelLockDurationInMinutes = currentState.cancelLockDurationInMinutes,
                 isEmergencyTaskEnabled = currentState.isEmergencyTaskEnabled,
@@ -709,18 +736,23 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 skipAlarmUntilTimeInMillis = null
             )
 
-            val alarmId = alarmsRepository.addOrEditAlarm(alarm = alarmToSave).run {
+            val alarmId = addOrEditAlarm(alarm = alarmToSave).run {
                 if (this > 0) this else idOfAlarm
             }
 
             if (currentState.temporaryCustomAlarmRingtoneUri != null) {
-                val savedLocalAlarmSoundUri = try {
-                    withContext(Dispatchers.IO) {
+                try {
+                    val savedLocalAlarmSoundUri = withContext(Dispatchers.IO) {
                         copyUriContentToLocalStorage(
                             uri = currentState.temporaryCustomAlarmRingtoneUri,
                             alarmId = alarmId
                         )
                     }
+
+                    alarmsRepository.setAlarmRingtoneUri(
+                        alarmId = alarmId,
+                        uri = savedLocalAlarmSoundUri.toString()
+                    )
                 } catch (exception: Exception) {
                     if (exception is IOException ||
                         exception is SecurityException ||
@@ -734,13 +766,6 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         throw exception
                     }
                 }
-
-                alarmsRepository.addOrEditAlarm(
-                    alarm = alarmToSave.copy(
-                        alarmId = alarmId,
-                        customRingtoneUriString = savedLocalAlarmSoundUri.toString()
-                    )
-                )
             }
 
             qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)

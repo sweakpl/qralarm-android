@@ -14,23 +14,23 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sweak.qralarm.R
-import com.sweak.qralarm.core.designsystem.component.QRAlarmComboBox
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.components.NamedCodePicker
+import com.sweak.qralarm.core.ui.model.Code
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AssignCodeBottomSheet(
     onScanCodeClicked: () -> Unit,
-    availableCodes: List<String>,
-    onChooseCodeFromList: (code: String) -> Unit,
+    availableCodes: List<Code>,
+    onChooseCodeFromList: (code: Code) -> Unit,
     onDismissRequest: () -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -83,21 +83,9 @@ fun AssignCodeBottomSheet(
                             )
                     )
 
-                    val resources = LocalResources.current
-
-                    QRAlarmComboBox(
-                        menuItems = listOf(
-                            resources.getString(R.string.click_to_choose),
-                            *availableCodes.toTypedArray()
-                        ),
-                        selectedIndex = 0,
-                        onMenuItemClick = { index ->
-                            if (index != 0) {
-                                availableCodes.getOrNull(index - 1)?.let {
-                                    onChooseCodeFromList(it)
-                                }
-                            }
-                        }
+                    NamedCodePicker(
+                        availableCodes = availableCodes,
+                        onCodeChosen = onChooseCodeFromList
                     )
                 }
             }
@@ -111,7 +99,10 @@ private fun AssignCodeBottomSheetPreview() {
     QRAlarmTheme {
         AssignCodeBottomSheet(
             onScanCodeClicked = {},
-            availableCodes = listOf("StopAlarm", "472839472890421341"),
+            availableCodes = listOf(
+                Code(value = "StopAlarm", name = "Stop alarm code"),
+                Code(value = "472839472890421341")
+            ),
             onChooseCodeFromList = {},
             onDismissRequest = {}
         )

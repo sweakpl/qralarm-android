@@ -13,6 +13,7 @@ import com.sweak.qralarm.core.domain.alarm.DEFAULT_GENTLE_WAKE_UP_DURATION_IN_SE
 import com.sweak.qralarm.core.domain.alarm.DEFAULT_SNOOZE_NUMBER_TO_DURATION_PAIR
 import com.sweak.qralarm.core.domain.alarm.DEFAULT_TEMPORARY_MUTE_DURATION_IN_SECONDS
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
+import com.sweak.qralarm.core.ui.model.Code
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -39,11 +40,12 @@ data class AddEditAlarmFlowState(
     val areVibrationsEnabled: Boolean = true,
     val isCodeEnabled: Boolean = true,
     val isAssignCodeDialogVisible: Boolean = false,
-    val previouslySavedCodes: List<String> = emptyList(),
+    val isEditCodeNameDialogVisible: Boolean = false,
+    val previouslySavedCodes: List<Code> = emptyList(),
     val isCameraPermissionDeniedDialogVisible: Boolean = false,
     val isNotificationsPermissionDeniedDialogVisible: Boolean = false,
-    val currentlyAssignedCode: String? = null,
-    val temporaryAssignedCode: String? = null,
+    val currentlyAssignedCode: Code? = null,
+    val temporaryAssignedCode: Code? = null,
     val isOpenCodeLinkEnabled: Boolean = false,
     val cancelLockDurationInMinutes: Int = DEFAULT_CANCEL_LOCK_DURATION_IN_MINUTES,
     val availableCancelLockDurationsInMinutes: List<Int> =
