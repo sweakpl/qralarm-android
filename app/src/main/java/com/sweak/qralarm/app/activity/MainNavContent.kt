@@ -15,6 +15,7 @@ import com.sweak.qralarm.core.navigation.SharedViewModelStoreNavEntryDecorator
 import com.sweak.qralarm.core.navigation.routes.AddEditAlarmRoute
 import com.sweak.qralarm.core.navigation.routes.AdvancedAlarmSettingsRoute
 import com.sweak.qralarm.core.navigation.routes.AlarmsChainSettingsRoute
+import com.sweak.qralarm.core.navigation.routes.CodesManagementRoute
 import com.sweak.qralarm.core.navigation.routes.CustomCodeScannerRoute
 import com.sweak.qralarm.core.navigation.routes.DisableAlarmScannerRoute
 import com.sweak.qralarm.core.navigation.routes.EmergencyRoute
@@ -39,6 +40,7 @@ import com.sweak.qralarm.features.disable_alarm_scanner.DisableAlarmScannerScree
 import com.sweak.qralarm.features.emergency.settings.EmergencySettingsScreen
 import com.sweak.qralarm.features.emergency.task.EmergencyScreen
 import com.sweak.qralarm.features.home.HomeScreen
+import com.sweak.qralarm.features.codes_management.CodesManagementScreen
 import com.sweak.qralarm.features.menu.MenuScreen
 import com.sweak.qralarm.features.onboarding.OnboardingScreen
 import com.sweak.qralarm.features.optimization.OptimizationScreen
@@ -180,10 +182,17 @@ fun MainNavContent(
                 onEmergencyTaskSettingsClicked = { navigator.navigate(EmergencySettingsRoute) },
                 onQRAlarmProClicked = { navigator.navigate(QRAlarmProRoute) },
                 onRateQRAlarmClicked = { navigator.navigate(RateRoute) },
+                onCodesManagementClicked = { navigator.navigate(CodesManagementRoute) },
+                onThemeClicked = { navigator.navigate(ThemeRoute) }
+            )
+        }
+
+        entry<CodesManagementRoute> {
+            CodesManagementScreen(
+                onBackClicked = { navigator.goBack() },
                 onScanDefaultCodeClicked = {
                     navigator.navigate(CustomCodeScannerRoute(shouldScanForDefaultCode = true))
-                },
-                onThemeClicked = { navigator.navigate(ThemeRoute) }
+                }
             )
         }
 

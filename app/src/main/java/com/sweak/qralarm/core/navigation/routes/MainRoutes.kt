@@ -44,3 +44,6 @@ data object ThemeRoute : NavKey
 
 @Serializable
 data object MenuRoute : NavKey
+
+@Serializable
+data object CodesManagementRoute : NavKey
