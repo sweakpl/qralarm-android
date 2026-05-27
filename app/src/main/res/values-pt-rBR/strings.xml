@@ -169,8 +169,6 @@
     <string name="incorrect_code_scanned">Código incorreto escaneado!</string>
     <string name="copy_alarm">Copiar alarme</string>
     <string name="default_alarm_code">Código padrão do alarme</string>
-    <string name="no_assigned_code">Nenhum código atribuído</string>
-    <string name="default_alarm_code_description">Defina o código que será usado automaticamente em novos alarmes:</string>
     <string name="clear_default_code">Limpar código padrão</string>
     <string name="keep_ringer_on">Manter toque ativo</string>
     <string name="keep_ringer_on_description">Impede que os modos silencioso/vibração interrompam o som do alarme.</string>

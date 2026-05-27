@@ -163,8 +163,6 @@
     <string name="incorrect_code_scanned">Onjuiste code gescand!</string>
     <string name="copy_alarm">Kopieer alarm</string>
     <string name="default_alarm_code">Standaard alarmcode</string>
-    <string name="no_assigned_code">Geen toegewezen code</string>
-    <string name="default_alarm_code_description">Stel de code in die automatisch wordt gebruikt voor alle nieuw aangemaakte alarmen:</string>
     <string name="clear_default_code">Standaardcode wissen</string>
     <string name="keep_ringer_on">Beltoon aanhouden</string>
     <string name="keep_ringer_on_description">Sta geen stille/trilstand beltonen toe die het alarmsignaal kunnen verstoren.</string>

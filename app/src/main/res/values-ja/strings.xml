@@ -143,8 +143,6 @@
     <string name="incorrect_code_scanned">間違ったコードをスキャンしました！</string>
     <string name="copy_alarm">アラームをコピー</string>
     <string name="default_alarm_code">デフォルトのアラームコード</string>
-    <string name="no_assigned_code">コードが未割り当て</string>
-    <string name="default_alarm_code_description">新しく作成されるアラームに自動で使用されるコードを設定：</string>
     <string name="clear_default_code">デフォルトコードをクリア</string>
     <string name="keep_ringer_on">着信音をオンに保つ</string>
     <string name="keep_ringer_on_description">無音/バイブレーションモードを許可せず、アラーム音を妨げないようにします。</string>

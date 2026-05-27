@@ -175,8 +175,6 @@
     <string name="incorrect_code_scanned">Неверный код отсканирован!</string>
     <string name="copy_alarm">Копировать будильник</string>
     <string name="default_alarm_code">Код будильника по умолчанию</string>
-    <string name="no_assigned_code">Код не назначен</string>
-    <string name="default_alarm_code_description">Установите код, который будет автоматически использоваться для всех новых будильников:</string>
     <string name="clear_default_code">Очистить код по умолчанию</string>
     <string name="keep_ringer_on">Сохранять звук</string>
     <string name="keep_ringer_on_description">Не допускайте беззвучного/вибрационного режима, который может нарушить звук будильника.</string>

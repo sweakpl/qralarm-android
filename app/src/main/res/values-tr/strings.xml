@@ -163,8 +163,6 @@
     <string name="incorrect_code_scanned">Yanlış kod tarandı!</string>
     <string name="copy_alarm">Alarmı kopyala</string>
     <string name="default_alarm_code">Varsayılan alarm kodu</string>
-    <string name="no_assigned_code">Atanmış kod yok</string>
-    <string name="default_alarm_code_description">Yeni oluşturulan tüm alarmlar için otomatik olarak kullanılacak kodu ayarlayın:</string>
     <string name="clear_default_code">Varsayılan kodu temizle</string>
     <string name="keep_ringer_on">Zil sesini açık tut</string>
     <string name="keep_ringer_on_description">Alarm sesini kesintiye uğratabilecek sessiz/titreşimli zil modu seçeneklerine izin verme.</string>

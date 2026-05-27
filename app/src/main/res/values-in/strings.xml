@@ -157,8 +157,6 @@
     <string name="incorrect_code_scanned">Kode yang dipindai salah!</string>
     <string name="copy_alarm">Salin alarm</string>
     <string name="default_alarm_code">Kode alarm default</string>
-    <string name="no_assigned_code">Tidak ada kode yang ditetapkan</string>
-    <string name="default_alarm_code_description">Atur kode yang akan otomatis digunakan untuk semua alarm baru yang dibuat:</string>
     <string name="clear_default_code">Hapus kode default</string>
     <string name="keep_ringer_on">Jaga dering tetap aktif</string>
     <string name="keep_ringer_on_description">Jangan izinkan mode dering senyap/getar yang bisa mengganggu suara alarm.</string>

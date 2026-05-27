@@ -218,8 +218,6 @@
     <string name="incorrect_code_scanned">잘못된 코드가 스캔되었습니다!</string>
     <string name="copy_alarm">알람 복사</string>
     <string name="default_alarm_code">기본 알람 코드</string>
-    <string name="no_assigned_code">할당된 코드 없음</string>
-    <string name="default_alarm_code_description">새로 생성된 모든 알람에 자동으로 사용할 코드를 설정하십시오:</string>
     <string name="clear_default_code">기본 코드 삭제</string>
     <string name="keep_ringer_on">벨소리 유지</string>
     <string name="keep_ringer_on_description">알람 소리를 방해할 수 있는 무음/진동 모드를 허용하지 않음.</string>

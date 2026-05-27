@@ -157,8 +157,6 @@
     <string name="incorrect_code_scanned">此码不匹配！</string>
     <string name="copy_alarm">复制此闹钟</string>
     <string name="default_alarm_code">默认二维码/条形码</string>
-    <string name="no_assigned_code">未录入</string>
-    <string name="default_alarm_code_description">新建闹钟后自动使用此条码（若有）：</string>
     <string name="clear_default_code">清除默认条码</string>
     <string name="keep_ringer_on">保持响铃</string>
     <string name="keep_ringer_on_description">禁止使用静音/振动响铃模式，以防止中断闹钟响铃。</string>

@@ -200,8 +200,6 @@
     <string name="incorrect_code_scanned">Incorrect code scanned!</string>
     <string name="copy_alarm">Copy alarm</string>
     <string name="default_alarm_code">Default alarm code</string>
-    <string name="no_assigned_code">No assigned code</string>
-    <string name="default_alarm_code_description">Set the code that will be automatically used for all newly created alarms:</string>
     <string name="clear_default_code">Clear default code</string>
     <string name="codes_management">Codes management</string>
     <string name="codes_management_description">All codes used across your alarms. The default code is applied automatically to newly created alarms.</string>
