@@ -59,6 +59,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -78,6 +79,7 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
+import com.sweak.qralarm.core.ui.components.EditCodeNameBottomSheet
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.components.NavigationButton
 import com.sweak.qralarm.core.ui.components.ToggleSetting
@@ -623,34 +625,54 @@ private fun AddEditAlarmScreenContent(
                                             Row(
                                                 horizontalArrangement = Arrangement.SpaceBetween,
                                                 verticalAlignment = Alignment.CenterVertically,
-                                                modifier = Modifier.fillMaxWidth()
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(all = MaterialTheme.space.medium)
                                             ) {
-                                                Column(modifier = Modifier.weight(1f)) {
-                                                    Text(
-                                                        text = stringResource(R.string.code_assigned),
-                                                        style = MaterialTheme.typography.titleMedium,
-                                                        modifier = Modifier
-                                                            .padding(
-                                                                start = MaterialTheme.space.medium,
-                                                                top = MaterialTheme.space.medium,
-                                                                end = MaterialTheme.space.medium,
-                                                                bottom = MaterialTheme.space.xSmall
+                                                Column(
+                                                    modifier = Modifier
+                                                        .weight(1f)
+                                                        .padding(end = MaterialTheme.space.smallMedium)
+                                                ) {
+                                                    Row(
+                                                        verticalAlignment = Alignment.CenterVertically,
+                                                        horizontalArrangement = Arrangement.spacedBy(
+                                                            MaterialTheme.space.small
+                                                        )
+                                                    ) {
+                                                        Icon(
+                                                            imageVector = QRAlarmIcons.QrCode,
+                                                            contentDescription = stringResource(
+                                                                R.string.content_description_qr_code_icon
+                                                            ),
+                                                            modifier = Modifier.size(
+                                                                MaterialTheme.space.mediumLarge
                                                             )
-                                                    )
+                                                        )
+
+                                                        val effectiveCode =
+                                                            state.temporaryAssignedCode
+                                                                ?: state.currentlyAssignedCode
+
+                                                        Text(
+                                                            text = effectiveCode?.name
+                                                                ?: stringResource(R.string.code_assigned),
+                                                            style = MaterialTheme.typography.titleMedium
+                                                        )
+                                                    }
 
                                                     Text(
                                                         text = stringResource(
                                                             R.string.current_code,
-                                                            state.temporaryAssignedCode
-                                                                ?: state.currentlyAssignedCode ?: ""
+                                                            state.temporaryAssignedCode?.value
+                                                                ?: state.currentlyAssignedCode?.value ?: ""
                                                         ),
                                                         style = MaterialTheme.typography.labelMedium,
-                                                        modifier = Modifier
-                                                            .padding(
-                                                                start = MaterialTheme.space.medium,
-                                                                end = MaterialTheme.space.medium,
-                                                                bottom = MaterialTheme.space.medium
-                                                            )
+                                                        maxLines = 1,
+                                                        overflow = TextOverflow.Ellipsis,
+                                                        modifier = Modifier.padding(
+                                                            top = MaterialTheme.space.xSmall
+                                                        )
                                                     )
                                                 }
 
@@ -679,16 +701,53 @@ private fun AddEditAlarmScreenContent(
                                                             text = {
                                                                 Text(
                                                                     text = stringResource(
+                                                                        R.string.edit_code_name
+                                                                    ),
+                                                                    style =
+                                                                        MaterialTheme.typography.labelMedium
+                                                                )
+                                                            },
+                                                            leadingIcon = {
+                                                                Icon(
+                                                                    imageVector = QRAlarmIcons.Edit,
+                                                                    contentDescription = stringResource(
+                                                                        R.string.content_description_edit_icon
+                                                                    )
+                                                                )
+                                                            },
+                                                            onClick = {
+                                                                expanded = false
+                                                                onEvent(
+                                                                    AddEditAlarmScreenUserEvent
+                                                                        .EditCodeNameDialogVisible(
+                                                                            isVisible = true
+                                                                        )
+                                                                )
+                                                            },
+                                                            colors = with(MaterialTheme) {
+                                                                if (isQRAlarmTheme)
+                                                                    MenuDefaults.itemColors(
+                                                                        textColor = colorScheme.onSurface,
+                                                                        leadingIconColor = colorScheme.onSurface
+                                                                    )
+                                                                else MenuDefaults.itemColors()
+                                                            }
+                                                        )
+
+                                                        DropdownMenuItem(
+                                                            text = {
+                                                                Text(
+                                                                    text = stringResource(
                                                                         R.string.assign_new_code
                                                                     ),
                                                                     style =
-                                                                    MaterialTheme.typography.labelMedium
+                                                                        MaterialTheme.typography.labelMedium
                                                                 )
                                                             },
                                                             leadingIcon = {
                                                                 Icon(
                                                                     imageVector =
-                                                                    QRAlarmIcons.QrCodeScanner,
+                                                                        QRAlarmIcons.QrCodeScanner,
                                                                     contentDescription = stringResource(
                                                                         R.string.content_description_qr_code_scanner_icon
                                                                     )
@@ -708,7 +767,7 @@ private fun AddEditAlarmScreenContent(
                                                                     }
                                                                 )
                                                             },
-                                                            colors = with (MaterialTheme) {
+                                                            colors = with(MaterialTheme) {
                                                                 if (isQRAlarmTheme)
                                                                     MenuDefaults.itemColors(
                                                                         textColor = colorScheme.onSurface,
@@ -1149,6 +1208,17 @@ private fun AddEditAlarmScreenContent(
             },
             onDismissRequest = {
                 onEvent(AddEditAlarmScreenUserEvent.AssignCodeDialogVisible(isVisible = false))
+            }
+        )
+    }
+
+    if (state.isEditCodeNameDialogVisible) {
+        EditCodeNameBottomSheet(
+            initialCodeName = state.temporaryAssignedCode?.name
+                ?: state.currentlyAssignedCode?.name,
+            onDismissRequest = { newName ->
+                onEvent(AddEditAlarmScreenUserEvent.CodeNameEdited(newName = newName))
+                onEvent(AddEditAlarmScreenUserEvent.EditCodeNameDialogVisible(isVisible = false))
             }
         )
     }
