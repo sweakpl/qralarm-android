@@ -68,18 +68,6 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
-    suspend fun setNextRatePromptTimeInMillis(promptTime: Long) {
-        dataStore.edit { preferences ->
-            preferences[NEXT_RATE_PROMPT_TIME] = promptTime
-        }
-    }
-
-    fun getNextRatePromptTimeInMillis(): Flow<Long?> {
-        return dataStore.data.map { preferences ->
-            preferences[NEXT_RATE_PROMPT_TIME]
-        }
-    }
-
     suspend fun setDefaultAlarmCode(code: String?) {
         dataStore.edit { preferences ->
             preferences[DEFAULT_ALARM_CODE] = code ?: ""
@@ -167,7 +155,6 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         val OPTIMIZATION_GUIDE_STATE = stringPreferencesKey("optimizationGuideState")
         val INTRODUCTION_FINISHED = booleanPreferencesKey("introductionFinished")
         val ALARM_MISSED_DETECTED = booleanPreferencesKey("alarmMissedDetected")
-        val NEXT_RATE_PROMPT_TIME = longPreferencesKey("nextRatePromptTime")
         val DEFAULT_ALARM_CODE = stringPreferencesKey("defaultAlarmCode")
         val EMERGENCY_SLIDER_RANGE = byteArrayPreferencesKey("emergencySliderRange")
         val EMERGENCY_REQUIRED_MATCHES = intPreferencesKey("emergencyRequiredMatches")

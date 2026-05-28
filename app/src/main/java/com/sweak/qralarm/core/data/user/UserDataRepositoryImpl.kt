@@ -50,13 +50,6 @@ class UserDataRepositoryImpl @Inject constructor(
             it == true
         }
 
-    override suspend fun setNextRatePromptTimeInMillis(promptTime: Long) {
-        qrAlarmPreferencesDataSource.setNextRatePromptTimeInMillis(promptTime = promptTime)
-    }
-
-    override val nextRatePromptTimeInMillis: Flow<Long?>
-        get() = qrAlarmPreferencesDataSource.getNextRatePromptTimeInMillis()
-
     override suspend fun setDefaultAlarmCode(code: String?) {
         qrAlarmPreferencesDataSource.setDefaultAlarmCode(code = code)
     }

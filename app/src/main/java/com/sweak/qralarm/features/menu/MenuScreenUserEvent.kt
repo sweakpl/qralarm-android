@@ -6,6 +6,7 @@ sealed class MenuScreenUserEvent {
     data object OnEmergencyTaskSettingsClicked : MenuScreenUserEvent()
     data object OnQRAlarmProClicked : MenuScreenUserEvent()
     data object OnRateQRAlarmClicked : MenuScreenUserEvent()
+    data object OnContactSupportClicked : MenuScreenUserEvent()
     data class AssignDefaultCodeDialogVisible(val isVisible: Boolean) : MenuScreenUserEvent()
     data object TryScanSpecificDefaultCode : MenuScreenUserEvent()
     data class DefaultCodeChosenFromList(val code: String) : MenuScreenUserEvent()

@@ -37,9 +37,6 @@ data class CustomCodeScannerRoute(val shouldScanForDefaultCode: Boolean) : NavKe
 data object QRAlarmProRoute : NavKey
 
 @Serializable
-data object RateRoute : NavKey
-
-@Serializable
 data object ThemeRoute : NavKey
 
 @Serializable

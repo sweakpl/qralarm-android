@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,7 +38,6 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             rescheduleAlarms(rescheduleAlarmsIfMissedByFiveMinutes = false)
             migrateToNewEmergencyRequiredMatches()
-            handleRatePromptTime()
 
             _state.update { currentState ->
                 currentState.copy(
@@ -69,20 +67,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleRatePromptTime() {
-        val nextRatePromptTimeInMillis = ZonedDateTime.now().plusDays(7).toInstant().toEpochMilli()
-
-        if (userDataRepository.nextRatePromptTimeInMillis.first() == null) {
-            userDataRepository.setNextRatePromptTimeInMillis(
-                promptTime = nextRatePromptTimeInMillis
-            )
-        }
-
-        _state.update { currentState ->
-            currentState.copy(rateQRAlarmPromptTimeInMillis = nextRatePromptTimeInMillis)
-        }
-    }
-
     fun onEvent(event: MainActivityUserEvent) {
         when (event) {
             is MainActivityUserEvent.ObserveActiveAlarms -> viewModelScope.launch {
@@ -103,15 +87,6 @@ class MainViewModel @Inject constructor(
                                 alarmId = activeAlarm.alarmId
                             )
                         )
-                    }
-                }
-            }
-            is MainActivityUserEvent.OnAlarmSaved -> {
-                state.value.rateQRAlarmPromptTimeInMillis?.let {
-                    if (it != 0L && it <= System.currentTimeMillis()) {
-                        viewModelScope.launch {
-                            backendEventsChannel.send(MainActivityBackendEvent.ShowRatePrompt)
-                        }
                     }
                 }
             }

@@ -143,12 +143,7 @@
     <string name="enter_your_alarm_label">Alarm etiketinizi girin…</string>
     <string name="open_code_link">Kod bağlantısını aç</string>
     <string name="open_code_link_description">Eğer kod geçerli bir URL içeriyorsa, uygulama tarama üzerine otomatik olarak açacaktır.</string>
-    <string name="do_you_enjoy_qralarm">QRAlarm\'ı sevdiniz mi? 🚀 ⏰</string>
-    <string name="im_working_hard">Sabahlarınızı olabildiğince sorunsuz hale getirmek için çok çalışıyorum! 🙂</string>
-    <string name="i_love_it_rate_me">Bayıldım - puan ver! ❤️</string>
-    <string name="did_something_go_wrong">Bir şeyler ters mi gitti?\nDüzeltmek için birlikte çalışabiliriz!</string>
     <string name="tell_me_what_is_wrong">Sorunun ne olduğunu bana söyle</string>
-    <string name="do_not_show_again">Bu ekranı bir daha gösterme.</string>
     <string name="rate_qralarm">QRAlarm\'ı Puanla</string>
     <string name="previous">Önceki</string>
     <string name="scan_code">Kodu tara</string>

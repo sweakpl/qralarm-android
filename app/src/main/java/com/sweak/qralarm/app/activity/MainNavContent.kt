@@ -25,7 +25,6 @@ import com.sweak.qralarm.core.navigation.routes.MenuRoute
 import com.sweak.qralarm.core.navigation.routes.OnboardingRoute
 import com.sweak.qralarm.core.navigation.routes.OptimizationRoute
 import com.sweak.qralarm.core.navigation.routes.QRAlarmProRoute
-import com.sweak.qralarm.core.navigation.routes.RateRoute
 import com.sweak.qralarm.core.navigation.routes.SpecialAlarmSettingsRoute
 import com.sweak.qralarm.core.navigation.routes.ThemeRoute
 import com.sweak.qralarm.core.navigation.toEntries
@@ -43,7 +42,6 @@ import com.sweak.qralarm.features.menu.MenuScreen
 import com.sweak.qralarm.features.onboarding.OnboardingScreen
 import com.sweak.qralarm.features.optimization.OptimizationScreen
 import com.sweak.qralarm.features.qralarm_pro.QRAlarmProScreen
-import com.sweak.qralarm.features.rate.RateScreen
 import com.sweak.qralarm.features.theme.ThemeScreen
 
 private const val ADD_EDIT_ALARM_CONTENT_KEY = "AddEditAlarm"
@@ -52,8 +50,7 @@ private const val ADD_EDIT_ALARM_CONTENT_KEY = "AddEditAlarm"
 fun MainNavContent(
     navigationState: NavigationState,
     navigator: Navigator,
-    onOnboardingFinished: () -> Unit,
-    onAlarmSaved: () -> Unit
+    onOnboardingFinished: () -> Unit
 ) {
     val mainEntryProvider = entryProvider {
         entry<AddEditAlarmRoute>(
@@ -67,10 +64,7 @@ fun MainNavContent(
             AddEditAlarmScreen(
                 addEditAlarmViewModel = addEditAlarmViewModel,
                 onCancelClicked = { navigator.goBack() },
-                onAlarmSaved = {
-                    navigator.goBack()
-                    onAlarmSaved()
-                },
+                onAlarmSaved = { navigator.goBack() },
                 onScanCustomCodeClicked = {
                     navigator.navigate(CustomCodeScannerRoute(shouldScanForDefaultCode = false))
                 },
@@ -179,7 +173,6 @@ fun MainNavContent(
                 },
                 onEmergencyTaskSettingsClicked = { navigator.navigate(EmergencySettingsRoute) },
                 onQRAlarmProClicked = { navigator.navigate(QRAlarmProRoute) },
-                onRateQRAlarmClicked = { navigator.navigate(RateRoute) },
                 onScanDefaultCodeClicked = {
                     navigator.navigate(CustomCodeScannerRoute(shouldScanForDefaultCode = true))
                 },
@@ -220,10 +213,6 @@ fun MainNavContent(
 
         entry<QRAlarmProRoute> {
             QRAlarmProScreen(onNotNowClicked = { navigator.goBack() })
-        }
-
-        entry<RateRoute> {
-            RateScreen(onExit = { navigator.goBack() })
         }
 
         entry<EmergencyRoute> { route ->

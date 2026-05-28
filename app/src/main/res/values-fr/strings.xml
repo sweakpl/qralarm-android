@@ -149,12 +149,7 @@
     <string name="enter_your_alarm_label">Entrez votre libellé d’alarme…</string>
     <string name="open_code_link">Ouvrir le lien du code</string>
     <string name="open_code_link_description">Si le code contient une URL valide, l\'application l\'ouvrira automatiquement lors de la numérisation.</string>
-    <string name="do_you_enjoy_qralarm">Aimez-vous QRAlarm ? 🚀 ⏰</string>
-    <string name="im_working_hard">Je travaille dur pour rendre vos matinées aussi douces que possible ! 🙂</string>
-    <string name="i_love_it_rate_me">J\'adore - évaluez-moi ! ❤️</string>
-    <string name="did_something_go_wrong">Quelque chose s\'est mal passé ?\nNous pouvons travailler ensemble pour résoudre ce problème !</string>
     <string name="tell_me_what_is_wrong">Dis-moi ce qui ne va pas</string>
-    <string name="do_not_show_again">Ne plus afficher cet écran.</string>
     <string name="rate_qralarm">Notez QRAlarm</string>
     <string name="previous">Précédent</string>
     <string name="scan_code">Code de numérisation</string>

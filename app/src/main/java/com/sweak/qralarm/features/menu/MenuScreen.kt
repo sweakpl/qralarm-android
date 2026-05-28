@@ -1,7 +1,9 @@
 package com.sweak.qralarm.features.menu
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.provider.Settings
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,7 +56,6 @@ fun MenuScreen(
     onOptimizationGuideClicked: () -> Unit,
     onEmergencyTaskSettingsClicked: () -> Unit,
     onQRAlarmProClicked: () -> Unit,
-    onRateQRAlarmClicked: () -> Unit,
     onScanDefaultCodeClicked: () -> Unit,
     onThemeClicked: () -> Unit
 ) {
@@ -87,7 +88,38 @@ fun MenuScreen(
                 is MenuScreenUserEvent.OnEmergencyTaskSettingsClicked ->
                     onEmergencyTaskSettingsClicked()
                 is MenuScreenUserEvent.OnQRAlarmProClicked -> onQRAlarmProClicked()
-                is MenuScreenUserEvent.OnRateQRAlarmClicked -> onRateQRAlarmClicked()
+                is MenuScreenUserEvent.OnRateQRAlarmClicked -> {
+                    try {
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                context.getString(R.string.qralarm_github_full_uri).toUri()
+                            )
+                        )
+                    } catch (_: ActivityNotFoundException) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.issue_opening_the_page),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                is MenuScreenUserEvent.OnContactSupportClicked -> {
+                    try {
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                context.getString(R.string.qralarm_github_issues_full_uri).toUri()
+                            )
+                        )
+                    } catch (_: ActivityNotFoundException) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.issue_opening_the_page),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
                 is MenuScreenUserEvent.OnThemeClicked -> onThemeClicked()
                 is MenuScreenUserEvent.TryScanSpecificDefaultCode -> {
                     menuViewModel.onEvent(
@@ -200,6 +232,11 @@ fun MenuScreenContent(
                 MenuEntry(
                     title = stringResource(R.string.rate_qralarm),
                     onClick = { onEvent(MenuScreenUserEvent.OnRateQRAlarmClicked) }
+                )
+
+                MenuEntry(
+                    title = stringResource(R.string.tell_me_what_is_wrong),
+                    onClick = { onEvent(MenuScreenUserEvent.OnContactSupportClicked) }
                 )
 
                 MenuEntry(
