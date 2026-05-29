@@ -281,8 +281,11 @@ fun CodesManagementScreenContent(
     if (state.codeBeingEdited != null) {
         EditCodeNameBottomSheet(
             initialCodeName = state.codeBeingEdited.name,
-            onDismissRequest = { newName ->
+            onConfirmClicked = { newName ->
                 onEvent(CodesManagementScreenUserEvent.CodeNameEditConfirmed(newName))
+            },
+            onDismissRequest = {
+                onEvent(CodesManagementScreenUserEvent.CodeNameEditDismissed)
             }
         )
     }

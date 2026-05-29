@@ -1216,8 +1216,10 @@ private fun AddEditAlarmScreenContent(
         EditCodeNameBottomSheet(
             initialCodeName = state.temporaryAssignedCode?.name
                 ?: state.currentlyAssignedCode?.name,
-            onDismissRequest = { newName ->
+            onConfirmClicked = { newName ->
                 onEvent(AddEditAlarmScreenUserEvent.CodeNameEdited(newName = newName))
+            },
+            onDismissRequest = {
                 onEvent(AddEditAlarmScreenUserEvent.EditCodeNameDialogVisible(isVisible = false))
             }
         )

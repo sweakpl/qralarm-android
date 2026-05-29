@@ -511,7 +511,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         temporaryAssignedCode = if (currentState.temporaryAssignedCode != null) updatedCode
                             else currentState.temporaryAssignedCode,
                         currentlyAssignedCode = if (currentState.temporaryAssignedCode == null) updatedCode
-                            else currentState.currentlyAssignedCode
+                            else currentState.currentlyAssignedCode,
+                        isEditCodeNameDialogVisible = false
                     )
                 }
             }

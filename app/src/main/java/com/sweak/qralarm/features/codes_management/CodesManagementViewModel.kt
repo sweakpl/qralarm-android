@@ -71,6 +71,9 @@ class CodesManagementViewModel @Inject constructor(
                 }
                 _state.update { it.copy(codeBeingEdited = null) }
             }
+            is CodesManagementScreenUserEvent.CodeNameEditDismissed -> {
+                _state.update { it.copy(codeBeingEdited = null) }
+            }
             is CodesManagementScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
                 _state.update { it.copy(isCameraPermissionDeniedDialogVisible = event.isVisible) }
             }
