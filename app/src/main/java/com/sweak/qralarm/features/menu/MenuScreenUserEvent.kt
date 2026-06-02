@@ -7,6 +7,7 @@ sealed class MenuScreenUserEvent {
     data object OnQRAlarmProClicked : MenuScreenUserEvent()
     data object OnRateQRAlarmClicked : MenuScreenUserEvent()
     data object OnCodesManagementClicked : MenuScreenUserEvent()
+    data object OnContactSupportClicked : MenuScreenUserEvent()
     data object GoToApplicationSettingsClicked : MenuScreenUserEvent()
     data object OnThemeClicked : MenuScreenUserEvent()
 }

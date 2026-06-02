@@ -54,6 +54,8 @@ class CustomCodeScannerViewModel @AssistedInject constructor(
 
     private var camera: Camera? = null
 
+    private var hasHandledFoundCode = false
+
     fun onEvent(event: CustomCodeScannerScreenUserEvent) {
         when (event) {
             is CustomCodeScannerScreenUserEvent.InitializeCamera -> viewModelScope.launch {
@@ -139,6 +141,9 @@ class CustomCodeScannerViewModel @AssistedInject constructor(
     private fun getBarcodeDetector(): CodeDetector =
         object : CodeDetector {
             override fun onCodeFound(codeValue: String) {
+                if (hasHandledFoundCode) return
+                hasHandledFoundCode = true
+
                 viewModelScope.launch {
                     if (shouldScanForDefaultCode) {
                         codesRepository.setDefaultAlarmCode(value = codeValue, name = null)

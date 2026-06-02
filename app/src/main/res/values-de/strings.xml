@@ -143,12 +143,7 @@
     <string name="enter_your_alarm_label">Alarmbezeichnung eingeben…</string>
     <string name="open_code_link">Code-Link öffnen</string>
     <string name="open_code_link_description">Wenn der Code eine gültige URL enthält, öffnet die App diese beim Scannen automatisch.</string>
-    <string name="do_you_enjoy_qralarm">Gefällt Ihnen QRAlarm? 🚀 ⏰</string>
-    <string name="im_working_hard">Ich arbeite hart daran, Ihren Morgen so reibungslos wie möglich zu gestalten! 🙂</string>
-    <string name="i_love_it_rate_me">Ich liebe es – bewerte die App! ❤️</string>
-    <string name="did_something_go_wrong">Ist etwas schief gelaufen?\nGemeinsam können wir das Problem beheben!</string>
     <string name="tell_me_what_is_wrong">Sag mir, was los ist</string>
-    <string name="do_not_show_again">Diesen Bildschirm nicht mehr anzeigen.</string>
     <string name="rate_qralarm">Bewerten Sie QRAlarm</string>
     <string name="previous">Zurück</string>
     <string name="scan_code">Code scannen</string>

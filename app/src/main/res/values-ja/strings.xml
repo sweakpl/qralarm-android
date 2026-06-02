@@ -123,12 +123,7 @@
     <string name="enter_your_alarm_label">アラームラベルを入力…</string>
     <string name="open_code_link">コードリンクを開く</string>
     <string name="open_code_link_description">コードに有効なURLが含まれている場合、スキャン時に自動的に開かれます。</string>
-    <string name="do_you_enjoy_qralarm">QRAlarmを楽しんでいますか？ 🚀 ⏰</string>
-    <string name="im_working_hard">あなたの朝をできるだけスムーズにするために頑張っています！ 🙂</string>
-    <string name="i_love_it_rate_me">気に入った - 評価する！ ❤️</string>
-    <string name="did_something_go_wrong">何か問題が起きましたか？\n一緒に解決しましょう！</string>
     <string name="tell_me_what_is_wrong">何が問題か教えてください</string>
-    <string name="do_not_show_again">この画面を再び表示しない。</string>
     <string name="rate_qralarm">QRAlarmを評価</string>
     <string name="previous">前の</string>
     <string name="scan_code">コードをスキャン</string>

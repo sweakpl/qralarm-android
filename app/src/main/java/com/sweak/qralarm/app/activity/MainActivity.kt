@@ -18,7 +18,6 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.navigation.routes.HomeRoute
 import com.sweak.qralarm.core.navigation.routes.OnboardingRoute
 import com.sweak.qralarm.core.navigation.Navigator
-import com.sweak.qralarm.core.navigation.routes.RateRoute
 import com.sweak.qralarm.core.navigation.rememberNavigationState
 import com.sweak.qralarm.core.ui.components.WhatsNewDialog
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
@@ -77,9 +76,6 @@ class MainActivity : FragmentActivity() {
                                 )
                             }
 
-                            is MainActivityBackendEvent.ShowRatePrompt -> {
-                                navigator.navigate(RateRoute)
-                            }
                         }
                     }
                 )
@@ -90,8 +86,7 @@ class MainActivity : FragmentActivity() {
                         navigator = navigator,
                         onOnboardingFinished = {
                             viewModel.onEvent(MainActivityUserEvent.OnOnboardingFinished)
-                        },
-                        onAlarmSaved = { viewModel.onEvent(MainActivityUserEvent.OnAlarmSaved) }
+                        }
                     )
 
                     if (state.isWhatsNewDialogVisible) {

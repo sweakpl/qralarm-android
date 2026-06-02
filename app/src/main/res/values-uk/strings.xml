@@ -155,12 +155,7 @@
     <string name="enter_your_alarm_label">Введіть назву будильника…</string>
     <string name="open_code_link">Відкрити посилання з коду</string>
     <string name="open_code_link_description">Якщо код містить дійсну URL-адресу, програма відкриє її автоматично після сканування.</string>
-    <string name="do_you_enjoy_qralarm">Вам подобається QRAlarm? 🚀 ⏰</string>
-    <string name="im_working_hard">Я докладаю всіх зусиль, щоб зробити ваш ранок якомога більш безтурботним! 🙂</string>
-    <string name="i_love_it_rate_me">Мені подобається - оцініть мене! ❤️</string>
-    <string name="did_something_go_wrong">Щось пішло не так?\nМи можемо виправити це разом!</string>
     <string name="tell_me_what_is_wrong">Скажіть нам, що не так</string>
-    <string name="do_not_show_again">Не показуйте цей екран знову.</string>
     <string name="rate_qralarm">Оцініть QRAlarm</string>
     <string name="previous">Попереднє</string>
     <string name="scan_code">Відскануйте код</string>

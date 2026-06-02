@@ -143,12 +143,7 @@
     <string name="enter_your_alarm_label">알람 라벨을 입력하세요…</string>
     <string name="open_code_link">코드 링크 열기</string>
     <string name="open_code_link_description">코드에 유효한 URL이 포함되어 있으면 스캔 시 자동으로 열립니다.</string>
-    <string name="do_you_enjoy_qralarm">QRAlarm을 즐기고 계신가요? 🚀 ⏰</string>
-    <string name="im_working_hard">아침이 최대한 부드럽게 시작되도록 열심히 작업 중입니다! 🙂</string>
-    <string name="i_love_it_rate_me">좋아요 - 평가할게요! ❤️</string>
-    <string name="did_something_go_wrong">문제가 발생했나요?\n함께 해결할 수 있어요!</string>
     <string name="tell_me_what_is_wrong">문제가 무엇인지 알려주세요</string>
-    <string name="do_not_show_again">이 화면을 다시 표시하지 않기</string>
     <string name="rate_qralarm">QRAlarm 평가하기</string>
     <string name="previous">이전</string>
     <string name="scan_code">코드 스캔</string>

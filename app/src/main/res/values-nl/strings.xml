@@ -143,12 +143,7 @@
     <string name="enter_your_alarm_label">Voer je alarmlabel in…</string>
     <string name="open_code_link">Codekoppeling openen</string>
     <string name="open_code_link_description">Als de code een geldige URL bevat, opent de app deze automatisch bij het scannen.</string>
-    <string name="do_you_enjoy_qralarm">Geniet je van QRAlarm? 🚀 ⏰</string>
-    <string name="im_working_hard">Ik werk hard om je ochtenden zo soepel mogelijk te maken! 🙂</string>
-    <string name="i_love_it_rate_me">Ik hou ervan - beoordeel me! ❤️</string>
-    <string name="did_something_go_wrong">Is er iets misgegaan?\nWe kunnen samen werken om het op te lossen!</string>
     <string name="tell_me_what_is_wrong">Vertel me wat er mis is</string>
-    <string name="do_not_show_again">Dit scherm niet meer tonen.</string>
     <string name="rate_qralarm">Beoordeel QRAlarm</string>
     <string name="previous">Vorige</string>
     <string name="scan_code">Code scannen</string>

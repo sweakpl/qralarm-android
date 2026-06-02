@@ -137,12 +137,7 @@
     <string name="enter_your_alarm_label">Masukkan label alarm Anda…</string>
     <string name="open_code_link">Buka tautan kode</string>
     <string name="open_code_link_description">Jika kode berisi URL yang valid, aplikasi akan membukanya secara otomatis saat pemindaian.</string>
-    <string name="do_you_enjoy_qralarm">Apakah Anda menikmati QRAlarm? 🚀 ⏰</string>
-    <string name="im_working_hard">Saya bekerja keras untuk membuat pagi Anda semudah mungkin! 🙂</string>
-    <string name="i_love_it_rate_me">Saya suka - beri penilaian! ❤️</string>
-    <string name="did_something_go_wrong">Apakah ada yang salah?\nKita bisa bekerja sama untuk memperbaikinya!</string>
     <string name="tell_me_what_is_wrong">Ceritakan apa yang salah</string>
-    <string name="do_not_show_again">Jangan tampilkan layar ini lagi.</string>
     <string name="rate_qralarm">Beri rating QRAlarm</string>
     <string name="previous">Sebelumnya</string>
     <string name="scan_code">Pindai kode</string>

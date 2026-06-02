@@ -3,6 +3,5 @@ package com.sweak.qralarm.app.activity
 sealed class MainActivityUserEvent {
     data object OnOnboardingFinished : MainActivityUserEvent()
     data object ObserveActiveAlarms : MainActivityUserEvent()
-    data object OnAlarmSaved : MainActivityUserEvent()
     data object OnWhatsNewDialogDismissed : MainActivityUserEvent()
 }
