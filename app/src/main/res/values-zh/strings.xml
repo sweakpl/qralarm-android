@@ -137,12 +137,7 @@
     <string name="enter_your_alarm_label">点此输入备注</string>
     <string name="open_code_link">打开二维码中的链接</string>
     <string name="open_code_link_description">如果二维码中包含链接，扫描时将自动访问此链接。</string>
-    <string name="do_you_enjoy_qralarm">你喜欢 QRAlarm 吗? 🚀 ⏰</string>
-    <string name="im_working_hard">我正在努力让你们的早晨尽可能顺畅！ 🙂</string>
-    <string name="i_love_it_rate_me">爱死了 - 马上打分! ❤️</string>
-    <string name="did_something_go_wrong">使用时遇到了麻烦？\n咱们一起想办法修理它!</string>
     <string name="tell_me_what_is_wrong">向我反馈您的问题</string>
-    <string name="do_not_show_again">不再显示</string>
     <string name="rate_qralarm">给 QRAlarm 打分</string>
     <string name="previous">上一步</string>
     <string name="scan_code">扫码</string>
