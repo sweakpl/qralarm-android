@@ -232,4 +232,16 @@
     <string name="widget_today">Hoy</string>
     <string name="widget_tomorrow">Mañana</string>
     <string name="widget_tap_to_add">Toca para añadir una</string>
+    <string name="codes_management">Gestión de códigos</string>
+    <string name="codes_management_description">Todos los códigos utilizados en tus alarmas. El código predeterminado se aplica automáticamente a las alarmas recién creadas.</string>
+    <string name="edit_code_name">Editar nombre del código</string>
+    <string name="edit_code_name_description">Dale a este código un nombre fácil de recordar para que puedas diferenciar los códigos de tus alarmas de un vistazo.</string>
+    <string name="enter_code_name">Ingresa nombre del código…</string>
+    <string name="pick_existing">Elige existente</string>
+    <string name="pick_default_code">Elige código predeterminado</string>
+    <string name="other_codes">Otros códigos</string>
+    <string name="no_default_code_yet">Aún sin código predeterminado</string>
+    <string name="no_default_code_yet_description">Configura uno para que las alarmas recién creadas lo reciban automáticamente.</string>
+    <string name="no_codes_yet">Aún no hay otros códigos</string>
+    <string name="no_codes_yet_description">Los códigos asignados a alarmas específicas, distintos al predeterminado, aparecerán aquí.</string>
 </resources>

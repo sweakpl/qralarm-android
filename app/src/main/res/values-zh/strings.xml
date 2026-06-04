@@ -225,4 +225,16 @@
     <string name="widget_tomorrow">明天</string>
     <string name="widget_tap_to_add">点击添加</string>
     <string name="widget_next_alarm">下一个闹钟</string>
+    <string name="codes_management">代码管理</string>
+    <string name="codes_management_description">所有用于闹钟的代码。默认代码会自动应用于新创建的闹钟。</string>
+    <string name="edit_code_name">编辑代码名称</string>
+    <string name="edit_code_name_description">给此代码起一个容易记住的名称，以便在查看多个闹钟时能一目了然地分辨出不同的代码。</string>
+    <string name="enter_code_name">输入代码名称…</string>
+    <string name="pick_existing">选择现有的</string>
+    <string name="pick_default_code">选择默认代码</string>
+    <string name="other_codes">其他代码</string>
+    <string name="no_default_code_yet">尚无默认代码</string>
+    <string name="no_default_code_yet_description">设置一个，以便新创建的闹钟自动分配它。</string>
+    <string name="no_codes_yet">尚无其他代码</string>
+    <string name="no_codes_yet_description">分配给特定闹钟的代码（默认以外）将显示在此。</string>
 </resources>

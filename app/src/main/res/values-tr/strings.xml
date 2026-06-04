@@ -226,4 +226,16 @@
     <string name="widget_next_alarm">Sonraki alarm</string>
     <string name="widget_tap_to_add">Eklemek için dokunun</string>
     <string name="widget_tomorrow">Yarın</string>
+    <string name="codes_management">Kod yönetimi</string>
+    <string name="codes_management_description">Alarmlarınızda kullanılan tüm kodlar. Varsayılan kod, yeni oluşturulan alarmlara otomatik olarak uygulanır.</string>
+    <string name="edit_code_name">Kod adını düzenle</string>
+    <string name="edit_code_name_description">Koda kolay hatırlanabilir bir ad verin, böylece alarmlarınızda kodları bir bakışta ayırt edebilirsiniz.</string>
+    <string name="enter_code_name">Kod adını girin…</string>
+    <string name="pick_existing">Mevcut olanı seç</string>
+    <string name="pick_default_code">Varsayılan kodu seç</string>
+    <string name="other_codes">Diğer kodlar</string>
+    <string name="no_default_code_yet">Henüz varsayılan kod yok</string>
+    <string name="no_default_code_yet_description">Yeni alarmlar otomatik atanması için bir tane ayarlayın.</string>
+    <string name="no_codes_yet">Henüz başka kod yok</string>
+    <string name="no_codes_yet_description">Varsayılan kod dışında herhangi bir alarma atanmış kodlar burada görünecek.</string>
 </resources>

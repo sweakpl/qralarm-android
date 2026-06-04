@@ -232,4 +232,16 @@
     <string name="widget_next_alarm">Prochain réveil</string>
     <string name="widget_today">Aujourd\'hui</string>
     <string name="widget_tap_to_add">Appuyez pour ajouter</string>
+    <string name="codes_management">Gestion des codes</string>
+    <string name="codes_management_description">Tous les codes utilisés dans vos alarmes. Le code par défaut est appliqué automatiquement aux alarmes nouvellement créées.</string>
+    <string name="edit_code_name">Modifier le nom du code</string>
+    <string name="edit_code_name_description">Donnez à ce code un nom facile à retenir pour distinguer les codes en un coup d\'œil dans vos alarmes.</string>
+    <string name="enter_code_name">Saisissez le nom du code…</string>
+    <string name="pick_existing">Choisir existant</string>
+    <string name="pick_default_code">Choisir le code par défaut</string>
+    <string name="other_codes">Autres codes</string>
+    <string name="no_default_code_yet">Aucun code par défaut pour le moment</string>
+    <string name="no_default_code_yet_description">Définissez-en un pour que les alarmes nouvellement créées l\'obtiennent automatiquement.</string>
+    <string name="no_codes_yet">Pas d\'autres codes pour le moment</string>
+    <string name="no_codes_yet_description">Les codes attribués à des alarmes spécifiques, autres que le code par défaut, apparaîtront ici.</string>
 </resources>

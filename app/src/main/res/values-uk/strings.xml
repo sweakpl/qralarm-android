@@ -238,4 +238,16 @@
     <string name="widget_today">Сьогодні</string>
     <string name="widget_tomorrow">Завтра</string>
     <string name="widget_tap_to_add">Торкніться, щоб додати</string>
+    <string name="codes_management">Керування кодами</string>
+    <string name="codes_management_description">Усі коди, використані у ваших будильниках. За замовчуванням код автоматично призначається для нових будильників.</string>
+    <string name="edit_code_name">Редагувати назву коду</string>
+    <string name="edit_code_name_description">Задайте цьому коду легко запам\'ятовувану назву, щоб ви могли легко відрізняти коди між вашими будильниками.</string>
+    <string name="enter_code_name">Введіть назву коду…</string>
+    <string name="pick_existing">Вибрати існуючий</string>
+    <string name="pick_default_code">Вибрати код за замовчуванням</string>
+    <string name="other_codes">Інші коди</string>
+    <string name="no_default_code_yet">Ще немає коду за замовчуванням</string>
+    <string name="no_default_code_yet_description">Встановіть один, щоб нові будильники отримували його автоматично.</string>
+    <string name="no_codes_yet">Ще немає інших кодів</string>
+    <string name="no_codes_yet_description">Коди, призначені для конкретних будильників, крім за замовчуванням, з\'являться тут.</string>
 </resources>

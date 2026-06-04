@@ -226,4 +226,16 @@
     <string name="widget_tap_to_add">Tippen, um einen hinzuzufügen</string>
     <string name="widget_today">Heute</string>
     <string name="widget_tomorrow">Morgen</string>
+    <string name="codes_management">Codes-Verwaltung</string>
+    <string name="codes_management_description">Alle Codes, die in Ihren Alarmen verwendet werden. Der Standardcode wird automatisch neu erstellten Alarmen zugewiesen.</string>
+    <string name="edit_code_name">Code-Namen bearbeiten</string>
+    <string name="edit_code_name_description">Geben Sie diesem Code einen leicht merkbaren Namen, damit Sie Codes in Ihren Alarmen auf einen Blick unterscheiden können.</string>
+    <string name="enter_code_name">Code-Namen eingeben…</string>
+    <string name="pick_existing">Bestehenden auswählen</string>
+    <string name="pick_default_code">Standardcode wählen</string>
+    <string name="other_codes">Andere Codes</string>
+    <string name="no_default_code_yet">Noch kein Standardcode</string>
+    <string name="no_default_code_yet_description">Legen Sie einen fest, damit neu erstellte Alarme ihn automatisch zugewiesen bekommen.</string>
+    <string name="no_codes_yet">Noch keine anderen Codes</string>
+    <string name="no_codes_yet_description">Codes, die bestimmten Alarmen zugewiesen sind und nicht dem Standard entsprechen, werden hier angezeigt.</string>
 </resources>
