@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new?</string>
-    <string name="whats_new_entry_1">Added QRAlarm Widget</string>
-    <string name="whats_new_entry_1_note_1">See which alarm is next</string>
-    <string name="whats_new_entry_1_note_2">Add it to your home screen</string>
+    <string name="whats_new_entry_1">Code names</string>
+    <string name="whats_new_entry_1_note_1">Give your codes memorable names</string>
+    <string name="whats_new_entry_1_note_2">Manage them all in one place</string>
     <string name="whats_new_entry_2">Performance improvements</string>
 </resources>
