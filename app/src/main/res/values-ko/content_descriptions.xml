@@ -37,4 +37,5 @@
     <string name="content_description_unchecked_circle_icon">확인되지 않은 원 아이콘</string>
     <string name="content_description_qralarm_pro_image">QRAlarm PRO 앱 아이콘 이미지</string>
     <string name="content_description_five_stars_image">황금 별 다섯 개 이미지</string>
+    <string name="content_description_qr_code_icon">QR 코드 아이콘</string>
 </resources>

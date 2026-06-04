@@ -37,4 +37,5 @@
     <string name="content_description_unchecked_circle_icon">Ikona niezaznaczonego kółka</string>
     <string name="content_description_qralarm_pro_image">Obraz ikony aplikacji QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Obraz pięciu złotych gwiazdek</string>
+    <string name="content_description_qr_code_icon">Ikona kodu QR</string>
 </resources>

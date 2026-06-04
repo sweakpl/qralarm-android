@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="content_description_qralarm_icon">Ícone do QRAlarm</string>
     <string name="content_description_add_icon">Ícone de adicionar (sinal de mais)</string>
@@ -34,7 +35,7 @@
     <string name="content_description_chain_icon">Ícone da cadeia</string>
     <string name="content_description_checked_circle_icon">Ícone de círculo marcado</string>
     <string name="content_description_unchecked_circle_icon">Ícone de círculo desmarcado</string>
-
     <string name="content_description_qralarm_pro_image">Imagem do ícone do app QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Imagem de cinco estrelas douradas</string>
+    <string name="content_description_qr_code_icon">Ícone de QR code</string>
 </resources>
