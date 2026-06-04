@@ -238,4 +238,16 @@
     <string name="widget_today">Сегодня</string>
     <string name="widget_tomorrow">Завтра</string>
     <string name="widget_tap_to_add">Нажмите, чтобы добавить</string>
+    <string name="codes_management">Управление кодами</string>
+    <string name="codes_management_description">Все коды, используемые в ваших будильниках. Код по умолчанию применяется автоматически к новым будильникам.</string>
+    <string name="edit_code_name">Изменить имя кода</string>
+    <string name="edit_code_name_description">Дайте этому коду легко запоминаемое имя, чтобы различать коды в ваших будильниках.</string>
+    <string name="enter_code_name">Введите имя кода…</string>
+    <string name="pick_existing">Выбрать существующий</string>
+    <string name="pick_default_code">Выбрать код по умолчанию</string>
+    <string name="other_codes">Другие коды</string>
+    <string name="no_default_code_yet">Код по умолчанию еще не задан</string>
+    <string name="no_default_code_yet_description">Установите один, чтобы новые будильники получали его автоматически.</string>
+    <string name="no_codes_yet">Других кодов еще нет</string>
+    <string name="no_codes_yet_description">Коды, назначенные конкретным будильникам, кроме кода по умолчанию, появятся здесь.</string>
 </resources>

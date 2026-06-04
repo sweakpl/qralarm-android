@@ -226,4 +226,16 @@
     <string name="widget_today">Vandaag</string>
     <string name="widget_tomorrow">Morgen</string>
     <string name="widget_tap_to_add">Tik om toe te voegen</string>
+    <string name="codes_management">Beheer codes</string>
+    <string name="codes_management_description">Alle codes gebruikt in je alarmen. De standaardcode wordt automatisch toegepast op nieuw aangemaakte alarmen.</string>
+    <string name="edit_code_name">Pas naam van code aan</string>
+    <string name="edit_code_name_description">Geef deze code een gemakkelijk te onthouden naam zodat je codes snel kunt onderscheiden in je alarmen.</string>
+    <string name="enter_code_name">Voer de naam van de code in…</string>
+    <string name="pick_existing">Kies bestaand</string>
+    <string name="pick_default_code">Kies standaardcode</string>
+    <string name="other_codes">Andere codes</string>
+    <string name="no_default_code_yet">Nog geen standaardcode</string>
+    <string name="no_default_code_yet_description">Stel er een in zodat nieuw aangemaakte alarmen deze automatisch toegewezen krijgen.</string>
+    <string name="no_codes_yet">Nog geen andere codes</string>
+    <string name="no_codes_yet_description">Codes toegewezen aan specifieke alarmen anders dan de standaard verschijnen hier.</string>
 </resources>

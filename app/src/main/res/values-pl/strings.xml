@@ -238,4 +238,16 @@
     <string name="widget_today">Dzisiaj</string>
     <string name="widget_tap_to_add">Stuknij, aby dodać jeden</string>
     <string name="widget_tomorrow">Jutro</string>
+    <string name="codes_management">Zarządzanie kodami</string>
+    <string name="codes_management_description">Wszystkie kody używane w Twoich alarmach. Domyślny kod jest automatycznie stosowany do nowo utworzonych alarmów.</string>
+    <string name="edit_code_name">Edytuj nazwę kodu</string>
+    <string name="edit_code_name_description">Nadaj temu kodowi łatwą do zapamiętania nazwę, abyś mógł łatwo odróżnić kody w alarmach.</string>
+    <string name="enter_code_name">Wpisz nazwę kodu…</string>
+    <string name="pick_existing">Wybierz istniejący</string>
+    <string name="pick_default_code">Wybierz domyślny kod</string>
+    <string name="other_codes">Inne kody</string>
+    <string name="no_default_code_yet">Jeszcze brak domyślnego kodu</string>
+    <string name="no_default_code_yet_description">Ustaw jeden, aby nowo utworzone alarmy zostały automatycznie przypisane.</string>
+    <string name="no_codes_yet">Jeszcze brak innych kodów</string>
+    <string name="no_codes_yet_description">Kody przypisane do konkretnych alarmów, inne niż domyślne, pojawią się tutaj.</string>
 </resources>

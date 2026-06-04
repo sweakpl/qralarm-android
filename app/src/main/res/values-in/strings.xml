@@ -220,4 +220,16 @@
     <string name="widget_next_alarm">Alarm berikutnya</string>
     <string name="widget_tomorrow">Besok</string>
     <string name="widget_tap_to_add">Ketuk untuk menambah satu</string>
+    <string name="codes_management">Manajemen kode</string>
+    <string name="codes_management_description">Semua kode yang digunakan di seluruh alarm Anda. Kode default diterapkan secara otomatis ke alarm yang baru dibuat.</string>
+    <string name="edit_code_name">Edit nama kode</string>
+    <string name="edit_code_name_description">Beri kode ini nama yang mudah diingat agar Anda dapat membedakan kode dengan mudah di antara alarm Anda.</string>
+    <string name="enter_code_name">Masukkan nama kode…</string>
+    <string name="pick_existing">Pilih yang ada</string>
+    <string name="pick_default_code">Pilih kode default</string>
+    <string name="other_codes">Kode lainnya</string>
+    <string name="no_default_code_yet">Belum ada kode default</string>
+    <string name="no_default_code_yet_description">Tetapkan satu agar alarm yang baru dibuat mendapatkannya secara otomatis.</string>
+    <string name="no_codes_yet">Belum ada kode lainnya</string>
+    <string name="no_codes_yet_description">Kode yang ditugaskan untuk alarm tertentu, selain yang default, akan muncul di sini.</string>
 </resources>
