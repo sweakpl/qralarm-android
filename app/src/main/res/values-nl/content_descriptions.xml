@@ -37,4 +37,5 @@
     <string name="content_description_checked_circle_icon">Geselecteerd cirkelicoon</string>
     <string name="content_description_unchecked_circle_icon">Ongeselecteerd cirkelicoon</string>
     <string name="content_description_qralarm_pro_image">QRAlarm PRO app-icoon afbeelding</string>
+    <string name="content_description_qr_code_icon">QR-codepictogram</string>
 </resources>

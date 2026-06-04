@@ -37,4 +37,5 @@
     <string name="content_description_unchecked_circle_icon">未チェックのサークルアイコン</string>
     <string name="content_description_qralarm_pro_image">QRAlarm PROアプリアイコン画像</string>
     <string name="content_description_five_stars_image">五つ星画像</string>
+    <string name="content_description_qr_code_icon">QRコードアイコン</string>
 </resources>

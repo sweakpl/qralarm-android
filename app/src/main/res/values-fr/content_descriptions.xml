@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="content_description_qralarm_icon">Icône QRAlarm</string>
     <string name="content_description_add_icon">Ajouter une icône (plus)</string>
@@ -34,7 +35,7 @@
     <string name="content_description_chain_icon">Icône chaîne</string>
     <string name="content_description_checked_circle_icon">Icône de cercle coché</string>
     <string name="content_description_unchecked_circle_icon">Icône de cercle non cochée</string>
-
     <string name="content_description_qralarm_pro_image">Image de l\'icône de l\'application QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Image de cinq étoiles dorées</string>
+    <string name="content_description_qr_code_icon">Icône de code QR</string>
 </resources>
