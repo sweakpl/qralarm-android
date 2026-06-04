@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Yenilikler neler?</string>
-    <string name="whats_new_entry_1">QRAlarm Widget eklendi</string>
-    <string name="whats_new_entry_1_note_1">Sıradaki alarmı görün</string>
+    <string name="whats_new_entry_1">Kod adları</string>
+    <string name="whats_new_entry_1_note_1">Kodlarınıza akılda kalıcı adlar verin</string>
     <string name="whats_new_entry_2">Performans iyileştirmeleri</string>
-    <string name="whats_new_entry_1_note_2">Ana ekranınıza ekleyin</string>
+    <string name="whats_new_entry_1_note_2">Hepsini tek bir yerde yönetin</string>
 </resources>
