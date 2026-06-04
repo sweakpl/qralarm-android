@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">새로운 기능</string>
-    <string name="whats_new_entry_1">QRAlarm 위젯 추가</string>
-    <string name="whats_new_entry_1_note_1">다음 알람 확인</string>
-    <string name="whats_new_entry_1_note_2">홈 화면에 추가</string>
+    <string name="whats_new_entry_1">코드 이름</string>
+    <string name="whats_new_entry_1_note_1">코드에 기억하기 쉬운 이름 지정</string>
+    <string name="whats_new_entry_1_note_2">한 곳에서 모두 관리</string>
     <string name="whats_new_entry_2">성능 개선</string>
 </resources>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Quoi de neuf ?</string>
-    <string name="whats_new_entry_1">Ajout du widget QRAlarm</string>
-    <string name="whats_new_entry_1_note_1">Voir quelle alarme est la prochaine</string>
+    <string name="whats_new_entry_1">Noms de code</string>
+    <string name="whats_new_entry_1_note_1">Donnez à vos codes des noms mémorables</string>
     <string name="whats_new_entry_2">Améliorations des performances</string>
-    <string name="whats_new_entry_1_note_2">Ajoutez-le à votre écran d\'accueil</string>
+    <string name="whats_new_entry_1_note_2">Gérez-les tous en un seul endroit</string>
 </resources>

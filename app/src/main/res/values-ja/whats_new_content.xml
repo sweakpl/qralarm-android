@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">新機能のお知らせ</string>
-    <string name="whats_new_entry_1">QRAlarmウィジェットを追加しました</string>
-    <string name="whats_new_entry_1_note_1">次のアラームを確認できます</string>
-    <string name="whats_new_entry_1_note_2">ホーム画面に追加</string>
+    <string name="whats_new_entry_1">コード名</string>
+    <string name="whats_new_entry_1_note_1">コードに記憶に残る名前を付ける</string>
+    <string name="whats_new_entry_1_note_2">一箇所で管理</string>
     <string name="whats_new_entry_2">パフォーマンス改善</string>
 </resources>

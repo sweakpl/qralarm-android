@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">更新内容？</string>
-    <string name="whats_new_entry_1">新增 QRAlarm 小组件</string>
-    <string name="whats_new_entry_1_note_1">查看下一个闹钟</string>
+    <string name="whats_new_entry_1">代码名称</string>
+    <string name="whats_new_entry_1_note_1">为您的代码起个容易记住的名字</string>
     <string name="whats_new_entry_2">性能提升</string>
-    <string name="whats_new_entry_1_note_2">添加到主屏幕</string>
+    <string name="whats_new_entry_1_note_2">集中管理所有代码</string>
 </resources>
