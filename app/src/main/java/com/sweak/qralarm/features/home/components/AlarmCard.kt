@@ -108,8 +108,7 @@ fun AlarmCard(
                 )
 
                 AnimatedVisibility(
-                    visible = alarmWrapper.isAlarmEnabled &&
-                            alarmWrapper.alarmRepeatingScheduleWrapper.alarmRepeatingMode != ONLY_ONCE
+                    visible = alarmWrapper.isAlarmEnabled
                 ) {
                     Text(
                         text = stringResource(
