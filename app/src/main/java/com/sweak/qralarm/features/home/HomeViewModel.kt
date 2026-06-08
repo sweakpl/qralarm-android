@@ -19,6 +19,7 @@ import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeat
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -64,7 +65,7 @@ class HomeViewModel @Inject constructor(
                 if (justEditedAlarmId != null) {
                     // Delay added for the alarms list animation to be visible as the Flow update
                     // Comes while the HomeScreen is still hidden behind AddEditAlarmScreen:
-                    delay(500)
+                    delay(500.milliseconds)
 
                     if (justEditedAlarmId == -1L) {
                         val allPreviousAlarms =

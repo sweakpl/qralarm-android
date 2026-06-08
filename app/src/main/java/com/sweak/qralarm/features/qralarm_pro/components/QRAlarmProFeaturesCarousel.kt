@@ -28,6 +28,7 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.features.qralarm_pro.components.util.AnimatedWebPDecoder
 import com.sweak.qralarm.features.qralarm_pro.model.qrAlarmProCarouselFeatures
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 
 @Composable
@@ -48,7 +49,7 @@ fun QRAlarmProFeaturesCarousel(modifier: Modifier = Modifier) {
         val featureAnimationDuration =
             qrAlarmProCarouselFeatures[resolvedPageContentIndex].animationDurationMillis
 
-        delay(featureAnimationDuration)
+        delay(featureAnimationDuration.milliseconds)
         val nextPage = (pagerState.currentPage + 1) % pageCount
         pagerState.animateScrollToPage(page = nextPage)
     }

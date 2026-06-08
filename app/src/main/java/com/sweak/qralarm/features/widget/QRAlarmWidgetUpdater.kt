@@ -26,6 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -55,7 +56,7 @@ class QRAlarmWidgetUpdater @Inject constructor(
 
         updateJob?.cancel()
         updateJob = scope.launch {
-            delay(debounceDelayMs)
+            delay(debounceDelayMs.milliseconds)
             performUpdate()
         }
     }

@@ -35,6 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -78,7 +79,7 @@ class AlarmService : Service() {
                 ) ?: DEFAULT_TEMPORARY_MUTE_DURATION_SECONDS
 
                 temporaryAlarmMuteJob = serviceScope.launch(Dispatchers.Main) {
-                    delay(muteDurationSeconds * 1000L)
+                    delay(muteDurationSeconds.seconds)
                     startAlarm()
                 }.also {
                     it.invokeOnCompletion { temporaryAlarmMuteJob = null }
@@ -96,7 +97,7 @@ class AlarmService : Service() {
                 alarmRingtonePlayer.stop()
 
                 emergencyTaskAlarmMuteJob = serviceScope.launch(Dispatchers.Main) {
-                    delay(EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS * 1000L)
+                    delay(EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS.seconds)
                     startAlarm()
                 }.also {
                     it.invokeOnCompletion { emergencyTaskAlarmMuteJob = null }

@@ -9,6 +9,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -57,7 +58,7 @@ class OptimizationViewModel @AssistedInject constructor(
         // This delay is supposed to ensure that
         // powerManager.isIgnoringBatteryOptimizations returns an updated value - it can
         // take some time until it is updated on some systems.
-        delay(1000)
+        delay(1.seconds)
         refreshInternal()
     }
 

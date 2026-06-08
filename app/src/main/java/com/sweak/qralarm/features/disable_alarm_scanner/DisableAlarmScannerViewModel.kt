@@ -28,6 +28,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -274,7 +275,7 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
             lastWrongCodeWarningMillis = currentTimeInMillis
 
             launch {
-                delay(2500)
+                delay(2500.milliseconds)
 
                 _state.update { currentState ->
                     currentState.copy(shouldShowIncorrectCodeWarning = false)

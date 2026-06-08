@@ -55,6 +55,7 @@ import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.features.optimization.components.BackgroundWorkPage
 import com.sweak.qralarm.features.optimization.components.BestSettingsPage
 import com.sweak.qralarm.features.optimization.components.FullyOptimizePage
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -246,7 +247,7 @@ fun OptimizationScreenContent(
                         buttonsDisabledTimeout = 5
 
                         repeat(5) {
-                            delay(1000)
+                            delay(1.seconds)
                             buttonsDisabledTimeout -= 1
                         }
                     }
@@ -280,7 +281,7 @@ fun OptimizationScreenContent(
 
                                 if (state.shouldDelayInstructionsTransitions) {
                                     repeat(5) {
-                                        delay(1000)
+                                        delay(1.seconds)
                                         buttonsDisabledTimeout -= 1
                                     }
                                 }

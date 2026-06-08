@@ -36,6 +36,7 @@ import com.sweak.qralarm.features.alarm.AlarmScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.DisableAlarmScannerScreen
 import com.sweak.qralarm.features.emergency.task.EmergencyScreen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -120,7 +121,7 @@ class AlarmActivity : FragmentActivity() {
                                     stopService(alarmId = alarmId)
 
                                     if (!isLaunchedFromMainActivity) {
-                                        delay(ALARM_CONFIRMATION_DISPLAY_DURATION_MS)
+                                        delay(ALARM_CONFIRMATION_DISPLAY_DURATION)
                                         finish()
                                     }
                                 }
@@ -147,7 +148,7 @@ class AlarmActivity : FragmentActivity() {
                                         stopService(alarmId)
 
                                         navigator.goBack()
-                                        delay(ALARM_CONFIRMATION_DISPLAY_DURATION_MS)
+                                        delay(ALARM_CONFIRMATION_DISPLAY_DURATION)
                                         finish()
 
                                         if (isLaunchedFromMainActivity) {
@@ -311,6 +312,6 @@ class AlarmActivity : FragmentActivity() {
         const val EXTRA_ALARM_ID = "alarmId"
         const val EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY = "launchedFromMainActivity"
 
-        private const val ALARM_CONFIRMATION_DISPLAY_DURATION_MS = 3000L
+        private val ALARM_CONFIRMATION_DISPLAY_DURATION = 3.seconds
     }
 }

@@ -15,6 +15,8 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -114,7 +116,7 @@ class EmergencyViewModel @AssistedInject constructor(
                                             disableAlarm(idOfAlarmToCancel)
                                         }
 
-                                        delay(1500)
+                                        delay(1500.milliseconds)
 
                                         if (::alarm.isInitialized &&
                                             alarm.repeatingMode is Alarm.RepeatingMode.Days
@@ -170,7 +172,7 @@ class EmergencyViewModel @AssistedInject constructor(
             }
 
             repeat(EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS) {
-                delay(1000)
+                delay(1.seconds)
                 _state.update { currentState ->
                     currentState.copy(
                         alarmMuteProgress =
@@ -179,7 +181,7 @@ class EmergencyViewModel @AssistedInject constructor(
                 }
             }
 
-            delay(1000)
+            delay(1.seconds)
         }.also {
             it.invokeOnCompletion {
                 alarmMuteIndicationJob = null

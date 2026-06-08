@@ -22,6 +22,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -85,7 +87,7 @@ class AlarmRingtonePlayer(
                     val progress = i.toDouble() / steps
                     val scaledVolume = progress.pow(power).toFloat()
                     player?.volume = scaledVolume
-                    if (i < steps) delay(perStepDelayMilliseconds)
+                    if (i < steps) delay(perStepDelayMilliseconds.milliseconds)
                 }
             }
         }
@@ -151,12 +153,12 @@ class AlarmRingtonePlayer(
 
         vibrationJob = playerScope.launch {
             if (delaySeconds > 0) {
-                delay(delaySeconds * 1000L)
+                delay(delaySeconds.seconds)
             }
 
             while (isActive) {
                 startVibrationInternal()
-                delay(2000L)
+                delay(2.seconds)
             }
         }
     }
