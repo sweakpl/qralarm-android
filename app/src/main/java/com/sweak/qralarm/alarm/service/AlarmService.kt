@@ -155,6 +155,13 @@ class AlarmService : Service() {
                 return@launch
             }
 
+            // The service is a singleton, so if a previous alarm is still ringing tear down first.
+            if (isRunning) {
+                withContext(Dispatchers.Main) {
+                    cleanUpPreviousAlarmState()
+                }
+            }
+
             isRunning = true
 
             ContextCompat.registerReceiver(
@@ -311,6 +318,26 @@ class AlarmService : Service() {
         if (alarm.areVibrationsEnabled) {
             alarmRingtonePlayer.startVibration(alarm.gentleWakeUpDurationInSeconds)
         }
+    }
+
+    private fun cleanUpPreviousAlarmState() {
+        temporaryAlarmMuteJob?.cancel()
+        temporaryAlarmMuteJob = null
+        emergencyTaskAlarmMuteJob?.cancel()
+        emergencyTaskAlarmMuteJob = null
+        hasAlarmBeenAlreadyTemporarilyMuted = false
+
+        try {
+            unregisterReceiver(temporaryAlarmMuteReceiver)
+            unregisterReceiver(emergencyTaskAlarmMuteReceiver)
+        } catch (_: IllegalArgumentException) { /* no-op */ }
+
+        alarmRingtonePlayer.stop()
+
+        originalSystemAlarmVolume?.let {
+            audioManager.setAlarmVolume(it)
+        }
+        originalSystemAlarmVolume = null
     }
 
     override fun onDestroy() {
