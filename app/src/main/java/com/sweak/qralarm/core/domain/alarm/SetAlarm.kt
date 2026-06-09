@@ -2,6 +2,8 @@ package com.sweak.qralarm.core.domain.alarm
 
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.features.widget.QRAlarmWidgetUpdater
+import java.time.Instant
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
@@ -24,6 +26,15 @@ class SetAlarm @Inject constructor(
         } else {
             when (alarm.repeatingMode) {
                 is Alarm.RepeatingMode.Once -> {
+                    val storedDate = Instant.ofEpochMilli(alarm.nextAlarmTimeInMillis)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    alarmDateTime = storedDate
+                        .atTime(alarm.alarmHourOfDay, alarm.alarmMinute)
+                        .atZone(ZoneId.systemDefault())
+                        .withSecond(0)
+                        .withNano(0)
+
                     if (alarmDateTime <= currentDateTime) {
                         alarmDateTime = alarmDateTime.plusDays(1)
                     }

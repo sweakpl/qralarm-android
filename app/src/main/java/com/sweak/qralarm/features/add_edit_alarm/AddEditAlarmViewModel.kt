@@ -19,6 +19,7 @@ import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
 import com.sweak.qralarm.core.ui.convertAlarmRepeatingMode
+import com.sweak.qralarm.core.ui.getEarliestOnlyOnceAlarmDate
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
@@ -49,6 +50,8 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.time.DayOfWeek
+import java.time.Instant
+import java.time.ZoneId
 import java.time.ZonedDateTime
 
 @HiltViewModel(assistedFactory = AddEditAlarmViewModel.Factory::class)
@@ -100,6 +103,11 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
                 if (idOfAlarm == 0L) {
                     val dateTime = ZonedDateTime.now()
+                    val onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
+                        currentDateInMillis = 0L,
+                        hourOfDay = dateTime.hour,
+                        minute = dateTime.minute
+                    )
 
                     _state.update { currentState ->
                         currentState.copy(
@@ -107,6 +115,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                             isEditingExistingAlarm = false,
                             alarmHourOfDay = dateTime.hour,
                             alarmMinute = dateTime.minute,
+                            onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis,
                             previouslySavedCodes = allSavedAlarmCodes
                         )
                     }
@@ -116,12 +125,20 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         repeatingMode = alarm.repeatingMode
                     ) ?: return@launch
 
+                    val onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
+                        currentDateInMillis = alarm.nextAlarmTimeInMillis,
+                        hourOfDay = alarm.alarmHourOfDay,
+                        minute = alarm.alarmMinute
+                    )
+
+
                     _state.update { currentState ->
                         currentState.copy(
                             isLoading = false,
                             isEditingExistingAlarm = true,
                             alarmHourOfDay = alarm.alarmHourOfDay,
                             alarmMinute = alarm.alarmMinute,
+                            onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis,
                             alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
                             snoozeNumberToDurationPair = Pair(
                                 first = alarm.snoozeConfig.snoozeMode.numberOfSnoozes,
@@ -315,10 +332,41 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
 
                 _state.update { currentState ->
+                    val newOnlyOnceDateInMillis = resolveOnlyOnceAlarmDateInMillis(
+                        currentDateInMillis = currentState.onlyOnceAlarmDateInMillis,
+                        hourOfDay = event.newAlarmHourOfDay,
+                        minute = event.newAlarmMinute
+                    )
+
                     currentState.copy(
                         alarmHourOfDay = event.newAlarmHourOfDay,
                         alarmMinute = event.newAlarmMinute,
+                        onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
                         isDialerPickerDialogVisible = false
+                    )
+                }
+            }
+            is AddEditAlarmScreenUserEvent.DatePickerDialogVisible -> {
+                _state.update { currentState ->
+                    currentState.copy(isDatePickerDialogVisible = event.isVisible)
+                }
+            }
+            is AddEditAlarmScreenUserEvent.AlarmDateSelected -> {
+                hasUnsavedChanges = true
+
+                _state.update { currentState ->
+                    val selectedDate = Instant.ofEpochMilli(event.selectedDateInMillis)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    val newOnlyOnceDateInMillis = selectedDate
+                        .atTime(currentState.alarmHourOfDay ?: 0, currentState.alarmMinute ?: 0)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+                        .toEpochMilli()
+
+                    currentState.copy(
+                        onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
+                        isDatePickerDialogVisible = false
                     )
                 }
             }
@@ -663,6 +711,15 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
             val repeatingMode =
                 if (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
+                    val chosenDate = Instant.ofEpochMilli(currentState.onlyOnceAlarmDateInMillis)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    alarmDateTime = chosenDate
+                        .atTime(currentState.alarmHourOfDay, currentState.alarmMinute)
+                        .atZone(ZoneId.systemDefault())
+                        .withSecond(0)
+                        .withNano(0)
+
                     if (alarmDateTime <= currentDateTime) {
                         alarmDateTime = alarmDateTime.plusDays(1)
                     }
@@ -810,6 +867,23 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         while (inputStream.read(buffer).also { read = it } != -1) {
             outputStream.write(buffer, 0, read)
         }
+    }
+
+    private fun resolveOnlyOnceAlarmDateInMillis(
+        currentDateInMillis: Long,
+        hourOfDay: Int,
+        minute: Int
+    ): Long {
+        val earliestDate = getEarliestOnlyOnceAlarmDate(hourOfDay, minute)
+        val date = Instant.ofEpochMilli(currentDateInMillis)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate()
+            .let { if (it.isBefore(earliestDate)) earliestDate else it }
+        return date
+            .atTime(hourOfDay, minute)
+            .atZone(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
     }
 
     override fun onCleared() {

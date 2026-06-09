@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -33,6 +35,7 @@ import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.getDayString
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode
 import com.sweak.qralarm.core.ui.shortName
@@ -44,6 +47,8 @@ import java.util.Locale
 @Composable
 fun ChooseAlarmRepeatingScheduleBottomSheet(
     initialAlarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper,
+    onlyOnceAlarmDateInMillis: Long,
+    onChooseOnlyOnceDateClicked: () -> Unit,
     onDismissRequest: (newAlarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -90,24 +95,51 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.mediumLarge),
                 modifier = Modifier.selectableGroup()
             ) {
-                Row(
-                    modifier = Modifier
-                        .selectable(
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .selectable(
+                                selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.ONLY_ONCE,
+                                onClick = { selectedAlarmRepeatingMode = AlarmRepeatingMode.ONLY_ONCE },
+                                role = Role.RadioButton
+                            )
+                    ) {
+                        QRAlarmRadioButton(
                             selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.ONLY_ONCE,
-                            onClick = { selectedAlarmRepeatingMode = AlarmRepeatingMode.ONLY_ONCE },
-                            role = Role.RadioButton
+                            onClick = null
                         )
-                ) {
-                    QRAlarmRadioButton(
-                        selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.ONLY_ONCE,
-                        onClick = null
-                    )
 
-                    Text(
-                        text = stringResource(R.string.only_once),
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.padding(start = MaterialTheme.space.medium)
-                    )
+                        Text(
+                            text = stringResource(R.string.only_once),
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(start = MaterialTheme.space.medium)
+                        )
+                    }
+
+                    AnimatedVisibility(
+                        visible = selectedAlarmRepeatingMode == AlarmRepeatingMode.ONLY_ONCE
+                    ) {
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.space.small),
+                            modifier = Modifier.padding(top = MaterialTheme.space.medium)
+                        ) {
+                            AssistChip(
+                                onClick = onChooseOnlyOnceDateClicked,
+                                label = {
+                                    Text(text = getDayString(onlyOnceAlarmDateInMillis))
+                                },
+                                border = null,
+                                colors = with(MaterialTheme) {
+                                    if (isQRAlarmTheme) {
+                                        AssistChipDefaults.assistChipColors(
+                                            containerColor = BlueZodiac,
+                                            labelColor = Color.White
+                                        )
+                                    } else AssistChipDefaults.assistChipColors()
+                                }
+                            )
+                        }
+                    }
                 }
 
                 Row(
@@ -253,6 +285,8 @@ private fun ChooseAlarmRepeatingScheduleBottomSheetPreview() {
                 alarmRepeatingMode = AlarmRepeatingMode.CUSTOM,
                 alarmDaysOfWeek = listOf(DayOfWeek.FRIDAY, DayOfWeek.MONDAY)
             ),
+            onlyOnceAlarmDateInMillis = System.currentTimeMillis(),
+            onChooseOnlyOnceDateClicked = {},
             onDismissRequest = {}
         )
     }

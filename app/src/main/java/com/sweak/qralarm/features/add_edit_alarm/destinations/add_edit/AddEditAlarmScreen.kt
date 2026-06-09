@@ -86,6 +86,8 @@ import com.sweak.qralarm.core.ui.components.ToggleSetting
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
+import com.sweak.qralarm.core.ui.getDayString
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowBackendEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
@@ -93,6 +95,7 @@ import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
 import com.sweak.qralarm.features.add_edit_alarm.components.SimpleSetting
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AssignCodeBottomSheet
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AlarmDatePickerDialog
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseAlarmRepeatingScheduleBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseAlarmRingtoneConfigDialogBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseSnoozeConfigurationBottomSheet
@@ -526,9 +529,11 @@ private fun AddEditAlarmScreenContent(
                                 )
                             },
                             title = stringResource(R.string.repeating),
-                            choiceName = getAlarmRepeatingScheduleString(
-                                state.alarmRepeatingScheduleWrapper
-                            )
+                            choiceName = if (state.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
+                                getDayString(state.onlyOnceAlarmDateInMillis)
+                            } else {
+                                getAlarmRepeatingScheduleString(state.alarmRepeatingScheduleWrapper)
+                            }
                         )
 
                         HorizontalDivider(
@@ -1104,9 +1109,34 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
+    if (state.isDatePickerDialogVisible &&
+        state.alarmHourOfDay != null &&
+        state.alarmMinute != null
+    ) {
+        AlarmDatePickerDialog(
+            initialDateInMillis = state.onlyOnceAlarmDateInMillis,
+            alarmHourOfDay = state.alarmHourOfDay,
+            alarmMinute = state.alarmMinute,
+            onDismissRequest = {
+                onEvent(AddEditAlarmScreenUserEvent.DatePickerDialogVisible(isVisible = false))
+            },
+            onDateConfirmed = { selectedDateInMillis ->
+                onEvent(
+                    AddEditAlarmScreenUserEvent.AlarmDateSelected(
+                        selectedDateInMillis = selectedDateInMillis
+                    )
+                )
+            }
+        )
+    }
+
     if (state.isChooseAlarmRepeatingScheduleDialogVisible) {
         ChooseAlarmRepeatingScheduleBottomSheet(
             initialAlarmRepeatingScheduleWrapper = state.alarmRepeatingScheduleWrapper,
+            onlyOnceAlarmDateInMillis = state.onlyOnceAlarmDateInMillis,
+            onChooseOnlyOnceDateClicked = {
+                onEvent(AddEditAlarmScreenUserEvent.DatePickerDialogVisible(isVisible = true))
+            },
             onDismissRequest = { newAlarmRepeatingSchedule ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmRepeatingScheduleSelected(

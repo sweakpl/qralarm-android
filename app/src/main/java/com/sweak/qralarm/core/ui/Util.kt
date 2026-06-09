@@ -11,6 +11,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -35,13 +36,10 @@ fun getTimeString(timeInMillis: Long, is24HourFormat: Boolean): String {
 }
 
 fun getDaysHoursAndMinutesUntilAlarm(alarmTimeInMillis: Long): Triple<Int, Int, Int> {
-    val diffDateTime = Instant
-        .ofEpochMilli(alarmTimeInMillis - System.currentTimeMillis())
-        .atZone(ZoneId.of("UTC+00:00"))
-
-    val days = (diffDateTime.dayOfYear - 1).run { if (this > 7) 0 else this }
-    val hours = diffDateTime.hour
-    val minutes = diffDateTime.minute
+    val totalSeconds = (alarmTimeInMillis - System.currentTimeMillis()) / 1000
+    val days = (totalSeconds / 86400).toInt()
+    val hours = ((totalSeconds % 86400) / 3600).toInt()
+    val minutes = ((totalSeconds % 3600) / 60).toInt()
 
     return if (days == 0 && hours == 0 && minutes == 0) {
         Triple(0, 0, 1)
@@ -105,11 +103,15 @@ fun getDayString(timeInMillis: Long): String {
         )
         .trim { it !in 'A'..'z' }
 
-    return Instant.ofEpochMilli(timeInMillis)
-        .atZone(ZoneId.systemDefault())
-        .format(
-            DateTimeFormatter.ofPattern(
-                "EEEE $datePatternWithoutYear"
-            )
-        )
+    val dateTime = Instant.ofEpochMilli(timeInMillis).atZone(ZoneId.systemDefault())
+    val differentYear = dateTime.year != ZonedDateTime.now().year
+    val pattern = if (differentYear) "EEEE $datePattern" else "EEEE $datePatternWithoutYear"
+
+    return dateTime.format(DateTimeFormatter.ofPattern(pattern))
+}
+
+fun getEarliestOnlyOnceAlarmDate(hourOfDay: Int, minute: Int): LocalDate {
+    val now = ZonedDateTime.now()
+    val todayAtAlarmTime = now.withHour(hourOfDay).withMinute(minute).withSecond(0).withNano(0)
+    return if (todayAtAlarmTime > now) now.toLocalDate() else now.toLocalDate().plusDays(1)
 }
