@@ -3,6 +3,6 @@
     <string name="whats_new_title">Yenilikler neler?</string>
     <string name="whats_new_entry_1">Kod adları</string>
     <string name="whats_new_entry_1_note_1">Kodlarınıza akılda kalıcı adlar verin</string>
-    <string name="whats_new_entry_2">Performans iyileştirmeleri</string>
+    <string name="whats_new_entry_2">Herhangi bir tarih için alarm kur</string>
     <string name="whats_new_entry_1_note_2">Hepsini tek bir yerde yönetin</string>
 </resources>
