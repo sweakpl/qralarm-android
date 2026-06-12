@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="number_of_snoozes_plural">
-        <item quantity="one">%1$d siesta</item>
-        <item quantity="many">%1$d siestas</item>
-        <item quantity="other">%1$d siestas</item>
+        <item quantity="one">%1$d aplazamiento</item>
+        <item quantity="many">%1$d aplazamientos</item>
+        <item quantity="other">%1$d aplazamientos</item>
     </plurals>
     <plurals name="number_of_seconds_plural">
         <item quantity="one">%1$d segundo</item>
@@ -31,11 +31,11 @@
         <item quantity="other">%1$d alarmas activas</item>
     </plurals>
     <string name="lets_go">¡Vamos!</string>
-    <string name="home">Hogar</string>
+    <string name="home">Inicio</string>
     <string name="alarms">Alarmas</string>
     <string name="alarm">Alarma</string>
     <string name="repeating">Repitiendo</string>
-    <string name="snooze">Siesta</string>
+    <string name="snooze">Posponer</string>
     <string name="ringtone">Tono de llamada</string>
     <string name="vibrations">Vibraciones</string>
     <string name="use_qr_bar_code">Utilice código QR/código de barras</string>
@@ -47,10 +47,10 @@
     <string name="gentle_wake_up_description">El volumen de la alarma aumentará durante el tiempo especificado.</string>
     <string name="temporary_mute_description">La alarma se silenciará durante el tiempo especificado después de hacer clic en DETENER cuando se utilice un código QR/de barras.</string>
     <string name="only_once">Sólo una vez</string>
-    <string name="custom">Costumbre</string>
-    <string name="number_of_snoozes">Número de siestas:</string>
-    <string name="snooze_duration">Duración de la repetición:</string>
-    <string name="no_snoozes">Sin siestas</string>
+    <string name="custom">Personalizado</string>
+    <string name="number_of_snoozes">Número de aplazamientos:</string>
+    <string name="snooze_duration">Duración del aplazamiento:</string>
+    <string name="no_snoozes">Sin aplazamientos</string>
     <string name="gentle_guitar">Guitarra suave</string>
     <string name="alarm_clock">Despertador</string>
     <string name="air_horn">Bocina de aire</string>
@@ -87,16 +87,16 @@
     <string name="discard_changes_description">Cualquier cambio realizado en esta alarma será descartado y no se guardará. ¿Estás seguro que deseas descartar?</string>
     <string name="discard">Desechar</string>
     <string name="alarm_in">Alarma en:</string>
-    <string name="alarm_notification_channel_name">Disparando alarmas</string>
+    <string name="alarm_notification_channel_name">Alarmas sonando</string>
     <string name="alarm_notification_channel_description">Reproduce un sonido de alarma, muestra una notificación y aparece en la pantalla.</string>
-    <string name="alarm_notification_title">¡La alarma ha subido! ¡Despertar!</string>
+    <string name="alarm_notification_title">¡La alarma está sonando! ¡Despierta!</string>
     <string name="alarm_set_indication_notification_channel_name">Notificación de alarmas</string>
     <string name="alarm_set_indication_notification_channel_description">Notifica sobre la alarma configurada actualmente o las alarmas perdidas, se oculta en el cajón de notificaciones, no emite sonido</string>
     <string name="alarm_missed_notification_title">¡Alarma perdida!</string>
     <string name="alarm_missed_notification_text">Probablemente, la alarma que configuraste anteriormente no se escuchó debido a un cambio de hora en tu teléfono o a que el teléfono estaba apagado en el momento de la alarma.</string>
     <string name="alarm_wake_up">Alarma - ¡despierta!</string>
-    <string name="stop">STOP</string>
-    <string name="snooze_capitals">SIESTA</string>
+    <string name="stop">DETENER</string>
+    <string name="snooze_capitals">POSPONER</string>
     <string name="alarm_snoozed_until">La alarma se pospuso hasta:</string>
     <string name="upcoming_alarm_indication_notification_title">Alarma próxima</string>
     <string name="upcoming_alarm_indication_notification_text">Se ha establecido la alarma para %1$s</string>
@@ -116,7 +116,7 @@
     <string name="optimization_screen_description">¡Las siguientes configuraciones ayudarán a que QRAlarm funcione mejor en su sistema para brindarle las mejores mañanas de su vida!</string>
     <string name="enable_background_work">Habilitar trabajo en segundo plano</string>
     <string name="enable_background_work_description">¡No permitas que el sistema interfiera con tus alarmas y duerme tranquilo!</string>
-    <string name="fully_optimize_for_your_system">Optimizado completamente para su sistema</string>
+    <string name="fully_optimize_for_your_system">Optimice completamente para su sistema</string>
     <string name="fully_optimize_for_your_system_description">Algunos sistemas Android imponen restricciones específicas al funcionamiento de las aplicaciones que pueden afectar a QRAlarm. Optimice la aplicación siguiendo las instrucciones para su teléfono:</string>
     <string name="ensure_the_best_settings_possible">Asegúrese de obtener la mejor configuración posible</string>
     <string name="ensure_the_best_settings_possible_description">Asegúrese de que estas configuraciones también estén habilitadas (si su sistema las admite):</string>
@@ -134,7 +134,7 @@
     <string name="get_it_now">¡Actualiza ahora!</string>
     <string name="not_now">Ahora no</string>
     <string name="special_settings">Configuraciones especiales</string>
-    <string name="do_not_leave_alarm">No dejes la alarma</string>
+    <string name="do_not_leave_alarm">No abandonar la alarma</string>
     <string name="do_not_leave_alarm_description">Seguir mostrando la pantalla de alarma cuando la alarma esté sonando.</string>
     <string name="block_volume_down">Bloquear bajar volumen</string>
     <string name="block_volume_down_description">No permita que se reduzca el volumen del tono de alarma.</string>
@@ -147,7 +147,7 @@
     <string name="next_alarm_date">Siguiente: %1$s</string>
     <string name="alarm_label">Etiqueta de alarma</string>
     <string name="enter_your_alarm_label">Ingrese la etiqueta de su alarma…</string>
-    <string name="open_code_link">Enlace de código abierto</string>
+    <string name="open_code_link">Abrir enlace del código</string>
     <string name="open_code_link_description">Si el código contiene una URL válida, la aplicación la abrirá automáticamente al escanearla.</string>
     <string name="tell_me_what_is_wrong">Dime qué pasa</string>
     <string name="rate_qralarm">Califica QRAlarm</string>
@@ -173,18 +173,18 @@
     <string name="download_your_qr_code">Descarga tu código QR</string>
     <string name="download_your_qr_code_description">Si no tienes tu propio código QR para escanear, puedes descargarte uno, imprimirlo y colocarlo en un lugar alejado de tu cama.</string>
     <string name="download_code">Descargar código</string>
-    <string name="saved_qr_code">Código QR guardado</string>
+    <string name="saved_qr_code">¡Código QR guardado!</string>
     <string name="could_not_save_qr_code">No se ha podido guardar el código QR.</string>
     <string name="emergency">Emergencia</string>
     <string name="emergency_task_description">¿Ha perdido u olvidado el código? Puedes terminar esta larga tarea para detener la alarma. Sólo tienes que mover el control deslizante para que coincida con el número objetivo. Buena suerte.</string>
-    <string name="start">Inicio</string>
+    <string name="start">Iniciar</string>
     <string name="target_colon">Objetivo:</string>
-    <string name="remaining_colon">Resto:</string>
+    <string name="remaining_colon">Restante:</string>
     <string name="emergency_task_setting_description">Tarea de emergencia para situaciones en las que no se puede escanear el código.</string>
     <string name="emergency_task">Tarea de emergencia</string>
     <string name="emergency_task_global_settings_description">Si olvida su código y suena una alarma, puede utilizar la tarea de emergencia para desactivar la alarma.\n\nPuede ajustar la dificultad de la tarea de emergencia cambiando la siguiente configuración y previsualizar cómo se verá:</string>
-    <string name="slider_range">Rango de deslizamiento:</string>
-    <string name="required_matches">Partidos necesarios:</string>
+    <string name="slider_range">Rango del control deslizante:</string>
+    <string name="required_matches">Coincidencias requeridas:</string>
     <string name="preview_emergency_task">Vista previa de la tarea de emergencia</string>
     <string name="alarms_chain">Cadena de alarmas</string>
     <string name="alarms_chain_description">Conecta las alarmas entre sí para mantenerte despierto y activo: desactiva cada una de ellas escaneando códigos en diferentes lugares.</string>
@@ -207,14 +207,14 @@
     <string name="background_work">Trabajo en segundo plano</string>
     <string name="thousands_of_mornings_changed">Miles de mañanas, cambiadas.</string>
     <string name="review_1">¡Cambió mi vida! Me levanto a tiempo, siempre, gracias a esto. Puse el código QR en otra habitación, así que tengo que salir de la cama para desactivar la alarma, ¡funciona de maravilla!</string>
-    <string name="review_2">Una solución simple y funcional para las personas que habitualmente duermen a través de sus alarmas. Las mañanas ya no son una carrera frenética, ahora tengo tiempo suficiente para disfrutar de mi ducha matutina, desayuno, y aún llegar temprano al trabajo. 5 estrellas no son suficientes, este es un cambio de juego y vale más que el tiempo, dinero y esfuerzo.</string>
+    <string name="review_2">Una solución simple y funcional para las personas que habitualmente no oyen sus alarmas. Las mañanas ya no son una carrera frenética, ahora tengo tiempo suficiente para disfrutar de mi ducha matutina, desayuno, y aún llegar temprano al trabajo. 5 estrellas no son suficientes, este es un cambio de juego y vale más que el tiempo, dinero y esfuerzo.</string>
     <string name="review_3">Simple pero efectivo, hace imposible que me quede en la cama cuando suena. En lugar de tener 20 alarmas cada 5 minutos que apago medio dormido, esta app me obliga a salir de la cama y escanear un código de barras en otra habitación.</string>
     <string name="review_4">Esta alarma salva mi vida/empleo, esta es literalmente la única forma de sacarme de la cama escaneando un código QR para desactivar la alarma, antes mi cuerpo estaba tan entrenado para apagar mi alarma DURMIENDO que me despertaba sin saber siquiera que había sonado. Esta alarma me ha impedido dormir de más y faltar al trabajo, ¡y estoy agradecido!</string>
     <string name="review_5">¡Excelente app con actualizaciones regulares que traen un montón de nuevas funciones! Es muy fácil de usar y me ahorra mucho tiempo.</string>
     <string name="welcome_title">La alarma de mañana no debería perder contra la noche pasada.</string>
     <string name="welcome_subtitle">La mayoría de las alarmas solo te piden tocar.\nQRAlarm te hace levantar.</string>
     <string name="the_cure_isnt_louder">La solución no es más ruido.</string>
-    <string name="its_further_away">Es más lejos.</string>
+    <string name="its_further_away">Está más lejos.</string>
     <string name="how_it_works_subtitle">Coloca un código QR donde realmente necesites estar por la mañana. La alarma solo se detiene cuando lo escaneas, así que ya estás levantado.</string>
     <string name="how_it_works_step_1_title">Configura tu alarma</string>
     <string name="how_it_works_step_1_description">Elige una hora, un sonido y los días. Como siempre.</string>
@@ -227,7 +227,7 @@
     <string name="of_people_oversleep">de las personas se quedan dormidas al menos una vez a la semana</string>
     <string name="survey_source">Encuesta 2019, más de 1,000 encuestados</string>
     <string name="sounds_familiar">¿Te suena familiar?</string>
-    <string name="sounds_familiar_description">Pones la alarma con buenas intenciones. Luego llega la mañana y tu mano medio dormida encuentra el temporal antes de que tu cerebro siquiera despierte. Otra mañana apresurada. De nuevo.</string>
+    <string name="sounds_familiar_description">Pones la alarma con buenas intenciones. Luego llega la mañana y tu mano medio dormida encuentra el botón de posponer antes de que tu cerebro siquiera despierte. Otra mañana apresurada. De nuevo.</string>
     <string name="widget_next_alarm">Próxima alarma</string>
     <string name="widget_today">Hoy</string>
     <string name="widget_tomorrow">Mañana</string>

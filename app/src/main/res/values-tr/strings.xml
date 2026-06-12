@@ -24,7 +24,7 @@
         <item quantity="one">%1$d alarm aktif</item>
         <item quantity="other">%1$d alarm aktif</item>
     </plurals>
-    <string name="lets_go">Hadi Gidelim!</string>
+    <string name="lets_go">Hadi başlayalım!</string>
     <string name="home">Ana Sayfa</string>
     <string name="alarms">Alarmlar</string>
     <string name="alarm">Alarm</string>
@@ -77,9 +77,9 @@
     <string name="delete_alarm">Alarmı sil</string>
     <string name="delete_this_alarm">Bu alarm silinsin mi?</string>
     <string name="delete">Sil</string>
-    <string name="discard_changes">Değişiklikler silinsin mi?</string>
-    <string name="discard_changes_description">Bu alarmda yapılan tüm değişiklikler silinecek ve kaydedilmeyecektir. Silmek istediğinizden emin misiniz?</string>
-    <string name="discard">Sil</string>
+    <string name="discard_changes">Değişiklikler yok sayılsın mı?</string>
+    <string name="discard_changes_description">Bu alarmda yapılan tüm değişiklikler yok sayılacak ve kaydedilmeyecektir. Yok saymak istediğinizden emin misiniz?</string>
+    <string name="discard">Yoksay</string>
     <string name="alarm_in">Alarmın çalmasına:</string>
     <string name="alarm_notification_channel_name">Çalan alarmlar</string>
     <string name="alarm_notification_channel_description">Alarm sesi çalar, bildirim gösterir ve ekranda belirir</string>
@@ -91,7 +91,7 @@
     <string name="alarm_wake_up">Alarm - uyan!</string>
     <string name="stop">DURDUR</string>
     <string name="snooze_capitals">ERTELE</string>
-    <string name="alarm_snoozed_until">Alarm ertelendi, yeni zaman:</string>
+    <string name="alarm_snoozed_until">Alarm şu saate kadar ertelendi:</string>
     <string name="upcoming_alarm_indication_notification_title">Yaklaşan alarm</string>
     <string name="upcoming_alarm_indication_notification_text">Alarm %1$s için kuruldu</string>
     <string name="upcoming_snoozed_alarm_indication_notification_text">Alarm şu saate kadar ertelendi: %1$s</string>
@@ -142,7 +142,7 @@
     <string name="alarm_label">Alarm etiketi</string>
     <string name="enter_your_alarm_label">Alarm etiketinizi girin…</string>
     <string name="open_code_link">Kod bağlantısını aç</string>
-    <string name="open_code_link_description">Eğer kod geçerli bir URL içeriyorsa, uygulama tarama üzerine otomatik olarak açacaktır.</string>
+    <string name="open_code_link_description">Eğer kod geçerli bir URL içeriyorsa, uygulama bağlantıyı tarama sonrasında otomatik olarak açacaktır.</string>
     <string name="tell_me_what_is_wrong">Sorunun ne olduğunu bana söyle</string>
     <string name="rate_qralarm">QRAlarm\'ı Puanla</string>
     <string name="previous">Önceki</string>
@@ -171,7 +171,7 @@
     <string name="could_not_save_qr_code">QR kodu kaydedilemedi.</string>
     <string name="emergency">Acil Durum</string>
     <string name="emergency_task_description">Kodu mu kaybettiniz veya unuttunuz? Alarmı durdurmak için bu uzun görevi bitirebilirsiniz. Hedef numarayla eşleştirmek için kaydırıcıyı hareket ettirmeniz yeterlidir. İyi şanslar.</string>
-    <string name="start">Başlangıç</string>
+    <string name="start">Başlat</string>
     <string name="target_colon">Hedef:</string>
     <string name="remaining_colon">Kalan:</string>
     <string name="emergency_task_setting_description">Kodu tarayamadığınız durumlar için acil durum görevi.</string>
@@ -184,7 +184,7 @@
     <string name="alarms_chain_description">Alarmları birbirine bağlayarak uyanık ve aktif kalın - farklı yerlerdeki kodları tarayarak her birini devre dışı bırakın.</string>
     <string name="this_alarm">Bu alarm</string>
     <string name="add_next_alarm_in_chain">+ Zincirde bir sonraki alarmı ekle</string>
-    <string name="failed_to_initialize_camera">Kamerayı başlatılamadı</string>
+    <string name="failed_to_initialize_camera">Kamera başlatılamadı</string>
     <string name="emergency_disabled_repeating_alarm_notification_title">Tekrar eden alarm devre dışı bırakıldı!</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">Acil durum görevi, tekrar eden alarmınızı devre dışı bırakmıştır. Tekrar programlamak için alarmlar sayfasına gidin.</string>
     <string name="standalone_app">Bağımsız uygulama</string>
@@ -199,13 +199,13 @@
     <string name="get_started">Başlayın</string>
     <string name="permissions_screen_description">Sizi yataktan kaldırmak için QRAlarm\'ın birkaç izne ihtiyacı var. Bunları sadece alarmınızın her zaman çalışmasını sağlamak için kullanıyoruz.</string>
     <string name="background_work">Arka plan çalışması</string>
-    <string name="thousands_of_mornings_changed">Binlerce sabah, değişti.</string>
+    <string name="thousands_of_mornings_changed">Binlerce sabah değişti.</string>
     <string name="review_1">Hayatımı değiştirdi! Sayesinde her zaman zamanında kalkıyorum. QR kodunu başka bir odaya koydum, böylece alarmı kapatmak için yataktan kalkmak zorunda kalıyorum, harika çalışıyor!</string>
-    <string name="review_2">Alarmlarını sürekli duymayarak uyuyanlar için basit ve işlevsel bir çözüm. Sabahlar artık panik dolu bir koşuşturma değil, sabah duşumun, kahvaltımın keyfini çıkaracak kadar zamanım oluyor ve işe erkenden gitmeye devam ediyorum. 5 yıldız yeterli değil, bu bir oyun değiştirici ve zamanı, parası ve çabayı fazlasıyla değer kılıyor.</string>
+    <string name="review_2">Alarmlarını sürekli duymayarak uyuyanlar için basit ve işlevsel bir çözüm. Sabahlar artık panik dolu bir koşuşturma değil, sabah duşumun, kahvaltımın keyfini çıkaracak kadar zamanım oluyor ve işe erkenden gitmeye devam ediyorum. 5 yıldız yeterli değil, bu ezber bozan bir uygulama ve harcanan zamana, paraya ve emeğe fazlasıyla değiyor.</string>
     <string name="review_3">Basit ama etkili, çaldığında yatakta kalmamı imkansız hale getiriyor. Yarı uykulu halde kapattığım 20 alarm yerine, bu uygulama beni yataktan kalkıp başka bir odadaki barkodu taramaya mecbur bırakıyor.</string>
     <string name="review_4">Bu Alarm bir hayat/iş kurtarıcısı, beni yataktan kaldırmanın tek yolu, alarmı devre dışı bırakmak için bir QR kodu taratmak. Önceden, vücudum alarmı UYURKEN kapatmaya öyle alışmıştı ki uyandığımda çaldığını bile bilmiyordum. Bu alarm işe geç kalmamı engelledi ve minnettarım!</string>
     <string name="review_5">Tonlarca yeni özellik getiren düzenli güncellemelerle mükemmel bir uygulama! Kullanımı çok kolay ve benim için büyük bir zaman tasarrufu sağlıyor.</string>
-    <string name="welcome_title">Yarınki alarm, dünkü akşamı geçmemeli.</string>
+    <string name="welcome_title">Yarınki alarm, dün geceye yenilmemeli.</string>
     <string name="welcome_subtitle">Çoğu alarm sadece dokunmanızı ister.\nQRAlarm sizi ayağa kaldırır.</string>
     <string name="the_cure_isnt_louder">Çözüm daha yüksek sesle değil.</string>
     <string name="its_further_away">Daha uzakta.</string>
@@ -218,13 +218,13 @@
     <string name="how_it_works_step_3_description">Yürüyün, tarayın, alarm dursun. Ayaktasınız.</string>
     <string name="almost_ready">Neredeyse hazır.</string>
     <string name="verified_user">Doğrulanmış kullanıcı</string>
-    <string name="of_people_oversleep">insanlar haftada en az bir kez fazla uyuyor</string>
+    <string name="of_people_oversleep">insan haftada en az bir kez uyuyakalıyor</string>
     <string name="survey_source">Anket 2019, 1.000+ katılımcı</string>
     <string name="sounds_familiar">Tanıdık geliyor mu?</string>
     <string name="sounds_familiar_description">Alarmı iyi niyetlerle kurarsınız. Sonra sabah gelir ve yarı uykulu eliniz, beyniniz uyanmadan önce ertelemeyi bulur. Yine aceleyle bir sabah daha. Yine.</string>
     <string name="widget_today">Bugün</string>
     <string name="widget_next_alarm">Sonraki alarm</string>
-    <string name="widget_tap_to_add">Eklemek için dokunun</string>
+    <string name="widget_tap_to_add">Alarm eklemek için dokunun</string>
     <string name="widget_tomorrow">Yarın</string>
     <string name="codes_management">Kod yönetimi</string>
     <string name="codes_management_description">Alarmlarınızda kullanılan tüm kodlar. Varsayılan kod, yeni oluşturulan alarmlara otomatik olarak uygulanır.</string>
@@ -235,7 +235,7 @@
     <string name="pick_default_code">Varsayılan kodu seç</string>
     <string name="other_codes">Diğer kodlar</string>
     <string name="no_default_code_yet">Henüz varsayılan kod yok</string>
-    <string name="no_default_code_yet_description">Yeni alarmlar otomatik atanması için bir tane ayarlayın.</string>
+    <string name="no_default_code_yet_description">Yeni oluşturulan alarmlara otomatik olarak atanması için bir kod ayarlayın.</string>
     <string name="no_codes_yet">Henüz başka kod yok</string>
     <string name="no_codes_yet_description">Varsayılan kod dışında herhangi bir alarma atanmış kodlar burada görünecek.</string>
 </resources>

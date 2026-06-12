@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="number_of_snoozes_plural">
-        <item quantity="other">%1$d tunda</item>
+        <item quantity="other">%1$d penundaan</item>
     </plurals>
     <plurals name="number_of_seconds_plural">
         <item quantity="other">%1$d detik</item>
@@ -18,7 +18,7 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d alarm aktif</item>
     </plurals>
-    <string name="lets_go">Ayo pergi!</string>
+    <string name="lets_go">Ayo mulai!</string>
     <string name="home">Beranda</string>
     <string name="alarms">Alarm</string>
     <string name="alarm">Alarm</string>
@@ -36,9 +36,9 @@
     <string name="temporary_mute_description">Alarm akan dibisukan untuk waktu yang ditentukan setelah mengklik STOP saat menggunakan kode QR/Batang.</string>
     <string name="only_once">Hanya sekali</string>
     <string name="custom">Kustom</string>
-    <string name="number_of_snoozes">Jumlah snooze:</string>
-    <string name="snooze_duration">Durasi snooze:</string>
-    <string name="no_snoozes">Tanpa snooze</string>
+    <string name="number_of_snoozes">Jumlah penundaan:</string>
+    <string name="snooze_duration">Durasi penundaan:</string>
+    <string name="no_snoozes">Tanpa penundaan</string>
     <string name="gentle_guitar">Gitar lembut</string>
     <string name="alarm_clock">Jam alarm</string>
     <string name="air_horn">Klakson udara</string>
@@ -60,7 +60,7 @@
     <string name="clear_assigned_code">Hapus kode yang ditetapkan</string>
     <string name="permissions_required">Izin diperlukan!</string>
     <string name="camera">Kamera</string>
-    <string name="camera_usage">Digunakan untuk memindai kode QR/Bar.</string>
+    <string name="camera_usage">Digunakan untuk memindai kode QR/Batang.</string>
     <string name="alarms_usage">Digunakan untuk menjadwalkan alarm pada waktu yang tepat.</string>
     <string name="notifications">Notifikasi</string>
     <string name="notifications_usage">Digunakan untuk menampilkan notifikasi bersamaan dengan alarm.</string>
@@ -75,7 +75,7 @@
     <string name="discard_changes_description">Perubahan yang dilakukan pada alarm ini akan dibuang dan tidak disimpan. Apakah Anda yakin ingin membuangnya?</string>
     <string name="discard">Buang</string>
     <string name="alarm_in">Alarm dalam:</string>
-    <string name="alarm_notification_channel_name">Menyalakan alarm</string>
+    <string name="alarm_notification_channel_name">Alarm yang berbunyi</string>
     <string name="alarm_notification_channel_description">Memutar suara alarm, menampilkan notifikasi dan muncul di layar</string>
     <string name="alarm_notification_title">Alarm berbunyi! Bangun!</string>
     <string name="alarm_set_indication_notification_channel_name">Memberitahukan tentang alarm</string>
@@ -195,7 +195,7 @@
     <string name="background_work">Pekerjaan latar belakang</string>
     <string name="thousands_of_mornings_changed">Ribuan pagi, berubah.</string>
     <string name="review_1">Mengubah hidupku! Saya bangun tepat waktu setiap kali berkat ini! Saya menempatkan kode QR di ruangan lain, jadi saya harus bangun dari tempat tidur untuk mematikan alarm, hasilnya sangat baik!</string>
-    <string name="review_2">Solusi sederhana dan fungsional bagi orang yang biasa tidur terlalu nyenyak melalui alarm mereka. Pagi tidak lagi berantakan, saya punya cukup waktu untuk menikmati mandi pagi, sarapan, dan tetap datang ke kantor lebih awal. 5 bintang tidak cukup, ini adalah pengubah permainan dan sangat berharga untuk waktu, uang, dan usaha.</string>
+    <string name="review_2">Solusi sederhana dan fungsional bagi orang yang biasa tidur terlalu nyenyak melalui alarm mereka. Pagi tidak lagi berantakan, saya punya cukup waktu untuk menikmati mandi pagi, sarapan, dan tetap datang ke kantor lebih awal. 5 bintang tidak cukup, aplikasi ini benar-benar mengubah segalanya dan sepadan dengan setiap waktu, uang, dan usaha yang dikeluarkan.</string>
     <string name="review_3">Sederhana tapi efektif, membuat saya tidak mungkin tetap di tempat tidur ketika berbunyi. Alih-alih memiliki 20 alarm setiap 5 menit yang saya matikan setengah tidur, aplikasi ini memaksa saya bangun dari tempat tidur dan memindai barcode di ruangan lain.</string>
     <string name="review_4">Alarm ini penyelamat hidup/pekerjaan, ini benar-benar satu-satunya cara untuk membuat saya bangun dari tempat tidur dengan memindai kode QR untuk menonaktifkan alarm, sebelumnya tubuh saya sangat terlatih untuk mematikan alarm DALAM TIDUR sehingga saya bangun tanpa tahu itu berbunyi. Alarm ini menghentikan saya dari terlalu tidur untuk bekerja, dan saya bersyukur!</string>
     <string name="review_5">Aplikasi hebat dengan pembaruan rutin yang membawa banyak fitur baru! Sangat mudah digunakan dan sangat menghemat waktu bagi saya.</string>
@@ -209,17 +209,17 @@
     <string name="how_it_works_step_2_title">Pasang QR code di suatu tempat</string>
     <string name="how_it_works_step_2_description">Dapur, kamar mandi, pintu depan — di mana pun Anda perlu berada.</string>
     <string name="how_it_works_step_3_title">Pindai di pagi hari</string>
-    <string name="how_it_works_step_3_description">Berjalan, pindai, alarm berhenti. Anda berdiri.</string>
+    <string name="how_it_works_step_3_description">Berjalan, pindai, alarm berhenti. Anda sudah bangun.</string>
     <string name="almost_ready">Hampir siap.</string>
     <string name="verified_user">Pengguna terverifikasi</string>
-    <string name="of_people_oversleep">orang sering terlambat bangun setidaknya sekali seminggu</string>
+    <string name="of_people_oversleep">orang terlambat bangun setidaknya sekali seminggu</string>
     <string name="survey_source">Survei 2019, lebih dari 1.000 responden</string>
     <string name="sounds_familiar">Kedengarannya familiar?</string>
-    <string name="sounds_familiar_description">Anda menyetel alarm dengan niat baik. Kemudian pagi datang dan tangan setengah tidur Anda menemukan tombol snooze sebelum otak Anda terbangun. Pagi terburu-buru lagi.</string>
+    <string name="sounds_familiar_description">Anda menyetel alarm dengan niat baik. Kemudian pagi datang dan tangan setengah tidur Anda menemukan tombol tunda sebelum otak Anda terbangun. Pagi terburu-buru lagi.</string>
     <string name="widget_today">Hari ini</string>
     <string name="widget_next_alarm">Alarm berikutnya</string>
     <string name="widget_tomorrow">Besok</string>
-    <string name="widget_tap_to_add">Ketuk untuk menambah satu</string>
+    <string name="widget_tap_to_add">Ketuk untuk menambah alarm</string>
     <string name="codes_management">Manajemen kode</string>
     <string name="codes_management_description">Semua kode yang digunakan di seluruh alarm Anda. Kode default diterapkan secara otomatis ke alarm yang baru dibuat.</string>
     <string name="edit_code_name">Edit nama kode</string>
@@ -229,7 +229,7 @@
     <string name="pick_default_code">Pilih kode default</string>
     <string name="other_codes">Kode lainnya</string>
     <string name="no_default_code_yet">Belum ada kode default</string>
-    <string name="no_default_code_yet_description">Tetapkan satu agar alarm yang baru dibuat mendapatkannya secara otomatis.</string>
+    <string name="no_default_code_yet_description">Tetapkan kode agar alarm yang baru dibuat mendapatkannya secara otomatis.</string>
     <string name="no_codes_yet">Belum ada kode lainnya</string>
     <string name="no_codes_yet_description">Kode yang ditugaskan untuk alarm tertentu, selain yang default, akan muncul di sini.</string>
 </resources>

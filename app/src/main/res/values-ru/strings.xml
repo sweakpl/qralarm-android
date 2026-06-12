@@ -59,7 +59,7 @@
     <string name="no_snoozes">Без отсрочек</string>
     <string name="gentle_guitar">Мягкая гитара</string>
     <string name="alarm_clock">Будильник</string>
-    <string name="air_horn">Сигнал воздушного рога</string>
+    <string name="air_horn">Пневматический гудок</string>
     <string name="custom_sound">Пользовательский звук</string>
     <string name="disabled">Отключено</string>
     <string name="min">мин</string>
@@ -97,7 +97,7 @@
     <string name="alarm_notification_channel_description">Воспроизводит звук будильника, показывает уведомление и появляется на экране</string>
     <string name="alarm_notification_title">Будильник сработал! Просыпайтесь!</string>
     <string name="alarm_set_indication_notification_channel_name">Оповещения о будильниках</string>
-    <string name="alarm_set_indication_notification_channel_description">Оповещает о текущем установленном будильнике или пропущенных будильниках, скрывается в панели уведомлений, не издает звука</string>
+    <string name="alarm_set_indication_notification_channel_description">Оповещает о текущем установленном будильнике или пропущенных будильниках, остаётся в панели уведомлений, не издает звука</string>
     <string name="alarm_missed_notification_title">Будильник пропущен!</string>
     <string name="alarm_missed_notification_text">Ваш ранее установленный будильник был пропущен, вероятно, из-за изменения времени на телефоне или его отключения в момент срабатывания будильника.</string>
     <string name="alarm_wake_up">Будильник - просыпайтесь!</string>
@@ -150,7 +150,7 @@
     <string name="there_was_an_issue_playing_ringtone">Возникла проблема с воспроизведением рингтона…</string>
     <string name="skip_next_alarm">Пропустить следующий будильник</string>
     <string name="undo_skipping_next_alarm">Отменить пропуск следующего будильника</string>
-    <string name="next_alarm_date">Далее: %1$s</string>
+    <string name="next_alarm_date">Следующий: %1$s</string>
     <string name="alarm_label">Метка будильника</string>
     <string name="enter_your_alarm_label">Введите метку вашего будильника…</string>
     <string name="open_code_link">Открыть ссылку кода</string>
@@ -163,7 +163,7 @@
     <string name="click_to_choose">*Нажмите, чтобы выбрать*</string>
     <string name="power_off_guard">Защита от выключения</string>
     <string name="power_off_guard_description">Предотвратите отключение вашего будильника через меню выключения.</string>
-    <string name="lock_alarm_to_this_volume">Установить звук будильника при срабатывании:</string>
+    <string name="lock_alarm_to_this_volume">Будильник будет звонить на этой громкости:</string>
     <string name="using_system_alarm_volume">Использование системной громкости будильника</string>
     <string name="ok">ОК</string>
     <string name="advanced_settings">Расширенные настройки</string>
@@ -172,7 +172,7 @@
     <string name="default_alarm_code">Код будильника по умолчанию</string>
     <string name="clear_default_code">Очистить код по умолчанию</string>
     <string name="keep_ringer_on">Сохранять звук</string>
-    <string name="keep_ringer_on_description">Не допускайте беззвучного/вибрационного режима, который может нарушить звук будильника.</string>
+    <string name="keep_ringer_on_description">Не позволяет беззвучному режиму и вибрации прерывать звук будильника.</string>
     <string name="active_alarms">Активные будильники</string>
     <string name="non_active_alarms">Неактивные будильники</string>
     <string name="dont_have_code">Нет кода?</string>
@@ -181,17 +181,17 @@
     <string name="download_code">Загрузить код</string>
     <string name="saved_qr_code">QR-код сохранён!</string>
     <string name="could_not_save_qr_code">Не удалось сохранить QR-код.</string>
-    <string name="emergency">Аварийная ситуация</string>
+    <string name="emergency">Экстренная ситуация</string>
     <string name="emergency_task_description">Потеряли или забыли код? Вы можете выполнить эту долгую задачу, чтобы отключить будильник. Просто переместите ползунок, чтобы совпал целевой номер. Удачи.</string>
     <string name="start">Начать</string>
     <string name="target_colon">Цель:</string>
     <string name="remaining_colon">Осталось:</string>
-    <string name="emergency_task_setting_description">Аварийная задача для случаев, когда вы не можете просканировать код.</string>
-    <string name="emergency_task">Аварийная задача</string>
-    <string name="emergency_task_global_settings_description">Если забудете код и зазвонит будильник, вы можете воспользоваться аварийной задачей, чтобы отключить будильник.\n\nВы можете настроить сложность аварийной задачи, изменив следующие настройки и посмотрев предварительно, как это будет выглядеть:</string>
+    <string name="emergency_task_setting_description">Экстренная задача для случаев, когда вы не можете просканировать код.</string>
+    <string name="emergency_task">Экстренная задача</string>
+    <string name="emergency_task_global_settings_description">Если забудете код и зазвонит будильник, вы можете воспользоваться экстренной задачей, чтобы отключить будильник.\n\nВы можете настроить сложность экстренной задачи, изменив следующие настройки и посмотрев предварительно, как это будет выглядеть:</string>
     <string name="slider_range">Диапазон ползунка:</string>
     <string name="required_matches">Требуемые совпадения:</string>
-    <string name="preview_emergency_task">Предпросмотр аварийной задачи</string>
+    <string name="preview_emergency_task">Предпросмотр экстренной задачи</string>
     <string name="alarms_chain">Цепочка будильников</string>
     <string name="alarms_chain_description">Свяжите будильники вместе, чтобы оставаться бодрыми и активными - отключайте каждый, сканируя коды в разных местах.</string>
     <string name="this_alarm">Этот будильник</string>
@@ -213,7 +213,7 @@
     <string name="background_work">Фоновая работа</string>
     <string name="thousands_of_mornings_changed">Тысячи измененных утр.</string>
     <string name="review_1">Изменила мою жизнь! Теперь я встаю вовремя каждый раз благодаря этому приложению! Я разместил QR-код в другой комнате, так что мне приходится вставать с постели, чтобы отключить будильник, прекрасно работает!</string>
-    <string name="review_2">Простое и функциональное решение для тех, кто привык проспать будильники. Утро больше не начинается с паники, у меня достаточно времени, чтобы насладиться душем, завтраком, и все равно прийти на работу заранее. 5 звезд недостаточно, это игра меняющая жизнь и безусловно стоит затраченного времени, денег и усилий.</string>
+    <string name="review_2">Простое и функциональное решение для тех, кто привык проспать будильники. Утро больше не начинается с паники, у меня достаточно времени, чтобы насладиться душем, завтраком, и все равно прийти на работу заранее. 5 звезд недостаточно, это полностью меняет дело и безусловно стоит затраченного времени, денег и усилий.</string>
     <string name="review_3">Простое, но эффективное приложение, невозможно остаться в постели, когда оно звонит. Вместо того чтобы иметь 20 будильников каждые 5 минут и отключать их полусонным, это приложение заставляет меня встать и сканировать штрих-код в другой комнате.</string>
     <string name="review_4">Этот будильник спасает жизнь/работу, это буквально единственный способ поднять меня с постели, требуя сканировать QR код, чтобы деактивировать будильник, раньше мое тело было так натренировано отключать будильник ВО СНЕ, что я просыпался, даже не осознавая, что он звонил. Этот будильник спас меня от пересыпания для работы, и я благодарен!</string>
     <string name="review_5">Отличное приложение с регулярными обновлениями, приносящими массу новых функций! Очень легко пользоваться и экономит мне кучу времени.</string>
@@ -227,17 +227,17 @@
     <string name="how_it_works_step_2_title">Закрепите QR-код где угодно</string>
     <string name="how_it_works_step_2_description">Кухня, ванная, входная дверь — где вам нужно быть.</string>
     <string name="how_it_works_step_3_title">Сканируйте утром</string>
-    <string name="how_it_works_step_3_description">Дойдите, сканируйте, будильник отключится. Вы вертикальны.</string>
+    <string name="how_it_works_step_3_description">Дойдите, отсканируйте — будильник отключится. Вы уже на ногах.</string>
     <string name="almost_ready">Почти готово.</string>
     <string name="verified_user">Проверенный пользователь</string>
-    <string name="of_people_oversleep">процентов людей проспят хотя бы раз в неделю</string>
+    <string name="of_people_oversleep">людей просыпают будильник хотя бы раз в неделю</string>
     <string name="survey_source">Опрос 2019 года, более 1000 респондентов</string>
     <string name="sounds_familiar">Звучит знакомо?</string>
     <string name="sounds_familiar_description">Вы устанавливаете будильник с благими намерениями. Затем наступает утро, и ваша сонная рука находит кнопку повтора, еще до того как мозг проснется. Еще одно спешное утро. Снова.</string>
     <string name="widget_next_alarm">Следующий будильник</string>
     <string name="widget_today">Сегодня</string>
     <string name="widget_tomorrow">Завтра</string>
-    <string name="widget_tap_to_add">Нажмите, чтобы добавить</string>
+    <string name="widget_tap_to_add">Нажмите, чтобы добавить будильник</string>
     <string name="codes_management">Управление кодами</string>
     <string name="codes_management_description">Все коды, используемые в ваших будильниках. Код по умолчанию применяется автоматически к новым будильникам.</string>
     <string name="edit_code_name">Изменить имя кода</string>
@@ -247,7 +247,7 @@
     <string name="pick_default_code">Выбрать код по умолчанию</string>
     <string name="other_codes">Другие коды</string>
     <string name="no_default_code_yet">Код по умолчанию еще не задан</string>
-    <string name="no_default_code_yet_description">Установите один, чтобы новые будильники получали его автоматически.</string>
+    <string name="no_default_code_yet_description">Задайте его, чтобы новые будильники получали его автоматически.</string>
     <string name="no_codes_yet">Других кодов еще нет</string>
     <string name="no_codes_yet_description">Коды, назначенные конкретным будильникам, кроме кода по умолчанию, появятся здесь.</string>
 </resources>

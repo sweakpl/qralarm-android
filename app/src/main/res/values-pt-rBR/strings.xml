@@ -187,10 +187,10 @@
     <string name="required_matches">Correspondências necessárias:</string>
     <string name="preview_emergency_task">Visualizar tarefa de emergência</string>
     <string name="alarms_chain">Cadeia de alarmes</string>
-    <string name="alarms_chain_description">Conecte os alarmes para permanecer acordado e ativo - desative cada um deles digitalizando os códigos em locais diferentes.</string>
+    <string name="alarms_chain_description">Conecte os alarmes para permanecer acordado e ativo - desative cada um deles escaneando os códigos em locais diferentes.</string>
     <string name="this_alarm">Este alarme</string>
     <string name="add_next_alarm_in_chain">+ Adicionar próximo alarme na cadeia</string>
-    <string name="failed_to_initialize_camera">Falha ao inicializar a câmara</string>
+    <string name="failed_to_initialize_camera">Falha ao inicializar a câmera</string>
     <string name="emergency_disabled_repeating_alarm_notification_title">Alarme repetitivo desativado!</string>
     <string name="emergency_disabled_repeating_alarm_notification_text">A tarefa de emergência desativou seu alarme repetitivo. Para programá-lo novamente, acesse a página de alarmes.</string>
     <string name="standalone_app">Aplicativo independente</string>
@@ -210,7 +210,7 @@
     <string name="review_2">Uma solução simples e funcional para pessoas que costumam dormir durante os alarmes. As manhãs não são mais uma correria desesperada, ganhei tempo suficiente para aproveitar meu banho matinal, café da manhã e ainda chegar cedo ao trabalho. 5 estrelas não são suficientes, isso é um divisor de águas e vale cada centavo, tempo e esforço.</string>
     <string name="review_3">Simples, mas eficaz, torna impossível eu ficar na cama quando toca. Em vez de ter 20 alarmes a cada 5 minutos que desligo meio dormindo de qualquer forma, este app me obriga a sair da cama e escanear um código de barras em outro cômodo.</string>
     <string name="review_4">Este alarme salva vidas/empregos, esse é literalmente o único jeito de me tirar da cama escaneando um QR code para desativar o alarme, antes meu corpo estava tão treinado para desligar meu alarme DURANTE O SONO que acordava sem nem saber que ele havia tocado. Este alarme me impediu de perder a hora para o trabalho, e sou grato!</string>
-    <string name="review_5">Excelente app com atualizações regulares que trazem muitas novas funcionalidades! É muito fácil de usar e um enorme poupador de tempo para mim.</string>
+    <string name="review_5">Excelente app com atualizações regulares que trazem muitas novas funcionalidades! É muito fácil de usar e me poupa muito tempo.</string>
     <string name="welcome_title">O alarme de amanhã não deve perder para a noite passada.</string>
     <string name="welcome_subtitle">A maioria dos alarmes só pede para você tocar. \nQRAlarm faz você levantar.</string>
     <string name="the_cure_isnt_louder">A cura não é mais barulho.</string>
@@ -221,13 +221,13 @@
     <string name="how_it_works_step_2_title">Fixar um código QR em algum lugar</string>
     <string name="how_it_works_step_2_description">Cozinha, banheiro, porta de entrada — onde você precisar estar.</string>
     <string name="how_it_works_step_3_title">Escanear de manhã</string>
-    <string name="how_it_works_step_3_description">Caminhe, escaneie, alarme pára. Você está de pé.</string>
+    <string name="how_it_works_step_3_description">Caminhe, escaneie, o alarme para. Você está de pé.</string>
     <string name="almost_ready">Quase pronto.</string>
     <string name="verified_user">Usuário verificado</string>
     <string name="of_people_oversleep">de pessoas perdem a hora pelo menos uma vez por semana</string>
     <string name="survey_source">Pesquisa 2019, mais de 1.000 entrevistados</string>
     <string name="sounds_familiar">Soa familiar?</string>
-    <string name="sounds_familiar_description">Você configura o alarme com boas intenções. Então, a manhã chega e sua mão meio adormecida encontra o soneca antes de seu cérebro sequer acordar. Outra manhã apressada. De novo.</string>
+    <string name="sounds_familiar_description">Você configura o alarme com boas intenções. Então, a manhã chega e sua mão meio adormecida encontra o botão de soneca antes de seu cérebro sequer acordar. Outra manhã apressada. De novo.</string>
     <string name="widget_tomorrow">Amanhã</string>
     <string name="widget_next_alarm">Próximo alarme</string>
     <string name="widget_tap_to_add">Toque para adicionar um</string>

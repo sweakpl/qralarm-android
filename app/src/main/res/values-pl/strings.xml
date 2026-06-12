@@ -103,10 +103,10 @@
     <string name="alarm_wake_up">Alarm - pobudka!</string>
     <string name="stop">STOP</string>
     <string name="snooze_capitals">DRZEMKA</string>
-    <string name="alarm_snoozed_until">Alarm uśpiony do:</string>
+    <string name="alarm_snoozed_until">Alarm odłożony do:</string>
     <string name="upcoming_alarm_indication_notification_title">Nadchodzący alarm</string>
     <string name="upcoming_alarm_indication_notification_text">Ustawiono alarm na %1$s</string>
-    <string name="upcoming_snoozed_alarm_indication_notification_text">Alarm został uśpiony do godziny %1$s</string>
+    <string name="upcoming_snoozed_alarm_indication_notification_text">Alarm został odłożony do godziny %1$s</string>
     <string name="next_step">Następny krok</string>
     <string name="kalimba">Kalimba</string>
     <string name="classic_alarm">Klasyczny alarm</string>
@@ -161,7 +161,7 @@
     <string name="scan_code">Skanuj kod</string>
     <string name="or_use_already_used_code">Lub użyj już używanego kodu</string>
     <string name="click_to_choose">*Kliknij by wybrać*</string>
-    <string name="power_off_guard">Ochrona wyłączania</string>
+    <string name="power_off_guard">Ochrona przed wyłączeniem</string>
     <string name="power_off_guard_description">Zapobiegaj wyłączeniu alarmu przez menu wyłączania zasilania.</string>
     <string name="lock_alarm_to_this_volume">Ustaw głośność alarmu, gdy dzwoni:</string>
     <string name="using_system_alarm_volume">Korzystanie z głośności alarmu systemowego</string>
@@ -207,8 +207,8 @@
     <string name="cancellation_lock_active_to_edit_scan_code">Blokada anulowania jest aktywna — aby edytować, wyłącz alarm, skanując kod.</string>
     <string name="cancellation_lock_active_scan_code_to_disable">Blokada anulowania jest aktywna — aby wyłączyć alarm, zeskanuj kod.</string>
     <string name="cancellation_lock">Blokada anulowania</string>
-    <string name="cancellation_lock_description">Nie można anulować ani edytować alarmu bez zeskanowania kodu w wybranym czasie przed jego dźwiękiem.</string>
-    <string name="get_started">Zaczynaj</string>
+    <string name="cancellation_lock_description">Nie można anulować ani edytować alarmu bez zeskanowania kodu w wybranym czasie, zanim zadzwoni.</string>
+    <string name="get_started">Rozpocznij</string>
     <string name="permissions_screen_description">Aby cię obudzić, QRAlarm potrzebuje kilku pozwoleń. Używamy ich tylko, aby upewnić się, że alarm zawsze działa.</string>
     <string name="background_work">Praca w tle</string>
     <string name="thousands_of_mornings_changed">Tysiące poranków, zmienionych.</string>
@@ -230,13 +230,13 @@
     <string name="how_it_works_step_3_description">Podejdź, zeskanuj, alarm się zatrzymuje. Jesteś na nogach.</string>
     <string name="almost_ready">Prawie gotowe.</string>
     <string name="verified_user">Zweryfikowany użytkownik</string>
-    <string name="of_people_oversleep">osób zasypia przynajmniej raz w tygodniu</string>
+    <string name="of_people_oversleep">osób przesypia budzik przynajmniej raz w tygodniu</string>
     <string name="survey_source">Badanie 2019, ponad 1000 respondentów</string>
     <string name="sounds_familiar">Brzmi znajomo?</string>
     <string name="sounds_familiar_description">Ustawiasz alarm z dobrymi intencjami. A potem przychodzi poranek, a twoja zaspana ręka znajduje drzemkę, zanim twój mózg się obudzi. Kolejny pośpieszny poranek. Znowu.</string>
     <string name="widget_next_alarm">Następny alarm</string>
     <string name="widget_today">Dzisiaj</string>
-    <string name="widget_tap_to_add">Stuknij, aby dodać jeden</string>
+    <string name="widget_tap_to_add">Stuknij, aby dodać alarm</string>
     <string name="widget_tomorrow">Jutro</string>
     <string name="codes_management">Zarządzanie kodami</string>
     <string name="codes_management_description">Wszystkie kody używane w Twoich alarmach. Domyślny kod jest automatycznie stosowany do nowo utworzonych alarmów.</string>
@@ -247,7 +247,7 @@
     <string name="pick_default_code">Wybierz domyślny kod</string>
     <string name="other_codes">Inne kody</string>
     <string name="no_default_code_yet">Jeszcze brak domyślnego kodu</string>
-    <string name="no_default_code_yet_description">Ustaw jeden, aby nowo utworzone alarmy zostały automatycznie przypisane.</string>
+    <string name="no_default_code_yet_description">Ustaw go, aby był automatycznie przypisywany do nowo utworzonych alarmów.</string>
     <string name="no_codes_yet">Jeszcze brak innych kodów</string>
     <string name="no_codes_yet_description">Kody przypisane do konkretnych alarmów, inne niż domyślne, pojawią się tutaj.</string>
 </resources>
