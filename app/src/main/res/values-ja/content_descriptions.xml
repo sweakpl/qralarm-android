@@ -24,7 +24,7 @@
     <string name="content_description_special_app_settings_icon">特別アプリ設定アイコン</string>
     <string name="content_description_star_icon">星アイコン</string>
     <string name="content_description_flash_icon">フラッシュアイコン</string>
-    <string name="content_description_skip_next_alarm_icon">次のアラームをスキップアイコン</string>
+    <string name="content_description_skip_next_alarm_icon">次のアラームをスキップするアイコン</string>
     <string name="content_description_label_icon">ラベルアイコン</string>
     <string name="content_description_sound_icon">サウンドアイコン</string>
     <string name="content_description_active_system_setting">有効なシステム設定アイコン</string>

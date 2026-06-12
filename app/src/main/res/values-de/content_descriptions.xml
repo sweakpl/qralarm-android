@@ -28,7 +28,7 @@
     <string name="content_description_label_icon">Beschriftungssymbol</string>
     <string name="content_description_sound_icon">Ton-Symbol</string>
     <string name="content_description_active_system_setting">Symbol für die aktive Systemeinstellung</string>
-    <string name="content_description_copy_icon">Symbol kopieren</string>
+    <string name="content_description_copy_icon">Symbol „Kopieren“</string>
     <string name="content_description_clock_icon">Uhr-Symbol</string>
     <string name="content_description_emergency_icon">Notfall-Dreieckssymbol</string>
     <string name="content_description_muted_sound_icon">Symbol für stummgeschalteten Ton</string>

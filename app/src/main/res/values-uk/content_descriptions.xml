@@ -18,7 +18,7 @@
     <string name="content_description_alarm_icon">Піктограма будильника</string>
     <string name="content_description_notification_icon">Піктограма повідомлення</string>
     <string name="content_description_full_screen_icon">Піктограма повноекранного відображення</string>
-    <string name="content_description_no_qr_code_icon">Піктограма відключеного QR-коду</string>
+    <string name="content_description_no_qr_code_icon">Піктограма вимкненого QR-коду</string>
     <string name="content_description_automatic_settings_icon">Піктограма автоматичних налаштувань</string>
     <string name="content_description_app_settings_icon">Піктограма налаштувань програми</string>
     <string name="content_description_special_app_settings_icon">Піктограма спеціальних налаштувань програми</string>
@@ -26,16 +26,16 @@
     <string name="content_description_flash_icon">Піктограма ліхтаря</string>
     <string name="content_description_skip_next_alarm_icon">Піктограма пропуску наступного будильника</string>
     <string name="content_description_label_icon">Піктограма назви</string>
-    <string name="content_description_sound_icon">Піктограма дзвінка</string>
+    <string name="content_description_sound_icon">Піктограма звуку</string>
     <string name="content_description_active_system_setting">Піктограма активних налаштувань системи</string>
     <string name="content_description_copy_icon">Піктограма копіювання</string>
     <string name="content_description_clock_icon">Піктограма годинника</string>
-    <string name="content_description_emergency_icon">Значок аварійного трикутника</string>
-    <string name="content_description_muted_sound_icon">Значок приглушеного звуку</string>
-    <string name="content_description_chain_icon">Значок ланцюга</string>
-    <string name="content_description_checked_circle_icon">Піктограма з позначкою у вигляді кружечка</string>
-    <string name="content_description_unchecked_circle_icon">Невідмічена піктограма кола</string>
-    <string name="content_description_qralarm_pro_image">Зображення іконки програми QRAlarm PRO</string>
+    <string name="content_description_emergency_icon">Піктограма аварійного трикутника</string>
+    <string name="content_description_muted_sound_icon">Піктограма вимкненого звуку</string>
+    <string name="content_description_chain_icon">Піктограма ланцюга</string>
+    <string name="content_description_checked_circle_icon">Піктограма позначеного кружечка</string>
+    <string name="content_description_unchecked_circle_icon">Піктограма непозначеного кружечка</string>
+    <string name="content_description_qralarm_pro_image">Зображення піктограми програми QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Зображення п\'яти золотих зірок</string>
-    <string name="content_description_qr_code_icon">Значок QR коду</string>
+    <string name="content_description_qr_code_icon">Піктограма QR-коду</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="content_description_qralarm_icon">Icône QRAlarm</string>
-    <string name="content_description_add_icon">Ajouter une icône (plus)</string>
+    <string name="content_description_add_icon">Icône Ajouter (plus)</string>
     <string name="content_description_menu_icon">Icône de menu</string>
     <string name="content_description_close_icon">Icône Fermer</string>
     <string name="content_description_done_icon">Icône Terminé</string>
@@ -10,11 +10,11 @@
     <string name="content_description_drop_down_arrow_icon">Icône de flèche déroulante</string>
     <string name="content_description_play_icon">Icône de lecture</string>
     <string name="content_description_stop_icon">Icône d\'arrêt</string>
-    <string name="content_description_edit_icon">Modifier l\'icône</string>
+    <string name="content_description_edit_icon">Icône Modifier</string>
     <string name="content_description_more_icon">Icône Plus d\'options</string>
     <string name="content_description_qr_code_scanner_icon">Icône du scanner de code QR</string>
-    <string name="content_description_delete_icon">Supprimer l\'icône</string>
-    <string name="content_description_camera_icon">Icône d\'appareil photo</string>
+    <string name="content_description_delete_icon">Icône Supprimer</string>
+    <string name="content_description_camera_icon">Icône de caméra</string>
     <string name="content_description_alarm_icon">Icône d\'alarme</string>
     <string name="content_description_notification_icon">Icône de notification</string>
     <string name="content_description_full_screen_icon">Icône d\'affichage plein écran</string>
@@ -24,7 +24,7 @@
     <string name="content_description_special_app_settings_icon">Icône de paramètres d\'application spéciaux</string>
     <string name="content_description_star_icon">Icône étoile</string>
     <string name="content_description_flash_icon">Icône Flash</string>
-    <string name="content_description_skip_next_alarm_icon">Ignorer l\'icône d\'alarme suivante</string>
+    <string name="content_description_skip_next_alarm_icon">Icône Passer l\'alarme suivante</string>
     <string name="content_description_label_icon">Icône d\'étiquette</string>
     <string name="content_description_sound_icon">Icône sonore</string>
     <string name="content_description_active_system_setting">Icône de réglage du système actif</string>
@@ -34,7 +34,7 @@
     <string name="content_description_muted_sound_icon">Icône de son coupé</string>
     <string name="content_description_chain_icon">Icône chaîne</string>
     <string name="content_description_checked_circle_icon">Icône de cercle coché</string>
-    <string name="content_description_unchecked_circle_icon">Icône de cercle non cochée</string>
+    <string name="content_description_unchecked_circle_icon">Icône de cercle non coché</string>
     <string name="content_description_qralarm_pro_image">Image de l\'icône de l\'application QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Image de cinq étoiles dorées</string>
     <string name="content_description_qr_code_icon">Icône de code QR</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="content_description_qralarm_icon">QRAlarm 图标</string>
-    <string name="content_description_add_icon">添加 (plus) 图标</string>
+    <string name="content_description_add_icon">添加（加号）图标</string>
     <string name="content_description_menu_icon">菜单图标</string>
     <string name="content_description_close_icon">关闭图标</string>
     <string name="content_description_done_icon">确认图标</string>
@@ -18,12 +18,12 @@
     <string name="content_description_alarm_icon">闹钟图标</string>
     <string name="content_description_notification_icon">通知图标</string>
     <string name="content_description_full_screen_icon">全屏显示图标</string>
-    <string name="content_description_no_qr_code_icon">未启用扫码图标</string>
+    <string name="content_description_no_qr_code_icon">已停用的二维码图标</string>
     <string name="content_description_automatic_settings_icon">自动设置图标</string>
     <string name="content_description_app_settings_icon">应用程序设置图标</string>
-    <string name="content_description_special_app_settings_icon">特殊程序设置图标</string>
+    <string name="content_description_special_app_settings_icon">特殊应用设置图标</string>
     <string name="content_description_star_icon">星星图标</string>
-    <string name="content_description_flash_icon">闪烁图标</string>
+    <string name="content_description_flash_icon">闪光灯图标</string>
     <string name="content_description_skip_next_alarm_icon">跳过下次响铃图标</string>
     <string name="content_description_label_icon">标签图标</string>
     <string name="content_description_sound_icon">声音图标</string>
@@ -35,7 +35,7 @@
     <string name="content_description_chain_icon">链条图标</string>
     <string name="content_description_checked_circle_icon">选中的圆圈图标</string>
     <string name="content_description_unchecked_circle_icon">未选中的圆圈图标</string>
-    <string name="content_description_qralarm_pro_image">QRAlarm 高级版应用图标</string>
-    <string name="content_description_five_stars_image">五星好评图标</string>
-    <string name="content_description_qr_code_icon">QR码图标</string>
+    <string name="content_description_qralarm_pro_image">QRAlarm PRO 应用图标图像</string>
+    <string name="content_description_five_stars_image">五星好评图像</string>
+    <string name="content_description_qr_code_icon">二维码图标</string>
 </resources>

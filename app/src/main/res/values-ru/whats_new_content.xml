@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Что нового?</string>
-    <string name="whats_new_entry_1">Кодовые имена</string>
-    <string name="whats_new_entry_1_note_1">Дайте вашим кодам запоминающиеся имена</string>
+    <string name="whats_new_entry_1">Названия кодов</string>
+    <string name="whats_new_entry_1_note_1">Дайте вашим кодам запоминающиеся названия</string>
     <string name="whats_new_entry_2">Улучшение производительности</string>
     <string name="whats_new_entry_1_note_2">Управляйте ими в одном месте</string>
 </resources>

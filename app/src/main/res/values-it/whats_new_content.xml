@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Novità?</string>
-    <string name="whats_new_entry_1">Nomi in codice</string>
+    <string name="whats_new_entry_1">Nomi dei codici</string>
     <string name="whats_new_entry_1_note_1">Dai ai tuoi codici nomi memorabili</string>
     <string name="whats_new_entry_2">Miglioramenti delle prestazioni</string>
     <string name="whats_new_entry_1_note_2">Gestiscili tutti in un unico posto</string>

@@ -12,13 +12,13 @@
     <string name="content_description_stop_icon">Ikon berhenti</string>
     <string name="content_description_edit_icon">Ikon edit</string>
     <string name="content_description_more_icon">Ikon opsi lainnya</string>
-    <string name="content_description_qr_code_scanner_icon">Ikon pemindai QR code</string>
+    <string name="content_description_qr_code_scanner_icon">Ikon pemindai kode QR</string>
     <string name="content_description_delete_icon">Ikon hapus</string>
     <string name="content_description_camera_icon">Ikon kamera</string>
     <string name="content_description_alarm_icon">Ikon alarm</string>
     <string name="content_description_notification_icon">Ikon notifikasi</string>
     <string name="content_description_full_screen_icon">Ikon tampilan layar penuh</string>
-    <string name="content_description_no_qr_code_icon">Ikon QR code dinonaktifkan</string>
+    <string name="content_description_no_qr_code_icon">Ikon kode QR dinonaktifkan</string>
     <string name="content_description_automatic_settings_icon">Ikon pengaturan otomatis</string>
     <string name="content_description_app_settings_icon">Ikon pengaturan aplikasi</string>
     <string name="content_description_special_app_settings_icon">Ikon pengaturan khusus</string>

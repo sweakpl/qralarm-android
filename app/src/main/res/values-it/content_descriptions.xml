@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="content_description_qralarm_icon">Icona QRAlarm</string>
-    <string name="content_description_add_icon">Aggiungi icona (più)</string>
+    <string name="content_description_add_icon">Icona Aggiungi (più)</string>
     <string name="content_description_menu_icon">Icona del menu</string>
-    <string name="content_description_close_icon">Chiudi icona</string>
+    <string name="content_description_close_icon">Icona Chiudi</string>
     <string name="content_description_done_icon">Icona Fatto</string>
     <string name="content_description_forward_arrow_icon">Icona freccia avanti</string>
     <string name="content_description_back_arrow_icon">Icona freccia indietro</string>
     <string name="content_description_drop_down_arrow_icon">Icona freccia a discesa</string>
     <string name="content_description_play_icon">Icona di riproduzione</string>
     <string name="content_description_stop_icon">Icona di arresto</string>
-    <string name="content_description_edit_icon">Modifica icona</string>
+    <string name="content_description_edit_icon">Icona Modifica</string>
     <string name="content_description_more_icon">Icona Altre opzioni</string>
     <string name="content_description_qr_code_scanner_icon">Icona dello scanner del codice QR</string>
-    <string name="content_description_delete_icon">Elimina icona</string>
+    <string name="content_description_delete_icon">Icona Elimina</string>
     <string name="content_description_camera_icon">Icona della fotocamera</string>
-    <string name="content_description_alarm_icon">Icona di allarme</string>
+    <string name="content_description_alarm_icon">Icona della sveglia</string>
     <string name="content_description_notification_icon">Icona di notifica</string>
     <string name="content_description_full_screen_icon">Icona di visualizzazione a schermo intero</string>
     <string name="content_description_no_qr_code_icon">Icona del codice QR disabilitato</string>
@@ -24,7 +24,7 @@
     <string name="content_description_special_app_settings_icon">Icona delle impostazioni speciali dell\'app</string>
     <string name="content_description_star_icon">Icona stella</string>
     <string name="content_description_flash_icon">Icona del flash</string>
-    <string name="content_description_skip_next_alarm_icon">Salta l\'icona dell\'allarme successivo</string>
+    <string name="content_description_skip_next_alarm_icon">Icona Salta la sveglia successiva</string>
     <string name="content_description_label_icon">Icona etichetta</string>
     <string name="content_description_sound_icon">Icona del suono</string>
     <string name="content_description_active_system_setting">Icona delle impostazioni di sistema attive</string>
@@ -33,8 +33,8 @@
     <string name="content_description_emergency_icon">Icona del triangolo di emergenza</string>
     <string name="content_description_muted_sound_icon">Icona audio disattivato</string>
     <string name="content_description_chain_icon">Icona catena</string>
-    <string name="content_description_checked_circle_icon">Icona del cerchio controllato</string>
-    <string name="content_description_unchecked_circle_icon">Icona del cerchio non selezionata</string>
+    <string name="content_description_checked_circle_icon">Icona del cerchio selezionato</string>
+    <string name="content_description_unchecked_circle_icon">Icona del cerchio non selezionato</string>
     <string name="content_description_qralarm_pro_image">Immagine dell\'icona dell\'app QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Immagine di cinque stelle dorate</string>
     <string name="content_description_qr_code_icon">Icona codice QR</string>

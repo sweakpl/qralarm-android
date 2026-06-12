@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="content_description_qralarm_icon">Icono de QRAlarm</string>
-    <string name="content_description_add_icon">Agregar icono (más)</string>
+    <string name="content_description_add_icon">Icono de agregar (más)</string>
     <string name="content_description_menu_icon">Icono de menú</string>
     <string name="content_description_close_icon">Icono de cerrar</string>
     <string name="content_description_done_icon">Icono de hecho</string>
@@ -10,10 +10,10 @@
     <string name="content_description_drop_down_arrow_icon">Icono de flecha desplegable</string>
     <string name="content_description_play_icon">Icono de reproducción</string>
     <string name="content_description_stop_icon">Icono de parada</string>
-    <string name="content_description_edit_icon">Editar icono</string>
+    <string name="content_description_edit_icon">Icono de editar</string>
     <string name="content_description_more_icon">Icono de más opciones</string>
     <string name="content_description_qr_code_scanner_icon">Icono del escáner de código QR</string>
-    <string name="content_description_delete_icon">Eliminar icono</string>
+    <string name="content_description_delete_icon">Icono de eliminar</string>
     <string name="content_description_camera_icon">Icono de cámara</string>
     <string name="content_description_alarm_icon">Icono de alarma</string>
     <string name="content_description_notification_icon">Icono de notificación</string>
@@ -23,8 +23,8 @@
     <string name="content_description_app_settings_icon">Icono de configuración de la aplicación</string>
     <string name="content_description_special_app_settings_icon">Icono de configuración de aplicaciones especiales</string>
     <string name="content_description_star_icon">Icono de estrella</string>
-    <string name="content_description_flash_icon">Icono de Flash</string>
-    <string name="content_description_skip_next_alarm_icon">Saltar el siguiente icono de alarma</string>
+    <string name="content_description_flash_icon">Icono de flash</string>
+    <string name="content_description_skip_next_alarm_icon">Icono de saltar la siguiente alarma</string>
     <string name="content_description_label_icon">Icono de etiqueta</string>
     <string name="content_description_sound_icon">Icono de sonido</string>
     <string name="content_description_active_system_setting">Icono de configuración activa del sistema</string>
