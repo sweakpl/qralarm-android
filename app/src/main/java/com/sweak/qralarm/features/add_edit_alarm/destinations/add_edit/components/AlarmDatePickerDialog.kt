@@ -27,14 +27,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.sweak.qralarm.R
-import com.sweak.qralarm.core.designsystem.theme.ButterflyBush
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.getEarliestOnlyOnceAlarmDate
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
 
@@ -86,11 +84,10 @@ fun AlarmDatePickerDialog(
         Surface(
             color = with(MaterialTheme) {
                 if (isQRAlarmTheme) colorScheme.surfaceContainerHighest
-                else colorScheme.surface
+                else colorScheme.surfaceContainerHigh
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = MaterialTheme.space.mediumLarge)
                 .clip(MaterialTheme.shapes.medium)
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -108,11 +105,10 @@ fun AlarmDatePickerDialog(
                         selectedYearContentColor = Color.White,
                         dayContentColor = Color.White,
                         todayContentColor = Color.White,
-                        todayDateBorderColor = ButterflyBush,
+                        todayDateBorderColor = Jacarta,
                         selectedDayContainerColor = Jacarta,
                         selectedDayContentColor = Color.White,
-                        disabledDayContentColor = Color.White.copy(alpha = 0.3f),
-                        disabledSelectedDayContainerColor = Jacarta.copy(alpha = 0.3f)
+                        disabledDayContentColor = Color.White.copy(alpha = 0.3f)
                     )
                 } else DatePickerDefaults.colors()
 

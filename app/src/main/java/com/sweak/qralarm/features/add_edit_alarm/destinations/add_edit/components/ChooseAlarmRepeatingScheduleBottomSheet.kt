@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +42,6 @@ import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeat
 import com.sweak.qralarm.core.ui.shortName
 import java.time.DayOfWeek
 import java.time.format.TextStyle
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -135,7 +135,11 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                                             containerColor = BlueZodiac,
                                             labelColor = Color.White
                                         )
-                                    } else AssistChipDefaults.assistChipColors()
+                                    } else {
+                                        AssistChipDefaults.assistChipColors(
+                                            containerColor = colorScheme.secondaryContainer
+                                        )
+                                    }
                                 }
                             )
                         }
@@ -244,7 +248,7 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                                         Text(
                                             text = dayOfWeek.getDisplayName(
                                                 TextStyle.SHORT,
-                                                Locale.getDefault()
+                                                LocalLocale.current.platformLocale
                                             )
                                         )
                                     },
