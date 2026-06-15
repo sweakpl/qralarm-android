@@ -352,18 +352,20 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.AlarmDateSelected -> {
-                hasUnsavedChanges = true
+                val selectedDate = Instant.ofEpochMilli(event.selectedDateInMillis)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                val newOnlyOnceDateInMillis = selectedDate
+                    .atTime(state.value.alarmHourOfDay ?: 0, state.value.alarmMinute ?: 0)
+                    .atZone(ZoneId.systemDefault())
+                    .toInstant()
+                    .toEpochMilli()
+
+                if (newOnlyOnceDateInMillis != state.value.onlyOnceAlarmDateInMillis) {
+                    hasUnsavedChanges = true
+                }
 
                 _state.update { currentState ->
-                    val selectedDate = Instant.ofEpochMilli(event.selectedDateInMillis)
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate()
-                    val newOnlyOnceDateInMillis = selectedDate
-                        .atTime(currentState.alarmHourOfDay ?: 0, currentState.alarmMinute ?: 0)
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant()
-                        .toEpochMilli()
-
                     currentState.copy(
                         onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
                         isDatePickerDialogVisible = false
@@ -551,7 +553,11 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.CodeNameEdited -> {
-                hasUnsavedChanges = true
+                val currentCodeName = (state.value.temporaryAssignedCode
+                    ?: state.value.currentlyAssignedCode)?.name
+                if (event.newName != currentCodeName) {
+                    hasUnsavedChanges = true
+                }
                 _state.update { currentState ->
                     val updatedCode = (currentState.temporaryAssignedCode
                         ?: currentState.currentlyAssignedCode)?.copy(name = event.newName)
