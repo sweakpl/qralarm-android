@@ -1329,6 +1329,7 @@ fun getAlarmRingtoneString(ringtone: Ringtone): String {
         Ringtone.ALARM_CLOCK -> stringResource(R.string.alarm_clock)
         Ringtone.ROOSTER -> stringResource(R.string.rooster)
         Ringtone.AIR_HORN -> stringResource(R.string.air_horn)
+        Ringtone.SYSTEM_DEFAULT -> stringResource(R.string.system_default_ringtone)
         Ringtone.CUSTOM_SOUND -> stringResource(R.string.custom_sound)
     }
 }

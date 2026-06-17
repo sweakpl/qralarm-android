@@ -49,6 +49,7 @@ data class Alarm(
         ALARM_CLOCK,
         ROOSTER,
         AIR_HORN,
+        SYSTEM_DEFAULT,
         CUSTOM_SOUND
     }
 

@@ -33,8 +33,7 @@ data class AddEditAlarmFlowState(
     val availableSnoozeDurationsInMinutes: List<Int> = AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES,
     val isChooseAlarmSnoozeConfigurationDialogVisible: Boolean = false,
     val ringtone: Ringtone = Ringtone.GENTLE_GUITAR,
-    val availableRingtonesWithPlaybackState: Map<Ringtone, Boolean> =
-        Ringtone.entries.associateWith { false },
+    val availableRingtonesWithPlaybackState: Map<Ringtone, Boolean> = emptyMap(),
     val currentCustomAlarmRingtoneUri: Uri? = null,
     val temporaryCustomAlarmRingtoneUri: Uri? = null,
     val alarmVolumePercentage: Int? = null,

@@ -75,6 +75,7 @@
     <string name="gentle_guitar">Gentle guitar</string>
     <string name="alarm_clock">Alarm clock</string>
     <string name="air_horn">Air horn</string>
+    <string name="system_default_ringtone">System default ringtone</string>
     <string name="custom_sound">Custom sound</string>
     <string name="disabled">Disabled</string>
     <string name="min">min</string>

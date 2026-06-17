@@ -101,6 +101,13 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     .first()
                     .map { Code(id = it.codeId, value = it.value, name = it.name) }
 
+                val availableRingtonesWithPlaybackState = Ringtone.entries
+                    .filter {
+                        it != Ringtone.SYSTEM_DEFAULT ||
+                                alarmRingtonePlayer.isSystemDefaultAlarmRingtoneAvailable()
+                    }
+                    .associateWith { false }
+
                 if (idOfAlarm == 0L) {
                     val dateTime = ZonedDateTime.now()
                     val onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
@@ -116,6 +123,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                             alarmHourOfDay = dateTime.hour,
                             alarmMinute = dateTime.minute,
                             onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis,
+                            availableRingtonesWithPlaybackState = availableRingtonesWithPlaybackState,
                             previouslySavedCodes = allSavedAlarmCodes
                         )
                     }
@@ -131,6 +139,13 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         minute = alarm.alarmMinute
                     )
 
+                    val savedRingtone = if (alarm.ringtone == Ringtone.SYSTEM_DEFAULT &&
+                        !alarmRingtonePlayer.isSystemDefaultAlarmRingtoneAvailable()
+                    ) {
+                        Ringtone.GENTLE_GUITAR
+                    } else {
+                        alarm.ringtone
+                    }
 
                     _state.update { currentState ->
                         currentState.copy(
@@ -144,7 +159,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                                 first = alarm.snoozeConfig.snoozeMode.numberOfSnoozes,
                                 second = alarm.snoozeConfig.snoozeMode.snoozeDurationInMinutes
                             ),
-                            ringtone = alarm.ringtone,
+                            availableRingtonesWithPlaybackState = availableRingtonesWithPlaybackState,
+                            ringtone = savedRingtone,
                             currentCustomAlarmRingtoneUri = alarm.customRingtoneUriString?.toUri(),
                             alarmVolumePercentage =
                                 if (alarm.alarmVolumeMode is Alarm.AlarmVolumeMode.Custom) {

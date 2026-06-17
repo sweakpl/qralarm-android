@@ -1,6 +1,7 @@
 package com.sweak.qralarm.core.ui.sound
 
 import android.content.Context
+import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.os.VibrationAttributes
@@ -45,11 +46,16 @@ class AlarmRingtonePlayer(
         }
     }
 
+    fun isSystemDefaultAlarmRingtoneAvailable(): Boolean =
+        getSystemDefaultAlarmRingtoneUri() != null
+
     fun playAlarmRingtone(ringtone: Ringtone, volumeIncreaseSeconds: Int) {
-        val alarmRingtoneUri: Uri = if (ringtone != Ringtone.CUSTOM_SOUND) {
-            getOriginalAlarmRingtoneUri(ringtone)
-        } else {
-            getOriginalAlarmRingtoneUri(Ringtone.GENTLE_GUITAR)
+        val alarmRingtoneUri: Uri = when (ringtone) {
+            Ringtone.CUSTOM_SOUND -> getOriginalAlarmRingtoneUri(Ringtone.GENTLE_GUITAR)
+            Ringtone.SYSTEM_DEFAULT ->
+                getSystemDefaultAlarmRingtoneUri()
+                    ?: getOriginalAlarmRingtoneUri(Ringtone.GENTLE_GUITAR)
+            else -> getOriginalAlarmRingtoneUri(ringtone)
         }
 
         playAlarmRingtone(alarmRingtoneUri, volumeIncreaseSeconds)
@@ -99,12 +105,26 @@ class AlarmRingtonePlayer(
         ringtone: Ringtone,
         onPreviewCompleted: (hasErrorOccurred: Boolean) -> Unit
     ) {
-        if (ringtone == Ringtone.CUSTOM_SOUND) {
-            onPreviewCompleted(true)
-            return
-        }
+        when (ringtone) {
+            Ringtone.CUSTOM_SOUND -> {
+                onPreviewCompleted(true)
+                return
+            }
+            Ringtone.SYSTEM_DEFAULT -> {
+                val systemDefaultUri = getSystemDefaultAlarmRingtoneUri()
 
-        playAlarmRingtonePreview(getOriginalAlarmRingtoneUri(ringtone), onPreviewCompleted)
+                if (systemDefaultUri == null) {
+                    onPreviewCompleted(true)
+                    return
+                }
+
+                playAlarmRingtonePreview(systemDefaultUri, onPreviewCompleted)
+            }
+            else -> playAlarmRingtonePreview(
+                getOriginalAlarmRingtoneUri(ringtone),
+                onPreviewCompleted
+            )
+        }
     }
 
     fun playAlarmRingtonePreview(
@@ -199,6 +219,14 @@ class AlarmRingtonePlayer(
                 + getOriginalRingtoneResourceId(ringtone)).toUri()
     }
 
+    private fun getSystemDefaultAlarmRingtoneUri(): Uri? {
+        return try {
+            RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_ALARM)
+        } catch (_: Exception) {
+            null
+        }
+    }
+
     @RawRes
     private fun getOriginalRingtoneResourceId(ringtone: Ringtone): Int {
         return when (ringtone) {
@@ -208,7 +236,7 @@ class AlarmRingtonePlayer(
             Ringtone.ALARM_CLOCK -> R.raw.alarm_clock
             Ringtone.ROOSTER -> R.raw.rooster
             Ringtone.AIR_HORN -> R.raw.air_horn
-            Ringtone.CUSTOM_SOUND -> -1
+            Ringtone.SYSTEM_DEFAULT, Ringtone.CUSTOM_SOUND -> -1
         }
     }
 
