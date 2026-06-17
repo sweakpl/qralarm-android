@@ -109,7 +109,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     .associateWith { false }
 
                 if (idOfAlarm == 0L) {
-                    val dateTime = ZonedDateTime.now()
+                    val dateTime = ZonedDateTime.now().plusMinutes(10)
                     val onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
                         currentDateInMillis = 0L,
                         hourOfDay = dateTime.hour,
