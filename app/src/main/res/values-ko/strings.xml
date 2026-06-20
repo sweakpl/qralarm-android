@@ -64,6 +64,7 @@
     <string name="gentle_guitar">부드러운 기타</string>
     <string name="alarm_clock">알람 시계</string>
     <string name="air_horn">에어 혼</string>
+    <string name="system_default_ringtone">시스템 기본 벨소리</string>
     <string name="custom_sound">사용자 정의 소리</string>
     <string name="disabled">사용 안 함</string>
     <string name="min">분</string>

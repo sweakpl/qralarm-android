@@ -54,6 +54,7 @@
     <string name="gentle_guitar">Chitarra gentile</string>
     <string name="alarm_clock">Sveglia</string>
     <string name="air_horn">Tromba d\'aria</string>
+    <string name="system_default_ringtone">Suoneria predefinita del sistema</string>
     <string name="custom_sound">Suono personalizzato</string>
     <string name="disabled">Disabilitato</string>
     <string name="min">min</string>

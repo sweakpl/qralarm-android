@@ -54,6 +54,7 @@
     <string name="gentle_guitar">Guitarra suave</string>
     <string name="alarm_clock">Despertador</string>
     <string name="air_horn">Bocina de aire</string>
+    <string name="system_default_ringtone">Tono predeterminado del sistema</string>
     <string name="custom_sound">Sonido personalizado</string>
     <string name="disabled">Desactivado</string>
     <string name="min">mín</string>

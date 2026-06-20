@@ -60,6 +60,7 @@
     <string name="gentle_guitar">Delikatna gitara</string>
     <string name="alarm_clock">Budzik</string>
     <string name="air_horn">Klakson</string>
+    <string name="system_default_ringtone">Domyślny dzwonek systemu</string>
     <string name="custom_sound">Własny dźwięk</string>
     <string name="disabled">Wyłączona</string>
     <string name="min">min</string>

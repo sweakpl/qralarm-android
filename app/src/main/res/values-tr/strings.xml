@@ -48,6 +48,7 @@
     <string name="gentle_guitar">Yumuşak gitar</string>
     <string name="alarm_clock">Çalar saat</string>
     <string name="air_horn">Havalı korna</string>
+    <string name="system_default_ringtone">Sistem varsayılan zil sesi</string>
     <string name="custom_sound">Özel ses</string>
     <string name="disabled">Devre dışı</string>
     <string name="min">dk</string>

@@ -48,6 +48,7 @@
     <string name="gentle_guitar">Sanfte Gitarre</string>
     <string name="alarm_clock">Wecker</string>
     <string name="air_horn">Drucklufthupe</string>
+    <string name="system_default_ringtone">Standard-Systemklingelton</string>
     <string name="custom_sound">Benutzerdefinierter Sound</string>
     <string name="disabled">Deaktiviert</string>
     <string name="min">Min</string>

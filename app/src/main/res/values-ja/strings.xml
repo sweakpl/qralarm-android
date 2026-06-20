@@ -44,6 +44,7 @@
     <string name="gentle_guitar">穏やかなギター</string>
     <string name="alarm_clock">目覚まし時計</string>
     <string name="air_horn">エアホーン</string>
+    <string name="system_default_ringtone">システムのデフォルト着信音</string>
     <string name="custom_sound">カスタムサウンド</string>
     <string name="disabled">無効</string>
     <string name="min">分</string>

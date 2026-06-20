@@ -42,6 +42,7 @@
     <string name="gentle_guitar">温柔吉它</string>
     <string name="alarm_clock">电子闹钟</string>
     <string name="air_horn">气笛</string>
+    <string name="system_default_ringtone">系统默认铃声</string>
     <string name="custom_sound">自定义铃声</string>
     <string name="disabled">未启用</string>
     <string name="min">分钟</string>

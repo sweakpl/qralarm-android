@@ -60,6 +60,7 @@
     <string name="gentle_guitar">Делікатна гітара</string>
     <string name="alarm_clock">Будильник</string>
     <string name="air_horn">Клаксон</string>
+    <string name="system_default_ringtone">Системний рингтон за замовчуванням</string>
     <string name="custom_sound">Власний звук</string>
     <string name="disabled">Вимкнено</string>
     <string name="min">хв</string>

@@ -48,6 +48,7 @@
     <string name="gentle_guitar">Zachte gitaar</string>
     <string name="alarm_clock">Wekker</string>
     <string name="air_horn">Luchthoorn</string>
+    <string name="system_default_ringtone">Standaardbeltoon van systeem</string>
     <string name="custom_sound">Aangepast geluid</string>
     <string name="disabled">Uitgeschakeld</string>
     <string name="min">min</string>

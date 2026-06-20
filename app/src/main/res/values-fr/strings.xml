@@ -54,6 +54,7 @@
     <string name="gentle_guitar">Guitare douce</string>
     <string name="alarm_clock">Réveil</string>
     <string name="air_horn">Corne de brume</string>
+    <string name="system_default_ringtone">Sonnerie par défaut du système</string>
     <string name="custom_sound">Son personnalisé</string>
     <string name="disabled">Désactivé</string>
     <string name="min">min</string>

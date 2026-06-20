@@ -42,6 +42,7 @@
     <string name="gentle_guitar">Gitar lembut</string>
     <string name="alarm_clock">Jam alarm</string>
     <string name="air_horn">Klakson udara</string>
+    <string name="system_default_ringtone">Nada dering bawaan sistem</string>
     <string name="custom_sound">Suara khusus</string>
     <string name="disabled">Dinonaktifkan</string>
     <string name="min">menit</string>
