@@ -1,2 +1,0 @@
-* Now you can set alarms for any date,
-* Bug fixes.
