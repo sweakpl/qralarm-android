@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmRadioButton
@@ -157,7 +158,10 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                                 role = Role.RadioButton
                             )
                     ) {
-                        Row {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.weight(weight = 1f)
+                        ) {
                             QRAlarmRadioButton(
                                 selected = selectedAlarmRingtone == alarmRingtone,
                                 onClick = null
@@ -177,6 +181,8 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                                     }
                                 ),
                                 style = MaterialTheme.typography.titleLarge,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                                 modifier = Modifier.padding(start = MaterialTheme.space.medium)
                             )
                         }

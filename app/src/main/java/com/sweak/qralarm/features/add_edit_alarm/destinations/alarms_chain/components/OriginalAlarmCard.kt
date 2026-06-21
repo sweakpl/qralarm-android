@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sweak.qralarm.R
@@ -39,7 +40,9 @@ fun OriginalAlarmCard(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(end = MaterialTheme.space.mediumLarge)
+                modifier = Modifier
+                    .weight(weight = 1f)
+                    .padding(end = MaterialTheme.space.mediumLarge)
             ) {
                 Icon(
                     imageVector = QRAlarmIcons.QRAlarm,
@@ -49,6 +52,8 @@ fun OriginalAlarmCard(
                 Text(
                     text = stringResource(R.string.this_alarm),
                     style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(start = MaterialTheme.space.smallMedium)
                 )
             }
