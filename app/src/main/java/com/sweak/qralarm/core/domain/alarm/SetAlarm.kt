@@ -35,7 +35,7 @@ class SetAlarm @Inject constructor(
                         .withSecond(0)
                         .withNano(0)
 
-                    if (alarmDateTime <= currentDateTime) {
+                    while (alarmDateTime <= currentDateTime) {
                         alarmDateTime = alarmDateTime.plusDays(1)
                     }
 
