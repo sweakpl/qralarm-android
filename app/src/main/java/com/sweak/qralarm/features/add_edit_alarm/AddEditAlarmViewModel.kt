@@ -14,7 +14,6 @@ import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CodesRepository
 import com.sweak.qralarm.core.domain.alarm.DeleteAlarm
-import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
@@ -29,17 +28,17 @@ import com.sweak.qralarm.core.ui.model.Code
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
-import com.sweak.qralarm.core.domain.alarm.Code as DomainCode
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -54,6 +53,8 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import kotlin.time.Duration.Companion.milliseconds
+import com.sweak.qralarm.core.domain.alarm.Code as DomainCode
 
 @HiltViewModel(assistedFactory = AddEditAlarmViewModel.Factory::class)
 class AddEditAlarmViewModel @AssistedInject constructor(
@@ -67,7 +68,6 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     private val addOrEditAlarm: AddOrEditAlarm,
     private val deleteAlarm: DeleteAlarm,
     private val setAlarm: SetAlarm,
-    private val disableAlarm: DisableAlarm,
     private val contentResolver: ContentResolver,
     private val filesDir: File
 ): ViewModel() {
@@ -84,6 +84,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
     private val backendEventsChannel = Channel<AddEditAlarmFlowBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
+
+    private var onlyOnceAlarmDateUpdateJob: Job? = null
 
     init {
         var launchedFromSavedState = false
@@ -260,7 +262,11 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
             }
             is AddEditAlarmScreenUserEvent.TrySaveAlarm -> {
-                _state.update { currentState ->
+                viewModelScope.launch {
+                    onlyOnceAlarmDateUpdateJob?.join()
+
+                    val currentState = state.value
+
                     if (currentState.permissionsDialogState.isVisible) {
                         with (currentState.permissionsDialogState) {
                             if ((cameraPermissionState == null || cameraPermissionState) &&
@@ -269,37 +275,37 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                                 (fullScreenIntentPermissionState == null || fullScreenIntentPermissionState)
                             ) {
                                 setAlarm(currentState)
-
-                                return@update currentState.copy(
+                                _state.update { it.copy(
                                     permissionsDialogState =
-                                    AddEditAlarmFlowState.PermissionsDialogState(
-                                        isVisible = false
+                                    AddEditAlarmFlowState.PermissionsDialogState(isVisible = false)
+                                ) }
+                            } else {
+                                _state.update {
+                                    it.copy(
+                                        permissionsDialogState =
+                                            currentState.permissionsDialogState.copy(
+                                                cameraPermissionState =
+                                                    currentState.permissionsDialogState.cameraPermissionState?.let {
+                                                        event.cameraPermissionStatus
+                                                    },
+                                                notificationsPermissionState =
+                                                    currentState.permissionsDialogState.notificationsPermissionState?.let {
+                                                        event.notificationsPermissionStatus
+                                                    },
+                                                alarmsPermissionState =
+                                                    currentState.permissionsDialogState.alarmsPermissionState?.let {
+                                                        qrAlarmManager.canScheduleExactAlarms()
+                                                    },
+                                                fullScreenIntentPermissionState =
+                                                    currentState.permissionsDialogState.fullScreenIntentPermissionState?.let {
+                                                        qrAlarmManager.canUseFullScreenIntent()
+                                                    }
+                                            )
                                     )
-                                )
+                                }
                             }
                         }
-
-                        return@update currentState.copy(
-                            permissionsDialogState =
-                            currentState.permissionsDialogState.copy(
-                                cameraPermissionState =
-                                currentState.permissionsDialogState.cameraPermissionState?.let {
-                                    event.cameraPermissionStatus
-                                },
-                                notificationsPermissionState =
-                                currentState.permissionsDialogState.notificationsPermissionState?.let {
-                                    event.notificationsPermissionStatus
-                                },
-                                alarmsPermissionState =
-                                currentState.permissionsDialogState.alarmsPermissionState?.let {
-                                    qrAlarmManager.canScheduleExactAlarms()
-                                },
-                                fullScreenIntentPermissionState =
-                                currentState.permissionsDialogState.fullScreenIntentPermissionState?.let {
-                                    qrAlarmManager.canUseFullScreenIntent()
-                                }
-                            )
-                        )
+                        return@launch
                     }
 
                     if ((!event.cameraPermissionStatus && currentState.isCodeEnabled) ||
@@ -307,26 +313,27 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         !qrAlarmManager.canScheduleExactAlarms() ||
                         !qrAlarmManager.canUseFullScreenIntent()
                     ) {
-                        return@update currentState.copy(
-                            permissionsDialogState =
-                                AddEditAlarmFlowState.PermissionsDialogState(
-                                    isVisible = true,
-                                    cameraPermissionState =
-                                    if (!event.cameraPermissionStatus && currentState.isCodeEnabled)
-                                        false else null,
-                                    notificationsPermissionState =
-                                    if (!event.notificationsPermissionStatus) false else null,
-                                    alarmsPermissionState =
-                                    if (!qrAlarmManager.canScheduleExactAlarms()) false else null,
-                                    fullScreenIntentPermissionState =
-                                    if (!qrAlarmManager.canUseFullScreenIntent()) false else null
-                                )
-                        )
+                        _state.update {
+                            it.copy(
+                                permissionsDialogState =
+                                    AddEditAlarmFlowState.PermissionsDialogState(
+                                        isVisible = true,
+                                        cameraPermissionState =
+                                            if (!event.cameraPermissionStatus && currentState.isCodeEnabled)
+                                                false else null,
+                                        notificationsPermissionState =
+                                            if (!event.notificationsPermissionStatus) false else null,
+                                        alarmsPermissionState =
+                                            if (!qrAlarmManager.canScheduleExactAlarms()) false else null,
+                                        fullScreenIntentPermissionState =
+                                            if (!qrAlarmManager.canUseFullScreenIntent()) false else null
+                                    )
+                            )
+                        }
+                        return@launch
                     }
 
                     setAlarm(currentState)
-
-                    return@update currentState
                 }
             }
             is AddEditAlarmScreenUserEvent.HideMissingPermissionsDialog -> {
@@ -358,19 +365,27 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
 
                 _state.update { currentState ->
-                    val newOnlyOnceDateInMillis = resolveOnlyOnceAlarmDateInMillis(
-                        currentDateInMillis = currentState.onlyOnceAlarmDateInMillis,
-                        hourOfDay = event.newAlarmHourOfDay,
-                        minute = event.newAlarmMinute,
-                        isDateSticky = currentState.isOnlyOnceAlarmDateSticky
-                    )
-
                     currentState.copy(
                         alarmHourOfDay = event.newAlarmHourOfDay,
                         alarmMinute = event.newAlarmMinute,
-                        onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
                         isDialerPickerDialogVisible = false
                     )
+                }
+
+                onlyOnceAlarmDateUpdateJob?.cancel()
+                onlyOnceAlarmDateUpdateJob = viewModelScope.launch {
+                    delay(500.milliseconds)
+
+                    _state.update { currentState ->
+                        currentState.copy(
+                            onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
+                                currentDateInMillis = currentState.onlyOnceAlarmDateInMillis,
+                                hourOfDay = event.newAlarmHourOfDay,
+                                minute = event.newAlarmMinute,
+                                isDateSticky = currentState.isOnlyOnceAlarmDateSticky
+                            )
+                        )
+                    }
                 }
             }
             is AddEditAlarmScreenUserEvent.DatePickerDialogVisible -> {
@@ -722,155 +737,153 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         }
     }
 
-    private fun setAlarm(currentState: AddEditAlarmFlowState) {
+    private suspend fun setAlarm(currentState: AddEditAlarmFlowState) {
         if (currentState.alarmHourOfDay == null || currentState.alarmMinute == null) {
             return
         }
 
-        viewModelScope.launch {
-            val optimizationGuideState = userDataRepository.optimizationGuideState.first()
+        val optimizationGuideState = userDataRepository.optimizationGuideState.first()
 
-            if (optimizationGuideState == OptimizationGuideState.NONE) {
-                userDataRepository.setOptimizationGuideState(
-                    state = OptimizationGuideState.SHOULD_BE_SEEN
-                )
-            }
+        if (optimizationGuideState == OptimizationGuideState.NONE) {
+            userDataRepository.setOptimizationGuideState(
+                state = OptimizationGuideState.SHOULD_BE_SEEN
+            )
+        }
 
-            val currentDateTime = ZonedDateTime.now()
-            var alarmDateTime = ZonedDateTime.now()
-                .withHour(currentState.alarmHourOfDay)
-                .withMinute(currentState.alarmMinute)
-                .withSecond(0)
-                .withNano(0)
-            val alarmTimeInMillis: Long
+        val currentDateTime = ZonedDateTime.now()
+        var alarmDateTime = ZonedDateTime.now()
+            .withHour(currentState.alarmHourOfDay)
+            .withMinute(currentState.alarmMinute)
+            .withSecond(0)
+            .withNano(0)
+        val alarmTimeInMillis: Long
 
-            val repeatingMode =
-                if (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
-                    val chosenDate = Instant.ofEpochMilli(currentState.onlyOnceAlarmDateInMillis)
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate()
-                    alarmDateTime = chosenDate
-                        .atTime(currentState.alarmHourOfDay, currentState.alarmMinute)
-                        .atZone(ZoneId.systemDefault())
-                        .withSecond(0)
-                        .withNano(0)
+        val repeatingMode =
+            if (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
+                val chosenDate = Instant.ofEpochMilli(currentState.onlyOnceAlarmDateInMillis)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                alarmDateTime = chosenDate
+                    .atTime(currentState.alarmHourOfDay, currentState.alarmMinute)
+                    .atZone(ZoneId.systemDefault())
+                    .withSecond(0)
+                    .withNano(0)
 
-                    if (alarmDateTime <= currentDateTime) {
-                        alarmDateTime = alarmDateTime.plusDays(1)
-                    }
-
-                    alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
-
-                    Alarm.RepeatingMode.Once
-                } else {
-                    val repeatingDaysOfWeek =
-                        when (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode) {
-                            MON_FRI -> listOf(
-                                DayOfWeek.MONDAY,
-                                DayOfWeek.TUESDAY,
-                                DayOfWeek.WEDNESDAY,
-                                DayOfWeek.THURSDAY,
-                                DayOfWeek.FRIDAY
-                            )
-                            SAT_SUN -> listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-                            EVERYDAY -> DayOfWeek.entries
-                            CUSTOM -> currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
-                        }
-
-                    while (alarmDateTime <= currentDateTime ||
-                        alarmDateTime.dayOfWeek !in repeatingDaysOfWeek
-                    ) {
-                        alarmDateTime = alarmDateTime.plusDays(1)
-                    }
-
-                    alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
-
-                    Alarm.RepeatingMode.Days(repeatingDaysOfWeek = repeatingDaysOfWeek)
+                if (alarmDateTime <= currentDateTime) {
+                    alarmDateTime = alarmDateTime.plusDays(1)
                 }
 
-            val alarmToSave = Alarm(
-                alarmId = idOfAlarm,
-                alarmHourOfDay = currentState.alarmHourOfDay,
-                alarmMinute = currentState.alarmMinute,
-                isAlarmEnabled = true,
-                isAlarmRunning = false,
-                repeatingMode = repeatingMode,
-                nextAlarmTimeInMillis = alarmTimeInMillis,
-                snoozeConfig = Alarm.SnoozeConfig(
-                    snoozeMode = Alarm.SnoozeMode(
-                        numberOfSnoozes = currentState.snoozeNumberToDurationPair.first,
-                        snoozeDurationInMinutes = currentState.snoozeNumberToDurationPair.second
-                    ),
-                    numberOfSnoozesLeft = currentState.snoozeNumberToDurationPair.first,
-                    isAlarmSnoozed = false,
-                    nextSnoozedAlarmTimeInMillis = null
+                alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
+
+                Alarm.RepeatingMode.Once
+            } else {
+                val repeatingDaysOfWeek =
+                    when (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode) {
+                        MON_FRI -> listOf(
+                            DayOfWeek.MONDAY,
+                            DayOfWeek.TUESDAY,
+                            DayOfWeek.WEDNESDAY,
+                            DayOfWeek.THURSDAY,
+                            DayOfWeek.FRIDAY
+                        )
+                        SAT_SUN -> listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+                        EVERYDAY -> DayOfWeek.entries
+                        CUSTOM -> currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
+                    }
+
+                while (alarmDateTime <= currentDateTime ||
+                    alarmDateTime.dayOfWeek !in repeatingDaysOfWeek
+                ) {
+                    alarmDateTime = alarmDateTime.plusDays(1)
+                }
+
+                alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
+
+                Alarm.RepeatingMode.Days(repeatingDaysOfWeek = repeatingDaysOfWeek)
+            }
+
+        val alarmToSave = Alarm(
+            alarmId = idOfAlarm,
+            alarmHourOfDay = currentState.alarmHourOfDay,
+            alarmMinute = currentState.alarmMinute,
+            isAlarmEnabled = true,
+            isAlarmRunning = false,
+            repeatingMode = repeatingMode,
+            nextAlarmTimeInMillis = alarmTimeInMillis,
+            snoozeConfig = Alarm.SnoozeConfig(
+                snoozeMode = Alarm.SnoozeMode(
+                    numberOfSnoozes = currentState.snoozeNumberToDurationPair.first,
+                    snoozeDurationInMinutes = currentState.snoozeNumberToDurationPair.second
                 ),
-                ringtone = currentState.ringtone,
-                customRingtoneUriString = currentState.currentCustomAlarmRingtoneUri?.toString(),
-                alarmVolumeMode = if (currentState.alarmVolumePercentage != null) {
-                    Alarm.AlarmVolumeMode.Custom(
-                        volumePercentage = currentState.alarmVolumePercentage
+                numberOfSnoozesLeft = currentState.snoozeNumberToDurationPair.first,
+                isAlarmSnoozed = false,
+                nextSnoozedAlarmTimeInMillis = null
+            ),
+            ringtone = currentState.ringtone,
+            customRingtoneUriString = currentState.currentCustomAlarmRingtoneUri?.toString(),
+            alarmVolumeMode = if (currentState.alarmVolumePercentage != null) {
+                Alarm.AlarmVolumeMode.Custom(
+                    volumePercentage = currentState.alarmVolumePercentage
+                )
+            } else {
+                Alarm.AlarmVolumeMode.System
+            },
+            areVibrationsEnabled = currentState.areVibrationsEnabled,
+            isUsingCode = currentState.isCodeEnabled,
+            assignedCode = (currentState.temporaryAssignedCode
+                ?: currentState.currentlyAssignedCode)?.let {
+                DomainCode(codeId = it.id, value = it.value, name = it.name)
+            },
+            isOpenCodeLinkEnabled = currentState.isOpenCodeLinkEnabled,
+            cancelLockDurationInMinutes = currentState.cancelLockDurationInMinutes,
+            isEmergencyTaskEnabled = currentState.isEmergencyTaskEnabled,
+            alarmLabel = currentState.alarmLabel,
+            gentleWakeUpDurationInSeconds = currentState.gentleWakeupDurationInSeconds,
+            temporaryMuteDurationInSeconds = currentState.temporaryMuteDurationInSeconds,
+            skipAlarmUntilTimeInMillis = null
+        )
+
+        val alarmId = addOrEditAlarm(alarm = alarmToSave).run {
+            if (this > 0) this else idOfAlarm
+        }
+
+        if (currentState.temporaryCustomAlarmRingtoneUri != null) {
+            try {
+                val savedLocalAlarmSoundUri = withContext(Dispatchers.IO) {
+                    copyUriContentToLocalStorage(
+                        uri = currentState.temporaryCustomAlarmRingtoneUri,
+                        alarmId = alarmId
+                    )
+                }
+
+                alarmsRepository.setAlarmRingtoneUri(
+                    alarmId = alarmId,
+                    uri = savedLocalAlarmSoundUri.toString()
+                )
+            } catch (exception: Exception) {
+                if (exception is IOException ||
+                    exception is SecurityException ||
+                    exception is NullPointerException
+                ) {
+                    backendEventsChannel.send(
+                        AddEditAlarmFlowBackendEvent
+                            .CustomRingtoneRetrievalFinished(isSuccess = false)
                     )
                 } else {
-                    Alarm.AlarmVolumeMode.System
-                },
-                areVibrationsEnabled = currentState.areVibrationsEnabled,
-                isUsingCode = currentState.isCodeEnabled,
-                assignedCode = (currentState.temporaryAssignedCode
-                    ?: currentState.currentlyAssignedCode)?.let {
-                    DomainCode(codeId = it.id, value = it.value, name = it.name)
-                },
-                isOpenCodeLinkEnabled = currentState.isOpenCodeLinkEnabled,
-                cancelLockDurationInMinutes = currentState.cancelLockDurationInMinutes,
-                isEmergencyTaskEnabled = currentState.isEmergencyTaskEnabled,
-                alarmLabel = currentState.alarmLabel,
-                gentleWakeUpDurationInSeconds = currentState.gentleWakeupDurationInSeconds,
-                temporaryMuteDurationInSeconds = currentState.temporaryMuteDurationInSeconds,
-                skipAlarmUntilTimeInMillis = null
-            )
-
-            val alarmId = addOrEditAlarm(alarm = alarmToSave).run {
-                if (this > 0) this else idOfAlarm
-            }
-
-            if (currentState.temporaryCustomAlarmRingtoneUri != null) {
-                try {
-                    val savedLocalAlarmSoundUri = withContext(Dispatchers.IO) {
-                        copyUriContentToLocalStorage(
-                            uri = currentState.temporaryCustomAlarmRingtoneUri,
-                            alarmId = alarmId
-                        )
-                    }
-
-                    alarmsRepository.setAlarmRingtoneUri(
-                        alarmId = alarmId,
-                        uri = savedLocalAlarmSoundUri.toString()
-                    )
-                } catch (exception: Exception) {
-                    if (exception is IOException ||
-                        exception is SecurityException ||
-                        exception is NullPointerException
-                    ) {
-                        backendEventsChannel.send(
-                            AddEditAlarmFlowBackendEvent
-                                .CustomRingtoneRetrievalFinished(isSuccess = false)
-                        )
-                    } else {
-                        throw exception
-                    }
+                    throw exception
                 }
             }
+        }
 
-            qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
+        qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
 
-            val setAlarmResult = setAlarm(
-                alarmId = alarmId,
-                isReschedulingMissedAlarm = false
-            )
+        val setAlarmResult = setAlarm(
+            alarmId = alarmId,
+            isReschedulingMissedAlarm = false
+        )
 
-            if (setAlarmResult is SetAlarm.Result.Success) {
-                backendEventsChannel.send(AddEditAlarmFlowBackendEvent.AlarmSaved)
-            }
+        if (setAlarmResult is SetAlarm.Result.Success) {
+            backendEventsChannel.send(AddEditAlarmFlowBackendEvent.AlarmSaved)
         }
     }
 
