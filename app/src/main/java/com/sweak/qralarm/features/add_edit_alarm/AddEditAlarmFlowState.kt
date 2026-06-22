@@ -24,6 +24,7 @@ data class AddEditAlarmFlowState(
     val alarmMinute: Int? = null,
     val isDialerPickerDialogVisible: Boolean = false,
     val onlyOnceAlarmDateInMillis: Long = 0L,
+    val isOnlyOnceAlarmDateSticky: Boolean = true,
     val isDatePickerDialogVisible: Boolean = false,
     val alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper =
         AlarmRepeatingScheduleWrapper(),

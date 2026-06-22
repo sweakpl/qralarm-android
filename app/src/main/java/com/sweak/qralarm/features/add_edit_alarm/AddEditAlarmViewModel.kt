@@ -51,6 +51,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.time.DayOfWeek
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
@@ -109,11 +110,12 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     .associateWith { false }
 
                 if (idOfAlarm == 0L) {
-                    val dateTime = ZonedDateTime.now().plusMinutes(10)
+                    val dateTime = ZonedDateTime.now().plusMinutes(1)
                     val onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
                         currentDateInMillis = 0L,
                         hourOfDay = dateTime.hour,
-                        minute = dateTime.minute
+                        minute = dateTime.minute,
+                        isDateSticky = true
                     )
 
                     _state.update { currentState ->
@@ -133,10 +135,17 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         repeatingMode = alarm.repeatingMode
                     ) ?: return@launch
 
+                    val persistedDate = Instant.ofEpochMilli(alarm.nextAlarmTimeInMillis)
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                    val isDateSticky = !persistedDate.isAfter(
+                        LocalDate.now(ZoneId.systemDefault()).plusDays(1)
+                    )
                     val onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
                         currentDateInMillis = alarm.nextAlarmTimeInMillis,
                         hourOfDay = alarm.alarmHourOfDay,
-                        minute = alarm.alarmMinute
+                        minute = alarm.alarmMinute,
+                        isDateSticky = isDateSticky
                     )
 
                     val savedRingtone = if (alarm.ringtone == Ringtone.SYSTEM_DEFAULT &&
@@ -154,6 +163,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                             alarmHourOfDay = alarm.alarmHourOfDay,
                             alarmMinute = alarm.alarmMinute,
                             onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis,
+                            isOnlyOnceAlarmDateSticky = isDateSticky,
                             alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
                             snoozeNumberToDurationPair = Pair(
                                 first = alarm.snoozeConfig.snoozeMode.numberOfSnoozes,
@@ -351,7 +361,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     val newOnlyOnceDateInMillis = resolveOnlyOnceAlarmDateInMillis(
                         currentDateInMillis = currentState.onlyOnceAlarmDateInMillis,
                         hourOfDay = event.newAlarmHourOfDay,
-                        minute = event.newAlarmMinute
+                        minute = event.newAlarmMinute,
+                        isDateSticky = currentState.isOnlyOnceAlarmDateSticky
                     )
 
                     currentState.copy(
@@ -376,6 +387,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     .atZone(ZoneId.systemDefault())
                     .toInstant()
                     .toEpochMilli()
+                val isSticky = selectedDate == LocalDate.now(ZoneId.systemDefault())
 
                 if (newOnlyOnceDateInMillis != state.value.onlyOnceAlarmDateInMillis) {
                     hasUnsavedChanges = true
@@ -384,6 +396,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 _state.update { currentState ->
                     currentState.copy(
                         onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
+                        isOnlyOnceAlarmDateSticky = isSticky,
                         isDatePickerDialogVisible = false
                     )
                 }
@@ -894,13 +907,18 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     private fun resolveOnlyOnceAlarmDateInMillis(
         currentDateInMillis: Long,
         hourOfDay: Int,
-        minute: Int
+        minute: Int,
+        isDateSticky: Boolean = false
     ): Long {
         val earliestDate = getEarliestOnlyOnceAlarmDate(hourOfDay, minute)
-        val date = Instant.ofEpochMilli(currentDateInMillis)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDate()
-            .let { if (it.isBefore(earliestDate)) earliestDate else it }
+        val date = if (isDateSticky) {
+            earliestDate
+        } else {
+            Instant.ofEpochMilli(currentDateInMillis)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .let { if (it.isBefore(earliestDate)) earliestDate else it }
+        }
         return date
             .atTime(hourOfDay, minute)
             .atZone(ZoneId.systemDefault())
