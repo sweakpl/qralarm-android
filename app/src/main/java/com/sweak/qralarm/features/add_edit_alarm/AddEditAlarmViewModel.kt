@@ -137,18 +137,33 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         repeatingMode = alarm.repeatingMode
                     ) ?: return@launch
 
-                    val persistedDate = Instant.ofEpochMilli(alarm.nextAlarmTimeInMillis)
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate()
-                    val isDateSticky = !persistedDate.isAfter(
-                        LocalDate.now(ZoneId.systemDefault()).plusDays(1)
-                    )
-                    val onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
-                        currentDateInMillis = alarm.nextAlarmTimeInMillis,
-                        hourOfDay = alarm.alarmHourOfDay,
-                        minute = alarm.alarmMinute,
-                        isDateSticky = isDateSticky
-                    )
+                    val isDateSticky: Boolean
+                    val onlyOnceAlarmDateInMillis: Long
+
+                    if (alarm.repeatingMode == Alarm.RepeatingMode.Once) {
+                        val persistedDate = Instant.ofEpochMilli(alarm.nextAlarmTimeInMillis)
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate()
+                        isDateSticky = !persistedDate.isAfter(
+                            LocalDate.now(ZoneId.systemDefault()).plusDays(1)
+                        )
+                        onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
+                            currentDateInMillis = alarm.nextAlarmTimeInMillis,
+                            hourOfDay = alarm.alarmHourOfDay,
+                            minute = alarm.alarmMinute,
+                            isDateSticky = isDateSticky
+                        )
+                    } else {
+                        isDateSticky = true
+                        onlyOnceAlarmDateInMillis = getEarliestOnlyOnceAlarmDate(
+                            hourOfDay = alarm.alarmHourOfDay,
+                            minute = alarm.alarmMinute
+                        )
+                            .atTime(alarm.alarmHourOfDay, alarm.alarmMinute)
+                            .atZone(ZoneId.systemDefault())
+                            .toInstant()
+                            .toEpochMilli()
+                    }
 
                     val savedRingtone = if (alarm.ringtone == Ringtone.SYSTEM_DEFAULT &&
                         !alarmRingtonePlayer.isSystemDefaultAlarmRingtoneAvailable()
