@@ -86,7 +86,6 @@ import com.sweak.qralarm.core.ui.components.ToggleSetting
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
-import com.sweak.qralarm.core.ui.getDayString
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowBackendEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
@@ -94,6 +93,7 @@ import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEd
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
 import com.sweak.qralarm.features.add_edit_alarm.components.SimpleSetting
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AlarmScheduleCard
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AssignCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AlarmDatePickerDialog
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseAlarmRepeatingScheduleBottomSheet
@@ -102,6 +102,7 @@ import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.component
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.DialerTimePickerDialog
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.DownloadCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.QRAlarmTimePicker
+import com.sweak.qralarm.features.alarm.components.TimeTickReceiver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -255,6 +256,10 @@ fun AddEditAlarmScreen(
 
     BackHandler {
         addEditAlarmViewModel.onEvent(AddEditAlarmScreenUserEvent.OnCancelClicked)
+    }
+
+    TimeTickReceiver {
+        addEditAlarmViewModel.onEvent(AddEditAlarmScreenUserEvent.RefreshAlarmCountdown)
     }
 
     AddEditAlarmScreenContent(
@@ -512,6 +517,24 @@ private fun AddEditAlarmScreenContent(
                         }
                     }
 
+                    AlarmScheduleCard(
+                        daysHoursAndMinutesUntilAlarm = state.daysHoursAndMinutesUntilAlarm,
+                        onlyOnceAlarmDateInMillis = state.onlyOnceAlarmDateInMillis,
+                        isOnlyOnce = state.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE,
+                        onAlarmDateClicked = {
+                            onEvent(
+                                AddEditAlarmScreenUserEvent.DatePickerDialogVisible(isVisible = true)
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = MaterialTheme.space.medium,
+                                end = MaterialTheme.space.medium,
+                                bottom = MaterialTheme.space.mediumLarge
+                            )
+                    )
+
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -529,11 +552,9 @@ private fun AddEditAlarmScreenContent(
                                 )
                             },
                             title = stringResource(R.string.repeating),
-                            choiceName = if (state.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
-                                getDayString(state.onlyOnceAlarmDateInMillis)
-                            } else {
-                                getAlarmRepeatingScheduleString(state.alarmRepeatingScheduleWrapper)
-                            }
+                            choiceName = getAlarmRepeatingScheduleString(
+                                state.alarmRepeatingScheduleWrapper
+                            )
                         )
 
                         HorizontalDivider(
@@ -1133,10 +1154,6 @@ private fun AddEditAlarmScreenContent(
     if (state.isChooseAlarmRepeatingScheduleDialogVisible) {
         ChooseAlarmRepeatingScheduleBottomSheet(
             initialAlarmRepeatingScheduleWrapper = state.alarmRepeatingScheduleWrapper,
-            onlyOnceAlarmDateInMillis = state.onlyOnceAlarmDateInMillis,
-            onChooseOnlyOnceDateClicked = {
-                onEvent(AddEditAlarmScreenUserEvent.DatePickerDialogVisible(isVisible = true))
-            },
             onDismissRequest = { newAlarmRepeatingSchedule ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmRepeatingScheduleSelected(

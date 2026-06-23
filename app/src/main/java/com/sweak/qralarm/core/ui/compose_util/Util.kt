@@ -1,12 +1,40 @@
 package com.sweak.qralarm.core.ui.compose_util
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode
 import com.sweak.qralarm.core.ui.shortName
 import java.time.DayOfWeek
+
+@Composable
+fun getAlarmInString(daysHoursAndMinutesUntilAlarm: Triple<Int, Int, Int>): String {
+    val days = daysHoursAndMinutesUntilAlarm.first
+    val hours = daysHoursAndMinutesUntilAlarm.second
+    val minutes = daysHoursAndMinutesUntilAlarm.third
+
+    return buildString {
+        append(stringResource(R.string.alarm_in))
+        append(' ')
+        if (days != 0) {
+            append(pluralStringResource(R.plurals.days, days, days))
+            append(' ')
+        }
+        if (hours != 0 || days != 0) {
+            append(pluralStringResource(R.plurals.hours, hours, hours))
+            append(' ')
+        }
+        append(
+            pluralStringResource(
+                R.plurals.minutes,
+                if (minutes == 0) 1 else minutes,
+                if (minutes == 0) 1 else minutes
+            )
+        )
+    }
+}
 
 @Composable
 fun getAlarmRepeatingScheduleString(

@@ -79,6 +79,7 @@ sealed class AddEditAlarmFlowUserEvent {
         data class DownloadCodeDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
         data object DownloadCode : AddEditAlarmScreenUserEvent()
         data object AlarmsChainSettingsClicked : AddEditAlarmScreenUserEvent()
+        data object RefreshAlarmCountdown : AddEditAlarmScreenUserEvent()
     }
 
     sealed class AdvancedAlarmSettingsScreenUserEvent : AddEditAlarmFlowUserEvent() {

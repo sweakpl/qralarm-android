@@ -44,7 +44,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,6 +68,7 @@ import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
+import com.sweak.qralarm.core.ui.compose_util.getAlarmInString
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.home.components.AlarmCard
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
@@ -247,28 +247,9 @@ private fun HomeScreenContent(
         val upcomingAlarmMessage = state.upcomingAlarmMessages.first()
         val alarmContentHash = upcomingAlarmMessage.alarmContentHash
         val upcomingAlarmId = upcomingAlarmMessage.alarmId
-        val days = upcomingAlarmMessage.daysHoursAndMinutesUntilAlarm.first
-        val hours = upcomingAlarmMessage.daysHoursAndMinutesUntilAlarm.second
-        val minutes = upcomingAlarmMessage.daysHoursAndMinutesUntilAlarm.third
-        val upcomingAlarmMessageBody = buildString {
-            append(stringResource(R.string.alarm_in))
-            append(' ')
-            if (days != 0) {
-                append(pluralStringResource(R.plurals.days, days, days))
-                append(' ')
-            }
-            if (hours != 0 || days != 0) {
-                append(pluralStringResource(R.plurals.hours, hours, hours))
-                append(' ')
-            }
-            append(
-                pluralStringResource(
-                    R.plurals.minutes,
-                    if (minutes == 0) 1 else minutes,
-                    if (minutes == 0) 1 else minutes
-                )
-            )
-        }
+        val upcomingAlarmMessageBody = getAlarmInString(
+            daysHoursAndMinutesUntilAlarm = upcomingAlarmMessage.daysHoursAndMinutesUntilAlarm
+        )
         val cancelActionLabel = stringResource(R.string.cancel)
 
         LaunchedEffect(key1 = alarmContentHash) {

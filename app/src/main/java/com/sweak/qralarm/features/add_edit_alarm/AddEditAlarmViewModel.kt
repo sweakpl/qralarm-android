@@ -18,7 +18,9 @@ import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
 import com.sweak.qralarm.core.ui.convertAlarmRepeatingMode
+import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
 import com.sweak.qralarm.core.ui.getEarliestOnlyOnceAlarmDate
+import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
@@ -85,7 +87,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     private val backendEventsChannel = Channel<AddEditAlarmFlowBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
-    private var onlyOnceAlarmDateUpdateJob: Job? = null
+    private var nextAlarmTimeUpdateJob: Job? = null
 
     init {
         var launchedFromSavedState = false
@@ -113,11 +115,20 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
                 if (idOfAlarm == 0L) {
                     val dateTime = ZonedDateTime.now().plusMinutes(1)
+                    val defaultRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper()
                     val onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
                         currentDateInMillis = 0L,
                         hourOfDay = dateTime.hour,
                         minute = dateTime.minute,
                         isDateSticky = true
+                    )
+                    val daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
+                        alarmTimeInMillis = computeNextAlarmTimeInMillis(
+                            hourOfDay = dateTime.hour,
+                            minute = dateTime.minute,
+                            repeatingScheduleWrapper = defaultRepeatingScheduleWrapper,
+                            onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis
+                        )
                     )
 
                     _state.update { currentState ->
@@ -127,6 +138,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                             alarmHourOfDay = dateTime.hour,
                             alarmMinute = dateTime.minute,
                             onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis,
+                            daysHoursAndMinutesUntilAlarm = daysHoursAndMinutesUntilAlarm,
+                            alarmRepeatingScheduleWrapper = defaultRepeatingScheduleWrapper,
                             availableRingtonesWithPlaybackState = availableRingtonesWithPlaybackState,
                             previouslySavedCodes = allSavedAlarmCodes
                         )
@@ -172,6 +185,15 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         alarm.ringtone
                     }
 
+                    val daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
+                        alarmTimeInMillis = computeNextAlarmTimeInMillis(
+                            hourOfDay = alarm.alarmHourOfDay,
+                            minute = alarm.alarmMinute,
+                            repeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
+                            onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis
+                        )
+                    )
+
                     _state.update { currentState ->
                         currentState.copy(
                             isLoading = false,
@@ -180,6 +202,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                             alarmMinute = alarm.alarmMinute,
                             onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis,
                             isOnlyOnceAlarmDateSticky = isDateSticky,
+                            daysHoursAndMinutesUntilAlarm = daysHoursAndMinutesUntilAlarm,
                             alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
                             snoozeNumberToDurationPair = Pair(
                                 first = alarm.snoozeConfig.snoozeMode.numberOfSnoozes,
@@ -277,7 +300,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
             is AddEditAlarmScreenUserEvent.TrySaveAlarm -> {
                 viewModelScope.launch {
-                    onlyOnceAlarmDateUpdateJob?.join()
+                    nextAlarmTimeUpdateJob?.join()
 
                     val currentState = state.value
 
@@ -386,18 +409,27 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     )
                 }
 
-                onlyOnceAlarmDateUpdateJob?.cancel()
-                onlyOnceAlarmDateUpdateJob = viewModelScope.launch {
+                nextAlarmTimeUpdateJob?.cancel()
+                nextAlarmTimeUpdateJob = viewModelScope.launch {
                     delay(500.milliseconds)
 
                     _state.update { currentState ->
+                        val newOnlyOnceDateInMillis = resolveOnlyOnceAlarmDateInMillis(
+                            currentDateInMillis = currentState.onlyOnceAlarmDateInMillis,
+                            hourOfDay = event.newAlarmHourOfDay,
+                            minute = event.newAlarmMinute,
+                            isDateSticky = currentState.isOnlyOnceAlarmDateSticky
+                        )
+                        val nextAlarmTimeInMillis = computeNextAlarmTimeInMillis(
+                            hourOfDay = event.newAlarmHourOfDay,
+                            minute = event.newAlarmMinute,
+                            repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
+                            onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis
+                        )
                         currentState.copy(
-                            onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
-                                currentDateInMillis = currentState.onlyOnceAlarmDateInMillis,
-                                hourOfDay = event.newAlarmHourOfDay,
-                                minute = event.newAlarmMinute,
-                                isDateSticky = currentState.isOnlyOnceAlarmDateSticky
-                            )
+                            onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
+                            daysHoursAndMinutesUntilAlarm =
+                                getDaysHoursAndMinutesUntilAlarm(nextAlarmTimeInMillis)
                         )
                     }
                 }
@@ -423,10 +455,18 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
 
                 _state.update { currentState ->
+                    val nextAlarmTimeInMillis = computeNextAlarmTimeInMillis(
+                        hourOfDay = currentState.alarmHourOfDay ?: 0,
+                        minute = currentState.alarmMinute ?: 0,
+                        repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
+                        onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis
+                    )
                     currentState.copy(
                         onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
                         isOnlyOnceAlarmDateSticky = isSticky,
-                        isDatePickerDialogVisible = false
+                        isDatePickerDialogVisible = false,
+                        daysHoursAndMinutesUntilAlarm =
+                            getDaysHoursAndMinutesUntilAlarm(nextAlarmTimeInMillis)
                     )
                 }
             }
@@ -441,9 +481,17 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
 
                 _state.update { currentState ->
+                    val nextAlarmTimeInMillis = computeNextAlarmTimeInMillis(
+                        hourOfDay = currentState.alarmHourOfDay ?: 0,
+                        minute = currentState.alarmMinute ?: 0,
+                        repeatingScheduleWrapper = event.newAlarmRepeatingScheduleWrapper,
+                        onlyOnceAlarmDateInMillis = currentState.onlyOnceAlarmDateInMillis
+                    )
                     currentState.copy(
                         alarmRepeatingScheduleWrapper = event.newAlarmRepeatingScheduleWrapper,
-                        isChooseAlarmRepeatingScheduleDialogVisible = false
+                        isChooseAlarmRepeatingScheduleDialogVisible = false,
+                        daysHoursAndMinutesUntilAlarm =
+                            getDaysHoursAndMinutesUntilAlarm(nextAlarmTimeInMillis)
                     )
                 }
             }
@@ -747,6 +795,27 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     currentState.copy(isDownloadCodeDialogVisible = event.isVisible)
                 }
             }
+            is AddEditAlarmScreenUserEvent.RefreshAlarmCountdown -> {
+                _state.update { currentState ->
+                    val hourOfDay = currentState.alarmHourOfDay ?: return@update currentState
+                    val minute = currentState.alarmMinute ?: return@update currentState
+                    val nextAlarmTimeInMillis = computeNextAlarmTimeInMillis(
+                        hourOfDay = hourOfDay,
+                        minute = minute,
+                        repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
+                        onlyOnceAlarmDateInMillis = currentState.onlyOnceAlarmDateInMillis
+                    )
+                    val isOnlyOnce =
+                        currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE
+
+                    currentState.copy(
+                        daysHoursAndMinutesUntilAlarm =
+                            getDaysHoursAndMinutesUntilAlarm(nextAlarmTimeInMillis),
+                        onlyOnceAlarmDateInMillis = if (isOnlyOnce) nextAlarmTimeInMillis
+                            else currentState.onlyOnceAlarmDateInMillis
+                    )
+                }
+            }
             else -> { /* no-op */ }
         }
     }
@@ -928,6 +997,58 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
         while (inputStream.read(buffer).also { read = it } != -1) {
             outputStream.write(buffer, 0, read)
+        }
+    }
+
+    private fun computeNextAlarmTimeInMillis(
+        hourOfDay: Int,
+        minute: Int,
+        repeatingScheduleWrapper: AlarmRepeatingScheduleWrapper,
+        onlyOnceAlarmDateInMillis: Long
+    ): Long {
+        val currentDateTime = ZonedDateTime.now()
+        var alarmDateTime = ZonedDateTime.now()
+            .withHour(hourOfDay)
+            .withMinute(minute)
+            .withSecond(0)
+            .withNano(0)
+
+        return if (repeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
+            val chosenDate = Instant.ofEpochMilli(onlyOnceAlarmDateInMillis)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+            alarmDateTime = chosenDate
+                .atTime(hourOfDay, minute)
+                .atZone(ZoneId.systemDefault())
+                .withSecond(0)
+                .withNano(0)
+
+            if (alarmDateTime <= currentDateTime) {
+                alarmDateTime = alarmDateTime.plusDays(1)
+            }
+
+            alarmDateTime.toInstant().toEpochMilli()
+        } else {
+            val repeatingDaysOfWeek = when (repeatingScheduleWrapper.alarmRepeatingMode) {
+                MON_FRI -> listOf(
+                    DayOfWeek.MONDAY,
+                    DayOfWeek.TUESDAY,
+                    DayOfWeek.WEDNESDAY,
+                    DayOfWeek.THURSDAY,
+                    DayOfWeek.FRIDAY
+                )
+                SAT_SUN -> listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
+                EVERYDAY -> DayOfWeek.entries
+                CUSTOM -> repeatingScheduleWrapper.alarmDaysOfWeek
+            }
+
+            while (alarmDateTime <= currentDateTime ||
+                alarmDateTime.dayOfWeek !in repeatingDaysOfWeek
+            ) {
+                alarmDateTime = alarmDateTime.plusDays(1)
+            }
+
+            alarmDateTime.toInstant().toEpochMilli()
         }
     }
 
