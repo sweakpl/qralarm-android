@@ -13,7 +13,7 @@ data class HomeScreenState(
     val isOptimizationGuideDialogVisible: Boolean = false,
     val isAlarmMissedDialogVisible: Boolean = false,
     val deleteAlarmDialogState: DeleteAlarmDialogState = DeleteAlarmDialogState(),
-    val upcomingAlarmMessages: List<UpcomingAlarmMessage> = emptyList(),
+    val upcomingAlarmMessage: UpcomingAlarmMessage? = null,
     val snackbarHostState: SnackbarHostState = SnackbarHostState()
 ) {
     data class PermissionsDialogState(

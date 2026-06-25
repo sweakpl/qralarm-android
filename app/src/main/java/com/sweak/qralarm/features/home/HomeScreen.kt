@@ -243,29 +243,29 @@ private fun HomeScreenContent(
     state: HomeScreenState,
     onEvent: (HomeScreenUserEvent) -> Unit
 ) {
-    if (state.upcomingAlarmMessages.isNotEmpty()) {
-        val upcomingAlarmMessage = state.upcomingAlarmMessages.first()
-        val alarmContentHash = upcomingAlarmMessage.alarmContentHash
-        val upcomingAlarmId = upcomingAlarmMessage.alarmId
+    val upcomingAlarmMessage = state.upcomingAlarmMessage
+    if (upcomingAlarmMessage != null) {
         val upcomingAlarmMessageBody = getAlarmInString(
             daysHoursAndMinutesUntilAlarm = upcomingAlarmMessage.daysHoursAndMinutesUntilAlarm
         )
         val cancelActionLabel = stringResource(R.string.cancel)
 
-        LaunchedEffect(key1 = alarmContentHash) {
+        LaunchedEffect(key1 = upcomingAlarmMessage) {
             val result = state.snackbarHostState.showSnackbar(
                 message = upcomingAlarmMessageBody,
                 actionLabel = cancelActionLabel,
                 duration = SnackbarDuration.Short
             )
             onEvent(
-                HomeScreenUserEvent.UpcomingAlarmMessageShown(alarmContentHash = alarmContentHash)
+                HomeScreenUserEvent.UpcomingAlarmMessageShown(
+                    alarmContentHash = upcomingAlarmMessage.alarmContentHash
+                )
             )
 
             if (result == SnackbarResult.ActionPerformed) {
                 onEvent(
                     HomeScreenUserEvent.AlarmEnabledChangeClicked(
-                        alarmId = upcomingAlarmId,
+                        alarmId = upcomingAlarmMessage.alarmId,
                         enabled = false,
                         fromSnackbar = true
                     )
@@ -632,10 +632,6 @@ private fun HomeScreenContent(
             onDismissRequest = { onEvent(HomeScreenUserEvent.HideDeleteAlarmDialog) },
             onPositiveClick = {
                 state.deleteAlarmDialogState.alarmId?.let {
-                    if (state.upcomingAlarmMessages.firstOrNull()?.alarmId == it) {
-                        state.snackbarHostState.currentSnackbarData?.dismiss()
-                    }
-
                     onEvent(HomeScreenUserEvent.DeleteAlarm(alarmId = it))
                 }
             },

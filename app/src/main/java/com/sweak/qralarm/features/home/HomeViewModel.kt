@@ -87,8 +87,8 @@ class HomeViewModel @Inject constructor(
                         isLoading = false,
                         activeAlarmWrappers = convertToAlarmWrappers(activeAlarms),
                         nonActiveAlarmWrappers = convertToAlarmWrappers(nonActiveAlarms),
-                        upcomingAlarmMessages = if (newlyEnabledAlarm != null) {
-                            currentState.upcomingAlarmMessages + HomeScreenState.UpcomingAlarmMessage(
+                        upcomingAlarmMessage = if (newlyEnabledAlarm != null) {
+                            HomeScreenState.UpcomingAlarmMessage(
                                 alarmContentHash = newlyEnabledAlarm.hashCode(),
                                 alarmId = newlyEnabledAlarm.alarmId,
                                 daysHoursAndMinutesUntilAlarm =
@@ -97,7 +97,7 @@ class HomeViewModel @Inject constructor(
                                     )
                             )
                         } else {
-                            currentState.upcomingAlarmMessages
+                            currentState.upcomingAlarmMessage
                         }
                     )
                 }
@@ -370,7 +370,10 @@ class HomeViewModel @Inject constructor(
                     currentState.copy(
                         deleteAlarmDialogState = HomeScreenState.DeleteAlarmDialogState(
                             isVisible = false
-                        )
+                        ),
+                        upcomingAlarmMessage =
+                            if (currentState.upcomingAlarmMessage?.alarmId == event.alarmId) null
+                            else currentState.upcomingAlarmMessage
                     )
                 }
             }
@@ -392,9 +395,12 @@ class HomeViewModel @Inject constructor(
             is HomeScreenUserEvent.UpcomingAlarmMessageShown -> {
                 _state.update { currentState ->
                     currentState.copy(
-                        upcomingAlarmMessages = currentState.upcomingAlarmMessages.filter {
-                            it.alarmContentHash != event.alarmContentHash
-                        }
+                        upcomingAlarmMessage =
+                            if (currentState.upcomingAlarmMessage?.alarmContentHash == event.alarmContentHash) {
+                                null
+                            } else {
+                                currentState.upcomingAlarmMessage
+                            }
                     )
                 }
             }
@@ -426,10 +432,9 @@ class HomeViewModel @Inject constructor(
 
                 _state.update { currentState ->
                     currentState.copy(
-                        upcomingAlarmMessages =
-                            currentState.upcomingAlarmMessages.filter {
-                                it.alarmId != alarmId
-                            }
+                        upcomingAlarmMessage =
+                            if (currentState.upcomingAlarmMessage?.alarmId == alarmId) null
+                            else currentState.upcomingAlarmMessage
                     )
                 }
             }
@@ -442,15 +447,13 @@ class HomeViewModel @Inject constructor(
 
                     _state.update { currentState ->
                         currentState.copy(
-                            upcomingAlarmMessages = currentState.upcomingAlarmMessages +
-                                    HomeScreenState.UpcomingAlarmMessage(
-                                        alarmContentHash = alarm.hashCode(),
-                                        alarmId = alarm.alarmId,
-                                        daysHoursAndMinutesUntilAlarm =
-                                            getDaysHoursAndMinutesUntilAlarm(
-                                                alarmTimeInMillis = result.alarmTimInMillis
-                                            )
-                                    )
+                            upcomingAlarmMessage = HomeScreenState.UpcomingAlarmMessage(
+                                alarmContentHash = alarm.hashCode(),
+                                alarmId = alarm.alarmId,
+                                daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
+                                    alarmTimeInMillis = result.alarmTimInMillis
+                                )
+                            )
                         )
                     }
                 }
