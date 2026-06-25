@@ -251,4 +251,5 @@
     <string name="no_default_code_yet_description">Ustaw go, aby był automatycznie przypisywany do nowo utworzonych alarmów.</string>
     <string name="no_codes_yet">Jeszcze brak innych kodów</string>
     <string name="no_codes_yet_description">Kody przypisane do konkretnych alarmów, inne niż domyślne, pojawią się tutaj.</string>
+    <string name="alarm_date">Data alarmu</string>
 </resources>
