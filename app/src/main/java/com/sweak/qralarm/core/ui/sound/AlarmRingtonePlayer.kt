@@ -78,23 +78,27 @@ class AlarmRingtonePlayer(
             prepare()
         }
 
-        if (volumeIncreaseSeconds > 0 && player?.isCommandAvailable(COMMAND_SET_VOLUME) == true) {
-            player?.volume = 0f
-
-            val totalMilliseconds = volumeIncreaseSeconds * 1000.0
-            val steps = 100
-            val perStepDelayMilliseconds = (totalMilliseconds / steps).toLong()
-            val power = 2.0 // quadratic ease-in
-
+        if (player?.isCommandAvailable(COMMAND_SET_VOLUME) == true) {
             if (::volumeIncreaseJob.isInitialized) volumeIncreaseJob.cancel()
 
-            volumeIncreaseJob = playerScope.launch {
-                for (i in 0..steps) {
-                    val progress = i.toDouble() / steps
-                    val scaledVolume = progress.pow(power).toFloat()
-                    player?.volume = scaledVolume
-                    if (i < steps) delay(perStepDelayMilliseconds.milliseconds)
+            if (volumeIncreaseSeconds > 0) {
+                player?.volume = 0f
+
+                val totalMilliseconds = volumeIncreaseSeconds * 1000.0
+                val steps = 100
+                val perStepDelayMilliseconds = (totalMilliseconds / steps).toLong()
+                val power = 2.0 // quadratic ease-in
+
+                volumeIncreaseJob = playerScope.launch {
+                    for (i in 0..steps) {
+                        val progress = i.toDouble() / steps
+                        val scaledVolume = progress.pow(power).toFloat()
+                        player?.volume = scaledVolume
+                        if (i < steps) delay(perStepDelayMilliseconds.milliseconds)
+                    }
                 }
+            } else {
+                player?.volume = 1f
             }
         }
 
