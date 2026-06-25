@@ -233,4 +233,5 @@
     <string name="no_default_code_yet_description">새로 생성된 알람에 자동으로 할당되도록 설정하세요.</string>
     <string name="no_codes_yet">아직 기타 코드 없음</string>
     <string name="no_codes_yet_description">기본 이외의 특정 알람에 할당된 코드는 여기에 표시됩니다.</string>
+    <string name="alarm_date">알람 날짜</string>
 </resources>

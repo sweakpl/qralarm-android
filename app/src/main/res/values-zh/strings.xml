@@ -233,4 +233,5 @@
     <string name="no_default_code_yet_description">设置一个默认代码，新创建的闹钟将自动使用它。</string>
     <string name="no_codes_yet">尚无其他代码</string>
     <string name="no_codes_yet_description">分配给特定闹钟的代码（默认以外）将显示在此。</string>
+    <string name="alarm_date">闹钟日期</string>
 </resources>

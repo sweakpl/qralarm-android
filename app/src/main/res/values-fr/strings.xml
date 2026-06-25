@@ -245,4 +245,5 @@
     <string name="no_default_code_yet_description">Définissez-en un pour que les alarmes nouvellement créées l\'obtiennent automatiquement.</string>
     <string name="no_codes_yet">Pas d\'autres codes pour le moment</string>
     <string name="no_codes_yet_description">Les codes attribués à des alarmes spécifiques, autres que le code par défaut, apparaîtront ici.</string>
+    <string name="alarm_date">Date de l\'alarme</string>
 </resources>

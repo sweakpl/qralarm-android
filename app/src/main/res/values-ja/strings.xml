@@ -233,4 +233,5 @@
     <string name="no_default_code_yet_description">新しく作成されるアラームに自動割り当てされるように設定します。</string>
     <string name="no_codes_yet">まだ他のコードはありません</string>
     <string name="no_codes_yet_description">デフォルト以外に特定のアラームに割り当てられたコードがここに表示されます。</string>
+    <string name="alarm_date">アラームの日付</string>
 </resources>
