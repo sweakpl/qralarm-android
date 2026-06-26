@@ -52,7 +52,7 @@ class AlarmViewModel @AssistedInject constructor(
                 if (!isAlarmBeingStopped) {
                     val isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed
                     val isSnoozeAvailable =
-                        it.snoozeConfig.numberOfSnoozesLeft != 0 && !isAlarmSnoozed
+                        it.snoozeConfig.numberOfSnoozesLeft > 0 && !isAlarmSnoozed
                     val isAlarmRunning = it.isAlarmRunning
                     val isInteractionEnabled = isAlarmRunning || (isAlarmSnoozed && !isTransient)
                     val alarmLabel = if (isAlarmRunning) {
