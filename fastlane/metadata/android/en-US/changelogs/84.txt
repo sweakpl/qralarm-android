@@ -1,0 +1,3 @@
+* See exactly how long until your alarm fires while editing it,
+* Improved date picking for one-time alarms,
+* Bug fixes.

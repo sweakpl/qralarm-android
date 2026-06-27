@@ -1,2 +1,0 @@
-* Added system-default ringtone option,
-* Bug fixes.
