@@ -106,6 +106,7 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    compileOnly(libs.error.prone.annotations)
     implementation(libs.androidx.hilt.navigation.compose)
 
     implementation(libs.androidx.room.ktx)
