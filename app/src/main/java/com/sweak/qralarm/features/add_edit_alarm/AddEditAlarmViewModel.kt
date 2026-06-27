@@ -161,7 +161,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         val persistedDate = Instant.ofEpochMilli(alarm.nextAlarmTimeInMillis)
                             .atZone(ZoneId.systemDefault())
                             .toLocalDate()
-                        isDateSticky = persistedDate == earliestDate
+                        isDateSticky = !persistedDate.isAfter(earliestDate)
                         onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
                             currentDateInMillis = alarm.nextAlarmTimeInMillis,
                             hourOfDay = alarm.alarmHourOfDay,
