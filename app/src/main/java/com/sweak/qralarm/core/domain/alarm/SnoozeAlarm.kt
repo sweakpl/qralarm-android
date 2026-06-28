@@ -26,8 +26,8 @@ class SnoozeAlarm @Inject constructor(
             alarm = alarm.copy(
                 snoozeConfig = alarm.snoozeConfig.copy(
                     numberOfSnoozesLeft =
-                    if (isReschedulingCurrentOrMissedSnooze) alarm.snoozeConfig.numberOfSnoozesLeft
-                    else (alarm.snoozeConfig.numberOfSnoozesLeft - 1).coerceAtLeast(0),
+                        if (isReschedulingCurrentOrMissedSnooze) alarm.snoozeConfig.numberOfSnoozesLeft
+                        else (alarm.snoozeConfig.numberOfSnoozesLeft - 1).coerceAtLeast(0),
                     isAlarmSnoozed = true,
                     nextSnoozedAlarmTimeInMillis = snoozeAlarmTimeInMillis
                 )

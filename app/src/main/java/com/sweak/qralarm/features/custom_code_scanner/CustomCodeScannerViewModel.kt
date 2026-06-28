@@ -66,7 +66,8 @@ class CustomCodeScannerViewModel @AssistedInject constructor(
 
                 try {
                     ProcessCameraProvider.configureInstance(Camera2Config.defaultConfig())
-                } catch (_: IllegalStateException) { /* no-op */ }
+                } catch (_: IllegalStateException) { /* no-op */
+                }
 
                 val processCameraProvider =
                     ProcessCameraProvider.awaitInstance(event.appContext).also { it.unbindAll() }
@@ -109,6 +110,7 @@ class CustomCodeScannerViewModel @AssistedInject constructor(
                     )
                 }
             }
+
             is CustomCodeScannerScreenUserEvent.ToggleFlash -> {
                 camera?.let {
                     _state.update { currentState ->
@@ -118,7 +120,9 @@ class CustomCodeScannerViewModel @AssistedInject constructor(
                     }
                 }
             }
-            else -> { /* no-op */ }
+
+            else -> { /* no-op */
+            }
         }
     }
 

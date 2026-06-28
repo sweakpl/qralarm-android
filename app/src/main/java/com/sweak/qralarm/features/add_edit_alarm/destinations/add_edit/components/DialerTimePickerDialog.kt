@@ -52,7 +52,7 @@ fun DialerTimePickerDialog(
         )
     ) {
         Surface(
-            color = with (MaterialTheme) {
+            color = with(MaterialTheme) {
                 if (isQRAlarmTheme) colorScheme.surfaceContainerHighest
                 else colorScheme.surface
             },
@@ -102,7 +102,7 @@ fun DialerTimePickerDialog(
                     ) {
                         Text(
                             text = stringResource(R.string.cancel),
-                            color = with (MaterialTheme) {
+                            color = with(MaterialTheme) {
                                 if (isQRAlarmTheme) colorScheme.onSurface else Color.Unspecified
                             }
                         )

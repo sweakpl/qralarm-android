@@ -14,5 +14,6 @@ sealed class CodesManagementScreenUserEvent {
     data object CodeNameEditDismissed : CodesManagementScreenUserEvent()
     data class CameraPermissionDeniedDialogVisible(val isVisible: Boolean) :
         CodesManagementScreenUserEvent()
+
     data object GoToApplicationSettingsClicked : CodesManagementScreenUserEvent()
 }

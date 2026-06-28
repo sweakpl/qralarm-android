@@ -34,9 +34,9 @@ import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.core.ui.shortName
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode
+import com.sweak.qralarm.core.ui.shortName
 import java.time.DayOfWeek
 import java.time.format.TextStyle
 
@@ -175,7 +175,9 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                         modifier = Modifier
                             .selectable(
                                 selected = selectedAlarmRepeatingMode == AlarmRepeatingMode.CUSTOM,
-                                onClick = { selectedAlarmRepeatingMode = AlarmRepeatingMode.CUSTOM },
+                                onClick = {
+                                    selectedAlarmRepeatingMode = AlarmRepeatingMode.CUSTOM
+                                },
                                 role = Role.RadioButton
                             )
                     ) {
@@ -219,12 +221,12 @@ fun ChooseAlarmRepeatingScheduleBottomSheet(
                                     border = FilterChipDefaults.filterChipBorder(
                                         enabled = true,
                                         selected = dayOfWeek in selectedAlarmDaysOfWeek,
-                                        borderColor = with (MaterialTheme) {
+                                        borderColor = with(MaterialTheme) {
                                             if (isQRAlarmTheme) Color.White
                                             else colorScheme.outlineVariant
                                         }
                                     ),
-                                    colors = with (MaterialTheme) {
+                                    colors = with(MaterialTheme) {
                                         if (isQRAlarmTheme) {
                                             FilterChipDefaults.filterChipColors(
                                                 containerColor = Color.Transparent,

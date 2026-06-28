@@ -41,6 +41,7 @@ class SetAlarm @Inject constructor(
 
                     alarmDateTime.toInstant().toEpochMilli()
                 }
+
                 is Alarm.RepeatingMode.Days -> {
                     while (alarmDateTime <= currentDateTime ||
                         alarmDateTime.dayOfWeek !in alarm.repeatingMode.repeatingDaysOfWeek ||

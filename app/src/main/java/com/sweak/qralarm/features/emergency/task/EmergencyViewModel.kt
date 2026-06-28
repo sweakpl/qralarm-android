@@ -15,8 +15,6 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,6 +24,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 import kotlin.random.nextInt
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel(assistedFactory = EmergencyViewModel.Factory::class)
 class EmergencyViewModel @AssistedInject constructor(
@@ -87,6 +87,7 @@ class EmergencyViewModel @AssistedInject constructor(
                     currentState.copy(isTaskStarted = true)
                 }
             }
+
             is EmergencyScreenUserEvent.OnTaskValueChanged -> {
                 _state.update { currentState ->
                     currentState.copy(
@@ -96,6 +97,7 @@ class EmergencyViewModel @AssistedInject constructor(
                     )
                 }
             }
+
             is EmergencyScreenUserEvent.OnTaskValueSelected -> {
                 val selectedValue = state.value.emergencyTaskConfig.currentValue
                 val targetValue = state.value.emergencyTaskConfig.targetValue
@@ -156,7 +158,9 @@ class EmergencyViewModel @AssistedInject constructor(
                     }
                 }
             }
-            else -> { /* no-op */ }
+
+            else -> { /* no-op */
+            }
         }
     }
 

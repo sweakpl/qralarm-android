@@ -10,6 +10,7 @@ sealed class DisableAlarmScannerScreenUserEvent {
         val lifecycleOwner: LifecycleOwner,
         val windowInfo: WindowInfo
     ) : DisableAlarmScannerScreenUserEvent()
+
     data object OnCloseClicked : DisableAlarmScannerScreenUserEvent()
     data object ToggleFlash : DisableAlarmScannerScreenUserEvent()
 }

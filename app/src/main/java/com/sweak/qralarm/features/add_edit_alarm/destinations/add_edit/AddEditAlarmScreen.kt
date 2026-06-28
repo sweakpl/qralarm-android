@@ -93,9 +93,9 @@ import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEd
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
 import com.sweak.qralarm.features.add_edit_alarm.components.SimpleSetting
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AlarmDatePickerDialog
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AlarmScheduleCard
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AssignCodeBottomSheet
-import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AlarmDatePickerDialog
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseAlarmRepeatingScheduleBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseAlarmRingtoneConfigDialogBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.ChooseSnoozeConfigurationBottomSheet
@@ -199,7 +199,8 @@ fun AddEditAlarmScreen(
         object : PermissionState {
             override val permission: String get() = "android.permission.POST_NOTIFICATIONS"
             override val status: PermissionStatus get() = PermissionStatus.Granted
-            override fun launchPermissionRequest() { /* no-op */ }
+            override fun launchPermissionRequest() { /* no-op */
+            }
         }
     }
 
@@ -217,6 +218,7 @@ fun AddEditAlarmScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
                 is AddEditAlarmFlowBackendEvent.CustomCodeAssignmentFinished -> {
                     Toast.makeText(
                         context,
@@ -224,6 +226,7 @@ fun AddEditAlarmScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
                 is AddEditAlarmFlowBackendEvent.AlarmDeleted -> onAlarmDeleted()
                 is AddEditAlarmFlowBackendEvent.AlarmRingtonePreviewPlaybackError -> {
                     Toast.makeText(
@@ -248,7 +251,7 @@ fun AddEditAlarmScreen(
                 AddEditAlarmScreenUserEvent.TrySaveAlarm(
                     cameraPermissionStatus = cameraPermissionState.status.isGranted,
                     notificationsPermissionStatus =
-                    notificationsPermissionState.status.isGranted
+                        notificationsPermissionState.status.isGranted
                 )
             )
         }
@@ -272,10 +275,11 @@ fun AddEditAlarmScreen(
                         AddEditAlarmScreenUserEvent.TrySaveAlarm(
                             cameraPermissionStatus = cameraPermissionState.status.isGranted,
                             notificationsPermissionStatus =
-                            notificationsPermissionState.status.isGranted
+                                notificationsPermissionState.status.isGranted
                         )
                     )
                 }
+
                 is AddEditAlarmScreenUserEvent.RequestCameraPermission -> {
                     if (cameraPermissionState.status.shouldShowRationale) {
                         addEditAlarmViewModel.onEvent(
@@ -287,6 +291,7 @@ fun AddEditAlarmScreen(
                         cameraPermissionState.launchPermissionRequest()
                     }
                 }
+
                 is AddEditAlarmScreenUserEvent.RequestNotificationsPermission -> {
                     if (notificationsPermissionState.status.shouldShowRationale) {
                         addEditAlarmViewModel.onEvent(
@@ -298,6 +303,7 @@ fun AddEditAlarmScreen(
                         notificationsPermissionState.launchPermissionRequest()
                     }
                 }
+
                 is AddEditAlarmScreenUserEvent.RequestAlarmsPermission -> {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         context.startActivity(
@@ -308,6 +314,7 @@ fun AddEditAlarmScreen(
                         )
                     }
                 }
+
                 is AddEditAlarmScreenUserEvent.RequestFullScreenIntentPermission -> {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                         context.startActivity(
@@ -318,6 +325,7 @@ fun AddEditAlarmScreen(
                         )
                     }
                 }
+
                 is AddEditAlarmScreenUserEvent.PickCustomRingtone -> {
                     try {
                         audioPickerLauncher.launch("audio/*")
@@ -329,6 +337,7 @@ fun AddEditAlarmScreen(
                         ).show()
                     }
                 }
+
                 is AddEditAlarmScreenUserEvent.TryScanSpecificCode -> {
                     addEditAlarmViewModel.onEvent(
                         AddEditAlarmScreenUserEvent.AssignCodeDialogVisible(isVisible = false)
@@ -350,6 +359,7 @@ fun AddEditAlarmScreen(
                         onScanCustomCodeClicked()
                     }
                 }
+
                 is AddEditAlarmScreenUserEvent.GoToApplicationSettingsClicked -> {
                     addEditAlarmViewModel.onEvent(
                         AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(
@@ -367,12 +377,15 @@ fun AddEditAlarmScreen(
                         }
                     )
                 }
+
                 is AddEditAlarmScreenUserEvent.AdvancedSettingsClicked -> {
                     onAdvancedSettingsClicked()
                 }
+
                 is AddEditAlarmScreenUserEvent.SpecialSettingsClicked -> {
                     onSpecialSettingsClicked()
                 }
+
                 is AddEditAlarmScreenUserEvent.DownloadCode -> {
                     addEditAlarmViewModel.onEvent(
                         AddEditAlarmScreenUserEvent.DownloadCodeDialogVisible(isVisible = false)
@@ -388,9 +401,11 @@ fun AddEditAlarmScreen(
                         ).show()
                     }
                 }
+
                 is AddEditAlarmScreenUserEvent.AlarmsChainSettingsClicked -> {
                     onAlarmsChainSettingsClicked()
                 }
+
                 else -> addEditAlarmViewModel.onEvent(event)
             }
         }
@@ -419,7 +434,7 @@ private fun AddEditAlarmScreenContent(
                         Icon(
                             imageVector = QRAlarmIcons.Close,
                             contentDescription =
-                            stringResource(R.string.content_description_close_icon)
+                                stringResource(R.string.content_description_close_icon)
                         )
                     }
                 },
@@ -429,12 +444,12 @@ private fun AddEditAlarmScreenContent(
                     ) {
                         Icon(
                             imageVector = QRAlarmIcons.Done,
-                            tint = with (MaterialTheme) {
+                            tint = with(MaterialTheme) {
                                 if (isQRAlarmTheme) colorScheme.onSurface
                                 else LocalContentColor.current
                             },
                             contentDescription =
-                            stringResource(R.string.content_description_done_icon)
+                                stringResource(R.string.content_description_done_icon)
                         )
                     }
                 }
@@ -691,7 +706,8 @@ private fun AddEditAlarmScreenContent(
                                                         text = stringResource(
                                                             R.string.current_code,
                                                             state.temporaryAssignedCode?.value
-                                                                ?: state.currentlyAssignedCode?.value ?: ""
+                                                                ?: state.currentlyAssignedCode?.value
+                                                                ?: ""
                                                         ),
                                                         style = MaterialTheme.typography.labelMedium,
                                                         maxLines = 1,
@@ -715,7 +731,7 @@ private fun AddEditAlarmScreenContent(
                                                     DropdownMenu(
                                                         expanded = expanded,
                                                         onDismissRequest = { expanded = false },
-                                                        containerColor = with (MaterialTheme) {
+                                                        containerColor = with(MaterialTheme) {
                                                             if (isQRAlarmTheme) colorScheme.surfaceContainerHighest
                                                             else colorScheme.surfaceContainer
                                                         }
@@ -810,7 +826,7 @@ private fun AddEditAlarmScreenContent(
                                                                         R.string.clear_assigned_code
                                                                     ),
                                                                     style =
-                                                                    MaterialTheme.typography.labelMedium
+                                                                        MaterialTheme.typography.labelMedium
                                                                 )
                                                             },
                                                             leadingIcon = {
@@ -950,7 +966,7 @@ private fun AddEditAlarmScreenContent(
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement =
-                                Arrangement.spacedBy(MaterialTheme.space.medium)
+                                    Arrangement.spacedBy(MaterialTheme.space.medium)
                             ) {
                                 Icon(
                                     imageVector = QRAlarmIcons.Label,
@@ -977,7 +993,7 @@ private fun AddEditAlarmScreenContent(
                                         if (state.alarmLabel.isNullOrBlank()) {
                                             Text(
                                                 text =
-                                                stringResource(R.string.enter_your_alarm_label),
+                                                    stringResource(R.string.enter_your_alarm_label),
                                                 style = MaterialTheme.typography.titleMedium.copy(
                                                     color = LocalContentColor.current.copy(
                                                         alpha = 0.6f
@@ -1062,7 +1078,7 @@ private fun AddEditAlarmScreenContent(
                         ) {
                             Row(
                                 horizontalArrangement =
-                                Arrangement.spacedBy(MaterialTheme.space.small),
+                                    Arrangement.spacedBy(MaterialTheme.space.small),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Icon(
@@ -1183,7 +1199,7 @@ private fun AddEditAlarmScreenContent(
         ChooseAlarmRingtoneConfigDialogBottomSheet(
             initialRingtone = state.ringtone,
             availableRingtonesWithPlaybackState =
-            state.availableRingtonesWithPlaybackState,
+                state.availableRingtonesWithPlaybackState,
             isCustomRingtoneUploaded = state.currentCustomAlarmRingtoneUri != null ||
                     state.temporaryCustomAlarmRingtoneUri != null,
             onTogglePlaybackState = { toggledAlarmRingtone ->
@@ -1287,7 +1303,7 @@ private fun AddEditAlarmScreenContent(
                 onEvent(AddEditAlarmScreenUserEvent.RequestNotificationsPermission)
             },
             fullScreenIntentPermissionState =
-            state.permissionsDialogState.fullScreenIntentPermissionState,
+                state.permissionsDialogState.fullScreenIntentPermissionState,
             onFullScreenIntentPermissionClick = {
                 onEvent(AddEditAlarmScreenUserEvent.RequestFullScreenIntentPermission)
             },
@@ -1368,6 +1384,7 @@ fun getCancelLockDurationString(durationInMinutes: Int): String {
             val hours = durationInMinutes / 60
             pluralStringResource(R.plurals.hours, hours, hours)
         }
+
         else -> {
             pluralStringResource(R.plurals.minutes, durationInMinutes, durationInMinutes)
         }
@@ -1382,6 +1399,7 @@ fun getCancelLockDurationAbbreviatedString(durationInMinutes: Int): String {
             val hours = durationInMinutes / 60
             hours.toString() + " " + stringResource(R.string.h)
         }
+
         else -> {
             durationInMinutes.toString() + " " + stringResource(R.string.min)
         }

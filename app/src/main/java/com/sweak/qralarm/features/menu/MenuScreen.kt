@@ -59,6 +59,7 @@ fun MenuScreen(
                 is MenuScreenUserEvent.OnOptimizationGuideClicked -> onOptimizationGuideClicked()
                 is MenuScreenUserEvent.OnEmergencyTaskSettingsClicked ->
                     onEmergencyTaskSettingsClicked()
+
                 is MenuScreenUserEvent.OnQRAlarmProClicked -> onQRAlarmProClicked()
                 is MenuScreenUserEvent.OnRateQRAlarmClicked -> {
                     try {
@@ -76,6 +77,7 @@ fun MenuScreen(
                         ).show()
                     }
                 }
+
                 is MenuScreenUserEvent.OnContactSupportClicked -> {
                     try {
                         context.startActivity(
@@ -92,6 +94,7 @@ fun MenuScreen(
                         ).show()
                     }
                 }
+
                 is MenuScreenUserEvent.OnCodesManagementClicked -> onCodesManagementClicked()
                 is MenuScreenUserEvent.OnThemeClicked -> onThemeClicked()
                 is MenuScreenUserEvent.GoToApplicationSettingsClicked -> {
@@ -128,7 +131,7 @@ fun MenuScreenContent(
                         Icon(
                             imageVector = QRAlarmIcons.BackArrow,
                             contentDescription =
-                            stringResource(R.string.content_description_back_arrow_icon)
+                                stringResource(R.string.content_description_back_arrow_icon)
                         )
                     }
                 }

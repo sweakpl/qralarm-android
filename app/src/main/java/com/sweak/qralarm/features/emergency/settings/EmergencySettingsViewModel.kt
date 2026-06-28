@@ -56,6 +56,7 @@ class EmergencySettingsViewModel @Inject constructor(
                     currentState.copy(selectedSliderRangeIndex = event.index)
                 }
             }
+
             is EmergencySettingsScreenUserEvent.RequiredMatchesSelected -> viewModelScope.launch {
                 val requiredMatches = EMERGENCY_AVAILABLE_REQUIRED_MATCHES[event.index]
 
@@ -65,7 +66,9 @@ class EmergencySettingsViewModel @Inject constructor(
                     currentState.copy(selectedRequiredMatchesIndex = event.index)
                 }
             }
-            else -> { /* no-op */ }
+
+            else -> { /* no-op */
+            }
         }
     }
 }

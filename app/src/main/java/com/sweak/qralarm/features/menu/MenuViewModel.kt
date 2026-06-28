@@ -30,7 +30,8 @@ class MenuViewModel @Inject constructor(
 
     fun onEvent(event: MenuScreenUserEvent) {
         when (event) {
-            else -> { /* no-op */ }
+            else -> { /* no-op */
+            }
         }
     }
 }

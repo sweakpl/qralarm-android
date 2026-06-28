@@ -9,6 +9,7 @@ sealed class HomeScreenUserEvent {
         val enabled: Boolean? = null,
         val fromSnackbar: Boolean = false
     ) : HomeScreenUserEvent()
+
     data class TryChangeAlarmEnabled(
         val alarmId: Long? = null,
         val enabled: Boolean? = null,
@@ -16,6 +17,7 @@ sealed class HomeScreenUserEvent {
         val cameraPermissionStatus: Boolean,
         val notificationsPermissionStatus: Boolean
     ) : HomeScreenUserEvent()
+
     data object HideMissingPermissionsDialog : HomeScreenUserEvent()
     data object RequestCameraPermission : HomeScreenUserEvent()
     data object RequestNotificationsPermission : HomeScreenUserEvent()
@@ -24,9 +26,11 @@ sealed class HomeScreenUserEvent {
     data class CameraPermissionDeniedDialogVisible(
         val isVisible: Boolean
     ) : HomeScreenUserEvent()
+
     data class NotificationsPermissionDeniedDialogVisible(
         val isVisible: Boolean
     ) : HomeScreenUserEvent()
+
     data object GoToApplicationSettingsClicked : HomeScreenUserEvent()
     data class OptimizationGuideDialogVisible(val isVisible: Boolean) : HomeScreenUserEvent()
     data object GoToOptimizationClicked : HomeScreenUserEvent()

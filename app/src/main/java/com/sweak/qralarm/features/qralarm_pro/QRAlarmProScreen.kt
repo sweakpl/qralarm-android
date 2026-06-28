@@ -107,6 +107,7 @@ fun QRAlarmProScreen(
                         }
                     }
                 }
+
                 is QRAlarmProScreenUserEvent.NotNowClicked -> onNotNowClicked()
             }
         }
@@ -187,7 +188,10 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                     },
                     selected = selectedQRAlarmProDistributionSource is QRAlarmProDistributionSource.GooglePlay,
                     enabled = true,
-                    onClick = { selectedQRAlarmProDistributionSource = QRAlarmProDistributionSource.GooglePlay },
+                    onClick = {
+                        selectedQRAlarmProDistributionSource =
+                            QRAlarmProDistributionSource.GooglePlay
+                    },
                     modifier = Modifier
                         .padding(
                             start = MaterialTheme.space.medium,
@@ -208,7 +212,9 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                     },
                     selected = selectedQRAlarmProDistributionSource is QRAlarmProDistributionSource.ItchIo,
                     enabled = true,
-                    onClick = { selectedQRAlarmProDistributionSource = QRAlarmProDistributionSource.ItchIo },
+                    onClick = {
+                        selectedQRAlarmProDistributionSource = QRAlarmProDistributionSource.ItchIo
+                    },
                     modifier = Modifier
                         .padding(
                             start = MaterialTheme.space.medium,

@@ -82,9 +82,11 @@ fun OnboardingScreen(
                     OnboardingPage.WELCOME -> WelcomePage()
                     OnboardingPage.OVERSLEEPING_PROBLEM ->
                         OversleepingProblemPage(isActive = pagerState.currentPage == page)
+
                     OnboardingPage.HOW_IT_WORKS -> HowItWorksPage()
                     OnboardingPage.SOCIAL_PROOF ->
                         SocialProofPage(isActive = pagerState.currentPage == page)
+
                     OnboardingPage.PERMISSIONS -> PermissionsPage(
                         onLetsGoEnabledChange = { areAllRequiredPermissionsHandled = it }
                     )

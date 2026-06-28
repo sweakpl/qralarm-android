@@ -52,32 +52,41 @@ class CodesManagementViewModel @Inject constructor(
                     _state.update { it.copy(isPickingDefault = true) }
                 }
             }
+
             is CodesManagementScreenUserEvent.CancelPickingCodeClicked -> {
                 _state.update { it.copy(isPickingDefault = false) }
             }
+
             is CodesManagementScreenUserEvent.CodePickedAsDefault -> viewModelScope.launch {
                 codesRepository.setDefaultAlarmCodeById(event.code.id)
                 _state.update { it.copy(isPickingDefault = false) }
             }
+
             is CodesManagementScreenUserEvent.ClearDefaultCodeClicked -> viewModelScope.launch {
                 codesRepository.setDefaultAlarmCodeById(null)
             }
+
             is CodesManagementScreenUserEvent.EditCodeNameClicked -> {
                 _state.update { it.copy(codeBeingEdited = event.code) }
             }
+
             is CodesManagementScreenUserEvent.CodeNameEditConfirmed -> viewModelScope.launch {
                 _state.value.codeBeingEdited?.let { code ->
                     codesRepository.updateCodeName(code.id, event.newName)
                 }
                 _state.update { it.copy(codeBeingEdited = null) }
             }
+
             is CodesManagementScreenUserEvent.CodeNameEditDismissed -> {
                 _state.update { it.copy(codeBeingEdited = null) }
             }
+
             is CodesManagementScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
                 _state.update { it.copy(isCameraPermissionDeniedDialogVisible = event.isVisible) }
             }
-            else -> { /* no-op */ }
+
+            else -> { /* no-op */
+            }
         }
     }
 }

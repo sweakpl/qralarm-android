@@ -47,7 +47,7 @@ fun EmergencySettingsScreen(
 ) {
     val emergencySettingsViewModel = hiltViewModel<EmergencySettingsViewModel>()
     val emergencySettingsScreenState by
-        emergencySettingsViewModel.state.collectAsStateWithLifecycle()
+    emergencySettingsViewModel.state.collectAsStateWithLifecycle()
 
     EmergencySettingsScreenContent(
         state = emergencySettingsScreenState,
@@ -56,9 +56,11 @@ fun EmergencySettingsScreen(
                 is EmergencySettingsScreenUserEvent.BackClicked -> {
                     onBackClicked()
                 }
+
                 is EmergencySettingsScreenUserEvent.PreviewEmergencyTaskClicked -> {
                     onPreviewEmergencyTaskClicked()
                 }
+
                 else -> emergencySettingsViewModel.onEvent(event)
             }
         }

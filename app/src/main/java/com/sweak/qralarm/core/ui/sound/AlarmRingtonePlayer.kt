@@ -17,17 +17,17 @@ import androidx.media3.common.Player.COMMAND_SET_VOLUME
 import androidx.media3.exoplayer.ExoPlayer
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
-import kotlin.math.pow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.math.pow
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 class AlarmRingtonePlayer(
     private val context: Context,
@@ -55,6 +55,7 @@ class AlarmRingtonePlayer(
             Ringtone.SYSTEM_DEFAULT ->
                 getSystemDefaultAlarmRingtoneUri()
                     ?: getOriginalAlarmRingtoneUri(Ringtone.GENTLE_GUITAR)
+
             else -> getOriginalAlarmRingtoneUri(ringtone)
         }
 
@@ -114,6 +115,7 @@ class AlarmRingtonePlayer(
                 onPreviewCompleted(true)
                 return
             }
+
             Ringtone.SYSTEM_DEFAULT -> {
                 val systemDefaultUri = getSystemDefaultAlarmRingtoneUri()
 
@@ -124,6 +126,7 @@ class AlarmRingtonePlayer(
 
                 playAlarmRingtonePreview(systemDefaultUri, onPreviewCompleted)
             }
+
             else -> playAlarmRingtonePreview(
                 getOriginalAlarmRingtoneUri(ringtone),
                 onPreviewCompleted

@@ -25,7 +25,7 @@ fun QRAlarmTimePicker(
             QRAlarmTimePicker(it).apply {
                 // Set text color programmatically using LocalContentColor
                 setTextColor(contentColor.toArgb())
-                
+
                 // Right after composing the TimePicker the internal TimePicker(View) calls the
                 // timeChangedListener with the current time which breaks the uiState - we have to
                 // prevent the uiState update after this initial timeChangedListener call:

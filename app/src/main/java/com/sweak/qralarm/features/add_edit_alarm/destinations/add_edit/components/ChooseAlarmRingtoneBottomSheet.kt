@@ -52,10 +52,19 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     var selectedAlarmRingtone by remember(initialRingtone) { mutableStateOf(initialRingtone) }
-    var selectedAlarmVolumePercentage by remember(alarmVolumePercentage) { mutableStateOf(alarmVolumePercentage) }
+    var selectedAlarmVolumePercentage by remember(alarmVolumePercentage) {
+        mutableStateOf(
+            alarmVolumePercentage
+        )
+    }
 
     ModalBottomSheet(
-        onDismissRequest = { onDismissRequest(selectedAlarmRingtone, selectedAlarmVolumePercentage) },
+        onDismissRequest = {
+            onDismissRequest(
+                selectedAlarmRingtone,
+                selectedAlarmVolumePercentage
+            )
+        },
         sheetState = modalBottomSheetState
     ) {
         Column(
@@ -195,7 +204,7 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                                     Icon(
                                         imageVector = QRAlarmIcons.Edit,
                                         contentDescription =
-                                        stringResource(R.string.content_description_edit_icon)
+                                            stringResource(R.string.content_description_edit_icon)
                                     )
                                 }
                             }
@@ -206,7 +215,7 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                                 IconButton(onClick = { onTogglePlaybackState(alarmRingtone) }) {
                                     Icon(
                                         imageVector =
-                                        if (playbackState) QRAlarmIcons.Stop else QRAlarmIcons.Play,
+                                            if (playbackState) QRAlarmIcons.Stop else QRAlarmIcons.Play,
                                         contentDescription = stringResource(
                                             if (playbackState) R.string.content_description_stop_icon
                                             else R.string.content_description_play_icon
@@ -227,7 +236,7 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
 private fun ChooseAlarmRingtoneDialogBottomSheetPreview() {
     QRAlarmTheme {
         ChooseAlarmRingtoneConfigDialogBottomSheet(
-            initialRingtone= Ringtone.GENTLE_GUITAR,
+            initialRingtone = Ringtone.GENTLE_GUITAR,
             availableRingtonesWithPlaybackState = Ringtone.entries.associateWith { false },
             isCustomRingtoneUploaded = true,
             onTogglePlaybackState = {},

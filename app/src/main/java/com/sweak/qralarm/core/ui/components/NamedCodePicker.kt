@@ -107,7 +107,8 @@ private fun NamedCodeRow(code: Code, contentColor: Color) {
         Icon(
             imageVector = QRAlarmIcons.QrCode,
             contentDescription = stringResource(R.string.content_description_qr_code_icon),
-            tint = contentColor.takeIf { it != Color.Unspecified } ?: MaterialTheme.colorScheme.onSurface,
+            tint = contentColor.takeIf { it != Color.Unspecified }
+                ?: MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(end = MaterialTheme.space.small)
         )
 

@@ -95,7 +95,8 @@ fun HomeScreen(
         object : PermissionState {
             override val permission: String get() = "android.permission.POST_NOTIFICATIONS"
             override val status: PermissionStatus get() = PermissionStatus.Granted
-            override fun launchPermissionRequest() { /* no-op */ }
+            override fun launchPermissionRequest() { /* no-op */
+            }
         }
     }
 
@@ -112,6 +113,7 @@ fun HomeScreen(
                         onEditAlarm(event.alarmId)
                     }
                 }
+
                 is HomeScreenBackendEvent.CanNotEditAlarm -> {
                     Toast.makeText(
                         context,
@@ -119,6 +121,7 @@ fun HomeScreen(
                         Toast.LENGTH_LONG
                     ).show()
                 }
+
                 is HomeScreenBackendEvent.CanNotDisableAlarm -> {
                     Toast.makeText(
                         context,
@@ -138,7 +141,7 @@ fun HomeScreen(
                 HomeScreenUserEvent.TryChangeAlarmEnabled(
                     cameraPermissionStatus = cameraPermissionState.status.isGranted,
                     notificationsPermissionStatus =
-                    notificationsPermissionState.status.isGranted
+                        notificationsPermissionState.status.isGranted
                 )
             )
         }
@@ -157,10 +160,11 @@ fun HomeScreen(
                             ignoreCancelLock = event.fromSnackbar,
                             cameraPermissionStatus = cameraPermissionState.status.isGranted,
                             notificationsPermissionStatus =
-                            notificationsPermissionState.status.isGranted
+                                notificationsPermissionState.status.isGranted
                         )
                     )
                 }
+
                 is HomeScreenUserEvent.RequestCameraPermission -> {
                     if (cameraPermissionState.status.shouldShowRationale) {
                         homeViewModel.onEvent(
@@ -172,6 +176,7 @@ fun HomeScreen(
                         cameraPermissionState.launchPermissionRequest()
                     }
                 }
+
                 is HomeScreenUserEvent.RequestNotificationsPermission -> {
                     if (notificationsPermissionState.status.shouldShowRationale) {
                         homeViewModel.onEvent(
@@ -183,6 +188,7 @@ fun HomeScreen(
                         notificationsPermissionState.launchPermissionRequest()
                     }
                 }
+
                 is HomeScreenUserEvent.RequestAlarmsPermission -> {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                         context.startActivity(
@@ -193,6 +199,7 @@ fun HomeScreen(
                         )
                     }
                 }
+
                 is HomeScreenUserEvent.RequestFullScreenIntentPermission -> {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                         context.startActivity(
@@ -203,6 +210,7 @@ fun HomeScreen(
                         )
                     }
                 }
+
                 is HomeScreenUserEvent.GoToApplicationSettingsClicked -> {
                     homeViewModel.onEvent(
                         HomeScreenUserEvent.CameraPermissionDeniedDialogVisible(
@@ -220,6 +228,7 @@ fun HomeScreen(
                         }
                     )
                 }
+
                 is HomeScreenUserEvent.GoToOptimizationClicked -> {
                     homeViewModel.onEvent(
                         HomeScreenUserEvent.OptimizationGuideDialogVisible(isVisible = false)
@@ -230,6 +239,7 @@ fun HomeScreen(
 
                     onGoToOptimizationClicked()
                 }
+
                 is HomeScreenUserEvent.EmergencyClicked -> onRedirectToEmergency(event.alarmId)
                 else -> homeViewModel.onEvent(event)
             }
@@ -290,7 +300,7 @@ private fun HomeScreenContent(
                         Icon(
                             imageVector = QRAlarmIcons.Menu,
                             contentDescription =
-                            stringResource(R.string.content_description_menu_icon)
+                                stringResource(R.string.content_description_menu_icon)
                         )
                     }
                 }
@@ -559,7 +569,7 @@ private fun HomeScreenContent(
                 onEvent(HomeScreenUserEvent.RequestNotificationsPermission)
             },
             fullScreenIntentPermissionState =
-            state.permissionsDialogState.fullScreenIntentPermissionState,
+                state.permissionsDialogState.fullScreenIntentPermissionState,
             onFullScreenIntentPermissionClick = {
                 onEvent(HomeScreenUserEvent.RequestFullScreenIntentPermission)
             },

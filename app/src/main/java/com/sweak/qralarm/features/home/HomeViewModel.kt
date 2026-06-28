@@ -19,7 +19,6 @@ import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeat
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,6 +28,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
     private val deleteAlarm: DeleteAlarm,
     private val copyAlarm: CopyAlarm,
     private val filesDir: File
-): ViewModel() {
+) : ViewModel() {
 
     private var _state = MutableStateFlow(HomeScreenState())
     val state = _state.asStateFlow()
@@ -115,7 +115,7 @@ class HomeViewModel @Inject constructor(
                         _state.update { currentState ->
                             currentState.copy(
                                 isOptimizationGuideDialogVisible =
-                                optimizationGuideState == OptimizationGuideState.SHOULD_BE_SEEN
+                                    optimizationGuideState == OptimizationGuideState.SHOULD_BE_SEEN
                             )
                         }
                     }
@@ -170,6 +170,7 @@ class HomeViewModel @Inject constructor(
                 justEditedAlarmId = -1L
                 backendEventsChannel.send(HomeScreenBackendEvent.RedirectToAddEditAlarm())
             }
+
             is HomeScreenUserEvent.EditAlarmClicked -> viewModelScope.launch {
                 if (canManipulateAlarm(alarmId = event.alarmId)) {
                     justEditedAlarmId = event.alarmId
@@ -180,6 +181,7 @@ class HomeViewModel @Inject constructor(
                     backendEventsChannel.send(HomeScreenBackendEvent.CanNotEditAlarm)
                 }
             }
+
             is HomeScreenUserEvent.TryChangeAlarmEnabled -> {
                 if (event.enabled == false) {
                     if (event.alarmId == null) return
@@ -206,23 +208,23 @@ class HomeViewModel @Inject constructor(
                     currentlyToggledAlarmId = event.alarmId
                     currentlyToggledAlarmEnabledState = event.enabled
                 } else {
-                    if (currentlyToggledAlarmId == null || 
+                    if (currentlyToggledAlarmId == null ||
                         currentlyToggledAlarmEnabledState == null
                     ) {
                         _state.update { currentState ->
                             currentState.copy(
-                                permissionsDialogState = 
-                                currentState.permissionsDialogState.copy(isVisible = false)
+                                permissionsDialogState =
+                                    currentState.permissionsDialogState.copy(isVisible = false)
                             )
                         }
-                        
+
                         return
                     }
                 }
 
                 _state.update { currentState ->
                     if (currentState.permissionsDialogState.isVisible) {
-                        with (currentState.permissionsDialogState) {
+                        with(currentState.permissionsDialogState) {
                             if ((cameraPermissionState == null || cameraPermissionState) &&
                                 (alarmsPermissionState == null || alarmsPermissionState) &&
                                 (notificationsPermissionState == null || notificationsPermissionState) &&
@@ -239,31 +241,31 @@ class HomeViewModel @Inject constructor(
 
                                 return@update currentState.copy(
                                     permissionsDialogState =
-                                    currentState.permissionsDialogState.copy(isVisible = false)
+                                        currentState.permissionsDialogState.copy(isVisible = false)
                                 )
                             }
                         }
 
                         return@update currentState.copy(
                             permissionsDialogState =
-                            currentState.permissionsDialogState.copy(
-                                cameraPermissionState =
-                                currentState.permissionsDialogState.cameraPermissionState?.let {
-                                    event.cameraPermissionStatus
-                                },
-                                notificationsPermissionState =
-                                currentState.permissionsDialogState.notificationsPermissionState?.let {
-                                    event.notificationsPermissionStatus
-                                },
-                                alarmsPermissionState =
-                                currentState.permissionsDialogState.alarmsPermissionState?.let {
-                                    qrAlarmManager.canScheduleExactAlarms()
-                                },
-                                fullScreenIntentPermissionState =
-                                currentState.permissionsDialogState.fullScreenIntentPermissionState?.let {
-                                    qrAlarmManager.canUseFullScreenIntent()
-                                }
-                            )
+                                currentState.permissionsDialogState.copy(
+                                    cameraPermissionState =
+                                        currentState.permissionsDialogState.cameraPermissionState?.let {
+                                            event.cameraPermissionStatus
+                                        },
+                                    notificationsPermissionState =
+                                        currentState.permissionsDialogState.notificationsPermissionState?.let {
+                                            event.notificationsPermissionStatus
+                                        },
+                                    alarmsPermissionState =
+                                        currentState.permissionsDialogState.alarmsPermissionState?.let {
+                                            qrAlarmManager.canScheduleExactAlarms()
+                                        },
+                                    fullScreenIntentPermissionState =
+                                        currentState.permissionsDialogState.fullScreenIntentPermissionState?.let {
+                                            qrAlarmManager.canUseFullScreenIntent()
+                                        }
+                                )
                         )
                     }
 
@@ -277,18 +279,18 @@ class HomeViewModel @Inject constructor(
                     ) {
                         return@update currentState.copy(
                             permissionsDialogState =
-                            HomeScreenState.PermissionsDialogState(
-                                isVisible = true,
-                                cameraPermissionState =
-                                if (!event.cameraPermissionStatus && isCodeEnabled == true)
-                                    false else null,
-                                notificationsPermissionState =
-                                if (!event.notificationsPermissionStatus) false else null,
-                                alarmsPermissionState =
-                                if (!qrAlarmManager.canScheduleExactAlarms()) false else null,
-                                fullScreenIntentPermissionState =
-                                if (!qrAlarmManager.canUseFullScreenIntent()) false else null
-                            )
+                                HomeScreenState.PermissionsDialogState(
+                                    isVisible = true,
+                                    cameraPermissionState =
+                                        if (!event.cameraPermissionStatus && isCodeEnabled == true)
+                                            false else null,
+                                    notificationsPermissionState =
+                                        if (!event.notificationsPermissionStatus) false else null,
+                                    alarmsPermissionState =
+                                        if (!qrAlarmManager.canScheduleExactAlarms()) false else null,
+                                    fullScreenIntentPermissionState =
+                                        if (!qrAlarmManager.canUseFullScreenIntent()) false else null
+                                )
                         )
                     }
 
@@ -304,6 +306,7 @@ class HomeViewModel @Inject constructor(
                     return@update currentState
                 }
             }
+
             is HomeScreenUserEvent.HideMissingPermissionsDialog -> {
                 _state.update { currentState ->
                     currentState.copy(
@@ -313,6 +316,7 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+
             is HomeScreenUserEvent.NotificationsPermissionDeniedDialogVisible -> {
                 _state.update { currentState ->
                     currentState.copy(
@@ -320,16 +324,19 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+
             is HomeScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
                 _state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
             }
+
             is HomeScreenUserEvent.OptimizationGuideDialogVisible -> {
                 _state.update { currentState ->
                     currentState.copy(isOptimizationGuideDialogVisible = event.isVisible)
                 }
             }
+
             is HomeScreenUserEvent.AlarmMissedDialogVisible -> viewModelScope.launch {
                 userDataRepository.setAlarmMissedDetected(detected = false)
 
@@ -337,6 +344,7 @@ class HomeViewModel @Inject constructor(
                     currentState.copy(isAlarmMissedDialogVisible = event.isVisible)
                 }
             }
+
             is HomeScreenUserEvent.TryDeleteAlarm -> viewModelScope.launch {
                 if (canManipulateAlarm(alarmId = event.alarmId)) {
                     _state.update { currentState ->
@@ -351,6 +359,7 @@ class HomeViewModel @Inject constructor(
                     backendEventsChannel.send(HomeScreenBackendEvent.CanNotEditAlarm)
                 }
             }
+
             is HomeScreenUserEvent.HideDeleteAlarmDialog -> {
                 _state.update { currentState ->
                     currentState.copy(
@@ -360,6 +369,7 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+
             is HomeScreenUserEvent.DeleteAlarm -> viewModelScope.launch {
                 deleteAlarm(alarmId = event.alarmId)
                 File(filesDir, event.alarmId.toString()).apply {
@@ -377,6 +387,7 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
+
             is HomeScreenUserEvent.SkipNextAlarmChanged -> viewModelScope.launch {
                 if (canManipulateAlarm(alarmId = event.alarmId)) {
                     alarmsRepository.setSkipNextAlarm(
@@ -389,9 +400,11 @@ class HomeViewModel @Inject constructor(
                     backendEventsChannel.send(HomeScreenBackendEvent.CanNotEditAlarm)
                 }
             }
+
             is HomeScreenUserEvent.CopyAlarm -> viewModelScope.launch {
                 copyAlarm(event.alarmId)
             }
+
             is HomeScreenUserEvent.UpcomingAlarmMessageShown -> {
                 _state.update { currentState ->
                     currentState.copy(
@@ -404,13 +417,15 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             }
-            else -> { /* no-op */ }
+
+            else -> { /* no-op */
+            }
         }
     }
 
     private fun toggleAlarm(alarmId: Long, enabled: Boolean) {
         if (isTogglingAlarm) return
-        
+
         viewModelScope.launch {
             isTogglingAlarm = true
             currentlyToggledAlarmId = null

@@ -11,5 +11,6 @@ sealed class CustomCodeScannerScreenUserEvent {
         val lifecycleOwner: LifecycleOwner,
         val windowInfo: WindowInfo
     ) : CustomCodeScannerScreenUserEvent()
+
     data object ToggleFlash : CustomCodeScannerScreenUserEvent()
 }

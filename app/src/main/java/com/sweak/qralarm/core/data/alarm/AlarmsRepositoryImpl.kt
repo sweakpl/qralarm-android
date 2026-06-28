@@ -28,9 +28,9 @@ class AlarmsRepositoryImpl @Inject constructor(
                 isAlarmRunning = alarm.isAlarmRunning,
                 nextAlarmTimeInMillis = alarm.nextAlarmTimeInMillis,
                 repeatingAlarmDays =
-                if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
-                    alarm.repeatingMode.repeatingDaysOfWeek.joinToString { it.name }
-                } else null,
+                    if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
+                        alarm.repeatingMode.repeatingDaysOfWeek.joinToString { it.name }
+                    } else null,
                 numberOfSnoozes = alarm.snoozeConfig.snoozeMode.numberOfSnoozes,
                 snoozeDurationInMinutes = alarm.snoozeConfig.snoozeMode.snoozeDurationInMinutes,
                 numberOfSnoozesLeft = alarm.snoozeConfig.numberOfSnoozesLeft,
@@ -39,9 +39,9 @@ class AlarmsRepositoryImpl @Inject constructor(
                 ringtone = alarm.ringtone.name,
                 customRingtoneUriString = alarm.customRingtoneUriString,
                 alarmVolumePercentage =
-                if (alarm.alarmVolumeMode is Alarm.AlarmVolumeMode.Custom) {
-                    alarm.alarmVolumeMode.volumePercentage
-                } else 0,
+                    if (alarm.alarmVolumeMode is Alarm.AlarmVolumeMode.Custom) {
+                        alarm.alarmVolumeMode.volumePercentage
+                    } else 0,
                 areVibrationsEnabled = alarm.areVibrationsEnabled,
                 isUsingCode = alarm.isUsingCode,
                 assignedCodeId = alarm.assignedCode?.codeId,
@@ -78,7 +78,7 @@ class AlarmsRepositoryImpl @Inject constructor(
                 alarmEntity = alarmEntity.copy(
                     isAlarmSnoozed = snoozed,
                     nextSnoozedAlarmTimeInMillis =
-                    if (!snoozed) null else alarmEntity.nextSnoozedAlarmTimeInMillis
+                        if (!snoozed) null else alarmEntity.nextSnoozedAlarmTimeInMillis
                 )
             )
         }
@@ -89,7 +89,7 @@ class AlarmsRepositoryImpl @Inject constructor(
             alarmsDao.upsertAlarm(
                 alarmEntity = alarmEntity.copy(
                     skipAlarmUntilTimeInMillis =
-                    if (skip) alarmEntity.nextAlarmTimeInMillis else null
+                        if (skip) alarmEntity.nextAlarmTimeInMillis else null
                 )
             )
         }

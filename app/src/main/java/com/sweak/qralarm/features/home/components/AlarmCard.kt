@@ -43,7 +43,6 @@ import com.sweak.qralarm.core.ui.getDayString
 import com.sweak.qralarm.core.ui.getTimeString
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
-import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 
 @Composable
@@ -92,8 +91,8 @@ fun AlarmCard(
                     ),
                     style = MaterialTheme.typography.displayLarge.copy(
                         textDecoration =
-                        if (indicateSkippingNextAlarm) TextDecoration.LineThrough
-                        else TextDecoration.None
+                            if (indicateSkippingNextAlarm) TextDecoration.LineThrough
+                            else TextDecoration.None
                     ),
                     color =
                         if (indicateSkippingNextAlarm) MaterialTheme.colorScheme.onSurfaceVariant
@@ -126,7 +125,7 @@ fun AlarmCard(
                     Icon(
                         imageVector = QRAlarmIcons.NoQRCode,
                         contentDescription =
-                        stringResource(R.string.content_description_no_qr_code_icon),
+                            stringResource(R.string.content_description_no_qr_code_icon),
                         modifier = Modifier.size(size = MaterialTheme.space.large)
                     )
 
@@ -151,7 +150,7 @@ fun AlarmCard(
                     DropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false },
-                        containerColor = with (MaterialTheme) {
+                        containerColor = with(MaterialTheme) {
                             if (isQRAlarmTheme) colorScheme.surfaceContainerHighest
                             else colorScheme.surfaceContainer
                         }
@@ -206,11 +205,11 @@ fun AlarmCard(
                                 leadingIcon = {
                                     Icon(
                                         imageVector =
-                                        if (alarmWrapper.skipNextAlarmConfig.isSkippingNextAlarm) {
-                                            QRAlarmIcons.Undo
-                                        } else {
-                                            QRAlarmIcons.SkipNextAlarm
-                                        },
+                                            if (alarmWrapper.skipNextAlarmConfig.isSkippingNextAlarm) {
+                                                QRAlarmIcons.Undo
+                                            } else {
+                                                QRAlarmIcons.SkipNextAlarm
+                                            },
                                         contentDescription = stringResource(
                                             if (alarmWrapper.skipNextAlarmConfig.isSkippingNextAlarm) {
                                                 R.string.content_description_no_qr_code_icon
@@ -283,7 +282,6 @@ fun AlarmCard(
         }
     }
 }
-
 
 
 @Preview

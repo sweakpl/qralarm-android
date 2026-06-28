@@ -117,7 +117,7 @@ fun MissingPermissionsBottomSheet(
 
                     Icon(
                         imageVector =
-                        if (cameraPermissionState) QRAlarmIcons.Done else QRAlarmIcons.ForwardArrow,
+                            if (cameraPermissionState) QRAlarmIcons.Done else QRAlarmIcons.ForwardArrow,
                         contentDescription = stringResource(
                             if (cameraPermissionState) R.string.content_description_done_icon
                             else R.string.content_description_forward_arrow_icon
@@ -163,7 +163,7 @@ fun MissingPermissionsBottomSheet(
 
                     Icon(
                         imageVector =
-                        if (alarmsPermissionState) QRAlarmIcons.Done else QRAlarmIcons.ForwardArrow,
+                            if (alarmsPermissionState) QRAlarmIcons.Done else QRAlarmIcons.ForwardArrow,
                         contentDescription = stringResource(
                             if (alarmsPermissionState) R.string.content_description_done_icon
                             else R.string.content_description_forward_arrow_icon
@@ -188,7 +188,7 @@ fun MissingPermissionsBottomSheet(
                     Icon(
                         imageVector = QRAlarmIcons.Notification,
                         contentDescription =
-                        stringResource(R.string.content_description_notification_icon)
+                            stringResource(R.string.content_description_notification_icon)
                     )
 
                     Column(
@@ -210,8 +210,8 @@ fun MissingPermissionsBottomSheet(
 
                     Icon(
                         imageVector =
-                        if (notificationsPermissionState) QRAlarmIcons.Done
-                        else QRAlarmIcons.ForwardArrow,
+                            if (notificationsPermissionState) QRAlarmIcons.Done
+                            else QRAlarmIcons.ForwardArrow,
                         contentDescription = stringResource(
                             if (notificationsPermissionState) R.string.content_description_done_icon
                             else R.string.content_description_forward_arrow_icon
@@ -236,7 +236,7 @@ fun MissingPermissionsBottomSheet(
                     Icon(
                         imageVector = QRAlarmIcons.FullScreen,
                         contentDescription =
-                        stringResource(R.string.content_description_full_screen_icon)
+                            stringResource(R.string.content_description_full_screen_icon)
                     )
 
                     Column(
@@ -258,8 +258,8 @@ fun MissingPermissionsBottomSheet(
 
                     Icon(
                         imageVector =
-                        if (fullScreenIntentPermissionState) QRAlarmIcons.Done
-                        else QRAlarmIcons.ForwardArrow,
+                            if (fullScreenIntentPermissionState) QRAlarmIcons.Done
+                            else QRAlarmIcons.ForwardArrow,
                         contentDescription = stringResource(
                             if (fullScreenIntentPermissionState) R.string.content_description_done_icon
                             else R.string.content_description_forward_arrow_icon

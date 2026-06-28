@@ -92,7 +92,8 @@
             android:name=".alarm.receiver.PostUpcomingAlarmNotificationReceiver"
             android:directBootAware="true" />
 
-        <receiver android:name=".features.widget.QRAlarmWidgetReceiver"
+        <receiver
+            android:name=".features.widget.QRAlarmWidgetReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

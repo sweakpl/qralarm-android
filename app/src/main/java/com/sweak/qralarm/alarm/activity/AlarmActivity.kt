@@ -26,26 +26,27 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.domain.user.model.Theme
+import com.sweak.qralarm.core.navigation.Navigator
+import com.sweak.qralarm.core.navigation.rememberNavigationState
 import com.sweak.qralarm.core.navigation.routes.AlarmRoute
 import com.sweak.qralarm.core.navigation.routes.DisableAlarmScannerRoute
 import com.sweak.qralarm.core.navigation.routes.EmergencyRoute
-import com.sweak.qralarm.core.navigation.Navigator
-import com.sweak.qralarm.core.navigation.rememberNavigationState
 import com.sweak.qralarm.core.navigation.toEntries
 import com.sweak.qralarm.features.alarm.AlarmScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.DisableAlarmScannerScreen
 import com.sweak.qralarm.features.emergency.task.EmergencyScreen
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class AlarmActivity : FragmentActivity() {
 
     @Inject
     lateinit var alarmsRepository: AlarmsRepository
+
     @Inject
     lateinit var userDataRepository: UserDataRepository
 

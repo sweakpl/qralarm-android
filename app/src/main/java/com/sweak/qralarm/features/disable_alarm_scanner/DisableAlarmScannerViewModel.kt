@@ -28,7 +28,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,6 +37,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel(assistedFactory = DisableAlarmScannerViewModel.Factory::class)
 class DisableAlarmScannerViewModel @AssistedInject constructor(
@@ -88,7 +88,8 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
 
                 try {
                     ProcessCameraProvider.configureInstance(Camera2Config.defaultConfig())
-                } catch (_: IllegalStateException) { /* no-op */ }
+                } catch (_: IllegalStateException) { /* no-op */
+                }
 
                 val processCameraProvider =
                     ProcessCameraProvider.awaitInstance(event.appContext).also { it.unbindAll() }
@@ -131,6 +132,7 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
                     )
                 }
             }
+
             is DisableAlarmScannerScreenUserEvent.ToggleFlash -> {
                 camera?.let {
                     _state.update { currentState ->
@@ -140,7 +142,9 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
                     }
                 }
             }
-            else -> { /* no-op */ }
+
+            else -> { /* no-op */
+            }
         }
     }
 

@@ -56,7 +56,8 @@ object DeviceProtectedDataStore {
                     )
                     credentialProtectedPreferencesFile.delete()
                 }
-            } catch (exception: Exception) { /* no-op */ }
+            } catch (exception: Exception) { /* no-op */
+            }
         }
     }
 } 

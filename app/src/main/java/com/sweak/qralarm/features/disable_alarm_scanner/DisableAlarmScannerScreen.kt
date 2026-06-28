@@ -28,8 +28,8 @@ fun DisableAlarmScannerScreen(
     onCloseClicked: () -> Unit
 ) {
     val disableAlarmScannerViewModel =
-        hiltViewModel<DisableAlarmScannerViewModel, DisableAlarmScannerViewModel.Factory> {
-            factory -> factory.create(
+        hiltViewModel<DisableAlarmScannerViewModel, DisableAlarmScannerViewModel.Factory> { factory ->
+            factory.create(
                 idOfAlarm = idOfAlarm,
                 isDisablingBeforeAlarmFired = isDisablingBeforeAlarmFired
             )
@@ -45,6 +45,7 @@ fun DisableAlarmScannerScreen(
                 is DisableAlarmScannerScreenBackendEvent.CorrectCodeScanned -> {
                     onAlarmDisabled(event.uriStringToOpen)
                 }
+
                 is DisableAlarmScannerScreenBackendEvent.CameraInitializationError -> {
                     Toast.makeText(
                         context,
@@ -77,6 +78,7 @@ fun DisableAlarmScannerScreen(
                 is DisableAlarmScannerScreenUserEvent.OnCloseClicked -> {
                     onCloseClicked()
                 }
+
                 else -> disableAlarmScannerViewModel.onEvent(event)
             }
         }

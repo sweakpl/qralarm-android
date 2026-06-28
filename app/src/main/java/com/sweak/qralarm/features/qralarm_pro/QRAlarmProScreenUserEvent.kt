@@ -6,5 +6,6 @@ sealed class QRAlarmProScreenUserEvent {
     data class GetQRAlarmProClicked(
         val qrAlarmProDistributionSource: QRAlarmProDistributionSource
     ) : QRAlarmProScreenUserEvent()
+
     data object NotNowClicked : QRAlarmProScreenUserEvent()
 }

@@ -68,7 +68,8 @@ fun PermissionsPage(
                 override val status: PermissionStatus
                     get() = PermissionStatus.Granted
 
-                override fun launchPermissionRequest() { /* no-op */ }
+                override fun launchPermissionRequest() { /* no-op */
+                }
             }
         }
 

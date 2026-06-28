@@ -45,7 +45,7 @@ class QRAlarmTimePicker @JvmOverloads constructor(
     }
 
     fun setIs24HourView(is24HourView: Boolean) {
-        timePicker.setIs24HourView(is24HourView)
+        timePicker.is24HourView = is24HourView
     }
 
     @Suppress("DEPRECATION")
@@ -84,7 +84,8 @@ class QRAlarmTimePicker @JvmOverloads constructor(
                 val paint = wheelPaintField.get(numberPicker) as? Paint
                 paint?.color = color
                 numberPicker.invalidate()
-            } catch (_: Exception) { /* no-op */ }
+            } catch (_: Exception) { /* no-op */
+            }
 
             // Also set EditText (center) color separately
             for (i in 0 until numberPicker.childCount) {

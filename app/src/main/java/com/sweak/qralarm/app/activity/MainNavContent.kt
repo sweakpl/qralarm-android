@@ -34,12 +34,12 @@ import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.AddEditAl
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.AdvancedAlarmSettingsScreen
 import com.sweak.qralarm.features.add_edit_alarm.destinations.alarms_chain.AlarmsChainSettingsScreen
 import com.sweak.qralarm.features.add_edit_alarm.destinations.special.SpecialAlarmSettingsScreen
+import com.sweak.qralarm.features.codes_management.CodesManagementScreen
 import com.sweak.qralarm.features.custom_code_scanner.CustomCodeScannerScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.DisableAlarmScannerScreen
 import com.sweak.qralarm.features.emergency.settings.EmergencySettingsScreen
 import com.sweak.qralarm.features.emergency.task.EmergencyScreen
 import com.sweak.qralarm.features.home.HomeScreen
-import com.sweak.qralarm.features.codes_management.CodesManagementScreen
 import com.sweak.qralarm.features.menu.MenuScreen
 import com.sweak.qralarm.features.onboarding.OnboardingScreen
 import com.sweak.qralarm.features.optimization.OptimizationScreen

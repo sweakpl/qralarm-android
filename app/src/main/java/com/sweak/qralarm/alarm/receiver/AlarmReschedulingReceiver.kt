@@ -16,7 +16,8 @@ class AlarmReschedulingReceiver : BroadcastReceiver() {
 
     private val receiverScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    @Inject lateinit var rescheduleAlarms: RescheduleAlarms
+    @Inject
+    lateinit var rescheduleAlarms: RescheduleAlarms
 
     private val intentActionsToFilter = listOf(
         "android.intent.action.BOOT_COMPLETED",

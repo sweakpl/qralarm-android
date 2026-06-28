@@ -93,9 +93,11 @@ class MainViewModel @Inject constructor(
                     }
                 }
             }
+
             is MainActivityUserEvent.OnOnboardingFinished -> viewModelScope.launch {
                 userDataRepository.setIntroductionFinished(finished = true)
             }
+
             is MainActivityUserEvent.OnWhatsNewDialogDismissed -> viewModelScope.launch {
                 userDataRepository.setWhatsNewLastShownVersionCode(WHATS_NEW_VERSION_CODE)
                 _state.update { it.copy(isWhatsNewDialogVisible = false) }

@@ -50,7 +50,7 @@ fun MenuEntry(
             Icon(
                 imageVector = QRAlarmIcons.ForwardArrow,
                 contentDescription =
-                stringResource(R.string.content_description_forward_arrow_icon)
+                    stringResource(R.string.content_description_forward_arrow_icon)
             )
         }
 

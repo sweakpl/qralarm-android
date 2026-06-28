@@ -34,7 +34,7 @@ fun QRAlarmDialog(
     onDismissRequest: () -> Unit,
     onPositiveClick: () -> Unit,
     positiveButtonText: String,
-    positiveButtonColor: Color = with (MaterialTheme) {
+    positiveButtonColor: Color = with(MaterialTheme) {
         if (isQRAlarmTheme) Jacarta
         else Color.Unspecified
     },
@@ -51,7 +51,7 @@ fun QRAlarmDialog(
         )
     ) {
         Surface(
-            color = with (MaterialTheme) {
+            color = with(MaterialTheme) {
                 if (isQRAlarmTheme) colorScheme.surfaceContainerHighest
                 else colorScheme.surface
             },
@@ -93,7 +93,7 @@ fun QRAlarmDialog(
                         ) {
                             Text(
                                 text = negativeButtonText,
-                                color = with (MaterialTheme) {
+                                color = with(MaterialTheme) {
                                     if (isQRAlarmTheme) colorScheme.onSurface else Color.Unspecified
                                 }
                             )

@@ -9,7 +9,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +16,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Named
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel(assistedFactory = OptimizationViewModel.Factory::class)
 class OptimizationViewModel @AssistedInject constructor(
@@ -24,7 +24,7 @@ class OptimizationViewModel @AssistedInject constructor(
     private val powerManager: PowerManager,
     @param:Named("PackageName") private val packageName: String,
     private val userDataRepository: UserDataRepository
-): ViewModel() {
+) : ViewModel() {
 
     @AssistedFactory
     interface Factory {

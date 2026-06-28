@@ -80,9 +80,9 @@ fun BackgroundWorkPage(
 
                 Icon(
                     imageVector =
-                    if (!isIgnoringBatteryOptimizations) {
-                        QRAlarmIcons.ForwardArrow
-                    } else QRAlarmIcons.Done,
+                        if (!isIgnoringBatteryOptimizations) {
+                            QRAlarmIcons.ForwardArrow
+                        } else QRAlarmIcons.Done,
                     contentDescription = stringResource(
                         if (!isIgnoringBatteryOptimizations) {
                             R.string.content_description_forward_arrow_icon

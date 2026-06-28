@@ -12,10 +12,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.ui.components.code_scanner.compose.CodeScanner
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
-import com.sweak.qralarm.R
 
 @Composable
 fun CustomCodeScannerScreen(
@@ -68,6 +68,7 @@ fun CustomCodeScannerScreen(
                 is CustomCodeScannerScreenUserEvent.CloseClicked -> {
                     onCloseClicked()
                 }
+
                 else -> customCodeScannerViewModel.onEvent(event)
             }
         }

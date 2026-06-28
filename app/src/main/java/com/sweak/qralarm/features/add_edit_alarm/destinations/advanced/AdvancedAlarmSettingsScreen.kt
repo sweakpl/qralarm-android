@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.add_edit_alarm.destinations.advanced
 
 import android.os.Build
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +21,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.foundation.background
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
@@ -34,11 +34,11 @@ import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.components.ToggleSetting
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
-import com.sweak.qralarm.core.ui.components.ToggleSetting
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getCancelLockDurationAbbreviatedString
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getSecondsDurationString
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.components.ChooseCancelLockDurationBottomSheet

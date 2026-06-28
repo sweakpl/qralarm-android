@@ -14,7 +14,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
 
-    @Inject lateinit var widgetUpdater: QRAlarmWidgetUpdater
+    @Inject
+    lateinit var widgetUpdater: QRAlarmWidgetUpdater
 
     override val glanceAppWidget: GlanceAppWidget = QRAlarmWidget()
 

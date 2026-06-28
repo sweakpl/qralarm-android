@@ -15,10 +15,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.sweak.qralarm.alarm.activity.AlarmActivity
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
-import com.sweak.qralarm.core.navigation.routes.HomeRoute
-import com.sweak.qralarm.core.navigation.routes.OnboardingRoute
 import com.sweak.qralarm.core.navigation.Navigator
 import com.sweak.qralarm.core.navigation.rememberNavigationState
+import com.sweak.qralarm.core.navigation.routes.HomeRoute
+import com.sweak.qralarm.core.navigation.routes.OnboardingRoute
 import com.sweak.qralarm.core.ui.components.WhatsNewDialog
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import dagger.hilt.android.AndroidEntryPoint

@@ -12,12 +12,14 @@ sealed class AddEditAlarmFlowUserEvent {
         data class DiscardAlarmChangesDialogVisible(
             val isVisible: Boolean
         ) : AddEditAlarmScreenUserEvent()
+
         data object ConfirmDiscardAlarmChanges : AddEditAlarmScreenUserEvent()
         data object SaveAlarmClicked : AddEditAlarmScreenUserEvent()
         data class TrySaveAlarm(
             val cameraPermissionStatus: Boolean,
             val notificationsPermissionStatus: Boolean
         ) : AddEditAlarmScreenUserEvent()
+
         data object HideMissingPermissionsDialog : AddEditAlarmScreenUserEvent()
         data object RequestCameraPermission : AddEditAlarmScreenUserEvent()
         data object RequestNotificationsPermission : AddEditAlarmScreenUserEvent()
@@ -26,39 +28,49 @@ sealed class AddEditAlarmFlowUserEvent {
         data class NotificationsPermissionDeniedDialogVisible(
             val isVisible: Boolean
         ) : AddEditAlarmScreenUserEvent()
+
         data class DialerPickerDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
         data class AlarmTimeChanged(
             val newAlarmHourOfDay: Int,
             val newAlarmMinute: Int
         ) : AddEditAlarmScreenUserEvent()
+
         data class DatePickerDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
         data class AlarmDateSelected(val selectedDateInMillis: Long) : AddEditAlarmScreenUserEvent()
         data class ChooseAlarmRepeatingScheduleDialogVisible(
             val isVisible: Boolean
         ) : AddEditAlarmScreenUserEvent()
+
         data class AlarmRepeatingScheduleSelected(
             val newAlarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper
         ) : AddEditAlarmScreenUserEvent()
+
         data class ChooseAlarmSnoozeConfigurationDialogVisible(
             val isVisible: Boolean
         ) : AddEditAlarmScreenUserEvent()
+
         data class AlarmSnoozeConfigurationSelected(
             val newSnoozeNumberToDurationPair: Pair<Int, Int>
         ) : AddEditAlarmScreenUserEvent()
+
         data class ChooseAlarmRingtoneDialogVisible(
             val isVisible: Boolean
         ) : AddEditAlarmScreenUserEvent()
+
         data class AlarmRingtoneConfigSelected(
             val newRingtone: Ringtone,
             val newAlarmVolumePercentage: Int?
         ) : AddEditAlarmScreenUserEvent()
+
         data class ToggleAlarmRingtonePlayback(
             val ringtone: Ringtone
         ) : AddEditAlarmScreenUserEvent()
+
         data object PickCustomRingtone : AddEditAlarmScreenUserEvent()
         data class CustomRingtoneUriRetrieved(
             val customRingtoneUri: Uri?
         ) : AddEditAlarmScreenUserEvent()
+
         data class VibrationsEnabledChanged(val areEnabled: Boolean) : AddEditAlarmScreenUserEvent()
         data class CodeEnabledChanged(val isEnabled: Boolean) : AddEditAlarmScreenUserEvent()
         data class AssignCodeDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
@@ -67,6 +79,7 @@ sealed class AddEditAlarmFlowUserEvent {
         data class CameraPermissionDeniedDialogVisible(
             val isVisible: Boolean
         ) : AddEditAlarmScreenUserEvent()
+
         data class CodeChosenFromList(val code: Code) : AddEditAlarmScreenUserEvent()
         data class CodeNameEdited(val newName: String?) : AddEditAlarmScreenUserEvent()
         data object ClearAssignedCode : AddEditAlarmScreenUserEvent()
@@ -87,24 +100,31 @@ sealed class AddEditAlarmFlowUserEvent {
         data class ChooseGentleWakeUpDurationDialogVisible(
             val isVisible: Boolean
         ) : AdvancedAlarmSettingsScreenUserEvent()
+
         data class GentleWakeUpDurationSelected(
             val newGentleWakeUpDurationInSeconds: Int
         ) : AdvancedAlarmSettingsScreenUserEvent()
+
         data class ChooseTemporaryMuteDurationDialogVisible(
             val isVisible: Boolean
         ) : AdvancedAlarmSettingsScreenUserEvent()
+
         data class TemporaryMuteDurationSelected(
             val newTemporaryMuteDurationInSeconds: Int
         ) : AdvancedAlarmSettingsScreenUserEvent()
+
         data class OpenCodeLinkEnabledChanged(
             val isEnabled: Boolean
         ) : AdvancedAlarmSettingsScreenUserEvent()
+
         data class ChooseCancelLockDurationDialogVisible(
             val isVisible: Boolean
         ) : AdvancedAlarmSettingsScreenUserEvent()
+
         data class CancelLockDurationSelected(
             val newCancelLockDurationInMinutes: Int
         ) : AdvancedAlarmSettingsScreenUserEvent()
+
         data class EmergencyTaskEnabledChanged(
             val isEnabled: Boolean
         ) : AdvancedAlarmSettingsScreenUserEvent()

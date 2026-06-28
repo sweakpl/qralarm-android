@@ -17,8 +17,10 @@ class PostUpcomingAlarmNotificationReceiver : BroadcastReceiver() {
 
     private val receiverScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    @Inject lateinit var alarmsRepository: AlarmsRepository
-    @Inject lateinit var qrAlarmManager: QRAlarmManager
+    @Inject
+    lateinit var alarmsRepository: AlarmsRepository
+    @Inject
+    lateinit var qrAlarmManager: QRAlarmManager
 
     override fun onReceive(context: Context, intent: Intent) {
         receiverScope.launch {

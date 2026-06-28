@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class UserDataRepositoryImpl @Inject constructor(
     private val qrAlarmPreferencesDataSource: QRAlarmPreferencesDataSource
-): UserDataRepository {
+) : UserDataRepository {
 
     override suspend fun setIntroductionFinished(finished: Boolean) {
         qrAlarmPreferencesDataSource.setIntroductionFinished(finished = finished)

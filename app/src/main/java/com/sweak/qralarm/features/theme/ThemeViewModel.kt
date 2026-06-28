@@ -55,16 +55,21 @@ class ThemeViewModel @Inject constructor(
                     )
                 }
             }
+
             is ThemeScreenUserEvent.OnCustomThemeToggled -> viewModelScope.launch {
                 backendEventsChannel.send(ThemeScreenBackendEvent.RedirectToQRAlarmPro)
             }
+
             is ThemeScreenUserEvent.OnCustomThemeSelected -> viewModelScope.launch {
                 backendEventsChannel.send(ThemeScreenBackendEvent.RedirectToQRAlarmPro)
             }
+
             is ThemeScreenUserEvent.OnColorPickerOpened -> viewModelScope.launch {
                 backendEventsChannel.send(ThemeScreenBackendEvent.RedirectToQRAlarmPro)
             }
-            else -> { /* no-op */ }
+
+            else -> { /* no-op */
+            }
         }
     }
 }

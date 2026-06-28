@@ -18,7 +18,7 @@ fun QRAlarmSlider(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     valueRange: ClosedFloatingPointRange<Float>,
-    steps: Int= 0,
+    steps: Int = 0,
     onValueChangeFinished: (() -> Unit)? = null
 ) {
     Slider(

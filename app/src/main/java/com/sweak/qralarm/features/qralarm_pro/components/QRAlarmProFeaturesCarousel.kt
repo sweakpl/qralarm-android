@@ -28,8 +28,8 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.features.qralarm_pro.components.util.AnimatedWebPDecoder
 import com.sweak.qralarm.features.qralarm_pro.model.qrAlarmProCarouselFeatures
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun QRAlarmProFeaturesCarousel(modifier: Modifier = Modifier) {

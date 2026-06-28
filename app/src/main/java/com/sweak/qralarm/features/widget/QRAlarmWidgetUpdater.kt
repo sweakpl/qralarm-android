@@ -4,14 +4,14 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.sweak.qralarm.alarm.ACTION_WIDGET_MIDNIGHT_UPDATE
-import com.sweak.qralarm.alarm.WIDGET_MIDNIGHT_UPDATE_REQUEST_CODE
 import android.os.Build
 import android.os.UserManager
 import android.text.format.DateFormat
 import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import com.sweak.qralarm.R
+import com.sweak.qralarm.alarm.ACTION_WIDGET_MIDNIGHT_UPDATE
+import com.sweak.qralarm.alarm.WIDGET_MIDNIGHT_UPDATE_REQUEST_CODE
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.ui.getDayString
@@ -26,7 +26,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -35,6 +34,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.milliseconds
 
 @Singleton
 class QRAlarmWidgetUpdater @Inject constructor(
@@ -137,7 +137,7 @@ class QRAlarmWidgetUpdater @Inject constructor(
         val snoozedNextAlarm = alarmsList
             .filter {
                 it.snoozeConfig.nextSnoozedAlarmTimeInMillis != null &&
-                it.snoozeConfig.isAlarmSnoozed
+                        it.snoozeConfig.isAlarmSnoozed
             }
             .minByOrNull { it.snoozeConfig.nextSnoozedAlarmTimeInMillis ?: Long.MAX_VALUE }
 

@@ -3,5 +3,4 @@
     android:initialLayout="@layout/glance_default_loading_layout"
     android:minWidth="128dp"
     android:minHeight="48dp"
-    android:updatePeriodMillis="0">
-</appwidget-provider>
+    android:updatePeriodMillis="0"></appwidget-provider>

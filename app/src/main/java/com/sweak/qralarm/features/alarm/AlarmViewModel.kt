@@ -116,17 +116,17 @@ class AlarmViewModel @AssistedInject constructor(
 
                             return@update currentState.copy(
                                 permissionsDialogState =
-                                AlarmScreenState.PermissionsDialogState(
-                                    isVisible = false
-                                )
+                                    AlarmScreenState.PermissionsDialogState(
+                                        isVisible = false
+                                    )
                             )
                         } else {
                             return@update currentState.copy(
                                 permissionsDialogState = currentState.permissionsDialogState.copy(
                                     cameraPermissionState =
-                                    currentState.permissionsDialogState.cameraPermissionState?.let {
-                                        event.cameraPermissionStatus
-                                    }
+                                        currentState.permissionsDialogState.cameraPermissionState?.let {
+                                            event.cameraPermissionStatus
+                                        }
                                 )
                             )
                         }
@@ -145,10 +145,10 @@ class AlarmViewModel @AssistedInject constructor(
 
                         return@update currentState.copy(
                             permissionsDialogState =
-                            AlarmScreenState.PermissionsDialogState(
-                                isVisible = true,
-                                cameraPermissionState = false
-                            )
+                                AlarmScreenState.PermissionsDialogState(
+                                    isVisible = true,
+                                    cameraPermissionState = false
+                                )
                         )
                     }
 
@@ -169,6 +169,7 @@ class AlarmViewModel @AssistedInject constructor(
                     return@update currentState
                 }
             }
+
             is AlarmScreenUserEvent.SnoozeAlarmClicked -> {
                 viewModelScope.launch {
                     _state.update { currentState ->
@@ -183,6 +184,7 @@ class AlarmViewModel @AssistedInject constructor(
                     backendEventsChannel.send(AlarmScreenBackendEvent.SnoozeAlarm)
                 }
             }
+
             is AlarmScreenUserEvent.HideMissingPermissionsDialog -> {
                 _state.update { currentState ->
                     currentState.copy(
@@ -192,11 +194,13 @@ class AlarmViewModel @AssistedInject constructor(
                     )
                 }
             }
+
             is AlarmScreenUserEvent.CameraPermissionDeniedDialogVisible -> {
                 _state.update { currentState ->
                     currentState.copy(isCameraPermissionDeniedDialogVisible = event.isVisible)
                 }
             }
+
             is AlarmScreenUserEvent.UpdateCurrentTime -> {
                 if (!_state.value.isAlarmSnoozed) {
                     _state.update { currentState ->
@@ -204,7 +208,9 @@ class AlarmViewModel @AssistedInject constructor(
                     }
                 }
             }
-            else -> { /* no-op */ }
+
+            else -> { /* no-op */
+            }
         }
     }
 

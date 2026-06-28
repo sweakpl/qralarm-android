@@ -29,11 +29,15 @@ fun QRAlarmProFeaturesRows(modifier: Modifier = Modifier) {
         val secondLazyListState = rememberLazyListState()
 
         LaunchedEffect(Unit) {
-            while (true) { firstLazyListState.autoScroll() }
+            while (true) {
+                firstLazyListState.autoScroll()
+            }
         }
 
         LaunchedEffect(Unit) {
-           while (true) { secondLazyListState.autoScroll() }
+            while (true) {
+                secondLazyListState.autoScroll()
+            }
         }
 
         LazyRow(

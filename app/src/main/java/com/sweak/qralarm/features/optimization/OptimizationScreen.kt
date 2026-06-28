@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.provider.Settings
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,7 +33,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.foundation.background
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
@@ -55,9 +55,9 @@ import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.features.optimization.components.BackgroundWorkPage
 import com.sweak.qralarm.features.optimization.components.BestSettingsPage
 import com.sweak.qralarm.features.optimization.components.FullyOptimizePage
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 @SuppressLint("BatteryLife")
 @Composable
@@ -150,7 +150,7 @@ fun OptimizationScreenContent(
                         Icon(
                             imageVector = QRAlarmIcons.BackArrow,
                             contentDescription =
-                            stringResource(R.string.content_description_back_arrow_icon)
+                                stringResource(R.string.content_description_back_arrow_icon)
                         )
                     }
                 }
@@ -215,12 +215,14 @@ fun OptimizationScreenContent(
                             },
                             modifier = Modifier.padding(all = MaterialTheme.space.medium)
                         )
+
                         1 -> BestSettingsPage(
                             onClick = {
                                 onEvent(OptimizationScreenUserEvent.ApplicationSettingsClicked)
                             },
                             modifier = Modifier.padding(all = MaterialTheme.space.medium)
                         )
+
                         2 -> FullyOptimizePage(
                             onClick = {
                                 onEvent(OptimizationScreenUserEvent.BackgroundWorkWebsiteClicked)

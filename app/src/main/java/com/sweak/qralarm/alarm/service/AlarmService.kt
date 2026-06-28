@@ -35,24 +35,31 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class AlarmService : Service() {
 
     private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    @Inject lateinit var alarmsRepository: AlarmsRepository
-    @Inject lateinit var qrAlarmManager: QRAlarmManager
-    @Inject lateinit var disableAlarm: DisableAlarm
-    @Inject lateinit var setAlarm: SetAlarm
-    @Inject lateinit var alarmRingtonePlayer: AlarmRingtonePlayer
-    @Inject lateinit var audioManager: AudioManager
-    @Inject lateinit var userDataRepository: UserDataRepository
+    @Inject
+    lateinit var alarmsRepository: AlarmsRepository
+    @Inject
+    lateinit var qrAlarmManager: QRAlarmManager
+    @Inject
+    lateinit var disableAlarm: DisableAlarm
+    @Inject
+    lateinit var setAlarm: SetAlarm
+    @Inject
+    lateinit var alarmRingtonePlayer: AlarmRingtonePlayer
+    @Inject
+    lateinit var audioManager: AudioManager
+    @Inject
+    lateinit var userDataRepository: UserDataRepository
 
     private lateinit var alarm: Alarm
 
@@ -256,7 +263,7 @@ class AlarmService : Service() {
             else -> alarm.nextAlarmTimeInMillis
         }
         return scheduledTimeInMillis != null &&
-            System.currentTimeMillis() - scheduledTimeInMillis > ABNORMAL_LAUNCH_TOLERANCE_MS
+                System.currentTimeMillis() - scheduledTimeInMillis > ABNORMAL_LAUNCH_TOLERANCE_MS
     }
 
     private suspend fun resetAvailableSnoozes() {
@@ -331,7 +338,8 @@ class AlarmService : Service() {
         try {
             unregisterReceiver(temporaryAlarmMuteReceiver)
             unregisterReceiver(emergencyTaskAlarmMuteReceiver)
-        } catch (_: IllegalArgumentException) { /* no-op */ }
+        } catch (_: IllegalArgumentException) { /* no-op */
+        }
 
         alarmRingtonePlayer.stop()
 
@@ -350,7 +358,8 @@ class AlarmService : Service() {
         try {
             unregisterReceiver(temporaryAlarmMuteReceiver)
             unregisterReceiver(emergencyTaskAlarmMuteReceiver)
-        } catch (_: IllegalArgumentException) { /* no-op */ }
+        } catch (_: IllegalArgumentException) { /* no-op */
+        }
 
         alarmRingtonePlayer.apply {
             stop()

@@ -6,6 +6,7 @@ sealed class AddEditAlarmFlowBackendEvent {
     data class CustomRingtoneRetrievalFinished(
         val isSuccess: Boolean
     ) : AddEditAlarmFlowBackendEvent()
+
     data object CustomCodeAssignmentFinished : AddEditAlarmFlowBackendEvent()
     data object AlarmDeleted : AddEditAlarmFlowBackendEvent()
     data object AlarmRingtonePreviewPlaybackError : AddEditAlarmFlowBackendEvent()
