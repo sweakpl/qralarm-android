@@ -148,18 +148,18 @@ class AlarmService : Service() {
 
             if (shouldStopService) {
                 userDataRepository.setAlarmMissedDetected(detected = true)
-                stopForegroundAndCancelNotification(alarmId)
+                handleEarlyServiceStop(alarmId)
                 return@launch
             }
 
             alarmsRepository.getAlarm(alarmId = alarmId)?.let {
                 alarm = it
                 if (isAbnormalLaunch(alarm, isSnoozeAlarm)) {
-                    stopForegroundAndCancelNotification(alarmId)
+                    handleEarlyServiceStop(alarmId)
                     return@launch
                 }
             } ?: run {
-                stopForegroundAndCancelNotification(alarmId)
+                handleEarlyServiceStop(alarmId)
                 return@launch
             }
 
@@ -252,9 +252,21 @@ class AlarmService : Service() {
         }
     }
 
-    private fun stopForegroundAndCancelNotification(alarmId: Long) {
+    private suspend fun handleEarlyServiceStop(alarmId: Long) {
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
+
+        // The delivery is already consumed and the regular rescheduling at ring start will not
+        // run, so the next occurrence has to be rescheduled here:
+        if (::alarm.isInitialized && alarm.alarmId == alarmId) {
+            if (alarm.snoozeConfig.isAlarmSnoozed) {
+                alarmsRepository.setAlarmSnoozed(
+                    alarmId = alarmId,
+                    snoozed = false
+                )
+            }
+            handleAlarmRescheduling()
+        }
     }
 
     private fun isAbnormalLaunch(alarm: Alarm, isSnoozeAlarm: Boolean?): Boolean {
@@ -262,8 +274,11 @@ class AlarmService : Service() {
             isSnoozeAlarm == true -> alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis
             else -> alarm.nextAlarmTimeInMillis
         }
-        return scheduledTimeInMillis != null &&
-                System.currentTimeMillis() - scheduledTimeInMillis > ABNORMAL_LAUNCH_TOLERANCE_MS
+        if (scheduledTimeInMillis == null) return false
+
+        val launchDelayInMillis = System.currentTimeMillis() - scheduledTimeInMillis
+
+        return launchDelayInMillis !in 0..ABNORMAL_LAUNCH_TOLERANCE_MS
     }
 
     private suspend fun resetAvailableSnoozes() {
