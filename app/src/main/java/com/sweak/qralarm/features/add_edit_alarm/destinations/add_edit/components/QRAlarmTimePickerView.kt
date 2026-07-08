@@ -45,7 +45,7 @@ class QRAlarmTimePicker @JvmOverloads constructor(
     }
 
     fun setIs24HourView(is24HourView: Boolean) {
-        timePicker.is24HourView = is24HourView
+        timePicker.setIs24HourView(is24HourView)
     }
 
     @Suppress("DEPRECATION")
