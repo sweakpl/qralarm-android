@@ -83,14 +83,21 @@ class ZXingCodeAnalyzer(
             reader.reset()
             try {
                 val result = reader.decode(binaryBitmap)
-                codeDetector.onCodeFound(result.text)
+                codeDetector.onCodeFound(
+                    codeValue = result.text,
+                    hasStrongErrorCorrection = result.barcodeFormat.hasStrongErrorCorrection()
+                )
             } catch (_: ReaderException) {
                 val invertedSource = source.invert()
                 val invertedBinaryBitmap = BinaryBitmap(HybridBinarizer(invertedSource))
                 reader.reset()
                 try {
                     val result = reader.decode(invertedBinaryBitmap)
-                    codeDetector.onCodeFound(result.text)
+                    codeDetector.onCodeFound(
+                        codeValue = result.text,
+                        hasStrongErrorCorrection =
+                            result.barcodeFormat.hasStrongErrorCorrection()
+                    )
                 } catch (_: ReaderException) {
                     // Not Found
                 }
@@ -98,5 +105,14 @@ class ZXingCodeAnalyzer(
         } catch (e: Exception) {
             codeDetector.onError(e)
         }
+    }
+
+    private fun BarcodeFormat.hasStrongErrorCorrection(): Boolean = when (this) {
+        BarcodeFormat.QR_CODE,
+        BarcodeFormat.AZTEC,
+        BarcodeFormat.DATA_MATRIX,
+        BarcodeFormat.PDF_417,
+        BarcodeFormat.MAXICODE -> true
+        else -> false
     }
 }

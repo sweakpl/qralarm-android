@@ -18,6 +18,7 @@ import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.alarm.CodesRepository
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeDetector
+import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ConsecutiveMatchCodeDetector
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -139,12 +140,12 @@ class CustomCodeScannerViewModel @AssistedInject constructor(
     }
 
     private fun getCodeAnalyzer(): ZXingCodeAnalyzer {
-        return ZXingCodeAnalyzer(getBarcodeDetector())
+        return ZXingCodeAnalyzer(ConsecutiveMatchCodeDetector(getBarcodeDetector()))
     }
 
     private fun getBarcodeDetector(): CodeDetector =
         object : CodeDetector {
-            override fun onCodeFound(codeValue: String) {
+            override fun onCodeFound(codeValue: String, hasStrongErrorCorrection: Boolean) {
                 if (hasHandledFoundCode) return
                 hasHandledFoundCode = true
 
