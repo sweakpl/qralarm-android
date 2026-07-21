@@ -1,8 +1,8 @@
 [versions]
 agp = "9.3.0"
-kotlin = "2.4.0"
+kotlin = "2.4.10"
 hilt = "2.60.1"
-ksp = "2.3.9"
+ksp = "2.3.10"
 serialization-json = "1.11.0"
 roomKtx = "2.8.4"
 coreKtx = "1.19.0"
