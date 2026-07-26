@@ -20,7 +20,6 @@ import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeDetector
-import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ConsecutiveMatchCodeDetector
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -162,7 +161,7 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
     }
 
     private fun getCodeAnalyzer(): ImageAnalysis.Analyzer {
-        return ZXingCodeAnalyzer(ConsecutiveMatchCodeDetector(getBarcodeDetector()))
+        return ZXingCodeAnalyzer(getBarcodeDetector())
     }
 
     private fun getBarcodeDetector(): CodeDetector =

@@ -2,6 +2,13 @@ package com.sweak.qralarm.core.ui.components.code_scanner.analyzer
 
 import java.util.concurrent.atomic.AtomicReference
 
+/**
+ * Reports codes without strong error correction (1D barcodes) only after the same value has been
+ * read in [REQUIRED_MATCHES] consecutive frames.
+ *
+ * Meant for code assignment, where a misread permanently stores an unscannable value - not for
+ * disabling an alarm, where a misread simply doesn't match and the user scans again.
+ */
 class ConsecutiveMatchCodeDetector(
     private val delegate: CodeDetector
 ) : CodeDetector by delegate {
