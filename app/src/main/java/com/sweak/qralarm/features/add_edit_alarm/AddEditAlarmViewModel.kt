@@ -681,7 +681,16 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
             is AddEditAlarmScreenUserEvent.EditCodeNameDialogVisible -> {
                 _state.update { currentState ->
-                    currentState.copy(isEditCodeNameDialogVisible = event.isVisible)
+                    val initialCodeName = if (event.isVisible) {
+                        currentState.run { temporaryAssignedCode ?: currentlyAssignedCode }?.name
+                    } else null
+
+                    currentState.copy(
+                        editCodeNameDialogState = AddEditAlarmFlowState.EditCodeNameDialogState(
+                            isVisible = event.isVisible,
+                            initialCodeName = initialCodeName
+                        )
+                    )
                 }
             }
 
@@ -699,7 +708,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         else currentState.temporaryAssignedCode,
                         currentlyAssignedCode = if (currentState.temporaryAssignedCode == null) updatedCode
                         else currentState.currentlyAssignedCode,
-                        isEditCodeNameDialogVisible = false
+                        editCodeNameDialogState = AddEditAlarmFlowState.EditCodeNameDialogState()
                     )
                 }
             }

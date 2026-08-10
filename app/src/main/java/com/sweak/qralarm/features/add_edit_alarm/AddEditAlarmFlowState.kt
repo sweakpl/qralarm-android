@@ -43,7 +43,7 @@ data class AddEditAlarmFlowState(
     val areVibrationsEnabled: Boolean = true,
     val isCodeEnabled: Boolean = true,
     val isAssignCodeDialogVisible: Boolean = false,
-    val isEditCodeNameDialogVisible: Boolean = false,
+    val editCodeNameDialogState: EditCodeNameDialogState = EditCodeNameDialogState(),
     val previouslySavedCodes: List<Code> = emptyList(),
     val isCameraPermissionDeniedDialogVisible: Boolean = false,
     val isNotificationsPermissionDeniedDialogVisible: Boolean = false,
@@ -76,5 +76,11 @@ data class AddEditAlarmFlowState(
         val notificationsPermissionState: Boolean? = null,
         val alarmsPermissionState: Boolean? = null,
         val fullScreenIntentPermissionState: Boolean? = null
+    ) : Parcelable
+
+    @Parcelize
+    data class EditCodeNameDialogState(
+        val isVisible: Boolean = false,
+        val initialCodeName: String? = null
     ) : Parcelable
 }

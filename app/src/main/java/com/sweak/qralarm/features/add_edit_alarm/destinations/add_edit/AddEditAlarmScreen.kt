@@ -1275,10 +1275,9 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isEditCodeNameDialogVisible) {
+    if (state.editCodeNameDialogState.isVisible) {
         EditCodeNameBottomSheet(
-            initialCodeName = state.temporaryAssignedCode?.name
-                ?: state.currentlyAssignedCode?.name,
+            initialCodeName = state.editCodeNameDialogState.initialCodeName,
             onConfirmClicked = { newName ->
                 onEvent(AddEditAlarmScreenUserEvent.CodeNameEdited(newName = newName))
             },
