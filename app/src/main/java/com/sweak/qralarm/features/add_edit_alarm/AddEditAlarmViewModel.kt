@@ -420,23 +420,23 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AddEditAlarmScreenUserEvent.AlarmTimeChanged -> {
-                if (event.newAlarmHourOfDay != state.value.alarmHourOfDay ||
-                    event.newAlarmMinute != state.value.alarmMinute
-                ) {
-                    hasUnsavedChanges = true
-                }
-
-                _state.update { currentState ->
-                    currentState.copy(
-                        alarmHourOfDay = event.newAlarmHourOfDay,
-                        alarmMinute = event.newAlarmMinute,
-                        isDialerPickerDialogVisible = false
-                    )
-                }
-
                 nextAlarmTimeUpdateJob?.cancel()
                 nextAlarmTimeUpdateJob = viewModelScope.launch {
                     delay(500.milliseconds)
+
+                    if (event.newAlarmHourOfDay != state.value.alarmHourOfDay ||
+                        event.newAlarmMinute != state.value.alarmMinute
+                    ) {
+                        hasUnsavedChanges = true
+                    }
+
+                    _state.update { currentState ->
+                        currentState.copy(
+                            alarmHourOfDay = event.newAlarmHourOfDay,
+                            alarmMinute = event.newAlarmMinute,
+                            isDialerPickerDialogVisible = false
+                        )
+                    }
 
                     _state.update { currentState ->
                         val newOnlyOnceDateInMillis = resolveOnlyOnceAlarmDateInMillis(

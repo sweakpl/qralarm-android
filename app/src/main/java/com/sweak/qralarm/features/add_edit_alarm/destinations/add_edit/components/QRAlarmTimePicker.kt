@@ -44,7 +44,6 @@ fun QRAlarmTimePicker(
         update = { view ->
             view.setTime(selectedHourOfDay, selectedMinute)
             view.isEnabled = isEnabled
-            view.setTextColor(contentColor.toArgb())
         }
     )
 }

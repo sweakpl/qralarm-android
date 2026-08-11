@@ -50,8 +50,10 @@ class QRAlarmTimePicker @JvmOverloads constructor(
 
     @Suppress("DEPRECATION")
     fun setTime(hour: Int, minute: Int) = timePicker.apply {
-        this.hour = hour
-        this.minute = minute
+        if (this.hour != hour || this.minute != minute) {
+            this.hour = hour
+            this.minute = minute
+        }
     }
 
     fun setTextColor(color: Int) {
