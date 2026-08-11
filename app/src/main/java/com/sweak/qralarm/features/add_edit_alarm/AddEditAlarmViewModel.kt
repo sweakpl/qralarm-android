@@ -3,6 +3,8 @@ package com.sweak.qralarm.features.add_edit_alarm
 import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.net.Uri
+import android.os.Build
+import android.os.Bundle
 import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -94,9 +96,18 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         var initialDefaultCodeUpdate = true
 
         viewModelScope.launch {
-            val savedState = savedStateHandle.get<AddEditAlarmFlowState>(
-                key = ADD_EDIT_ALARM_FLOW_STATE_KEY
-            )
+            val savedState: AddEditAlarmFlowState? = savedStateHandle.get<Bundle?>(
+                key = SAVED_STATE_HANDLE_BUNDLE_KEY
+            )?.let {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    it.getParcelable(
+                        ADD_EDIT_ALARM_FLOW_STATE_KEY,
+                        AddEditAlarmFlowState::class.java
+                    )
+                } else {
+                    it.getParcelable(ADD_EDIT_ALARM_FLOW_STATE_KEY)
+                }
+            }
 
             if (savedState != null) {
                 _state.update { savedState }
@@ -277,8 +288,10 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
         }
 
-        viewModelScope.launch {
-            state.collect { savedStateHandle[ADD_EDIT_ALARM_FLOW_STATE_KEY] = it }
+        savedStateHandle.setSavedStateProvider(SAVED_STATE_HANDLE_BUNDLE_KEY) {
+            Bundle().apply {
+                putParcelable(ADD_EDIT_ALARM_FLOW_STATE_KEY, state.value)
+            }
         }
     }
 
@@ -1132,11 +1145,10 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
     override fun onCleared() {
         alarmRingtonePlayer.onDestroy()
-
-        super.onCleared()
     }
 
     companion object {
+        private const val SAVED_STATE_HANDLE_BUNDLE_KEY = "savedStateHandleBundleKey"
         private const val ADD_EDIT_ALARM_FLOW_STATE_KEY = "addEditAlarmFlowState"
     }
 }
