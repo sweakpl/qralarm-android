@@ -41,6 +41,8 @@ class AlarmRingtonePlayer(
     private var alarmPlaybackListener: Player.Listener? = null
     private var hasFallenBackToBundledRingtone = false
 
+    private var previewPlaybackListener: Player.Listener? = null
+
     lateinit var volumeIncreaseJob: Job
     lateinit var vibrationJob: Job
 
@@ -161,6 +163,21 @@ class AlarmRingtonePlayer(
     ) {
         initializePlayer()
 
+        previewPlaybackListener?.let { player?.removeListener(it) }
+
+        val listener = object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_ENDED) {
+                    completePreview(hasErrorOccurred = false, onPreviewCompleted)
+                }
+            }
+
+            override fun onPlayerError(error: PlaybackException) {
+                completePreview(hasErrorOccurred = true, onPreviewCompleted)
+            }
+        }
+        previewPlaybackListener = listener
+
         player?.apply {
             setMediaItem(MediaItem.fromUri(alarmRingtoneUri))
             repeatMode = Player.REPEAT_MODE_OFF
@@ -171,17 +188,21 @@ class AlarmRingtonePlayer(
                     .build(),
                 true
             )
-            addListener(object : Player.Listener {
-                override fun onPlaybackStateChanged(playbackState: Int) {
-                    if (playbackState == Player.STATE_ENDED) {
-                        stop()
-                        onPreviewCompleted(false)
-                    }
-                }
-            })
+            addListener(listener)
             playWhenReady = true
             prepare()
         }
+    }
+
+    private fun completePreview(
+        hasErrorOccurred: Boolean,
+        onPreviewCompleted: (hasErrorOccurred: Boolean) -> Unit
+    ) {
+        previewPlaybackListener?.let { player?.removeListener(it) }
+        previewPlaybackListener = null
+
+        stop()
+        onPreviewCompleted(hasErrorOccurred)
     }
 
     fun stop() {
@@ -276,5 +297,6 @@ class AlarmRingtonePlayer(
         player?.release()
         player = null
         alarmPlaybackListener = null
+        previewPlaybackListener = null
     }
 }
