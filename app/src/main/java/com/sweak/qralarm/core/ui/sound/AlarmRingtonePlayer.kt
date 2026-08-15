@@ -12,6 +12,7 @@ import androidx.core.net.toUri
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.Player.COMMAND_SET_VOLUME
 import androidx.media3.exoplayer.ExoPlayer
@@ -36,6 +37,9 @@ class AlarmRingtonePlayer(
     private val playerScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private var player: ExoPlayer? = null
+
+    private var alarmPlaybackListener: Player.Listener? = null
+    private var hasFallenBackToBundledRingtone = false
 
     lateinit var volumeIncreaseJob: Job
     lateinit var vibrationJob: Job
@@ -64,6 +68,7 @@ class AlarmRingtonePlayer(
 
     fun playAlarmRingtone(alarmRingtoneUri: Uri, volumeIncreaseSeconds: Int) {
         initializePlayer()
+        ensureAlarmPlaybackListener()
 
         player?.apply {
             setMediaItem(MediaItem.fromUri(alarmRingtoneUri))
@@ -104,6 +109,22 @@ class AlarmRingtonePlayer(
         }
 
         player?.play()
+    }
+
+    private fun ensureAlarmPlaybackListener() {
+        if (alarmPlaybackListener != null) return
+
+        alarmPlaybackListener = object : Player.Listener {
+            override fun onPlayerError(error: PlaybackException) {
+                if (hasFallenBackToBundledRingtone) return
+                hasFallenBackToBundledRingtone = true
+
+                playAlarmRingtone(
+                    alarmRingtoneUri = getOriginalAlarmRingtoneUri(Ringtone.GENTLE_GUITAR),
+                    volumeIncreaseSeconds = 0
+                )
+            }
+        }.also { player?.addListener(it) }
     }
 
     fun playAlarmRingtonePreview(
@@ -166,6 +187,8 @@ class AlarmRingtonePlayer(
     fun stop() {
         if (::volumeIncreaseJob.isInitialized) volumeIncreaseJob.cancel()
         if (::vibrationJob.isInitialized) vibrationJob.cancel()
+
+        hasFallenBackToBundledRingtone = false
 
         vibrator.cancel()
 
@@ -252,5 +275,6 @@ class AlarmRingtonePlayer(
         vibrator.cancel()
         player?.release()
         player = null
+        alarmPlaybackListener = null
     }
 }
