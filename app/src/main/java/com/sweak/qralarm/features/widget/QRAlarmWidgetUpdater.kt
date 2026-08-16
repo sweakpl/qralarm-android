@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.time.Instant
@@ -45,7 +46,18 @@ class QRAlarmWidgetUpdater @Inject constructor(
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var updateJob: Job? = null
+    private var observingJob: Job? = null
     private val debounceDelayMs = 1500L
+
+    fun startObserving() {
+        if (observingJob?.isActive == true) return
+
+        observingJob = scope.launch {
+            alarmsRepository.getAllAlarms()
+                .drop(1) // the initial widget render is triggered by QRAlarmWidgetReceiver.onUpdate()
+                .collect { requestUpdate() }
+        }
+    }
 
     fun requestUpdate() {
         // AppWidgetManager throws IllegalStateException before user unlock (Direct Boot).

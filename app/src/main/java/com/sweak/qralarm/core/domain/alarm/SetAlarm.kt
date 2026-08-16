@@ -1,6 +1,5 @@
 package com.sweak.qralarm.core.domain.alarm
 
-import com.sweak.qralarm.features.widget.QRAlarmWidgetUpdater
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -9,8 +8,7 @@ import javax.inject.Inject
 class SetAlarm @Inject constructor(
     private val alarmScheduler: AlarmScheduler,
     private val alarmNotifier: AlarmNotifier,
-    private val alarmsRepository: AlarmsRepository,
-    private val widgetUpdater: QRAlarmWidgetUpdater
+    private val alarmsRepository: AlarmsRepository
 ) {
     suspend operator fun invoke(alarmId: Long, isReschedulingMissedAlarm: Boolean): Result {
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return Result.Failure
@@ -95,8 +93,6 @@ class SetAlarm @Inject constructor(
                 )
             }
         }
-
-        widgetUpdater.requestUpdate()
 
         return Result.Success(alarmTimInMillis = alarmTimeInMillis)
     }

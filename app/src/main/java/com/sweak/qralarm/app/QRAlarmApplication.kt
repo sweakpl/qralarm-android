@@ -9,6 +9,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.ALARM_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.alarm.ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
+import com.sweak.qralarm.features.widget.QRAlarmWidgetUpdater
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -18,10 +19,14 @@ class QRAlarmApplication : Application() {
     @Inject
     lateinit var notificationManager: NotificationManager
 
+    @Inject
+    lateinit var widgetUpdater: QRAlarmWidgetUpdater
+
     override fun onCreate() {
         super.onCreate()
 
         createNotificationChannels()
+        widgetUpdater.startObserving()
     }
 
     private fun createNotificationChannels() {

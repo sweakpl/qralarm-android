@@ -1,12 +1,10 @@
 package com.sweak.qralarm.core.domain.alarm
 
-import com.sweak.qralarm.features.widget.QRAlarmWidgetUpdater
 import javax.inject.Inject
 
 class DisableAlarm @Inject constructor(
     private val alarmScheduler: AlarmScheduler,
-    private val alarmsRepository: AlarmsRepository,
-    private val widgetUpdater: QRAlarmWidgetUpdater
+    private val alarmsRepository: AlarmsRepository
 ) {
     suspend operator fun invoke(alarmId: Long) {
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId)
@@ -26,8 +24,5 @@ class DisableAlarm @Inject constructor(
                 snoozed = false
             )
         }
-
-        widgetUpdater.requestUpdate()
-
     }
 }
