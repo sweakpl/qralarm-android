@@ -1,6 +1,5 @@
 package com.sweak.qralarm.core.domain.alarm
 
-import com.sweak.qralarm.core.ui.getHourAndMinuteOfAlarmTimeInMillis
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
