@@ -1,8 +1,5 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
-import android.annotation.SuppressLint
-import android.content.ContentResolver
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.core.net.toUri
@@ -36,7 +33,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -46,12 +42,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
@@ -71,9 +61,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     private val qrAlarmManager: QRAlarmManager,
     private val addOrEditAlarm: AddOrEditAlarm,
     private val deleteAlarm: DeleteAlarm,
-    private val setAlarm: SetAlarm,
-    private val contentResolver: ContentResolver,
-    private val filesDir: File
+    private val setAlarm: SetAlarm
 ) : ViewModel() {
 
     @AssistedFactory
@@ -848,9 +836,6 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
             is AddEditAlarmScreenUserEvent.DeleteAlarm -> viewModelScope.launch {
                 deleteAlarm(alarmId = idOfAlarm)
-                File(filesDir, idOfAlarm.toString()).apply {
-                    if (exists()) delete()
-                }
                 backendEventsChannel.send(AddEditAlarmFlowBackendEvent.AlarmDeleted)
             }
 
@@ -994,37 +979,19 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             skipAlarmUntilTimeInMillis = null
         )
 
-        val alarmId = addOrEditAlarm(alarm = alarmToSave).run {
-            if (this > 0) this else idOfAlarm
+        val addOrEditAlarmResult = addOrEditAlarm(
+            alarm = alarmToSave,
+            temporaryCustomRingtoneContentUriString =
+                currentState.temporaryCustomAlarmRingtoneUri?.toString()
+        )
+
+        if (addOrEditAlarmResult is AddOrEditAlarm.Result.CustomRingtoneSaveFailed) {
+            backendEventsChannel.send(
+                AddEditAlarmFlowBackendEvent.CustomRingtoneRetrievalFinished(isSuccess = false)
+            )
         }
 
-        if (currentState.temporaryCustomAlarmRingtoneUri != null) {
-            try {
-                val savedLocalAlarmSoundUri = withContext(Dispatchers.IO) {
-                    copyUriContentToLocalStorage(
-                        uri = currentState.temporaryCustomAlarmRingtoneUri,
-                        alarmId = alarmId
-                    )
-                }
-
-                alarmsRepository.setAlarmRingtoneUri(
-                    alarmId = alarmId,
-                    uri = savedLocalAlarmSoundUri.toString()
-                )
-            } catch (exception: Exception) {
-                if (exception is IOException ||
-                    exception is SecurityException ||
-                    exception is NullPointerException
-                ) {
-                    backendEventsChannel.send(
-                        AddEditAlarmFlowBackendEvent
-                            .CustomRingtoneRetrievalFinished(isSuccess = false)
-                    )
-                } else {
-                    throw exception
-                }
-            }
-        }
+        val alarmId = addOrEditAlarmResult.alarmId
 
         qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
 
@@ -1035,36 +1002,6 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
         if (setAlarmResult is SetAlarm.Result.Success) {
             backendEventsChannel.send(AddEditAlarmFlowBackendEvent.AlarmSaved)
-        }
-    }
-
-    @SuppressLint("SetWorldReadable")
-    private fun copyUriContentToLocalStorage(uri: Uri, alarmId: Long): Uri {
-        val file = File(filesDir, alarmId.toString())
-        file.createNewFile()
-        // Setting world-readable due to: https://stackoverflow.com/a/11977292/14037302
-        file.setReadable(true, false)
-
-        FileOutputStream(file).use { outputStream ->
-            contentResolver.openInputStream(uri).use { inputStream ->
-                if (inputStream == null) {
-                    throw IOException()
-                }
-
-                copyStream(inputStream, outputStream)
-                outputStream.flush()
-            }
-        }
-
-        return Uri.fromFile(file)
-    }
-
-    private fun copyStream(inputStream: InputStream, outputStream: OutputStream) {
-        val buffer = ByteArray(1024)
-        var read: Int
-
-        while (inputStream.read(buffer).also { read = it } != -1) {
-            outputStream.write(buffer, 0, read)
         }
     }
 

@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -40,8 +39,7 @@ class HomeViewModel @Inject constructor(
     private val disableAlarm: DisableAlarm,
     private val canManipulateAlarm: CanManipulateAlarm,
     private val deleteAlarm: DeleteAlarm,
-    private val copyAlarm: CopyAlarm,
-    private val filesDir: File
+    private val copyAlarm: CopyAlarm
 ) : ViewModel() {
 
     private var _state = MutableStateFlow(HomeScreenState())
@@ -372,9 +370,6 @@ class HomeViewModel @Inject constructor(
 
             is HomeScreenUserEvent.DeleteAlarm -> viewModelScope.launch {
                 deleteAlarm(alarmId = event.alarmId)
-                File(filesDir, event.alarmId.toString()).apply {
-                    if (exists()) delete()
-                }
 
                 _state.update { currentState ->
                     currentState.copy(

@@ -8,11 +8,13 @@ class DeleteAlarm @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
     private val codesRepository: CodesRepository,
     private val qrAlarmManager: QRAlarmManager,
-    private val widgetUpdater: QRAlarmWidgetUpdater
+    private val widgetUpdater: QRAlarmWidgetUpdater,
+    private val alarmRingtoneStorage: AlarmRingtoneStorage
 ) {
     suspend operator fun invoke(alarmId: Long) {
         qrAlarmManager.cancelAlarm(alarmId = alarmId)
         alarmsRepository.deleteAlarm(alarmId = alarmId)
+        alarmRingtoneStorage.deleteForAlarm(alarmId = alarmId)
         codesRepository.cleanupUnreferencedCodes()
         widgetUpdater.requestUpdate()
     }
