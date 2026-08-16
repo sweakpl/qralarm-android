@@ -1,8 +1,10 @@
 package com.sweak.qralarm.core.data.di
 
+import com.sweak.qralarm.core.data.alarm.AlarmRingtoneStorageImpl
 import com.sweak.qralarm.core.data.alarm.AlarmsRepositoryImpl
 import com.sweak.qralarm.core.data.alarm.CodesRepositoryImpl
 import com.sweak.qralarm.core.data.user.UserDataRepositoryImpl
+import com.sweak.qralarm.core.domain.alarm.AlarmRingtoneStorage
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CodesRepository
 import com.sweak.qralarm.core.domain.user.UserDataRepository
@@ -29,4 +31,9 @@ interface DataAccessorsModule {
     fun bindsCodesRepository(
         codesRepositoryImpl: CodesRepositoryImpl
     ): CodesRepository
+
+    @Binds
+    fun bindsAlarmRingtoneStorage(
+        alarmRingtoneStorageImpl: AlarmRingtoneStorageImpl
+    ): AlarmRingtoneStorage
 }
