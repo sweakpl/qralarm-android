@@ -6,11 +6,11 @@ import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CodesRepository
 import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
+import com.sweak.qralarm.core.domain.user.EMERGENCY_DEFAULT_REQUIRED_MATCHES
 import com.sweak.qralarm.core.domain.user.ShouldShowWhatsNew
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.domain.user.WHATS_NEW_VERSION_CODE
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_REQUIRED_MATCHES
-import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_REQUIRED_MATCHES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

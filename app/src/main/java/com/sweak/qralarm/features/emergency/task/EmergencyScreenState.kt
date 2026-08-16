@@ -1,7 +1,7 @@
 package com.sweak.qralarm.features.emergency.task
 
-import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_REQUIRED_MATCHES
-import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_DEFAULT_SLIDER_RANGE
+import com.sweak.qralarm.core.domain.user.EMERGENCY_DEFAULT_REQUIRED_MATCHES
+import com.sweak.qralarm.core.domain.user.EMERGENCY_DEFAULT_REQUIRED_MATCHES_RANGE
 
 data class EmergencyScreenState(
     val isTaskStarted: Boolean = false,
@@ -9,7 +9,7 @@ data class EmergencyScreenState(
     val alarmMuteProgress: Float? = null
 ) {
     data class EmergencyTaskConfig(
-        val valueRange: IntRange = EMERGENCY_DEFAULT_SLIDER_RANGE,
+        val valueRange: IntRange = EMERGENCY_DEFAULT_REQUIRED_MATCHES_RANGE,
         val targetValue: Int = 100,
         val currentValue: Int = 50,
         val remainingMatches: Int = EMERGENCY_DEFAULT_REQUIRED_MATCHES,
