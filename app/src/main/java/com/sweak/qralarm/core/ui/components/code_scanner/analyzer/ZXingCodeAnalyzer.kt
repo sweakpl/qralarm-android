@@ -9,7 +9,7 @@ import com.google.zxing.MultiFormatReader
 import com.google.zxing.PlanarYUVLuminanceSource
 import com.google.zxing.ReaderException
 import com.google.zxing.common.HybridBinarizer
-import com.sweak.qralarm.features.custom_code_scanner.components.SCAN_OVERLAY_RATIO
+import com.sweak.qralarm.core.ui.components.code_scanner.SCAN_OVERLAY_RATIO
 import java.nio.ByteBuffer
 import kotlin.math.roundToInt
 

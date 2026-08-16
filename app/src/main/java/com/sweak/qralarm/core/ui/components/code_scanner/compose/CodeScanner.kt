@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.features.custom_code_scanner.components.ScanOverlay
+import com.sweak.qralarm.core.ui.components.code_scanner.ScanOverlay
 
 @Composable
 fun CodeScanner(

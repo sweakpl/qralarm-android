@@ -1,4 +1,4 @@
-package com.sweak.qralarm.features.custom_code_scanner.components
+package com.sweak.qralarm.core.ui.components.code_scanner
 
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
