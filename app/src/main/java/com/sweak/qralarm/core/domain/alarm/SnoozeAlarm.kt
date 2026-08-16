@@ -1,13 +1,13 @@
 package com.sweak.qralarm.core.domain.alarm
 
-import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.ui.getHourAndMinuteOfAlarmTimeInMillis
 import com.sweak.qralarm.features.widget.QRAlarmWidgetUpdater
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class SnoozeAlarm @Inject constructor(
-    private val qrAlarmManager: QRAlarmManager,
+    private val alarmScheduler: AlarmScheduler,
+    private val alarmNotifier: AlarmNotifier,
     private val alarmsRepository: AlarmsRepository,
     private val widgetUpdater: QRAlarmWidgetUpdater
 ) {
@@ -35,7 +35,7 @@ class SnoozeAlarm @Inject constructor(
         )
 
         if (snoozeAlarmTimeInMillis != null) {
-            qrAlarmManager.setAlarm(
+            alarmScheduler.setAlarm(
                 alarmId = alarm.alarmId,
                 alarmTimeInMillis = snoozeAlarmTimeInMillis,
                 isSnoozeAlarm = true
@@ -44,7 +44,7 @@ class SnoozeAlarm @Inject constructor(
             val (alarmHourOfDay, alarmMinute) =
                 getHourAndMinuteOfAlarmTimeInMillis(snoozeAlarmTimeInMillis)
 
-            qrAlarmManager.showUpcomingAlarmNotification(
+            alarmNotifier.showUpcomingAlarmNotification(
                 alarmId = alarm.alarmId,
                 alarmHourOfDay = alarmHourOfDay,
                 alarmMinute = alarmMinute,

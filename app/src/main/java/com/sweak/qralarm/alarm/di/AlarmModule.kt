@@ -7,6 +7,8 @@ import android.app.Service
 import android.content.Context
 import android.media.AudioManager
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.core.domain.alarm.AlarmNotifier
+import com.sweak.qralarm.core.domain.alarm.AlarmScheduler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,6 +27,12 @@ object AlarmModule {
         notificationManager: NotificationManager,
         @ApplicationContext context: Context
     ): QRAlarmManager = QRAlarmManager(alarmManager, notificationManager, context)
+
+    @Provides
+    fun provideAlarmScheduler(qrAlarmManager: QRAlarmManager): AlarmScheduler = qrAlarmManager
+
+    @Provides
+    fun provideAlarmNotifier(qrAlarmManager: QRAlarmManager): AlarmNotifier = qrAlarmManager
 
     @Provides
     fun provideAlarmManager(app: Application): AlarmManager =

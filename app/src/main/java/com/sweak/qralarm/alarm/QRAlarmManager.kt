@@ -17,14 +17,16 @@ import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_ALARM_ID
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EXTRA_IS_SNOOZE_ALARM
 import com.sweak.qralarm.app.activity.MainActivity
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
+import com.sweak.qralarm.core.domain.alarm.AlarmNotifier
+import com.sweak.qralarm.core.domain.alarm.AlarmScheduler
 import com.sweak.qralarm.core.ui.getTimeString
 
 class QRAlarmManager(
     private val alarmManager: AlarmManager,
     private val notificationManager: NotificationManager,
     private val context: Context
-) {
-    fun setAlarm(alarmId: Long, alarmTimeInMillis: Long, isSnoozeAlarm: Boolean) {
+) : AlarmScheduler, AlarmNotifier {
+    override fun setAlarm(alarmId: Long, alarmTimeInMillis: Long, isSnoozeAlarm: Boolean) {
         val alarmIntent = Intent(context, AlarmService::class.java).apply {
             putExtra(EXTRA_ALARM_ID, alarmId)
             putExtra(EXTRA_IS_SNOOZE_ALARM, isSnoozeAlarm)
@@ -60,7 +62,7 @@ class QRAlarmManager(
         )
     }
 
-    fun scheduleUpcomingAlarmNotification(
+    override fun scheduleUpcomingAlarmNotification(
         alarmId: Long,
         upcomingAlarmNotificationTimeInMillis: Long
     ) {
@@ -78,7 +80,7 @@ class QRAlarmManager(
         )
     }
 
-    fun showUpcomingAlarmNotification(
+    override fun showUpcomingAlarmNotification(
         alarmId: Long,
         alarmHourOfDay: Int,
         alarmMinute: Int,
@@ -126,7 +128,7 @@ class QRAlarmManager(
         )
     }
 
-    fun cancelAlarm(alarmId: Long) {
+    override fun cancelAlarm(alarmId: Long) {
         val alarmPendingIntent =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 PendingIntent.getForegroundService(
@@ -152,7 +154,7 @@ class QRAlarmManager(
         cancelUpcomingAlarmNotification(alarmId = alarmId)
     }
 
-    fun cancelUpcomingAlarmNotification(alarmId: Long) {
+    override fun cancelUpcomingAlarmNotification(alarmId: Long) {
         val upcomingAlarmNotificationPendingIntent = PendingIntent.getBroadcast(
             context,
             alarmId.toInt(),
@@ -168,7 +170,7 @@ class QRAlarmManager(
         notificationManager.cancel(getUpcomingAlarmNotificationId(alarmId = alarmId))
     }
 
-    fun canScheduleExactAlarms(): Boolean =
+    override fun canScheduleExactAlarms(): Boolean =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
             Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2
         ) {
@@ -177,7 +179,7 @@ class QRAlarmManager(
             true
         }
 
-    fun canUseFullScreenIntent(): Boolean {
+    override fun canUseFullScreenIntent(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             notificationManager.canUseFullScreenIntent()
         } else {
@@ -185,7 +187,7 @@ class QRAlarmManager(
         }
     }
 
-    fun notifyAboutMissedAlarm() {
+    override fun notifyAboutMissedAlarm() {
         val alarmMissedPendingIntent = PendingIntent.getActivity(
             context,
             ALARM_MISSED_NOTIFICATION_REQUEST_CODE,
@@ -216,7 +218,7 @@ class QRAlarmManager(
         )
     }
 
-    fun notifyAboutEmergencyDisabledRepeatingAlarm() {
+    override fun notifyAboutEmergencyDisabledRepeatingAlarm() {
         val emergencyDisabledAlarmPendingIntent = PendingIntent.getActivity(
             context,
             EMERGENCY_DISABLED_REPEATING_ALARM_NOTIFICATION_REQUEST_CODE,

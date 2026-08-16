@@ -1,6 +1,5 @@
 package com.sweak.qralarm.core.domain.alarm
 
-import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.features.widget.QRAlarmWidgetUpdater
 import java.time.Instant
 import java.time.ZoneId
@@ -8,7 +7,8 @@ import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class SetAlarm @Inject constructor(
-    private val qrAlarmManager: QRAlarmManager,
+    private val alarmScheduler: AlarmScheduler,
+    private val alarmNotifier: AlarmNotifier,
     private val alarmsRepository: AlarmsRepository,
     private val widgetUpdater: QRAlarmWidgetUpdater
 ) {
@@ -61,8 +61,8 @@ class SetAlarm @Inject constructor(
             alarm = alarm.copy(nextAlarmTimeInMillis = alarmTimeInMillis)
         )
 
-        qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
-        qrAlarmManager.setAlarm(
+        alarmScheduler.cancelUpcomingAlarmNotification(alarmId = alarmId)
+        alarmScheduler.setAlarm(
             alarmId = alarmId,
             alarmTimeInMillis = alarmTimeInMillis,
             isSnoozeAlarm = false
@@ -79,7 +79,7 @@ class SetAlarm @Inject constructor(
             val twoHoursBeforeAlarm = alarmDateTime.minusHours(2)
 
             if (twoHoursBeforeAlarm <= currentDateTime) {
-                qrAlarmManager.showUpcomingAlarmNotification(
+                alarmNotifier.showUpcomingAlarmNotification(
                     alarmId = alarmId,
                     alarmHourOfDay = alarm.alarmHourOfDay,
                     alarmMinute = alarm.alarmMinute,
@@ -89,7 +89,7 @@ class SetAlarm @Inject constructor(
                 val upcomingAlarmNotificationTimeInMillis =
                     twoHoursBeforeAlarm.toInstant().toEpochMilli()
 
-                qrAlarmManager.scheduleUpcomingAlarmNotification(
+                alarmScheduler.scheduleUpcomingAlarmNotification(
                     alarmId = alarmId,
                     upcomingAlarmNotificationTimeInMillis = upcomingAlarmNotificationTimeInMillis
                 )
