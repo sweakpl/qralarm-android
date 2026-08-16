@@ -14,4 +14,5 @@ interface AlarmsRepository {
     suspend fun deleteAlarm(alarmId: Long)
     suspend fun setAvailableSnoozes(alarmId: Long, availableSnoozes: Int)
     suspend fun setAlarmRingtoneUri(alarmId: Long, uri: String?)
+    suspend fun setAlarmRingtone(alarmId: Long, ringtone: Alarm.Ringtone)
 }

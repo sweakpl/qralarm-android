@@ -111,6 +111,14 @@ class AlarmsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun setAlarmRingtone(alarmId: Long, ringtone: Alarm.Ringtone) {
+        alarmsDao.getAlarm(alarmId = alarmId).firstOrNull()?.let { alarmEntity ->
+            alarmsDao.upsertAlarm(
+                alarmEntity = alarmEntity.copy(ringtone = ringtone.name)
+            )
+        }
+    }
+
     override suspend fun getAlarm(alarmId: Long): Alarm? {
         return alarmsDao.getAlarm(alarmId = alarmId).firstOrNull()?.let { alarmEntity ->
             convertAlarmEntity(alarmEntity = alarmEntity)
