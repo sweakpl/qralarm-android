@@ -3,6 +3,7 @@ package com.sweak.qralarm.core.data.alarm
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtoneStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
@@ -18,8 +19,13 @@ class AlarmRingtoneStorageImpl @Inject constructor(
     @param:ApplicationContext private val context: Context
 ) : AlarmRingtoneStorage {
 
+    private val storageContext =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            context.createDeviceProtectedStorageContext()
+        } else context
+
     override fun saveContentUriForAlarm(contentUriString: String, alarmId: Long): String {
-        val file = File(context.filesDir, alarmId.toString())
+        val file = ringtoneFile(alarmId = alarmId)
         file.createNewFile()
         // Setting world-readable due to: https://stackoverflow.com/a/11977292/14037302
         file.setReadable(true, false)
@@ -35,16 +41,16 @@ class AlarmRingtoneStorageImpl @Inject constructor(
             }
         }
 
+        deleteLegacyRingtoneFile(alarmId = alarmId)
+
         return Uri.fromFile(file).toString()
     }
 
     override fun duplicateForAlarm(sourceAlarmId: Long, newAlarmId: Long): String? {
-        val sourceFile = File(context.filesDir, sourceAlarmId.toString())
-
-        if (!sourceFile.exists()) return null
+        val sourceFile = existingRingtoneFile(alarmId = sourceAlarmId) ?: return null
 
         return try {
-            val newFile = File(context.filesDir, newAlarmId.toString())
+            val newFile = ringtoneFile(alarmId = newAlarmId)
             sourceFile.copyTo(target = newFile, overwrite = true)
             newFile.setReadable(true, false)
             Uri.fromFile(newFile).toString()
@@ -61,13 +67,33 @@ class AlarmRingtoneStorageImpl @Inject constructor(
     }
 
     override fun deleteForAlarm(alarmId: Long) {
-        File(context.filesDir, alarmId.toString()).apply {
+        ringtoneFile(alarmId = alarmId).apply {
             if (exists()) delete()
         }
+
+        deleteLegacyRingtoneFile(alarmId = alarmId)
     }
 
-    override fun exists(alarmId: Long): Boolean =
-        File(context.filesDir, alarmId.toString()).exists()
+    override fun exists(alarmId: Long): Boolean = existingRingtoneFile(alarmId = alarmId) != null
+
+    private fun ringtoneFile(alarmId: Long): File =
+        File(storageContext.filesDir, alarmId.toString())
+
+    private fun legacyRingtoneFile(alarmId: Long): File =
+        File(context.filesDir, alarmId.toString())
+
+    private fun existingRingtoneFile(alarmId: Long): File? {
+        ringtoneFile(alarmId = alarmId).let { if (it.exists()) return it }
+        return legacyRingtoneFile(alarmId = alarmId).takeIf { it.exists() }
+    }
+
+    private fun deleteLegacyRingtoneFile(alarmId: Long) {
+        val legacyFile = legacyRingtoneFile(alarmId = alarmId)
+
+        if (legacyFile != ringtoneFile(alarmId = alarmId) && legacyFile.exists()) {
+            legacyFile.delete()
+        }
+    }
 
     private fun copyStream(inputStream: InputStream, outputStream: OutputStream) {
         val buffer = ByteArray(1024)
