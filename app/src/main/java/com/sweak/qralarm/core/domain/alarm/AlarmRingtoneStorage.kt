@@ -20,4 +20,12 @@ interface AlarmRingtoneStorage {
 
     /** True if a ringtone file exists for [alarmId]. */
     fun exists(alarmId: Long): Boolean
+
+    /**
+     * Makes sure the ringtone file for [alarmId] is stored where it can be read before the first
+     * unlock after a reboot, moving it from the legacy location if needed. Returns the current
+     * file:// URI string, or null if there is no ringtone file for [alarmId] or the move failed.
+     * Never throws.
+     */
+    fun migrateToDeviceProtectedStorage(alarmId: Long): String?
 }

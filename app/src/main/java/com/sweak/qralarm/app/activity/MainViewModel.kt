@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CodesRepository
+import com.sweak.qralarm.core.domain.alarm.MigrateCustomRingtonesToDeviceProtectedStorage
 import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import com.sweak.qralarm.core.domain.user.EMERGENCY_DEFAULT_REQUIRED_MATCHES
 import com.sweak.qralarm.core.domain.user.ShouldShowWhatsNew
@@ -27,7 +28,8 @@ class MainViewModel @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
     private val codesRepository: CodesRepository,
     private val rescheduleAlarms: RescheduleAlarms,
-    private val shouldShowWhatsNew: ShouldShowWhatsNew
+    private val shouldShowWhatsNew: ShouldShowWhatsNew,
+    private val migrateCustomRingtonesToDeviceProtectedStorage: MigrateCustomRingtonesToDeviceProtectedStorage
 ) : ViewModel() {
 
     private var _state = MutableStateFlow(MainActivityState())
@@ -40,6 +42,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             rescheduleAlarms(rescheduleAlarmsIfMissedByFiveMinutes = false)
             codesRepository.migrateLegacyDefaultAlarmCode()
+            migrateCustomRingtonesToDeviceProtectedStorage()
             migrateToNewEmergencyRequiredMatches()
 
             _state.update { currentState ->

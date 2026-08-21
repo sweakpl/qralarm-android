@@ -76,6 +76,29 @@ class AlarmRingtoneStorageImpl @Inject constructor(
 
     override fun exists(alarmId: Long): Boolean = existingRingtoneFile(alarmId = alarmId) != null
 
+    override fun migrateToDeviceProtectedStorage(alarmId: Long): String? {
+        return try {
+            val file = ringtoneFile(alarmId = alarmId)
+
+            if (file.exists()) {
+                deleteLegacyRingtoneFile(alarmId = alarmId)
+                return Uri.fromFile(file).toString()
+            }
+
+            val legacyFile = legacyRingtoneFile(alarmId = alarmId)
+
+            if (!legacyFile.exists()) return null
+
+            legacyFile.copyTo(target = file, overwrite = true)
+            file.setReadable(true, false)
+            legacyFile.delete()
+
+            Uri.fromFile(file).toString()
+        } catch (_: Exception) {
+            null
+        }
+    }
+
     private fun ringtoneFile(alarmId: Long): File =
         File(storageContext.filesDir, alarmId.toString())
 
