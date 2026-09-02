@@ -133,6 +133,23 @@ fun PermissionsPage(
                     }
                 }
 
+                is PermissionsPageUserEvent.DoNotDisturbPermissionClicked -> {
+                    viewModel.onEvent(event)
+                    try {
+                        context.startActivity(
+                            Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                        )
+                    } catch (_: ActivityNotFoundException) {
+                        Toast.makeText(
+                            context,
+                            resources.getString(
+                                R.string.setting_unavailable_refer_to_the_next_step
+                            ),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+
                 is PermissionsPageUserEvent.FullScreenIntentPermissionClicked -> {
                     viewModel.onEvent(event)
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -252,6 +269,23 @@ private fun PermissionsPageContent(
                 )
             }
 
+            if (state.doNotDisturbPermissionVisible) {
+                PermissionCard(
+                    icon = QRAlarmIcons.Sound,
+                    iconContentDescription = stringResource(
+                        R.string.bypass_do_not_disturb
+                    ),
+                    title = stringResource(R.string.bypass_do_not_disturb),
+                    subtitle = stringResource(R.string.bypass_do_not_disturb_usage),
+                    isGranted = state.doNotDisturbPermissionGranted,
+                    isClickable = !state.doNotDisturbPermissionGranted,
+                    onClick = {
+                        onEvent(PermissionsPageUserEvent.DoNotDisturbPermissionClicked)
+                    },
+                    showDivider = true
+                )
+            }
+
             if (state.fullScreenIntentPermissionVisible) {
                 PermissionCard(
                     icon = QRAlarmIcons.FullScreen,
@@ -336,12 +370,15 @@ private fun PermissionsPageContentPreview() {
                 alarmsPermissionGranted = false,
                 notificationsPermissionVisible = true,
                 notificationsPermissionGranted = false,
+                doNotDisturbPermissionVisible = true,
+                doNotDisturbPermissionGranted = false,
                 fullScreenIntentPermissionVisible = true,
                 fullScreenIntentPermissionGranted = false,
                 backgroundWorkPermissionGranted = false,
                 permissionsRequiringInteraction = setOf(
                     PermissionsPagePermissionKey.ALARMS,
                     PermissionsPagePermissionKey.NOTIFICATIONS,
+                    PermissionsPagePermissionKey.DO_NOT_DISTURB,
                     PermissionsPagePermissionKey.FULL_SCREEN_INTENT,
                     PermissionsPagePermissionKey.BACKGROUND_WORK
                 ),

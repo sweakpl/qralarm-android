@@ -1,13 +1,17 @@
 package com.sweak.qralarm.features.onboarding.permissions
 
+import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
+import android.provider.Settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.features.onboarding.permissions.util.PermissionsPagePermissionKey
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,6 +23,7 @@ import javax.inject.Named
 
 @HiltViewModel
 class PermissionsViewModel @Inject constructor(
+    @param:ApplicationContext private val context: Context,
     private val qrAlarmManager: QRAlarmManager,
     private val powerManager: PowerManager,
     @param:Named("PackageName") private val packageName: String,
@@ -35,14 +40,18 @@ class PermissionsViewModel @Inject constructor(
         val alarmsVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2
         val notificationsVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+        val doNotDisturbVisible = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+            .resolveActivity(context.packageManager) != null
         val fullScreenVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
 
         _state.update { current ->
             current.copy(
                 alarmsPermissionVisible = alarmsVisible,
                 notificationsPermissionVisible = notificationsVisible,
+                doNotDisturbPermissionVisible = doNotDisturbVisible,
                 fullScreenIntentPermissionVisible = fullScreenVisible,
-                notificationsPermissionGranted = !notificationsVisible
+                notificationsPermissionGranted = !notificationsVisible,
+                doNotDisturbPermissionGranted = !doNotDisturbVisible
             )
         }
 
@@ -61,6 +70,16 @@ class PermissionsViewModel @Inject constructor(
                 } else {
                     true
                 },
+                doNotDisturbPermissionGranted =
+                    if (current.doNotDisturbPermissionVisible) {
+                        qrAlarmManager.canBypassDoNotDisturb().also { isGranted ->
+                            if (isGranted) {
+                                qrAlarmManager.enableAlarmNotificationChannelDndBypass()
+                            }
+                        }
+                    } else {
+                        true
+                    },
                 fullScreenIntentPermissionGranted = if (current.fullScreenIntentPermissionVisible) {
                     qrAlarmManager.canUseFullScreenIntent()
                 } else {
@@ -95,6 +114,9 @@ class PermissionsViewModel @Inject constructor(
 
             is PermissionsPageUserEvent.NotificationsPermissionClicked ->
                 addInteraction(PermissionsPagePermissionKey.NOTIFICATIONS)
+
+            is PermissionsPageUserEvent.DoNotDisturbPermissionClicked ->
+                addInteraction(PermissionsPagePermissionKey.DO_NOT_DISTURB)
 
             is PermissionsPageUserEvent.FullScreenIntentPermissionClicked ->
                 addInteraction(PermissionsPagePermissionKey.FULL_SCREEN_INTENT)
@@ -161,6 +183,12 @@ class PermissionsViewModel @Inject constructor(
 
                 if (current.notificationsPermissionVisible && !notificationsEffective) {
                     add(PermissionsPagePermissionKey.NOTIFICATIONS)
+                }
+
+                if (current.doNotDisturbPermissionVisible &&
+                    !current.doNotDisturbPermissionGranted
+                ) {
+                    add(PermissionsPagePermissionKey.DO_NOT_DISTURB)
                 }
 
                 if (current.fullScreenIntentPermissionVisible &&
