@@ -63,6 +63,17 @@ class PermissionsViewModel @Inject constructor(
     }
 
     private fun refreshSystemPermissionsOnly() {
+        val doNotDisturbPermissionGranted =
+            if (_state.value.doNotDisturbPermissionVisible) {
+                qrAlarmManager.canBypassDoNotDisturb()
+            } else {
+                true
+            }
+
+        if (doNotDisturbPermissionGranted) {
+            qrAlarmManager.enableAlarmNotificationChannelDndBypass()
+        }
+
         _state.update { current ->
             current.copy(
                 alarmsPermissionGranted = if (current.alarmsPermissionVisible) {
@@ -70,16 +81,7 @@ class PermissionsViewModel @Inject constructor(
                 } else {
                     true
                 },
-                doNotDisturbPermissionGranted =
-                    if (current.doNotDisturbPermissionVisible) {
-                        qrAlarmManager.canBypassDoNotDisturb().also { isGranted ->
-                            if (isGranted) {
-                                qrAlarmManager.enableAlarmNotificationChannelDndBypass()
-                            }
-                        }
-                    } else {
-                        true
-                    },
+                doNotDisturbPermissionGranted = doNotDisturbPermissionGranted,
                 fullScreenIntentPermissionGranted = if (current.fullScreenIntentPermissionVisible) {
                     qrAlarmManager.canUseFullScreenIntent()
                 } else {

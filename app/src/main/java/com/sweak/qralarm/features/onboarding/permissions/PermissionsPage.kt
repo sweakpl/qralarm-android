@@ -273,7 +273,7 @@ private fun PermissionsPageContent(
                 PermissionCard(
                     icon = QRAlarmIcons.Sound,
                     iconContentDescription = stringResource(
-                        R.string.bypass_do_not_disturb
+                        R.string.content_description_sound_icon
                     ),
                     title = stringResource(R.string.bypass_do_not_disturb),
                     subtitle = stringResource(R.string.bypass_do_not_disturb_usage),
