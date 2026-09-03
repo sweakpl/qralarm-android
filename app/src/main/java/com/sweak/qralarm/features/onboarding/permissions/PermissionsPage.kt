@@ -3,6 +3,7 @@ package com.sweak.qralarm.features.onboarding.permissions
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
@@ -135,19 +136,12 @@ fun PermissionsPage(
 
                 is PermissionsPageUserEvent.DoNotDisturbPermissionClicked -> {
                     viewModel.onEvent(event)
-                    try {
-                        context.startActivity(
-                            Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                    context.startActivityOrShowUnavailableMessage(
+                        intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS),
+                        unavailableMessage = resources.getString(
+                            R.string.setting_unavailable_refer_to_the_next_step
                         )
-                    } catch (_: ActivityNotFoundException) {
-                        Toast.makeText(
-                            context,
-                            resources.getString(
-                                R.string.setting_unavailable_refer_to_the_next_step
-                            ),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+                    )
                 }
 
                 is PermissionsPageUserEvent.FullScreenIntentPermissionClicked -> {
@@ -164,21 +158,16 @@ fun PermissionsPage(
 
                 is PermissionsPageUserEvent.BackgroundWorkPermissionClicked -> {
                     viewModel.onEvent(event)
-                    try {
-                        context.startActivity(
-                            Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                                data = "package:${context.packageName}".toUri()
-                            }
+                    context.startActivityOrShowUnavailableMessage(
+                        intent = Intent(
+                            Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                        ).apply {
+                            data = "package:${context.packageName}".toUri()
+                        },
+                        unavailableMessage = resources.getString(
+                            R.string.setting_unavailable_refer_to_the_next_step
                         )
-                    } catch (_: ActivityNotFoundException) {
-                        Toast.makeText(
-                            context,
-                            resources.getString(
-                                R.string.setting_unavailable_refer_to_the_next_step
-                            ),
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
+                    )
                 }
 
                 is PermissionsPageUserEvent.GoToApplicationSettingsClicked -> {
@@ -269,22 +258,20 @@ private fun PermissionsPageContent(
                 )
             }
 
-            if (state.doNotDisturbPermissionVisible) {
-                PermissionCard(
-                    icon = QRAlarmIcons.Sound,
-                    iconContentDescription = stringResource(
-                        R.string.content_description_sound_icon
-                    ),
-                    title = stringResource(R.string.bypass_do_not_disturb),
-                    subtitle = stringResource(R.string.bypass_do_not_disturb_usage),
-                    isGranted = state.doNotDisturbPermissionGranted,
-                    isClickable = !state.doNotDisturbPermissionGranted,
-                    onClick = {
-                        onEvent(PermissionsPageUserEvent.DoNotDisturbPermissionClicked)
-                    },
-                    showDivider = true
-                )
-            }
+            PermissionCard(
+                icon = QRAlarmIcons.Sound,
+                iconContentDescription = stringResource(
+                    R.string.content_description_sound_icon
+                ),
+                title = stringResource(R.string.bypass_do_not_disturb),
+                subtitle = stringResource(R.string.bypass_do_not_disturb_usage),
+                isGranted = state.doNotDisturbPermissionGranted,
+                isClickable = !state.doNotDisturbPermissionGranted,
+                onClick = {
+                    onEvent(PermissionsPageUserEvent.DoNotDisturbPermissionClicked)
+                },
+                showDivider = true
+            )
 
             if (state.fullScreenIntentPermissionVisible) {
                 PermissionCard(
@@ -370,7 +357,6 @@ private fun PermissionsPageContentPreview() {
                 alarmsPermissionGranted = false,
                 notificationsPermissionVisible = true,
                 notificationsPermissionGranted = false,
-                doNotDisturbPermissionVisible = true,
                 doNotDisturbPermissionGranted = false,
                 fullScreenIntentPermissionVisible = true,
                 fullScreenIntentPermissionGranted = false,
@@ -387,5 +373,16 @@ private fun PermissionsPageContentPreview() {
             ),
             onEvent = {}
         )
+    }
+}
+
+private fun Context.startActivityOrShowUnavailableMessage(
+    intent: Intent,
+    unavailableMessage: String
+) {
+    try {
+        startActivity(intent)
+    } catch (_: ActivityNotFoundException) {
+        Toast.makeText(this, unavailableMessage, Toast.LENGTH_LONG).show()
     }
 }

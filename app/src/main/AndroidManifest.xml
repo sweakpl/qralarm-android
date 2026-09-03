@@ -20,12 +20,6 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
-    <queries>
-        <intent>
-            <action android:name="android.settings.NOTIFICATION_POLICY_ACCESS_SETTINGS" />
-        </intent>
-    </queries>
-
     <application
         android:name=".app.QRAlarmApplication"
         android:allowBackup="false"

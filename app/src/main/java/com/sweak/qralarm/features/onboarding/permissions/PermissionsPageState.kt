@@ -8,7 +8,6 @@ data class PermissionsPageState(
     val alarmsPermissionGranted: Boolean = true,
     val notificationsPermissionVisible: Boolean = false,
     val notificationsPermissionGranted: Boolean = true,
-    val doNotDisturbPermissionVisible: Boolean = false,
     val doNotDisturbPermissionGranted: Boolean = true,
     val fullScreenIntentPermissionVisible: Boolean = false,
     val fullScreenIntentPermissionGranted: Boolean = true,
