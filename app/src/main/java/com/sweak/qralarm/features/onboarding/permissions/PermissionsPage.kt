@@ -359,9 +359,9 @@ private fun PermissionsPageContentPreview() {
                 alarmsPermissionGranted = false,
                 notificationsPermissionVisible = true,
                 notificationsPermissionGranted = false,
+                doNotDisturbPermissionVisible = true,
                 doNotDisturbPermissionGranted = false,
                 fullScreenIntentPermissionVisible = true,
-                fullScreenIntentPermissionGranted = false,
                 backgroundWorkPermissionGranted = false,
                 permissionsRequiringInteraction = setOf(
                     PermissionsPagePermissionKey.ALARMS,
