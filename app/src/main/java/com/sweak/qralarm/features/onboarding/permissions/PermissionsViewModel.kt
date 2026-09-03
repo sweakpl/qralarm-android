@@ -35,12 +35,14 @@ class PermissionsViewModel @Inject constructor(
         val alarmsVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2
         val notificationsVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+        val doNotDisturbVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
         val fullScreenVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
 
         _state.update { current ->
             current.copy(
                 alarmsPermissionVisible = alarmsVisible,
                 notificationsPermissionVisible = notificationsVisible,
+                doNotDisturbPermissionVisible = doNotDisturbVisible,
                 fullScreenIntentPermissionVisible = fullScreenVisible,
                 notificationsPermissionGranted = !notificationsVisible
             )
@@ -54,9 +56,14 @@ class PermissionsViewModel @Inject constructor(
     }
 
     private fun refreshSystemPermissionsOnly() {
-        val doNotDisturbPermissionGranted = qrAlarmManager.canBypassDoNotDisturb()
+        val doNotDisturbPermissionVisible = _state.value.doNotDisturbPermissionVisible
+        val doNotDisturbPermissionGranted = if (doNotDisturbPermissionVisible) {
+            qrAlarmManager.canBypassDoNotDisturb()
+        } else {
+            true
+        }
 
-        if (doNotDisturbPermissionGranted) {
+        if (doNotDisturbPermissionVisible && doNotDisturbPermissionGranted) {
             qrAlarmManager.enableAlarmNotificationChannelDndBypass()
         }
 
@@ -173,7 +180,9 @@ class PermissionsViewModel @Inject constructor(
                     add(PermissionsPagePermissionKey.NOTIFICATIONS)
                 }
 
-                if (!current.doNotDisturbPermissionGranted) {
+                if (current.doNotDisturbPermissionVisible &&
+                    !current.doNotDisturbPermissionGranted
+                ) {
                     add(PermissionsPagePermissionKey.DO_NOT_DISTURB)
                 }
 

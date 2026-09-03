@@ -258,20 +258,22 @@ private fun PermissionsPageContent(
                 )
             }
 
-            PermissionCard(
-                icon = QRAlarmIcons.Sound,
-                iconContentDescription = stringResource(
-                    R.string.content_description_sound_icon
-                ),
-                title = stringResource(R.string.bypass_do_not_disturb),
-                subtitle = stringResource(R.string.bypass_do_not_disturb_usage),
-                isGranted = state.doNotDisturbPermissionGranted,
-                isClickable = !state.doNotDisturbPermissionGranted,
-                onClick = {
-                    onEvent(PermissionsPageUserEvent.DoNotDisturbPermissionClicked)
-                },
-                showDivider = true
-            )
+            if (state.doNotDisturbPermissionVisible) {
+                PermissionCard(
+                    icon = QRAlarmIcons.Sound,
+                    iconContentDescription = stringResource(
+                        R.string.content_description_sound_icon
+                    ),
+                    title = stringResource(R.string.bypass_do_not_disturb),
+                    subtitle = stringResource(R.string.bypass_do_not_disturb_usage),
+                    isGranted = state.doNotDisturbPermissionGranted,
+                    isClickable = !state.doNotDisturbPermissionGranted,
+                    onClick = {
+                        onEvent(PermissionsPageUserEvent.DoNotDisturbPermissionClicked)
+                    },
+                    showDivider = true
+                )
+            }
 
             if (state.fullScreenIntentPermissionVisible) {
                 PermissionCard(
