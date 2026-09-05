@@ -37,7 +37,6 @@ import androidx.compose.material.icons.outlined.PhonelinkLock
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.QrCode
 import androidx.compose.material.icons.outlined.QrCodeScanner
-import androidx.compose.material.icons.outlined.SecurityUpdateGood
 import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Stop
@@ -85,7 +84,6 @@ object QRAlarmIcons {
     val Sound = Icons.AutoMirrored.Outlined.VolumeUp
     val SoundMedium = Icons.AutoMirrored.Outlined.VolumeDown
     val SoundLow = Icons.AutoMirrored.Outlined.VolumeMute
-    val UsingSystem = Icons.Outlined.SecurityUpdateGood
     val Copy = Icons.Outlined.ContentCopy
     val Clock = Icons.Outlined.AccessTime
     val CalendarMonth = Icons.Outlined.CalendarMonth

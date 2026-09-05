@@ -164,7 +164,6 @@
     <string name="click_to_choose">*Натисніть, щоб вибрати*</string>
     <string name="power_off_guard">Захист від вимкнення</string>
     <string name="power_off_guard_description">Запобігає вимкненню будильника через меню вимкнення живлення.</string>
-    <string name="lock_alarm_to_this_volume">Налаштуйте гучність будильника, коли він лунає:</string>
     <string name="using_system_alarm_volume">Використання системної гучності будильника</string>
     <string name="ok">OK</string>
     <string name="advanced_settings">Розширені налаштування</string>

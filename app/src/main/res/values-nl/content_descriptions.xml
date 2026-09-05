@@ -27,7 +27,6 @@
     <string name="content_description_skip_next_alarm_icon">Volgend alarm overslaan-pictogram</string>
     <string name="content_description_label_icon">Label-pictogram</string>
     <string name="content_description_sound_icon">Geluid-pictogram</string>
-    <string name="content_description_active_system_setting">Actieve systeeminstelling-pictogram</string>
     <string name="content_description_copy_icon">Kopieer-pictogram</string>
     <string name="content_description_clock_icon">Klok-pictogram</string>
     <string name="content_description_emergency_icon">Nooddriehoek-pictogram</string>

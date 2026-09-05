@@ -164,7 +164,6 @@
     <string name="click_to_choose">*Нажмите, чтобы выбрать*</string>
     <string name="power_off_guard">Защита от выключения</string>
     <string name="power_off_guard_description">Предотвратите отключение вашего будильника через меню выключения.</string>
-    <string name="lock_alarm_to_this_volume">Будильник будет звонить на этой громкости:</string>
     <string name="using_system_alarm_volume">Использование системной громкости будильника</string>
     <string name="ok">ОК</string>
     <string name="advanced_settings">Расширенные настройки</string>

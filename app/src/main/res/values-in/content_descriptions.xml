@@ -27,7 +27,6 @@
     <string name="content_description_skip_next_alarm_icon">Ikon lewati alarm berikutnya</string>
     <string name="content_description_label_icon">Ikon label</string>
     <string name="content_description_sound_icon">Ikon suara</string>
-    <string name="content_description_active_system_setting">Ikon pengaturan sistem aktif</string>
     <string name="content_description_copy_icon">Ikon salin</string>
     <string name="content_description_clock_icon">Ikon jam</string>
     <string name="content_description_emergency_icon">Ikon segitiga darurat</string>

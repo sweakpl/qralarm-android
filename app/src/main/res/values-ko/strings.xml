@@ -207,7 +207,6 @@
     <string name="click_to_choose">*클릭하여 선택*</string>
     <string name="power_off_guard">전원 차단 보호</string>
     <string name="power_off_guard_description">전원 차단 메뉴가 알람을 멈추지 않도록 방지합니다.</string>
-    <string name="lock_alarm_to_this_volume">알람이 울릴 때 이 볼륨으로 설정:</string>
     <string name="using_system_alarm_volume">시스템 알람 볼륨 사용</string>
     <string name="ok">확인</string>
     <string name="advanced_settings">고급 설정</string>

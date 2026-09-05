@@ -146,7 +146,6 @@
     <string name="click_to_choose">*Tekan untuk memilih*</string>
     <string name="power_off_guard">Penjaga mati daya</string>
     <string name="power_off_guard_description">Cegah menu mati daya menghentikan alarm Anda.</string>
-    <string name="lock_alarm_to_this_volume">Atur volume alarm saat berbunyi:</string>
     <string name="using_system_alarm_volume">Menggunakan volume alarm sistem</string>
     <string name="ok">OK</string>
     <string name="advanced_settings">Pengaturan lanjutan</string>

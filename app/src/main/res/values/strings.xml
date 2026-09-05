@@ -190,7 +190,6 @@
     <string name="click_to_choose">*Click to choose*</string>
     <string name="power_off_guard">Power-off guard</string>
     <string name="power_off_guard_description">Prevent the power-off menu from stopping your alarm.</string>
-    <string name="lock_alarm_to_this_volume">Set the alarm to this volume when it rings:</string>
     <string name="using_system_alarm_volume">Using system alarm volume</string>
     <string name="ok">OK</string>
     <string name="advanced_settings">Advanced settings</string>

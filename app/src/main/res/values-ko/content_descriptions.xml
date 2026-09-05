@@ -27,7 +27,6 @@
     <string name="content_description_skip_next_alarm_icon">다음 알람 건너뛰기 아이콘</string>
     <string name="content_description_label_icon">라벨 아이콘</string>
     <string name="content_description_sound_icon">소리 아이콘</string>
-    <string name="content_description_active_system_setting">활성 시스템 설정 아이콘</string>
     <string name="content_description_copy_icon">복사 아이콘</string>
     <string name="content_description_clock_icon">시계 아이콘</string>
     <string name="content_description_emergency_icon">긴급 삼각형 아이콘</string>

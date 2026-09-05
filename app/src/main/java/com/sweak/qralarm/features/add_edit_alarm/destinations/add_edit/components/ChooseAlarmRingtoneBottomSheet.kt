@@ -1,6 +1,5 @@
 package com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,16 +10,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,7 +33,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmCheckbox
 import com.sweak.qralarm.core.designsystem.component.QRAlarmRadioButton
 import com.sweak.qralarm.core.designsystem.component.QRAlarmSlider
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
@@ -52,17 +57,18 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     var selectedAlarmRingtone by remember(initialRingtone) { mutableStateOf(initialRingtone) }
+    var isUsingSystemVolume by remember(alarmVolumePercentage) {
+        mutableStateOf(alarmVolumePercentage == null)
+    }
     var selectedAlarmVolumePercentage by remember(alarmVolumePercentage) {
-        mutableStateOf(
-            alarmVolumePercentage
-        )
+        mutableIntStateOf(alarmVolumePercentage ?: 50)
     }
 
     ModalBottomSheet(
         onDismissRequest = {
             onDismissRequest(
                 selectedAlarmRingtone,
-                selectedAlarmVolumePercentage
+                if (isUsingSystemVolume) null else selectedAlarmVolumePercentage
             )
         },
         sheetState = modalBottomSheetState
@@ -81,65 +87,61 @@ fun ChooseAlarmRingtoneConfigDialogBottomSheet(
                 modifier = Modifier.padding(bottom = MaterialTheme.space.mediumLarge)
             )
 
-            Text(
-                text = stringResource(R.string.lock_alarm_to_this_volume),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(bottom = MaterialTheme.space.smallMedium)
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(bottom = MaterialTheme.space.medium)
+            ) {
+                Icon(
+                    imageVector = when (selectedAlarmVolumePercentage) {
+                        in 0..33 -> QRAlarmIcons.SoundLow
+                        in 34..66 -> QRAlarmIcons.SoundMedium
+                        else -> QRAlarmIcons.Sound
+                    },
+                    contentDescription = stringResource(R.string.content_description_sound_icon),
+                    modifier = Modifier.size(size = MaterialTheme.space.large)
+                )
+
+                QRAlarmSlider(
+                    value = selectedAlarmVolumePercentage.toFloat(),
+                    enabled = !isUsingSystemVolume,
+                    valueRange = 0f..100f,
+                    steps = 9,
+                    onValueChange = { newValue ->
+                        selectedAlarmVolumePercentage =
+                            if (newValue < 10f) 10 else newValue.toInt()
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = MaterialTheme.space.medium)
+                )
+            }
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = MaterialTheme.space.mediumLarge)
-            ) {
-                val isUsingSystemVolume = selectedAlarmVolumePercentage == null
-
-                IconButton(
-                    onClick = {
-                        selectedAlarmVolumePercentage =
-                            if (selectedAlarmVolumePercentage == null) 50 else null
-                    }
-                ) {
-                    Icon(
-                        imageVector = if (!isUsingSystemVolume) {
-                            when (selectedAlarmVolumePercentage) {
-                                in 0..33 -> QRAlarmIcons.SoundLow
-                                in 34..66 -> QRAlarmIcons.SoundMedium
-                                else -> QRAlarmIcons.Sound
-                            }
-                        } else {
-                            QRAlarmIcons.UsingSystem
-                        },
-                        contentDescription = stringResource(
-                            if (!isUsingSystemVolume) R.string.content_description_sound_icon
-                            else R.string.content_description_active_system_setting
-                        ),
-                        modifier = Modifier.size(size = MaterialTheme.space.large)
+                modifier = Modifier
+                    .toggleable(
+                        value = isUsingSystemVolume,
+                        onValueChange = { isUsingSystemVolume = it },
+                        role = Role.Checkbox
                     )
-                }
+            ) {
+                QRAlarmCheckbox(
+                    checked = isUsingSystemVolume,
+                    onCheckedChange = null
+                )
 
-                AnimatedContent(targetState = isUsingSystemVolume) { systemVolume ->
-                    if (systemVolume) {
-                        Text(
-                            text = stringResource(R.string.using_system_alarm_volume),
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(start = MaterialTheme.space.medium)
-                        )
-                    } else if (selectedAlarmVolumePercentage != null) {
-                        QRAlarmSlider(
-                            value = selectedAlarmVolumePercentage!!.toFloat(),
-                            valueRange = 0f..100f,
-                            steps = 9,
-                            onValueChange = { newValue ->
-                                selectedAlarmVolumePercentage =
-                                    if (newValue < 10f) 10 else newValue.toInt()
-                            },
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(horizontal = MaterialTheme.space.medium)
-                        )
-                    }
-                }
+                Text(
+                    text = stringResource(R.string.using_system_alarm_volume),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = MaterialTheme.space.medium)
+                )
             }
+
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = LocalContentColor.current,
+                modifier = Modifier.padding(vertical = MaterialTheme.space.mediumLarge)
+            )
 
             Column(
                 modifier = Modifier

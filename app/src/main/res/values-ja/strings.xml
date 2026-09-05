@@ -132,7 +132,6 @@
     <string name="click_to_choose">*クリックして選択*</string>
     <string name="power_off_guard">電源オフガード</string>
     <string name="power_off_guard_description">電源オフメニューがアラームを止めるのを防ぎます。</string>
-    <string name="lock_alarm_to_this_volume">アラームが鳴るとき、この音量に設定：</string>
     <string name="using_system_alarm_volume">システムアラーム音量を使用中</string>
     <string name="ok">OK</string>
     <string name="advanced_settings">詳細設定</string>

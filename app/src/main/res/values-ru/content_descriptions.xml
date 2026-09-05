@@ -27,7 +27,6 @@
     <string name="content_description_skip_next_alarm_icon">Значок пропуска следующего будильника</string>
     <string name="content_description_label_icon">Значок ярлыка</string>
     <string name="content_description_sound_icon">Значок звука</string>
-    <string name="content_description_active_system_setting">Значок активной системной настройки</string>
     <string name="content_description_copy_icon">Значок копирования</string>
     <string name="content_description_clock_icon">Значок часов</string>
     <string name="content_description_emergency_icon">Значок аварийного треугольника</string>

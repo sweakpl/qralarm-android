@@ -27,7 +27,6 @@
     <string name="content_description_skip_next_alarm_icon">Ícone de pular próximo alarme</string>
     <string name="content_description_label_icon">Ícone de etiqueta</string>
     <string name="content_description_sound_icon">Ícone de som</string>
-    <string name="content_description_active_system_setting">Ícone de configuração ativa do sistema</string>
     <string name="content_description_copy_icon">Ícone de copiar</string>
     <string name="content_description_clock_icon">Ícone de relógio</string>
     <string name="content_description_emergency_icon">Ícone de triângulo de emergência</string>

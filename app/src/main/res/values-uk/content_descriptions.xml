@@ -27,7 +27,6 @@
     <string name="content_description_skip_next_alarm_icon">Піктограма пропуску наступного будильника</string>
     <string name="content_description_label_icon">Піктограма назви</string>
     <string name="content_description_sound_icon">Піктограма звуку</string>
-    <string name="content_description_active_system_setting">Піктограма активних налаштувань системи</string>
     <string name="content_description_copy_icon">Піктограма копіювання</string>
     <string name="content_description_clock_icon">Піктограма годинника</string>
     <string name="content_description_emergency_icon">Піктограма аварійного трикутника</string>

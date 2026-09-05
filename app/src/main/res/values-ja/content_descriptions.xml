@@ -27,7 +27,6 @@
     <string name="content_description_skip_next_alarm_icon">次のアラームをスキップするアイコン</string>
     <string name="content_description_label_icon">ラベルアイコン</string>
     <string name="content_description_sound_icon">サウンドアイコン</string>
-    <string name="content_description_active_system_setting">有効なシステム設定アイコン</string>
     <string name="content_description_copy_icon">コピーアイコン</string>
     <string name="content_description_clock_icon">時計アイコン</string>
     <string name="content_description_emergency_icon">緊急用三角アイコン</string>

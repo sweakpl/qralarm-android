@@ -158,7 +158,6 @@
     <string name="click_to_choose">*Clicca per scegliere*</string>
     <string name="power_off_guard">Protezione spegnimento</string>
     <string name="power_off_guard_description">Impedisce al menu di spegnimento di disattivare la sveglia.</string>
-    <string name="lock_alarm_to_this_volume">Impostare la sveglia su questo volume quando suona:</string>
     <string name="using_system_alarm_volume">Utilizzo del volume della sveglia di sistema</string>
     <string name="ok">OK</string>
     <string name="advanced_settings">Impostazioni avanzate</string>

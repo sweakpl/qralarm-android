@@ -27,7 +27,6 @@
     <string name="content_description_skip_next_alarm_icon">Sonraki alarmı atla simgesi</string>
     <string name="content_description_label_icon">Etiket simgesi</string>
     <string name="content_description_sound_icon">Ses simgesi</string>
-    <string name="content_description_active_system_setting">Etkin sistem ayarı simgesi</string>
     <string name="content_description_copy_icon">Kopyala simgesi</string>
     <string name="content_description_clock_icon">Saat simgesi</string>
     <string name="content_description_emergency_icon">Acil durum üçgen simgesi</string>

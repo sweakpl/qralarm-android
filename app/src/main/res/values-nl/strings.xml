@@ -152,7 +152,6 @@
     <string name="click_to_choose">*Klik om te kiezen*</string>
     <string name="power_off_guard">Uitschakelbeveiliging</string>
     <string name="power_off_guard_description">Voorkom dat het uitschakelmenu uw alarm stopt.</string>
-    <string name="lock_alarm_to_this_volume">Stel het alarm in op dit volume wanneer het afgaat:</string>
     <string name="using_system_alarm_volume">Systeemalarmvolume gebruiken</string>
     <string name="ok">OK</string>
     <string name="advanced_settings">Geavanceerde instellingen</string>

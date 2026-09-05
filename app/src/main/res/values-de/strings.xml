@@ -152,7 +152,6 @@
     <string name="click_to_choose">*Zum Auswählen anklicken*</string>
     <string name="power_off_guard">Abschaltschutz</string>
     <string name="power_off_guard_description">Verhindern Sie, dass das Ausschaltmenü Ihren Alarm stoppt.</string>
-    <string name="lock_alarm_to_this_volume">Stellen Sie den Alarm auf diese Lautstärke ein, wenn er klingelt:</string>
     <string name="using_system_alarm_volume">Verwendung der Systemalarmlautstärke</string>
     <string name="ok">OK</string>
     <string name="advanced_settings">Erweiterte Einstellungen</string>
