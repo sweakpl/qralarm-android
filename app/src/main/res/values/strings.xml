@@ -230,6 +230,8 @@
     <string name="slider_range">Slider range:</string>
     <string name="required_matches">Required matches:</string>
     <string name="preview_emergency_task">Preview emergency task</string>
+    <string name="disable_repeating_alarms">Disable repeating alarms</string>
+    <string name="disable_repeating_alarms_description">Finishing emergency task will disable the alarm if it is repeating.</string>
     <string name="alarms_chain">Alarms chain</string>
     <string name="alarms_chain_description">Link alarms together to stay awake and active - disable each one by scanning codes in different places.</string>
     <string name="this_alarm">This alarm</string>

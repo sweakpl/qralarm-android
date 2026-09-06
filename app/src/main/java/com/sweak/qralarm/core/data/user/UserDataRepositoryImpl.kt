@@ -75,6 +75,15 @@ class UserDataRepositoryImpl @Inject constructor(
             it ?: EMERGENCY_DEFAULT_REQUIRED_MATCHES
         }
 
+    override suspend fun setEmergencyDisableRepeatingAlarms(disable: Boolean) {
+        qrAlarmPreferencesDataSource.setEmergencyDisableRepeatingAlarms(disable = disable)
+    }
+
+    override val isEmergencyDisableRepeatingAlarmsEnabled: Flow<Boolean>
+        get() = qrAlarmPreferencesDataSource.getEmergencyDisableRepeatingAlarms().map {
+            it ?: true
+        }
+
     override suspend fun setTheme(theme: Theme) {
         qrAlarmPreferencesDataSource.setTheme(theme = theme)
     }

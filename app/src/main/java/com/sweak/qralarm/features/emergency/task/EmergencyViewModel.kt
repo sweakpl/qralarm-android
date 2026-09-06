@@ -114,15 +114,20 @@ class EmergencyViewModel @AssistedInject constructor(
                             emergencyTaskConfig =
                                 if (remainingMatches <= 0) {
                                     viewModelScope.launch {
-                                        if (idOfAlarmToCancel != 0L) {
+                                        val isAlarmRepeating = ::alarm.isInitialized &&
+                                                alarm.repeatingMode is Alarm.RepeatingMode.Days
+                                        val shouldDisableRepeatingAlarms = userDataRepository
+                                            .isEmergencyDisableRepeatingAlarmsEnabled.first()
+
+                                        if (idOfAlarmToCancel != 0L &&
+                                            (!isAlarmRepeating || shouldDisableRepeatingAlarms)
+                                        ) {
                                             disableAlarm(idOfAlarmToCancel)
                                         }
 
                                         delay(1500.milliseconds)
 
-                                        if (::alarm.isInitialized &&
-                                            alarm.repeatingMode is Alarm.RepeatingMode.Days
-                                        ) {
+                                        if (isAlarmRepeating && shouldDisableRepeatingAlarms) {
                                             qrAlarmManager.notifyAboutEmergencyDisabledRepeatingAlarm()
                                         }
 

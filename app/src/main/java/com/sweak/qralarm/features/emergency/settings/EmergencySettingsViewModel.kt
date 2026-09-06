@@ -39,7 +39,9 @@ class EmergencySettingsViewModel @Inject constructor(
                                 EMERGENCY_DEFAULT_REQUIRED_MATCHES
                             )
                         } else it
-                    }
+                    },
+                    isDisableRepeatingAlarmsEnabled =
+                        userDataRepository.isEmergencyDisableRepeatingAlarmsEnabled.first()
                 )
             }
         }
@@ -66,6 +68,17 @@ class EmergencySettingsViewModel @Inject constructor(
                     currentState.copy(selectedRequiredMatchesIndex = event.index)
                 }
             }
+
+            is EmergencySettingsScreenUserEvent.DisableRepeatingAlarmsEnabledChanged ->
+                viewModelScope.launch {
+                    userDataRepository.setEmergencyDisableRepeatingAlarms(
+                        disable = event.isEnabled
+                    )
+
+                    _state.update { currentState ->
+                        currentState.copy(isDisableRepeatingAlarmsEnabled = event.isEnabled)
+                    }
+                }
 
             else -> { /* no-op */
             }

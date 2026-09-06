@@ -153,6 +153,18 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun setEmergencyDisableRepeatingAlarms(disable: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[EMERGENCY_DISABLE_REPEATING_ALARMS] = disable
+        }
+    }
+
+    fun getEmergencyDisableRepeatingAlarms(): Flow<Boolean?> {
+        return dataStore.data.map { preferences ->
+            preferences[EMERGENCY_DISABLE_REPEATING_ALARMS]
+        }
+    }
+
     private val json = Json {
         classDiscriminator = "type"
         ignoreUnknownKeys = true
@@ -200,6 +212,8 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         val HAS_MIGRATED_DEFAULT_ALARM_CODE = booleanPreferencesKey("hasMigratedDefaultAlarmCode")
         val EMERGENCY_SLIDER_RANGE = byteArrayPreferencesKey("emergencySliderRange")
         val EMERGENCY_REQUIRED_MATCHES = intPreferencesKey("emergencyRequiredMatches")
+        val EMERGENCY_DISABLE_REPEATING_ALARMS =
+            booleanPreferencesKey("emergencyDisableRepeatingAlarms")
         val THEME = stringPreferencesKey("theme")
         val WHATS_NEW_LAST_SHOWN_VERSION_CODE = intPreferencesKey("whatsNewLastShownVersionCode")
     }

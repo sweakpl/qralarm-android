@@ -27,6 +27,9 @@ interface UserDataRepository {
     suspend fun setEmergencyRequiredMatches(matches: Int)
     val emergencyRequiredMatches: Flow<Int>
 
+    suspend fun setEmergencyDisableRepeatingAlarms(disable: Boolean)
+    val isEmergencyDisableRepeatingAlarmsEnabled: Flow<Boolean>
+
     suspend fun setTheme(theme: Theme)
     val theme: Flow<Theme>
 

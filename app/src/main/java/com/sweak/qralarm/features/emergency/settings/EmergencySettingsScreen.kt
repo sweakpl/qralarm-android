@@ -37,6 +37,7 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.components.NavigationButton
+import com.sweak.qralarm.core.ui.components.ToggleSetting
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_REQUIRED_MATCHES
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_SLIDER_RANGES
 
@@ -131,7 +132,7 @@ fun EmergencySettingsScreenContent(
                         .padding(
                             start = MaterialTheme.space.medium,
                             end = MaterialTheme.space.medium,
-                            bottom = MaterialTheme.space.medium
+                            bottom = MaterialTheme.space.mediumLarge
                         )
                 ) {
                     Text(
@@ -220,6 +221,31 @@ fun EmergencySettingsScreenContent(
                         modifier = Modifier.padding(all = MaterialTheme.space.medium)
                     )
                 }
+
+                if (state.isDisableRepeatingAlarmsEnabled != null) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = MaterialTheme.space.medium,
+                                end = MaterialTheme.space.medium,
+                                bottom = MaterialTheme.space.medium
+                            )
+                    ) {
+                        ToggleSetting(
+                            isChecked = state.isDisableRepeatingAlarmsEnabled,
+                            onCheckedChange = {
+                                onEvent(
+                                    EmergencySettingsScreenUserEvent
+                                        .DisableRepeatingAlarmsEnabledChanged(isEnabled = it)
+                                )
+                            },
+                            title = stringResource(R.string.disable_repeating_alarms),
+                            description =
+                                stringResource(R.string.disable_repeating_alarms_description)
+                        )
+                    }
+                }
             }
         }
     }
@@ -234,7 +260,8 @@ fun EmergencySettingsContentPreview() {
                 availableSliderRanges = EMERGENCY_AVAILABLE_SLIDER_RANGES,
                 selectedSliderRangeIndex = 2,
                 availableRequiredMatches = EMERGENCY_AVAILABLE_REQUIRED_MATCHES,
-                selectedRequiredMatchesIndex = 1
+                selectedRequiredMatchesIndex = 1,
+                isDisableRepeatingAlarmsEnabled = true
             ),
             onEvent = {}
         )
