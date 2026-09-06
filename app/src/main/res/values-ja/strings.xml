@@ -233,4 +233,6 @@
     <string name="no_codes_yet">まだ他のコードはありません</string>
     <string name="no_codes_yet_description">デフォルト以外に特定のアラームに割り当てられたコードがここに表示されます。</string>
     <string name="alarm_date">アラームの日付</string>
+    <string name="disable_repeating_alarms">繰り返しアラームを無効にする</string>
+    <string name="disable_repeating_alarms_description">緊急タスクを終了すると、アラームが繰り返しの場合は無効になります。</string>
 </resources>
