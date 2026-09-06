@@ -1,2 +1,4 @@
-* Performance improvements,
-* Bug fixes.
+* Improved ringtone volume controls,
+* Added 60 and 90 seconds options for temporary mute feature,
+* Added option to disable automatic disabling of repeating alarms when emergency task is finished,
+* Performance improvements.
