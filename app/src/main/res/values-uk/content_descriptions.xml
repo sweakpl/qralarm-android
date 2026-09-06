@@ -37,4 +37,6 @@
     <string name="content_description_qralarm_pro_image">Зображення піктограми програми QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Зображення п\'яти золотих зірок</string>
     <string name="content_description_qr_code_icon">Піктограма QR-коду</string>
+    <string name="content_description_info_icon">Піктограма інформації</string>
+    <string name="content_description_calendar_icon">Значок календаря</string>
 </resources>
