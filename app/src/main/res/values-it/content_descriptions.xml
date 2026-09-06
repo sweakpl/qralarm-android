@@ -37,4 +37,6 @@
     <string name="content_description_qralarm_pro_image">Immagine dell\'icona dell\'app QRAlarm PRO</string>
     <string name="content_description_five_stars_image">Immagine di cinque stelle dorate</string>
     <string name="content_description_qr_code_icon">Icona codice QR</string>
+    <string name="content_description_info_icon">Icona Informazioni</string>
+    <string name="content_description_calendar_icon">Icona calendario</string>
 </resources>
