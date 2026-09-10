@@ -32,8 +32,13 @@ sealed class AddEditAlarmFlowUserEvent {
         data class DialerPickerDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
         data class AlarmTimeChanged(
             val newAlarmHourOfDay: Int,
-            val newAlarmMinute: Int
-        ) : AddEditAlarmScreenUserEvent()
+            val newAlarmMinute: Int,
+            val source: Source
+        ) : AddEditAlarmScreenUserEvent() {
+            enum class Source {
+                Spinner, Dialog
+            }
+        }
 
         data class DatePickerDialogVisible(val isVisible: Boolean) : AddEditAlarmScreenUserEvent()
         data class AlarmDateSelected(val selectedDateInMillis: Long) : AddEditAlarmScreenUserEvent()

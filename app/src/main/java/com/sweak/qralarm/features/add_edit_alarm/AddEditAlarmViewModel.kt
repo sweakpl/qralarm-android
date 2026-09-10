@@ -410,7 +410,10 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             is AddEditAlarmScreenUserEvent.AlarmTimeChanged -> {
                 nextAlarmTimeUpdateJob?.cancel()
                 nextAlarmTimeUpdateJob = viewModelScope.launch {
-                    delay(500.milliseconds)
+                    // Only debounce when the update comes from spinner which can be rapid:
+                    if (event.source == AddEditAlarmScreenUserEvent.AlarmTimeChanged.Source.Spinner) {
+                        delay(500.milliseconds)
+                    }
 
                     if (event.newAlarmHourOfDay != state.value.alarmHourOfDay ||
                         event.newAlarmMinute != state.value.alarmMinute

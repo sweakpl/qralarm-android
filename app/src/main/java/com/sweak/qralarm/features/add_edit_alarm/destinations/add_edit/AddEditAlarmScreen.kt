@@ -503,7 +503,8 @@ private fun AddEditAlarmScreenContent(
                                     onEvent(
                                         AddEditAlarmScreenUserEvent.AlarmTimeChanged(
                                             newAlarmHourOfDay = hourOfDay,
-                                            newAlarmMinute = minute
+                                            newAlarmMinute = minute,
+                                            source = AddEditAlarmScreenUserEvent.AlarmTimeChanged.Source.Spinner
                                         )
                                     )
                                 },
@@ -1139,7 +1140,8 @@ private fun AddEditAlarmScreenContent(
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmTimeChanged(
                         newAlarmHourOfDay = hourOfDay,
-                        newAlarmMinute = minute
+                        newAlarmMinute = minute,
+                        source = AddEditAlarmScreenUserEvent.AlarmTimeChanged.Source.Dialog
                     )
                 )
             }
