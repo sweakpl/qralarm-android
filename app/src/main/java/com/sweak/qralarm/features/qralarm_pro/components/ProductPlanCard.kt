@@ -92,7 +92,7 @@ private fun ProductPlanCardPreview() {
             title = "Standalone app",
             price = {
                 Text(
-                    text = "itch.io",
+                    text = "Google Play",
                     color = Color.White,
                     style = MaterialTheme.typography.displaySmall
                 )

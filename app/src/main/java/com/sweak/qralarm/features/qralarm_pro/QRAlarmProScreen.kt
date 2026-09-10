@@ -60,25 +60,7 @@ fun QRAlarmProScreen(
         onEvent = { event ->
             when (event) {
                 is QRAlarmProScreenUserEvent.GetQRAlarmProClicked -> {
-                    if (event.qrAlarmProDistributionSource is QRAlarmProDistributionSource.ItchIo) {
-                        val qralarmProItchIoUrl =
-                            resources.getString(R.string.qralarm_pro_itch_io_url)
-
-                        try {
-                            context.startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    qralarmProItchIoUrl.toUri()
-                                )
-                            )
-                        } catch (_: ActivityNotFoundException) {
-                            Toast.makeText(
-                                context,
-                                resources.getString(R.string.issue_opening_the_page),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    } else if (event.qrAlarmProDistributionSource is QRAlarmProDistributionSource.GooglePlay) {
+                    if (event.qrAlarmProDistributionSource is QRAlarmProDistributionSource.GooglePlay) {
                         val qralarmProPackageName =
                             resources.getString(R.string.qralarm_pro_package_name)
 
@@ -191,29 +173,6 @@ fun QRAlarmProScreenContent(onEvent: (QRAlarmProScreenUserEvent) -> Unit) {
                     onClick = {
                         selectedQRAlarmProDistributionSource =
                             QRAlarmProDistributionSource.GooglePlay
-                    },
-                    modifier = Modifier
-                        .padding(
-                            start = MaterialTheme.space.medium,
-                            end = MaterialTheme.space.medium,
-                            bottom = MaterialTheme.space.medium
-                        )
-                )
-
-                ProductPlanCard(
-                    title = stringResource(R.string.standalone_app),
-                    price = {
-                        Text(
-                            text = stringResource(R.string.itch_io),
-                            style = MaterialTheme.typography.displaySmall,
-                            color = Color.White,
-                            modifier = Modifier.basicMarquee()
-                        )
-                    },
-                    selected = selectedQRAlarmProDistributionSource is QRAlarmProDistributionSource.ItchIo,
-                    enabled = true,
-                    onClick = {
-                        selectedQRAlarmProDistributionSource = QRAlarmProDistributionSource.ItchIo
                     },
                     modifier = Modifier
                         .padding(
