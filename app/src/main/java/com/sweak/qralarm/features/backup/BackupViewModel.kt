@@ -2,10 +2,12 @@ package com.sweak.qralarm.features.backup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.R
 import com.sweak.qralarm.core.domain.backup.BackupError
 import com.sweak.qralarm.core.domain.backup.CreateBackup
 import com.sweak.qralarm.core.domain.backup.RestoreBackup
 import com.sweak.qralarm.core.domain.util.Result
+import com.sweak.qralarm.core.ui.compose_util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +28,7 @@ class BackupViewModel @Inject constructor(
         when (event) {
             is BackupScreenUserEvent.OnExportBackupClicked -> {
                 _state.update { currentState ->
-                    currentState.copy(message = null)
+                    currentState.withoutMessages()
                 }
             }
 
@@ -34,7 +36,7 @@ class BackupViewModel @Inject constructor(
                 if (isWorkInProgress()) return@launch
 
                 _state.update { currentState ->
-                    currentState.copy(isBackupInProgress = true, message = null)
+                    currentState.withoutMessages().copy(isBackupInProgress = true)
                 }
 
                 val result = createBackup(destinationUriString = event.destinationUriString)
@@ -42,9 +44,16 @@ class BackupViewModel @Inject constructor(
                 _state.update { currentState ->
                     currentState.copy(
                         isBackupInProgress = false,
-                        message = when (result) {
-                            is Result.Success -> BackupScreenMessage.BackupCreated
-                            is Result.Error -> BackupScreenMessage.BackupCreationFailed
+                        exportMessage = when (result) {
+                            is Result.Success -> BackupScreenMessage.Success(
+                                text = UiText.StringResource(resId = R.string.backup_created)
+                            )
+
+                            is Result.Error -> BackupScreenMessage.Failure(
+                                text = UiText.StringResource(
+                                    resId = R.string.backup_creation_failed
+                                )
+                            )
                         }
                     )
                 }
@@ -52,22 +61,25 @@ class BackupViewModel @Inject constructor(
 
             is BackupScreenUserEvent.OnImportBackupClicked -> {
                 _state.update { currentState ->
-                    currentState.copy(
-                        isImportConfirmationDialogVisible = true,
-                        message = null
+                    currentState.withoutMessages().copy(
+                        isImportConfirmationDialogVisible = true
                     )
                 }
             }
 
             is BackupScreenUserEvent.ImportConfirmationDialogVisible -> {
                 _state.update { currentState ->
-                    currentState.copy(isImportConfirmationDialogVisible = event.isVisible)
+                    currentState.withoutMessages().copy(
+                        isImportConfirmationDialogVisible = event.isVisible
+                    )
                 }
             }
 
             is BackupScreenUserEvent.OnImportBackupConfirmed -> {
                 _state.update { currentState ->
-                    currentState.copy(isImportConfirmationDialogVisible = false)
+                    currentState.withoutMessages().copy(
+                        isImportConfirmationDialogVisible = false
+                    )
                 }
             }
 
@@ -75,7 +87,7 @@ class BackupViewModel @Inject constructor(
                 if (isWorkInProgress()) return@launch
 
                 _state.update { currentState ->
-                    currentState.copy(isImportInProgress = true, message = null)
+                    currentState.withoutMessages().copy(isImportInProgress = true)
                 }
 
                 val result = restoreBackup(sourceUriString = event.sourceUriString)
@@ -83,27 +95,38 @@ class BackupViewModel @Inject constructor(
                 _state.update { currentState ->
                     currentState.copy(
                         isImportInProgress = false,
-                        message = when (result) {
-                            is Result.Success -> BackupScreenMessage.BackupImported
-                            is Result.Error -> when (result.error) {
-                                is BackupError.NotAQRAlarmBackup ->
-                                    BackupScreenMessage.BackupNotRecognized
+                        importMessage = when (result) {
+                            is Result.Success -> BackupScreenMessage.Success(
+                                text = UiText.StringResource(resId = R.string.backup_imported)
+                            )
 
-                                is BackupError.UnsupportedFormatVersion ->
-                                    BackupScreenMessage.BackupTooNew
+                            is Result.Error -> BackupScreenMessage.Failure(
+                                text = UiText.StringResource(
+                                    resId = when (result.error) {
+                                        is BackupError.NotAQRAlarmBackup ->
+                                            R.string.backup_not_recognized
 
-                                is BackupError.IoFailure ->
-                                    BackupScreenMessage.BackupImportFailed
-                            }
+                                        is BackupError.UnsupportedFormatVersion ->
+                                            R.string.backup_too_new
+
+                                        is BackupError.IoFailure ->
+                                            R.string.backup_import_failed
+                                    }
+                                )
+                            )
                         }
                     )
                 }
             }
 
-            else -> { /* no-op */ }
+            else -> { /* no-op */
+            }
         }
     }
 
     private fun isWorkInProgress(): Boolean =
         state.value.isBackupInProgress || state.value.isImportInProgress
+
+    private fun BackupScreenState.withoutMessages(): BackupScreenState =
+        copy(exportMessage = null, importMessage = null)
 }

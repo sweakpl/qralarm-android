@@ -262,8 +262,8 @@
     <string name="import_backup_description">Bring back your alarms, codes, and ringtones from a previous backup file.</string>
     <string name="replaces_all_current_data">Replaces all current data</string>
     <string name="import_backup_question">Import a backup?</string>
-    <string name="import_backup_question_description">All of your current alarms, codes and settings will be replaced with the ones from the backup. The restored alarms will be switched off — turn back on the ones you want.</string>
-    <string name="backup_imported">Backup imported. The restored alarms are switched off — turn back on the ones you want.</string>
+    <string name="import_backup_question_description">All of your current alarms, codes and settings will be replaced with the ones from the backup. The restored alarms will be switched off.</string>
+    <string name="backup_imported">Backup imported. The restored alarms are switched off.</string>
     <string name="backup_not_recognized">This file is not a QRAlarm backup.</string>
     <string name="backup_too_new">This backup was made with a newer version of QRAlarm. Update the app and try again.</string>
     <string name="backup_import_failed">Couldn\'t read the backup. Please try again.</string>

@@ -2,6 +2,10 @@ package com.sweak.qralarm.features.backup
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,6 +50,7 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.domain.backup.defaultBackupFileName
+import com.sweak.qralarm.core.ui.compose_util.UiText
 
 @Composable
 fun BackupScreen(onBackClicked: () -> Unit) {
@@ -152,6 +157,7 @@ fun BackupScreenContent(
                     isActionInProgress = state.isBackupInProgress,
                     isActionEnabled = !isAnythingInProgress,
                     onActionClick = { onEvent(BackupScreenUserEvent.OnExportBackupClicked) },
+                    message = state.exportMessage,
                     modifier = Modifier.padding(
                         start = MaterialTheme.space.medium,
                         top = MaterialTheme.space.mediumLarge,
@@ -171,52 +177,13 @@ fun BackupScreenContent(
                     isActionInProgress = state.isImportInProgress,
                     isActionEnabled = !isAnythingInProgress,
                     onActionClick = { onEvent(BackupScreenUserEvent.OnImportBackupClicked) },
+                    message = state.importMessage,
                     modifier = Modifier.padding(
                         start = MaterialTheme.space.medium,
                         end = MaterialTheme.space.medium,
                         bottom = MaterialTheme.space.mediumLarge
                     )
                 )
-
-                if (state.message != null) {
-                    val isFailure = state.message != BackupScreenMessage.BackupCreated &&
-                            state.message != BackupScreenMessage.BackupImported
-
-                    Text(
-                        text = stringResource(
-                            id = when (state.message) {
-                                is BackupScreenMessage.BackupCreated ->
-                                    R.string.backup_created
-
-                                is BackupScreenMessage.BackupCreationFailed ->
-                                    R.string.backup_creation_failed
-
-                                is BackupScreenMessage.BackupImported ->
-                                    R.string.backup_imported
-
-                                is BackupScreenMessage.BackupNotRecognized ->
-                                    R.string.backup_not_recognized
-
-                                is BackupScreenMessage.BackupTooNew ->
-                                    R.string.backup_too_new
-
-                                is BackupScreenMessage.BackupImportFailed ->
-                                    R.string.backup_import_failed
-                            }
-                        ),
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
-                        color = if (isFailure) MaterialTheme.colorScheme.error
-                        else MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                start = MaterialTheme.space.medium,
-                                end = MaterialTheme.space.medium,
-                                bottom = MaterialTheme.space.mediumLarge
-                            )
-                    )
-                }
             }
         }
     }
@@ -248,7 +215,8 @@ private fun BackupOptionCard(
     isActionEnabled: Boolean,
     onActionClick: () -> Unit,
     modifier: Modifier = Modifier,
-    warning: String? = null
+    warning: String? = null,
+    message: BackupScreenMessage? = null
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(all = MaterialTheme.space.medium)) {
@@ -305,6 +273,30 @@ private fun BackupOptionCard(
                     else MaterialTheme.space.medium
                 )
             )
+
+            AnimatedContent(
+                targetState = message,
+                transitionSpec = { fadeIn() togetherWith fadeOut() },
+                label = "Backup action message animation"
+            ) { backupScreenMessage ->
+                if (backupScreenMessage != null) {
+                    Text(
+                        text = backupScreenMessage.text.asString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        color = when (backupScreenMessage) {
+                            is BackupScreenMessage.Success ->
+                                MaterialTheme.colorScheme.onSurfaceVariant
+
+                            is BackupScreenMessage.Failure ->
+                                MaterialTheme.colorScheme.error
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = MaterialTheme.space.smallMedium)
+                    )
+                }
+            }
         }
     }
 }
@@ -343,7 +335,11 @@ private fun BackupActionButton(
 private fun BackupScreenContentPreview() {
     QRAlarmTheme {
         BackupScreenContent(
-            state = BackupScreenState(),
+            state = BackupScreenState(
+                exportMessage = BackupScreenMessage.Success(
+                    text = UiText.StringResource(resId = R.string.backup_created)
+                )
+            ),
             onEvent = {}
         )
     }
