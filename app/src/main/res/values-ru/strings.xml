@@ -253,4 +253,18 @@
     <string name="alarm_date">Дата будильника</string>
     <string name="disable_repeating_alarms">Отключить повторяющиеся будильники</string>
     <string name="disable_repeating_alarms_description">Завершение экстренной задачи отключит будильник, если он повторяется.</string>
+    <string name="backup">Резервная копия</string>
+    <string name="export_backup">Экспорт резервной копии</string>
+    <string name="export_backup_description">Сохраните ваши будильники, коды и мелодии в файл.</string>
+    <string name="backup_created">Резервная копия создана.</string>
+    <string name="backup_creation_failed">Не удалось создать резервную копию. Попробуйте ещё раз.</string>
+    <string name="import_backup">Импорт резервной копии</string>
+    <string name="import_backup_description">Восстановите ваши будильники, коды и мелодии из предыдущей резервной копии.</string>
+    <string name="replaces_all_current_data">Заменяет все текущие данные</string>
+    <string name="import_backup_question">Импортировать резервную копию?</string>
+    <string name="import_backup_question_description">Все ваши текущие будильники, коды и настройки будут заменены на те, что в резервной копии. Восстановленные будильники будут выключены.</string>
+    <string name="backup_imported">Резервная копия импортирована. Восстановленные будильники выключены.</string>
+    <string name="backup_not_recognized">Этот файл не является резервной копией QRAlarm.</string>
+    <string name="backup_too_new">Эта резервная копия была создана в более новой версии QRAlarm. Обновите приложение и попробуйте снова.</string>
+    <string name="backup_import_failed">Не удалось прочитать резервную копию. Попробуйте ещё раз.</string>
 </resources>

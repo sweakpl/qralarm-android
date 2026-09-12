@@ -235,4 +235,18 @@
     <string name="alarm_date">アラームの日付</string>
     <string name="disable_repeating_alarms">繰り返しアラームを無効にする</string>
     <string name="disable_repeating_alarms_description">緊急タスクを終了すると、アラームが繰り返しの場合は無効になります。</string>
+    <string name="backup">バックアップ</string>
+    <string name="export_backup">バックアップをエクスポート</string>
+    <string name="export_backup_description">アラーム、コード、着信音をファイルに保存します。</string>
+    <string name="backup_created">バックアップが作成されました。</string>
+    <string name="backup_creation_failed">バックアップを作成できませんでした。再試行してください。</string>
+    <string name="import_backup">バックアップをインポート</string>
+    <string name="import_backup_description">以前のバックアップファイルからアラーム、コード、着信音を復元します。</string>
+    <string name="replaces_all_current_data">すべての現在のデータを置き換えます</string>
+    <string name="import_backup_question">バックアップをインポートしますか？</string>
+    <string name="import_backup_question_description">現在のすべてのアラーム、コード、設定がバックアップのものに置き換えられます。復元されたアラームは停止状態になります。</string>
+    <string name="backup_imported">バックアップがインポートされました。復元されたアラームは停止状態です。</string>
+    <string name="backup_not_recognized">このファイルはQRAlarmのバックアップではありません。</string>
+    <string name="backup_too_new">このバックアップはQRAlarmの新しいバージョンで作成されました。アプリを更新して再試行してください。</string>
+    <string name="backup_import_failed">バックアップを読み取れませんでした。再試行してください。</string>
 </resources>

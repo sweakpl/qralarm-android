@@ -241,4 +241,18 @@
     <string name="alarm_date">Alarmdatum</string>
     <string name="disable_repeating_alarms">Wiederholende Alarme deaktivieren</string>
     <string name="disable_repeating_alarms_description">Das Abschließen der Notfallaufgabe wird die Alarm deaktivieren, wenn sie wiederholt wird.</string>
+    <string name="backup">Sicherung</string>
+    <string name="export_backup">Backup exportieren</string>
+    <string name="export_backup_description">Speichern Sie Ihre Alarme, Codes und Klingeltöne in einer Datei.</string>
+    <string name="backup_created">Backup erstellt.</string>
+    <string name="backup_creation_failed">Backup konnte nicht erstellt werden. Bitte versuchen Sie es erneut.</string>
+    <string name="import_backup">Backup importieren</string>
+    <string name="import_backup_description">Stellen Sie Ihre Alarme, Codes und Klingeltöne aus einer früheren Backup-Datei wieder her.</string>
+    <string name="replaces_all_current_data">Ersetzt alle aktuellen Daten</string>
+    <string name="import_backup_question">Backup importieren?</string>
+    <string name="import_backup_question_description">Alle aktuellen Alarme, Codes und Einstellungen werden durch die aus dem Backup ersetzt. Die wiederhergestellten Alarme sind ausgeschaltet.</string>
+    <string name="backup_imported">Backup importiert. Die wiederhergestellten Alarme sind ausgeschaltet.</string>
+    <string name="backup_not_recognized">Diese Datei ist kein QRAlarm-Backup.</string>
+    <string name="backup_too_new">Dieses Backup wurde mit einer neueren Version von QRAlarm erstellt. Bitte aktualisieren Sie die App und versuchen Sie es erneut.</string>
+    <string name="backup_import_failed">Das Backup konnte nicht gelesen werden. Bitte versuchen Sie es erneut.</string>
 </resources>

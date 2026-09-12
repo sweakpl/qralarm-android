@@ -235,4 +235,18 @@
     <string name="alarm_date">Tanggal alarm</string>
     <string name="disable_repeating_alarms">Nonaktifkan alarm berulang</string>
     <string name="disable_repeating_alarms_description">Menyelesaikan tugas darurat akan menonaktifkan alarm jika sedang berulang.</string>
+    <string name="backup">Cadangkan</string>
+    <string name="export_backup">Ekspor cadangan</string>
+    <string name="export_backup_description">Simpan alarm, kode, dan nada dering Anda ke dalam file.</string>
+    <string name="backup_created">Cadangan dibuat.</string>
+    <string name="backup_creation_failed">Tidak bisa membuat cadangan. Silakan coba lagi.</string>
+    <string name="import_backup">Impor cadangan</string>
+    <string name="import_backup_description">Kembalikan alarm, kode, dan nada dering Anda dari file cadangan sebelumnya.</string>
+    <string name="replaces_all_current_data">Menggantikan semua data saat ini</string>
+    <string name="import_backup_question">Impor cadangan?</string>
+    <string name="import_backup_question_description">Semua alarm, kode, dan pengaturan Anda saat ini akan digantikan dengan yang ada di cadangan. Alarm yang dipulihkan akan dimatikan.</string>
+    <string name="backup_imported">Cadangan diimpor. Alarm yang dipulihkan dimatikan.</string>
+    <string name="backup_not_recognized">File ini bukan cadangan QRAlarm.</string>
+    <string name="backup_too_new">Cadangan ini dibuat dengan versi QRAlarm yang lebih baru. Perbarui aplikasi dan coba lagi.</string>
+    <string name="backup_import_failed">Tidak bisa membaca cadangan. Silakan coba lagi.</string>
 </resources>

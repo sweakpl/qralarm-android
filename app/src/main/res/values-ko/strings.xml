@@ -235,4 +235,18 @@
     <string name="alarm_date">알람 날짜</string>
     <string name="disable_repeating_alarms">반복 알람 비활성화</string>
     <string name="disable_repeating_alarms_description">비상 작업이 완료되면 알람이 반복 중일 경우 비활성화됩니다.</string>
+    <string name="backup">백업</string>
+    <string name="export_backup">백업 내보내기</string>
+    <string name="export_backup_description">알람, 코드 및 벨소리를 파일로 저장합니다.</string>
+    <string name="backup_created">백업이 생성되었습니다.</string>
+    <string name="backup_creation_failed">백업을 생성할 수 없습니다. 다시 시도해 주세요.</string>
+    <string name="import_backup">백업 가져오기</string>
+    <string name="import_backup_description">이전 백업 파일에서 알람, 코드 및 벨소리를 복원합니다.</string>
+    <string name="replaces_all_current_data">모든 현재 데이터가 대체됩니다</string>
+    <string name="import_backup_question">백업을 가져오시겠습니까?</string>
+    <string name="import_backup_question_description">현재 알람, 코드 및 설정이 백업 데이터로 대체됩니다. 복원된 알람은 꺼진 상태로 유지됩니다.</string>
+    <string name="backup_imported">백업이 가져와졌습니다. 복원된 알람은 꺼져 있습니다.</string>
+    <string name="backup_not_recognized">이 파일은 QRAlarm 백업이 아닙니다.</string>
+    <string name="backup_too_new">이 백업은 최신 버전 QRAlarm으로 만들어졌습니다. 앱을 업데이트하고 다시 시도하세요.</string>
+    <string name="backup_import_failed">백업을 읽을 수 없습니다. 다시 시도해 주세요.</string>
 </resources>

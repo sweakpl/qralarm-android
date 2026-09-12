@@ -241,4 +241,18 @@
     <string name="alarm_date">Alarm tarihi</string>
     <string name="disable_repeating_alarms">Tekrar eden alarmları devre dışı bırak</string>
     <string name="disable_repeating_alarms_description">Acil durum görevi tamamlandığında alarm tekrar ediyorsa devre dışı bırakılır.</string>
+    <string name="backup">Yedekle</string>
+    <string name="export_backup">Yedek dışa aktar</string>
+    <string name="export_backup_description">Alarmlarınızı, kodlarınızı ve zil seslerinizi bir dosyaya kaydedin.</string>
+    <string name="backup_created">Yedekleme oluşturuldu.</string>
+    <string name="backup_creation_failed">Yedek oluşturulamadı. Lütfen tekrar deneyin.</string>
+    <string name="import_backup">Yedek içe aktar</string>
+    <string name="import_backup_description">Önceki bir yedek dosyasından alarmlarınızı, kodlarınızı ve zil seslerinizi geri getirin.</string>
+    <string name="replaces_all_current_data">Tüm mevcut verileri değiştirir</string>
+    <string name="import_backup_question">Bir yedek içe aktarılsın mı?</string>
+    <string name="import_backup_question_description">Mevcut tüm alarmlarınız, kodlarınız ve ayarlarınız yedeklemedekilerle değiştirilecektir. Geri yüklenen alarmlar kapalı olacaktır.</string>
+    <string name="backup_imported">Yedek yüklendi. Geri yüklenen alarmlar kapalı.</string>
+    <string name="backup_not_recognized">Bu dosya bir QRAlarm yedeği değil.</string>
+    <string name="backup_too_new">Bu yedek QRAlarm\'ın daha yeni bir sürümüyle oluşturulmuş. Uygulamayı güncelleyin ve tekrar deneyin.</string>
+    <string name="backup_import_failed">Yedek okunamadı. Lütfen tekrar deneyin.</string>
 </resources>
