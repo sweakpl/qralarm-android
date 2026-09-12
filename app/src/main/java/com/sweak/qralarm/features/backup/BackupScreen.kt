@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
+import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
@@ -60,6 +61,18 @@ fun BackupScreen(onBackClicked: () -> Unit) {
         }
     }
 
+    // Anything can be picked on purpose: a backup usually comes back from a drive or an email as a
+    // file of no particular type, and a narrower filter would grey out the user's own backup.
+    val openBackupFileLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { sourceUri ->
+        if (sourceUri != null) {
+            backupViewModel.onEvent(
+                BackupScreenUserEvent.BackupSourcePicked(sourceUriString = sourceUri.toString())
+            )
+        }
+    }
+
     BackupScreenContent(
         state = backupScreenState,
         onEvent = { event ->
@@ -68,6 +81,11 @@ fun BackupScreen(onBackClicked: () -> Unit) {
                 is BackupScreenUserEvent.OnExportBackupClicked -> {
                     backupViewModel.onEvent(event)
                     createBackupFileLauncher.launch(defaultBackupFileName())
+                }
+
+                is BackupScreenUserEvent.OnImportBackupConfirmed -> {
+                    backupViewModel.onEvent(event)
+                    openBackupFileLauncher.launch(arrayOf("*/*"))
                 }
 
                 else -> backupViewModel.onEvent(event)
@@ -136,29 +154,27 @@ fun BackupScreenContent(
                             style = MaterialTheme.typography.bodyMedium
                         )
 
-                        val isQRAlarmTheme = MaterialTheme.isQRAlarmTheme
+                        val isAnythingInProgress =
+                            state.isBackupInProgress || state.isImportInProgress
 
-                        Button(
-                            onClick = { onEvent(BackupScreenUserEvent.OnExportBackupClicked) },
-                            enabled = !state.isBackupInProgress,
-                            colors = if (isQRAlarmTheme)
-                                ButtonDefaults.buttonColors(containerColor = Jacarta)
-                            else
-                                ButtonDefaults.buttonColors(),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            if (state.isBackupInProgress) {
-                                CircularProgressIndicator(
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    strokeWidth = 2.dp,
-                                    modifier = Modifier.size(size = MaterialTheme.space.mediumLarge)
-                                )
-                            } else {
-                                Text(text = stringResource(R.string.export_backup))
-                            }
-                        }
+                        BackupActionButton(
+                            text = stringResource(R.string.export_backup),
+                            isInProgress = state.isBackupInProgress,
+                            isEnabled = !isAnythingInProgress,
+                            onClick = { onEvent(BackupScreenUserEvent.OnExportBackupClicked) }
+                        )
+
+                        BackupActionButton(
+                            text = stringResource(R.string.import_backup),
+                            isInProgress = state.isImportInProgress,
+                            isEnabled = !isAnythingInProgress,
+                            onClick = { onEvent(BackupScreenUserEvent.OnImportBackupClicked) }
+                        )
 
                         if (state.message != null) {
+                            val isFailure = state.message != BackupScreenMessage.BackupCreated &&
+                                    state.message != BackupScreenMessage.BackupImported
+
                             Text(
                                 text = stringResource(
                                     id = when (state.message) {
@@ -167,23 +183,73 @@ fun BackupScreenContent(
 
                                         is BackupScreenMessage.BackupCreationFailed ->
                                             R.string.backup_creation_failed
+
+                                        is BackupScreenMessage.BackupImported ->
+                                            R.string.backup_imported
+
+                                        is BackupScreenMessage.BackupNotRecognized ->
+                                            R.string.backup_not_recognized
+
+                                        is BackupScreenMessage.BackupTooNew ->
+                                            R.string.backup_too_new
+
+                                        is BackupScreenMessage.BackupImportFailed ->
+                                            R.string.backup_import_failed
                                     }
                                 ),
                                 style = MaterialTheme.typography.bodyMedium,
                                 textAlign = TextAlign.Center,
-                                color = when (state.message) {
-                                    is BackupScreenMessage.BackupCreated ->
-                                        MaterialTheme.colorScheme.onSurfaceVariant
-
-                                    is BackupScreenMessage.BackupCreationFailed ->
-                                        MaterialTheme.colorScheme.error
-                                },
+                                color = if (isFailure) MaterialTheme.colorScheme.error
+                                else MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
                     }
                 }
             }
+        }
+    }
+
+    if (state.isImportConfirmationDialogVisible) {
+        QRAlarmDialog(
+            title = stringResource(R.string.import_backup_question),
+            message = stringResource(R.string.import_backup_description),
+            onDismissRequest = {
+                onEvent(
+                    BackupScreenUserEvent.ImportConfirmationDialogVisible(isVisible = false)
+                )
+            },
+            onPositiveClick = { onEvent(BackupScreenUserEvent.OnImportBackupConfirmed) },
+            positiveButtonText = stringResource(R.string.import_backup),
+            negativeButtonText = stringResource(R.string.cancel)
+        )
+    }
+}
+
+@Composable
+private fun BackupActionButton(
+    text: String,
+    isInProgress: Boolean,
+    isEnabled: Boolean,
+    onClick: () -> Unit
+) {
+    val isQRAlarmTheme = MaterialTheme.isQRAlarmTheme
+
+    Button(
+        onClick = onClick,
+        enabled = isEnabled,
+        colors = if (isQRAlarmTheme) ButtonDefaults.buttonColors(containerColor = Jacarta)
+        else ButtonDefaults.buttonColors(),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        if (isInProgress) {
+            CircularProgressIndicator(
+                color = MaterialTheme.colorScheme.onPrimary,
+                strokeWidth = 2.dp,
+                modifier = Modifier.size(size = MaterialTheme.space.mediumLarge)
+            )
+        } else {
+            Text(text = text)
         }
     }
 }

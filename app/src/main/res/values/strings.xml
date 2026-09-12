@@ -258,4 +258,11 @@
     <string name="export_backup">Export backup</string>
     <string name="backup_created">Backup created.</string>
     <string name="backup_creation_failed">Couldn\'t create the backup. Please try again.</string>
+    <string name="import_backup">Import backup</string>
+    <string name="import_backup_question">Import a backup?</string>
+    <string name="import_backup_description">All of your current alarms, codes and settings will be replaced with the ones from the backup. The restored alarms will be switched off — turn back on the ones you want.</string>
+    <string name="backup_imported">Backup imported. The restored alarms are switched off — turn back on the ones you want.</string>
+    <string name="backup_not_recognized">This file is not a QRAlarm backup.</string>
+    <string name="backup_too_new">This backup was made with a newer version of QRAlarm. Update the app and try again.</string>
+    <string name="backup_import_failed">Couldn\'t read the backup. Please try again.</string>
 </resources>

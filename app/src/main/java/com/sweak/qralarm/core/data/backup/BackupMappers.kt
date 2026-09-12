@@ -1,5 +1,6 @@
 package com.sweak.qralarm.core.data.backup
 
+import android.os.Build
 import com.sweak.qralarm.core.data.backup.dto.AlarmDto
 import com.sweak.qralarm.core.data.backup.dto.AppDto
 import com.sweak.qralarm.core.data.backup.dto.CodeDto
@@ -11,6 +12,7 @@ import com.sweak.qralarm.core.domain.backup.BackupAlarm
 import com.sweak.qralarm.core.domain.backup.BackupCode
 import com.sweak.qralarm.core.domain.backup.BackupMetadata
 import com.sweak.qralarm.core.domain.backup.BackupPreferences
+import com.sweak.qralarm.core.domain.user.model.Theme
 import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 import com.sweak.qralarm.core.storage.database.model.CodeEntity
 import java.time.DayOfWeek
@@ -177,7 +179,11 @@ fun PreferencesDto.toBackupPreferences(): BackupPreferences = BackupPreferences(
     defaultAlarmCodeId = defaultAlarmCodeId,
     emergencySliderRange = emergencySliderRange?.let { it.first..it.last },
     emergencyRequiredMatches = emergencyRequiredMatches,
-    theme = theme
+    theme = if (theme is Theme.Dynamic && Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+        Theme.Default
+    } else {
+        theme
+    }
 )
 
 /** How the alarm's repeating days are stored in one column, see AlarmsRepositoryImpl. */
