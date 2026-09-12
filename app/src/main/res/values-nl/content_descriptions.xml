@@ -39,4 +39,7 @@
     <string name="content_description_qr_code_icon">QR-codepictogram</string>
     <string name="content_description_info_icon">Informatie-pictogram</string>
     <string name="content_description_calendar_icon">Kalenderpictogram</string>
+    <string name="content_description_export_backup_icon">Back-up exporteren (bestandsdownload) pictogram</string>
+    <string name="content_description_import_backup_icon">Back-up importeren (bestandsupload) pictogram</string>
+    <string name="content_description_warning_icon">Waarschuwing driehoek pictogram</string>
 </resources>

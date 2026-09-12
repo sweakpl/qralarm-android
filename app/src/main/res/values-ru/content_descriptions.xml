@@ -39,4 +39,7 @@
     <string name="content_description_qr_code_icon">Значок QR-кода</string>
     <string name="content_description_info_icon">Значок информации</string>
     <string name="content_description_calendar_icon">Иконка календаря</string>
+    <string name="content_description_export_backup_icon">Экспорт резервной копии (загрузка файла) значок</string>
+    <string name="content_description_import_backup_icon">Импорт резервной копии (загрузка файла) значок</string>
+    <string name="content_description_warning_icon">Предупреждающий треугольник значок</string>
 </resources>

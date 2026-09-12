@@ -39,4 +39,7 @@
     <string name="content_description_qr_code_icon">Ikon kode QR</string>
     <string name="content_description_info_icon">Ikon informasi</string>
     <string name="content_description_calendar_icon">Ikon kalender</string>
+    <string name="content_description_export_backup_icon">Ekspor cadangan (unduh file) ikon</string>
+    <string name="content_description_import_backup_icon">Impor cadangan (unggah file) ikon</string>
+    <string name="content_description_warning_icon">Peringatan segitiga ikon</string>
 </resources>

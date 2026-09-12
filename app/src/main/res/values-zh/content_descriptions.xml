@@ -39,4 +39,7 @@
     <string name="content_description_qr_code_icon">二维码图标</string>
     <string name="content_description_info_icon">信息图标</string>
     <string name="content_description_calendar_icon">日历图标</string>
+    <string name="content_description_import_backup_icon">导入备份（文件上传）图标</string>
+    <string name="content_description_warning_icon">警告三角形图标</string>
+    <string name="content_description_export_backup_icon">导出备份（文件下载）图标</string>
 </resources>
