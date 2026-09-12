@@ -37,4 +37,7 @@ interface CodesDao {
         """
     )
     suspend fun deleteUnreferencedCodes(defaultCodeId: Long?)
+
+    @Query("DELETE FROM code")
+    suspend fun deleteAllCodes()
 }

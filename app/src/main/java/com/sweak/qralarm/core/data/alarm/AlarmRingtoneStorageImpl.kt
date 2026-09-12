@@ -7,6 +7,7 @@ import android.os.Build
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtoneStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -54,6 +55,50 @@ class AlarmRingtoneStorageImpl @Inject constructor(
             sourceFile.copyTo(target = newFile, overwrite = true)
             newFile.setReadable(true, false)
             Uri.fromFile(newFile).toString()
+        } catch (exception: Exception) {
+            if (exception is IOException ||
+                exception is SecurityException ||
+                exception is NullPointerException
+            ) {
+                null
+            } else {
+                throw exception
+            }
+        }
+    }
+
+    override fun openForAlarm(alarmId: Long): InputStream? {
+        val file = existingRingtoneFile(alarmId = alarmId) ?: return null
+
+        return try {
+            FileInputStream(file)
+        } catch (exception: Exception) {
+            if (exception is IOException ||
+                exception is SecurityException ||
+                exception is NullPointerException
+            ) {
+                null
+            } else {
+                throw exception
+            }
+        }
+    }
+
+    override fun writeForAlarm(alarmId: Long, inputStream: InputStream): String? {
+        return try {
+            val file = ringtoneFile(alarmId = alarmId)
+            file.createNewFile()
+            // Setting world-readable due to: https://stackoverflow.com/a/11977292/14037302
+            file.setReadable(true, false)
+
+            FileOutputStream(file).use { outputStream ->
+                copyStream(inputStream, outputStream)
+                outputStream.flush()
+            }
+
+            deleteLegacyRingtoneFile(alarmId = alarmId)
+
+            Uri.fromFile(file).toString()
         } catch (exception: Exception) {
             if (exception is IOException ||
                 exception is SecurityException ||

@@ -20,4 +20,10 @@ interface AlarmsDao {
 
     @Query("DELETE FROM alarm WHERE alarmId = :alarmId")
     suspend fun deleteAlarm(alarmId: Long)
+
+    @Query("DELETE FROM alarm")
+    suspend fun deleteAllAlarms()
+
+    @Query("SELECT alarmId FROM alarm")
+    suspend fun getAllAlarmIds(): List<Long>
 }
