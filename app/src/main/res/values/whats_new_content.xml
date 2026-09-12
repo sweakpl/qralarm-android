@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">What\'s new?</string>
-    <string name="whats_new_entry_1">Code names</string>
-    <string name="whats_new_entry_1_note_1">Give your codes memorable names</string>
-    <string name="whats_new_entry_1_note_2">Manage them all in one place</string>
-    <string name="whats_new_entry_2">Set alarms for any date</string>
+    <string name="whats_new_entry_1">Backup feature</string>
+    <string name="whats_new_entry_1_note_1">Save all your data to a file</string>
+    <string name="whats_new_entry_1_note_2">Import your data on e.g. a new phone</string>
+    <string name="whats_new_entry_2">Ringtone playback improvements</string>
 </resources>

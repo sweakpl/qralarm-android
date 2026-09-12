@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Wat is nieuw?</string>
-    <string name="whats_new_entry_1">Codenamen</string>
-    <string name="whats_new_entry_1_note_1">Geef je codes gedenkwaardige namen</string>
-    <string name="whats_new_entry_2">Stel alarmen in voor elke datum</string>
-    <string name="whats_new_entry_1_note_2">Beheer ze allemaal op één plek</string>
 </resources>

@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Quoi de neuf ?</string>
-    <string name="whats_new_entry_1">Noms des codes</string>
-    <string name="whats_new_entry_1_note_1">Donnez à vos codes des noms mémorables</string>
-    <string name="whats_new_entry_2">Régler des alarmes pour n\'importe quelle date</string>
-    <string name="whats_new_entry_1_note_2">Gérez-les tous en un seul endroit</string>
 </resources>
