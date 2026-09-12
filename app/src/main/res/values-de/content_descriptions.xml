@@ -39,4 +39,7 @@
     <string name="content_description_qr_code_icon">QR-Code-Symbol</string>
     <string name="content_description_info_icon">Informationssymbol</string>
     <string name="content_description_calendar_icon">Kalender-Symbol</string>
+    <string name="content_description_export_backup_icon">Backup exportieren (Datei herunterladen) Symbol</string>
+    <string name="content_description_import_backup_icon">Backup importieren (Datei hochladen) Symbol</string>
+    <string name="content_description_warning_icon">Warn-Dreieck-Symbol</string>
 </resources>

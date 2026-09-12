@@ -39,4 +39,7 @@
     <string name="content_description_qr_code_icon">QRコードアイコン</string>
     <string name="content_description_info_icon">情報アイコン</string>
     <string name="content_description_calendar_icon">カレンダーアイコン</string>
+    <string name="content_description_export_backup_icon">バックアップをエクスポート（ファイルダウンロード）アイコン</string>
+    <string name="content_description_import_backup_icon">バックアップをインポート（ファイルアップロード）アイコン</string>
+    <string name="content_description_warning_icon">警告三角形アイコン</string>
 </resources>

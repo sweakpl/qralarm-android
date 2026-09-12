@@ -39,4 +39,7 @@
     <string name="content_description_qr_code_icon">QR kodu simgesi</string>
     <string name="content_description_info_icon">Bilgi simgesi</string>
     <string name="content_description_calendar_icon">Takvim simgesi</string>
+    <string name="content_description_export_backup_icon">Yedekleme dışa aktarma (dosya indirme) simgesi</string>
+    <string name="content_description_import_backup_icon">Yedekleme içe aktarma (dosya yükleme) simgesi</string>
+    <string name="content_description_warning_icon">Uyarı üçgeni simgesi</string>
 </resources>

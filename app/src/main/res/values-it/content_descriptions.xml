@@ -39,4 +39,7 @@
     <string name="content_description_qr_code_icon">Icona codice QR</string>
     <string name="content_description_info_icon">Icona Informazioni</string>
     <string name="content_description_calendar_icon">Icona calendario</string>
+    <string name="content_description_export_backup_icon">Icona esporta backup (scaricamento file)</string>
+    <string name="content_description_warning_icon">Icona triangolo di avviso</string>
+    <string name="content_description_import_backup_icon">Icona importa backup (caricamento file)</string>
 </resources>

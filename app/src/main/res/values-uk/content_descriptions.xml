@@ -39,4 +39,7 @@
     <string name="content_description_qr_code_icon">Піктограма QR-коду</string>
     <string name="content_description_info_icon">Піктограма інформації</string>
     <string name="content_description_calendar_icon">Значок календаря</string>
+    <string name="content_description_export_backup_icon">Експорт резервної копії (значок завантаження файлу)</string>
+    <string name="content_description_import_backup_icon">Імпорт резервної копії (значок завантаження файлу)</string>
+    <string name="content_description_warning_icon">Значок попереджувального трикутника</string>
 </resources>
