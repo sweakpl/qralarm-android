@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,8 +26,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +40,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
+import com.sweak.qralarm.core.designsystem.theme.Gold
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
@@ -135,76 +139,83 @@ fun BackupScreenContent(
                 )
                 .verticalScroll(rememberScrollState())
         ) {
+            val isAnythingInProgress = state.isBackupInProgress || state.isImportInProgress
+
             Column(modifier = Modifier.padding(paddingValues = paddingValues)) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = MaterialTheme.space.medium,
-                            top = MaterialTheme.space.mediumLarge,
-                            end = MaterialTheme.space.medium
-                        )
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.medium),
-                        modifier = Modifier.padding(all = MaterialTheme.space.medium)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.backup_description),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                BackupOptionCard(
+                    icon = QRAlarmIcons.ExportBackup,
+                    iconContentDescription =
+                        stringResource(R.string.content_description_export_backup_icon),
+                    title = stringResource(R.string.export_backup),
+                    description = stringResource(R.string.export_backup_description),
+                    actionText = stringResource(R.string.export_backup),
+                    isActionInProgress = state.isBackupInProgress,
+                    isActionEnabled = !isAnythingInProgress,
+                    onActionClick = { onEvent(BackupScreenUserEvent.OnExportBackupClicked) },
+                    modifier = Modifier.padding(
+                        start = MaterialTheme.space.medium,
+                        top = MaterialTheme.space.mediumLarge,
+                        end = MaterialTheme.space.medium,
+                        bottom = MaterialTheme.space.mediumLarge
+                    )
+                )
 
-                        val isAnythingInProgress =
-                            state.isBackupInProgress || state.isImportInProgress
+                BackupOptionCard(
+                    icon = QRAlarmIcons.ImportBackup,
+                    iconContentDescription =
+                        stringResource(R.string.content_description_import_backup_icon),
+                    title = stringResource(R.string.import_backup),
+                    description = stringResource(R.string.import_backup_description),
+                    warning = stringResource(R.string.replaces_all_current_data),
+                    actionText = stringResource(R.string.import_backup),
+                    isActionInProgress = state.isImportInProgress,
+                    isActionEnabled = !isAnythingInProgress,
+                    onActionClick = { onEvent(BackupScreenUserEvent.OnImportBackupClicked) },
+                    modifier = Modifier.padding(
+                        start = MaterialTheme.space.medium,
+                        end = MaterialTheme.space.medium,
+                        bottom = MaterialTheme.space.mediumLarge
+                    )
+                )
 
-                        BackupActionButton(
-                            text = stringResource(R.string.export_backup),
-                            isInProgress = state.isBackupInProgress,
-                            isEnabled = !isAnythingInProgress,
-                            onClick = { onEvent(BackupScreenUserEvent.OnExportBackupClicked) }
-                        )
+                if (state.message != null) {
+                    val isFailure = state.message != BackupScreenMessage.BackupCreated &&
+                            state.message != BackupScreenMessage.BackupImported
 
-                        BackupActionButton(
-                            text = stringResource(R.string.import_backup),
-                            isInProgress = state.isImportInProgress,
-                            isEnabled = !isAnythingInProgress,
-                            onClick = { onEvent(BackupScreenUserEvent.OnImportBackupClicked) }
-                        )
+                    Text(
+                        text = stringResource(
+                            id = when (state.message) {
+                                is BackupScreenMessage.BackupCreated ->
+                                    R.string.backup_created
 
-                        if (state.message != null) {
-                            val isFailure = state.message != BackupScreenMessage.BackupCreated &&
-                                    state.message != BackupScreenMessage.BackupImported
+                                is BackupScreenMessage.BackupCreationFailed ->
+                                    R.string.backup_creation_failed
 
-                            Text(
-                                text = stringResource(
-                                    id = when (state.message) {
-                                        is BackupScreenMessage.BackupCreated ->
-                                            R.string.backup_created
+                                is BackupScreenMessage.BackupImported ->
+                                    R.string.backup_imported
 
-                                        is BackupScreenMessage.BackupCreationFailed ->
-                                            R.string.backup_creation_failed
+                                is BackupScreenMessage.BackupNotRecognized ->
+                                    R.string.backup_not_recognized
 
-                                        is BackupScreenMessage.BackupImported ->
-                                            R.string.backup_imported
+                                is BackupScreenMessage.BackupTooNew ->
+                                    R.string.backup_too_new
 
-                                        is BackupScreenMessage.BackupNotRecognized ->
-                                            R.string.backup_not_recognized
-
-                                        is BackupScreenMessage.BackupTooNew ->
-                                            R.string.backup_too_new
-
-                                        is BackupScreenMessage.BackupImportFailed ->
-                                            R.string.backup_import_failed
-                                    }
-                                ),
-                                style = MaterialTheme.typography.bodyMedium,
-                                textAlign = TextAlign.Center,
-                                color = if (isFailure) MaterialTheme.colorScheme.error
-                                else MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.fillMaxWidth()
+                                is BackupScreenMessage.BackupImportFailed ->
+                                    R.string.backup_import_failed
+                            }
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        color = if (isFailure) MaterialTheme.colorScheme.error
+                        else MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = MaterialTheme.space.medium,
+                                end = MaterialTheme.space.medium,
+                                bottom = MaterialTheme.space.mediumLarge
                             )
-                        }
-                    }
+                    )
                 }
             }
         }
@@ -213,7 +224,7 @@ fun BackupScreenContent(
     if (state.isImportConfirmationDialogVisible) {
         QRAlarmDialog(
             title = stringResource(R.string.import_backup_question),
-            message = stringResource(R.string.import_backup_description),
+            message = stringResource(R.string.import_backup_question_description),
             onDismissRequest = {
                 onEvent(
                     BackupScreenUserEvent.ImportConfirmationDialogVisible(isVisible = false)
@@ -227,11 +238,84 @@ fun BackupScreenContent(
 }
 
 @Composable
+private fun BackupOptionCard(
+    icon: ImageVector,
+    iconContentDescription: String,
+    title: String,
+    description: String,
+    actionText: String,
+    isActionInProgress: Boolean,
+    isActionEnabled: Boolean,
+    onActionClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    warning: String? = null
+) {
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(all = MaterialTheme.space.medium)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.space.smallMedium)
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = iconContentDescription,
+                    modifier = Modifier.size(size = MaterialTheme.space.mediumLarge)
+                )
+
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(top = MaterialTheme.space.smallMedium)
+            )
+
+            if (warning != null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.space.small),
+                    modifier = Modifier.padding(top = MaterialTheme.space.smallMedium)
+                ) {
+                    Icon(
+                        imageVector = QRAlarmIcons.Warning,
+                        contentDescription = stringResource(R.string.content_description_warning_icon),
+                        tint = Gold,
+                        modifier = Modifier.size(size = MaterialTheme.space.medium)
+                    )
+
+                    Text(
+                        text = warning,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Gold
+                    )
+                }
+            }
+
+            BackupActionButton(
+                text = actionText,
+                isInProgress = isActionInProgress,
+                isEnabled = isActionEnabled,
+                onClick = onActionClick,
+                modifier = Modifier.padding(
+                    top = if (warning != null) MaterialTheme.space.smallMedium
+                    else MaterialTheme.space.medium
+                )
+            )
+        }
+    }
+}
+
+@Composable
 private fun BackupActionButton(
     text: String,
     isInProgress: Boolean,
     isEnabled: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val isQRAlarmTheme = MaterialTheme.isQRAlarmTheme
 
@@ -240,7 +324,7 @@ private fun BackupActionButton(
         enabled = isEnabled,
         colors = if (isQRAlarmTheme) ButtonDefaults.buttonColors(containerColor = Jacarta)
         else ButtonDefaults.buttonColors(),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         if (isInProgress) {
             CircularProgressIndicator(

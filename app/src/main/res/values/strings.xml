@@ -254,13 +254,15 @@
     <string name="widget_tomorrow">Tomorrow</string>
     <string name="widget_tap_to_add">Tap to add one</string>
     <string name="backup">Backup</string>
-    <string name="backup_description">Save your alarms, codes and settings to a file. Keep it somewhere safe — you can use it to bring everything back on a new phone.</string>
     <string name="export_backup">Export backup</string>
+    <string name="export_backup_description">Save your alarms, codes and ringtones to a file.</string>
     <string name="backup_created">Backup created.</string>
     <string name="backup_creation_failed">Couldn\'t create the backup. Please try again.</string>
     <string name="import_backup">Import backup</string>
+    <string name="import_backup_description">Bring back your alarms, codes, and ringtones from a previous backup file.</string>
+    <string name="replaces_all_current_data">Replaces all current data</string>
     <string name="import_backup_question">Import a backup?</string>
-    <string name="import_backup_description">All of your current alarms, codes and settings will be replaced with the ones from the backup. The restored alarms will be switched off — turn back on the ones you want.</string>
+    <string name="import_backup_question_description">All of your current alarms, codes and settings will be replaced with the ones from the backup. The restored alarms will be switched off — turn back on the ones you want.</string>
     <string name="backup_imported">Backup imported. The restored alarms are switched off — turn back on the ones you want.</string>
     <string name="backup_not_recognized">This file is not a QRAlarm backup.</string>
     <string name="backup_too_new">This backup was made with a newer version of QRAlarm. Update the app and try again.</string>

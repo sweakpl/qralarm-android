@@ -28,6 +28,8 @@ import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.FileDownload
+import androidx.compose.material.icons.outlined.FileUpload
 import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.GppGood
 import androidx.compose.material.icons.outlined.Menu
@@ -92,4 +94,7 @@ object QRAlarmIcons {
     val FlashOff = Icons.Filled.FlashOff
     val SoundMute = Icons.AutoMirrored.Outlined.VolumeOff
     val Theme = Icons.Outlined.ColorLens
+    val ExportBackup = Icons.Outlined.FileDownload
+    val ImportBackup = Icons.Outlined.FileUpload
+    val Warning = Icons.Outlined.WarningAmber
 }
