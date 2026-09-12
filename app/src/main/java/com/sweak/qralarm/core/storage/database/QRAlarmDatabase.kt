@@ -10,9 +10,11 @@ import com.sweak.qralarm.core.storage.database.dao.CodesDao
 import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 import com.sweak.qralarm.core.storage.database.model.CodeEntity
 
+const val QRALARM_DATABASE_VERSION = 10
+
 @Database(
     entities = [AlarmEntity::class, CodeEntity::class],
-    version = 10,
+    version = QRALARM_DATABASE_VERSION,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),

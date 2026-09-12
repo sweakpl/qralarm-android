@@ -1,5 +1,33 @@
 package com.sweak.qralarm.core.domain.backup
 
+import com.sweak.qralarm.core.domain.user.model.Theme
+
+/**
+ * Everything a backup carries over: the alarms, the saved codes and the handful of settings worth
+ * keeping. Ids are the ones the alarms and codes had when the backup was made - restoring hands
+ * out fresh ones and remaps every reference to them.
+ */
+data class BackupBundle(
+    val alarms: List<BackupAlarm>,
+    val codes: List<BackupCode>,
+    val preferences: BackupPreferences
+)
+
+/**
+ * Says where a bundle came from. Only [backupFormatVersion] is ever acted upon - a bundle written
+ * in a newer format than this version of the app understands cannot be restored. Everything else
+ * is there to be looked at, never to be gated on.
+ */
+data class BackupMetadata(
+    val backupFormatVersion: Int,
+    val createdAtEpochMillis: Long,
+    val applicationId: String,
+    val flavor: String,
+    val versionCode: Int,
+    val versionName: String,
+    val databaseSchemaVersion: Int
+)
+
 /**
  * A single alarm as it travels through a backup. Deliberately not a domain
  * [com.sweak.qralarm.core.domain.alarm.Alarm]: every value is carried exactly as it was saved and
@@ -38,4 +66,17 @@ data class BackupCode(
     val codeId: Long,
     val value: String,
     val name: String?
+)
+
+/**
+ * The settings a backup carries. A null value means the bundle says nothing about that setting
+ * and whatever is currently set is left alone - except [defaultAlarmCodeId], for
+ * which null also legitimately means "no default code" and restores to exactly that.
+ */
+data class BackupPreferences(
+    /** The id the code had when the backup was made. */
+    val defaultAlarmCodeId: Long?,
+    val emergencySliderRange: IntRange?,
+    val emergencyRequiredMatches: Int?,
+    val theme: Theme?
 )
