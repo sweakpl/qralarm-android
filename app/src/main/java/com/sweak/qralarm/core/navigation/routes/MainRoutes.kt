@@ -44,3 +44,6 @@ data object MenuRoute : NavKey
 
 @Serializable
 data object CodesManagementRoute : NavKey
+
+@Serializable
+data object BackupRoute : NavKey

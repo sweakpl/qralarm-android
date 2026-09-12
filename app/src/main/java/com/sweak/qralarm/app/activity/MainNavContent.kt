@@ -15,6 +15,7 @@ import com.sweak.qralarm.core.navigation.SharedViewModelStoreNavEntryDecorator
 import com.sweak.qralarm.core.navigation.routes.AddEditAlarmRoute
 import com.sweak.qralarm.core.navigation.routes.AdvancedAlarmSettingsRoute
 import com.sweak.qralarm.core.navigation.routes.AlarmsChainSettingsRoute
+import com.sweak.qralarm.core.navigation.routes.BackupRoute
 import com.sweak.qralarm.core.navigation.routes.CodesManagementRoute
 import com.sweak.qralarm.core.navigation.routes.CustomCodeScannerRoute
 import com.sweak.qralarm.core.navigation.routes.DisableAlarmScannerRoute
@@ -34,6 +35,7 @@ import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.AddEditAl
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.AdvancedAlarmSettingsScreen
 import com.sweak.qralarm.features.add_edit_alarm.destinations.alarms_chain.AlarmsChainSettingsScreen
 import com.sweak.qralarm.features.add_edit_alarm.destinations.special.SpecialAlarmSettingsScreen
+import com.sweak.qralarm.features.backup.BackupScreen
 import com.sweak.qralarm.features.codes_management.CodesManagementScreen
 import com.sweak.qralarm.features.custom_code_scanner.CustomCodeScannerScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.DisableAlarmScannerScreen
@@ -176,8 +178,13 @@ fun MainNavContent(
                 onEmergencyTaskSettingsClicked = { navigator.navigate(EmergencySettingsRoute) },
                 onQRAlarmProClicked = { navigator.navigate(QRAlarmProRoute) },
                 onCodesManagementClicked = { navigator.navigate(CodesManagementRoute) },
-                onThemeClicked = { navigator.navigate(ThemeRoute) }
+                onThemeClicked = { navigator.navigate(ThemeRoute) },
+                onBackupClicked = { navigator.navigate(BackupRoute) }
             )
+        }
+
+        entry<BackupRoute> {
+            BackupScreen(onBackClicked = { navigator.goBack() })
         }
 
         entry<CodesManagementRoute> {

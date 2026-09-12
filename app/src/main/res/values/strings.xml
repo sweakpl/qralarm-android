@@ -253,4 +253,9 @@
     <string name="widget_today">Today</string>
     <string name="widget_tomorrow">Tomorrow</string>
     <string name="widget_tap_to_add">Tap to add one</string>
+    <string name="backup">Backup</string>
+    <string name="backup_description">Save your alarms, codes and settings to a file. Keep it somewhere safe — you can use it to bring everything back on a new phone.</string>
+    <string name="export_backup">Export backup</string>
+    <string name="backup_created">Backup created.</string>
+    <string name="backup_creation_failed">Couldn\'t create the backup. Please try again.</string>
 </resources>

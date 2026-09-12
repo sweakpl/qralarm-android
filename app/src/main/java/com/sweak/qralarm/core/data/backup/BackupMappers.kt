@@ -24,7 +24,6 @@ fun AlarmEntity.toBackupAlarm(): BackupAlarm = BackupAlarm(
     numberOfSnoozes = numberOfSnoozes,
     snoozeDurationInMinutes = snoozeDurationInMinutes,
     ringtone = ringtone,
-    // Narrowed down further by CreateBackup, which also checks that the file is actually there.
     hasCustomRingtoneFile = customRingtoneUriString != null,
     alarmVolumePercentage = alarmVolumePercentage,
     areVibrationsEnabled = areVibrationsEnabled,

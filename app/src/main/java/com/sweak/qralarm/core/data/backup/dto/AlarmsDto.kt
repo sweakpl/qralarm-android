@@ -33,7 +33,10 @@ data class AlarmDto(
     val snoozeDurationInMinutes: Int = DEFAULT_SNOOZE_NUMBER_TO_DURATION_PAIR.second,
     /** An [Alarm.Ringtone] name. */
     val ringtone: String = Alarm.Ringtone.GENTLE_GUITAR.name,
-    /** True if the backup carries a ringtone file for this alarm under ringtones/[alarmId]. */
+    /**
+     * True if the alarm used a custom ringtone. Its file is under ringtones/[alarmId], unless it
+     * could no longer be read when the backup was made.
+     */
     val hasCustomRingtoneFile: Boolean = false,
     val alarmVolumePercentage: Int = 0,
     val areVibrationsEnabled: Boolean = true,

@@ -10,4 +10,5 @@ sealed class MenuScreenUserEvent {
     data object OnContactSupportClicked : MenuScreenUserEvent()
     data object GoToApplicationSettingsClicked : MenuScreenUserEvent()
     data object OnThemeClicked : MenuScreenUserEvent()
+    data object OnBackupClicked : MenuScreenUserEvent()
 }

@@ -44,7 +44,8 @@ fun MenuScreen(
     onEmergencyTaskSettingsClicked: () -> Unit,
     onQRAlarmProClicked: () -> Unit,
     onCodesManagementClicked: () -> Unit,
-    onThemeClicked: () -> Unit
+    onThemeClicked: () -> Unit,
+    onBackupClicked: () -> Unit
 ) {
     val menuViewModel = hiltViewModel<MenuViewModel>()
     val menuScreenState by menuViewModel.state.collectAsStateWithLifecycle()
@@ -97,6 +98,7 @@ fun MenuScreen(
 
                 is MenuScreenUserEvent.OnCodesManagementClicked -> onCodesManagementClicked()
                 is MenuScreenUserEvent.OnThemeClicked -> onThemeClicked()
+                is MenuScreenUserEvent.OnBackupClicked -> onBackupClicked()
                 is MenuScreenUserEvent.GoToApplicationSettingsClicked -> {
                     context.startActivity(
                         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
@@ -188,6 +190,11 @@ fun MenuScreenContent(
                 MenuEntry(
                     title = stringResource(R.string.theme),
                     onClick = { onEvent(MenuScreenUserEvent.OnThemeClicked) }
+                )
+
+                MenuEntry(
+                    title = stringResource(R.string.backup),
+                    onClick = { onEvent(MenuScreenUserEvent.OnBackupClicked) }
                 )
             }
         }
