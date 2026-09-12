@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">更新内容？</string>
+    <string name="whats_new_entry_1">备份功能</string>
+    <string name="whats_new_entry_1_note_2">在新手机等设备上导入数据</string>
+    <string name="whats_new_entry_1_note_1">将所有数据保存到文件</string>
+    <string name="whats_new_entry_2">铃声播放优化</string>
 </resources>

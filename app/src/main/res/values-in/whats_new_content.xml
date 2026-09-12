@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Apa yang baru?</string>
+    <string name="whats_new_entry_1">Fitur cadangan</string>
+    <string name="whats_new_entry_1_note_1">Simpan semua data Anda ke file</string>
+    <string name="whats_new_entry_1_note_2">Impor data Anda misalnya ke ponsel baru</string>
+    <string name="whats_new_entry_2">Peningkatan pemutaran nada dering</string>
 </resources>

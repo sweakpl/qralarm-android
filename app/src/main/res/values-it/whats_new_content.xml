@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Novità?</string>
+    <string name="whats_new_entry_1">Funzione di backup</string>
+    <string name="whats_new_entry_1_note_1">Salva tutti i tuoi dati in un file</string>
+    <string name="whats_new_entry_1_note_2">Importa i tuoi dati su, ad esempio, un nuovo telefono</string>
+    <string name="whats_new_entry_2">Miglioramenti nella riproduzione della suoneria</string>
 </resources>

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">新機能のお知らせ</string>
+    <string name="whats_new_entry_1">バックアップ機能</string>
+    <string name="whats_new_entry_1_note_1">すべてのデータをファイルに保存する</string>
+    <string name="whats_new_entry_1_note_2">新しい電話などでデータをインポートする</string>
+    <string name="whats_new_entry_2">着信音再生の改善</string>
 </resources>
