@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Quoi de neuf ?</string>
+    <string name="whats_new_entry_1">Fonction de sauvegarde</string>
+    <string name="whats_new_entry_2">Améliorations de la lecture de la sonnerie</string>
+    <string name="whats_new_entry_1_note_1">Enregistrez toutes vos données dans un fichier</string>
+    <string name="whats_new_entry_1_note_2">Importez vos données sur par ex. un nouveau téléphone</string>
 </resources>

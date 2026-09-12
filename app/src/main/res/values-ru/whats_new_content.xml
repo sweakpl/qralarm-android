@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Что нового?</string>
+    <string name="whats_new_entry_1">Функция резервного копирования</string>
+    <string name="whats_new_entry_1_note_1">Сохраните все ваши данные в файл</string>
+    <string name="whats_new_entry_1_note_2">Импортируйте ваши данные, например, на новый телефон</string>
+    <string name="whats_new_entry_2">Улучшения воспроизведения рингтона</string>
 </resources>

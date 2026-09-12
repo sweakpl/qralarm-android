@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="whats_new_title">Yenilikler neler?</string>
+    <string name="whats_new_entry_1">Yedekleme özelliği</string>
+    <string name="whats_new_entry_1_note_1">Tüm verilerinizi bir dosyaya kaydedin</string>
+    <string name="whats_new_entry_1_note_2">Verilerinizi örneğin yeni bir telefona aktarın</string>
+    <string name="whats_new_entry_2">Zil sesi çalma iyileştirmeleri</string>
 </resources>
