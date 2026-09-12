@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.backup
 
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -57,7 +58,10 @@ fun BackupScreen(onBackClicked: () -> Unit) {
     val backupViewModel = hiltViewModel<BackupViewModel>()
     val backupScreenState by backupViewModel.state.collectAsStateWithLifecycle()
 
-    // A custom extension would have the provider append ".zip" to it if the type was zip.
+    BackHandler(
+        enabled = backupScreenState.isBackupInProgress || backupScreenState.isImportInProgress
+    ) { /* no-op */ }
+
     val createBackupFileLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/octet-stream")
     ) { destinationUri ->
@@ -70,8 +74,6 @@ fun BackupScreen(onBackClicked: () -> Unit) {
         }
     }
 
-    // Anything can be picked on purpose: a backup usually comes back from a drive or an email as a
-    // file of no particular type, and a narrower filter would grey out the user's own backup.
     val openBackupFileLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
     ) { sourceUri ->
@@ -109,6 +111,8 @@ fun BackupScreenContent(
     state: BackupScreenState,
     onEvent: (BackupScreenUserEvent) -> Unit
 ) {
+    val isAnythingInProgress = state.isBackupInProgress || state.isImportInProgress
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -120,7 +124,8 @@ fun BackupScreenContent(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = { onEvent(BackupScreenUserEvent.OnBackClicked) }
+                        onClick = { onEvent(BackupScreenUserEvent.OnBackClicked) },
+                        enabled = !isAnythingInProgress
                     ) {
                         Icon(
                             imageVector = QRAlarmIcons.BackArrow,
@@ -144,8 +149,6 @@ fun BackupScreenContent(
                 )
                 .verticalScroll(rememberScrollState())
         ) {
-            val isAnythingInProgress = state.isBackupInProgress || state.isImportInProgress
-
             Column(modifier = Modifier.padding(paddingValues = paddingValues)) {
                 BackupOptionCard(
                     icon = QRAlarmIcons.ExportBackup,
