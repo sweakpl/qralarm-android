@@ -124,6 +124,12 @@ class RestoreBackup @Inject constructor(
             userDataRepository.setEmergencyRequiredMatches(matches = emergencyRequiredMatches)
         }
 
+        preferences.emergencyDisableRepeatingAlarms?.let { emergencyDisableRepeatingAlarms ->
+            userDataRepository.setEmergencyDisableRepeatingAlarms(
+                disable = emergencyDisableRepeatingAlarms
+            )
+        }
+
         preferences.theme?.let { theme ->
             userDataRepository.setTheme(theme = theme)
         }

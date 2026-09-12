@@ -78,5 +78,6 @@ data class BackupPreferences(
     val defaultAlarmCodeId: Long?,
     val emergencySliderRange: IntRange?,
     val emergencyRequiredMatches: Int?,
+    val emergencyDisableRepeatingAlarms: Boolean?,
     val theme: Theme?
 )

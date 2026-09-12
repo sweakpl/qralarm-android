@@ -23,6 +23,7 @@ class CreateBackup @Inject constructor(
                 defaultAlarmCodeId = codesRepository.getDefaultAlarmCodeFlow().first()?.codeId,
                 emergencySliderRange = userDataRepository.emergencySliderRange.first(),
                 emergencyRequiredMatches = userDataRepository.emergencyRequiredMatches.first(),
+                emergencyDisableRepeatingAlarms = userDataRepository.isEmergencyDisableRepeatingAlarmsEnabled.first(),
                 theme = userDataRepository.theme.first()
             )
         )

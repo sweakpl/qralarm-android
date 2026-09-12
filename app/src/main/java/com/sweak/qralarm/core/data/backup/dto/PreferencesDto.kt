@@ -19,6 +19,7 @@ data class PreferencesDto(
     val defaultAlarmCodeId: Long? = null,
     val emergencySliderRange: IntRangeDto? = null,
     val emergencyRequiredMatches: Int? = null,
+    val emergencyDisableRepeatingAlarms: Boolean? = null,
     @Serializable(with = ThemeWithFallbackSerializer::class)
     val theme: Theme? = null
 )
