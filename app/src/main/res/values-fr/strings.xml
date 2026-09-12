@@ -247,4 +247,18 @@
     <string name="alarm_date">Date de l\'alarme</string>
     <string name="disable_repeating_alarms">Désactiver les alarmes répétées</string>
     <string name="disable_repeating_alarms_description">Terminer la tâche d\'urgence désactivera l\'alarme si elle se répète.</string>
+    <string name="backup">Sauvegarde</string>
+    <string name="export_backup">Exporter la sauvegarde</string>
+    <string name="export_backup_description">Enregistrez vos alarmes, codes et sonneries dans un fichier.</string>
+    <string name="backup_created">Sauvegarde créée.</string>
+    <string name="backup_creation_failed">Impossible de créer la sauvegarde. Veuillez réessayer.</string>
+    <string name="import_backup">Importer la sauvegarde</string>
+    <string name="import_backup_description">Restaurez vos alarmes, codes et sonneries depuis un fichier de sauvegarde précédent.</string>
+    <string name="replaces_all_current_data">Remplace toutes les données actuelles</string>
+    <string name="import_backup_question">Importer une sauvegarde ?</string>
+    <string name="import_backup_question_description">Toutes vos alarmes, codes et réglages actuels seront remplacés par ceux de la sauvegarde. Les alarmes restaurées seront désactivées.</string>
+    <string name="backup_imported">Sauvegarde importée. Les alarmes restaurées sont désactivées.</string>
+    <string name="backup_not_recognized">Ce fichier n\'est pas une sauvegarde QRAlarm.</string>
+    <string name="backup_too_new">Cette sauvegarde a été créée avec une version plus récente de QRAlarm. Mettez l\'application à jour et réessayez.</string>
+    <string name="backup_import_failed">Impossible de lire la sauvegarde. Veuillez réessayer.</string>
 </resources>

@@ -241,4 +241,18 @@
     <string name="alarm_date">Alarmdatum</string>
     <string name="disable_repeating_alarms">Herhalende alarmen uitschakelen</string>
     <string name="disable_repeating_alarms_description">Het voltooien van de noodtaak schakelt de alarm uit als het herhalend is.</string>
+    <string name="backup">Back-up</string>
+    <string name="export_backup">Exporteer back-up</string>
+    <string name="export_backup_description">Sla je alarms, codes en ringtones op in een bestand.</string>
+    <string name="backup_created">Back-up gemaakt.</string>
+    <string name="backup_creation_failed">Kon de back-up niet maken. Probeer het opnieuw.</string>
+    <string name="import_backup">Importeer back-up</string>
+    <string name="import_backup_description">Haal je alarms, codes en ringtones terug van een eerder back-upbestand.</string>
+    <string name="replaces_all_current_data">Vervangt alle huidige gegevens</string>
+    <string name="import_backup_question">Een back-up importeren?</string>
+    <string name="import_backup_question_description">Al je huidige alarms, codes en instellingen worden vervangen door die van de back-up. De herstelde alarms worden uitgeschakeld.</string>
+    <string name="backup_imported">Back-up geïmporteerd. De herstelde alarms zijn uitgeschakeld.</string>
+    <string name="backup_not_recognized">Dit bestand is geen QRAlarm back-up.</string>
+    <string name="backup_too_new">Deze back-up is gemaakt met een nieuwere versie van QRAlarm. Update de app en probeer opnieuw.</string>
+    <string name="backup_import_failed">Kon de back-up niet lezen. Probeer het opnieuw.</string>
 </resources>

@@ -247,4 +247,18 @@
     <string name="alarm_date">Fecha de la alarma</string>
     <string name="disable_repeating_alarms">Desactivar alarmas recurrentes</string>
     <string name="disable_repeating_alarms_description">Completar la tarea de emergencia desactivará la alarma si es recurrente.</string>
+    <string name="backup">Copia de seguridad</string>
+    <string name="export_backup">Exportar copia de seguridad</string>
+    <string name="export_backup_description">Guarda tus alarmas, códigos y tonos en un archivo.</string>
+    <string name="backup_created">Copia de seguridad creada.</string>
+    <string name="backup_creation_failed">No se pudo crear la copia de seguridad. Por favor, intenta de nuevo.</string>
+    <string name="import_backup">Importar copia de seguridad</string>
+    <string name="import_backup_description">Recupera tus alarmas, códigos y tonos de un archivo de copia de seguridad anterior.</string>
+    <string name="replaces_all_current_data">Reemplaza todos los datos actuales</string>
+    <string name="import_backup_question">¿Importar una copia de seguridad?</string>
+    <string name="import_backup_question_description">Todas tus alarmas, códigos y configuraciones actuales serán reemplazados por los del respaldo. Las alarmas restauradas estarán desactivadas.</string>
+    <string name="backup_imported">Copia de seguridad importada. Las alarmas restauradas están desactivadas.</string>
+    <string name="backup_not_recognized">Este archivo no es una copia de seguridad de QRAlarm.</string>
+    <string name="backup_too_new">Esta copia de seguridad se realizó con una versión más reciente de QRAlarm. Actualiza la app y vuelve a intentarlo.</string>
+    <string name="backup_import_failed">No se pudo leer la copia de seguridad. Por favor, intenta de nuevo.</string>
 </resources>

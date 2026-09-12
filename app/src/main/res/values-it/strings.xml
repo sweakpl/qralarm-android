@@ -247,4 +247,18 @@
     <string name="alarm_date">Data sveglia</string>
     <string name="disable_repeating_alarms">Disabilita le sveglie ripetute</string>
     <string name="disable_repeating_alarms_description">Il completamento dell\'attività di emergenza disattiverà la sveglia se è ripetuta.</string>
+    <string name="backup">Backup</string>
+    <string name="export_backup">Esporta backup</string>
+    <string name="export_backup_description">Salva i tuoi allarmi, codici e suonerie in un file.</string>
+    <string name="backup_created">Backup creato.</string>
+    <string name="backup_creation_failed">Impossibile creare il backup. Riprova.</string>
+    <string name="import_backup">Importa backup</string>
+    <string name="import_backup_description">Ripristina i tuoi allarmi, codici e suonerie da un file di backup precedente.</string>
+    <string name="replaces_all_current_data">Sostituisce tutti i dati attuali</string>
+    <string name="import_backup_question">Importare un backup?</string>
+    <string name="import_backup_question_description">Tutti i tuoi allarmi, codici e impostazioni attuali saranno sostituiti con quelli del backup. Gli allarmi ripristinati saranno disattivati.</string>
+    <string name="backup_imported">Backup importato. Gli allarmi ripristinati sono disattivati.</string>
+    <string name="backup_not_recognized">Questo file non è un backup di QRAlarm.</string>
+    <string name="backup_too_new">Questo backup è stato creato con una versione più recente di QRAlarm. Aggiorna l\'app e riprova.</string>
+    <string name="backup_import_failed">Impossibile leggere il backup. Riprova.</string>
 </resources>

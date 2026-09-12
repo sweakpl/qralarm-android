@@ -253,4 +253,18 @@
     <string name="alarm_date">Data alarmu</string>
     <string name="disable_repeating_alarms">Wyłącz powtarzające się alarmy</string>
     <string name="disable_repeating_alarms_description">Zakończenie zadania awaryjnego wyłączy alarm, jeśli jest powtarzający się.</string>
+    <string name="backup">Kopia zapasowa</string>
+    <string name="export_backup">Eksportuj kopię zapasową</string>
+    <string name="export_backup_description">Zapisz swoje alarmy, kody i dzwonki do pliku.</string>
+    <string name="backup_created">Kopia zapasowa utworzona.</string>
+    <string name="backup_creation_failed">Nie udało się utworzyć kopii zapasowej. Spróbuj ponownie.</string>
+    <string name="import_backup">Importuj kopię zapasową</string>
+    <string name="import_backup_description">Przywróć swoje alarmy, kody i dzwonki z wcześniejszego pliku kopii zapasowej.</string>
+    <string name="replaces_all_current_data">Zastępuje wszystkie bieżące dane</string>
+    <string name="import_backup_question">Importować kopię zapasową?</string>
+    <string name="import_backup_question_description">Wszystkie bieżące alarmy, kody i ustawienia zostaną zastąpione tymi z kopii zapasowej. Przywrócone alarmy będą wyłączone.</string>
+    <string name="backup_imported">Kopia zapasowa zaimportowana. Przywrócone alarmy są wyłączone.</string>
+    <string name="backup_not_recognized">Ten plik nie jest kopią zapasową QRAlarm.</string>
+    <string name="backup_too_new">Ta kopia zapasowa została utworzona przy użyciu nowszej wersji QRAlarm. Zaktualizuj aplikację i spróbuj ponownie.</string>
+    <string name="backup_import_failed">Nie udało się odczytać kopii zapasowej. Spróbuj ponownie.</string>
 </resources>
