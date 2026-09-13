@@ -179,7 +179,6 @@ class CustomCodeScannerViewModel @AssistedInject constructor(
     private fun getImageAnalysisUseCase() =
         ImageAnalysis.Builder().apply {
             setResolutionSelector(ResolutionSelector.Builder().build())
-            setOutputImageRotationEnabled(true)
         }.build()
 
     private fun Camera.configureAutoFocus(windowInfo: WindowInfo) {

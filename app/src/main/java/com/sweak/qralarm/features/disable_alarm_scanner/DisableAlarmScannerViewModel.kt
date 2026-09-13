@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.disable_alarm_scanner
 
+import android.os.Build
 import android.util.Log
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.Camera
@@ -203,7 +204,13 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
     private fun getImageAnalysisUseCase() =
         ImageAnalysis.Builder().apply {
             setResolutionSelector(ResolutionSelector.Builder().build())
-            setOutputImageRotationEnabled(true)
+
+            // Android 13 ImageWriter double-closes buffer fences in the frame rotation path,
+            // crashing PowerVR devices - this got fixed in Android 14
+            // https://android.googlesource.com/platform/frameworks/base/+/1165c90081ab1ae67b74fffff2c604573b3bde45
+            if (Build.VERSION.SDK_INT != Build.VERSION_CODES.TIRAMISU) {
+                setOutputImageRotationEnabled(true)
+            }
         }.build()
 
     private fun Camera.configureAutoFocus(windowInfo: WindowInfo) {
