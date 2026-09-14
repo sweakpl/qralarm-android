@@ -20,6 +20,11 @@ object DeviceProtectedDataStore {
 
         return PreferenceDataStoreFactory.create(
             produceFile = {
+                migrateToDeviceProtectedStorageIfRequired(
+                    context = context,
+                    preferencesFileName = preferencesFileName
+                )
+
                 File(
                     deviceProtectedContext.filesDir,
                     "datastore/$preferencesFileName.preferences_pb"
@@ -29,7 +34,7 @@ object DeviceProtectedDataStore {
         )
     }
 
-    fun migrateToDeviceProtectedStorageIfRequired(
+    private fun migrateToDeviceProtectedStorageIfRequired(
         context: Context,
         preferencesFileName: String
     ) {
@@ -56,7 +61,7 @@ object DeviceProtectedDataStore {
                     )
                     credentialProtectedPreferencesFile.delete()
                 }
-            } catch (exception: Exception) { /* no-op */
+            } catch (_: Exception) { /* no-op */
             }
         }
     }

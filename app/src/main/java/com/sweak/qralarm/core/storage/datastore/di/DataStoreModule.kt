@@ -24,11 +24,6 @@ object DataStoreModule {
     fun providePreferencesDataStore(
         @ApplicationContext context: Context
     ): DataStore<Preferences> {
-        DeviceProtectedDataStore.migrateToDeviceProtectedStorageIfRequired(
-            context = context,
-            preferencesFileName = PREFERENCES_FILE_NAME
-        )
-
         return DeviceProtectedDataStore.create(
             context = context,
             preferencesFileName = PREFERENCES_FILE_NAME,
