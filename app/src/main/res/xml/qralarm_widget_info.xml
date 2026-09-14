@@ -3,4 +3,5 @@
     android:initialLayout="@layout/glance_default_loading_layout"
     android:minWidth="128dp"
     android:minHeight="48dp"
-    android:updatePeriodMillis="0"></appwidget-provider>
+    android:previewImage="@drawable/qralarm_widget_preview"
+    android:updatePeriodMillis="0" />
