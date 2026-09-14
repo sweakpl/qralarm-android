@@ -98,6 +98,8 @@
     <string name="alarms_usage">Used for scheduling alarms at precise time.</string>
     <string name="notifications">Notifications</string>
     <string name="notifications_usage">Used to accompany the alarm with a visible notification.</string>
+    <string name="bypass_do_not_disturb">Bypass Do Not Disturb</string>
+    <string name="bypass_do_not_disturb_usage">Allows alarms to alert you while Do Not Disturb is enabled.</string>
     <string name="full_screen_display">Full screen display</string>
     <string name="full_screen_display_usage">Used for displaying full screen alarm notification.</string>
     <string name="notifications_permission_required">Notifications permission required</string>

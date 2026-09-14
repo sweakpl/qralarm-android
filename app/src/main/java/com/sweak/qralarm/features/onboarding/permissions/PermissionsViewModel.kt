@@ -35,12 +35,14 @@ class PermissionsViewModel @Inject constructor(
         val alarmsVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
                 Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2
         val notificationsVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+        val doNotDisturbVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
         val fullScreenVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
 
         _state.update { current ->
             current.copy(
                 alarmsPermissionVisible = alarmsVisible,
                 notificationsPermissionVisible = notificationsVisible,
+                doNotDisturbPermissionVisible = doNotDisturbVisible,
                 fullScreenIntentPermissionVisible = fullScreenVisible,
                 notificationsPermissionGranted = !notificationsVisible
             )
@@ -54,6 +56,17 @@ class PermissionsViewModel @Inject constructor(
     }
 
     private fun refreshSystemPermissionsOnly() {
+        val doNotDisturbPermissionVisible = _state.value.doNotDisturbPermissionVisible
+        val doNotDisturbPermissionGranted = if (doNotDisturbPermissionVisible) {
+            qrAlarmManager.canBypassDoNotDisturb()
+        } else {
+            true
+        }
+
+        if (doNotDisturbPermissionVisible && doNotDisturbPermissionGranted) {
+            qrAlarmManager.enableAlarmNotificationChannelDndBypass()
+        }
+
         _state.update { current ->
             current.copy(
                 alarmsPermissionGranted = if (current.alarmsPermissionVisible) {
@@ -61,6 +74,7 @@ class PermissionsViewModel @Inject constructor(
                 } else {
                     true
                 },
+                doNotDisturbPermissionGranted = doNotDisturbPermissionGranted,
                 fullScreenIntentPermissionGranted = if (current.fullScreenIntentPermissionVisible) {
                     qrAlarmManager.canUseFullScreenIntent()
                 } else {
@@ -95,6 +109,9 @@ class PermissionsViewModel @Inject constructor(
 
             is PermissionsPageUserEvent.NotificationsPermissionClicked ->
                 addInteraction(PermissionsPagePermissionKey.NOTIFICATIONS)
+
+            is PermissionsPageUserEvent.DoNotDisturbPermissionClicked ->
+                addInteraction(PermissionsPagePermissionKey.DO_NOT_DISTURB)
 
             is PermissionsPageUserEvent.FullScreenIntentPermissionClicked ->
                 addInteraction(PermissionsPagePermissionKey.FULL_SCREEN_INTENT)
@@ -161,6 +178,12 @@ class PermissionsViewModel @Inject constructor(
 
                 if (current.notificationsPermissionVisible && !notificationsEffective) {
                     add(PermissionsPagePermissionKey.NOTIFICATIONS)
+                }
+
+                if (current.doNotDisturbPermissionVisible &&
+                    !current.doNotDisturbPermissionGranted
+                ) {
+                    add(PermissionsPagePermissionKey.DO_NOT_DISTURB)
                 }
 
                 if (current.fullScreenIntentPermissionVisible &&

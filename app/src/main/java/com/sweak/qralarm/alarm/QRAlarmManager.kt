@@ -187,6 +187,20 @@ class QRAlarmManager(
         }
     }
 
+    fun canBypassDoNotDisturb(): Boolean =
+        notificationManager.isNotificationPolicyAccessGranted
+
+    fun enableAlarmNotificationChannelDndBypass() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && canBypassDoNotDisturb()) {
+            notificationManager.getNotificationChannel(ALARM_NOTIFICATION_CHANNEL_ID)?.let {
+                if (!it.canBypassDnd()) {
+                    it.setBypassDnd(true)
+                    notificationManager.createNotificationChannel(it)
+                }
+            }
+        }
+    }
+
     override fun notifyAboutMissedAlarm() {
         val alarmMissedPendingIntent = PendingIntent.getActivity(
             context,
