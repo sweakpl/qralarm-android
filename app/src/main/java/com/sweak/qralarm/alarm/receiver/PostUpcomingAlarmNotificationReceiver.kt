@@ -23,19 +23,25 @@ class PostUpcomingAlarmNotificationReceiver : BroadcastReceiver() {
     lateinit var qrAlarmManager: QRAlarmManager
 
     override fun onReceive(context: Context, intent: Intent) {
+        val pendingResult = goAsync()
+
         receiverScope.launch {
-            val alarmId = intent.extras?.getLong(EXTRA_ALARM_ID) ?: return@launch
+            try {
+                val alarmId = intent.extras?.getLong(EXTRA_ALARM_ID) ?: return@launch
 
-            if (alarmId == 0L) return@launch
+                if (alarmId == 0L) return@launch
 
-            val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return@launch
+                val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return@launch
 
-            qrAlarmManager.showUpcomingAlarmNotification(
-                alarmId = alarm.alarmId,
-                alarmHourOfDay = alarm.alarmHourOfDay,
-                alarmMinute = alarm.alarmMinute,
-                isSnoozeAlarm = false
-            )
+                qrAlarmManager.showUpcomingAlarmNotification(
+                    alarmId = alarm.alarmId,
+                    alarmHourOfDay = alarm.alarmHourOfDay,
+                    alarmMinute = alarm.alarmMinute,
+                    isSnoozeAlarm = false
+                )
+            } finally {
+                pendingResult.finish()
+            }
         }
     }
 
