@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -201,12 +202,21 @@ private fun AlarmScreenContent(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Button(
                         onClick = { onEvent(AlarmScreenUserEvent.StopAlarmClicked) },
-                        enabled = state.isInteractionEnabled,
+                        enabled = state.isInteractionEnabled
                     ) {
                         Text(
                             text = stringResource(R.string.stop),
-                            style = MaterialTheme.typography.displaySmall,
-                            modifier = Modifier.padding(all = MaterialTheme.space.small)
+                            style = MaterialTheme.typography.displayLarge,
+                            autoSize = TextAutoSize.StepBased(
+                                minFontSize = MaterialTheme.typography.displaySmall.fontSize,
+                                maxFontSize = MaterialTheme.typography.displayLarge.fontSize
+                            ),
+                            maxLines = 1,
+                            modifier = Modifier
+                                .padding(
+                                    vertical = MaterialTheme.space.mediumLarge,
+                                    horizontal = MaterialTheme.space.xxLarge
+                                )
                         )
                     }
 
