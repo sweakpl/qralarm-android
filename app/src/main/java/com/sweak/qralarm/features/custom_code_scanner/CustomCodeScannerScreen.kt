@@ -84,6 +84,7 @@ fun CustomCodeScannerScreenContent(
         CodeScanner(
             surfaceRequest = state.surfaceRequest,
             isFlashEnabled = state.isFlashEnabled,
+            codeName = null,
             onCloseClicked = { onEvent(CustomCodeScannerScreenUserEvent.CloseClicked) },
             onToggleFlash = { onEvent(CustomCodeScannerScreenUserEvent.ToggleFlash) },
             paddingValues = paddingValues

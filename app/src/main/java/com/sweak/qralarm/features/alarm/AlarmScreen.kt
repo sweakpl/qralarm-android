@@ -49,6 +49,7 @@ import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.components.CodeNameChip
 import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
@@ -177,15 +178,20 @@ private fun AlarmScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize()
             ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.space.xLarge),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    AnimatedVisibility(
+                        visible = state.codeName != null,
+                        modifier = Modifier.padding(bottom = MaterialTheme.space.large)
+                    ) {
+                        CodeNameChip(codeName = state.codeName ?: "")
+                    }
+
                     AnimatedVisibility(visible = state.alarmLabel != null) {
                         Text(
                             text = state.alarmLabel?.asString() ?: "",
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.displayLarge
+                            style = MaterialTheme.typography.displayLarge,
+                            modifier = Modifier.padding(bottom = MaterialTheme.space.xLarge)
                         )
                     }
 
@@ -295,6 +301,7 @@ private fun AlarmScreenContentPreview() {
         AlarmScreenContent(
             state = AlarmScreenState(
                 alarmLabel = UiText.DynamicString("Alarm label"),
+                codeName = "Coffee bag code",
                 isSnoozeAvailable = true,
                 timeToShow = 1729861439787
             ),

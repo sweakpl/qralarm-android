@@ -94,6 +94,7 @@ fun DisableAlarmScannerScreenContent(
         CodeScanner(
             surfaceRequest = state.surfaceRequest,
             isFlashEnabled = state.isFlashEnabled,
+            codeName = state.codeName,
             onCloseClicked = { onEvent(DisableAlarmScannerScreenUserEvent.OnCloseClicked) },
             onToggleFlash = { onEvent(DisableAlarmScannerScreenUserEvent.ToggleFlash) },
             paddingValues = paddingValues

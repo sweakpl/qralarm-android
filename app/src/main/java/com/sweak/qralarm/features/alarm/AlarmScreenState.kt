@@ -4,6 +4,7 @@ import com.sweak.qralarm.core.ui.compose_util.UiText
 
 data class AlarmScreenState(
     val alarmLabel: UiText? = null,
+    val codeName: String? = null,
     val timeToShow: Long = System.currentTimeMillis(),
     val isAlarmSnoozed: Boolean = false,
     val isSnoozeAvailable: Boolean = false,

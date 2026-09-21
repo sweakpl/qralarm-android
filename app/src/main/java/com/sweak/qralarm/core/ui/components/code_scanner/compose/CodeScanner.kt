@@ -3,8 +3,12 @@ package com.sweak.qralarm.core.ui.components.code_scanner.compose
 import androidx.camera.compose.CameraXViewfinder
 import androidx.camera.core.SurfaceRequest
 import androidx.camera.viewfinder.core.ImplementationMode
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -24,12 +28,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.components.CodeNameChip
 import com.sweak.qralarm.core.ui.components.code_scanner.ScanOverlay
 
 @Composable
 fun CodeScanner(
     surfaceRequest: SurfaceRequest?,
     isFlashEnabled: Boolean,
+    codeName: String?,
     onCloseClicked: () -> Unit,
     onToggleFlash: () -> Unit,
     paddingValues: PaddingValues,
@@ -46,8 +52,8 @@ fun CodeScanner(
 
         ScanOverlay()
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .fillMaxWidth()
@@ -59,24 +65,40 @@ fun CodeScanner(
                             MaterialTheme.space.mediumLarge
                 )
         ) {
-            IconButton(onClick = onCloseClicked) {
-                Icon(
-                    imageVector = QRAlarmIcons.Close,
-                    contentDescription = stringResource(R.string.content_description_close_icon),
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(MaterialTheme.space.xLarge)
-                )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                IconButton(onClick = onCloseClicked) {
+                    Icon(
+                        imageVector = QRAlarmIcons.Close,
+                        contentDescription =
+                            stringResource(R.string.content_description_close_icon),
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(MaterialTheme.space.xLarge)
+                    )
+                }
+
+                IconButton(onClick = onToggleFlash) {
+                    Icon(
+                        imageVector =
+                            if (isFlashEnabled) QRAlarmIcons.FlashOff
+                            else QRAlarmIcons.FlashOn,
+                        contentDescription =
+                            stringResource(R.string.content_description_flash_icon),
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(MaterialTheme.space.xLarge)
+                    )
+                }
             }
 
-            IconButton(onClick = onToggleFlash) {
-                Icon(
-                    imageVector =
-                        if (isFlashEnabled) QRAlarmIcons.FlashOff
-                        else QRAlarmIcons.FlashOn,
-                    contentDescription = stringResource(R.string.content_description_flash_icon),
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(MaterialTheme.space.xLarge)
-                )
+            AnimatedVisibility(
+                visible = codeName != null,
+                enter = fadeIn(),
+                exit = fadeOut(),
+                modifier = Modifier.padding(top = MaterialTheme.space.medium)
+            ) {
+                CodeNameChip(codeName = codeName ?: "")
             }
         }
     }

@@ -5,5 +5,6 @@ import androidx.camera.core.SurfaceRequest
 data class DisableAlarmScannerScreenState(
     val surfaceRequest: SurfaceRequest? = null,
     val isFlashEnabled: Boolean = false,
+    val codeName: String? = null,
     val shouldShowIncorrectCodeWarning: Boolean = false
 )

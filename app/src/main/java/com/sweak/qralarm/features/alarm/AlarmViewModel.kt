@@ -64,6 +64,9 @@ class AlarmViewModel @AssistedInject constructor(
                     } else if (isAlarmSnoozed) {
                         UiText.StringResource(resId = R.string.alarm_snoozed_until)
                     } else null
+                    val codeName = if (it.isUsingCode && (isAlarmRunning || isAlarmSnoozed)) {
+                        it.assignedCode?.name
+                    } else null
                     val timeToShow =
                         if (isAlarmSnoozed && it.snoozeConfig.nextSnoozedAlarmTimeInMillis != null) {
                             it.snoozeConfig.nextSnoozedAlarmTimeInMillis
@@ -74,6 +77,7 @@ class AlarmViewModel @AssistedInject constructor(
                     _state.update { currentState ->
                         currentState.copy(
                             alarmLabel = alarmLabel,
+                            codeName = codeName,
                             timeToShow = timeToShow,
                             isAlarmSnoozed = isAlarmSnoozed,
                             isSnoozeAvailable = isSnoozeAvailable,

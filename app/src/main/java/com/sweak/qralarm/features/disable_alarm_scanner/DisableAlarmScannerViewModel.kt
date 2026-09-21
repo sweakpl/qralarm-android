@@ -75,6 +75,10 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
         viewModelScope.launch {
             alarmsRepository.getAlarm(alarmId = idOfAlarm)?.let {
                 alarm = it
+
+                _state.update { currentState ->
+                    currentState.copy(codeName = alarm.assignedCode?.name)
+                }
             }
         }
     }
