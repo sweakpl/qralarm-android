@@ -34,7 +34,6 @@
     <string name="content_description_chain_icon">Chain icon</string>
     <string name="content_description_checked_circle_icon">Checked circle icon</string>
     <string name="content_description_unchecked_circle_icon">Unchecked circle icon</string>
-    <string name="content_description_info_icon">Information icon</string>
     <string name="content_description_calendar_icon">Calendar icon</string>
     <string name="content_description_export_backup_icon">Export backup (file download) icon</string>
     <string name="content_description_import_backup_icon">Import backup (file upload) icon</string>

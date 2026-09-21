@@ -37,7 +37,6 @@
     <string name="content_description_qralarm_pro_image">QRAlarm PRO 应用图标图像</string>
     <string name="content_description_five_stars_image">五星好评图像</string>
     <string name="content_description_qr_code_icon">二维码图标</string>
-    <string name="content_description_info_icon">信息图标</string>
     <string name="content_description_calendar_icon">日历图标</string>
     <string name="content_description_import_backup_icon">导入备份（文件上传）图标</string>
     <string name="content_description_warning_icon">警告三角形图标</string>
