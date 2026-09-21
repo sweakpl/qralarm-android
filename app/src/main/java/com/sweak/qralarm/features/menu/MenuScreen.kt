@@ -20,15 +20,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
@@ -47,13 +45,10 @@ fun MenuScreen(
     onThemeClicked: () -> Unit,
     onBackupClicked: () -> Unit
 ) {
-    val menuViewModel = hiltViewModel<MenuViewModel>()
-    val menuScreenState by menuViewModel.state.collectAsStateWithLifecycle()
-
     val context = LocalContext.current
+    val resources = LocalResources.current
 
     MenuScreenContent(
-        state = menuScreenState,
         onEvent = { event ->
             when (event) {
                 is MenuScreenUserEvent.OnBackClicked -> onBackClicked()
@@ -67,13 +62,13 @@ fun MenuScreen(
                         context.startActivity(
                             Intent(
                                 Intent.ACTION_VIEW,
-                                context.getString(R.string.qralarm_github_full_uri).toUri()
+                                resources.getString(R.string.qralarm_github_full_uri).toUri()
                             )
                         )
                     } catch (_: ActivityNotFoundException) {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.issue_opening_the_page),
+                            resources.getString(R.string.issue_opening_the_page),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -84,13 +79,13 @@ fun MenuScreen(
                         context.startActivity(
                             Intent(
                                 Intent.ACTION_VIEW,
-                                context.getString(R.string.qralarm_github_issues_full_uri).toUri()
+                                resources.getString(R.string.qralarm_github_issues_full_uri).toUri()
                             )
                         )
                     } catch (_: ActivityNotFoundException) {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.issue_opening_the_page),
+                            resources.getString(R.string.issue_opening_the_page),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -114,7 +109,6 @@ fun MenuScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreenContent(
-    state: MenuScreenState,
     onEvent: (MenuScreenUserEvent) -> Unit
 ) {
     Scaffold(
@@ -205,9 +199,6 @@ fun MenuScreenContent(
 @Composable
 private fun MenuScreenContentPreview() {
     QRAlarmTheme {
-        MenuScreenContent(
-            state = MenuScreenState(),
-            onEvent = {}
-        )
+        MenuScreenContent(onEvent = {})
     }
 }
