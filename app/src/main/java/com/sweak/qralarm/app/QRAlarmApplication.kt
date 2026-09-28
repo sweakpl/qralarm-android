@@ -38,6 +38,7 @@ class QRAlarmApplication : Application() {
             ).apply {
                 enableLights(true)
                 setSound(null, null)
+                setBypassDnd(notificationManager.isNotificationPolicyAccessGranted)
                 description = getString(R.string.alarm_notification_channel_description)
                 lightColor = Jacarta.toArgb()
                 lockscreenVisibility = Notification.VISIBILITY_PUBLIC
