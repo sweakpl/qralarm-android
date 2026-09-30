@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">Có gì mới?</string>
+    <string name="whats_new_entry_1">Tính năng sao lưu</string>
+    <string name="whats_new_entry_1_note_1">Lưu tất cả dữ liệu vào một tệp</string>
+    <string name="whats_new_entry_1_note_2">Nhập dữ liệu, chẳng hạn như trên điện thoại mới</string>
+    <string name="whats_new_entry_2">Cải thiện phát nhạc chuông</string>
+</resources>
