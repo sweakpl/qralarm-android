@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_qralarm_icon">Biểu tượng QRAlarm</string>
+    <string name="content_description_add_icon">Biểu tượng thêm (dấu cộng)</string>
+    <string name="content_description_menu_icon">Biểu tượng menu</string>
+    <string name="content_description_close_icon">Biểu tượng đóng</string>
+    <string name="content_description_done_icon">Biểu tượng hoàn tất</string>
+    <string name="content_description_forward_arrow_icon">Biểu tượng mũi tên tiến</string>
+    <string name="content_description_back_arrow_icon">Biểu tượng mũi tên quay lại</string>
+    <string name="content_description_drop_down_arrow_icon">Biểu tượng mũi tên thả xuống</string>
+    <string name="content_description_play_icon">Biểu tượng phát</string>
+    <string name="content_description_stop_icon">Biểu tượng dừng</string>
+    <string name="content_description_edit_icon">Biểu tượng chỉnh sửa</string>
+    <string name="content_description_more_icon">Biểu tượng tùy chọn khác</string>
+    <string name="content_description_qr_code_icon">Biểu tượng mã QR</string>
+    <string name="content_description_qr_code_scanner_icon">Biểu tượng quét mã QR</string>
+    <string name="content_description_delete_icon">Biểu tượng xóa</string>
+    <string name="content_description_camera_icon">Biểu tượng máy ảnh</string>
+    <string name="content_description_alarm_icon">Biểu tượng báo thức</string>
+    <string name="content_description_notification_icon">Biểu tượng thông báo</string>
+    <string name="content_description_full_screen_icon">Biểu tượng hiển thị toàn màn hình</string>
+    <string name="content_description_no_qr_code_icon">Biểu tượng mã QR đã tắt</string>
+    <string name="content_description_automatic_settings_icon">Biểu tượng cài đặt tự động</string>
+    <string name="content_description_app_settings_icon">Biểu tượng cài đặt ứng dụng</string>
+    <string name="content_description_special_app_settings_icon">Biểu tượng cài đặt đặc biệt của ứng dụng</string>
+    <string name="content_description_star_icon">Biểu tượng ngôi sao</string>
+    <string name="content_description_flash_icon">Biểu tượng đèn pin</string>
+    <string name="content_description_skip_next_alarm_icon">Biểu tượng bỏ qua báo thức tiếp theo</string>
+    <string name="content_description_label_icon">Biểu tượng nhãn</string>
+    <string name="content_description_sound_icon">Biểu tượng âm thanh</string>
+    <string name="content_description_copy_icon">Biểu tượng sao chép</string>
+    <string name="content_description_clock_icon">Biểu tượng đồng hồ</string>
+    <string name="content_description_emergency_icon">Biểu tượng tam giác khẩn cấp</string>
+    <string name="content_description_muted_sound_icon">Biểu tượng tắt tiếng</string>
+    <string name="content_description_chain_icon">Biểu tượng mắt xích</string>
+    <string name="content_description_calendar_icon">Biểu tượng lịch</string>
+    <string name="content_description_export_backup_icon">Biểu tượng xuất bản sao lưu (tải tệp xuống)</string>
+    <string name="content_description_import_backup_icon">Biểu tượng nhập bản sao lưu (tải tệp lên)</string>
+    <string name="content_description_warning_icon">Biểu tượng tam giác cảnh báo</string>
+    <string name="content_description_five_stars_image">Hình ảnh năm ngôi sao vàng</string>
+    <string name="content_description_checked_circle_icon">Biểu tượng hình tròn đã chọn</string>
+    <string name="content_description_unchecked_circle_icon">Biểu tượng hình tròn chưa chọn</string>
+    <string name="content_description_qralarm_pro_image">Hình biểu tượng ứng dụng QRAlarm PRO</string>
+</resources>

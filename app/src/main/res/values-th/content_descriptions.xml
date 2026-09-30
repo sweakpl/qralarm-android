@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_qralarm_icon">ไอคอน QRAlarm</string>
+    <string name="content_description_add_icon">ไอคอนเพิ่ม (เครื่องหมายบวก)</string>
+    <string name="content_description_menu_icon">ไอคอนเมนู</string>
+    <string name="content_description_close_icon">ไอคอนปิด</string>
+    <string name="content_description_done_icon">ไอคอนเสร็จสิ้น</string>
+    <string name="content_description_forward_arrow_icon">ไอคอนลูกศรไปข้างหน้า</string>
+    <string name="content_description_back_arrow_icon">ไอคอนลูกศรย้อนกลับ</string>
+    <string name="content_description_drop_down_arrow_icon">ไอคอนลูกศรแบบเลื่อนลง</string>
+    <string name="content_description_play_icon">ไอคอนเล่น</string>
+    <string name="content_description_stop_icon">ไอคอนหยุด</string>
+    <string name="content_description_edit_icon">ไอคอนแก้ไข</string>
+    <string name="content_description_more_icon">ไอคอนตัวเลือกเพิ่มเติม</string>
+    <string name="content_description_qr_code_icon">ไอคอนคิวอาร์โค้ด</string>
+    <string name="content_description_qr_code_scanner_icon">ไอคอนสแกนคิวอาร์โค้ด</string>
+    <string name="content_description_delete_icon">ไอคอนลบ</string>
+    <string name="content_description_camera_icon">ไอคอนกล้อง</string>
+    <string name="content_description_alarm_icon">ไอคอนการปลุก</string>
+    <string name="content_description_notification_icon">ไอคอนการแจ้งเตือน</string>
+    <string name="content_description_full_screen_icon">ไอคอนแสดงผลเต็มหน้าจอ</string>
+    <string name="content_description_no_qr_code_icon">ไอคอนคิวอาร์โค้ดที่ปิดใช้งาน</string>
+    <string name="content_description_automatic_settings_icon">ไอคอนการตั้งค่าอัตโนมัติ</string>
+    <string name="content_description_app_settings_icon">ไอคอนการตั้งค่าแอป</string>
+    <string name="content_description_special_app_settings_icon">ไอคอนการตั้งค่าแอปพิเศษ</string>
+    <string name="content_description_star_icon">ไอคอนรูปดาว</string>
+    <string name="content_description_flash_icon">ไอคอนรูปแฟลช</string>
+    <string name="content_description_skip_next_alarm_icon">ไอคอนข้ามการปลุกครั้งถัดไป</string>
+    <string name="content_description_label_icon">ไอคอนป้ายกำกับ</string>
+    <string name="content_description_sound_icon">ไอคอนเสียง</string>
+    <string name="content_description_copy_icon">ไอคอนคัดลอก</string>
+    <string name="content_description_clock_icon">ไอคอนนาฬิกา</string>
+    <string name="content_description_emergency_icon">ไอคอนสามเหลี่ยมฉุกเฉิน</string>
+    <string name="content_description_muted_sound_icon">ไอคอนปิดเสียง</string>
+    <string name="content_description_chain_icon">ไอคอนโซ่</string>
+    <string name="content_description_calendar_icon">ไอคอนปฏิทิน</string>
+    <string name="content_description_export_backup_icon">ไอคอนส่งออกข้อมูลสำรอง (ดาวน์โหลดไฟล์)</string>
+    <string name="content_description_import_backup_icon">ไอคอนนำเข้าข้อมูลสำรอง (อัปโหลดไฟล์)</string>
+    <string name="content_description_warning_icon">ไอคอนสามเหลี่ยมเตือน</string>
+    <string name="content_description_five_stars_image">ภาพดาวสีทองห้าดวง</string>
+    <string name="content_description_checked_circle_icon">ไอคอนวงกลมที่มีเครื่องหมายถูก</string>
+    <string name="content_description_unchecked_circle_icon">ไอคอนวงกลมที่ยังไม่เลือก</string>
+    <string name="content_description_qralarm_pro_image">รูปไอคอนแอป QRAlarm PRO</string>
+</resources>

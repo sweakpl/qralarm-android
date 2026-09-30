@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_qralarm_icon">Ikon QRAlarm</string>
+    <string name="content_description_add_icon">Ikon tambah (plus)</string>
+    <string name="content_description_menu_icon">Ikon menu</string>
+    <string name="content_description_close_icon">Ikon tutup</string>
+    <string name="content_description_done_icon">Ikon selesai</string>
+    <string name="content_description_forward_arrow_icon">Ikon anak panah ke hadapan</string>
+    <string name="content_description_back_arrow_icon">Ikon anak panah ke belakang</string>
+    <string name="content_description_drop_down_arrow_icon">Ikon anak panah lungsur</string>
+    <string name="content_description_play_icon">Ikon main</string>
+    <string name="content_description_stop_icon">Ikon berhenti</string>
+    <string name="content_description_edit_icon">Ikon edit</string>
+    <string name="content_description_more_icon">Ikon pilihan lain</string>
+    <string name="content_description_qr_code_icon">Ikon kod QR</string>
+    <string name="content_description_qr_code_scanner_icon">Ikon pengimbas kod QR</string>
+    <string name="content_description_delete_icon">Ikon padam</string>
+    <string name="content_description_camera_icon">Ikon kamera</string>
+    <string name="content_description_alarm_icon">Ikon penggera</string>
+    <string name="content_description_notification_icon">Ikon pemberitahuan</string>
+    <string name="content_description_full_screen_icon">Ikon paparan skrin penuh</string>
+    <string name="content_description_no_qr_code_icon">Ikon kod QR dinyahaktifkan</string>
+    <string name="content_description_automatic_settings_icon">Ikon tetapan automatik</string>
+    <string name="content_description_app_settings_icon">Ikon tetapan aplikasi</string>
+    <string name="content_description_special_app_settings_icon">Ikon tetapan khas aplikasi</string>
+    <string name="content_description_star_icon">Ikon bintang</string>
+    <string name="content_description_flash_icon">Ikon denyar</string>
+    <string name="content_description_skip_next_alarm_icon">Ikon langkau penggera seterusnya</string>
+    <string name="content_description_label_icon">Ikon label</string>
+    <string name="content_description_sound_icon">Ikon bunyi</string>
+    <string name="content_description_copy_icon">Ikon salin</string>
+    <string name="content_description_clock_icon">Ikon jam</string>
+    <string name="content_description_emergency_icon">Ikon segi tiga kecemasan</string>
+    <string name="content_description_muted_sound_icon">Ikon bunyi disenyapkan</string>
+    <string name="content_description_chain_icon">Ikon rantai</string>
+    <string name="content_description_calendar_icon">Ikon kalendar</string>
+    <string name="content_description_export_backup_icon">Ikon eksport sandaran (muat turun fail)</string>
+    <string name="content_description_import_backup_icon">Ikon import sandaran (muat naik fail)</string>
+    <string name="content_description_warning_icon">Ikon segi tiga amaran</string>
+    <string name="content_description_five_stars_image">Imej lima bintang emas</string>
+    <string name="content_description_checked_circle_icon">Ikon bulatan bertanda</string>
+    <string name="content_description_unchecked_circle_icon">Ikon bulatan tidak bertanda</string>
+    <string name="content_description_qralarm_pro_image">Imej ikon aplikasi QRAlarm PRO</string>
+</resources>
