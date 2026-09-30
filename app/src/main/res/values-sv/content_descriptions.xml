@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_qralarm_icon">QRAlarm-ikon</string>
+    <string name="content_description_add_icon">Lägg till-ikon</string>
+    <string name="content_description_menu_icon">Menyikon</string>
+    <string name="content_description_close_icon">Stängningsikon</string>
+    <string name="content_description_done_icon">Klar-ikon</string>
+    <string name="content_description_forward_arrow_icon">Framåtpil</string>
+    <string name="content_description_back_arrow_icon">Bakåtpil</string>
+    <string name="content_description_drop_down_arrow_icon">Rullgardinspil</string>
+    <string name="content_description_play_icon">Spela upp-ikon</string>
+    <string name="content_description_stop_icon">Stoppikon</string>
+    <string name="content_description_edit_icon">Redigera-ikon</string>
+    <string name="content_description_more_icon">Ikon för fler alternativ</string>
+    <string name="content_description_qr_code_icon">QR-kodsikon</string>
+    <string name="content_description_qr_code_scanner_icon">QR-kodsskannerikon</string>
+    <string name="content_description_delete_icon">Radera-ikon</string>
+    <string name="content_description_camera_icon">Kameraikon</string>
+    <string name="content_description_alarm_icon">Alarmikon</string>
+    <string name="content_description_notification_icon">Aviseringsikon</string>
+    <string name="content_description_full_screen_icon">Ikon för helskärmsläge</string>
+    <string name="content_description_no_qr_code_icon">Inaktiverad QR-kodsikon</string>
+    <string name="content_description_automatic_settings_icon">Ikon för automatiska inställningar</string>
+    <string name="content_description_app_settings_icon">Ikon för appinställningar</string>
+    <string name="content_description_special_app_settings_icon">Ikon för särskilda appinställningar</string>
+    <string name="content_description_star_icon">Stjärnikon</string>
+    <string name="content_description_flash_icon">Blixtikon</string>
+    <string name="content_description_skip_next_alarm_icon">Ikon för att hoppa över nästa alarm</string>
+    <string name="content_description_label_icon">Etikettikon</string>
+    <string name="content_description_sound_icon">Ljudikon</string>
+    <string name="content_description_copy_icon">Kopieringsikon</string>
+    <string name="content_description_clock_icon">Klockikon</string>
+    <string name="content_description_emergency_icon">Nödtriangelikon</string>
+    <string name="content_description_muted_sound_icon">Ikon för ljud av</string>
+    <string name="content_description_chain_icon">Kedjeikon</string>
+    <string name="content_description_calendar_icon">Kalenderikon</string>
+    <string name="content_description_export_backup_icon">Ikon för att exportera säkerhetskopia (filhämtning)</string>
+    <string name="content_description_import_backup_icon">Ikon för att importera säkerhetskopia (filuppladdning)</string>
+    <string name="content_description_warning_icon">Varningstriangelikon</string>
+    <string name="content_description_five_stars_image">Bild med fem gyllene stjärnor</string>
+    <string name="content_description_checked_circle_icon">Ikon med markerad cirkel</string>
+    <string name="content_description_unchecked_circle_icon">Ikon med omarkerad cirkel</string>
+    <string name="content_description_qralarm_pro_image">Bild av QRAlarm PRO-appens ikon</string>
+</resources>

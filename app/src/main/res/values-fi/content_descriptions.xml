@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_qralarm_icon">QRAlarm-kuvake</string>
+    <string name="content_description_add_icon">Lisää (plus) -kuvake</string>
+    <string name="content_description_menu_icon">Valikkokuvake</string>
+    <string name="content_description_close_icon">Sulkemiskuvake</string>
+    <string name="content_description_done_icon">Valmis-kuvake</string>
+    <string name="content_description_forward_arrow_icon">Eteenpäin-nuolikuvake</string>
+    <string name="content_description_back_arrow_icon">Takaisin-nuolikuvake</string>
+    <string name="content_description_drop_down_arrow_icon">Pudotusvalikon nuolikuvake</string>
+    <string name="content_description_play_icon">Toistokuvake</string>
+    <string name="content_description_stop_icon">Lopeta-kuvake</string>
+    <string name="content_description_edit_icon">Muokkauskuvake</string>
+    <string name="content_description_more_icon">Lisää vaihtoehtoja -kuvake</string>
+    <string name="content_description_qr_code_icon">QR-koodikuvake</string>
+    <string name="content_description_qr_code_scanner_icon">QR-koodin skannauskuvake</string>
+    <string name="content_description_delete_icon">Poistokuvake</string>
+    <string name="content_description_camera_icon">Kamerakuvake</string>
+    <string name="content_description_alarm_icon">Herätyskuvake</string>
+    <string name="content_description_notification_icon">Ilmoituskuvake</string>
+    <string name="content_description_full_screen_icon">Koko näytön kuvake</string>
+    <string name="content_description_no_qr_code_icon">Käytöstä poistetun QR-koodin kuvake</string>
+    <string name="content_description_automatic_settings_icon">Automaattisten asetusten kuvake</string>
+    <string name="content_description_app_settings_icon">Sovelluksen asetusten kuvake</string>
+    <string name="content_description_special_app_settings_icon">Erityisten sovellusasetusten kuvake</string>
+    <string name="content_description_star_icon">Tähtikuvake</string>
+    <string name="content_description_flash_icon">Salamakuvake</string>
+    <string name="content_description_skip_next_alarm_icon">Ohita seuraava herätys -kuvake</string>
+    <string name="content_description_label_icon">Tunnistekuvake</string>
+    <string name="content_description_sound_icon">Äänikuvake</string>
+    <string name="content_description_copy_icon">Kopiointikuvake</string>
+    <string name="content_description_clock_icon">Kellokuvake</string>
+    <string name="content_description_emergency_icon">Hätätilannekolmion kuvake</string>
+    <string name="content_description_muted_sound_icon">Mykistetyn äänen kuvake</string>
+    <string name="content_description_chain_icon">Ketjukuvake</string>
+    <string name="content_description_calendar_icon">Kalenterikuvake</string>
+    <string name="content_description_export_backup_icon">Varmuuskopion vientikuvake (tiedoston lataus)</string>
+    <string name="content_description_import_backup_icon">Varmuuskopion tuontikuvake (tiedoston lähetys)</string>
+    <string name="content_description_warning_icon">Varoituskolmion kuvake</string>
+    <string name="content_description_five_stars_image">Viiden kultaisen tähden kuva</string>
+    <string name="content_description_checked_circle_icon">Valittu ympyräkuvake</string>
+    <string name="content_description_unchecked_circle_icon">Valitsematon ympyräkuvake</string>
+    <string name="content_description_qralarm_pro_image">QRAlarm PRO -sovelluksen kuvake</string>
+</resources>
