@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">Apa yang baharu?</string>
+    <string name="whats_new_entry_1">Ciri sandaran</string>
+    <string name="whats_new_entry_1_note_1">Simpan semua data anda ke dalam fail</string>
+    <string name="whats_new_entry_1_note_2">Import data anda, contohnya ke telefon baharu</string>
+    <string name="whats_new_entry_2">Penambahbaikan main balik nada dering</string>
+</resources>

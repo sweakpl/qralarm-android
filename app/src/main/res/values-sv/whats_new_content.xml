@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">Vad är nytt?</string>
+    <string name="whats_new_entry_1">Säkerhetskopiering</string>
+    <string name="whats_new_entry_1_note_1">Spara all din data i en fil</string>
+    <string name="whats_new_entry_1_note_2">Importera dina data till exempelvis en ny telefon</string>
+    <string name="whats_new_entry_2">Förbättrad uppspelning av ringsignaler</string>
+</resources>
