@@ -33,7 +33,7 @@ android {
 
     defaultConfig {
         applicationId = "com.sweak.qralarm"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 37
         versionCode = 91
         versionName = "2.11.2"
