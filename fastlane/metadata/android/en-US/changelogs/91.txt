@@ -1,0 +1,2 @@
+* Alarm screen now shows the name of the assigned code,
+* New languages support: Finnish, Malaysian, Norwegian, Swedish, Thai, Vietnamese.
