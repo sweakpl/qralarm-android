@@ -14,9 +14,7 @@ object DeviceProtectedDataStore {
         preferencesFileName: String,
         corruptionHandler: ReplaceFileCorruptionHandler<Preferences>
     ): DataStore<Preferences> {
-        val deviceProtectedContext = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.createDeviceProtectedStorageContext()
-        } else context
+        val deviceProtectedContext = context.createDeviceProtectedStorageContext()
 
         return PreferenceDataStoreFactory.create(
             produceFile = {
@@ -38,31 +36,29 @@ object DeviceProtectedDataStore {
         context: Context,
         preferencesFileName: String
     ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val preferencesFilesDirLocalPath = "datastore/$preferencesFileName.preferences_pb"
+        val preferencesFilesDirLocalPath = "datastore/$preferencesFileName.preferences_pb"
 
-            val deviceProtectedPreferencesFile = File(
-                context.createDeviceProtectedStorageContext().filesDir,
-                preferencesFilesDirLocalPath
-            )
-            val credentialProtectedPreferencesFile = File(
-                context.filesDir,
-                preferencesFilesDirLocalPath
-            )
+        val deviceProtectedPreferencesFile = File(
+            context.createDeviceProtectedStorageContext().filesDir,
+            preferencesFilesDirLocalPath
+        )
+        val credentialProtectedPreferencesFile = File(
+            context.filesDir,
+            preferencesFilesDirLocalPath
+        )
 
-            try {
-                if (credentialProtectedPreferencesFile.exists() &&
-                    !deviceProtectedPreferencesFile.exists()
-                ) {
-                    deviceProtectedPreferencesFile.parentFile?.mkdirs()
-                    credentialProtectedPreferencesFile.copyTo(
-                        target = deviceProtectedPreferencesFile,
-                        overwrite = true
-                    )
-                    credentialProtectedPreferencesFile.delete()
-                }
-            } catch (_: Exception) { /* no-op */
+        try {
+            if (credentialProtectedPreferencesFile.exists() &&
+                !deviceProtectedPreferencesFile.exists()
+            ) {
+                deviceProtectedPreferencesFile.parentFile?.mkdirs()
+                credentialProtectedPreferencesFile.copyTo(
+                    target = deviceProtectedPreferencesFile,
+                    overwrite = true
+                )
+                credentialProtectedPreferencesFile.delete()
             }
+        } catch (_: Exception) { /* no-op */
         }
     }
 } 

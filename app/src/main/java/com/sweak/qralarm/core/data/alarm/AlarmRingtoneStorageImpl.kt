@@ -20,10 +20,7 @@ class AlarmRingtoneStorageImpl @Inject constructor(
     @param:ApplicationContext private val context: Context
 ) : AlarmRingtoneStorage {
 
-    private val storageContext =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.createDeviceProtectedStorageContext()
-        } else context
+    private val storageContext = context.createDeviceProtectedStorageContext()
 
     override fun saveContentUriForAlarm(contentUriString: String, alarmId: Long): String {
         val file = ringtoneFile(alarmId = alarmId)

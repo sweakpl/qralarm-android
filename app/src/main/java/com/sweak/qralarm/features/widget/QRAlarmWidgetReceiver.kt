@@ -25,10 +25,8 @@ class QRAlarmWidgetReceiver : GlanceAppWidgetReceiver() {
         appWidgetIds: IntArray
     ) {
         // Glance's super.onUpdate() calls WorkManager internally, which crashes before user unlock.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
-            if (!userManager.isUserUnlocked) return
-        }
+        val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
+        if (!userManager.isUserUnlocked) return
 
         super.onUpdate(context, appWidgetManager, appWidgetIds)
         widgetUpdater.requestUpdate()

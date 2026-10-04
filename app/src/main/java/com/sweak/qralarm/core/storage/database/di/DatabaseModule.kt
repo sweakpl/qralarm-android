@@ -23,9 +23,7 @@ object DatabaseModule {
         @ApplicationContext context: Context
     ): QRAlarmDatabase =
         Room.databaseBuilder(
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                context.createDeviceProtectedStorageContext()
-            } else context,
+            context.createDeviceProtectedStorageContext(),
             QRAlarmDatabase::class.java,
             "QRAlarmDatabase"
         )
