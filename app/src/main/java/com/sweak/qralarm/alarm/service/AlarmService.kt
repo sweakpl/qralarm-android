@@ -39,6 +39,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
@@ -163,6 +164,12 @@ class AlarmService : Service() {
                 return@launch
             }
 
+            // An early delivery is waited out, so that the alarm rings on time and the
+            // rescheduling below does not schedule the very same occurrence again:
+            getLaunchDelayInMillis(alarm, isSnoozeAlarm)?.let { launchDelayInMillis ->
+                if (launchDelayInMillis < 0) delay((-launchDelayInMillis).milliseconds)
+            }
+
             // The service is a singleton, so if a previous alarm is still ringing tear down first.
             if (isRunning) {
                 withContext(Dispatchers.Main) {
@@ -270,15 +277,19 @@ class AlarmService : Service() {
     }
 
     private fun isAbnormalLaunch(alarm: Alarm, isSnoozeAlarm: Boolean?): Boolean {
+        val launchDelayInMillis = getLaunchDelayInMillis(alarm, isSnoozeAlarm) ?: return false
+
+        return launchDelayInMillis !in -EARLY_LAUNCH_TOLERANCE_MS..ABNORMAL_LAUNCH_TOLERANCE_MS
+    }
+
+    private fun getLaunchDelayInMillis(alarm: Alarm, isSnoozeAlarm: Boolean?): Long? {
         val scheduledTimeInMillis = when {
             isSnoozeAlarm == true -> alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis
             else -> alarm.nextAlarmTimeInMillis
         }
-        if (scheduledTimeInMillis == null) return false
+        if (scheduledTimeInMillis == null) return null
 
-        val launchDelayInMillis = System.currentTimeMillis() - scheduledTimeInMillis
-
-        return launchDelayInMillis !in 0..ABNORMAL_LAUNCH_TOLERANCE_MS
+        return System.currentTimeMillis() - scheduledTimeInMillis
     }
 
     private suspend fun resetAvailableSnoozes() {
@@ -406,5 +417,6 @@ class AlarmService : Service() {
         var isRunning = false
 
         private const val ABNORMAL_LAUNCH_TOLERANCE_MS = 10 * 60 * 1000L
+        private const val EARLY_LAUNCH_TOLERANCE_MS = 5 * 1000L
     }
 }
