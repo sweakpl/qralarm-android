@@ -4,6 +4,7 @@ sealed class PermissionsPageUserEvent {
     data object CameraPermissionClicked : PermissionsPageUserEvent()
     data object AlarmsPermissionClicked : PermissionsPageUserEvent()
     data object NotificationsPermissionClicked : PermissionsPageUserEvent()
+    data object DoNotDisturbPermissionClicked : PermissionsPageUserEvent()
     data object FullScreenIntentPermissionClicked : PermissionsPageUserEvent()
     data object BackgroundWorkPermissionClicked : PermissionsPageUserEvent()
     data object GoToApplicationSettingsClicked : PermissionsPageUserEvent()
