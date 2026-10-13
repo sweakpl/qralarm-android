@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_checked_circle_icon">أيقونة دائرة محددة</string>
+    <string name="content_description_unchecked_circle_icon">أيقونة دائرة غير محددة</string>
+    <string name="content_description_qralarm_pro_image">صورة أيقونة تطبيق QRAlarm PRO</string>
+    <string name="content_description_muted_sound_icon">أيقونة كتم الصوت</string>
+    <string name="content_description_chain_icon">أيقونة السلسلة</string>
+    <string name="content_description_qralarm_icon">أيقونة QRAlarm</string>
+    <string name="content_description_add_icon">أيقونة الإضافة (علامة زائد)</string>
+    <string name="content_description_menu_icon">أيقونة القائمة</string>
+    <string name="content_description_close_icon">أيقونة الإغلاق</string>
+    <string name="content_description_done_icon">أيقونة تم</string>
+    <string name="content_description_forward_arrow_icon">أيقونة السهم للأمام</string>
+    <string name="content_description_back_arrow_icon">أيقونة السهم للخلف</string>
+    <string name="content_description_drop_down_arrow_icon">أيقونة السهم للقائمة المنسدلة</string>
+    <string name="content_description_play_icon">أيقونة التشغيل</string>
+    <string name="content_description_stop_icon">أيقونة الإيقاف</string>
+    <string name="content_description_edit_icon">أيقونة التعديل</string>
+    <string name="content_description_more_icon">أيقونة خيارات إضافية</string>
+    <string name="content_description_qr_code_icon">أيقونة رمز QR</string>
+    <string name="content_description_qr_code_scanner_icon">أيقونة ماسح رمز QR</string>
+    <string name="content_description_delete_icon">أيقونة الحذف</string>
+    <string name="content_description_camera_icon">أيقونة الكاميرا</string>
+    <string name="content_description_alarm_icon">أيقونة المنبه</string>
+    <string name="content_description_notification_icon">أيقونة الإشعار</string>
+    <string name="content_description_full_screen_icon">أيقونة العرض بملء الشاشة</string>
+    <string name="content_description_no_qr_code_icon">أيقونة رمز QR المعطّل</string>
+    <string name="content_description_automatic_settings_icon">أيقونة الإعدادات التلقائية</string>
+    <string name="content_description_app_settings_icon">أيقونة إعدادات التطبيق</string>
+    <string name="content_description_special_app_settings_icon">أيقونة إعدادات التطبيقات الخاصة</string>
+    <string name="content_description_star_icon">أيقونة النجمة</string>
+    <string name="content_description_flash_icon">أيقونة الفلاش</string>
+    <string name="content_description_skip_next_alarm_icon">أيقونة تخطي المنبه التالي</string>
+    <string name="content_description_label_icon">أيقونة التصنيف</string>
+    <string name="content_description_sound_icon">أيقونة الصوت</string>
+    <string name="content_description_copy_icon">أيقونة النسخ</string>
+    <string name="content_description_clock_icon">أيقونة الساعة</string>
+    <string name="content_description_emergency_icon">أيقونة مثلث الطوارئ</string>
+    <string name="content_description_calendar_icon">أيقونة التقويم</string>
+    <string name="content_description_export_backup_icon">أيقونة تصدير النسخة الاحتياطية (تنزيل ملف)</string>
+    <string name="content_description_import_backup_icon">أيقونة استيراد النسخة الاحتياطية (تحميل ملف)</string>
+    <string name="content_description_warning_icon">أيقونة مثلث التحذير</string>
+    <string name="content_description_five_stars_image">صورة خمس نجوم ذهبية</string>
+</resources>

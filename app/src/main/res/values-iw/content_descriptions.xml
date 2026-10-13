@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_checked_circle_icon">סמל עיגול מסומן</string>
+    <string name="content_description_unchecked_circle_icon">סמל עיגול לא מסומן</string>
+    <string name="content_description_qralarm_pro_image">תמונת סמל האפליקציה QRAlarm PRO</string>
+    <string name="content_description_qralarm_icon">סמל QRAlarm</string>
+    <string name="content_description_add_icon">סמל הוספה (פלוס)</string>
+    <string name="content_description_menu_icon">סמל תפריט</string>
+    <string name="content_description_close_icon">סמל סגירה</string>
+    <string name="content_description_done_icon">סמל אישור</string>
+    <string name="content_description_forward_arrow_icon">סמל חץ קדימה</string>
+    <string name="content_description_back_arrow_icon">סמל חץ אחורה</string>
+    <string name="content_description_drop_down_arrow_icon">סמל חץ נפתח</string>
+    <string name="content_description_play_icon">סמל הפעלה</string>
+    <string name="content_description_stop_icon">סמל עצירה</string>
+    <string name="content_description_edit_icon">סמל עריכה</string>
+    <string name="content_description_more_icon">סמל אפשרויות נוספות</string>
+    <string name="content_description_qr_code_icon">סמל קוד QR</string>
+    <string name="content_description_qr_code_scanner_icon">סמל סורק קוד QR</string>
+    <string name="content_description_delete_icon">סמל מחיקה</string>
+    <string name="content_description_camera_icon">סמל מצלמה</string>
+    <string name="content_description_alarm_icon">סמל שעון מעורר</string>
+    <string name="content_description_notification_icon">סמל התראה</string>
+    <string name="content_description_full_screen_icon">סמל תצוגה במסך מלא</string>
+    <string name="content_description_no_qr_code_icon">סמל קוד QR מושבת</string>
+    <string name="content_description_automatic_settings_icon">סמל ההגדרות האוטומטיות</string>
+    <string name="content_description_app_settings_icon">סמל הגדרות האפליקציה</string>
+    <string name="content_description_special_app_settings_icon">סמל הגדרות מיוחדות לאפליקציה</string>
+    <string name="content_description_star_icon">סמל כוכב</string>
+    <string name="content_description_flash_icon">סמל הבזק</string>
+    <string name="content_description_skip_next_alarm_icon">סמל דילוג על השעון המעורר הבא</string>
+    <string name="content_description_label_icon">סמל תווית</string>
+    <string name="content_description_sound_icon">סמל צליל</string>
+    <string name="content_description_copy_icon">סמל העתקה</string>
+    <string name="content_description_clock_icon">סמל שעון</string>
+    <string name="content_description_emergency_icon">סמל משולש חירום</string>
+    <string name="content_description_muted_sound_icon">סמל צליל מושתק</string>
+    <string name="content_description_chain_icon">סמל שרשרת</string>
+    <string name="content_description_calendar_icon">סמל לוח שנה</string>
+    <string name="content_description_export_backup_icon">סמל ייצוא גיבוי (הורדת קובץ)</string>
+    <string name="content_description_import_backup_icon">סמל ייבוא גיבוי (העלאת קובץ)</string>
+    <string name="content_description_warning_icon">סמל משולש אזהרה</string>
+    <string name="content_description_five_stars_image">תמונה של חמישה כוכבי זהב</string>
+</resources>
