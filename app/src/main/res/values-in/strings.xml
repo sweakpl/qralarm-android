@@ -18,6 +18,18 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d alarm aktif</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="other">%1$d detik</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="other">%1$d menit</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="other">%1$d j</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="other">%1$d x %2$d menit</item>
+    </plurals>
     <string name="lets_go">Ayo mulai!</string>
     <string name="home">Beranda</string>
     <string name="alarms">Alarm</string>

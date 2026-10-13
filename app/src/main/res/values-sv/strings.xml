@@ -24,6 +24,22 @@
         <item quantity="one">%1$d aktivt alarm</item>
         <item quantity="other">%1$d aktiva alarm</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d sek</item>
+        <item quantity="other">%1$d sek</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d h</item>
+        <item quantity="other">%1$d h</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d x %2$d min</item>
+        <item quantity="other">%1$d x %2$d min</item>
+    </plurals>
     <string name="welcome_title">Morgondagens alarm ska inte behöva förlora mot gårdagskvällen.</string>
     <string name="welcome_subtitle">De flesta alarm ber dig bara trycka.\nQRAlarm får dig att gå upp.</string>
     <string name="get_started">Kom igång</string>

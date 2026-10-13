@@ -24,6 +24,22 @@
         <item quantity="one">%1$d herätystä aktiivisena</item>
         <item quantity="other">%1$d herätystä aktiivisena</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d s</item>
+        <item quantity="other">%1$d s</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d h</item>
+        <item quantity="other">%1$d h</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d x %2$d min</item>
+        <item quantity="other">%1$d x %2$d min</item>
+    </plurals>
     <string name="welcome_title">Älä anna viime yön voittaa huomisen herätystä.</string>
     <string name="welcome_subtitle">Useimmat herätykset saa kuitattua napauttamalla.\nQRAlarm saa sinut nousemaan.</string>
     <string name="get_started">Aloita</string>

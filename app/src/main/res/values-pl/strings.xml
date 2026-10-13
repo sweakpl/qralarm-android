@@ -36,6 +36,30 @@
         <item quantity="many">%1$d alarmów aktywnych</item>
         <item quantity="other">%1$d alarmów aktywnych</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d sek</item>
+        <item quantity="few">%1$d sek</item>
+        <item quantity="many">%1$d sek</item>
+        <item quantity="other">%1$d sek</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d min</item>
+        <item quantity="few">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d h</item>
+        <item quantity="few">%1$d h</item>
+        <item quantity="many">%1$d h</item>
+        <item quantity="other">%1$d h</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d x %2$d min</item>
+        <item quantity="few">%1$d x %2$d min</item>
+        <item quantity="many">%1$d x %2$d min</item>
+        <item quantity="other">%1$d x %2$d min</item>
+    </plurals>
     <string name="lets_go">Zaczynajmy!</string>
     <string name="home">Strona główna</string>
     <string name="alarms">Alarmy</string>

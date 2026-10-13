@@ -18,6 +18,18 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d 개의 알람 활성화</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="other">%1$d 초</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="other">%1$d 분</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="other">%1$d 시간</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="other">%1$d x %2$d 분</item>
+    </plurals>
     <string name="welcome_title">내일 아침 알람은 어젯밤을 이겨야 합니다.</string>
     <string name="welcome_subtitle">대부분의 알람은 탭만 요구합니다.\nQRAlarm은 일어나게 만듭니다.</string>
     <string name="get_started">시작하기</string>

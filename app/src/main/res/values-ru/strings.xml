@@ -36,6 +36,30 @@
         <item quantity="many">%1$d активных будильников</item>
         <item quantity="other">%1$d активных будильников</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d сек</item>
+        <item quantity="few">%1$d сек</item>
+        <item quantity="many">%1$d сек</item>
+        <item quantity="other">%1$d сек</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d мин</item>
+        <item quantity="few">%1$d мин</item>
+        <item quantity="many">%1$d мин</item>
+        <item quantity="other">%1$d мин</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d ч</item>
+        <item quantity="few">%1$d ч</item>
+        <item quantity="many">%1$d ч</item>
+        <item quantity="other">%1$d ч</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d x %2$d мин</item>
+        <item quantity="few">%1$d x %2$d мин</item>
+        <item quantity="many">%1$d x %2$d мин</item>
+        <item quantity="other">%1$d x %2$d мин</item>
+    </plurals>
     <string name="lets_go">Поехали!</string>
     <string name="home">Главная</string>
     <string name="alarms">Будильники</string>

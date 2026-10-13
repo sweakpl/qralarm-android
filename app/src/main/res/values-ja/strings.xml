@@ -18,6 +18,18 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d 個のアラームが有効</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="other">%1$d 秒</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="other">%1$d 分</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="other">%1$d 時間</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="other">%1$d x %2$d 分</item>
+    </plurals>
     <string name="welcome_title">明日のアラームは昨夜に負けてはいけない。</string>
     <string name="welcome_subtitle">ほとんどのアラームはタップを求めるだけ。\nQRAlarmはあなたを起こします。</string>
     <string name="get_started">開始</string>
