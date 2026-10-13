@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">ما الجديد؟</string>
+    <string name="whats_new_entry_1">ميزة النسخ الاحتياطي</string>
+    <string name="whats_new_entry_1_note_1">احفظ جميع بياناتك في ملف</string>
+    <string name="whats_new_entry_1_note_2">استورد بياناتك إلى هاتف جديد، مثلاً</string>
+    <string name="whats_new_entry_2">تحسينات على تشغيل نغمة الرنين</string>
+</resources>
