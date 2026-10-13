@@ -5,6 +5,7 @@
         <item quantity="other">%1$d snoozes</item>
     </plurals>
     <plurals name="number_of_seconds_plural">
+        <item quantity="one">%1$d second</item>
         <item quantity="other">%1$d seconds</item>
     </plurals>
     <plurals name="days">
