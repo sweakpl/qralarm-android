@@ -131,12 +131,12 @@
         <item quantity="other">%1$d س</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="zero">%1$d x %2$d دقائق</item>
-        <item quantity="one">%1$d x %2$d دقيقة</item>
-        <item quantity="two">%1$d x %2$d دقيقتان</item>
-        <item quantity="few">%1$d x %2$d دقائق</item>
-        <item quantity="many">%1$d x %2$d دقيقة</item>
-        <item quantity="other">%1$d x %2$d دقيقة</item>
+        <item quantity="zero">%1$d × %2$d دقائق</item>
+        <item quantity="one">%1$d × %2$d دقيقة</item>
+        <item quantity="two">%1$d × %2$d دقيقتان</item>
+        <item quantity="few">%1$d × %2$d دقائق</item>
+        <item quantity="many">%1$d × %2$d دقيقة</item>
+        <item quantity="other">%1$d × %2$d دقيقة</item>
     </plurals>
     <string name="how_it_works_step_3_description">اذهب إليه وامسح الرمز، وسيتوقف المنبه. وها أنت واقف.</string>
     <string name="almost_ready">أوشكت على الانتهاء.</string>

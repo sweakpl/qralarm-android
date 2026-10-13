@@ -46,9 +46,9 @@
         <item quantity="other">%1$d h</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="one">%1$d x %2$d mín</item>
-        <item quantity="many">%1$d x %2$d mín</item>
-        <item quantity="other">%1$d x %2$d mín</item>
+        <item quantity="one">%1$d × %2$d mín</item>
+        <item quantity="many">%1$d × %2$d mín</item>
+        <item quantity="other">%1$d × %2$d mín</item>
     </plurals>
     <string name="lets_go">¡Vamos!</string>
     <string name="home">Inicio</string>

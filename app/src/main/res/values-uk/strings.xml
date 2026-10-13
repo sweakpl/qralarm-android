@@ -55,10 +55,10 @@
         <item quantity="other">%1$d год</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="one">%1$d x %2$d хв</item>
-        <item quantity="few">%1$d x %2$d хв</item>
-        <item quantity="many">%1$d x %2$d хв</item>
-        <item quantity="other">%1$d x %2$d хв</item>
+        <item quantity="one">%1$d × %2$d хв</item>
+        <item quantity="few">%1$d × %2$d хв</item>
+        <item quantity="many">%1$d × %2$d хв</item>
+        <item quantity="other">%1$d × %2$d хв</item>
     </plurals>
     <string name="lets_go">Почнемо!</string>
     <string name="home">Головна сторінка</string>

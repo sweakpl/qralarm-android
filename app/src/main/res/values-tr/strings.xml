@@ -37,8 +37,8 @@
         <item quantity="other">%1$d sa</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="one">%1$d x %2$d dk</item>
-        <item quantity="other">%1$d x %2$d dk</item>
+        <item quantity="one">%1$d × %2$d dk</item>
+        <item quantity="other">%1$d × %2$d dk</item>
     </plurals>
     <string name="lets_go">Hadi başlayalım!</string>
     <string name="home">Ana Sayfa</string>

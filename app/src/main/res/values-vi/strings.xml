@@ -28,7 +28,7 @@
         <item quantity="other">%1$d giờ</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="other">%1$d x %2$d phút</item>
+        <item quantity="other">%1$d × %2$d phút</item>
     </plurals>
     <string name="welcome_title">Đừng để báo thức ngày mai thua đêm qua.</string>
     <string name="welcome_subtitle">Hầu hết báo thức chỉ yêu cầu bạn chạm vào màn hình.\nQRAlarm buộc bạn phải thức dậy.</string>

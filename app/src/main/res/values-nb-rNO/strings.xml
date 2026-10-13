@@ -37,8 +37,8 @@
         <item quantity="other">%1$d t</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="one">%1$d x %2$d min</item>
-        <item quantity="other">%1$d x %2$d min</item>
+        <item quantity="one">%1$d × %2$d min</item>
+        <item quantity="other">%1$d × %2$d min</item>
     </plurals>
     <string name="welcome_title">Morgendagens alarm skal ikke tape mot gårskvelden.</string>
     <string name="welcome_subtitle">De fleste alarmer ber deg bare trykke.\nQRAlarm får deg opp.</string>

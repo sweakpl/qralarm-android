@@ -55,10 +55,10 @@
         <item quantity="other">%1$d ч</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="one">%1$d x %2$d мин</item>
-        <item quantity="few">%1$d x %2$d мин</item>
-        <item quantity="many">%1$d x %2$d мин</item>
-        <item quantity="other">%1$d x %2$d мин</item>
+        <item quantity="one">%1$d × %2$d мин</item>
+        <item quantity="few">%1$d × %2$d мин</item>
+        <item quantity="many">%1$d × %2$d мин</item>
+        <item quantity="other">%1$d × %2$d мин</item>
     </plurals>
     <string name="lets_go">Поехали!</string>
     <string name="home">Главная</string>

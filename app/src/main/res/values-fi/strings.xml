@@ -37,8 +37,8 @@
         <item quantity="other">%1$d h</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="one">%1$d x %2$d min</item>
-        <item quantity="other">%1$d x %2$d min</item>
+        <item quantity="one">%1$d × %2$d min</item>
+        <item quantity="other">%1$d × %2$d min</item>
     </plurals>
     <string name="welcome_title">Älä anna viime yön voittaa huomisen herätystä.</string>
     <string name="welcome_subtitle">Useimmat herätykset saa kuitattua napauttamalla.\nQRAlarm saa sinut nousemaan.</string>

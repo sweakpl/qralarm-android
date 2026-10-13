@@ -37,8 +37,8 @@
         <item quantity="other">%1$d Std</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="one">%1$d x %2$d Min</item>
-        <item quantity="other">%1$d x %2$d Min</item>
+        <item quantity="one">%1$d × %2$d Min</item>
+        <item quantity="other">%1$d × %2$d Min</item>
     </plurals>
     <string name="lets_go">Lass uns loslegen!</string>
     <string name="home">Übersicht</string>

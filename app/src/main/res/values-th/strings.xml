@@ -28,7 +28,7 @@
         <item quantity="other">%1$d ชม.</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="other">%1$d x %2$d นาที</item>
+        <item quantity="other">%1$d × %2$d นาที</item>
     </plurals>
     <string name="welcome_title">อย่าให้การปลุกพรุ่งนี้แพ้ความง่วงจากเมื่อคืน</string>
     <string name="welcome_subtitle">การปลุกส่วนใหญ่แค่ให้คุณแตะหน้าจอ\nQRAlarm ทำให้คุณต้องลุกจากเตียง</string>

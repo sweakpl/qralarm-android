@@ -36,8 +36,8 @@
         <item quantity="other">%1$d h</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="one">%1$d x %2$d min</item>
-        <item quantity="other">%1$d x %2$d min</item>
+        <item quantity="one">%1$d × %2$d min</item>
+        <item quantity="other">%1$d × %2$d min</item>
     </plurals>
     <string name="app_name" translatable="false">QRAlarm</string>
     <string name="welcome_title">Tomorrow\'s alarm shouldn\'t lose to last night.</string>

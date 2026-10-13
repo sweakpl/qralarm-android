@@ -28,7 +28,7 @@
         <item quantity="other">%1$d j</item>
     </plurals>
     <plurals name="snoozes_times_minutes_abbreviated">
-        <item quantity="other">%1$d x %2$d min</item>
+        <item quantity="other">%1$d × %2$d min</item>
     </plurals>
     <string name="welcome_title">Penggera esok jangan sampai tewas kepada malam tadi.</string>
     <string name="welcome_subtitle">Kebanyakan penggera cuma minta anda mengetik.\nQRAlarm buat anda bangun.</string>
