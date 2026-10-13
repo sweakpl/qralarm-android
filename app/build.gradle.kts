@@ -53,6 +53,10 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
         }
+        debug {
+            // Adds the en-XA (accented) and ar-XB (RTL) pseudolocales to the device language list
+            isPseudoLocalesEnabled = true
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
