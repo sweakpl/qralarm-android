@@ -18,6 +18,11 @@
         <item quantity="two">%1$d נודניקים</item>
         <item quantity="other">%1$d נודניקים</item>
     </plurals>
+    <plurals name="number_of_seconds_plural">
+        <item quantity="one">%1$d שנייה</item>
+        <item quantity="two">%1$d שניות</item>
+        <item quantity="other">%1$d שניות</item>
+    </plurals>
     <plurals name="days">
         <item quantity="one">%1$d יום</item>
         <item quantity="two">%1$d ימים</item>

@@ -74,6 +74,14 @@
         <item quantity="many">%1$d غفوة</item>
         <item quantity="other">%1$d غفوة</item>
     </plurals>
+    <plurals name="number_of_seconds_plural">
+        <item quantity="zero">%1$d ثوانٍ</item>
+        <item quantity="one">%1$d ثانية</item>
+        <item quantity="two">%1$d ثانيتان</item>
+        <item quantity="few">%1$d ثوانٍ</item>
+        <item quantity="many">%1$d ثانية</item>
+        <item quantity="other">%1$d ثانية</item>
+    </plurals>
     <plurals name="days">
         <item quantity="zero">%1$d أيام</item>
         <item quantity="one">%1$d يوم</item>
