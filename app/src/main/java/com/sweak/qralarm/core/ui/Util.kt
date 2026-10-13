@@ -1,5 +1,6 @@
 package com.sweak.qralarm.core.ui
 
+import androidx.core.text.BidiFormatter
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
@@ -15,6 +16,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DecimalStyle
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -22,17 +24,26 @@ fun DayOfWeek.shortName(): String {
     return getDisplayName(TextStyle.SHORT, Locale.getDefault())
 }
 
+// Wraps LTR content (e.g. code values) so it doesn't get reordered inside RTL sentences
+fun String.toBidiIsolated(): String = BidiFormatter.getInstance().unicodeWrap(this)
+
+// Uses the locale's digits, consistent with %d in string resources
+fun Int.toLocalizedString(): String = String.format(Locale.getDefault(), "%d", this)
+
+private fun localizedDateTimeFormatter(pattern: String): DateTimeFormatter =
+    DateTimeFormatter.ofPattern(pattern).withDecimalStyle(DecimalStyle.ofDefaultLocale())
+
 fun getTimeString(hourOfDay: Int, minute: Int, is24HourFormat: Boolean): String {
     return ZonedDateTime.now()
         .withHour(hourOfDay)
         .withMinute(minute)
-        .format(DateTimeFormatter.ofPattern(if (is24HourFormat) "HH:mm" else "hh:mm a"))
+        .format(localizedDateTimeFormatter(if (is24HourFormat) "HH:mm" else "hh:mm a"))
 }
 
 fun getTimeString(timeInMillis: Long, is24HourFormat: Boolean): String {
     return Instant.ofEpochMilli(timeInMillis)
         .atZone(ZoneId.systemDefault())
-        .format(DateTimeFormatter.ofPattern(if (is24HourFormat) "HH:mm" else "hh:mm a"))
+        .format(localizedDateTimeFormatter(if (is24HourFormat) "HH:mm" else "hh:mm a"))
 }
 
 fun getDaysHoursAndMinutesUntilAlarm(alarmTimeInMillis: Long): Triple<Int, Int, Int> {
@@ -99,7 +110,7 @@ fun getDayString(timeInMillis: Long): String {
     val differentYear = dateTime.year != ZonedDateTime.now().year
     val pattern = if (differentYear) "EEEE $datePattern" else "EEEE $datePatternWithoutYear"
 
-    return dateTime.format(DateTimeFormatter.ofPattern(pattern))
+    return dateTime.format(localizedDateTimeFormatter(pattern))
 }
 
 fun getEarliestOnlyOnceAlarmDate(hourOfDay: Int, minute: Int): LocalDate {

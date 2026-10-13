@@ -18,6 +18,11 @@
         <item quantity="two">%1$d נודניקים</item>
         <item quantity="other">%1$d נודניקים</item>
     </plurals>
+    <plurals name="number_of_seconds_plural">
+        <item quantity="one">%1$d שנייה</item>
+        <item quantity="two">%1$d שניות</item>
+        <item quantity="other">%1$d שניות</item>
+    </plurals>
     <plurals name="days">
         <item quantity="one">%1$d יום</item>
         <item quantity="two">%1$d ימים</item>
@@ -37,6 +42,26 @@
         <item quantity="one">%1$d שעון מעורר פעיל</item>
         <item quantity="two">%1$d שעונים מעוררים פעילים</item>
         <item quantity="other">%1$d שעונים מעוררים פעילים</item>
+    </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d שנייה</item>
+        <item quantity="two">%1$d שניות</item>
+        <item quantity="other">%1$d שניות</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d דקה</item>
+        <item quantity="two">%1$d דקות</item>
+        <item quantity="other">%1$d דקות</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d שעה</item>
+        <item quantity="two">%1$d שעות</item>
+        <item quantity="other">%1$d שעות</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d × %2$d דקה</item>
+        <item quantity="two">%1$d × %2$d דקות</item>
+        <item quantity="other">%1$d × %2$d דקות</item>
     </plurals>
     <string name="welcome_title">השעון המעורר של מחר לא צריך להפסיד ללילה שעבר.</string>
     <string name="welcome_subtitle">ברוב השעונים המעוררים מספיק ללחוץ על כפתור.\nQRAlarm גורם לך לקום.</string>

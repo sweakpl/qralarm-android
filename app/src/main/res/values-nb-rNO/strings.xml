@@ -24,6 +24,22 @@
         <item quantity="one">%1$d alarm aktiv</item>
         <item quantity="other">%1$d alarmer aktive</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d sek</item>
+        <item quantity="other">%1$d sek</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d t</item>
+        <item quantity="other">%1$d t</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d × %2$d min</item>
+        <item quantity="other">%1$d × %2$d min</item>
+    </plurals>
     <string name="welcome_title">Morgendagens alarm skal ikke tape mot gårskvelden.</string>
     <string name="welcome_subtitle">De fleste alarmer ber deg bare trykke.\nQRAlarm får deg opp.</string>
     <string name="get_started">Kom i gang</string>
@@ -73,9 +89,6 @@
     <string name="system_default_ringtone">Systemets standardringetone</string>
     <string name="custom_sound">Egendefinert lyd</string>
     <string name="disabled">Deaktivert</string>
-    <string name="min">min</string>
-    <string name="h">t</string>
-    <string name="sec">sek</string>
     <string name="ringtone_successfully_uploaded">Den egendefinerte ringetonen er lastet opp!</string>
     <string name="ringtone_upload_unsuccessful">Den egendefinerte ringetonen ble ikke lastet opp …</string>
     <string name="code_assigned">Kode tilordnet!</string>

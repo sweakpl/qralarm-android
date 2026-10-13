@@ -18,6 +18,18 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d penggera aktif</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="other">%1$d s</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="other">%1$d j</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="other">%1$d × %2$d min</item>
+    </plurals>
     <string name="welcome_title">Penggera esok jangan sampai tewas kepada malam tadi.</string>
     <string name="welcome_subtitle">Kebanyakan penggera cuma minta anda mengetik.\nQRAlarm buat anda bangun.</string>
     <string name="get_started">Mari mulakan</string>
@@ -67,9 +79,6 @@
     <string name="system_default_ringtone">Nada dering lalai sistem</string>
     <string name="custom_sound">Bunyi tersuai</string>
     <string name="disabled">Dilumpuhkan</string>
-    <string name="min">min</string>
-    <string name="h">j</string>
-    <string name="sec">s</string>
     <string name="ringtone_successfully_uploaded">Nada dering tersuai anda berjaya dimuat naik!</string>
     <string name="ringtone_upload_unsuccessful">Nada dering tersuai tidak dimuat naik…</string>
     <string name="code_assigned">Kod ditetapkan!</string>

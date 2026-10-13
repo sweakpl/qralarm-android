@@ -30,6 +30,26 @@
         <item quantity="many">%1$d alarmes actives</item>
         <item quantity="other">%1$d alarmes actives</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d sec</item>
+        <item quantity="many">%1$d sec</item>
+        <item quantity="other">%1$d sec</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d h</item>
+        <item quantity="many">%1$d h</item>
+        <item quantity="other">%1$d h</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d × %2$d min</item>
+        <item quantity="many">%1$d × %2$d min</item>
+        <item quantity="other">%1$d × %2$d min</item>
+    </plurals>
     <string name="lets_go">Allons-y !</string>
     <string name="home">Accueil</string>
     <string name="alarms">Alarmes</string>
@@ -57,9 +77,6 @@
     <string name="system_default_ringtone">Sonnerie par défaut du système</string>
     <string name="custom_sound">Son personnalisé</string>
     <string name="disabled">Désactivé</string>
-    <string name="min">min</string>
-    <string name="h">h</string>
-    <string name="sec">sec</string>
     <string name="ringtone_successfully_uploaded">Votre sonnerie personnalisée a été téléchargée avec succès !</string>
     <string name="ringtone_upload_unsuccessful">La sonnerie personnalisée n’a pas été téléchargée…</string>
     <string name="code_assigned">Code attribué !</string>

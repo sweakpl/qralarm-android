@@ -18,6 +18,18 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d alarm aktif</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="other">%1$d detik</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="other">%1$d menit</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="other">%1$d j</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="other">%1$d × %2$d menit</item>
+    </plurals>
     <string name="lets_go">Ayo mulai!</string>
     <string name="home">Beranda</string>
     <string name="alarms">Alarm</string>
@@ -45,9 +57,6 @@
     <string name="system_default_ringtone">Nada dering bawaan sistem</string>
     <string name="custom_sound">Suara khusus</string>
     <string name="disabled">Dinonaktifkan</string>
-    <string name="min">menit</string>
-    <string name="h">j</string>
-    <string name="sec">detik</string>
     <string name="ringtone_successfully_uploaded">Nada dering kustom Anda berhasil diunggah!</string>
     <string name="ringtone_upload_unsuccessful">Nada dering kustom tidak diunggah…</string>
     <string name="code_assigned">Kode ditetapkan!</string>

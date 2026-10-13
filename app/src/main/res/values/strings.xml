@@ -5,6 +5,7 @@
         <item quantity="other">%1$d snoozes</item>
     </plurals>
     <plurals name="number_of_seconds_plural">
+        <item quantity="one">%1$d second</item>
         <item quantity="other">%1$d seconds</item>
     </plurals>
     <plurals name="days">
@@ -22,6 +23,22 @@
     <plurals name="alarms_active">
         <item quantity="one">%1$d alarm active</item>
         <item quantity="other">%1$d alarms active</item>
+    </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d sec</item>
+        <item quantity="other">%1$d sec</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d h</item>
+        <item quantity="other">%1$d h</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d × %2$d min</item>
+        <item quantity="other">%1$d × %2$d min</item>
     </plurals>
     <string name="app_name" translatable="false">QRAlarm</string>
     <string name="welcome_title">Tomorrow\'s alarm shouldn\'t lose to last night.</string>
@@ -78,9 +95,6 @@
     <string name="system_default_ringtone">System default ringtone</string>
     <string name="custom_sound">Custom sound</string>
     <string name="disabled">Disabled</string>
-    <string name="min">min</string>
-    <string name="h">h</string>
-    <string name="sec">sec</string>
     <string name="ringtone_successfully_uploaded">Your custom ringtone has been successfully uploaded!</string>
     <string name="ringtone_upload_unsuccessful">Custom ringtone was not uploaded…</string>
     <string name="code_assigned">Code assigned!</string>

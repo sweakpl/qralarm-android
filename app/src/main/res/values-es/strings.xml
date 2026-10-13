@@ -30,6 +30,26 @@
         <item quantity="many">%1$d alarmas activas</item>
         <item quantity="other">%1$d alarmas activas</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d seg</item>
+        <item quantity="many">%1$d seg</item>
+        <item quantity="other">%1$d seg</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d mín</item>
+        <item quantity="many">%1$d mín</item>
+        <item quantity="other">%1$d mín</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d h</item>
+        <item quantity="many">%1$d h</item>
+        <item quantity="other">%1$d h</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d × %2$d mín</item>
+        <item quantity="many">%1$d × %2$d mín</item>
+        <item quantity="other">%1$d × %2$d mín</item>
+    </plurals>
     <string name="lets_go">¡Vamos!</string>
     <string name="home">Inicio</string>
     <string name="alarms">Alarmas</string>
@@ -57,9 +77,6 @@
     <string name="system_default_ringtone">Tono predeterminado del sistema</string>
     <string name="custom_sound">Sonido personalizado</string>
     <string name="disabled">Desactivado</string>
-    <string name="min">mín</string>
-    <string name="h">h</string>
-    <string name="sec">seg</string>
     <string name="ringtone_successfully_uploaded">¡Tu tono de llamada personalizado se ha cargado correctamente!</string>
     <string name="ringtone_upload_unsuccessful">El tono de llamada personalizado no se cargó…</string>
     <string name="code_assigned">¡Código asignado!</string>

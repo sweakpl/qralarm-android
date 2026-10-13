@@ -74,6 +74,14 @@
         <item quantity="many">%1$d غفوة</item>
         <item quantity="other">%1$d غفوة</item>
     </plurals>
+    <plurals name="number_of_seconds_plural">
+        <item quantity="zero">%1$d ثوانٍ</item>
+        <item quantity="one">%1$d ثانية</item>
+        <item quantity="two">%1$d ثانيتان</item>
+        <item quantity="few">%1$d ثوانٍ</item>
+        <item quantity="many">%1$d ثانية</item>
+        <item quantity="other">%1$d ثانية</item>
+    </plurals>
     <plurals name="days">
         <item quantity="zero">%1$d أيام</item>
         <item quantity="one">%1$d يوم</item>
@@ -105,6 +113,38 @@
         <item quantity="few">%1$d منبهات نشطة</item>
         <item quantity="many">%1$d منبهًا نشطًا</item>
         <item quantity="other">%1$d منبه نشط</item>
+    </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="zero">%1$d ث</item>
+        <item quantity="one">%1$d ث</item>
+        <item quantity="two">%1$d ث</item>
+        <item quantity="few">%1$d ث</item>
+        <item quantity="many">%1$d ث</item>
+        <item quantity="other">%1$d ث</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="zero">%1$d دقائق</item>
+        <item quantity="one">%1$d دقيقة</item>
+        <item quantity="two">%1$d دقيقتان</item>
+        <item quantity="few">%1$d دقائق</item>
+        <item quantity="many">%1$d دقيقة</item>
+        <item quantity="other">%1$d دقيقة</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="zero">%1$d س</item>
+        <item quantity="one">%1$d س</item>
+        <item quantity="two">%1$d س</item>
+        <item quantity="few">%1$d س</item>
+        <item quantity="many">%1$d س</item>
+        <item quantity="other">%1$d س</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="zero">%1$d × %2$d دقائق</item>
+        <item quantity="one">%1$d × %2$d دقيقة</item>
+        <item quantity="two">%1$d × %2$d دقيقتان</item>
+        <item quantity="few">%1$d × %2$d دقائق</item>
+        <item quantity="many">%1$d × %2$d دقيقة</item>
+        <item quantity="other">%1$d × %2$d دقيقة</item>
     </plurals>
     <string name="how_it_works_step_3_description">اذهب إليه وامسح الرمز، وسيتوقف المنبه. وها أنت واقف.</string>
     <string name="almost_ready">أوشكت على الانتهاء.</string>

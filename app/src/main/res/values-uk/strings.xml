@@ -36,6 +36,30 @@
         <item quantity="many">%1$d активних будильників</item>
         <item quantity="other">%1$d активних тривог</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d сек</item>
+        <item quantity="few">%1$d сек</item>
+        <item quantity="many">%1$d сек</item>
+        <item quantity="other">%1$d сек</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d хв</item>
+        <item quantity="few">%1$d хв</item>
+        <item quantity="many">%1$d хв</item>
+        <item quantity="other">%1$d хв</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d год</item>
+        <item quantity="few">%1$d год</item>
+        <item quantity="many">%1$d год</item>
+        <item quantity="other">%1$d год</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d × %2$d хв</item>
+        <item quantity="few">%1$d × %2$d хв</item>
+        <item quantity="many">%1$d × %2$d хв</item>
+        <item quantity="other">%1$d × %2$d хв</item>
+    </plurals>
     <string name="lets_go">Почнемо!</string>
     <string name="home">Головна сторінка</string>
     <string name="alarms">Будильники</string>
@@ -63,9 +87,6 @@
     <string name="system_default_ringtone">Системний рингтон за замовчуванням</string>
     <string name="custom_sound">Власний звук</string>
     <string name="disabled">Вимкнено</string>
-    <string name="min">хв</string>
-    <string name="h">год</string>
-    <string name="sec">сек</string>
     <string name="ringtone_successfully_uploaded">Ваш власний дзвінок успішно завантажено!</string>
     <string name="ringtone_upload_unsuccessful">Власний дзвінок не було надіслано…</string>
     <string name="code_assigned">Код присвоєно!</string>

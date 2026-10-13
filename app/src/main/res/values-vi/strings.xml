@@ -18,6 +18,18 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d báo thức đang hoạt động</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="other">%1$d giây</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="other">%1$d phút</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="other">%1$d giờ</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="other">%1$d × %2$d phút</item>
+    </plurals>
     <string name="welcome_title">Đừng để báo thức ngày mai thua đêm qua.</string>
     <string name="welcome_subtitle">Hầu hết báo thức chỉ yêu cầu bạn chạm vào màn hình.\nQRAlarm buộc bạn phải thức dậy.</string>
     <string name="get_started">Bắt đầu</string>
@@ -67,9 +79,6 @@
     <string name="system_default_ringtone">Nhạc chuông mặc định của hệ thống</string>
     <string name="custom_sound">Âm thanh tùy chỉnh</string>
     <string name="disabled">Đã tắt</string>
-    <string name="min">phút</string>
-    <string name="h">giờ</string>
-    <string name="sec">giây</string>
     <string name="ringtone_successfully_uploaded">Đã tải nhạc chuông tùy chỉnh lên thành công!</string>
     <string name="ringtone_upload_unsuccessful">Không thể tải nhạc chuông tùy chỉnh lên…</string>
     <string name="code_assigned">Đã gán mã!</string>

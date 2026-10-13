@@ -36,6 +36,30 @@
         <item quantity="many">%1$d активных будильников</item>
         <item quantity="other">%1$d активных будильников</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d сек</item>
+        <item quantity="few">%1$d сек</item>
+        <item quantity="many">%1$d сек</item>
+        <item quantity="other">%1$d сек</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d мин</item>
+        <item quantity="few">%1$d мин</item>
+        <item quantity="many">%1$d мин</item>
+        <item quantity="other">%1$d мин</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d ч</item>
+        <item quantity="few">%1$d ч</item>
+        <item quantity="many">%1$d ч</item>
+        <item quantity="other">%1$d ч</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d × %2$d мин</item>
+        <item quantity="few">%1$d × %2$d мин</item>
+        <item quantity="many">%1$d × %2$d мин</item>
+        <item quantity="other">%1$d × %2$d мин</item>
+    </plurals>
     <string name="lets_go">Поехали!</string>
     <string name="home">Главная</string>
     <string name="alarms">Будильники</string>
@@ -63,9 +87,6 @@
     <string name="system_default_ringtone">Системный рингтон по умолчанию</string>
     <string name="custom_sound">Пользовательский звук</string>
     <string name="disabled">Отключено</string>
-    <string name="min">мин</string>
-    <string name="h">ч</string>
-    <string name="sec">сек</string>
     <string name="ringtone_successfully_uploaded">Ваш пользовательский рингтон успешно загружен!</string>
     <string name="ringtone_upload_unsuccessful">Пользовательский рингтон не загружен…</string>
     <string name="code_assigned">Код присвоен!</string>

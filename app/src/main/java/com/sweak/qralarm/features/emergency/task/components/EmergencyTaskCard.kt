@@ -17,6 +17,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmSlider
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.toLocalizedString
 import com.sweak.qralarm.features.emergency.task.EmergencyScreenState
 
 @Composable
@@ -43,7 +44,7 @@ fun EmergencyTaskCard(
                 )
 
                 Text(
-                    text = emergencyTaskConfig.targetValue.toString(),
+                    text = emergencyTaskConfig.targetValue.toLocalizedString(),
                     style = MaterialTheme.typography.displaySmall.copy(
                         fontWeight = FontWeight.Bold
                     )
@@ -51,7 +52,7 @@ fun EmergencyTaskCard(
             }
 
             Text(
-                text = emergencyTaskConfig.currentValue.toString(),
+                text = emergencyTaskConfig.currentValue.toLocalizedString(),
                 style = MaterialTheme.typography.displayLarge,
                 modifier = Modifier.padding(bottom = MaterialTheme.space.xSmall)
             )
@@ -79,7 +80,7 @@ fun EmergencyTaskCard(
                 )
 
                 Text(
-                    text = emergencyTaskConfig.remainingMatches.toString(),
+                    text = emergencyTaskConfig.remainingMatches.toLocalizedString(),
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold
                     )

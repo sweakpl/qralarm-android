@@ -87,6 +87,7 @@ import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
+import com.sweak.qralarm.core.ui.toBidiIsolated
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowBackendEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
@@ -706,9 +707,9 @@ private fun AddEditAlarmScreenContent(
                                                     Text(
                                                         text = stringResource(
                                                             R.string.current_code,
-                                                            state.temporaryAssignedCode?.value
+                                                            (state.temporaryAssignedCode?.value
                                                                 ?: state.currentlyAssignedCode?.value
-                                                                ?: ""
+                                                                ?: "").toBidiIsolated()
                                                         ),
                                                         style = MaterialTheme.typography.labelMedium,
                                                         maxLines = 1,
@@ -1348,10 +1349,12 @@ private fun getAlarmSnoozeModeString(
         return stringResource(R.string.no_snoozes)
     }
 
-    return snoozeNumberToDurationPair.first.toString() +
-            " x " +
-            snoozeNumberToDurationPair.second +
-            " " + stringResource(R.string.min)
+    return pluralStringResource(
+        R.plurals.snoozes_times_minutes_abbreviated,
+        snoozeNumberToDurationPair.second,
+        snoozeNumberToDurationPair.first,
+        snoozeNumberToDurationPair.second
+    )
 }
 
 @Composable
@@ -1373,7 +1376,7 @@ fun getSecondsDurationString(durationInSeconds: Int): String {
     return if (durationInSeconds == 0) {
         stringResource(R.string.disabled)
     } else {
-        durationInSeconds.toString() + " " + stringResource(R.string.sec)
+        pluralStringResource(R.plurals.seconds_abbreviated, durationInSeconds, durationInSeconds)
     }
 }
 
@@ -1398,11 +1401,15 @@ fun getCancelLockDurationAbbreviatedString(durationInMinutes: Int): String {
         durationInMinutes == 0 -> stringResource(R.string.disabled)
         durationInMinutes >= 60 && durationInMinutes % 60 == 0 -> {
             val hours = durationInMinutes / 60
-            hours.toString() + " " + stringResource(R.string.h)
+            pluralStringResource(R.plurals.hours_abbreviated, hours, hours)
         }
 
         else -> {
-            durationInMinutes.toString() + " " + stringResource(R.string.min)
+            pluralStringResource(
+                R.plurals.minutes_abbreviated,
+                durationInMinutes,
+                durationInMinutes
+            )
         }
     }
 }

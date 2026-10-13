@@ -18,6 +18,18 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d 개의 알람 활성화</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="other">%1$d 초</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="other">%1$d 분</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="other">%1$d 시간</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="other">%1$d × %2$d 분</item>
+    </plurals>
     <string name="welcome_title">내일 아침 알람은 어젯밤을 이겨야 합니다.</string>
     <string name="welcome_subtitle">대부분의 알람은 탭만 요구합니다.\nQRAlarm은 일어나게 만듭니다.</string>
     <string name="get_started">시작하기</string>
@@ -67,9 +79,6 @@
     <string name="system_default_ringtone">시스템 기본 벨소리</string>
     <string name="custom_sound">사용자 정의 소리</string>
     <string name="disabled">사용 안 함</string>
-    <string name="min">분</string>
-    <string name="h">시간</string>
-    <string name="sec">초</string>
     <string name="ringtone_successfully_uploaded">사용자 정의 벨소리가 성공적으로 업로드되었습니다!</string>
     <string name="ringtone_upload_unsuccessful">사용자 정의 벨소리가 업로드되지 않았습니다…</string>
     <string name="code_assigned">코드가 할당되었습니다!</string>

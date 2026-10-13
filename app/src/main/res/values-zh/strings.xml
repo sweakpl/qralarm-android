@@ -18,6 +18,18 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d 个闹钟已启用</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="other">%1$d 秒</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="other">%1$d 分钟</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="other">%1$d 小时</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="other">%1$d × %2$d 分钟</item>
+    </plurals>
     <string name="lets_go">开始使用!</string>
     <string name="home">主页</string>
     <string name="alarms">我的闹钟</string>
@@ -45,9 +57,6 @@
     <string name="system_default_ringtone">系统默认铃声</string>
     <string name="custom_sound">自定义铃声</string>
     <string name="disabled">未启用</string>
-    <string name="min">分钟</string>
-    <string name="h">小时</string>
-    <string name="sec">秒</string>
     <string name="ringtone_successfully_uploaded">自定义铃声设置成功</string>
     <string name="ringtone_upload_unsuccessful">自定义铃声设置失败</string>
     <string name="code_assigned">已录入特定条码!</string>

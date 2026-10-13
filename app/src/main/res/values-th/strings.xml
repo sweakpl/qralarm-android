@@ -18,6 +18,18 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d รายการปลุกที่เปิดใช้งาน</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="other">%1$d วินาที</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="other">%1$d นาที</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="other">%1$d ชม.</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="other">%1$d × %2$d นาที</item>
+    </plurals>
     <string name="welcome_title">อย่าให้การปลุกพรุ่งนี้แพ้ความง่วงจากเมื่อคืน</string>
     <string name="welcome_subtitle">การปลุกส่วนใหญ่แค่ให้คุณแตะหน้าจอ\nQRAlarm ทำให้คุณต้องลุกจากเตียง</string>
     <string name="get_started">เริ่มต้นใช้งาน</string>
@@ -67,9 +79,6 @@
     <string name="system_default_ringtone">เสียงปลุกเริ่มต้นของระบบ</string>
     <string name="custom_sound">เสียงกำหนดเอง</string>
     <string name="disabled">ปิดใช้งาน</string>
-    <string name="min">นาที</string>
-    <string name="h">ชม.</string>
-    <string name="sec">วินาที</string>
     <string name="ringtone_successfully_uploaded">อัปโหลดเสียงปลุกที่กำหนดเองเรียบร้อยแล้ว!</string>
     <string name="ringtone_upload_unsuccessful">อัปโหลดเสียงปลุกที่กำหนดเองไม่สำเร็จ…</string>
     <string name="code_assigned">กำหนดโค้ดแล้ว!</string>

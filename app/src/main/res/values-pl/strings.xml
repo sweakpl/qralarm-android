@@ -36,6 +36,30 @@
         <item quantity="many">%1$d alarmów aktywnych</item>
         <item quantity="other">%1$d alarmów aktywnych</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="one">%1$d sek</item>
+        <item quantity="few">%1$d sek</item>
+        <item quantity="many">%1$d sek</item>
+        <item quantity="other">%1$d sek</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="one">%1$d min</item>
+        <item quantity="few">%1$d min</item>
+        <item quantity="many">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="one">%1$d h</item>
+        <item quantity="few">%1$d h</item>
+        <item quantity="many">%1$d h</item>
+        <item quantity="other">%1$d h</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="one">%1$d × %2$d min</item>
+        <item quantity="few">%1$d × %2$d min</item>
+        <item quantity="many">%1$d × %2$d min</item>
+        <item quantity="other">%1$d × %2$d min</item>
+    </plurals>
     <string name="lets_go">Zaczynajmy!</string>
     <string name="home">Strona główna</string>
     <string name="alarms">Alarmy</string>
@@ -63,9 +87,6 @@
     <string name="system_default_ringtone">Domyślny dzwonek systemu</string>
     <string name="custom_sound">Własny dźwięk</string>
     <string name="disabled">Wyłączona</string>
-    <string name="min">min</string>
-    <string name="h">h</string>
-    <string name="sec">sek</string>
     <string name="ringtone_successfully_uploaded">Twój własny dzwonek został pomyślnie przesłany!</string>
     <string name="ringtone_upload_unsuccessful">Własny dzwonek nie został przesłany…</string>
     <string name="code_assigned">Kod przypisany!</string>

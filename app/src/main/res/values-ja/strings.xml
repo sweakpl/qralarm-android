@@ -18,6 +18,18 @@
     <plurals name="alarms_active">
         <item quantity="other">%1$d 個のアラームが有効</item>
     </plurals>
+    <plurals name="seconds_abbreviated">
+        <item quantity="other">%1$d 秒</item>
+    </plurals>
+    <plurals name="minutes_abbreviated">
+        <item quantity="other">%1$d 分</item>
+    </plurals>
+    <plurals name="hours_abbreviated">
+        <item quantity="other">%1$d 時間</item>
+    </plurals>
+    <plurals name="snoozes_times_minutes_abbreviated">
+        <item quantity="other">%1$d × %2$d 分</item>
+    </plurals>
     <string name="welcome_title">明日のアラームは昨夜に負けてはいけない。</string>
     <string name="welcome_subtitle">ほとんどのアラームはタップを求めるだけ。\nQRAlarmはあなたを起こします。</string>
     <string name="get_started">開始</string>
@@ -47,9 +59,6 @@
     <string name="system_default_ringtone">システムのデフォルト着信音</string>
     <string name="custom_sound">カスタムサウンド</string>
     <string name="disabled">無効</string>
-    <string name="min">分</string>
-    <string name="h">時間</string>
-    <string name="sec">秒</string>
     <string name="ringtone_successfully_uploaded">カスタム着信音が正常にアップロードされました！</string>
     <string name="ringtone_upload_unsuccessful">カスタム着信音のアップロードに失敗しました…</string>
     <string name="code_assigned">コードが割り当てられました！</string>

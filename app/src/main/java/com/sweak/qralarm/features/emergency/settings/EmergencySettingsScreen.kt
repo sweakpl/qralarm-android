@@ -38,6 +38,7 @@ import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.components.NavigationButton
 import com.sweak.qralarm.core.ui.components.ToggleSetting
+import com.sweak.qralarm.core.ui.toLocalizedString
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_REQUIRED_MATCHES
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_SLIDER_RANGES
 
@@ -154,7 +155,7 @@ fun EmergencySettingsScreenContent(
                     if (state.selectedSliderRangeIndex != null) {
                         QRAlarmComboBox(
                             menuItems = state.availableSliderRanges.map {
-                                "${it.first} - ${it.last}"
+                                "${it.first.toLocalizedString()} - ${it.last.toLocalizedString()}"
                             },
                             selectedIndex = state.selectedSliderRangeIndex,
                             onMenuItemClick = { index ->
