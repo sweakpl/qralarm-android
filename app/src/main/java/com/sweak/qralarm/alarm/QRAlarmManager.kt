@@ -33,21 +33,12 @@ class QRAlarmManager(
         }
 
         val alarmPendingIntent =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                PendingIntent.getForegroundService(
-                    context,
-                    alarmId.toInt(),
-                    alarmIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                )
-            } else {
-                PendingIntent.getService(
-                    context,
-                    alarmId.toInt(),
-                    alarmIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                )
-            }
+            PendingIntent.getForegroundService(
+                context,
+                alarmId.toInt(),
+                alarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
 
         val alarmInfoPendingIntent = PendingIntent.getActivity(
             context,
@@ -130,21 +121,12 @@ class QRAlarmManager(
 
     override fun cancelAlarm(alarmId: Long) {
         val alarmPendingIntent =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                PendingIntent.getForegroundService(
-                    context,
-                    alarmId.toInt(),
-                    Intent(context, AlarmService::class.java),
-                    PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
-                )
-            } else {
-                PendingIntent.getService(
-                    context,
-                    alarmId.toInt(),
-                    Intent(context, AlarmService::class.java),
-                    PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
-                )
-            }
+            PendingIntent.getForegroundService(
+                context,
+                alarmId.toInt(),
+                Intent(context, AlarmService::class.java),
+                PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+            )
 
         if (alarmPendingIntent != null) {
             alarmManager.cancel(alarmPendingIntent)

@@ -1,6 +1,5 @@
 package com.sweak.qralarm.features.add_edit_alarm.destinations.advanced
 
-import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -192,25 +191,23 @@ private fun AdvancedAlarmSettingsScreenContent(
                             )
                         )
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            HorizontalDivider(
-                                thickness = 1.dp,
-                                color = LocalContentColor.current,
-                                modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
-                            )
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = LocalContentColor.current,
+                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                        )
 
-                            ToggleSetting(
-                                isChecked = state.isOpenCodeLinkEnabled,
-                                onCheckedChange = {
-                                    onEvent(
-                                        AdvancedAlarmSettingsScreenUserEvent
-                                            .OpenCodeLinkEnabledChanged(isEnabled = it)
-                                    )
-                                },
-                                title = stringResource(R.string.open_code_link),
-                                description = stringResource(R.string.open_code_link_description)
-                            )
-                        }
+                        ToggleSetting(
+                            isChecked = state.isOpenCodeLinkEnabled,
+                            onCheckedChange = {
+                                onEvent(
+                                    AdvancedAlarmSettingsScreenUserEvent
+                                        .OpenCodeLinkEnabledChanged(isEnabled = it)
+                                )
+                            },
+                            title = stringResource(R.string.open_code_link),
+                            description = stringResource(R.string.open_code_link_description)
+                        )
                     }
                 }
             }

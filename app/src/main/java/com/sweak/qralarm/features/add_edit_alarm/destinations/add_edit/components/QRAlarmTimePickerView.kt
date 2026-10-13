@@ -35,9 +35,7 @@ class QRAlarmTimePicker @JvmOverloads constructor(
 
         timePicker.descendantFocusability = FOCUS_BLOCK_DESCENDANTS
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            timePicker.importantForAutofill = IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
-        }
+        timePicker.importantForAutofill = IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS
     }
 
     fun setOnTimeChangedListener(onTimeChangedListener: OnTimeChangedListener) {

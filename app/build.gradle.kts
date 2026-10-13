@@ -33,7 +33,7 @@ android {
 
     defaultConfig {
         applicationId = "com.sweak.qralarm"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 37
         versionCode = 91
         versionName = "2.11.2"
@@ -55,7 +55,6 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -129,6 +128,4 @@ dependencies {
 
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material3)
-
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

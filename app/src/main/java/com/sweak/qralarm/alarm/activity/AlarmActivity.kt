@@ -142,9 +142,7 @@ class AlarmActivity : FragmentActivity() {
                             idOfAlarm = route.idOfAlarm,
                             isDisablingBeforeAlarmFired = route.isDisablingBeforeAlarmFired,
                             onAlarmDisabled = { uriStringToTryToOpen ->
-                                if (uriStringToTryToOpen == null ||
-                                    Build.VERSION.SDK_INT < Build.VERSION_CODES.O
-                                ) {
+                                if (uriStringToTryToOpen == null) {
                                     lifecycleScope.launch {
                                         stopService(alarmId)
 

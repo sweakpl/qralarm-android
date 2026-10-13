@@ -236,30 +236,22 @@ class AlarmRingtonePlayer(
 
     @Suppress("DEPRECATION")
     private fun startVibrationInternal() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val vibrationEffect = VibrationEffect.createWaveform(
-                longArrayOf(1000, 1000),
-                intArrayOf(255, 0),
-                -1
-            )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                val vibrationAttributes = VibrationAttributes.Builder()
-                    .setUsage(VibrationAttributes.USAGE_ALARM)
-                    .build()
+        val vibrationEffect = VibrationEffect.createWaveform(
+            longArrayOf(1000, 1000),
+            intArrayOf(255, 0),
+            -1
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val vibrationAttributes = VibrationAttributes.Builder()
+                .setUsage(VibrationAttributes.USAGE_ALARM)
+                .build()
 
-                vibrator.vibrate(vibrationEffect, vibrationAttributes)
-            } else {
-                val vibrationAudioAttributes = android.media.AudioAttributes.Builder()
-                    .setUsage(android.media.AudioAttributes.USAGE_ALARM)
-                    .build()
-                vibrator.vibrate(vibrationEffect, vibrationAudioAttributes)
-            }
+            vibrator.vibrate(vibrationEffect, vibrationAttributes)
         } else {
             val vibrationAudioAttributes = android.media.AudioAttributes.Builder()
                 .setUsage(android.media.AudioAttributes.USAGE_ALARM)
                 .build()
-
-            vibrator.vibrate(longArrayOf(0, 1000, 1000), -1, vibrationAudioAttributes)
+            vibrator.vibrate(vibrationEffect, vibrationAudioAttributes)
         }
     }
 

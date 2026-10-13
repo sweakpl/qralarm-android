@@ -24,7 +24,6 @@ cameraX = "1.6.2"
 zxing = "3.5.4"
 datastorePreferences = "1.2.1"
 accompanist-permissions = "0.37.3"
-desugarJdkLibs = "2.1.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -71,7 +70,6 @@ androidx-vectordrawable-animated = { group = "androidx.vectordrawable", name = "
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceAppwidget" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceAppwidget" }
 
-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
