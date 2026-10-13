@@ -67,9 +67,6 @@
     <string name="system_default_ringtone">Nada dering lalai sistem</string>
     <string name="custom_sound">Bunyi tersuai</string>
     <string name="disabled">Dilumpuhkan</string>
-    <string name="min">min</string>
-    <string name="h">j</string>
-    <string name="sec">s</string>
     <string name="ringtone_successfully_uploaded">Nada dering tersuai anda berjaya dimuat naik!</string>
     <string name="ringtone_upload_unsuccessful">Nada dering tersuai tidak dimuat naik…</string>
     <string name="code_assigned">Kod ditetapkan!</string>

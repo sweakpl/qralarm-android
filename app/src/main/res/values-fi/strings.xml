@@ -73,9 +73,6 @@
     <string name="system_default_ringtone">Järjestelmän oletusherätysääni</string>
     <string name="custom_sound">Mukautettu ääni</string>
     <string name="disabled">Ei käytössä</string>
-    <string name="min">min</string>
-    <string name="h">h</string>
-    <string name="sec">s</string>
     <string name="ringtone_successfully_uploaded">Mukautettu herätysääni ladattiin onnistuneesti!</string>
     <string name="ringtone_upload_unsuccessful">Mukautettua herätysääntä ei ladattu…</string>
     <string name="code_assigned">Koodi määritetty!</string>

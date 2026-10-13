@@ -67,9 +67,6 @@
     <string name="system_default_ringtone">เสียงปลุกเริ่มต้นของระบบ</string>
     <string name="custom_sound">เสียงกำหนดเอง</string>
     <string name="disabled">ปิดใช้งาน</string>
-    <string name="min">นาที</string>
-    <string name="h">ชม.</string>
-    <string name="sec">วินาที</string>
     <string name="ringtone_successfully_uploaded">อัปโหลดเสียงปลุกที่กำหนดเองเรียบร้อยแล้ว!</string>
     <string name="ringtone_upload_unsuccessful">อัปโหลดเสียงปลุกที่กำหนดเองไม่สำเร็จ…</string>
     <string name="code_assigned">กำหนดโค้ดแล้ว!</string>

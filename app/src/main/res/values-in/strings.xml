@@ -45,9 +45,6 @@
     <string name="system_default_ringtone">Nada dering bawaan sistem</string>
     <string name="custom_sound">Suara khusus</string>
     <string name="disabled">Dinonaktifkan</string>
-    <string name="min">menit</string>
-    <string name="h">j</string>
-    <string name="sec">detik</string>
     <string name="ringtone_successfully_uploaded">Nada dering kustom Anda berhasil diunggah!</string>
     <string name="ringtone_upload_unsuccessful">Nada dering kustom tidak diunggah…</string>
     <string name="code_assigned">Kode ditetapkan!</string>

@@ -73,9 +73,6 @@
     <string name="system_default_ringtone">Systemets standardringetone</string>
     <string name="custom_sound">Egendefinert lyd</string>
     <string name="disabled">Deaktivert</string>
-    <string name="min">min</string>
-    <string name="h">t</string>
-    <string name="sec">sek</string>
     <string name="ringtone_successfully_uploaded">Den egendefinerte ringetonen er lastet opp!</string>
     <string name="ringtone_upload_unsuccessful">Den egendefinerte ringetonen ble ikke lastet opp …</string>
     <string name="code_assigned">Kode tilordnet!</string>

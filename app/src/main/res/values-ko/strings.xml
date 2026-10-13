@@ -67,9 +67,6 @@
     <string name="system_default_ringtone">시스템 기본 벨소리</string>
     <string name="custom_sound">사용자 정의 소리</string>
     <string name="disabled">사용 안 함</string>
-    <string name="min">분</string>
-    <string name="h">시간</string>
-    <string name="sec">초</string>
     <string name="ringtone_successfully_uploaded">사용자 정의 벨소리가 성공적으로 업로드되었습니다!</string>
     <string name="ringtone_upload_unsuccessful">사용자 정의 벨소리가 업로드되지 않았습니다…</string>
     <string name="code_assigned">코드가 할당되었습니다!</string>

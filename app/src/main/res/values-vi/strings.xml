@@ -67,9 +67,6 @@
     <string name="system_default_ringtone">Nhạc chuông mặc định của hệ thống</string>
     <string name="custom_sound">Âm thanh tùy chỉnh</string>
     <string name="disabled">Đã tắt</string>
-    <string name="min">phút</string>
-    <string name="h">giờ</string>
-    <string name="sec">giây</string>
     <string name="ringtone_successfully_uploaded">Đã tải nhạc chuông tùy chỉnh lên thành công!</string>
     <string name="ringtone_upload_unsuccessful">Không thể tải nhạc chuông tùy chỉnh lên…</string>
     <string name="code_assigned">Đã gán mã!</string>

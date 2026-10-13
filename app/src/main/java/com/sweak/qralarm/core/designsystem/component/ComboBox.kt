@@ -27,6 +27,7 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.toLocalizedString
 
 @Composable
 fun QRAlarmComboBox(
@@ -53,7 +54,7 @@ fun QRAlarmComboBox(
                     .clickable { expanded = true }
             ) {
                 Text(
-                    text = menuItems[selectedIndex].toString(),
+                    text = menuItems[selectedIndex].toDisplayString(),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
                         .padding(all = MaterialTheme.space.medium)
@@ -90,7 +91,7 @@ fun QRAlarmComboBox(
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = content.toString(),
+                            text = content.toDisplayString(),
                             style = MaterialTheme.typography.titleMedium
                         )
                     },
@@ -107,3 +108,6 @@ fun QRAlarmComboBox(
         }
     }
 }
+
+private fun Any.toDisplayString(): String =
+    if (this is Int) toLocalizedString() else toString()

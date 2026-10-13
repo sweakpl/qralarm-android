@@ -23,8 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.LayoutDirection
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.space
@@ -41,6 +41,8 @@ fun CodeScanner(
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier
 ) {
+    val layoutDirection = LocalLayoutDirection.current
+
     Box(modifier = modifier) {
         surfaceRequest?.let { request ->
             CameraXViewfinder(
@@ -58,10 +60,10 @@ fun CodeScanner(
                 .align(Alignment.TopStart)
                 .fillMaxWidth()
                 .padding(
-                    start = paddingValues.calculateStartPadding(LayoutDirection.Ltr) +
+                    start = paddingValues.calculateStartPadding(layoutDirection) +
                             MaterialTheme.space.mediumLarge,
                     top = paddingValues.calculateTopPadding() + MaterialTheme.space.mediumLarge,
-                    end = paddingValues.calculateEndPadding(LayoutDirection.Ltr) +
+                    end = paddingValues.calculateEndPadding(layoutDirection) +
                             MaterialTheme.space.mediumLarge
                 )
         ) {

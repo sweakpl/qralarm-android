@@ -63,9 +63,6 @@
     <string name="system_default_ringtone">Системний рингтон за замовчуванням</string>
     <string name="custom_sound">Власний звук</string>
     <string name="disabled">Вимкнено</string>
-    <string name="min">хв</string>
-    <string name="h">год</string>
-    <string name="sec">сек</string>
     <string name="ringtone_successfully_uploaded">Ваш власний дзвінок успішно завантажено!</string>
     <string name="ringtone_upload_unsuccessful">Власний дзвінок не було надіслано…</string>
     <string name="code_assigned">Код присвоєно!</string>

@@ -47,9 +47,6 @@
     <string name="system_default_ringtone">システムのデフォルト着信音</string>
     <string name="custom_sound">カスタムサウンド</string>
     <string name="disabled">無効</string>
-    <string name="min">分</string>
-    <string name="h">時間</string>
-    <string name="sec">秒</string>
     <string name="ringtone_successfully_uploaded">カスタム着信音が正常にアップロードされました！</string>
     <string name="ringtone_upload_unsuccessful">カスタム着信音のアップロードに失敗しました…</string>
     <string name="code_assigned">コードが割り当てられました！</string>

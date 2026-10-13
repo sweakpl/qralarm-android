@@ -73,9 +73,6 @@
     <string name="system_default_ringtone">Systemets standardringsignal</string>
     <string name="custom_sound">Eget ljud</string>
     <string name="disabled">Inaktiverad</string>
-    <string name="min">min</string>
-    <string name="h">h</string>
-    <string name="sec">sek</string>
     <string name="ringtone_successfully_uploaded">Din anpassade ringsignal har laddats upp!</string>
     <string name="ringtone_upload_unsuccessful">Den anpassade ringsignalen laddades inte upp …</string>
     <string name="code_assigned">Koden har tilldelats!</string>
