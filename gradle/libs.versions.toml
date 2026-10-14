@@ -1,6 +1,6 @@
 [versions]
 agp = "9.4.1"
-kotlin = "2.4.20"
+kotlin = "2.4.21"
 hilt = "2.60.1"
 ksp = "2.3.10"
 serialization-json = "1.11.0"
