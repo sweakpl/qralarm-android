@@ -92,10 +92,10 @@ class CopyAlarmTest {
     fun `given alarm with a custom ringtone, when copying, then the source alarm is left unchanged`() = runTest {
         // Given
         val sourceAlarmId = alarmsRepository.addOrEditAlarm(
-            alarm(customRingtoneUriString = "file://ringtones/source")
+            alarm(customRingtoneUriString = "source-ringtone-uri")
         )
         val storedSourceAlarm = alarmsRepository.getAlarm(sourceAlarmId)
-        every { alarmRingtoneStorage.duplicateForAlarm(any(), any()) } returns "file://ringtones/copy"
+        every { alarmRingtoneStorage.duplicateForAlarm(any(), any()) } returns "copied-ringtone-uri"
 
         // When
         copyAlarm(sourceAlarmId)
@@ -120,11 +120,11 @@ class CopyAlarmTest {
     fun `given alarm with a custom ringtone, when copying, then the ringtone is duplicated and the copy points at the new file`() = runTest {
         // Given
         val sourceAlarmId = alarmsRepository.addOrEditAlarm(
-            alarm(customRingtoneUriString = "file://ringtones/source")
+            alarm(customRingtoneUriString = "source-ringtone-uri")
         )
         every {
             alarmRingtoneStorage.duplicateForAlarm(sourceAlarmId = sourceAlarmId, newAlarmId = any())
-        } answers { "file://ringtones/${secondArg<Long>()}" }
+        } answers { "ringtone-uri-for-${secondArg<Long>()}" }
 
         // When
         copyAlarm(sourceAlarmId)
@@ -132,7 +132,7 @@ class CopyAlarmTest {
         // Then
         val copiedAlarm = copiedAlarm(sourceAlarmId)
         assertThat(copiedAlarm.customRingtoneUriString)
-            .isEqualTo("file://ringtones/${copiedAlarm.alarmId}")
+            .isEqualTo("ringtone-uri-for-${copiedAlarm.alarmId}")
     }
 
     @Test
@@ -141,7 +141,7 @@ class CopyAlarmTest {
         val sourceAlarmId = alarmsRepository.addOrEditAlarm(
             alarm(
                 ringtone = Alarm.Ringtone.CUSTOM_SOUND,
-                customRingtoneUriString = "file://ringtones/source"
+                customRingtoneUriString = "source-ringtone-uri"
             )
         )
         every { alarmRingtoneStorage.duplicateForAlarm(any(), any()) } returns null

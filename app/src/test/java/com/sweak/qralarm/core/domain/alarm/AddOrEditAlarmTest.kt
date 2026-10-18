@@ -133,13 +133,13 @@ class AddOrEditAlarmTest {
     fun `given ringtone uri, when saving, then the ringtone is saved under the alarm id and the alarm points at it`() = runTest {
         // Given
         every {
-            alarmRingtoneStorage.saveContentUriForAlarm("content://picked", alarmId = any())
-        } answers { "file://ringtones/${secondArg<Long>()}" }
+            alarmRingtoneStorage.saveContentUriForAlarm("picked-ringtone-uri", alarmId = any())
+        } answers { "ringtone-uri-for-${secondArg<Long>()}" }
 
         // When
         val result = addOrEditAlarm(
             alarm(),
-            temporaryCustomRingtoneContentUriString = "content://picked"
+            temporaryCustomRingtoneContentUriString = "picked-ringtone-uri"
         )
 
         // Then
@@ -147,7 +147,7 @@ class AddOrEditAlarmTest {
         assertThat(alarmsRepository.getAlarm(result.alarmId))
             .isNotNull()
             .prop(Alarm::customRingtoneUriString)
-            .isEqualTo("file://ringtones/${result.alarmId}")
+            .isEqualTo("ringtone-uri-for-${result.alarmId}")
     }
 
     enum class HandledSaveFailure(val exception: Exception) {
@@ -166,7 +166,7 @@ class AddOrEditAlarmTest {
         // When
         val result = addOrEditAlarm(
             alarm(customRingtoneUriString = null),
-            temporaryCustomRingtoneContentUriString = "content://picked"
+            temporaryCustomRingtoneContentUriString = "picked-ringtone-uri"
         )
 
         // Then
@@ -186,7 +186,7 @@ class AddOrEditAlarmTest {
 
         // When & Then
         assertFailure {
-            addOrEditAlarm(alarm(), temporaryCustomRingtoneContentUriString = "content://picked")
+            addOrEditAlarm(alarm(), temporaryCustomRingtoneContentUriString = "picked-ringtone-uri")
         }.isInstanceOf<IllegalStateException>()
     }
 }

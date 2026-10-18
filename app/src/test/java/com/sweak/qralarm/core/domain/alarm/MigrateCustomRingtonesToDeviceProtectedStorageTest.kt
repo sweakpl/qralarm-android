@@ -42,10 +42,10 @@ class MigrateCustomRingtonesToDeviceProtectedStorageTest {
         // Given
         alarmsRepository.addOrEditAlarm(alarm(customRingtoneUriString = null))
         val alarmId = alarmsRepository.addOrEditAlarm(
-            alarm(customRingtoneUriString = "file://legacy/ringtone")
+            alarm(customRingtoneUriString = "legacy-ringtone-uri")
         )
         every { alarmRingtoneStorage.migrateToDeviceProtectedStorage(alarmId) } returns
-                "file://device-protected/ringtone"
+                "device-protected-ringtone-uri"
 
         // When
         migrateCustomRingtonesToDeviceProtectedStorage()
@@ -54,17 +54,17 @@ class MigrateCustomRingtonesToDeviceProtectedStorageTest {
         assertThat(alarmsRepository.getAlarm(alarmId))
             .isNotNull()
             .prop(Alarm::customRingtoneUriString)
-            .isEqualTo("file://device-protected/ringtone")
+            .isEqualTo("device-protected-ringtone-uri")
     }
 
     @Test
     fun `given ringtone moved to device protected storage, when migrating, then the alarm points at the new uri`() = runTest {
         // Given
         val alarmId = alarmsRepository.addOrEditAlarm(
-            alarm(customRingtoneUriString = "file://legacy/ringtone")
+            alarm(customRingtoneUriString = "legacy-ringtone-uri")
         )
         every { alarmRingtoneStorage.migrateToDeviceProtectedStorage(alarmId) } returns
-                "file://device-protected/ringtone"
+                "device-protected-ringtone-uri"
 
         // When
         migrateCustomRingtonesToDeviceProtectedStorage()
@@ -73,17 +73,17 @@ class MigrateCustomRingtonesToDeviceProtectedStorageTest {
         assertThat(alarmsRepository.getAlarm(alarmId))
             .isNotNull()
             .prop(Alarm::customRingtoneUriString)
-            .isEqualTo("file://device-protected/ringtone")
+            .isEqualTo("device-protected-ringtone-uri")
     }
 
     @Test
     fun `given ringtone already in device protected storage, when migrating, then the alarm is not written`() = runTest {
         // Given
         val alarmId = alarmsRepository.addOrEditAlarm(
-            alarm(customRingtoneUriString = "file://device-protected/ringtone")
+            alarm(customRingtoneUriString = "device-protected-ringtone-uri")
         )
         every { alarmRingtoneStorage.migrateToDeviceProtectedStorage(alarmId) } returns
-                "file://device-protected/ringtone"
+                "device-protected-ringtone-uri"
 
         // When
         migrateCustomRingtonesToDeviceProtectedStorage()
@@ -96,7 +96,7 @@ class MigrateCustomRingtonesToDeviceProtectedStorageTest {
     fun `given ringtone migration fails, when migrating, then the alarm keeps its stored uri`() = runTest {
         // Given
         val alarmId = alarmsRepository.addOrEditAlarm(
-            alarm(customRingtoneUriString = "file://legacy/ringtone")
+            alarm(customRingtoneUriString = "legacy-ringtone-uri")
         )
         every { alarmRingtoneStorage.migrateToDeviceProtectedStorage(alarmId) } returns null
 
@@ -107,6 +107,6 @@ class MigrateCustomRingtonesToDeviceProtectedStorageTest {
         assertThat(alarmsRepository.getAlarm(alarmId))
             .isNotNull()
             .prop(Alarm::customRingtoneUriString)
-            .isEqualTo("file://legacy/ringtone")
+            .isEqualTo("legacy-ringtone-uri")
     }
 }

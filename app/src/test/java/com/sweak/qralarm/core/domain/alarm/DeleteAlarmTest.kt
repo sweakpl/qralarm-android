@@ -52,7 +52,7 @@ class DeleteAlarmTest {
     fun `given stored alarm, when deleting, then its ringtone file is deleted`() = runTest {
         // Given
         val alarmId = alarmsRepository.addOrEditAlarm(
-            alarm(customRingtoneUriString = "file://ringtones/alarm")
+            alarm(customRingtoneUriString = "ringtone-uri")
         )
 
         // When
