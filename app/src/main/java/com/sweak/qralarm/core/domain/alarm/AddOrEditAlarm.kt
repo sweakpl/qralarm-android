@@ -17,8 +17,7 @@ class AddOrEditAlarm @Inject constructor(
         val resolvedAlarm = alarm.copy(
             assignedCode = resolveCode(alarm.assignedCode)
         )
-        val upsertedAlarmId = alarmsRepository.addOrEditAlarm(resolvedAlarm)
-        val alarmId = if (upsertedAlarmId > 0) upsertedAlarmId else alarm.alarmId
+        val alarmId = alarmsRepository.addOrEditAlarm(resolvedAlarm)
 
         codesRepository.cleanupUnreferencedCodes()
 
