@@ -11,6 +11,7 @@ fun alarm(
     repeatingMode: Alarm.RepeatingMode = Alarm.RepeatingMode.Once,
     nextAlarmTimeInMillis: Long = 0,
     numberOfSnoozes: Int = 3,
+    snoozeDurationInMinutes: Int = 10,
     numberOfSnoozesLeft: Int = 3,
     isAlarmSnoozed: Boolean = false,
     nextSnoozedAlarmTimeInMillis: Long? = null,
@@ -33,7 +34,7 @@ fun alarm(
     snoozeConfig = Alarm.SnoozeConfig(
         snoozeMode = Alarm.SnoozeMode(
             numberOfSnoozes = numberOfSnoozes,
-            snoozeDurationInMinutes = 10
+            snoozeDurationInMinutes = snoozeDurationInMinutes
         ),
         numberOfSnoozesLeft = numberOfSnoozesLeft,
         isAlarmSnoozed = isAlarmSnoozed,
