@@ -132,4 +132,10 @@ dependencies {
 
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material3)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.test.parameter.injector)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.assertk)
+    testImplementation(libs.mockk)
 }

@@ -19,7 +19,7 @@ class AlarmsRepositoryImpl @Inject constructor(
 ) : AlarmsRepository {
 
     override suspend fun addOrEditAlarm(alarm: Alarm): Long {
-        return alarmsDao.upsertAlarm(
+        val upsertedAlarmId = alarmsDao.upsertAlarm(
             alarmEntity = AlarmEntity(
                 alarmId = alarm.alarmId,
                 alarmHourOfDay = alarm.alarmHourOfDay,
@@ -54,6 +54,8 @@ class AlarmsRepositoryImpl @Inject constructor(
                 skipAlarmUntilTimeInMillis = alarm.skipAlarmUntilTimeInMillis
             )
         )
+
+        return upsertedAlarmId.takeIf { it > 0 } ?: alarm.alarmId
     }
 
     override suspend fun setAlarmEnabled(alarmId: Long, enabled: Boolean) {

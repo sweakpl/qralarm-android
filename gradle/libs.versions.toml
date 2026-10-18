@@ -24,6 +24,11 @@ cameraX = "1.6.2"
 zxing = "3.5.4"
 datastorePreferences = "1.2.1"
 accompanist-permissions = "0.37.3"
+junit = "4.13.2"
+testParameterInjector = "1.24"
+coroutinesTest = "1.11.0"
+assertk = "0.28.1"
+mockk = "1.14.11"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -70,6 +75,11 @@ androidx-vectordrawable-animated = { group = "androidx.vectordrawable", name = "
 androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glanceAppwidget" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glanceAppwidget" }
 
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+test-parameter-injector = { group = "com.google.testparameterinjector", name = "test-parameter-injector", version.ref = "testParameterInjector" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+assertk = { group = "com.willowtreeapps.assertk", name = "assertk", version.ref = "assertk" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

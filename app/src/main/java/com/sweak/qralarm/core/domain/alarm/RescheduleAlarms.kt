@@ -2,6 +2,7 @@ package com.sweak.qralarm.core.domain.alarm
 
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import kotlinx.coroutines.flow.first
+import java.time.Clock
 import javax.inject.Inject
 
 class RescheduleAlarms @Inject constructor(
@@ -12,6 +13,7 @@ class RescheduleAlarms @Inject constructor(
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
     private val snoozeAlarm: SnoozeAlarm,
+    private val clock: Clock
 ) {
     suspend operator fun invoke(rescheduleAlarmsIfMissedByFiveMinutes: Boolean = true) {
         if (!alarmScheduler.canScheduleExactAlarms()) {
@@ -20,7 +22,7 @@ class RescheduleAlarms @Inject constructor(
             }
         } else {
             val fiveMinutesInMillis = 5 * 60000
-            val currentTimeInMillis = System.currentTimeMillis()
+            val currentTimeInMillis = clock.millis()
 
             alarmsRepository.getAllAlarms().first().forEach { alarm ->
                 if (alarm.snoozeConfig.isAlarmSnoozed &&

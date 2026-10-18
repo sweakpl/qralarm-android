@@ -1,19 +1,20 @@
 package com.sweak.qralarm.core.domain.alarm
 
+import java.time.Clock
 import java.time.Instant
-import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class SetAlarm @Inject constructor(
     private val alarmScheduler: AlarmScheduler,
     private val alarmNotifier: AlarmNotifier,
-    private val alarmsRepository: AlarmsRepository
+    private val alarmsRepository: AlarmsRepository,
+    private val clock: Clock
 ) {
     suspend operator fun invoke(alarmId: Long, isReschedulingMissedAlarm: Boolean): Result {
         val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return Result.Failure
-        val currentDateTime = ZonedDateTime.now()
-        var alarmDateTime = ZonedDateTime.now()
+        val currentDateTime = ZonedDateTime.now(clock)
+        var alarmDateTime = currentDateTime
             .withHour(alarm.alarmHourOfDay)
             .withMinute(alarm.alarmMinute)
             .withSecond(0)
@@ -25,11 +26,11 @@ class SetAlarm @Inject constructor(
             when (alarm.repeatingMode) {
                 is Alarm.RepeatingMode.Once -> {
                     val storedDate = Instant.ofEpochMilli(alarm.nextAlarmTimeInMillis)
-                        .atZone(ZoneId.systemDefault())
+                        .atZone(currentDateTime.zone)
                         .toLocalDate()
                     alarmDateTime = storedDate
                         .atTime(alarm.alarmHourOfDay, alarm.alarmMinute)
-                        .atZone(ZoneId.systemDefault())
+                        .atZone(currentDateTime.zone)
                         .withSecond(0)
                         .withNano(0)
 
