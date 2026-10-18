@@ -13,6 +13,11 @@ class CopyAlarm @Inject constructor(
             alarmId = 0,
             isAlarmEnabled = false,
             isAlarmRunning = false,
+            snoozeConfig = sourceAlarm.snoozeConfig.copy(
+                numberOfSnoozesLeft = sourceAlarm.snoozeConfig.snoozeMode.numberOfSnoozes,
+                isAlarmSnoozed = false,
+                nextSnoozedAlarmTimeInMillis = null
+            ),
             skipAlarmUntilTimeInMillis = null
         )
 
