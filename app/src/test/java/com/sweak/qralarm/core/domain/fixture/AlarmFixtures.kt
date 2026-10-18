@@ -22,6 +22,8 @@ fun alarm(
         Alarm.Ringtone.GENTLE_GUITAR
     },
     assignedCode: Code? = null,
+    isUsingCode: Boolean = assignedCode != null,
+    cancelLockDurationInMinutes: Int = 0,
     skipAlarmUntilTimeInMillis: Long? = null
 ) = Alarm(
     alarmId = 0,
@@ -44,10 +46,10 @@ fun alarm(
     customRingtoneUriString = customRingtoneUriString,
     alarmVolumeMode = Alarm.AlarmVolumeMode.System,
     areVibrationsEnabled = true,
-    isUsingCode = assignedCode != null,
+    isUsingCode = isUsingCode,
     assignedCode = assignedCode,
     isOpenCodeLinkEnabled = false,
-    cancelLockDurationInMinutes = 0,
+    cancelLockDurationInMinutes = cancelLockDurationInMinutes,
     isEmergencyTaskEnabled = false,
     alarmLabel = null,
     gentleWakeUpDurationInSeconds = 0,
