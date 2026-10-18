@@ -165,7 +165,7 @@ class AddOrEditAlarmTest {
 
         // When
         val result = addOrEditAlarm(
-            alarm(),
+            alarm(customRingtoneUriString = null),
             temporaryCustomRingtoneContentUriString = "content://picked"
         )
 

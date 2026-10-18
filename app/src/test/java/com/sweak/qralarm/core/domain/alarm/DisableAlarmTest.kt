@@ -35,7 +35,7 @@ class DisableAlarmTest {
     @Test
     fun `given enabled alarm, when disabling, then it is stored as disabled`() = runTest {
         // Given
-        val alarmId = alarmsRepository.addOrEditAlarm(alarm())
+        val alarmId = alarmsRepository.addOrEditAlarm(alarm(isAlarmEnabled = true))
 
         // When
         disableAlarm(alarmId)
@@ -51,7 +51,11 @@ class DisableAlarmTest {
     fun `given snoozed enabled alarm, when disabling, then it is stored as not snoozed`() = runTest {
         // Given
         val alarmId = alarmsRepository.addOrEditAlarm(
-            alarm(isAlarmSnoozed = true, nextSnoozedAlarmTimeInMillis = 1_000)
+            alarm(
+                isAlarmEnabled = true,
+                isAlarmSnoozed = true,
+                nextSnoozedAlarmTimeInMillis = 1_000
+            )
         )
 
         // When

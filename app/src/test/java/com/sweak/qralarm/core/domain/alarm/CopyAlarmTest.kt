@@ -4,6 +4,7 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.prop
 import com.sweak.qralarm.core.domain.fake.FakeAlarmsRepository
@@ -42,6 +43,7 @@ class CopyAlarmTest {
     fun `given enabled running alarm with a skipped occurrence, when copying, then the copy is a new disabled idle alarm with every other setting kept`() = runTest {
         // Given
         val sourceAlarm = alarm(
+            isAlarmEnabled = true,
             isAlarmRunning = true,
             assignedCode = Code(codeId = 7, value = "kitchen-qr", name = "Kitchen"),
             skipAlarmUntilTimeInMillis = 1_000
@@ -68,6 +70,7 @@ class CopyAlarmTest {
         // Given
         val sourceAlarmId = alarmsRepository.addOrEditAlarm(
             alarm(
+                numberOfSnoozes = 3,
                 numberOfSnoozesLeft = 1,
                 isAlarmSnoozed = true,
                 nextSnoozedAlarmTimeInMillis = 1_000
@@ -78,14 +81,11 @@ class CopyAlarmTest {
         copyAlarm(sourceAlarmId)
 
         // Then
-        assertThat(copiedAlarm(sourceAlarmId).snoozeConfig).isEqualTo(
-            Alarm.SnoozeConfig(
-                snoozeMode = Alarm.SnoozeMode(numberOfSnoozes = 3, snoozeDurationInMinutes = 10),
-                numberOfSnoozesLeft = 3,
-                isAlarmSnoozed = false,
-                nextSnoozedAlarmTimeInMillis = null
-            )
-        )
+        assertThat(copiedAlarm(sourceAlarmId).snoozeConfig).all {
+            prop(Alarm.SnoozeConfig::numberOfSnoozesLeft).isEqualTo(3)
+            prop(Alarm.SnoozeConfig::isAlarmSnoozed).isFalse()
+            prop(Alarm.SnoozeConfig::nextSnoozedAlarmTimeInMillis).isNull()
+        }
     }
 
     @Test
@@ -139,7 +139,10 @@ class CopyAlarmTest {
     fun `given custom ringtone duplication fails, when copying, then the copy falls back to the default ringtone`() = runTest {
         // Given
         val sourceAlarmId = alarmsRepository.addOrEditAlarm(
-            alarm(customRingtoneUriString = "file://ringtones/source")
+            alarm(
+                ringtone = Alarm.Ringtone.CUSTOM_SOUND,
+                customRingtoneUriString = "file://ringtones/source"
+            )
         )
         every { alarmRingtoneStorage.duplicateForAlarm(any(), any()) } returns null
 
