@@ -13,3 +13,4 @@
 local.properties
 qralarm-keystore.jks
 keystore.properties
+*.stackdump
