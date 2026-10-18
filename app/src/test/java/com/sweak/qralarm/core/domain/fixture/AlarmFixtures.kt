@@ -4,6 +4,7 @@ import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Code
 
 fun alarm(
+    isAlarmEnabled: Boolean = true,
     isAlarmRunning: Boolean = false,
     numberOfSnoozesLeft: Int = 3,
     isAlarmSnoozed: Boolean = false,
@@ -15,7 +16,7 @@ fun alarm(
     alarmId = 0,
     alarmHourOfDay = 7,
     alarmMinute = 0,
-    isAlarmEnabled = true,
+    isAlarmEnabled = isAlarmEnabled,
     isAlarmRunning = isAlarmRunning,
     repeatingMode = Alarm.RepeatingMode.Once,
     nextAlarmTimeInMillis = 0,
