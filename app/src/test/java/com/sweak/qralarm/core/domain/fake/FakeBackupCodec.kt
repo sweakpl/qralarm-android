@@ -12,6 +12,14 @@ class FakeBackupCodec : BackupCodec {
 
     var writeFailure: Exception? = null
 
+    private val backups = mutableMapOf<String, BackupReader>()
+
+    var openFailure: Exception? = null
+
+    fun addBackup(sourceUriString: String, backupReader: BackupReader) {
+        backups[sourceUriString] = backupReader
+    }
+
     override fun write(
         bundle: BackupBundle,
         destinationUriString: String,
@@ -26,5 +34,9 @@ class FakeBackupCodec : BackupCodec {
         _writtenBundles[destinationUriString] = bundle
     }
 
-    override fun open(sourceUriString: String): BackupReader = TODO()
+    override fun open(sourceUriString: String): BackupReader {
+        openFailure?.let { throw it }
+
+        return backups[sourceUriString] ?: error("No backup at $sourceUriString")
+    }
 }
