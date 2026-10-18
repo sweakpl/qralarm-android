@@ -3,6 +3,7 @@ package com.sweak.qralarm.core.domain.fake
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class FakeAlarmsRepository : AlarmsRepository {
 
@@ -25,7 +26,7 @@ class FakeAlarmsRepository : AlarmsRepository {
     override suspend fun setAlarmSnoozed(alarmId: Long, snoozed: Boolean) = TODO()
     override suspend fun setSkipNextAlarm(alarmId: Long, skip: Boolean) = TODO()
     override fun getAlarmFlow(alarmId: Long): Flow<Alarm> = TODO()
-    override fun getAllAlarms(): Flow<List<Alarm>> = TODO()
+    override fun getAllAlarms(): Flow<List<Alarm>> = flow { emit(alarms.values.toList()) }
     override suspend fun deleteAlarm(alarmId: Long) = TODO()
 
     override suspend fun setAvailableSnoozes(alarmId: Long, availableSnoozes: Int) = TODO()
@@ -33,5 +34,7 @@ class FakeAlarmsRepository : AlarmsRepository {
         alarms.computeIfPresent(alarmId) { _, alarm -> alarm.copy(customRingtoneUriString = uri) }
     }
 
-    override suspend fun setAlarmRingtone(alarmId: Long, ringtone: Alarm.Ringtone) = TODO()
+    override suspend fun setAlarmRingtone(alarmId: Long, ringtone: Alarm.Ringtone) {
+        alarms.computeIfPresent(alarmId) { _, alarm -> alarm.copy(ringtone = ringtone) }
+    }
 }
