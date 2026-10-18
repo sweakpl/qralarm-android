@@ -27,7 +27,9 @@ class FakeAlarmsRepository : AlarmsRepository {
     override suspend fun setSkipNextAlarm(alarmId: Long, skip: Boolean) = TODO()
     override fun getAlarmFlow(alarmId: Long): Flow<Alarm> = TODO()
     override fun getAllAlarms(): Flow<List<Alarm>> = flow { emit(alarms.values.toList()) }
-    override suspend fun deleteAlarm(alarmId: Long) = TODO()
+    override suspend fun deleteAlarm(alarmId: Long) {
+        alarms.remove(alarmId)
+    }
 
     override suspend fun setAvailableSnoozes(alarmId: Long, availableSnoozes: Int) = TODO()
     override suspend fun setAlarmRingtoneUri(alarmId: Long, uri: String?) {
