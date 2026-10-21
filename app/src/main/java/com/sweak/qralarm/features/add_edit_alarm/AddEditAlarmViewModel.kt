@@ -627,11 +627,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     currentState.copy(
                         availableRingtonesWithPlaybackState =
                             currentState.availableRingtonesWithPlaybackState.mapValues {
-                                if (it.key == event.ringtone) {
-                                    !it.value
-                                } else {
-                                    false
-                                }
+                                it.key == event.ringtone && !it.value
                             }
                     )
                 }

@@ -3,7 +3,6 @@ package com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.componen
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -40,7 +39,7 @@ import com.sweak.qralarm.core.ui.shortName
 import java.time.DayOfWeek
 import java.time.format.TextStyle
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseAlarmRepeatingScheduleBottomSheet(
     initialAlarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper,

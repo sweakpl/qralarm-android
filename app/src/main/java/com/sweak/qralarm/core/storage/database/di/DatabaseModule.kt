@@ -1,7 +1,6 @@
 package com.sweak.qralarm.core.storage.database.di
 
 import android.content.Context
-import android.os.Build
 import androidx.room.Room
 import com.sweak.qralarm.core.storage.database.QRAlarmDatabase
 import com.sweak.qralarm.core.storage.database.dao.AlarmsDao
