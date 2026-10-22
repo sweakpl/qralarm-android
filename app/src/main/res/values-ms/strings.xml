@@ -237,8 +237,6 @@
     <string name="custom_theme_description">Cipta tema anda sendiri dengan warna tersuai.</string>
     <string name="cancellation_lock">Kunci pembatalan</string>
     <string name="cancellation_lock_description">Penggera tidak boleh dibatalkan atau diedit tanpa mengimbas kod dalam tempoh yang dipilih sebelum penggera berbunyi.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Kunci pembatalan aktif — untuk mengedit, nyahaktifkan penggera dengan mengimbas kod.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Kunci pembatalan aktif — imbas kod untuk menyahaktifkan penggera.</string>
     <string name="widget_next_alarm">Penggera seterusnya</string>
     <string name="widget_today">Hari ini</string>
     <string name="widget_tomorrow">Esok</string>

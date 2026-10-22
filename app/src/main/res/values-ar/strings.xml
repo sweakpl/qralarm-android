@@ -46,8 +46,6 @@
     <string name="custom_theme_description">أنشئ سمتك الخاصة باستخدام ألوان مخصصة.</string>
     <string name="cancellation_lock">قفل الإلغاء</string>
     <string name="cancellation_lock_description">لا يمكن إلغاء المنبه أو تعديله إلا بمسح الرمز ضوئيًا خلال المدة المحددة قبل موعد رنينه.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">قفل الإلغاء مفعّل — لتعديل المنبه، أوقفه بمسح الرمز ضوئيًا.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">قفل الإلغاء مفعّل — أوقف المنبه بمسح الرمز ضوئيًا.</string>
     <string name="widget_next_alarm">المنبه التالي</string>
     <string name="widget_today">اليوم</string>
     <string name="widget_tomorrow">غدًا</string>

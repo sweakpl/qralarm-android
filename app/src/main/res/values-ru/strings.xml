@@ -226,8 +226,6 @@
     <string name="custom_theme_description">Создайте свою тему с пользовательскими цветами.</string>
     <string name="cancellation_lock">Блокировка отмены</string>
     <string name="cancellation_lock_description">Будильник нельзя отменить или изменить без сканирования кода в выбранное время перед его срабатыванием.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Блокировка отмены активна — для редактирования отключите будильник, отсканировав код.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Блокировка отмены активна — отсканируйте код, чтобы отключить будильник.</string>
     <string name="standalone_app">Автономное приложение</string>
     <string name="get_started">Начать</string>
     <string name="permissions_screen_description">Чтобы поднять вас с постели, QRAlarm нужны некоторые разрешения. Мы используем их только для обеспечения работоспособности вашего будильника.</string>

@@ -215,8 +215,6 @@
     <string name="custom_theme">Tema personalizado</string>
     <string name="custom_color">Cor personalizada</string>
     <string name="custom_theme_description">Crie seu próprio tema com cores personalizadas.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Bloqueio de cancelamento está ativo — para editar, desative o alarme escaneando o código.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Bloqueio de cancelamento está ativo — escaneie o código para desativar o alarme.</string>
     <string name="cancellation_lock">Bloqueio de cancelamento</string>
     <string name="cancellation_lock_description">O alarme não pode ser cancelado ou editado sem escanear o código no tempo selecionado antes de tocar.</string>
     <string name="get_started">Começar</string>

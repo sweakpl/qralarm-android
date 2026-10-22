@@ -237,8 +237,6 @@
     <string name="custom_theme_description">Tạo chủ đề của riêng bạn với màu sắc tùy chỉnh.</string>
     <string name="cancellation_lock">Khóa chống hủy</string>
     <string name="cancellation_lock_description">Không thể hủy hoặc chỉnh sửa báo thức nếu không quét mã trong khoảng thời gian đã chọn trước khi chuông reo.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Đang bật khóa chống hủy — để chỉnh sửa, hãy quét mã để tắt báo thức.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Đang bật khóa chống hủy — hãy quét mã để tắt báo thức.</string>
     <string name="widget_next_alarm">Báo thức tiếp theo</string>
     <string name="widget_today">Hôm nay</string>
     <string name="widget_tomorrow">Ngày mai</string>

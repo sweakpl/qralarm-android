@@ -215,8 +215,6 @@
     <string name="custom_theme">Thème personnalisé</string>
     <string name="custom_color">Couleur personnalisée</string>
     <string name="custom_theme_description">Créez votre propre thème avec des couleurs personnalisées.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Le verrouillage d\'annulation est actif — pour modifier, désactivez l\'alarme en scannant le code.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Le verrouillage d\'annulation est actif — scannez le code pour désactiver l\'alarme.</string>
     <string name="cancellation_lock">Verrouillage d\'annulation</string>
     <string name="cancellation_lock_description">L\'alarme ne peut pas être annulée ou modifiée sans scanner le code dans le délai sélectionné avant qu\'elle ne sonne.</string>
     <string name="get_started">Commencer</string>

@@ -215,8 +215,6 @@
     <string name="custom_theme">Tema personalizzato</string>
     <string name="custom_color">Colore personalizzato</string>
     <string name="custom_theme_description">Crea il tuo tema con colori personalizzati.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Blocco di annullamento attivo — per modificare, disabilita la sveglia scansionando il codice.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Blocco di annullamento attivo — scansiona il codice per disabilitare la sveglia.</string>
     <string name="cancellation_lock">Blocco di annullamento</string>
     <string name="cancellation_lock_description">La sveglia non può essere annullata o modificata senza scansionare il codice entro il tempo selezionato prima che suoni.</string>
     <string name="get_started">Inizia</string>

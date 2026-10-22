@@ -225,8 +225,6 @@
     <string name="custom_theme">Motyw niestandardowy</string>
     <string name="custom_color">Niestandardowy kolor</string>
     <string name="custom_theme_description">Stwórz własny motyw z niestandardowymi kolorami.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Blokada anulowania jest aktywna — aby edytować, wyłącz alarm, skanując kod.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Blokada anulowania jest aktywna — aby wyłączyć alarm, zeskanuj kod.</string>
     <string name="cancellation_lock">Blokada anulowania</string>
     <string name="cancellation_lock_description">Nie można anulować ani edytować alarmu bez zeskanowania kodu w wybranym czasie, zanim zadzwoni.</string>
     <string name="get_started">Rozpocznij</string>

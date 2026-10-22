@@ -237,8 +237,6 @@
     <string name="custom_theme_description">สร้างธีมของคุณเองด้วยสีที่กำหนดเอง</string>
     <string name="cancellation_lock">ล็อกการยกเลิก</string>
     <string name="cancellation_lock_description">ไม่สามารถยกเลิกหรือแก้ไขการปลุกได้ หากไม่สแกนโค้ดภายในเวลาที่กำหนดก่อนถึงเวลาปลุก</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">ล็อกการยกเลิกทำงานอยู่ — หากต้องการแก้ไข ให้ปิดการปลุกโดยสแกนโค้ด</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">ล็อกการยกเลิกทำงานอยู่ — สแกนโค้ดเพื่อปิดการปลุก</string>
     <string name="widget_next_alarm">การปลุกครั้งถัดไป</string>
     <string name="widget_today">วันนี้</string>
     <string name="widget_tomorrow">พรุ่งนี้</string>

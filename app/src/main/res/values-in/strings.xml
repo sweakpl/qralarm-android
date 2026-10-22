@@ -196,8 +196,6 @@
     <string name="custom_theme_description">Buat tema Anda sendiri dengan warna kustom.</string>
     <string name="cancellation_lock">Kunci pembatalan</string>
     <string name="cancellation_lock_description">Alarm tidak dapat dibatalkan atau diedit tanpa memindai kode dalam waktu yang dipilih sebelum berbunyi.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Kunci pembatalan aktif — untuk mengedit, nonaktifkan alarm dengan memindai kode.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Kunci pembatalan aktif — pindai kode untuk menonaktifkan alarm.</string>
     <string name="standalone_app">Aplikasi mandiri</string>
     <string name="get_started">Mulai</string>
     <string name="permissions_screen_description">Agar dapat membangunkan Anda, QRAlarm memerlukan beberapa izin. Kami hanya menggunakannya untuk memastikan alarm Anda selalu berfungsi.</string>

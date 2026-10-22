@@ -225,8 +225,6 @@
     <string name="custom_theme">Користувацька тема</string>
     <string name="custom_color">Нестандартний колір</string>
     <string name="custom_theme_description">Створіть власну тему з користувацькими кольорами.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Блокування скасування активне — для редагування вимкніть будильник шляхом сканування коду.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Блокування скасування активне — скануйте код, щоб вимкнути будильник.</string>
     <string name="cancellation_lock">Блокування скасування</string>
     <string name="cancellation_lock_description">Будильник не можна скасувати або редагувати без сканування коду за вибраний час до його спрацювання.</string>
     <string name="get_started">Почати</string>

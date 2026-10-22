@@ -183,8 +183,6 @@
     <string name="custom_theme_description">カスタムカラーで自分だけのテーマを作成。</string>
     <string name="cancellation_lock">キャンセルロック</string>
     <string name="cancellation_lock_description">アラームは、鳴る前に選択した時間内でコードをスキャンしないとキャンセルまたは編集できません。</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">キャンセルロックが有効 — 編集するには、コードをスキャンしてアラームを無効にしてください。</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">キャンセルロックが有効 — コードをスキャンしてアラームを無効にしてください。</string>
     <string name="widget_next_alarm">次のアラーム</string>
     <string name="widget_today">今日</string>
     <string name="widget_tomorrow">明日</string>

@@ -258,8 +258,6 @@
     <string name="custom_theme_description">צרו ערכת נושא משלכם עם צבעים מותאמים אישית.</string>
     <string name="cancellation_lock">נעילת ביטול</string>
     <string name="cancellation_lock_description">לא ניתן לבטל או לערוך את השעון המעורר בלי לסרוק את הקוד בפרק הזמן שנבחר לפני הצלצול.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">נעילת ביטול פעילה — כדי לערוך, יש להשבית את השעון המעורר באמצעות סריקת הקוד.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">נעילת ביטול פעילה — יש לסרוק את הקוד כדי להשבית את השעון המעורר.</string>
     <string name="widget_next_alarm">השעון המעורר הבא</string>
     <string name="widget_today">היום</string>
     <string name="widget_tomorrow">מחר</string>

@@ -247,8 +247,6 @@
     <string name="custom_theme_description">Skapa ett eget tema med anpassade färger.</string>
     <string name="cancellation_lock">Avbrytningsspärr</string>
     <string name="cancellation_lock_description">Alarmet kan inte avbrytas eller redigeras utan att du skannar koden inom den valda tiden före alarmet ringer.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Avbrytningsspärren är aktiv – skanna koden för att stänga av alarmet innan du redigerar det.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Avbrytningsspärren är aktiv – skanna koden för att stänga av alarmet.</string>
     <string name="widget_next_alarm">Nästa alarm</string>
     <string name="widget_today">I dag</string>
     <string name="widget_tomorrow">I morgon</string>

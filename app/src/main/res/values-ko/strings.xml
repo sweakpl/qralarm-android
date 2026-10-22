@@ -186,8 +186,6 @@
     <string name="custom_theme_description">사용자 정의 색상으로 테마를 만드세요.</string>
     <string name="cancellation_lock">취소 잠금</string>
     <string name="cancellation_lock_description">알람이 울리기 전 설정된 시간 내에 코드를 스캔하지 않으면 알람을 취소하거나 수정할 수 없습니다.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">취소 잠금이 활성화되었습니다 — 수정하려면 코드를 스캔하여 알람을 비활성화하세요.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">취소 잠금이 활성화되었습니다 — 코드를 스캔하여 알람을 비활성화하세요.</string>
     <string name="widget_next_alarm">다음 알람</string>
     <string name="widget_today">오늘</string>
     <string name="widget_tomorrow">내일</string>

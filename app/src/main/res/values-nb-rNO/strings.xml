@@ -247,8 +247,6 @@
     <string name="custom_theme_description">Lag ditt eget tema med egendefinerte farger.</string>
     <string name="cancellation_lock">Kanselleringslås</string>
     <string name="cancellation_lock_description">Alarmen kan ikke kanselleres eller redigeres uten å skanne koden innenfor det valgte tidsrommet før den ringer.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Kanselleringslåsen er aktiv – skann koden for å deaktivere alarmen før du redigerer den.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Kanselleringslåsen er aktiv – skann koden for å deaktivere alarmen.</string>
     <string name="widget_next_alarm">Neste alarm</string>
     <string name="widget_today">I dag</string>
     <string name="widget_tomorrow">I morgen</string>

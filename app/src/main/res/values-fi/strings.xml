@@ -247,8 +247,6 @@
     <string name="custom_theme_description">Luo oma teema mukautetuilla väreillä.</string>
     <string name="cancellation_lock">Peruutuslukko</string>
     <string name="cancellation_lock_description">Herätystä ei voi peruuttaa tai muokata skannaamatta koodia valittuna aikana ennen kuin se soi.</string>
-    <string name="cancellation_lock_active_to_edit_scan_code">Peruutuslukko on käytössä — muokkaa herätystä poistamalla se käytöstä koodi skannaamalla.</string>
-    <string name="cancellation_lock_active_scan_code_to_disable">Peruutuslukko on käytössä — poista herätys käytöstä skannaamalla koodi.</string>
     <string name="widget_next_alarm">Seuraava herätys</string>
     <string name="widget_today">Tänään</string>
     <string name="widget_tomorrow">Huomenna</string>
