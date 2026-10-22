@@ -78,6 +78,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
     private var nextAlarmTimeUpdateJob: Job? = null
+    private var hasAlarmSaveStarted = false
 
     init {
         var launchedFromSavedState = false
@@ -875,6 +876,9 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         if (currentState.alarmHourOfDay == null || currentState.alarmMinute == null) {
             return
         }
+
+        if (hasAlarmSaveStarted) return
+        hasAlarmSaveStarted = true
 
         val optimizationGuideState = userDataRepository.optimizationGuideState.first()
 
