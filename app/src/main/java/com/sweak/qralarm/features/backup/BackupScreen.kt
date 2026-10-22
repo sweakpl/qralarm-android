@@ -45,7 +45,6 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
-import com.sweak.qralarm.core.designsystem.theme.Gold
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
@@ -254,14 +253,14 @@ private fun BackupOptionCard(
                     Icon(
                         imageVector = QRAlarmIcons.Warning,
                         contentDescription = stringResource(R.string.content_description_warning_icon),
-                        tint = Gold,
+                        tint = MaterialTheme.colorScheme.error,
                         modifier = Modifier.size(size = MaterialTheme.space.medium)
                     )
 
                     Text(
                         text = warning,
                         style = MaterialTheme.typography.bodySmall,
-                        color = Gold
+                        color = MaterialTheme.colorScheme.error
                     )
                 }
             }
