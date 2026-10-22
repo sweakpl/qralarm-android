@@ -266,4 +266,5 @@
     <string name="backup_not_recognized">Dit bestand is geen QRAlarm back-up.</string>
     <string name="backup_too_new">Deze back-up is gemaakt met een nieuwere versie van QRAlarm. Update de app en probeer opnieuw.</string>
     <string name="backup_import_failed">Kon de back-up niet lezen. Probeer het opnieuw.</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">Annuleringsslot actief — gebruik de schakelaar om het uit te schakelen.</string>
 </resources>

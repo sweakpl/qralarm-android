@@ -256,4 +256,5 @@
     <string name="backup_too_new">Sandaran ini dibuat dengan versi QRAlarm yang lebih baharu. Kemas kini apl dan cuba lagi.</string>
     <string name="backup_import_failed">Sandaran tidak dapat dibaca. Sila cuba lagi.</string>
     <string name="standalone_app">Aplikasi kendiri</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">Kunci pembatalan aktif — gunakan butang togol untuk menyahaktifkannya.</string>
 </resources>

@@ -286,4 +286,5 @@
     <string name="backup_not_recognized">Этот файл не является резервной копией QRAlarm.</string>
     <string name="backup_too_new">Эта резервная копия была создана в более новой версии QRAlarm. Обновите приложение и попробуйте снова.</string>
     <string name="backup_import_failed">Не удалось прочитать резервную копию. Попробуйте ещё раз.</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">Блокировка отмены активна — отключите её переключателем.</string>
 </resources>

@@ -266,4 +266,5 @@
     <string name="backup_too_new">Säkerhetskopian skapades med en nyare version av QRAlarm. Uppdatera appen och försök igen.</string>
     <string name="backup_import_failed">Det gick inte att läsa säkerhetskopian. Försök igen.</string>
     <string name="standalone_app">Fristående app</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">Avbrytningsspärr aktiv – använd växlingsknappen för att inaktivera den</string>
 </resources>

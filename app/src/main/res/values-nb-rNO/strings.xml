@@ -266,4 +266,5 @@
     <string name="backup_too_new">Denne sikkerhetskopien ble laget med en nyere versjon av QRAlarm. Oppdater appen og prøv igjen.</string>
     <string name="backup_import_failed">Kunne ikke lese sikkerhetskopien. Prøv igjen.</string>
     <string name="standalone_app">Frittstående app</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">Kanselleringslås aktiv – bruk bryteren for å deaktivere</string>
 </resources>

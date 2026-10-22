@@ -276,4 +276,5 @@
     <string name="backup_not_recognized">הקובץ הזה אינו גיבוי של QRAlarm.</string>
     <string name="backup_too_new">הגיבוי הזה נוצר בגרסה חדשה יותר של QRAlarm. עדכן את האפליקציה ונסה שוב.</string>
     <string name="backup_import_failed">לא ניתן לקרוא את הגיבוי. נסה שוב.</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">נעילת ביטול פעילה — יש להשתמש במתג כדי להשבית אותה</string>
 </resources>

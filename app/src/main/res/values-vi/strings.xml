@@ -256,4 +256,5 @@
     <string name="backup_too_new">Bản sao lưu này được tạo bằng phiên bản QRAlarm mới hơn. Hãy cập nhật ứng dụng rồi thử lại.</string>
     <string name="backup_import_failed">Không thể đọc bản sao lưu. Vui lòng thử lại.</string>
     <string name="standalone_app">Ứng dụng độc lập</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">Khóa chống hủy đang bật — dùng nút bật/tắt để tắt.</string>
 </resources>

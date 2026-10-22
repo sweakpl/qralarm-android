@@ -266,4 +266,5 @@
     <string name="backup_not_recognized">Bu dosya bir QRAlarm yedeği değil.</string>
     <string name="backup_too_new">Bu yedek QRAlarm\'ın daha yeni bir sürümüyle oluşturulmuş. Uygulamayı güncelleyin ve tekrar deneyin.</string>
     <string name="backup_import_failed">Yedek okunamadı. Lütfen tekrar deneyin.</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">İptal kilidi etkin. Devre dışı bırakmak için açma/kapatma düğmesini kullanın.</string>
 </resources>

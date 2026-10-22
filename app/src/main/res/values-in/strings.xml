@@ -256,4 +256,5 @@
     <string name="backup_not_recognized">File ini bukan cadangan QRAlarm.</string>
     <string name="backup_too_new">Cadangan ini dibuat dengan versi QRAlarm yang lebih baru. Perbarui aplikasi dan coba lagi.</string>
     <string name="backup_import_failed">Tidak bisa membaca cadangan. Silakan coba lagi.</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">Kunci pembatalan aktif — gunakan tombol sakelar untuk menonaktifkannya</string>
 </resources>

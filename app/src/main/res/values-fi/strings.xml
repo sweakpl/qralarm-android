@@ -266,4 +266,5 @@
     <string name="backup_too_new">Tämä varmuuskopio on luotu QRAlarmin uudemmalla versiolla. Päivitä sovellus ja yritä uudelleen.</string>
     <string name="backup_import_failed">Varmuuskopion lukeminen epäonnistui. Yritä uudelleen.</string>
     <string name="standalone_app">Erillinen sovellus</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">Peruutuslukko käytössä – poista käytöstä kytkinpainikkeella</string>
 </resources>
