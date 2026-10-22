@@ -256,4 +256,5 @@
     <string name="backup_not_recognized">此文件不是QRAlarm备份。</string>
     <string name="backup_too_new">此备份是用较新版本的QRAlarm创建的。请更新应用程序后再试。</string>
     <string name="backup_import_failed">无法读取备份。请重试。</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">取消锁定已启用，请使用开关按钮将其关闭</string>
 </resources>

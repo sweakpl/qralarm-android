@@ -286,4 +286,5 @@
     <string name="backup_not_recognized">Ten plik nie jest kopią zapasową QRAlarm.</string>
     <string name="backup_too_new">Ta kopia zapasowa została utworzona przy użyciu nowszej wersji QRAlarm. Zaktualizuj aplikację i spróbuj ponownie.</string>
     <string name="backup_import_failed">Nie udało się odczytać kopii zapasowej. Spróbuj ponownie.</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">Blokada anulowania aktywna — użyj przełącznika, aby ją wyłączyć</string>
 </resources>

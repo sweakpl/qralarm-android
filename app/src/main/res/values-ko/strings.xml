@@ -256,4 +256,5 @@
     <string name="backup_not_recognized">이 파일은 QRAlarm 백업이 아닙니다.</string>
     <string name="backup_too_new">이 백업은 최신 버전 QRAlarm으로 만들어졌습니다. 앱을 업데이트하고 다시 시도하세요.</string>
     <string name="backup_import_failed">백업을 읽을 수 없습니다. 다시 시도해 주세요.</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">취소 잠금 활성화됨 — 토글 버튼을 눌러 해제하세요.</string>
 </resources>

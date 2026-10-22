@@ -306,4 +306,5 @@
     <string name="emergency">الطوارئ</string>
     <string name="emergency_task_description">هل فقدت الرمز أو نسيته؟ يمكنك إكمال هذه المهمة الطويلة لإيقاف المنبه. ما عليك سوى تحريك شريط التمرير حتى يطابق الرقم المستهدف. حظًا موفقًا!</string>
     <string name="start">ابدأ</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">قفل الإلغاء مفعّل — استخدم زر التبديل لتعطيله</string>
 </resources>

@@ -266,4 +266,5 @@
     <string name="backup_not_recognized">Diese Datei ist kein QRAlarm-Backup.</string>
     <string name="backup_too_new">Dieses Backup wurde mit einer neueren Version von QRAlarm erstellt. Bitte aktualisieren Sie die App und versuchen Sie es erneut.</string>
     <string name="backup_import_failed">Das Backup konnte nicht gelesen werden. Bitte versuchen Sie es erneut.</string>
+    <string name="cancellation_lock_active_use_toggle_to_disable">Sperre gegen Beenden aktiv – zum Deaktivieren den Schalter verwenden.</string>
 </resources>
