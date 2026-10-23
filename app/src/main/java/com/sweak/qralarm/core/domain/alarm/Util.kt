@@ -3,6 +3,9 @@ package com.sweak.qralarm.core.domain.alarm
 import java.time.Instant
 import java.time.ZoneId
 
+fun Alarm.isSnoozeAvailable() =
+    snoozeConfig.numberOfSnoozesLeft > 0 && !snoozeConfig.isAlarmSnoozed
+
 fun getHourAndMinuteOfAlarmTimeInMillis(
     alarmTimeInMillis: Long,
     zoneId: ZoneId

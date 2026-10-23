@@ -3,6 +3,7 @@ package com.sweak.qralarm.core.domain.alarm
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import assertk.assertions.prop
@@ -59,6 +60,7 @@ class SnoozeAlarmTest {
         val alarmId = alarmsRepository.addOrEditAlarm(
             alarm(
                 snoozeDurationInMinutes = 5,
+                numberOfSnoozesLeft = 2,
                 isAlarmSnoozed = false,
                 nextSnoozedAlarmTimeInMillis = null
             )
@@ -79,9 +81,25 @@ class SnoozeAlarmTest {
     }
 
     @Test
+    fun `given ringing alarm with snoozes left, when snoozing, then it is snoozed`() = runTest {
+        // Given
+        val alarmId = alarmsRepository.addOrEditAlarm(
+            alarm(numberOfSnoozesLeft = 2, isAlarmSnoozed = false)
+        )
+
+        // When
+        val result = snoozeAlarm(alarmId, now = TODAY.atTime(7, 30))
+
+        // Then
+        assertThat(result).isEqualTo(SnoozeAlarm.Result.Snoozed)
+    }
+
+    @Test
     fun `given ringing alarm, when snoozing, then a snoozed alarm is scheduled at the current minute plus the snooze duration`() = runTest {
         // Given
-        val alarmId = alarmsRepository.addOrEditAlarm(alarm(snoozeDurationInMinutes = 5))
+        val alarmId = alarmsRepository.addOrEditAlarm(
+            alarm(snoozeDurationInMinutes = 5, numberOfSnoozesLeft = 2, isAlarmSnoozed = false)
+        )
 
         // When
         snoozeAlarm(alarmId, now = TODAY.atTime(7, 30, 45))
@@ -99,7 +117,9 @@ class SnoozeAlarmTest {
     @Test
     fun `given ringing alarm, when snoozing, then a snoozed upcoming notification is shown with the snooze hour and minute`() = runTest {
         // Given
-        val alarmId = alarmsRepository.addOrEditAlarm(alarm(snoozeDurationInMinutes = 5))
+        val alarmId = alarmsRepository.addOrEditAlarm(
+            alarm(snoozeDurationInMinutes = 5, numberOfSnoozesLeft = 2, isAlarmSnoozed = false)
+        )
 
         // When
         snoozeAlarm(alarmId, now = TODAY.atTime(7, 30, 45))
@@ -118,7 +138,9 @@ class SnoozeAlarmTest {
     @Test
     fun `given alarm with snoozes left, when snoozing, then one snooze is used up`() = runTest {
         // Given
-        val alarmId = alarmsRepository.addOrEditAlarm(alarm(numberOfSnoozesLeft = 2))
+        val alarmId = alarmsRepository.addOrEditAlarm(
+            alarm(numberOfSnoozesLeft = 2, isAlarmSnoozed = false)
+        )
 
         // When
         snoozeAlarm(alarmId, now = TODAY.atTime(7, 30))
@@ -132,19 +154,57 @@ class SnoozeAlarmTest {
     }
 
     @Test
-    fun `given alarm with no snoozes left, when snoozing, then the snooze count stays at zero`() = runTest {
+    fun `given alarm with no snoozes left, when snoozing, then it is refused and not stored as snoozed`() = runTest {
         // Given
-        val alarmId = alarmsRepository.addOrEditAlarm(alarm(numberOfSnoozesLeft = 0))
+        val alarmId = alarmsRepository.addOrEditAlarm(
+            alarm(numberOfSnoozesLeft = 0, isAlarmSnoozed = false)
+        )
+
+        // When
+        val result = snoozeAlarm(alarmId, now = TODAY.atTime(7, 30))
+
+        // Then
+        assertThat(result).isEqualTo(SnoozeAlarm.Result.NotAvailable)
+        assertThat(alarmsRepository.getAlarm(alarmId))
+            .isNotNull()
+            .prop(Alarm::snoozeConfig)
+            .prop(Alarm.SnoozeConfig::isAlarmSnoozed)
+            .isFalse()
+    }
+
+    @Test
+    fun `given alarm with no snoozes left, when snoozing, then nothing is scheduled or shown`() = runTest {
+        // Given
+        val alarmId = alarmsRepository.addOrEditAlarm(
+            alarm(numberOfSnoozesLeft = 0, isAlarmSnoozed = false)
+        )
 
         // When
         snoozeAlarm(alarmId, now = TODAY.atTime(7, 30))
 
         // Then
-        assertThat(alarmsRepository.getAlarm(alarmId))
-            .isNotNull()
-            .prop(Alarm::snoozeConfig)
-            .prop(Alarm.SnoozeConfig::numberOfSnoozesLeft)
-            .isEqualTo(0)
+        verify {
+            alarmScheduler wasNot Called
+            alarmNotifier wasNot Called
+        }
+    }
+
+    @Test
+    fun `given alarm already snoozed, when snoozing again, then it is refused`() = runTest {
+        // Given
+        val alarmId = alarmsRepository.addOrEditAlarm(
+            alarm(
+                numberOfSnoozesLeft = 2,
+                isAlarmSnoozed = true,
+                nextSnoozedAlarmTimeInMillis = epochMillisAt(TODAY.atTime(7, 40))
+            )
+        )
+
+        // When
+        val result = snoozeAlarm(alarmId, now = TODAY.atTime(7, 32))
+
+        // Then
+        assertThat(result).isEqualTo(SnoozeAlarm.Result.NotAvailable)
     }
 
     @Test
@@ -191,6 +251,36 @@ class SnoozeAlarmTest {
             .prop(Alarm::snoozeConfig)
             .prop(Alarm.SnoozeConfig::numberOfSnoozesLeft)
             .isEqualTo(2)
+    }
+
+    @Test
+    fun `given snoozed alarm with its last snooze used being rescheduled, when snoozing, then it is re-armed at the stored snooze time`() = runTest {
+        // Given
+        val alarmId = alarmsRepository.addOrEditAlarm(
+            alarm(
+                snoozeDurationInMinutes = 5,
+                numberOfSnoozesLeft = 0,
+                isAlarmSnoozed = true,
+                nextSnoozedAlarmTimeInMillis = epochMillisAt(TODAY.atTime(7, 40))
+            )
+        )
+
+        // When
+        val result = snoozeAlarm(
+            alarmId,
+            now = TODAY.atTime(7, 32),
+            isReschedulingCurrentOrMissedSnooze = true
+        )
+
+        // Then
+        assertThat(result).isEqualTo(SnoozeAlarm.Result.Snoozed)
+        verify {
+            alarmScheduler.setAlarm(
+                alarmId = alarmId,
+                alarmTimeInMillis = epochMillisAt(TODAY.atTime(7, 40)),
+                isSnoozeAlarm = true
+            )
+        }
     }
 
     @Test

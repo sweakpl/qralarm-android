@@ -356,6 +356,34 @@ class RescheduleAlarmsTest {
     }
 
     @Test
+    fun `given snooze in the future with no snoozes left, when rescheduling, then a snoozed alarm is scheduled at the stored snooze time`() = runTest {
+        // Given
+        every { alarmScheduler.canScheduleExactAlarms() } returns true
+        val alarmId = alarmsRepository.addOrEditAlarm(
+            alarm(
+                isAlarmEnabled = false,
+                repeatingMode = Alarm.RepeatingMode.Once,
+                snoozeDurationInMinutes = 5,
+                numberOfSnoozesLeft = 0,
+                isAlarmSnoozed = true,
+                nextSnoozedAlarmTimeInMillis = epochMillisAt(SATURDAY.atTime(7, 40))
+            )
+        )
+
+        // When
+        rescheduleAlarms(now = SATURDAY.atTime(7, 32), rescheduleAlarmsIfMissedByFiveMinutes = true)
+
+        // Then
+        verify {
+            alarmScheduler.setAlarm(
+                alarmId = alarmId,
+                alarmTimeInMillis = epochMillisAt(SATURDAY.atTime(7, 40)),
+                isSnoozeAlarm = true
+            )
+        }
+    }
+
+    @Test
     fun `given snooze in the future, when rescheduling, then no snooze is used up`() = runTest {
         // Given
         every { alarmScheduler.canScheduleExactAlarms() } returns true

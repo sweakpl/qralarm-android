@@ -10,8 +10,16 @@ class SnoozeAlarm @Inject constructor(
     private val alarmsRepository: AlarmsRepository,
     private val clock: Clock
 ) {
-    suspend operator fun invoke(alarmId: Long, isReschedulingCurrentOrMissedSnooze: Boolean) {
-        val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return
+    suspend operator fun invoke(
+        alarmId: Long,
+        isReschedulingCurrentOrMissedSnooze: Boolean
+    ): Result {
+        val alarm = alarmsRepository.getAlarm(alarmId = alarmId) ?: return Result.NotAvailable
+
+        if (!isReschedulingCurrentOrMissedSnooze && !alarm.isSnoozeAvailable()) {
+            return Result.NotAvailable
+        }
+
         val snoozeAlarmTimeInMillis =
             if (isReschedulingCurrentOrMissedSnooze) alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis
             else ZonedDateTime.now(clock)
@@ -26,7 +34,7 @@ class SnoozeAlarm @Inject constructor(
                 snoozeConfig = alarm.snoozeConfig.copy(
                     numberOfSnoozesLeft =
                         if (isReschedulingCurrentOrMissedSnooze) alarm.snoozeConfig.numberOfSnoozesLeft
-                        else (alarm.snoozeConfig.numberOfSnoozesLeft - 1).coerceAtLeast(0),
+                        else alarm.snoozeConfig.numberOfSnoozesLeft - 1,
                     isAlarmSnoozed = true,
                     nextSnoozedAlarmTimeInMillis = snoozeAlarmTimeInMillis
                 )
@@ -50,5 +58,12 @@ class SnoozeAlarm @Inject constructor(
                 isSnoozeAlarm = true
             )
         }
+
+        return Result.Snoozed
+    }
+
+    sealed class Result {
+        data object Snoozed : Result()
+        data object NotAvailable : Result()
     }
 }

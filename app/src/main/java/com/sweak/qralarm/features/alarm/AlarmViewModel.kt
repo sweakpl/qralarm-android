@@ -8,6 +8,7 @@ import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.alarm.SnoozeAlarm
+import com.sweak.qralarm.core.domain.alarm.isSnoozeAvailable
 import com.sweak.qralarm.core.ui.compose_util.UiText
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -51,8 +52,7 @@ class AlarmViewModel @AssistedInject constructor(
 
                 if (!isAlarmBeingStopped) {
                     val isAlarmSnoozed = it.snoozeConfig.isAlarmSnoozed
-                    val isSnoozeAvailable =
-                        it.snoozeConfig.numberOfSnoozesLeft > 0 && !isAlarmSnoozed
+                    val isSnoozeAvailable = it.isSnoozeAvailable()
                     val isAlarmRunning = it.isAlarmRunning
                     val isInteractionEnabled = isAlarmRunning || (isAlarmSnoozed && !isTransient)
                     val alarmLabel = if (isAlarmRunning) {
@@ -180,10 +180,17 @@ class AlarmViewModel @AssistedInject constructor(
                         currentState.copy(isInteractionEnabled = !isTransient)
                     }
 
-                    snoozeAlarm(
+                    val result = snoozeAlarm(
                         alarmId = idOfAlarm,
                         isReschedulingCurrentOrMissedSnooze = false
                     )
+
+                    if (result is SnoozeAlarm.Result.NotAvailable) {
+                        _state.update { currentState ->
+                            currentState.copy(isInteractionEnabled = true)
+                        }
+                        return@launch
+                    }
 
                     backendEventsChannel.send(AlarmScreenBackendEvent.SnoozeAlarm)
                 }
