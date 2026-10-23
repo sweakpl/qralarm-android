@@ -13,6 +13,7 @@ import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.domain.user.WHATS_NEW_VERSION_CODE
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_REQUIRED_MATCHES
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,6 +38,8 @@ class MainViewModel @Inject constructor(
 
     private val backendEventsChannel = Channel<MainActivityBackendEvent>()
     val backendEvents = backendEventsChannel.receiveAsFlow()
+
+    private var activeAlarmsObservationJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -73,28 +76,38 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private suspend fun observeActiveAlarms() {
+        alarmsRepository.getAllAlarms().collect { alarms ->
+            alarms.firstOrNull { alarm ->
+                alarm.isAlarmRunning || alarm.snoozeConfig.isAlarmSnoozed
+            }?.let { activeAlarm ->
+                if (activeAlarm.isAlarmRunning && !AlarmService.isRunning) {
+                    alarmsRepository.setAlarmRunning(
+                        alarmId = activeAlarm.alarmId,
+                        running = false
+                    )
+                    return@let
+                }
+
+                backendEventsChannel.send(
+                    MainActivityBackendEvent.NavigateToActiveAlarm(
+                        alarmId = activeAlarm.alarmId
+                    )
+                )
+            }
+        }
+    }
+
     fun onEvent(event: MainActivityUserEvent) {
         when (event) {
-            is MainActivityUserEvent.ObserveActiveAlarms -> viewModelScope.launch {
-                alarmsRepository.getAllAlarms().collect { alarms ->
-                    alarms.firstOrNull { alarm ->
-                        alarm.isAlarmRunning || alarm.snoozeConfig.isAlarmSnoozed
-                    }?.let { activeAlarm ->
-                        if (activeAlarm.isAlarmRunning && !AlarmService.isRunning) {
-                            alarmsRepository.setAlarmRunning(
-                                alarmId = activeAlarm.alarmId,
-                                running = false
-                            )
-                            return@let
-                        }
+            is MainActivityUserEvent.OnResumed -> {
+                activeAlarmsObservationJob?.cancel()
+                activeAlarmsObservationJob = viewModelScope.launch { observeActiveAlarms() }
+            }
 
-                        backendEventsChannel.send(
-                            MainActivityBackendEvent.NavigateToActiveAlarm(
-                                alarmId = activeAlarm.alarmId
-                            )
-                        )
-                    }
-                }
+            is MainActivityUserEvent.OnPaused -> {
+                activeAlarmsObservationJob?.cancel()
+                activeAlarmsObservationJob = null
             }
 
             is MainActivityUserEvent.OnOnboardingFinished -> viewModelScope.launch {

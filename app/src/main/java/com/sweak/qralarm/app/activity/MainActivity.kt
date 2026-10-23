@@ -9,10 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.sweak.qralarm.alarm.activity.AlarmActivity
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.navigation.Navigator
@@ -22,7 +20,6 @@ import com.sweak.qralarm.core.navigation.routes.OnboardingRoute
 import com.sweak.qralarm.core.ui.components.WhatsNewDialog
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
@@ -38,13 +35,12 @@ class MainActivity : FragmentActivity() {
 
         splashScreen.setKeepOnScreenCondition { viewModel.state.value.shouldShowSplashScreen }
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.onEvent(MainActivityUserEvent.ObserveActiveAlarms)
-            }
-        }
-
         setContent {
+            LifecycleResumeEffect(Unit) {
+                viewModel.onEvent(MainActivityUserEvent.OnResumed)
+                onPauseOrDispose { viewModel.onEvent(MainActivityUserEvent.OnPaused) }
+            }
+
             val state by viewModel.state.collectAsStateWithLifecycle()
             val isIntroductionFinished = state.isIntroductionFinished
 
