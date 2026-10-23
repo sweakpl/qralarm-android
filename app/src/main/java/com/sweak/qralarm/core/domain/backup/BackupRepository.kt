@@ -9,7 +9,8 @@ interface BackupRepository {
 
     /**
      * Discards every stored alarm and code and puts [codes] and [alarms] in their place. All or
-     * nothing: if this fails, what was already stored is left as it was.
+     * nothing: if this fails, what was already stored is left as it was. A failure to write to
+     * the database is thrown as an [java.io.IOException] whose cause is the original exception.
      *
      * Restored alarms land disabled and with no custom ringtone assigned - the caller restores
      * the ringtone files afterward.

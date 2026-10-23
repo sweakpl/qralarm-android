@@ -13,6 +13,6 @@ sealed class BackupError : Error {
         val supportedFormatVersion: Int
     ) : BackupError()
 
-    /** The backup file could not be read or written. */
+    /** The backup file could not be read or written, or what it holds could not be stored. */
     data object IoFailure : BackupError()
 }

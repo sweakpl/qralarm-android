@@ -200,6 +200,50 @@ class RestoreBackupTest {
     }
 
     @Test
+    fun `given replacing the stored alarms fails, when restoring, then the stored alarms are not cancelled`() = runTest {
+        // Given
+        givenRestore(storedAlarmIds = listOf(1, 2))
+        coEvery { backupRepository.replaceAll(any(), any()) } throws IOException()
+
+        // When
+        restoreBackup(sourceUriString = backupUriString)
+
+        // Then
+        verify { alarmScheduler wasNot Called }
+    }
+
+    @Test
+    fun `given replacing the stored alarms fails, when restoring, then the default code is left as it was`() = runTest {
+        // Given
+        givenRestore(
+            bundle = backupBundle(
+                codes = listOf(BackupCode(codeId = 7, value = "kitchen-qr", name = "Kitchen")),
+                preferences = backupPreferences(defaultAlarmCodeId = 7)
+            )
+        )
+        coEvery { backupRepository.replaceAll(any(), any()) } throws IOException()
+
+        // When
+        restoreBackup(sourceUriString = backupUriString)
+
+        // Then
+        verify { codesRepository wasNot Called }
+    }
+
+    @Test
+    fun `given replacing the stored alarms fails, when restoring, then an IO failure is returned`() = runTest {
+        // Given
+        givenRestore()
+        coEvery { backupRepository.replaceAll(any(), any()) } throws IOException()
+
+        // When
+        val result = restoreBackup(sourceUriString = backupUriString)
+
+        // Then
+        assertThat(result).isEqualTo(Result.Error(BackupError.IoFailure))
+    }
+
+    @Test
     fun `given a backed-up ringtone, when restoring, then it is written under the alarm's new id and assigned to it`() = runTest {
         // Given
         givenRestore(

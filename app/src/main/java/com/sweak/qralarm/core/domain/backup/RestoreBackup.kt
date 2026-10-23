@@ -50,16 +50,18 @@ class RestoreBackup @Inject constructor(
         backupReader.use { reader ->
             val replacedAlarmIds = backupRepository.getAllAlarmIds()
 
+            val restoreIdMappings = try {
+                backupRepository.replaceAll(
+                    codes = reader.bundle.codes,
+                    alarms = reader.bundle.alarms
+                )
+            } catch (_: IOException) {
+                return Result.Error(BackupError.IoFailure)
+            }
+
             replacedAlarmIds.forEach { alarmId ->
                 alarmScheduler.cancelAlarm(alarmId = alarmId)
             }
-
-            codesRepository.setDefaultAlarmCodeById(codeId = null)
-
-            val restoreIdMappings = backupRepository.replaceAll(
-                codes = reader.bundle.codes,
-                alarms = reader.bundle.alarms
-            )
 
             restoreRingtones(
                 alarms = reader.bundle.alarms,
