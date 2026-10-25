@@ -1,2 +1,0 @@
-* New languages support: Arabic and Hebrew,
-* Bug fixes.
