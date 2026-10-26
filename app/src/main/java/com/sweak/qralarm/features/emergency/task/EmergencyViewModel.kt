@@ -8,6 +8,7 @@ import com.sweak.qralarm.alarm.service.AlarmService.Companion.EMERGENCY_TASK_ALA
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
+import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -31,6 +32,7 @@ import kotlin.time.Duration.Companion.seconds
 class EmergencyViewModel @AssistedInject constructor(
     @Assisted private val idOfAlarmToCancel: Long,
     private val disableAlarm: DisableAlarm,
+    private val setAlarm: SetAlarm,
     private val alarmsRepository: AlarmsRepository,
     private val userDataRepository: UserDataRepository,
     private val qrAlarmManager: QRAlarmManager
@@ -119,10 +121,19 @@ class EmergencyViewModel @AssistedInject constructor(
                                         val shouldDisableRepeatingAlarms = userDataRepository
                                             .isEmergencyDisableRepeatingAlarmsEnabled.first()
 
-                                        if (idOfAlarmToCancel != 0L &&
-                                            (!isAlarmRepeating || shouldDisableRepeatingAlarms)
-                                        ) {
-                                            disableAlarm(idOfAlarmToCancel)
+                                        if (idOfAlarmToCancel != 0L) {
+                                            if (!isAlarmRepeating || shouldDisableRepeatingAlarms) {
+                                                disableAlarm(idOfAlarmToCancel)
+                                            } else if (alarm.snoozeConfig.isAlarmSnoozed) {
+                                                alarmsRepository.setAlarmSnoozed(
+                                                    alarmId = idOfAlarmToCancel,
+                                                    snoozed = false
+                                                )
+                                                setAlarm(
+                                                    alarmId = idOfAlarmToCancel,
+                                                    isReschedulingMissedAlarm = false
+                                                )
+                                            }
                                         }
 
                                         delay(1500.milliseconds)
