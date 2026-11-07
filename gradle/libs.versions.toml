@@ -10,7 +10,7 @@ lifecycleRuntimeKtx = "2.11.0"
 activityCompose = "1.13.0"
 uiViewbinding = "1.12.1"
 composeBom = "2026.09.00"
-nav3Core = "1.2.0"
+nav3Core = "1.2.1"
 lifecycleViewmodelNav3 = "2.11.0"
 media3 = "1.11.1"
 coil = "2.7.0"
@@ -28,7 +28,7 @@ junit = "4.13.2"
 testParameterInjector = "1.25"
 coroutinesTest = "1.11.0"
 assertk = "0.28.1"
-mockk = "1.14.11"
+mockk = "1.14.12"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
