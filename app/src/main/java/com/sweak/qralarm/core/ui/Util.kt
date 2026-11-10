@@ -46,8 +46,11 @@ fun getTimeString(timeInMillis: Long, is24HourFormat: Boolean): String {
         .format(localizedDateTimeFormatter(if (is24HourFormat) "HH:mm" else "hh:mm a"))
 }
 
-fun getDaysHoursAndMinutesUntilAlarm(alarmTimeInMillis: Long): Triple<Int, Int, Int> {
-    val totalSeconds = (alarmTimeInMillis - System.currentTimeMillis()) / 1000
+fun getDaysHoursAndMinutesUntilAlarm(
+    alarmTimeInMillis: Long,
+    currentTimeInMillis: Long = System.currentTimeMillis()
+): Triple<Int, Int, Int> {
+    val totalSeconds = (alarmTimeInMillis - currentTimeInMillis) / 1000
     val days = (totalSeconds / 86400).toInt()
     val hours = ((totalSeconds % 86400) / 3600).toInt()
     val minutes = ((totalSeconds % 3600) / 60).toInt()
@@ -113,8 +116,11 @@ fun getDayString(timeInMillis: Long): String {
     return dateTime.format(localizedDateTimeFormatter(pattern))
 }
 
-fun getEarliestOnlyOnceAlarmDate(hourOfDay: Int, minute: Int): LocalDate {
-    val now = ZonedDateTime.now()
+fun getEarliestOnlyOnceAlarmDate(
+    hourOfDay: Int,
+    minute: Int,
+    now: ZonedDateTime = ZonedDateTime.now()
+): LocalDate {
     val todayAtAlarmTime = now.withHour(hourOfDay).withMinute(minute).withSecond(0).withNano(0)
     return if (todayAtAlarmTime > now) now.toLocalDate() else now.toLocalDate().plusDays(1)
 }

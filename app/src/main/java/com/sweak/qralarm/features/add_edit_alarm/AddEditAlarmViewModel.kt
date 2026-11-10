@@ -2,13 +2,11 @@ package com.sweak.qralarm.features.add_edit_alarm
 
 import android.os.Build
 import android.os.Bundle
-import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.core.domain.alarm.AddOrEditAlarm
-import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CodesRepository
@@ -18,17 +16,13 @@ import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
 import com.sweak.qralarm.core.ui.convertAlarmRepeatingMode
 import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
-import com.sweak.qralarm.core.ui.getEarliestOnlyOnceAlarmDate
-import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
-import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.CUSTOM
-import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.EVERYDAY
-import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
-import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.SAT_SUN
 import com.sweak.qralarm.core.ui.model.Code
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
+import com.sweak.qralarm.features.add_edit_alarm.util.AddEditAlarmFlowStateMapper
+import com.sweak.qralarm.features.add_edit_alarm.util.AlarmScheduleCalculator
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -42,13 +36,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.ZonedDateTime
 import kotlin.time.Duration.Companion.milliseconds
-import com.sweak.qralarm.core.domain.alarm.Code as DomainCode
 
 @HiltViewModel(assistedFactory = AddEditAlarmViewModel.Factory::class)
 class AddEditAlarmViewModel @AssistedInject constructor(
@@ -61,7 +52,9 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     private val qrAlarmManager: QRAlarmManager,
     private val addOrEditAlarm: AddOrEditAlarm,
     private val deleteAlarm: DeleteAlarm,
-    private val setAlarm: SetAlarm
+    private val setAlarm: SetAlarm,
+    private val alarmScheduleCalculator: AlarmScheduleCalculator,
+    private val addEditAlarmFlowStateMapper: AddEditAlarmFlowStateMapper
 ) : ViewModel() {
 
     @AssistedFactory
@@ -114,32 +107,9 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     .associateWith { false }
 
                 if (idOfAlarm == 0L) {
-                    val dateTime = ZonedDateTime.now().plusMinutes(1)
-                    val defaultRepeatingScheduleWrapper = AlarmRepeatingScheduleWrapper()
-                    val onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
-                        currentDateInMillis = 0L,
-                        hourOfDay = dateTime.hour,
-                        minute = dateTime.minute,
-                        isDateSticky = true
-                    )
-                    val daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
-                        alarmTimeInMillis = computeNextAlarmTimeInMillis(
-                            hourOfDay = dateTime.hour,
-                            minute = dateTime.minute,
-                            repeatingScheduleWrapper = defaultRepeatingScheduleWrapper,
-                            onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis
-                        )
-                    )
-
                     _state.update { currentState ->
-                        currentState.copy(
-                            isLoading = false,
-                            isEditingExistingAlarm = false,
-                            alarmHourOfDay = dateTime.hour,
-                            alarmMinute = dateTime.minute,
-                            onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis,
-                            daysHoursAndMinutesUntilAlarm = daysHoursAndMinutesUntilAlarm,
-                            alarmRepeatingScheduleWrapper = defaultRepeatingScheduleWrapper,
+                        addEditAlarmFlowStateMapper.withNewAlarm(
+                            currentState = currentState,
                             availableRingtonesWithPlaybackState = availableRingtonesWithPlaybackState,
                             previouslySavedCodes = allSavedAlarmCodes
                         )
@@ -149,86 +119,18 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     val alarmRepeatingScheduleWrapper = convertAlarmRepeatingMode(
                         repeatingMode = alarm.repeatingMode
                     ) ?: return@launch
-
-                    val isDateSticky: Boolean
-                    val onlyOnceAlarmDateInMillis: Long
-                    val earliestDate = getEarliestOnlyOnceAlarmDate(
-                        hourOfDay = alarm.alarmHourOfDay,
-                        minute = alarm.alarmMinute
-                    )
-
-                    if (alarm.repeatingMode == Alarm.RepeatingMode.Once) {
-                        val persistedDate = Instant.ofEpochMilli(alarm.nextAlarmTimeInMillis)
-                            .atZone(ZoneId.systemDefault())
-                            .toLocalDate()
-                        isDateSticky = !persistedDate.isAfter(earliestDate)
-                        onlyOnceAlarmDateInMillis = resolveOnlyOnceAlarmDateInMillis(
-                            currentDateInMillis = alarm.nextAlarmTimeInMillis,
-                            hourOfDay = alarm.alarmHourOfDay,
-                            minute = alarm.alarmMinute,
-                            isDateSticky = isDateSticky
-                        )
-                    } else {
-                        isDateSticky = true
-                        onlyOnceAlarmDateInMillis = earliestDate
-                            .atTime(alarm.alarmHourOfDay, alarm.alarmMinute)
-                            .atZone(ZoneId.systemDefault())
-                            .toInstant()
-                            .toEpochMilli()
-                    }
-
-                    val savedRingtone = if (alarm.ringtone == Ringtone.SYSTEM_DEFAULT &&
-                        !alarmRingtonePlayer.isSystemDefaultAlarmRingtoneAvailable()
-                    ) {
-                        Ringtone.GENTLE_GUITAR
-                    } else {
-                        alarm.ringtone
-                    }
-
-                    val daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(
-                        alarmTimeInMillis = computeNextAlarmTimeInMillis(
-                            hourOfDay = alarm.alarmHourOfDay,
-                            minute = alarm.alarmMinute,
-                            repeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
-                            onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis
-                        )
-                    )
+                    val isSystemDefaultAlarmRingtoneAvailable =
+                        alarmRingtonePlayer.isSystemDefaultAlarmRingtoneAvailable()
 
                     _state.update { currentState ->
-                        currentState.copy(
-                            isLoading = false,
-                            isEditingExistingAlarm = true,
-                            alarmHourOfDay = alarm.alarmHourOfDay,
-                            alarmMinute = alarm.alarmMinute,
-                            onlyOnceAlarmDateInMillis = onlyOnceAlarmDateInMillis,
-                            isOnlyOnceAlarmDateSticky = isDateSticky,
-                            daysHoursAndMinutesUntilAlarm = daysHoursAndMinutesUntilAlarm,
+                        addEditAlarmFlowStateMapper.withExistingAlarm(
+                            currentState = currentState,
+                            alarm = alarm,
                             alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
-                            snoozeNumberToDurationPair = Pair(
-                                first = alarm.snoozeConfig.snoozeMode.numberOfSnoozes,
-                                second = alarm.snoozeConfig.snoozeMode.snoozeDurationInMinutes
-                            ),
                             availableRingtonesWithPlaybackState = availableRingtonesWithPlaybackState,
-                            ringtone = savedRingtone,
-                            currentCustomAlarmRingtoneUri = alarm.customRingtoneUriString?.toUri(),
-                            alarmVolumePercentage =
-                                if (alarm.alarmVolumeMode is Alarm.AlarmVolumeMode.Custom) {
-                                    alarm.alarmVolumeMode.volumePercentage
-                                } else {
-                                    null
-                                },
-                            areVibrationsEnabled = alarm.areVibrationsEnabled,
-                            isCodeEnabled = alarm.isUsingCode,
                             previouslySavedCodes = allSavedAlarmCodes,
-                            currentlyAssignedCode = alarm.assignedCode?.let {
-                                Code(id = it.codeId, value = it.value, name = it.name)
-                            },
-                            isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
-                            cancelLockDurationInMinutes = alarm.cancelLockDurationInMinutes,
-                            isEmergencyTaskEnabled = alarm.isEmergencyTaskEnabled,
-                            alarmLabel = alarm.alarmLabel,
-                            gentleWakeupDurationInSeconds = alarm.gentleWakeUpDurationInSeconds,
-                            temporaryMuteDurationInSeconds = alarm.temporaryMuteDurationInSeconds
+                            isSystemDefaultAlarmRingtoneAvailable =
+                                isSystemDefaultAlarmRingtoneAvailable
                         )
                     }
                 }
@@ -431,18 +333,20 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     }
 
                     _state.update { currentState ->
-                        val newOnlyOnceDateInMillis = resolveOnlyOnceAlarmDateInMillis(
-                            currentDateInMillis = currentState.onlyOnceAlarmDateInMillis,
-                            hourOfDay = event.newAlarmHourOfDay,
-                            minute = event.newAlarmMinute,
-                            isDateSticky = currentState.isOnlyOnceAlarmDateSticky
-                        )
-                        val nextAlarmTimeInMillis = computeNextAlarmTimeInMillis(
-                            hourOfDay = event.newAlarmHourOfDay,
-                            minute = event.newAlarmMinute,
-                            repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
-                            onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis
-                        )
+                        val newOnlyOnceDateInMillis =
+                            alarmScheduleCalculator.resolveOnlyOnceAlarmDateInMillis(
+                                currentDateInMillis = currentState.onlyOnceAlarmDateInMillis,
+                                hourOfDay = event.newAlarmHourOfDay,
+                                minute = event.newAlarmMinute,
+                                isDateSticky = currentState.isOnlyOnceAlarmDateSticky
+                            )
+                        val nextAlarmTimeInMillis =
+                            alarmScheduleCalculator.computeNextAlarmTimeInMillis(
+                                hourOfDay = event.newAlarmHourOfDay,
+                                minute = event.newAlarmMinute,
+                                repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
+                                onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis
+                            )
                         currentState.copy(
                             onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
                             daysHoursAndMinutesUntilAlarm =
@@ -474,12 +378,13 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
 
                 _state.update { currentState ->
-                    val nextAlarmTimeInMillis = computeNextAlarmTimeInMillis(
-                        hourOfDay = currentState.alarmHourOfDay ?: 0,
-                        minute = currentState.alarmMinute ?: 0,
-                        repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
-                        onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis
-                    )
+                    val nextAlarmTimeInMillis =
+                        alarmScheduleCalculator.computeNextAlarmTimeInMillis(
+                            hourOfDay = currentState.alarmHourOfDay ?: 0,
+                            minute = currentState.alarmMinute ?: 0,
+                            repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
+                            onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis
+                        )
                     currentState.copy(
                         onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
                         isOnlyOnceAlarmDateSticky = isSticky,
@@ -502,12 +407,13 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
 
                 _state.update { currentState ->
-                    val nextAlarmTimeInMillis = computeNextAlarmTimeInMillis(
-                        hourOfDay = currentState.alarmHourOfDay ?: 0,
-                        minute = currentState.alarmMinute ?: 0,
-                        repeatingScheduleWrapper = event.newAlarmRepeatingScheduleWrapper,
-                        onlyOnceAlarmDateInMillis = currentState.onlyOnceAlarmDateInMillis
-                    )
+                    val nextAlarmTimeInMillis =
+                        alarmScheduleCalculator.computeNextAlarmTimeInMillis(
+                            hourOfDay = currentState.alarmHourOfDay ?: 0,
+                            minute = currentState.alarmMinute ?: 0,
+                            repeatingScheduleWrapper = event.newAlarmRepeatingScheduleWrapper,
+                            onlyOnceAlarmDateInMillis = currentState.onlyOnceAlarmDateInMillis
+                        )
                     currentState.copy(
                         alarmRepeatingScheduleWrapper = event.newAlarmRepeatingScheduleWrapper,
                         isChooseAlarmRepeatingScheduleDialogVisible = false,
@@ -849,12 +755,13 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 _state.update { currentState ->
                     val hourOfDay = currentState.alarmHourOfDay ?: return@update currentState
                     val minute = currentState.alarmMinute ?: return@update currentState
-                    val nextAlarmTimeInMillis = computeNextAlarmTimeInMillis(
-                        hourOfDay = hourOfDay,
-                        minute = minute,
-                        repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
-                        onlyOnceAlarmDateInMillis = currentState.onlyOnceAlarmDateInMillis
-                    )
+                    val nextAlarmTimeInMillis =
+                        alarmScheduleCalculator.computeNextAlarmTimeInMillis(
+                            hourOfDay = hourOfDay,
+                            minute = minute,
+                            repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
+                            onlyOnceAlarmDateInMillis = currentState.onlyOnceAlarmDateInMillis
+                        )
                     val isOnlyOnce =
                         currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE
 
@@ -873,9 +780,10 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     }
 
     private suspend fun setAlarm(currentState: AddEditAlarmFlowState) {
-        if (currentState.alarmHourOfDay == null || currentState.alarmMinute == null) {
-            return
-        }
+        val alarmToSave = addEditAlarmFlowStateMapper.toAlarm(
+            state = currentState,
+            alarmId = idOfAlarm
+        ) ?: return
 
         if (hasAlarmSaveStarted) return
         hasAlarmSaveStarted = true
@@ -887,100 +795,6 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 state = OptimizationGuideState.SHOULD_BE_SEEN
             )
         }
-
-        val currentDateTime = ZonedDateTime.now()
-        var alarmDateTime = ZonedDateTime.now()
-            .withHour(currentState.alarmHourOfDay)
-            .withMinute(currentState.alarmMinute)
-            .withSecond(0)
-            .withNano(0)
-        val alarmTimeInMillis: Long
-
-        val repeatingMode =
-            if (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
-                val chosenDate = Instant.ofEpochMilli(currentState.onlyOnceAlarmDateInMillis)
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate()
-                alarmDateTime = chosenDate
-                    .atTime(currentState.alarmHourOfDay, currentState.alarmMinute)
-                    .atZone(ZoneId.systemDefault())
-                    .withSecond(0)
-                    .withNano(0)
-
-                if (alarmDateTime <= currentDateTime) {
-                    alarmDateTime = alarmDateTime.plusDays(1)
-                }
-
-                alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
-
-                Alarm.RepeatingMode.Once
-            } else {
-                val repeatingDaysOfWeek =
-                    when (currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode) {
-                        MON_FRI -> listOf(
-                            DayOfWeek.MONDAY,
-                            DayOfWeek.TUESDAY,
-                            DayOfWeek.WEDNESDAY,
-                            DayOfWeek.THURSDAY,
-                            DayOfWeek.FRIDAY
-                        )
-
-                        SAT_SUN -> listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-                        EVERYDAY -> DayOfWeek.entries
-                        CUSTOM -> currentState.alarmRepeatingScheduleWrapper.alarmDaysOfWeek
-                    }
-
-                while (alarmDateTime <= currentDateTime ||
-                    alarmDateTime.dayOfWeek !in repeatingDaysOfWeek
-                ) {
-                    alarmDateTime = alarmDateTime.plusDays(1)
-                }
-
-                alarmTimeInMillis = alarmDateTime.toInstant().toEpochMilli()
-
-                Alarm.RepeatingMode.Days(repeatingDaysOfWeek = repeatingDaysOfWeek)
-            }
-
-        val alarmToSave = Alarm(
-            alarmId = idOfAlarm,
-            alarmHourOfDay = currentState.alarmHourOfDay,
-            alarmMinute = currentState.alarmMinute,
-            isAlarmEnabled = true,
-            isAlarmRunning = false,
-            repeatingMode = repeatingMode,
-            nextAlarmTimeInMillis = alarmTimeInMillis,
-            snoozeConfig = Alarm.SnoozeConfig(
-                snoozeMode = Alarm.SnoozeMode(
-                    numberOfSnoozes = currentState.snoozeNumberToDurationPair.first,
-                    snoozeDurationInMinutes = currentState.snoozeNumberToDurationPair.second
-                ),
-                numberOfSnoozesLeft = currentState.snoozeNumberToDurationPair.first,
-                isAlarmSnoozed = false,
-                nextSnoozedAlarmTimeInMillis = null
-            ),
-            ringtone = currentState.ringtone,
-            customRingtoneUriString = currentState.currentCustomAlarmRingtoneUri?.toString(),
-            alarmVolumeMode = if (currentState.alarmVolumePercentage != null) {
-                Alarm.AlarmVolumeMode.Custom(
-                    volumePercentage = currentState.alarmVolumePercentage
-                )
-            } else {
-                Alarm.AlarmVolumeMode.System
-            },
-            areVibrationsEnabled = currentState.areVibrationsEnabled,
-            isUsingCode = currentState.isCodeEnabled,
-            assignedCode = (currentState.temporaryAssignedCode
-                ?: currentState.currentlyAssignedCode)?.let {
-                DomainCode(codeId = it.id, value = it.value, name = it.name)
-            },
-            isOpenCodeLinkEnabled = currentState.isOpenCodeLinkEnabled,
-            cancelLockDurationInMinutes = currentState.cancelLockDurationInMinutes,
-            isEmergencyTaskEnabled = currentState.isEmergencyTaskEnabled,
-            alarmLabel = currentState.alarmLabel,
-            gentleWakeUpDurationInSeconds = currentState.gentleWakeupDurationInSeconds,
-            temporaryMuteDurationInSeconds = currentState.temporaryMuteDurationInSeconds,
-            skipAlarmUntilTimeInMillis = null
-        )
 
         val addOrEditAlarmResult = addOrEditAlarm(
             alarm = alarmToSave,
@@ -1006,81 +820,6 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         if (setAlarmResult is SetAlarm.Result.Success) {
             backendEventsChannel.send(AddEditAlarmFlowBackendEvent.AlarmSaved)
         }
-    }
-
-    private fun computeNextAlarmTimeInMillis(
-        hourOfDay: Int,
-        minute: Int,
-        repeatingScheduleWrapper: AlarmRepeatingScheduleWrapper,
-        onlyOnceAlarmDateInMillis: Long
-    ): Long {
-        val currentDateTime = ZonedDateTime.now()
-        var alarmDateTime = ZonedDateTime.now()
-            .withHour(hourOfDay)
-            .withMinute(minute)
-            .withSecond(0)
-            .withNano(0)
-
-        return if (repeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE) {
-            val chosenDate = Instant.ofEpochMilli(onlyOnceAlarmDateInMillis)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate()
-            alarmDateTime = chosenDate
-                .atTime(hourOfDay, minute)
-                .atZone(ZoneId.systemDefault())
-                .withSecond(0)
-                .withNano(0)
-
-            if (alarmDateTime <= currentDateTime) {
-                alarmDateTime = alarmDateTime.plusDays(1)
-            }
-
-            alarmDateTime.toInstant().toEpochMilli()
-        } else {
-            val repeatingDaysOfWeek = when (repeatingScheduleWrapper.alarmRepeatingMode) {
-                MON_FRI -> listOf(
-                    DayOfWeek.MONDAY,
-                    DayOfWeek.TUESDAY,
-                    DayOfWeek.WEDNESDAY,
-                    DayOfWeek.THURSDAY,
-                    DayOfWeek.FRIDAY
-                )
-
-                SAT_SUN -> listOf(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-                EVERYDAY -> DayOfWeek.entries
-                CUSTOM -> repeatingScheduleWrapper.alarmDaysOfWeek
-            }
-
-            while (alarmDateTime <= currentDateTime ||
-                alarmDateTime.dayOfWeek !in repeatingDaysOfWeek
-            ) {
-                alarmDateTime = alarmDateTime.plusDays(1)
-            }
-
-            alarmDateTime.toInstant().toEpochMilli()
-        }
-    }
-
-    private fun resolveOnlyOnceAlarmDateInMillis(
-        currentDateInMillis: Long,
-        hourOfDay: Int,
-        minute: Int,
-        isDateSticky: Boolean = false
-    ): Long {
-        val earliestDate = getEarliestOnlyOnceAlarmDate(hourOfDay, minute)
-        val date = if (isDateSticky) {
-            earliestDate
-        } else {
-            Instant.ofEpochMilli(currentDateInMillis)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate()
-                .let { if (it.isBefore(earliestDate)) earliestDate else it }
-        }
-        return date
-            .atTime(hourOfDay, minute)
-            .atZone(ZoneId.systemDefault())
-            .toInstant()
-            .toEpochMilli()
     }
 
     override fun onCleared() {
