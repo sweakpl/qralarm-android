@@ -21,7 +21,8 @@ import com.sweak.qralarm.core.ui.model.Code
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
-import com.sweak.qralarm.features.add_edit_alarm.util.AddEditAlarmFlowStateMapper
+import com.sweak.qralarm.features.add_edit_alarm.model.AlarmDraft
+import com.sweak.qralarm.features.add_edit_alarm.util.AlarmDraftMapper
 import com.sweak.qralarm.features.add_edit_alarm.util.AlarmScheduleCalculator
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -54,7 +55,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     private val deleteAlarm: DeleteAlarm,
     private val setAlarm: SetAlarm,
     private val alarmScheduleCalculator: AlarmScheduleCalculator,
-    private val addEditAlarmFlowStateMapper: AddEditAlarmFlowStateMapper
+    private val alarmDraftMapper: AlarmDraftMapper
 ) : ViewModel() {
 
     @AssistedFactory
@@ -78,9 +79,10 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         var initialDefaultCodeUpdate = true
 
         viewModelScope.launch {
-            val savedState: AddEditAlarmFlowState? = savedStateHandle.get<Bundle?>(
+            val savedStateBundle = savedStateHandle.get<Bundle?>(
                 key = SAVED_STATE_HANDLE_BUNDLE_KEY
-            )?.let {
+            )
+            val savedState: AddEditAlarmFlowState? = savedStateBundle?.let {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     it.getParcelable(
                         ADD_EDIT_ALARM_FLOW_STATE_KEY,
@@ -91,8 +93,9 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
             }
 
-            if (savedState != null) {
+            if (savedStateBundle != null && savedState != null) {
                 _state.update { savedState }
+                hasUnsavedChanges = savedStateBundle.getBoolean(HAS_UNSAVED_CHANGES_KEY)
                 launchedFromSavedState = true
             } else {
                 val allSavedAlarmCodes = codesRepository.getCodesFlow()
@@ -106,13 +109,11 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     }
                     .associateWith { false }
 
+                val loadDraft: (AlarmDraft) -> AlarmDraft
+
                 if (idOfAlarm == 0L) {
-                    _state.update { currentState ->
-                        addEditAlarmFlowStateMapper.withNewAlarm(
-                            currentState = currentState,
-                            availableRingtonesWithPlaybackState = availableRingtonesWithPlaybackState,
-                            previouslySavedCodes = allSavedAlarmCodes
-                        )
+                    loadDraft = { currentDraft ->
+                        alarmDraftMapper.withNewAlarm(currentDraft = currentDraft)
                     }
                 } else {
                     val alarm = alarmsRepository.getAlarm(alarmId = idOfAlarm) ?: return@launch
@@ -122,24 +123,32 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     val isSystemDefaultAlarmRingtoneAvailable =
                         alarmRingtonePlayer.isSystemDefaultAlarmRingtoneAvailable()
 
-                    _state.update { currentState ->
-                        addEditAlarmFlowStateMapper.withExistingAlarm(
-                            currentState = currentState,
+                    loadDraft = { currentDraft ->
+                        alarmDraftMapper.withExistingAlarm(
+                            currentDraft = currentDraft,
                             alarm = alarm,
                             alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
-                            availableRingtonesWithPlaybackState = availableRingtonesWithPlaybackState,
-                            previouslySavedCodes = allSavedAlarmCodes,
                             isSystemDefaultAlarmRingtoneAvailable =
                                 isSystemDefaultAlarmRingtoneAvailable
                         )
                     }
+                }
+
+                _state.update { currentState ->
+                    currentState.copy(
+                        isLoading = false,
+                        isEditingExistingAlarm = idOfAlarm != 0L,
+                        draft = loadDraft(currentState.draft),
+                        availableRingtonesWithPlaybackState = availableRingtonesWithPlaybackState,
+                        previouslySavedCodes = allSavedAlarmCodes
+                    ).withRefreshedAlarmCountdown()
                 }
             }
         }
 
         viewModelScope.launch {
             userDataRepository.setTemporaryScannedCode(
-                if (launchedFromSavedState) state.value.temporaryAssignedCode?.value
+                if (launchedFromSavedState) state.value.draft.temporaryAssignedCode?.value
                 else if (idOfAlarm == 0L) codesRepository.getDefaultAlarmCodeFlow().first()?.value
                 else null
             )
@@ -149,15 +158,11 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     launchedFromSavedState = false
                     initialDefaultCodeUpdate = false
                 } else {
-                    if (temporaryScannedCode != state.value.temporaryAssignedCode?.value) {
-                        hasUnsavedChanges = true
-                    }
-
                     val existingCode = state.value.previouslySavedCodes
                         .find { it.value == temporaryScannedCode }
 
-                    _state.update { currentState ->
-                        currentState.copy(
+                    updateDraft { draft ->
+                        draft.copy(
                             temporaryAssignedCode = temporaryScannedCode?.let {
                                 Code(
                                     id = existingCode?.id ?: 0L,
@@ -182,6 +187,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         savedStateHandle.setSavedStateProvider(SAVED_STATE_HANDLE_BUNDLE_KEY) {
             Bundle().apply {
                 putParcelable(ADD_EDIT_ALARM_FLOW_STATE_KEY, state.value)
+                putBoolean(HAS_UNSAVED_CHANGES_KEY, hasUnsavedChanges)
             }
         }
     }
@@ -221,7 +227,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                                 (notificationsPermissionState == null || notificationsPermissionState) &&
                                 (fullScreenIntentPermissionState == null || fullScreenIntentPermissionState)
                             ) {
-                                setAlarm(currentState)
+                                setAlarm(currentState.draft)
                                 _state.update {
                                     it.copy(
                                         permissionsDialogState =
@@ -257,7 +263,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         return@launch
                     }
 
-                    if ((!event.cameraPermissionStatus && currentState.isCodeEnabled) ||
+                    if ((!event.cameraPermissionStatus && currentState.draft.isCodeEnabled) ||
                         !event.notificationsPermissionStatus ||
                         !qrAlarmManager.canScheduleExactAlarms() ||
                         !qrAlarmManager.canUseFullScreenIntent()
@@ -268,8 +274,9 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                                     AddEditAlarmFlowState.PermissionsDialogState(
                                         isVisible = true,
                                         cameraPermissionState =
-                                            if (!event.cameraPermissionStatus && currentState.isCodeEnabled)
-                                                false else null,
+                                            if (!event.cameraPermissionStatus &&
+                                                currentState.draft.isCodeEnabled
+                                            ) false else null,
                                         notificationsPermissionState =
                                             if (!event.notificationsPermissionStatus) false else null,
                                         alarmsPermissionState =
@@ -282,7 +289,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         return@launch
                     }
 
-                    setAlarm(currentState)
+                    setAlarm(currentState.draft)
                 }
             }
 
@@ -318,40 +325,29 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                         delay(500.milliseconds)
                     }
 
-                    if (event.newAlarmHourOfDay != state.value.alarmHourOfDay ||
-                        event.newAlarmMinute != state.value.alarmMinute
-                    ) {
-                        hasUnsavedChanges = true
-                    }
-
-                    _state.update { currentState ->
-                        currentState.copy(
+                    updateDraft { draft ->
+                        draft.copy(
                             alarmHourOfDay = event.newAlarmHourOfDay,
-                            alarmMinute = event.newAlarmMinute,
-                            isDialerPickerDialogVisible = false
+                            alarmMinute = event.newAlarmMinute
+                        )
+                    }
+
+                    updateDraft(countsAsUnsavedChange = false) { draft ->
+                        draft.copy(
+                            onlyOnceAlarmDateInMillis =
+                                alarmScheduleCalculator.resolveOnlyOnceAlarmDateInMillis(
+                                    currentDateInMillis = draft.onlyOnceAlarmDateInMillis,
+                                    hourOfDay = event.newAlarmHourOfDay,
+                                    minute = event.newAlarmMinute,
+                                    isDateSticky = draft.isOnlyOnceAlarmDateSticky
+                                )
                         )
                     }
 
                     _state.update { currentState ->
-                        val newOnlyOnceDateInMillis =
-                            alarmScheduleCalculator.resolveOnlyOnceAlarmDateInMillis(
-                                currentDateInMillis = currentState.onlyOnceAlarmDateInMillis,
-                                hourOfDay = event.newAlarmHourOfDay,
-                                minute = event.newAlarmMinute,
-                                isDateSticky = currentState.isOnlyOnceAlarmDateSticky
-                            )
-                        val nextAlarmTimeInMillis =
-                            alarmScheduleCalculator.computeNextAlarmTimeInMillis(
-                                hourOfDay = event.newAlarmHourOfDay,
-                                minute = event.newAlarmMinute,
-                                repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
-                                onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis
-                            )
-                        currentState.copy(
-                            onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
-                            daysHoursAndMinutesUntilAlarm =
-                                getDaysHoursAndMinutesUntilAlarm(nextAlarmTimeInMillis)
-                        )
+                        currentState
+                            .copy(isDialerPickerDialogVisible = false)
+                            .withRefreshedAlarmCountdown()
                     }
                 }
             }
@@ -367,31 +363,26 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate()
                 val newOnlyOnceDateInMillis = selectedDate
-                    .atTime(state.value.alarmHourOfDay ?: 0, state.value.alarmMinute ?: 0)
+                    .atTime(
+                        state.value.draft.alarmHourOfDay ?: 0,
+                        state.value.draft.alarmMinute ?: 0
+                    )
                     .atZone(ZoneId.systemDefault())
                     .toInstant()
                     .toEpochMilli()
                 val isSticky = selectedDate == LocalDate.now(ZoneId.systemDefault())
 
-                if (newOnlyOnceDateInMillis != state.value.onlyOnceAlarmDateInMillis) {
-                    hasUnsavedChanges = true
+                updateDraft { draft ->
+                    draft.copy(
+                        onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
+                        isOnlyOnceAlarmDateSticky = isSticky
+                    )
                 }
 
                 _state.update { currentState ->
-                    val nextAlarmTimeInMillis =
-                        alarmScheduleCalculator.computeNextAlarmTimeInMillis(
-                            hourOfDay = currentState.alarmHourOfDay ?: 0,
-                            minute = currentState.alarmMinute ?: 0,
-                            repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
-                            onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis
-                        )
-                    currentState.copy(
-                        onlyOnceAlarmDateInMillis = newOnlyOnceDateInMillis,
-                        isOnlyOnceAlarmDateSticky = isSticky,
-                        isDatePickerDialogVisible = false,
-                        daysHoursAndMinutesUntilAlarm =
-                            getDaysHoursAndMinutesUntilAlarm(nextAlarmTimeInMillis)
-                    )
+                    currentState
+                        .copy(isDatePickerDialogVisible = false)
+                        .withRefreshedAlarmCountdown()
                 }
             }
 
@@ -402,24 +393,16 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AddEditAlarmScreenUserEvent.AlarmRepeatingScheduleSelected -> {
-                if (event.newAlarmRepeatingScheduleWrapper != state.value.alarmRepeatingScheduleWrapper) {
-                    hasUnsavedChanges = true
+                updateDraft { draft ->
+                    draft.copy(
+                        alarmRepeatingScheduleWrapper = event.newAlarmRepeatingScheduleWrapper
+                    )
                 }
 
                 _state.update { currentState ->
-                    val nextAlarmTimeInMillis =
-                        alarmScheduleCalculator.computeNextAlarmTimeInMillis(
-                            hourOfDay = currentState.alarmHourOfDay ?: 0,
-                            minute = currentState.alarmMinute ?: 0,
-                            repeatingScheduleWrapper = event.newAlarmRepeatingScheduleWrapper,
-                            onlyOnceAlarmDateInMillis = currentState.onlyOnceAlarmDateInMillis
-                        )
-                    currentState.copy(
-                        alarmRepeatingScheduleWrapper = event.newAlarmRepeatingScheduleWrapper,
-                        isChooseAlarmRepeatingScheduleDialogVisible = false,
-                        daysHoursAndMinutesUntilAlarm =
-                            getDaysHoursAndMinutesUntilAlarm(nextAlarmTimeInMillis)
-                    )
+                    currentState
+                        .copy(isChooseAlarmRepeatingScheduleDialogVisible = false)
+                        .withRefreshedAlarmCountdown()
                 }
             }
 
@@ -432,15 +415,12 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AddEditAlarmScreenUserEvent.AlarmSnoozeConfigurationSelected -> {
-                if (event.newSnoozeNumberToDurationPair != state.value.snoozeNumberToDurationPair) {
-                    hasUnsavedChanges = true
+                updateDraft { draft ->
+                    draft.copy(snoozeNumberToDurationPair = event.newSnoozeNumberToDurationPair)
                 }
 
                 _state.update { currentState ->
-                    currentState.copy(
-                        snoozeNumberToDurationPair = event.newSnoozeNumberToDurationPair,
-                        isChooseAlarmSnoozeConfigurationDialogVisible = false
-                    )
+                    currentState.copy(isChooseAlarmSnoozeConfigurationDialogVisible = false)
                 }
             }
 
@@ -453,16 +433,15 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             is AddEditAlarmScreenUserEvent.AlarmRingtoneConfigSelected -> {
                 alarmRingtonePlayer.stop()
 
-                if (event.newRingtone != state.value.ringtone ||
-                    event.newAlarmVolumePercentage != state.value.alarmVolumePercentage
-                ) {
-                    hasUnsavedChanges = true
+                updateDraft { draft ->
+                    draft.copy(
+                        ringtone = event.newRingtone,
+                        alarmVolumePercentage = event.newAlarmVolumePercentage
+                    )
                 }
 
                 _state.update { currentState ->
                     currentState.copy(
-                        ringtone = event.newRingtone,
-                        alarmVolumePercentage = event.newAlarmVolumePercentage,
                         isChooseAlarmRingtoneConfigDialogVisible = false,
                         availableRingtonesWithPlaybackState =
                             currentState.availableRingtonesWithPlaybackState.mapValues { false }
@@ -477,11 +456,13 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
                     if (!isPlaying) {
                         if (event.ringtone == Ringtone.CUSTOM_SOUND &&
-                            (currentState.currentCustomAlarmRingtoneUri != null ||
-                                    currentState.temporaryCustomAlarmRingtoneUri != null)
+                            (currentState.draft.currentCustomAlarmRingtoneUri != null ||
+                                    currentState.draft.temporaryCustomAlarmRingtoneUri != null)
                         ) {
-                            val alarmRingtoneUri = currentState.temporaryCustomAlarmRingtoneUri
-                                ?: currentState.currentCustomAlarmRingtoneUri ?: return
+                            val alarmRingtoneUri =
+                                currentState.draft.temporaryCustomAlarmRingtoneUri
+                                    ?: currentState.draft.currentCustomAlarmRingtoneUri
+                                    ?: return
 
                             alarmRingtonePlayer.playAlarmRingtonePreview(
                                 alarmRingtoneUri = alarmRingtoneUri,
@@ -542,10 +523,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
             is AddEditAlarmScreenUserEvent.CustomRingtoneUriRetrieved -> viewModelScope.launch {
                 event.customRingtoneUri?.let { retrievedUri ->
-                    hasUnsavedChanges = true
-
-                    _state.update { currentState ->
-                        currentState.copy(
+                    updateDraft { draft ->
+                        draft.copy(
                             ringtone = Ringtone.CUSTOM_SOUND,
                             temporaryCustomAlarmRingtoneUri = retrievedUri
                         )
@@ -567,16 +546,14 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AddEditAlarmScreenUserEvent.VibrationsEnabledChanged -> {
-                hasUnsavedChanges = true
-                _state.update { currentState ->
-                    currentState.copy(areVibrationsEnabled = event.areEnabled)
+                updateDraft { draft ->
+                    draft.copy(areVibrationsEnabled = event.areEnabled)
                 }
             }
 
             is AddEditAlarmScreenUserEvent.CodeEnabledChanged -> {
-                hasUnsavedChanges = true
-                _state.update { currentState ->
-                    currentState.copy(isCodeEnabled = event.isEnabled)
+                updateDraft { draft ->
+                    draft.copy(isCodeEnabled = event.isEnabled)
                 }
             }
 
@@ -589,7 +566,9 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             is AddEditAlarmScreenUserEvent.EditCodeNameDialogVisible -> {
                 _state.update { currentState ->
                     val initialCodeName = if (event.isVisible) {
-                        currentState.run { temporaryAssignedCode ?: currentlyAssignedCode }?.name
+                        currentState.draft
+                            .run { temporaryAssignedCode ?: currentlyAssignedCode }
+                            ?.name
                     } else null
 
                     currentState.copy(
@@ -602,19 +581,19 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AddEditAlarmScreenUserEvent.CodeNameEdited -> {
-                val currentCodeName = (state.value.temporaryAssignedCode
-                    ?: state.value.currentlyAssignedCode)?.name
-                if (event.newName != currentCodeName) {
-                    hasUnsavedChanges = true
+                updateDraft { draft ->
+                    val updatedCode = (draft.temporaryAssignedCode
+                        ?: draft.currentlyAssignedCode)?.copy(name = event.newName)
+                    draft.copy(
+                        temporaryAssignedCode = if (draft.temporaryAssignedCode != null) updatedCode
+                        else draft.temporaryAssignedCode,
+                        currentlyAssignedCode = if (draft.temporaryAssignedCode == null) updatedCode
+                        else draft.currentlyAssignedCode
+                    )
                 }
+
                 _state.update { currentState ->
-                    val updatedCode = (currentState.temporaryAssignedCode
-                        ?: currentState.currentlyAssignedCode)?.copy(name = event.newName)
                     currentState.copy(
-                        temporaryAssignedCode = if (currentState.temporaryAssignedCode != null) updatedCode
-                        else currentState.temporaryAssignedCode,
-                        currentlyAssignedCode = if (currentState.temporaryAssignedCode == null) updatedCode
-                        else currentState.currentlyAssignedCode,
                         editCodeNameDialogState = AddEditAlarmFlowState.EditCodeNameDialogState()
                     )
                 }
@@ -635,13 +614,11 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AddEditAlarmScreenUserEvent.ClearAssignedCode -> {
-                hasUnsavedChanges = true
-
-                if (state.value.currentlyAssignedCode != null &&
-                    state.value.temporaryAssignedCode == null
+                if (state.value.draft.currentlyAssignedCode != null &&
+                    state.value.draft.temporaryAssignedCode == null
                 ) {
-                    _state.update { currentState ->
-                        currentState.copy(currentlyAssignedCode = null)
+                    updateDraft { draft ->
+                        draft.copy(currentlyAssignedCode = null)
                     }
                 } else {
                     viewModelScope.launch {
@@ -651,9 +628,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AdvancedAlarmSettingsScreenUserEvent.OpenCodeLinkEnabledChanged -> {
-                hasUnsavedChanges = true
-                _state.update { currentState ->
-                    currentState.copy(isOpenCodeLinkEnabled = event.isEnabled)
+                updateDraft { draft ->
+                    draft.copy(isOpenCodeLinkEnabled = event.isEnabled)
                 }
             }
 
@@ -666,29 +642,24 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AdvancedAlarmSettingsScreenUserEvent.CancelLockDurationSelected -> {
-                if (event.newCancelLockDurationInMinutes != state.value.cancelLockDurationInMinutes) {
-                    hasUnsavedChanges = true
+                updateDraft { draft ->
+                    draft.copy(cancelLockDurationInMinutes = event.newCancelLockDurationInMinutes)
                 }
 
                 _state.update { currentState ->
-                    currentState.copy(
-                        cancelLockDurationInMinutes = event.newCancelLockDurationInMinutes,
-                        isChooseCancelLockDurationDialogVisible = false
-                    )
+                    currentState.copy(isChooseCancelLockDurationDialogVisible = false)
                 }
             }
 
             is AdvancedAlarmSettingsScreenUserEvent.EmergencyTaskEnabledChanged -> {
-                hasUnsavedChanges = true
-                _state.update { currentState ->
-                    currentState.copy(isEmergencyTaskEnabled = event.isEnabled)
+                updateDraft { draft ->
+                    draft.copy(isEmergencyTaskEnabled = event.isEnabled)
                 }
             }
 
             is AddEditAlarmScreenUserEvent.AlarmLabelChanged -> {
-                hasUnsavedChanges = true
-                _state.update { currentState ->
-                    currentState.copy(
+                updateDraft { draft ->
+                    draft.copy(
                         alarmLabel = event.newAlarmLabel.run { this.ifBlank { null } }
                     )
                 }
@@ -703,15 +674,14 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AdvancedAlarmSettingsScreenUserEvent.GentleWakeUpDurationSelected -> {
-                if (event.newGentleWakeUpDurationInSeconds != state.value.gentleWakeupDurationInSeconds) {
-                    hasUnsavedChanges = true
+                updateDraft { draft ->
+                    draft.copy(
+                        gentleWakeupDurationInSeconds = event.newGentleWakeUpDurationInSeconds
+                    )
                 }
 
                 _state.update { currentState ->
-                    currentState.copy(
-                        gentleWakeupDurationInSeconds = event.newGentleWakeUpDurationInSeconds,
-                        isChooseGentleWakeUpDurationDialogVisible = false
-                    )
+                    currentState.copy(isChooseGentleWakeUpDurationDialogVisible = false)
                 }
             }
 
@@ -722,15 +692,14 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AdvancedAlarmSettingsScreenUserEvent.TemporaryMuteDurationSelected -> {
-                if (event.newTemporaryMuteDurationInSeconds != state.value.temporaryMuteDurationInSeconds) {
-                    hasUnsavedChanges = true
+                updateDraft { draft ->
+                    draft.copy(
+                        temporaryMuteDurationInSeconds = event.newTemporaryMuteDurationInSeconds
+                    )
                 }
 
                 _state.update { currentState ->
-                    currentState.copy(
-                        temporaryMuteDurationInSeconds = event.newTemporaryMuteDurationInSeconds,
-                        isChooseTemporaryMuteDurationDialogVisible = false
-                    )
+                    currentState.copy(isChooseTemporaryMuteDurationDialogVisible = false)
                 }
             }
 
@@ -752,25 +721,20 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             }
 
             is AddEditAlarmScreenUserEvent.RefreshAlarmCountdown -> {
-                _state.update { currentState ->
-                    val hourOfDay = currentState.alarmHourOfDay ?: return@update currentState
-                    val minute = currentState.alarmMinute ?: return@update currentState
-                    val nextAlarmTimeInMillis =
-                        alarmScheduleCalculator.computeNextAlarmTimeInMillis(
-                            hourOfDay = hourOfDay,
-                            minute = minute,
-                            repeatingScheduleWrapper = currentState.alarmRepeatingScheduleWrapper,
-                            onlyOnceAlarmDateInMillis = currentState.onlyOnceAlarmDateInMillis
-                        )
+                updateDraft(countsAsUnsavedChange = false) { draft ->
                     val isOnlyOnce =
-                        currentState.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE
+                        draft.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE
+                    val nextAlarmTimeInMillis = computeNextAlarmTimeInMillis(draft)
 
-                    currentState.copy(
-                        daysHoursAndMinutesUntilAlarm =
-                            getDaysHoursAndMinutesUntilAlarm(nextAlarmTimeInMillis),
-                        onlyOnceAlarmDateInMillis = if (isOnlyOnce) nextAlarmTimeInMillis
-                        else currentState.onlyOnceAlarmDateInMillis
-                    )
+                    if (isOnlyOnce && nextAlarmTimeInMillis != null) {
+                        draft.copy(onlyOnceAlarmDateInMillis = nextAlarmTimeInMillis)
+                    } else {
+                        draft
+                    }
+                }
+
+                _state.update { currentState ->
+                    currentState.withRefreshedAlarmCountdown()
                 }
             }
 
@@ -779,9 +743,44 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         }
     }
 
-    private suspend fun setAlarm(currentState: AddEditAlarmFlowState) {
-        val alarmToSave = addEditAlarmFlowStateMapper.toAlarm(
-            state = currentState,
+    private fun updateDraft(
+        countsAsUnsavedChange: Boolean = true,
+        transform: (AlarmDraft) -> AlarmDraft
+    ) {
+        var hasDraftChanged = false
+
+        _state.update { currentState ->
+            val newDraft = transform(currentState.draft)
+
+            hasDraftChanged = newDraft != currentState.draft
+            currentState.copy(draft = newDraft)
+        }
+
+        if (countsAsUnsavedChange && hasDraftChanged) {
+            hasUnsavedChanges = true
+        }
+    }
+
+    private fun computeNextAlarmTimeInMillis(draft: AlarmDraft): Long? {
+        return alarmScheduleCalculator.computeNextAlarmTimeInMillis(
+            hourOfDay = draft.alarmHourOfDay ?: return null,
+            minute = draft.alarmMinute ?: return null,
+            repeatingScheduleWrapper = draft.alarmRepeatingScheduleWrapper,
+            onlyOnceAlarmDateInMillis = draft.onlyOnceAlarmDateInMillis
+        )
+    }
+
+    private fun AddEditAlarmFlowState.withRefreshedAlarmCountdown(): AddEditAlarmFlowState {
+        val nextAlarmTimeInMillis = computeNextAlarmTimeInMillis(draft) ?: return this
+
+        return copy(
+            daysHoursAndMinutesUntilAlarm = getDaysHoursAndMinutesUntilAlarm(nextAlarmTimeInMillis)
+        )
+    }
+
+    private suspend fun setAlarm(draft: AlarmDraft) {
+        val alarmToSave = alarmDraftMapper.toAlarm(
+            draft = draft,
             alarmId = idOfAlarm
         ) ?: return
 
@@ -799,7 +798,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         val addOrEditAlarmResult = addOrEditAlarm(
             alarm = alarmToSave,
             temporaryCustomRingtoneContentUriString =
-                currentState.temporaryCustomAlarmRingtoneUri?.toString()
+                draft.temporaryCustomAlarmRingtoneUri?.toString()
         )
 
         if (addOrEditAlarmResult is AddOrEditAlarm.Result.CustomRingtoneSaveFailed) {
@@ -829,5 +828,6 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     companion object {
         private const val SAVED_STATE_HANDLE_BUNDLE_KEY = "savedStateHandleBundleKey"
         private const val ADD_EDIT_ALARM_FLOW_STATE_KEY = "addEditAlarmFlowState"
+        private const val HAS_UNSAVED_CHANGES_KEY = "hasUnsavedChanges"
     }
 }

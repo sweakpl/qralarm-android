@@ -32,6 +32,7 @@ import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.Alarm
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.destinations.alarms_chain.components.AddNewChainedAlarmCard
 import com.sweak.qralarm.features.add_edit_alarm.destinations.alarms_chain.components.OriginalAlarmCard
+import com.sweak.qralarm.features.add_edit_alarm.model.AlarmDraft
 
 @Composable
 fun AlarmsChainSettingsScreen(
@@ -117,10 +118,10 @@ fun AlarmsChainSettingsScreenContent(
                 }
 
                 item(key = "original_alarm_card") {
-                    if (state.alarmHourOfDay != null && state.alarmMinute != null) {
+                    if (state.draft.alarmHourOfDay != null && state.draft.alarmMinute != null) {
                         OriginalAlarmCard(
-                            alarmHourOfDay = state.alarmHourOfDay,
-                            alarmMinute = state.alarmMinute,
+                            alarmHourOfDay = state.draft.alarmHourOfDay,
+                            alarmMinute = state.draft.alarmMinute,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
                     }
@@ -151,8 +152,7 @@ private fun AlarmsChainSettingsScreenContentPreview() {
         AlarmsChainSettingsScreenContent(
             state = AddEditAlarmFlowState(
                 isLoading = false,
-                alarmHourOfDay = 7,
-                alarmMinute = 30,
+                draft = AlarmDraft(alarmHourOfDay = 7, alarmMinute = 30)
             ),
             onEvent = {}
         )

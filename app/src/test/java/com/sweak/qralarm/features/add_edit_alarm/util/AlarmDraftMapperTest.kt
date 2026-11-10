@@ -14,38 +14,35 @@ import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.MON_FRI
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.core.ui.model.Code
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
+import com.sweak.qralarm.features.add_edit_alarm.model.AlarmDraft
 import org.junit.Test
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 import com.sweak.qralarm.core.domain.alarm.Code as DomainCode
 
-class AddEditAlarmFlowStateMapperTest {
+class AlarmDraftMapperTest {
 
-    private fun mapper(now: LocalDateTime): AddEditAlarmFlowStateMapper {
+    private fun mapper(now: LocalDateTime): AlarmDraftMapper {
         val clock = fixedClock(now)
 
-        return AddEditAlarmFlowStateMapper(
+        return AlarmDraftMapper(
             alarmScheduleCalculator = AlarmScheduleCalculator(clock = clock),
             clock = clock
         )
     }
 
-    private fun existingAlarmState(
+    private fun existingAlarmDraft(
         alarm: Alarm,
         now: LocalDateTime,
-        currentState: AddEditAlarmFlowState = AddEditAlarmFlowState(),
+        currentDraft: AlarmDraft = AlarmDraft(),
         alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper =
             AlarmRepeatingScheduleWrapper(alarmRepeatingMode = ONLY_ONCE),
-        previouslySavedCodes: List<Code> = emptyList(),
         isSystemDefaultAlarmRingtoneAvailable: Boolean = true
     ) = mapper(now).withExistingAlarm(
-        currentState = currentState,
+        currentDraft = currentDraft,
         alarm = alarm,
         alarmRepeatingScheduleWrapper = alarmRepeatingScheduleWrapper,
-        availableRingtonesWithPlaybackState = emptyMap(),
-        previouslySavedCodes = previouslySavedCodes,
         isSystemDefaultAlarmRingtoneAvailable = isSystemDefaultAlarmRingtoneAvailable
     )
 
@@ -53,28 +50,32 @@ class AddEditAlarmFlowStateMapperTest {
     fun `given new alarm, when mapping, then alarm is preset to one minute from now as a one-time alarm`() {
         // Given
         val mapper = mapper(now = SATURDAY.atTime(21, 44))
-        val savedCodes = listOf(Code(id = 5, value = "BATHROOM-QR", name = "Bathroom"))
 
         // When
-        val result = mapper.withNewAlarm(
-            currentState = AddEditAlarmFlowState(),
-            availableRingtonesWithPlaybackState = mapOf(Ringtone.KALIMBA to false),
-            previouslySavedCodes = savedCodes
-        )
+        val result = mapper.withNewAlarm(currentDraft = AlarmDraft())
 
         // Then
-        assertThat(result.isLoading).isFalse()
-        assertThat(result.isEditingExistingAlarm).isFalse()
         assertThat(result.alarmHourOfDay).isEqualTo(21)
         assertThat(result.alarmMinute).isEqualTo(45)
         assertThat(result.alarmRepeatingScheduleWrapper)
             .isEqualTo(AlarmRepeatingScheduleWrapper(alarmRepeatingMode = ONLY_ONCE))
         assertThat(result.onlyOnceAlarmDateInMillis)
             .isEqualTo(epochMillisAt(SATURDAY.atTime(21, 45)))
-        assertThat(result.daysHoursAndMinutesUntilAlarm).isEqualTo(Triple(0, 0, 1))
-        assertThat(result.availableRingtonesWithPlaybackState)
-            .isEqualTo(mapOf(Ringtone.KALIMBA to false))
-        assertThat(result.previouslySavedCodes).isEqualTo(savedCodes)
+    }
+
+    @Test
+    fun `given code scanned while the new alarm was being prepared, when mapping, then the scanned code is preserved`() {
+        // Given
+        val mapper = mapper(now = SATURDAY.atTime(21, 44))
+        val scannedCode = Code(id = 0, value = "KITCHEN-QR", name = null)
+
+        // When
+        val result = mapper.withNewAlarm(
+            currentDraft = AlarmDraft(temporaryAssignedCode = scannedCode)
+        )
+
+        // Then
+        assertThat(result.temporaryAssignedCode).isEqualTo(scannedCode)
     }
 
     @Test
@@ -88,7 +89,7 @@ class AddEditAlarmFlowStateMapperTest {
         )
 
         // When
-        val result = existingAlarmState(
+        val result = existingAlarmDraft(
             alarm = alarm,
             now = SATURDAY.atTime(10, 0),
             alarmRepeatingScheduleWrapper =
@@ -96,14 +97,11 @@ class AddEditAlarmFlowStateMapperTest {
         )
 
         // Then
-        assertThat(result.isLoading).isFalse()
-        assertThat(result.isEditingExistingAlarm).isTrue()
         assertThat(result.alarmHourOfDay).isEqualTo(7)
         assertThat(result.alarmMinute).isEqualTo(30)
         assertThat(result.isOnlyOnceAlarmDateSticky).isFalse()
         assertThat(result.onlyOnceAlarmDateInMillis)
             .isEqualTo(epochMillisAt(WEDNESDAY.atTime(7, 30)))
-        assertThat(result.daysHoursAndMinutesUntilAlarm).isEqualTo(Triple(3, 21, 30))
     }
 
     @Test
@@ -117,7 +115,7 @@ class AddEditAlarmFlowStateMapperTest {
         )
 
         // When
-        val result = existingAlarmState(
+        val result = existingAlarmDraft(
             alarm = alarm,
             now = SATURDAY.atTime(10, 0),
             alarmRepeatingScheduleWrapper =
@@ -128,11 +126,10 @@ class AddEditAlarmFlowStateMapperTest {
         assertThat(result.isOnlyOnceAlarmDateSticky).isTrue()
         assertThat(result.onlyOnceAlarmDateInMillis)
             .isEqualTo(epochMillisAt(SUNDAY.atTime(7, 30)))
-        assertThat(result.daysHoursAndMinutesUntilAlarm).isEqualTo(Triple(0, 21, 30))
     }
 
     @Test
-    fun `given repeating alarm, when mapping, then one-time date sticks to the earliest possible one and countdown targets the next repeating day`() {
+    fun `given repeating alarm, when mapping, then one-time date sticks to the earliest possible one`() {
         // Given
         val alarm = alarm(
             alarmHourOfDay = 7,
@@ -150,7 +147,7 @@ class AddEditAlarmFlowStateMapperTest {
         )
 
         // When
-        val result = existingAlarmState(
+        val result = existingAlarmDraft(
             alarm = alarm,
             now = SATURDAY.atTime(6, 0),
             alarmRepeatingScheduleWrapper =
@@ -163,7 +160,6 @@ class AddEditAlarmFlowStateMapperTest {
         assertThat(result.isOnlyOnceAlarmDateSticky).isTrue()
         assertThat(result.onlyOnceAlarmDateInMillis)
             .isEqualTo(epochMillisAt(SATURDAY.atTime(7, 30)))
-        assertThat(result.daysHoursAndMinutesUntilAlarm).isEqualTo(Triple(2, 1, 30))
     }
 
     @Test
@@ -172,7 +168,7 @@ class AddEditAlarmFlowStateMapperTest {
         val alarm = alarm(ringtone = Ringtone.SYSTEM_DEFAULT)
 
         // When
-        val result = existingAlarmState(
+        val result = existingAlarmDraft(
             alarm = alarm,
             now = SATURDAY.atTime(10, 0),
             isSystemDefaultAlarmRingtoneAvailable = false
@@ -188,7 +184,7 @@ class AddEditAlarmFlowStateMapperTest {
         val alarm = alarm(ringtone = Ringtone.SYSTEM_DEFAULT)
 
         // When
-        val result = existingAlarmState(
+        val result = existingAlarmDraft(
             alarm = alarm,
             now = SATURDAY.atTime(10, 0),
             isSystemDefaultAlarmRingtoneAvailable = true
@@ -199,7 +195,7 @@ class AddEditAlarmFlowStateMapperTest {
     }
 
     @Test
-    fun `given alarm with customized settings, when mapping, then settings are carried over to the state`() {
+    fun `given alarm with customized settings, when mapping, then settings are carried over to the draft`() {
         // Given
         val alarm = alarm(
             numberOfSnoozes = 2,
@@ -218,13 +214,11 @@ class AddEditAlarmFlowStateMapperTest {
             gentleWakeUpDurationInSeconds = 30,
             temporaryMuteDurationInSeconds = 45
         )
-        val savedCodes = listOf(Code(id = 5, value = "BATHROOM-QR", name = "Bathroom"))
 
         // When
-        val result = existingAlarmState(
+        val result = existingAlarmDraft(
             alarm = alarm,
-            now = SATURDAY.atTime(10, 0),
-            previouslySavedCodes = savedCodes
+            now = SATURDAY.atTime(10, 0)
         )
 
         // Then
@@ -236,7 +230,6 @@ class AddEditAlarmFlowStateMapperTest {
         assertThat(result.isCodeEnabled).isTrue()
         assertThat(result.currentlyAssignedCode)
             .isEqualTo(Code(id = 5, value = "BATHROOM-QR", name = "Bathroom"))
-        assertThat(result.previouslySavedCodes).isEqualTo(savedCodes)
         assertThat(result.isOpenCodeLinkEnabled).isTrue()
         assertThat(result.cancelLockDurationInMinutes).isEqualTo(30)
         assertThat(result.isEmergencyTaskEnabled).isTrue()
@@ -251,7 +244,7 @@ class AddEditAlarmFlowStateMapperTest {
         val alarm = alarm().copy(alarmVolumeMode = Alarm.AlarmVolumeMode.System)
 
         // When
-        val result = existingAlarmState(alarm = alarm, now = SATURDAY.atTime(10, 0))
+        val result = existingAlarmDraft(alarm = alarm, now = SATURDAY.atTime(10, 0))
 
         // Then
         assertThat(result.alarmVolumePercentage).isNull()
@@ -266,10 +259,10 @@ class AddEditAlarmFlowStateMapperTest {
         )
 
         // When
-        val result = existingAlarmState(
+        val result = existingAlarmDraft(
             alarm = alarm,
             now = SATURDAY.atTime(10, 0),
-            currentState = AddEditAlarmFlowState(temporaryAssignedCode = scannedCode)
+            currentDraft = AlarmDraft(temporaryAssignedCode = scannedCode)
         )
 
         // Then
@@ -279,21 +272,21 @@ class AddEditAlarmFlowStateMapperTest {
     }
 
     @Test
-    fun `given state without alarm time, when mapping to alarm, then there is no alarm`() {
+    fun `given draft without alarm time, when mapping to alarm, then there is no alarm`() {
         // Given
-        val state = AddEditAlarmFlowState(alarmHourOfDay = null, alarmMinute = null)
+        val draft = AlarmDraft(alarmHourOfDay = null, alarmMinute = null)
 
         // When
-        val result = mapper(now = SATURDAY.atTime(10, 0)).toAlarm(state = state, alarmId = 42)
+        val result = mapper(now = SATURDAY.atTime(10, 0)).toAlarm(draft = draft, alarmId = 42)
 
         // Then
         assertThat(result).isNull()
     }
 
     @Test
-    fun `given fully configured one-time alarm state, when mapping to alarm, then alarm reflects the state and is scheduled for the chosen date`() {
+    fun `given fully configured one-time alarm draft, when mapping to alarm, then alarm reflects the draft and is scheduled for the chosen date`() {
         // Given
-        val state = AddEditAlarmFlowState(
+        val draft = AlarmDraft(
             alarmHourOfDay = 7,
             alarmMinute = 30,
             alarmRepeatingScheduleWrapper =
@@ -316,7 +309,7 @@ class AddEditAlarmFlowStateMapperTest {
         )
 
         // When
-        val result = mapper(now = SATURDAY.atTime(10, 0)).toAlarm(state = state, alarmId = 42)
+        val result = mapper(now = SATURDAY.atTime(10, 0)).toAlarm(draft = draft, alarmId = 42)
 
         // Then
         assertThat(result).isEqualTo(
@@ -355,9 +348,9 @@ class AddEditAlarmFlowStateMapperTest {
     }
 
     @Test
-    fun `given Monday to Friday alarm state on Saturday, when mapping to alarm, then alarm repeats on working days and is scheduled for Monday`() {
+    fun `given Monday to Friday alarm draft on Saturday, when mapping to alarm, then alarm repeats on working days and is scheduled for Monday`() {
         // Given
-        val state = AddEditAlarmFlowState(
+        val draft = AlarmDraft(
             alarmHourOfDay = 7,
             alarmMinute = 30,
             alarmRepeatingScheduleWrapper =
@@ -366,7 +359,7 @@ class AddEditAlarmFlowStateMapperTest {
         )
 
         // When
-        val result = mapper(now = SATURDAY.atTime(6, 0)).toAlarm(state = state, alarmId = 42)
+        val result = mapper(now = SATURDAY.atTime(6, 0)).toAlarm(draft = draft, alarmId = 42)
 
         // Then
         assertThat(result?.repeatingMode).isEqualTo(
@@ -384,9 +377,9 @@ class AddEditAlarmFlowStateMapperTest {
     }
 
     @Test
-    fun `given state with both a previously assigned and a newly scanned code, when mapping to alarm, then the newly scanned code wins`() {
+    fun `given draft with both a previously assigned and a newly scanned code, when mapping to alarm, then the newly scanned code wins`() {
         // Given
-        val state = AddEditAlarmFlowState(
+        val draft = AlarmDraft(
             alarmHourOfDay = 7,
             alarmMinute = 30,
             currentlyAssignedCode = Code(id = 5, value = "BATHROOM-QR", name = "Bathroom"),
@@ -394,7 +387,7 @@ class AddEditAlarmFlowStateMapperTest {
         )
 
         // When
-        val result = mapper(now = SATURDAY.atTime(6, 0)).toAlarm(state = state, alarmId = 42)
+        val result = mapper(now = SATURDAY.atTime(6, 0)).toAlarm(draft = draft, alarmId = 42)
 
         // Then
         assertThat(result?.assignedCode)
@@ -402,16 +395,16 @@ class AddEditAlarmFlowStateMapperTest {
     }
 
     @Test
-    fun `given state using system volume, when mapping to alarm, then alarm uses system volume mode`() {
+    fun `given draft using system volume, when mapping to alarm, then alarm uses system volume mode`() {
         // Given
-        val state = AddEditAlarmFlowState(
+        val draft = AlarmDraft(
             alarmHourOfDay = 7,
             alarmMinute = 30,
             alarmVolumePercentage = null
         )
 
         // When
-        val result = mapper(now = SATURDAY.atTime(6, 0)).toAlarm(state = state, alarmId = 42)
+        val result = mapper(now = SATURDAY.atTime(6, 0)).toAlarm(draft = draft, alarmId = 42)
 
         // Then
         assertThat(result?.alarmVolumeMode).isEqualTo(Alarm.AlarmVolumeMode.System)

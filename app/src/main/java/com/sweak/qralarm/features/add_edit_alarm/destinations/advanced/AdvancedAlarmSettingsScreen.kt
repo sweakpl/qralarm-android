@@ -122,7 +122,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                         title = stringResource(R.string.gentle_wake_up),
                         description = stringResource(R.string.gentle_wake_up_description),
                         choiceName = getSecondsDurationString(
-                            state.gentleWakeupDurationInSeconds
+                            state.draft.gentleWakeupDurationInSeconds
                         )
                     )
 
@@ -142,12 +142,12 @@ private fun AdvancedAlarmSettingsScreenContent(
                         title = stringResource(R.string.temporary_mute),
                         description = stringResource(R.string.temporary_mute_description),
                         choiceName = getSecondsDurationString(
-                            state.temporaryMuteDurationInSeconds
+                            state.draft.temporaryMuteDurationInSeconds
                         )
                     )
                 }
 
-                if (state.isCodeEnabled) {
+                if (state.draft.isCodeEnabled) {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -167,7 +167,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                             title = stringResource(R.string.cancellation_lock),
                             description = stringResource(R.string.cancellation_lock_description),
                             choiceName = getCancelLockDurationAbbreviatedString(
-                                state.cancelLockDurationInMinutes
+                                state.draft.cancelLockDurationInMinutes
                             )
                         )
 
@@ -178,7 +178,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                         )
 
                         ToggleSetting(
-                            isChecked = state.isEmergencyTaskEnabled,
+                            isChecked = state.draft.isEmergencyTaskEnabled,
                             onCheckedChange = {
                                 onEvent(
                                     AdvancedAlarmSettingsScreenUserEvent
@@ -198,7 +198,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                         )
 
                         ToggleSetting(
-                            isChecked = state.isOpenCodeLinkEnabled,
+                            isChecked = state.draft.isOpenCodeLinkEnabled,
                             onCheckedChange = {
                                 onEvent(
                                     AdvancedAlarmSettingsScreenUserEvent
@@ -216,7 +216,7 @@ private fun AdvancedAlarmSettingsScreenContent(
 
     if (state.isChooseGentleWakeUpDurationDialogVisible) {
         ChooseGentleWakeUpDurationBottomSheet(
-            initialGentleWakeUpDurationInSeconds = state.gentleWakeupDurationInSeconds,
+            initialGentleWakeUpDurationInSeconds = state.draft.gentleWakeupDurationInSeconds,
             availableGentleWakeUpDurationsInSeconds = state.availableGentleWakeUpDurationsInSeconds,
             onDismissRequest = { newGentleWakeUpDurationInSeconds ->
                 onEvent(
@@ -230,7 +230,7 @@ private fun AdvancedAlarmSettingsScreenContent(
 
     if (state.isChooseTemporaryMuteDurationDialogVisible) {
         ChooseTemporaryMuteDurationBottomSheet(
-            initialTemporaryMuteDurationInSeconds = state.temporaryMuteDurationInSeconds,
+            initialTemporaryMuteDurationInSeconds = state.draft.temporaryMuteDurationInSeconds,
             availableTemporaryMuteDurationsInSeconds =
                 state.availableTemporaryMuteDurationsInSeconds,
             onDismissRequest = { newTemporaryMuteDurationInSeconds ->
@@ -245,7 +245,7 @@ private fun AdvancedAlarmSettingsScreenContent(
 
     if (state.isChooseCancelLockDurationDialogVisible) {
         ChooseCancelLockDurationBottomSheet(
-            initialCancelLockDurationInMinutes = state.cancelLockDurationInMinutes,
+            initialCancelLockDurationInMinutes = state.draft.cancelLockDurationInMinutes,
             availableCancelLockDurationsInMinutes = state.availableCancelLockDurationsInMinutes,
             onDismissRequest = { newCancelLockDurationInMinutes ->
                 onEvent(

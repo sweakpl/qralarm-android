@@ -1,6 +1,5 @@
 package com.sweak.qralarm.features.add_edit_alarm
 
-import android.net.Uri
 import android.os.Parcelable
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_CANCEL_LOCK_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS
@@ -8,59 +7,35 @@ import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_NUMBERS
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_TEMPORARY_MUTE_DURATIONS_IN_SECONDS
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
-import com.sweak.qralarm.core.domain.alarm.DEFAULT_CANCEL_LOCK_DURATION_IN_MINUTES
-import com.sweak.qralarm.core.domain.alarm.DEFAULT_GENTLE_WAKE_UP_DURATION_IN_SECONDS
-import com.sweak.qralarm.core.domain.alarm.DEFAULT_SNOOZE_NUMBER_TO_DURATION_PAIR
-import com.sweak.qralarm.core.domain.alarm.DEFAULT_TEMPORARY_MUTE_DURATION_IN_SECONDS
-import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.Code
+import com.sweak.qralarm.features.add_edit_alarm.model.AlarmDraft
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AddEditAlarmFlowState(
     val isLoading: Boolean = true,
     val isEditingExistingAlarm: Boolean = false,
-    val alarmHourOfDay: Int? = null,
-    val alarmMinute: Int? = null,
+    val draft: AlarmDraft = AlarmDraft(),
     val isDialerPickerDialogVisible: Boolean = false,
-    val onlyOnceAlarmDateInMillis: Long = 0L,
-    val isOnlyOnceAlarmDateSticky: Boolean = true,
     val daysHoursAndMinutesUntilAlarm: Triple<Int, Int, Int> = Triple(0, 0, 0),
     val isDatePickerDialogVisible: Boolean = false,
-    val alarmRepeatingScheduleWrapper: AlarmRepeatingScheduleWrapper =
-        AlarmRepeatingScheduleWrapper(),
     val isChooseAlarmRepeatingScheduleDialogVisible: Boolean = false,
-    val snoozeNumberToDurationPair: Pair<Int, Int> = DEFAULT_SNOOZE_NUMBER_TO_DURATION_PAIR,
     val availableSnoozeNumbers: List<Int> = AVAILABLE_SNOOZE_NUMBERS,
     val availableSnoozeDurationsInMinutes: List<Int> = AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES,
     val isChooseAlarmSnoozeConfigurationDialogVisible: Boolean = false,
-    val ringtone: Ringtone = Ringtone.GENTLE_GUITAR,
     val availableRingtonesWithPlaybackState: Map<Ringtone, Boolean> = emptyMap(),
-    val currentCustomAlarmRingtoneUri: Uri? = null,
-    val temporaryCustomAlarmRingtoneUri: Uri? = null,
-    val alarmVolumePercentage: Int? = null,
     val isChooseAlarmRingtoneConfigDialogVisible: Boolean = false,
-    val areVibrationsEnabled: Boolean = true,
-    val isCodeEnabled: Boolean = true,
     val isAssignCodeDialogVisible: Boolean = false,
     val editCodeNameDialogState: EditCodeNameDialogState = EditCodeNameDialogState(),
     val previouslySavedCodes: List<Code> = emptyList(),
     val isCameraPermissionDeniedDialogVisible: Boolean = false,
     val isNotificationsPermissionDeniedDialogVisible: Boolean = false,
-    val currentlyAssignedCode: Code? = null,
-    val temporaryAssignedCode: Code? = null,
-    val isOpenCodeLinkEnabled: Boolean = false,
-    val cancelLockDurationInMinutes: Int = DEFAULT_CANCEL_LOCK_DURATION_IN_MINUTES,
     val availableCancelLockDurationsInMinutes: List<Int> =
         AVAILABLE_CANCEL_LOCK_DURATIONS_IN_MINUTES,
     val isChooseCancelLockDurationDialogVisible: Boolean = false,
-    val isEmergencyTaskEnabled: Boolean = true,
-    val alarmLabel: String? = null,
-    val gentleWakeupDurationInSeconds: Int = DEFAULT_GENTLE_WAKE_UP_DURATION_IN_SECONDS,
     val availableGentleWakeUpDurationsInSeconds: List<Int> =
         AVAILABLE_GENTLE_WAKE_UP_DURATIONS_IN_SECONDS,
     val isChooseGentleWakeUpDurationDialogVisible: Boolean = false,
-    val temporaryMuteDurationInSeconds: Int = DEFAULT_TEMPORARY_MUTE_DURATION_IN_SECONDS,
     val availableTemporaryMuteDurationsInSeconds: List<Int> =
         AVAILABLE_TEMPORARY_MUTE_DURATIONS_IN_SECONDS,
     val isChooseTemporaryMuteDurationDialogVisible: Boolean = false,

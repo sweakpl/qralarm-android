@@ -103,6 +103,7 @@ import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.component
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.DialerTimePickerDialog
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.DownloadCodeBottomSheet
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.QRAlarmTimePicker
+import com.sweak.qralarm.features.add_edit_alarm.model.AlarmDraft
 import com.sweak.qralarm.features.alarm.components.TimeTickReceiver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -491,15 +492,15 @@ private fun AddEditAlarmScreenContent(
                         .padding(paddingValues = paddingValues)
                         .fillMaxWidth()
                 ) {
-                    if (state.alarmHourOfDay != null && state.alarmMinute != null) {
+                    if (state.draft.alarmHourOfDay != null && state.draft.alarmMinute != null) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = MaterialTheme.space.mediumLarge)
                         ) {
                             QRAlarmTimePicker(
-                                selectedHourOfDay = state.alarmHourOfDay,
-                                selectedMinute = state.alarmMinute,
+                                selectedHourOfDay = state.draft.alarmHourOfDay,
+                                selectedMinute = state.draft.alarmMinute,
                                 onTimeChanged = { hourOfDay, minute ->
                                     onEvent(
                                         AddEditAlarmScreenUserEvent.AlarmTimeChanged(
@@ -536,8 +537,9 @@ private fun AddEditAlarmScreenContent(
 
                     AlarmScheduleCard(
                         daysHoursAndMinutesUntilAlarm = state.daysHoursAndMinutesUntilAlarm,
-                        onlyOnceAlarmDateInMillis = state.onlyOnceAlarmDateInMillis,
-                        isOnlyOnce = state.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE,
+                        onlyOnceAlarmDateInMillis = state.draft.onlyOnceAlarmDateInMillis,
+                        isOnlyOnce =
+                            state.draft.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE,
                         onAlarmDateClicked = {
                             onEvent(
                                 AddEditAlarmScreenUserEvent.DatePickerDialogVisible(isVisible = true)
@@ -570,7 +572,7 @@ private fun AddEditAlarmScreenContent(
                             },
                             title = stringResource(R.string.repeating),
                             choiceName = getAlarmRepeatingScheduleString(
-                                state.alarmRepeatingScheduleWrapper
+                                state.draft.alarmRepeatingScheduleWrapper
                             )
                         )
 
@@ -589,7 +591,7 @@ private fun AddEditAlarmScreenContent(
                             },
                             title = stringResource(R.string.snooze),
                             choiceName = getAlarmSnoozeModeString(
-                                state.snoozeNumberToDurationPair
+                                state.draft.snoozeNumberToDurationPair
                             )
                         )
 
@@ -607,7 +609,7 @@ private fun AddEditAlarmScreenContent(
                                 )
                             },
                             title = stringResource(R.string.ringtone),
-                            choiceName = getAlarmRingtoneString(state.ringtone)
+                            choiceName = getAlarmRingtoneString(state.draft.ringtone)
                         )
 
                         HorizontalDivider(
@@ -617,7 +619,7 @@ private fun AddEditAlarmScreenContent(
                         )
 
                         ToggleSetting(
-                            isChecked = state.areVibrationsEnabled,
+                            isChecked = state.draft.areVibrationsEnabled,
                             onCheckedChange = {
                                 onEvent(
                                     AddEditAlarmScreenUserEvent.VibrationsEnabledChanged(
@@ -640,7 +642,7 @@ private fun AddEditAlarmScreenContent(
                             )
                     ) {
                         ToggleSetting(
-                            isChecked = state.isCodeEnabled,
+                            isChecked = state.draft.isCodeEnabled,
                             onCheckedChange = {
                                 onEvent(
                                     AddEditAlarmScreenUserEvent.CodeEnabledChanged(isEnabled = it)
@@ -650,7 +652,7 @@ private fun AddEditAlarmScreenContent(
                             compactHeight = true
                         )
 
-                        AnimatedVisibility(visible = state.isCodeEnabled) {
+                        AnimatedVisibility(visible = state.draft.isCodeEnabled) {
                             Column {
                                 HorizontalDivider(
                                     thickness = 1.dp,
@@ -659,8 +661,8 @@ private fun AddEditAlarmScreenContent(
                                 )
 
                                 AnimatedContent(
-                                    targetState = state.currentlyAssignedCode != null ||
-                                            state.temporaryAssignedCode != null,
+                                    targetState = state.draft.currentlyAssignedCode != null ||
+                                            state.draft.temporaryAssignedCode != null,
                                     label = "Code assigning animation"
                                 ) { isAnyCodeAssigned ->
                                     Column {
@@ -694,8 +696,8 @@ private fun AddEditAlarmScreenContent(
                                                         )
 
                                                         val effectiveCode =
-                                                            state.temporaryAssignedCode
-                                                                ?: state.currentlyAssignedCode
+                                                            state.draft.temporaryAssignedCode
+                                                                ?: state.draft.currentlyAssignedCode
 
                                                         Text(
                                                             text = effectiveCode?.name
@@ -707,8 +709,8 @@ private fun AddEditAlarmScreenContent(
                                                     Text(
                                                         text = stringResource(
                                                             R.string.current_code,
-                                                            (state.temporaryAssignedCode?.value
-                                                                ?: state.currentlyAssignedCode?.value
+                                                            (state.draft.temporaryAssignedCode?.value
+                                                                ?: state.draft.currentlyAssignedCode?.value
                                                                 ?: "").toBidiIsolated()
                                                         ),
                                                         style = MaterialTheme.typography.labelMedium,
@@ -979,7 +981,7 @@ private fun AddEditAlarmScreenContent(
                                 )
 
                                 BasicTextField(
-                                    value = state.alarmLabel ?: "",
+                                    value = state.draft.alarmLabel ?: "",
                                     onValueChange = {
                                         onEvent(
                                             AddEditAlarmScreenUserEvent.AlarmLabelChanged(
@@ -992,7 +994,7 @@ private fun AddEditAlarmScreenContent(
                                     ),
                                     singleLine = true,
                                     decorationBox = { innerTextField ->
-                                        if (state.alarmLabel.isNullOrBlank()) {
+                                        if (state.draft.alarmLabel.isNullOrBlank()) {
                                             Text(
                                                 text =
                                                     stringResource(R.string.enter_your_alarm_label),
@@ -1128,12 +1130,12 @@ private fun AddEditAlarmScreenContent(
     }
 
     if (state.isDialerPickerDialogVisible &&
-        state.alarmHourOfDay != null &&
-        state.alarmMinute != null
+        state.draft.alarmHourOfDay != null &&
+        state.draft.alarmMinute != null
     ) {
         DialerTimePickerDialog(
-            initialHourOfDay = state.alarmHourOfDay,
-            initialMinute = state.alarmMinute,
+            initialHourOfDay = state.draft.alarmHourOfDay,
+            initialMinute = state.draft.alarmMinute,
             onDismissRequest = {
                 onEvent(AddEditAlarmScreenUserEvent.DialerPickerDialogVisible(isVisible = false))
             },
@@ -1150,13 +1152,13 @@ private fun AddEditAlarmScreenContent(
     }
 
     if (state.isDatePickerDialogVisible &&
-        state.alarmHourOfDay != null &&
-        state.alarmMinute != null
+        state.draft.alarmHourOfDay != null &&
+        state.draft.alarmMinute != null
     ) {
         AlarmDatePickerDialog(
-            initialDateInMillis = state.onlyOnceAlarmDateInMillis,
-            alarmHourOfDay = state.alarmHourOfDay,
-            alarmMinute = state.alarmMinute,
+            initialDateInMillis = state.draft.onlyOnceAlarmDateInMillis,
+            alarmHourOfDay = state.draft.alarmHourOfDay,
+            alarmMinute = state.draft.alarmMinute,
             onDismissRequest = {
                 onEvent(AddEditAlarmScreenUserEvent.DatePickerDialogVisible(isVisible = false))
             },
@@ -1172,7 +1174,7 @@ private fun AddEditAlarmScreenContent(
 
     if (state.isChooseAlarmRepeatingScheduleDialogVisible) {
         ChooseAlarmRepeatingScheduleBottomSheet(
-            initialAlarmRepeatingScheduleWrapper = state.alarmRepeatingScheduleWrapper,
+            initialAlarmRepeatingScheduleWrapper = state.draft.alarmRepeatingScheduleWrapper,
             onDismissRequest = { newAlarmRepeatingSchedule ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmRepeatingScheduleSelected(
@@ -1185,7 +1187,7 @@ private fun AddEditAlarmScreenContent(
 
     if (state.isChooseAlarmSnoozeConfigurationDialogVisible) {
         ChooseSnoozeConfigurationBottomSheet(
-            initialSnoozeNumberToDurationPair = state.snoozeNumberToDurationPair,
+            initialSnoozeNumberToDurationPair = state.draft.snoozeNumberToDurationPair,
             availableSnoozeNumbers = state.availableSnoozeNumbers,
             availableSnoozeDurationsInMinutes = state.availableSnoozeDurationsInMinutes,
             onDismissRequest = { newSnoozeNumberToDurationPair ->
@@ -1200,11 +1202,11 @@ private fun AddEditAlarmScreenContent(
 
     if (state.isChooseAlarmRingtoneConfigDialogVisible) {
         ChooseAlarmRingtoneConfigDialogBottomSheet(
-            initialRingtone = state.ringtone,
+            initialRingtone = state.draft.ringtone,
             availableRingtonesWithPlaybackState =
                 state.availableRingtonesWithPlaybackState,
-            isCustomRingtoneUploaded = state.currentCustomAlarmRingtoneUri != null ||
-                    state.temporaryCustomAlarmRingtoneUri != null,
+            isCustomRingtoneUploaded = state.draft.currentCustomAlarmRingtoneUri != null ||
+                    state.draft.temporaryCustomAlarmRingtoneUri != null,
             onTogglePlaybackState = { toggledAlarmRingtone ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.ToggleAlarmRingtonePlayback(
@@ -1215,7 +1217,7 @@ private fun AddEditAlarmScreenContent(
             onPickCustomRingtone = {
                 onEvent(AddEditAlarmScreenUserEvent.PickCustomRingtone)
             },
-            alarmVolumePercentage = state.alarmVolumePercentage,
+            alarmVolumePercentage = state.draft.alarmVolumePercentage,
             onDismissRequest = { newAlarmRingtone, newAlarmVolumePercentage ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmRingtoneConfigSelected(
@@ -1421,8 +1423,7 @@ private fun AddEditAlarmScreenContentPreview() {
         AddEditAlarmScreenContent(
             state = AddEditAlarmFlowState(
                 isLoading = false,
-                alarmHourOfDay = 8,
-                alarmMinute = 0
+                draft = AlarmDraft(alarmHourOfDay = 8, alarmMinute = 0)
             ),
             onEvent = { }
         )
