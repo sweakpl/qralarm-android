@@ -23,10 +23,9 @@ import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.activity.AlarmActivity
 import com.sweak.qralarm.alarm.util.setAlarmVolume
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
+import com.sweak.qralarm.core.domain.alarm.AdvanceAlarmToNextOccurrence
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
-import com.sweak.qralarm.core.domain.alarm.DisableAlarm
-import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,9 +51,7 @@ class AlarmService : Service() {
     @Inject
     lateinit var qrAlarmManager: QRAlarmManager
     @Inject
-    lateinit var disableAlarm: DisableAlarm
-    @Inject
-    lateinit var setAlarm: SetAlarm
+    lateinit var advanceAlarmToNextOccurrence: AdvanceAlarmToNextOccurrence
     @Inject
     lateinit var alarmRingtonePlayer: AlarmRingtonePlayer
     @Inject
@@ -206,7 +203,7 @@ class AlarmService : Service() {
                 snoozed = false
             )
 
-            handleAlarmRescheduling()
+            advanceAlarmToNextOccurrence(alarmId = alarmId)
 
             adjustAlarmVolume()
 
@@ -272,7 +269,7 @@ class AlarmService : Service() {
                     snoozed = false
                 )
             }
-            handleAlarmRescheduling()
+            advanceAlarmToNextOccurrence(alarmId = alarmId)
         }
     }
 
@@ -297,17 +294,6 @@ class AlarmService : Service() {
             alarmId = alarm.alarmId,
             availableSnoozes = alarm.snoozeConfig.snoozeMode.numberOfSnoozes
         )
-    }
-
-    private suspend fun handleAlarmRescheduling() {
-        if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-            disableAlarm(alarmId = alarm.alarmId)
-        } else if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
-            setAlarm(
-                alarmId = alarm.alarmId,
-                isReschedulingMissedAlarm = false
-            )
-        }
     }
 
     private fun adjustAlarmVolume() {

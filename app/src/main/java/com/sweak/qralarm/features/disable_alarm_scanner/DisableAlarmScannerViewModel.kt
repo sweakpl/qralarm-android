@@ -18,8 +18,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
-import com.sweak.qralarm.core.domain.alarm.DisableAlarm
-import com.sweak.qralarm.core.domain.alarm.SetAlarm
+import com.sweak.qralarm.core.domain.alarm.DismissAlarm
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeDetector
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
 import dagger.assisted.Assisted
@@ -45,8 +44,7 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
     @Assisted private val idOfAlarm: Long,
     @Assisted private val isDisablingBeforeAlarmFired: Boolean,
     private val alarmsRepository: AlarmsRepository,
-    private val setAlarm: SetAlarm,
-    private val disableAlarm: DisableAlarm
+    private val dismissAlarm: DismissAlarm
 ) : ViewModel() {
 
     @AssistedFactory
@@ -177,10 +175,10 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
 
                     viewModelScope.launch {
                         if (alarm.assignedCode == null) {
-                            disableAlarm(codeValue)
+                            dismissAlarmWithCode(codeValue)
                         } else {
                             if (codeValue == alarm.assignedCode?.value) {
-                                disableAlarm(codeValue)
+                                dismissAlarmWithCode(codeValue)
                             } else {
                                 showIncorrectCodeWarning()
 
@@ -239,21 +237,16 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
         }
     }
 
-    private suspend fun disableAlarm(scannedCodeText: String) {
-        alarmsRepository.setAlarmSnoozed(
-            alarmId = idOfAlarm,
-            snoozed = false
+    private suspend fun dismissAlarmWithCode(scannedCodeText: String) {
+        dismissAlarm(
+            alarmId = alarm.alarmId,
+            reason = if (isDisablingBeforeAlarmFired) {
+                DismissAlarm.Reason.CodeScannedBeforeAlarmFired
+            } else {
+                DismissAlarm.Reason.CodeScanned
+            }
         )
 
-        if (isDisablingBeforeAlarmFired) {
-            disableAlarm(alarmId = alarm.alarmId)
-            alarmsRepository.setSkipNextAlarm(
-                alarmId = alarm.alarmId,
-                skip = true
-            )
-        }
-
-        handleAlarmRescheduling()
         sendCorrectCodeScannedConfirmation(scannedCodeText)
     }
 
@@ -264,19 +257,6 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
                     if (alarm.isOpenCodeLinkEnabled) scannedCodeText else null
             )
         )
-    }
-
-    private suspend fun handleAlarmRescheduling() {
-        if (::alarm.isInitialized) {
-            if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                disableAlarm(alarmId = alarm.alarmId)
-            } else if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
-                setAlarm(
-                    alarmId = alarm.alarmId,
-                    isReschedulingMissedAlarm = false
-                )
-            }
-        }
     }
 
     private suspend fun showIncorrectCodeWarning() = coroutineScope {

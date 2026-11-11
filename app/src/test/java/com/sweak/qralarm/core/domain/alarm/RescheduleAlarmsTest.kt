@@ -35,27 +35,34 @@ class RescheduleAlarmsTest {
         rescheduleAlarmsIfMissedByFiveMinutes: Boolean
     ) {
         val clock = fixedClock(now)
+        val setAlarm = SetAlarm(
+            alarmScheduler = alarmScheduler,
+            alarmNotifier = alarmNotifier,
+            alarmsRepository = alarmsRepository,
+            clock = clock
+        )
+        val disableAlarm = DisableAlarm(
+            alarmScheduler = alarmScheduler,
+            alarmsRepository = alarmsRepository
+        )
 
         RescheduleAlarms(
             alarmsRepository = alarmsRepository,
             alarmScheduler = alarmScheduler,
             alarmNotifier = alarmNotifier,
             userDataRepository = userDataRepository,
-            setAlarm = SetAlarm(
-                alarmScheduler = alarmScheduler,
-                alarmNotifier = alarmNotifier,
-                alarmsRepository = alarmsRepository,
-                clock = clock
-            ),
-            disableAlarm = DisableAlarm(
-                alarmScheduler = alarmScheduler,
-                alarmsRepository = alarmsRepository
-            ),
+            setAlarm = setAlarm,
+            disableAlarm = disableAlarm,
             snoozeAlarm = SnoozeAlarm(
                 alarmScheduler = alarmScheduler,
                 alarmNotifier = alarmNotifier,
                 alarmsRepository = alarmsRepository,
                 clock = clock
+            ),
+            advanceAlarmToNextOccurrence = AdvanceAlarmToNextOccurrence(
+                alarmsRepository = alarmsRepository,
+                setAlarm = setAlarm,
+                disableAlarm = disableAlarm
             ),
             clock = clock
         )(rescheduleAlarmsIfMissedByFiveMinutes = rescheduleAlarmsIfMissedByFiveMinutes)

@@ -13,6 +13,7 @@ class RescheduleAlarms @Inject constructor(
     private val setAlarm: SetAlarm,
     private val disableAlarm: DisableAlarm,
     private val snoozeAlarm: SnoozeAlarm,
+    private val advanceAlarmToNextOccurrence: AdvanceAlarmToNextOccurrence,
     private val clock: Clock
 ) {
     suspend operator fun invoke(rescheduleAlarmsIfMissedByFiveMinutes: Boolean = true) {
@@ -44,19 +45,11 @@ class RescheduleAlarms @Inject constructor(
                         } else {
                             alarmNotifier.notifyAboutMissedAlarm()
                             userDataRepository.setAlarmMissedDetected(detected = true)
-
-                            if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                                disableAlarm(alarmId = alarm.alarmId)
-                            } else {
-                                alarmsRepository.setAlarmSnoozed(
-                                    alarmId = alarm.alarmId,
-                                    snoozed = false
-                                )
-                                setAlarm(
-                                    alarmId = alarm.alarmId,
-                                    isReschedulingMissedAlarm = false
-                                )
-                            }
+                            alarmsRepository.setAlarmSnoozed(
+                                alarmId = alarm.alarmId,
+                                snoozed = false
+                            )
+                            advanceAlarmToNextOccurrence(alarmId = alarm.alarmId)
                         }
                         // The snoozed alarm is still in the future - reschedule:
                     } else {
@@ -82,15 +75,7 @@ class RescheduleAlarms @Inject constructor(
                         } else {
                             alarmNotifier.notifyAboutMissedAlarm()
                             userDataRepository.setAlarmMissedDetected(detected = true)
-
-                            if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                                disableAlarm(alarmId = alarm.alarmId)
-                            } else {
-                                setAlarm(
-                                    alarmId = alarm.alarmId,
-                                    isReschedulingMissedAlarm = false
-                                )
-                            }
+                            advanceAlarmToNextOccurrence(alarmId = alarm.alarmId)
                         }
                         // The alarm is still in the future - reschedule:
                     } else {

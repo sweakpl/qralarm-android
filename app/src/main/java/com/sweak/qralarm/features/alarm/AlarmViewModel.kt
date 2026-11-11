@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
-import com.sweak.qralarm.core.domain.alarm.DisableAlarm
-import com.sweak.qralarm.core.domain.alarm.SetAlarm
+import com.sweak.qralarm.core.domain.alarm.DismissAlarm
 import com.sweak.qralarm.core.domain.alarm.SnoozeAlarm
 import com.sweak.qralarm.core.domain.alarm.isSnoozeAvailable
 import com.sweak.qralarm.core.ui.compose_util.UiText
@@ -27,8 +26,7 @@ class AlarmViewModel @AssistedInject constructor(
     @Assisted private val isTransient: Boolean,
     private val alarmsRepository: AlarmsRepository,
     private val snoozeAlarm: SnoozeAlarm,
-    private val setAlarm: SetAlarm,
-    private val disableAlarm: DisableAlarm
+    private val dismissAlarm: DismissAlarm
 ) : ViewModel() {
 
     private lateinit var alarm: Alarm
@@ -98,11 +96,10 @@ class AlarmViewModel @AssistedInject constructor(
                 if (!isUsingCode) {
                     viewModelScope.launch {
                         isAlarmBeingStopped = true
-                        alarmsRepository.setAlarmSnoozed(
+                        dismissAlarm(
                             alarmId = idOfAlarm,
-                            snoozed = false
+                            reason = DismissAlarm.Reason.StoppedWithoutCode
                         )
-                        handleAlarmRescheduling()
 
                         backendEventsChannel.send(AlarmScreenBackendEvent.StopAlarm)
                     }
@@ -221,19 +218,6 @@ class AlarmViewModel @AssistedInject constructor(
             }
 
             else -> { /* no-op */
-            }
-        }
-    }
-
-    private suspend fun handleAlarmRescheduling() {
-        if (::alarm.isInitialized) {
-            if (alarm.repeatingMode is Alarm.RepeatingMode.Once) {
-                disableAlarm(alarmId = alarm.alarmId)
-            } else if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
-                setAlarm(
-                    alarmId = alarm.alarmId,
-                    isReschedulingMissedAlarm = false
-                )
             }
         }
     }

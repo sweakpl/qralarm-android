@@ -5,10 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.service.AlarmService
 import com.sweak.qralarm.alarm.service.AlarmService.Companion.EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS
-import com.sweak.qralarm.core.domain.alarm.Alarm
-import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
-import com.sweak.qralarm.core.domain.alarm.DisableAlarm
-import com.sweak.qralarm.core.domain.alarm.SetAlarm
+import com.sweak.qralarm.core.domain.alarm.DismissAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -31,9 +28,7 @@ import kotlin.time.Duration.Companion.seconds
 @HiltViewModel(assistedFactory = EmergencyViewModel.Factory::class)
 class EmergencyViewModel @AssistedInject constructor(
     @Assisted private val idOfAlarmToCancel: Long,
-    private val disableAlarm: DisableAlarm,
-    private val setAlarm: SetAlarm,
-    private val alarmsRepository: AlarmsRepository,
+    private val dismissAlarm: DismissAlarm,
     private val userDataRepository: UserDataRepository,
     private val qrAlarmManager: QRAlarmManager
 ) : ViewModel() {
@@ -42,8 +37,6 @@ class EmergencyViewModel @AssistedInject constructor(
     interface Factory {
         fun create(idOfAlarmToCancel: Long): EmergencyViewModel
     }
-
-    private lateinit var alarm: Alarm
 
     private var _state = MutableStateFlow(EmergencyScreenState())
     val state = _state.asStateFlow()
@@ -55,10 +48,6 @@ class EmergencyViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            alarmsRepository.getAlarm(alarmId = idOfAlarmToCancel)?.let {
-                alarm = it
-            }
-
             _state.update { currentState ->
                 val valueRange = userDataRepository.emergencySliderRange.first()
                 val targetValue = Random.nextInt(range = valueRange)
@@ -111,66 +100,34 @@ class EmergencyViewModel @AssistedInject constructor(
                         indicateAlarmMute()
                     }
 
-                    _state.update { currentState ->
-                        currentState.copy(
-                            emergencyTaskConfig =
-                                if (remainingMatches <= 0) {
-                                    viewModelScope.launch {
-                                        val isAlarmRepeating = ::alarm.isInitialized &&
-                                                alarm.repeatingMode is Alarm.RepeatingMode.Days
-                                        val shouldDisableRepeatingAlarms = userDataRepository
-                                            .isEmergencyDisableRepeatingAlarmsEnabled.first()
+                    if (remainingMatches <= 0) {
+                        _state.update { currentState ->
+                            currentState.copy(
+                                emergencyTaskConfig = currentState.emergencyTaskConfig.copy(
+                                    isCompleted = true,
+                                    remainingMatches = 0
+                                )
+                            )
+                        }
 
-                                        if (idOfAlarmToCancel != 0L) {
-                                            if (!isAlarmRepeating || shouldDisableRepeatingAlarms) {
-                                                disableAlarm(idOfAlarmToCancel)
-                                            } else if (alarm.snoozeConfig.isAlarmSnoozed) {
-                                                alarmsRepository.setAlarmSnoozed(
-                                                    alarmId = idOfAlarmToCancel,
-                                                    snoozed = false
-                                                )
-                                                setAlarm(
-                                                    alarmId = idOfAlarmToCancel,
-                                                    isReschedulingMissedAlarm = false
-                                                )
-                                            }
-                                        }
+                        completeEmergencyTask()
+                    } else {
+                        val valueRange = state.value.emergencyTaskConfig.valueRange
+                        var newTargetValue = Random.nextInt(range = valueRange)
 
-                                        delay(1500.milliseconds)
+                        while (newTargetValue == selectedValue) {
+                            // Ensure new target value is not equal to current value
+                            newTargetValue = Random.nextInt(range = valueRange)
+                        }
 
-                                        if (isAlarmRepeating && shouldDisableRepeatingAlarms) {
-                                            qrAlarmManager.notifyAboutEmergencyDisabledRepeatingAlarm()
-                                        }
-
-                                        backendEventsChannel.send(
-                                            EmergencyScreenBackendEvent.EmergencyTaskCompleted
-                                        )
-                                    }
-
-                                    currentState.emergencyTaskConfig.copy(
-                                        isCompleted = true,
-                                        remainingMatches = 0
-                                    )
-                                } else {
-                                    val currentValue = currentState.emergencyTaskConfig.currentValue
-                                    var targetValue = Random.nextInt(
-                                        range = currentState.emergencyTaskConfig.valueRange
-                                    )
-
-                                    while (targetValue == currentValue) {
-                                        // Ensure new target value is not equal to current value
-                                        targetValue = Random.nextInt(
-                                            range = currentState.emergencyTaskConfig.valueRange
-                                        )
-                                    }
-
-                                    currentState.emergencyTaskConfig.copy(
-                                        targetValue = targetValue,
-                                        currentValue = currentValue,
-                                        remainingMatches = remainingMatches
-                                    )
-                                }
-                        )
+                        _state.update { currentState ->
+                            currentState.copy(
+                                emergencyTaskConfig = currentState.emergencyTaskConfig.copy(
+                                    targetValue = newTargetValue,
+                                    remainingMatches = remainingMatches
+                                )
+                            )
+                        }
                     }
                 }
             }
@@ -178,6 +135,25 @@ class EmergencyViewModel @AssistedInject constructor(
             else -> { /* no-op */
             }
         }
+    }
+
+    private fun completeEmergencyTask() = viewModelScope.launch {
+        val dismissalResult = if (idOfAlarmToCancel == 0L) {
+            null
+        } else {
+            dismissAlarm(
+                alarmId = idOfAlarmToCancel,
+                reason = DismissAlarm.Reason.EmergencyTaskCompleted
+            )
+        }
+
+        delay(1500.milliseconds)
+
+        if (dismissalResult is DismissAlarm.Result.RepeatingAlarmDisabled) {
+            qrAlarmManager.notifyAboutEmergencyDisabledRepeatingAlarm()
+        }
+
+        backendEventsChannel.send(EmergencyScreenBackendEvent.EmergencyTaskCompleted)
     }
 
     private fun indicateAlarmMute() {
