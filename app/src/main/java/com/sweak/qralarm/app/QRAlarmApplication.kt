@@ -5,6 +5,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import androidx.compose.ui.graphics.toArgb
+import androidx.work.Configuration
 import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.ALARM_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.alarm.ALARM_SET_INDICATION_NOTIFICATION_CHANNEL_ID
@@ -14,7 +15,7 @@ import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @HiltAndroidApp
-class QRAlarmApplication : Application() {
+class QRAlarmApplication : Application(), Configuration.Provider {
 
     @Inject
     lateinit var notificationManager: NotificationManager
@@ -28,6 +29,11 @@ class QRAlarmApplication : Application() {
         createNotificationChannels()
         widgetUpdater.startObserving()
     }
+
+    // The androidx-startup WorkManagerInitializer doesn't run in a process started during
+    // Direct Boot, so WorkManager (used by Glance) has to initialize on demand instead.
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder().build()
 
     private fun createNotificationChannels() {
         val alarmNotificationChannel = NotificationChannel(
