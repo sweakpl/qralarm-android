@@ -88,10 +88,6 @@ import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.core.ui.toBidiIsolated
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowBackendEvent
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AddEditAlarmScreenUserEvent
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
 import com.sweak.qralarm.features.add_edit_alarm.components.SimpleSetting
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.components.AlarmDatePickerDialog
@@ -210,9 +206,9 @@ fun AddEditAlarmScreen(
         flow = addEditAlarmViewModel.backendEvents,
         onEvent = { event ->
             when (event) {
-                is AddEditAlarmFlowBackendEvent.AlarmChangesDiscarded -> onCancelClicked()
-                is AddEditAlarmFlowBackendEvent.AlarmSaved -> onAlarmSaved()
-                is AddEditAlarmFlowBackendEvent.CustomRingtoneRetrievalFinished -> {
+                is AddEditAlarmScreenBackendEvent.AlarmChangesDiscarded -> onCancelClicked()
+                is AddEditAlarmScreenBackendEvent.AlarmSaved -> onAlarmSaved()
+                is AddEditAlarmScreenBackendEvent.CustomRingtoneRetrievalFinished -> {
                     Toast.makeText(
                         context,
                         if (event.isSuccess) R.string.ringtone_successfully_uploaded
@@ -221,7 +217,7 @@ fun AddEditAlarmScreen(
                     ).show()
                 }
 
-                is AddEditAlarmFlowBackendEvent.CustomCodeAssignmentFinished -> {
+                is AddEditAlarmScreenBackendEvent.CustomCodeAssignmentFinished -> {
                     Toast.makeText(
                         context,
                         R.string.code_successfully_assigned,
@@ -229,8 +225,8 @@ fun AddEditAlarmScreen(
                     ).show()
                 }
 
-                is AddEditAlarmFlowBackendEvent.AlarmDeleted -> onAlarmDeleted()
-                is AddEditAlarmFlowBackendEvent.AlarmRingtonePreviewPlaybackError -> {
+                is AddEditAlarmScreenBackendEvent.AlarmDeleted -> onAlarmDeleted()
+                is AddEditAlarmScreenBackendEvent.AlarmRingtonePreviewPlaybackError -> {
                     Toast.makeText(
                         context,
                         R.string.there_was_an_issue_playing_ringtone,
@@ -248,7 +244,7 @@ fun AddEditAlarmScreen(
             if (cameraPermissionState.status is PermissionStatus.Granted) {
                 onScanCustomCodeClicked()
             }
-        } else if (addEditAlarmScreenState.permissionsDialogState.isVisible) {
+        } else if (addEditAlarmScreenState.ui.permissionsDialogState.isVisible) {
             addEditAlarmViewModel.onEvent(
                 AddEditAlarmScreenUserEvent.TrySaveAlarm(
                     cameraPermissionStatus = cameraPermissionState.status.isGranted,
@@ -417,7 +413,7 @@ fun AddEditAlarmScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AddEditAlarmScreenContent(
-    state: AddEditAlarmFlowState,
+    state: AddEditAlarmState,
     onEvent: (AddEditAlarmScreenUserEvent) -> Unit
 ) {
     Scaffold(
@@ -459,7 +455,7 @@ private fun AddEditAlarmScreenContent(
         }
     ) { paddingValues ->
         AnimatedContent(
-            targetState = state.isLoading,
+            targetState = state.ui.isLoading,
             contentAlignment = Alignment.Center,
             label = "addEditAlarmScreenLoadingAnimation",
             modifier = Modifier
@@ -536,7 +532,7 @@ private fun AddEditAlarmScreenContent(
                     }
 
                     AlarmScheduleCard(
-                        daysHoursAndMinutesUntilAlarm = state.daysHoursAndMinutesUntilAlarm,
+                        daysHoursAndMinutesUntilAlarm = state.ui.daysHoursAndMinutesUntilAlarm,
                         onlyOnceAlarmDateInMillis = state.draft.onlyOnceAlarmDateInMillis,
                         isOnlyOnce =
                             state.draft.alarmRepeatingScheduleWrapper.alarmRepeatingMode == ONLY_ONCE,
@@ -1059,7 +1055,7 @@ private fun AddEditAlarmScreenContent(
                         )
                     }
 
-                    if (state.isEditingExistingAlarm) {
+                    if (state.ui.isEditingExistingAlarm) {
                         OutlinedButton(
                             onClick = {
                                 onEvent(
@@ -1107,7 +1103,7 @@ private fun AddEditAlarmScreenContent(
         }
     }
 
-    if (state.isDiscardAlarmChangesDialogVisible) {
+    if (state.ui.isDiscardAlarmChangesDialogVisible) {
         QRAlarmDialog(
             title = stringResource(R.string.discard_changes),
             message = stringResource(R.string.discard_changes_description),
@@ -1129,7 +1125,7 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isDialerPickerDialogVisible &&
+    if (state.ui.isDialerPickerDialogVisible &&
         state.draft.alarmHourOfDay != null &&
         state.draft.alarmMinute != null
     ) {
@@ -1151,7 +1147,7 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isDatePickerDialogVisible &&
+    if (state.ui.isDatePickerDialogVisible &&
         state.draft.alarmHourOfDay != null &&
         state.draft.alarmMinute != null
     ) {
@@ -1172,7 +1168,7 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isChooseAlarmRepeatingScheduleDialogVisible) {
+    if (state.ui.isChooseAlarmRepeatingScheduleDialogVisible) {
         ChooseAlarmRepeatingScheduleBottomSheet(
             initialAlarmRepeatingScheduleWrapper = state.draft.alarmRepeatingScheduleWrapper,
             onDismissRequest = { newAlarmRepeatingSchedule ->
@@ -1185,11 +1181,11 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isChooseAlarmSnoozeConfigurationDialogVisible) {
+    if (state.ui.isChooseAlarmSnoozeConfigurationDialogVisible) {
         ChooseSnoozeConfigurationBottomSheet(
             initialSnoozeNumberToDurationPair = state.draft.snoozeNumberToDurationPair,
-            availableSnoozeNumbers = state.availableSnoozeNumbers,
-            availableSnoozeDurationsInMinutes = state.availableSnoozeDurationsInMinutes,
+            availableSnoozeNumbers = state.ui.availableSnoozeNumbers,
+            availableSnoozeDurationsInMinutes = state.ui.availableSnoozeDurationsInMinutes,
             onDismissRequest = { newSnoozeNumberToDurationPair ->
                 onEvent(
                     AddEditAlarmScreenUserEvent.AlarmSnoozeConfigurationSelected(
@@ -1200,7 +1196,7 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isChooseAlarmRingtoneConfigDialogVisible) {
+    if (state.ui.isChooseAlarmRingtoneConfigDialogVisible) {
         ChooseAlarmRingtoneConfigDialogBottomSheet(
             initialRingtone = state.draft.ringtone,
             availableRingtonesWithPlaybackState =
@@ -1229,7 +1225,7 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isCameraPermissionDeniedDialogVisible) {
+    if (state.ui.isCameraPermissionDeniedDialogVisible) {
         QRAlarmDialog(
             title = stringResource(R.string.camera_permission_required),
             message = stringResource(R.string.camera_permission_required_description),
@@ -1248,7 +1244,7 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isNotificationsPermissionDeniedDialogVisible) {
+    if (state.ui.isNotificationsPermissionDeniedDialogVisible) {
         QRAlarmDialog(
             title = stringResource(R.string.notifications_permission_required),
             message = stringResource(R.string.notifications_permission_required_description),
@@ -1267,7 +1263,7 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isAssignCodeDialogVisible) {
+    if (state.ui.isAssignCodeDialogVisible) {
         AssignCodeBottomSheet(
             onScanCodeClicked = { onEvent(AddEditAlarmScreenUserEvent.TryScanSpecificCode) },
             availableCodes = state.previouslySavedCodes,
@@ -1280,9 +1276,9 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.editCodeNameDialogState.isVisible) {
+    if (state.ui.editCodeNameDialogState.isVisible) {
         EditCodeNameBottomSheet(
-            initialCodeName = state.editCodeNameDialogState.initialCodeName,
+            initialCodeName = state.ui.editCodeNameDialogState.initialCodeName,
             onConfirmClicked = { newName ->
                 onEvent(AddEditAlarmScreenUserEvent.CodeNameEdited(newName = newName))
             },
@@ -1292,22 +1288,23 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.permissionsDialogState.isVisible) {
+    if (state.ui.permissionsDialogState.isVisible) {
         MissingPermissionsBottomSheet(
-            cameraPermissionState = state.permissionsDialogState.cameraPermissionState,
+            cameraPermissionState = state.ui.permissionsDialogState.cameraPermissionState,
             onCameraPermissionClick = {
                 onEvent(AddEditAlarmScreenUserEvent.RequestCameraPermission)
             },
-            alarmsPermissionState = state.permissionsDialogState.alarmsPermissionState,
+            alarmsPermissionState = state.ui.permissionsDialogState.alarmsPermissionState,
             onAlarmsPermissionClick = {
                 onEvent(AddEditAlarmScreenUserEvent.RequestAlarmsPermission)
             },
-            notificationsPermissionState = state.permissionsDialogState.notificationsPermissionState,
+            notificationsPermissionState =
+                state.ui.permissionsDialogState.notificationsPermissionState,
             onNotificationsPermissionClick = {
                 onEvent(AddEditAlarmScreenUserEvent.RequestNotificationsPermission)
             },
             fullScreenIntentPermissionState =
-                state.permissionsDialogState.fullScreenIntentPermissionState,
+                state.ui.permissionsDialogState.fullScreenIntentPermissionState,
             onFullScreenIntentPermissionClick = {
                 onEvent(AddEditAlarmScreenUserEvent.RequestFullScreenIntentPermission)
             },
@@ -1316,7 +1313,7 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isDeleteAlarmDialogVisible) {
+    if (state.ui.isDeleteAlarmDialogVisible) {
         QRAlarmDialog(
             title = stringResource(R.string.delete_this_alarm),
             onDismissRequest = {
@@ -1331,7 +1328,7 @@ private fun AddEditAlarmScreenContent(
         )
     }
 
-    if (state.isDownloadCodeDialogVisible) {
+    if (state.ui.isDownloadCodeDialogVisible) {
         DownloadCodeBottomSheet(
             onDownloadCodeClicked = {
                 onEvent(AddEditAlarmScreenUserEvent.DownloadCode)
@@ -1421,9 +1418,9 @@ fun getCancelLockDurationAbbreviatedString(durationInMinutes: Int): String {
 private fun AddEditAlarmScreenContentPreview() {
     QRAlarmTheme {
         AddEditAlarmScreenContent(
-            state = AddEditAlarmFlowState(
-                isLoading = false,
-                draft = AlarmDraft(alarmHourOfDay = 8, alarmMinute = 0)
+            state = AddEditAlarmState(
+                draft = AlarmDraft(alarmHourOfDay = 8, alarmMinute = 0),
+                ui = AddEditAlarmUiState(isLoading = false)
             ),
             onEvent = { }
         )

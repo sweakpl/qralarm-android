@@ -10,7 +10,7 @@ class FakeAlarmDraftHandle(initialDraft: AlarmDraft) : AlarmDraftHandle {
     override val draft = MutableStateFlow(initialDraft)
     override val isLoading = MutableStateFlow(false)
     override val previouslySavedCodes = MutableStateFlow(emptyList<Code>())
-    override val hasUnsavedChanges = false
+    override var hasUnsavedChanges = false
     override val isRestoredFromSavedState = false
 
     override fun updateDraft(

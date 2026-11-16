@@ -3,7 +3,6 @@ package com.sweak.qralarm.features.add_edit_alarm.destinations.advanced
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
 import com.sweak.qralarm.features.add_edit_alarm.fake.FakeAlarmDraftHandle
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmDraft
 import com.sweak.qralarm.fixture.MainDispatcherRule

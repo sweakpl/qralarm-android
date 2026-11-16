@@ -31,8 +31,8 @@ import com.sweak.qralarm.core.navigation.routes.SpecialAlarmSettingsRoute
 import com.sweak.qralarm.core.navigation.routes.ThemeRoute
 import com.sweak.qralarm.core.navigation.toEntries
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowViewModel
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.AddEditAlarmScreen
+import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.AdvancedAlarmSettingsScreen
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.AdvancedAlarmSettingsViewModel
 import com.sweak.qralarm.features.add_edit_alarm.destinations.alarms_chain.AlarmsChainSettingsScreen
