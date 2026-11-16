@@ -34,9 +34,7 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 import com.sweak.qralarm.core.ui.components.ToggleSetting
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AdvancedAlarmSettingsScreenUserEvent
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getCancelLockDurationAbbreviatedString
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.getSecondsDurationString
@@ -46,17 +44,17 @@ import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.component
 
 @Composable
 fun AdvancedAlarmSettingsScreen(
-    addEditAlarmViewModel: AddEditAlarmViewModel,
+    advancedAlarmSettingsViewModel: AdvancedAlarmSettingsViewModel,
     onCancelClicked: () -> Unit
 ) {
-    val addEditAlarmScreenState by addEditAlarmViewModel.state.collectAsStateWithLifecycle()
+    val state by advancedAlarmSettingsViewModel.state.collectAsStateWithLifecycle()
 
     AdvancedAlarmSettingsScreenContent(
-        state = addEditAlarmScreenState,
+        state = state,
         onEvent = { event ->
             when (event) {
                 is AdvancedAlarmSettingsScreenUserEvent.OnCancelClicked -> onCancelClicked()
-                else -> addEditAlarmViewModel.onEvent(event)
+                else -> advancedAlarmSettingsViewModel.onEvent(event)
             }
         }
     )
@@ -65,7 +63,7 @@ fun AdvancedAlarmSettingsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AdvancedAlarmSettingsScreenContent(
-    state: AddEditAlarmFlowState,
+    state: AdvancedAlarmSettingsState,
     onEvent: (AdvancedAlarmSettingsScreenUserEvent) -> Unit
 ) {
     Scaffold(
@@ -214,10 +212,11 @@ private fun AdvancedAlarmSettingsScreenContent(
         }
     }
 
-    if (state.isChooseGentleWakeUpDurationDialogVisible) {
+    if (state.ui.isChooseGentleWakeUpDurationDialogVisible) {
         ChooseGentleWakeUpDurationBottomSheet(
             initialGentleWakeUpDurationInSeconds = state.draft.gentleWakeupDurationInSeconds,
-            availableGentleWakeUpDurationsInSeconds = state.availableGentleWakeUpDurationsInSeconds,
+            availableGentleWakeUpDurationsInSeconds =
+                state.ui.availableGentleWakeUpDurationsInSeconds,
             onDismissRequest = { newGentleWakeUpDurationInSeconds ->
                 onEvent(
                     AdvancedAlarmSettingsScreenUserEvent.GentleWakeUpDurationSelected(
@@ -228,11 +227,11 @@ private fun AdvancedAlarmSettingsScreenContent(
         )
     }
 
-    if (state.isChooseTemporaryMuteDurationDialogVisible) {
+    if (state.ui.isChooseTemporaryMuteDurationDialogVisible) {
         ChooseTemporaryMuteDurationBottomSheet(
             initialTemporaryMuteDurationInSeconds = state.draft.temporaryMuteDurationInSeconds,
             availableTemporaryMuteDurationsInSeconds =
-                state.availableTemporaryMuteDurationsInSeconds,
+                state.ui.availableTemporaryMuteDurationsInSeconds,
             onDismissRequest = { newTemporaryMuteDurationInSeconds ->
                 onEvent(
                     AdvancedAlarmSettingsScreenUserEvent.TemporaryMuteDurationSelected(
@@ -243,10 +242,10 @@ private fun AdvancedAlarmSettingsScreenContent(
         )
     }
 
-    if (state.isChooseCancelLockDurationDialogVisible) {
+    if (state.ui.isChooseCancelLockDurationDialogVisible) {
         ChooseCancelLockDurationBottomSheet(
             initialCancelLockDurationInMinutes = state.draft.cancelLockDurationInMinutes,
-            availableCancelLockDurationsInMinutes = state.availableCancelLockDurationsInMinutes,
+            availableCancelLockDurationsInMinutes = state.ui.availableCancelLockDurationsInMinutes,
             onDismissRequest = { newCancelLockDurationInMinutes ->
                 onEvent(
                     AdvancedAlarmSettingsScreenUserEvent.CancelLockDurationSelected(
@@ -263,7 +262,7 @@ private fun AdvancedAlarmSettingsScreenContent(
 private fun AdvancedAlarmSettingsScreenContentPreview() {
     QRAlarmTheme {
         AdvancedAlarmSettingsScreenContent(
-            state = AddEditAlarmFlowState(),
+            state = AdvancedAlarmSettingsState(),
             onEvent = {}
         )
     }

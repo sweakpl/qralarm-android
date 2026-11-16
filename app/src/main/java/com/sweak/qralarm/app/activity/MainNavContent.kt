@@ -30,9 +30,11 @@ import com.sweak.qralarm.core.navigation.routes.QRAlarmProRoute
 import com.sweak.qralarm.core.navigation.routes.SpecialAlarmSettingsRoute
 import com.sweak.qralarm.core.navigation.routes.ThemeRoute
 import com.sweak.qralarm.core.navigation.toEntries
+import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowViewModel
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
 import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.AddEditAlarmScreen
 import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.AdvancedAlarmSettingsScreen
+import com.sweak.qralarm.features.add_edit_alarm.destinations.advanced.AdvancedAlarmSettingsViewModel
 import com.sweak.qralarm.features.add_edit_alarm.destinations.alarms_chain.AlarmsChainSettingsScreen
 import com.sweak.qralarm.features.add_edit_alarm.destinations.special.SpecialAlarmSettingsScreen
 import com.sweak.qralarm.features.backup.BackupScreen
@@ -60,10 +62,7 @@ fun MainNavContent(
         entry<AddEditAlarmRoute>(
             clazzContentKey = { ADD_EDIT_ALARM_CONTENT_KEY }
         ) { route ->
-            val addEditAlarmViewModel =
-                hiltViewModel<AddEditAlarmViewModel, AddEditAlarmViewModel.Factory> {
-                    it.create(route.idOfAlarmToEdit)
-                }
+            val addEditAlarmViewModel = addEditAlarmViewModel(route.idOfAlarmToEdit)
 
             AddEditAlarmScreen(
                 addEditAlarmViewModel = addEditAlarmViewModel,
@@ -88,13 +87,11 @@ fun MainNavContent(
         entry<AdvancedAlarmSettingsRoute>(
             metadata = SharedViewModelStoreNavEntryDecorator.parent(ADD_EDIT_ALARM_CONTENT_KEY)
         ) { route ->
-            val addEditAlarmViewModel =
-                hiltViewModel<AddEditAlarmViewModel, AddEditAlarmViewModel.Factory> {
-                    it.create(route.idOfAlarmToEdit)
-                }
+            val advancedAlarmSettingsViewModel =
+                advancedAlarmSettingsViewModel(route.idOfAlarmToEdit)
 
             AdvancedAlarmSettingsScreen(
-                addEditAlarmViewModel = addEditAlarmViewModel,
+                advancedAlarmSettingsViewModel = advancedAlarmSettingsViewModel,
                 onCancelClicked = { navigator.goBack() }
             )
         }
@@ -102,10 +99,7 @@ fun MainNavContent(
         entry<AlarmsChainSettingsRoute>(
             metadata = SharedViewModelStoreNavEntryDecorator.parent(ADD_EDIT_ALARM_CONTENT_KEY)
         ) { route ->
-            val addEditAlarmViewModel =
-                hiltViewModel<AddEditAlarmViewModel, AddEditAlarmViewModel.Factory> {
-                    it.create(route.idOfAlarmToEdit)
-                }
+            val addEditAlarmViewModel = addEditAlarmViewModel(route.idOfAlarmToEdit)
 
             AlarmsChainSettingsScreen(
                 addEditAlarmViewModel = addEditAlarmViewModel,
@@ -249,4 +243,31 @@ fun MainNavContent(
         popTransitionSpec = { EnterTransition.None togetherWith fadeOut() },
         predictivePopTransitionSpec = { EnterTransition.None togetherWith fadeOut() }
     )
+}
+
+@Composable
+private fun addEditAlarmFlowViewModel(idOfAlarmToEdit: Long): AddEditAlarmFlowViewModel =
+    hiltViewModel<AddEditAlarmFlowViewModel, AddEditAlarmFlowViewModel.Factory> {
+        it.create(idOfAlarmToEdit)
+    }
+
+@Composable
+private fun addEditAlarmViewModel(idOfAlarmToEdit: Long): AddEditAlarmViewModel {
+    val addEditAlarmFlowViewModel = addEditAlarmFlowViewModel(idOfAlarmToEdit)
+
+    return hiltViewModel<AddEditAlarmViewModel, AddEditAlarmViewModel.Factory> {
+        it.create(
+            idOfAlarmToEdit = idOfAlarmToEdit,
+            alarmDraftHandle = addEditAlarmFlowViewModel
+        )
+    }
+}
+
+@Composable
+private fun advancedAlarmSettingsViewModel(idOfAlarmToEdit: Long): AdvancedAlarmSettingsViewModel {
+    val addEditAlarmFlowViewModel = addEditAlarmFlowViewModel(idOfAlarmToEdit)
+
+    return hiltViewModel<AdvancedAlarmSettingsViewModel, AdvancedAlarmSettingsViewModel.Factory> {
+        it.create(alarmDraftHandle = addEditAlarmFlowViewModel)
+    }
 }
