@@ -27,23 +27,22 @@ import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowState
 import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmFlowUserEvent.AlarmsChainSettingsScreenUserEvent
-import com.sweak.qralarm.features.add_edit_alarm.AddEditAlarmViewModel
+import com.sweak.qralarm.features.add_edit_alarm.AlarmDraftHandle
 import com.sweak.qralarm.features.add_edit_alarm.destinations.alarms_chain.components.AddNewChainedAlarmCard
 import com.sweak.qralarm.features.add_edit_alarm.destinations.alarms_chain.components.OriginalAlarmCard
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmDraft
 
 @Composable
 fun AlarmsChainSettingsScreen(
-    addEditAlarmViewModel: AddEditAlarmViewModel,
+    alarmDraftHandle: AlarmDraftHandle,
     onCancelClicked: () -> Unit,
     onRedirectToQRAlarmPro: () -> Unit
 ) {
-    val addEditAlarmScreenState by addEditAlarmViewModel.state.collectAsStateWithLifecycle()
+    val draft by alarmDraftHandle.draft.collectAsStateWithLifecycle()
 
     AlarmsChainSettingsScreenContent(
-        state = addEditAlarmScreenState,
+        draft = draft,
         onEvent = { event ->
             when (event) {
                 is AlarmsChainSettingsScreenUserEvent.OnCancelClicked -> {
@@ -60,8 +59,8 @@ fun AlarmsChainSettingsScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlarmsChainSettingsScreenContent(
-    state: AddEditAlarmFlowState,
+private fun AlarmsChainSettingsScreenContent(
+    draft: AlarmDraft,
     onEvent: (AlarmsChainSettingsScreenUserEvent) -> Unit
 ) {
     Scaffold(
@@ -118,10 +117,10 @@ fun AlarmsChainSettingsScreenContent(
                 }
 
                 item(key = "original_alarm_card") {
-                    if (state.draft.alarmHourOfDay != null && state.draft.alarmMinute != null) {
+                    if (draft.alarmHourOfDay != null && draft.alarmMinute != null) {
                         OriginalAlarmCard(
-                            alarmHourOfDay = state.draft.alarmHourOfDay,
-                            alarmMinute = state.draft.alarmMinute,
+                            alarmHourOfDay = draft.alarmHourOfDay,
+                            alarmMinute = draft.alarmMinute,
                             modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
                         )
                     }
@@ -150,10 +149,7 @@ fun AlarmsChainSettingsScreenContent(
 private fun AlarmsChainSettingsScreenContentPreview() {
     QRAlarmTheme {
         AlarmsChainSettingsScreenContent(
-            state = AddEditAlarmFlowState(
-                isLoading = false,
-                draft = AlarmDraft(alarmHourOfDay = 7, alarmMinute = 30)
-            ),
+            draft = AlarmDraft(alarmHourOfDay = 7, alarmMinute = 30),
             onEvent = {}
         )
     }

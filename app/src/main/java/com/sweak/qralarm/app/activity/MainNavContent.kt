@@ -99,10 +99,10 @@ fun MainNavContent(
         entry<AlarmsChainSettingsRoute>(
             metadata = SharedViewModelStoreNavEntryDecorator.parent(ADD_EDIT_ALARM_CONTENT_KEY)
         ) { route ->
-            val addEditAlarmViewModel = addEditAlarmViewModel(route.idOfAlarmToEdit)
+            val addEditAlarmFlowViewModel = addEditAlarmFlowViewModel(route.idOfAlarmToEdit)
 
             AlarmsChainSettingsScreen(
-                addEditAlarmViewModel = addEditAlarmViewModel,
+                alarmDraftHandle = addEditAlarmFlowViewModel,
                 onCancelClicked = { navigator.goBack() },
                 onRedirectToQRAlarmPro = { navigator.navigate(QRAlarmProRoute) }
             )

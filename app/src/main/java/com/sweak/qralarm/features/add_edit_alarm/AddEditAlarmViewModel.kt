@@ -152,7 +152,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         }
     }
 
-    fun onEvent(event: AddEditAlarmFlowUserEvent) {
+    fun onEvent(event: AddEditAlarmScreenUserEvent) {
         when (event) {
             is AddEditAlarmScreenUserEvent.OnCancelClicked -> {
                 if (_state.value.isEditingExistingAlarm && alarmDraftHandle.hasUnsavedChanges) {
