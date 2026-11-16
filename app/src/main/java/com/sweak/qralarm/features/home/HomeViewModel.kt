@@ -16,6 +16,8 @@ import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
 import com.sweak.qralarm.core.ui.convertAlarmRepeatingMode
 import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
+import com.sweak.qralarm.core.ui.model.PermissionsDialogState
+import com.sweak.qralarm.core.ui.permissions.RequiredPermissionsGate
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -39,7 +41,8 @@ class HomeViewModel @Inject constructor(
     private val disableAlarm: DisableAlarm,
     private val canManipulateAlarm: CanManipulateAlarm,
     private val deleteAlarm: DeleteAlarm,
-    private val copyAlarm: CopyAlarm
+    private val copyAlarm: CopyAlarm,
+    private val requiredPermissionsGate: RequiredPermissionsGate
 ) : ViewModel() {
 
     private var _state = MutableStateFlow(HomeScreenState())
@@ -210,108 +213,47 @@ class HomeViewModel @Inject constructor(
                         currentlyToggledAlarmEnabledState == null
                     ) {
                         _state.update { currentState ->
-                            currentState.copy(
-                                permissionsDialogState =
-                                    currentState.permissionsDialogState.copy(isVisible = false)
-                            )
+                            currentState.copy(permissionsDialogState = PermissionsDialogState())
                         }
 
                         return
                     }
                 }
 
-                _state.update { currentState ->
-                    if (currentState.permissionsDialogState.isVisible) {
-                        with(currentState.permissionsDialogState) {
-                            if ((cameraPermissionState == null || cameraPermissionState) &&
-                                (alarmsPermissionState == null || alarmsPermissionState) &&
-                                (notificationsPermissionState == null || notificationsPermissionState) &&
-                                (fullScreenIntentPermissionState == null || fullScreenIntentPermissionState)
-                            ) {
-                                currentlyToggledAlarmId?.let { alarmId ->
-                                    currentlyToggledAlarmEnabledState?.let { enabled ->
-                                        toggleAlarm(
-                                            alarmId = alarmId,
-                                            enabled = enabled
-                                        )
-                                    }
-                                }
+                val isCodeEnabled = state.value.nonActiveAlarmWrappers
+                    .find { it.alarmId == event.alarmId }?.isCodeEnabled == true
 
-                                return@update currentState.copy(
-                                    permissionsDialogState =
-                                        currentState.permissionsDialogState.copy(isVisible = false)
-                                )
+                val decision = requiredPermissionsGate.evaluate(
+                    dialogState = state.value.permissionsDialogState,
+                    isCameraPermissionGranted = event.cameraPermissionStatus,
+                    isNotificationsPermissionGranted = event.notificationsPermissionStatus,
+                    isCameraPermissionRequired = isCodeEnabled
+                )
+
+                when (decision) {
+                    is RequiredPermissionsGate.Decision.Proceed -> {
+                        currentlyToggledAlarmId?.let { alarmId ->
+                            currentlyToggledAlarmEnabledState?.let { enabled ->
+                                toggleAlarm(alarmId = alarmId, enabled = enabled)
                             }
                         }
 
-                        return@update currentState.copy(
-                            permissionsDialogState =
-                                currentState.permissionsDialogState.copy(
-                                    cameraPermissionState =
-                                        currentState.permissionsDialogState.cameraPermissionState?.let {
-                                            event.cameraPermissionStatus
-                                        },
-                                    notificationsPermissionState =
-                                        currentState.permissionsDialogState.notificationsPermissionState?.let {
-                                            event.notificationsPermissionStatus
-                                        },
-                                    alarmsPermissionState =
-                                        currentState.permissionsDialogState.alarmsPermissionState?.let {
-                                            qrAlarmManager.canScheduleExactAlarms()
-                                        },
-                                    fullScreenIntentPermissionState =
-                                        currentState.permissionsDialogState.fullScreenIntentPermissionState?.let {
-                                            qrAlarmManager.canUseFullScreenIntent()
-                                        }
-                                )
-                        )
-                    }
-
-                    val isCodeEnabled = currentState.nonActiveAlarmWrappers
-                        .find { it.alarmId == event.alarmId }?.isCodeEnabled
-
-                    if ((!event.cameraPermissionStatus && isCodeEnabled == true) ||
-                        !event.notificationsPermissionStatus ||
-                        !qrAlarmManager.canScheduleExactAlarms() ||
-                        !qrAlarmManager.canUseFullScreenIntent()
-                    ) {
-                        return@update currentState.copy(
-                            permissionsDialogState =
-                                HomeScreenState.PermissionsDialogState(
-                                    isVisible = true,
-                                    cameraPermissionState =
-                                        if (!event.cameraPermissionStatus && isCodeEnabled == true)
-                                            false else null,
-                                    notificationsPermissionState =
-                                        if (!event.notificationsPermissionStatus) false else null,
-                                    alarmsPermissionState =
-                                        if (!qrAlarmManager.canScheduleExactAlarms()) false else null,
-                                    fullScreenIntentPermissionState =
-                                        if (!qrAlarmManager.canUseFullScreenIntent()) false else null
-                                )
-                        )
-                    }
-
-                    currentlyToggledAlarmId?.let { alarmId ->
-                        currentlyToggledAlarmEnabledState?.let { enabled ->
-                            toggleAlarm(
-                                alarmId = alarmId,
-                                enabled = enabled
-                            )
+                        _state.update { currentState ->
+                            currentState.copy(permissionsDialogState = PermissionsDialogState())
                         }
                     }
 
-                    return@update currentState
+                    is RequiredPermissionsGate.Decision.ShowDialog -> {
+                        _state.update { currentState ->
+                            currentState.copy(permissionsDialogState = decision.dialogState)
+                        }
+                    }
                 }
             }
 
             is HomeScreenUserEvent.HideMissingPermissionsDialog -> {
                 _state.update { currentState ->
-                    currentState.copy(
-                        permissionsDialogState = HomeScreenState.PermissionsDialogState(
-                            isVisible = false
-                        )
-                    )
+                    currentState.copy(permissionsDialogState = PermissionsDialogState())
                 }
             }
 

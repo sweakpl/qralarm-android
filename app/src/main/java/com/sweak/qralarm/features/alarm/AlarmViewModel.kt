@@ -9,6 +9,7 @@ import com.sweak.qralarm.core.domain.alarm.DismissAlarm
 import com.sweak.qralarm.core.domain.alarm.SnoozeAlarm
 import com.sweak.qralarm.core.domain.alarm.isSnoozeAvailable
 import com.sweak.qralarm.core.ui.compose_util.UiText
+import com.sweak.qralarm.core.ui.model.PermissionsDialogState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -116,10 +117,7 @@ class AlarmViewModel @AssistedInject constructor(
                             }
 
                             return@update currentState.copy(
-                                permissionsDialogState =
-                                    AlarmScreenState.PermissionsDialogState(
-                                        isVisible = false
-                                    )
+                                permissionsDialogState = PermissionsDialogState(isVisible = false)
                             )
                         } else {
                             return@update currentState.copy(
@@ -146,7 +144,7 @@ class AlarmViewModel @AssistedInject constructor(
 
                         return@update currentState.copy(
                             permissionsDialogState =
-                                AlarmScreenState.PermissionsDialogState(
+                                PermissionsDialogState(
                                     isVisible = true,
                                     cameraPermissionState = false
                                 )
@@ -196,9 +194,7 @@ class AlarmViewModel @AssistedInject constructor(
             is AlarmScreenUserEvent.HideMissingPermissionsDialog -> {
                 _state.update { currentState ->
                     currentState.copy(
-                        permissionsDialogState = AlarmScreenState.PermissionsDialogState(
-                            isVisible = false
-                        )
+                        permissionsDialogState = PermissionsDialogState(isVisible = false)
                     )
                 }
             }

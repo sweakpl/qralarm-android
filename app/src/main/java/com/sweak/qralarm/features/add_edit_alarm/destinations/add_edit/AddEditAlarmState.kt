@@ -4,6 +4,7 @@ import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_DURATIONS_IN_MINUTES
 import com.sweak.qralarm.core.domain.alarm.AVAILABLE_SNOOZE_NUMBERS
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
 import com.sweak.qralarm.core.ui.model.Code
+import com.sweak.qralarm.core.ui.model.PermissionsDialogState
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmDraft
 
 data class AddEditAlarmState(
@@ -37,14 +38,6 @@ data class AddEditAlarmUiState(
     val isDiscardAlarmChangesDialogVisible: Boolean = false,
     val isDownloadCodeDialogVisible: Boolean = false
 ) {
-    data class PermissionsDialogState(
-        val isVisible: Boolean = false,
-        val cameraPermissionState: Boolean? = null,
-        val notificationsPermissionState: Boolean? = null,
-        val alarmsPermissionState: Boolean? = null,
-        val fullScreenIntentPermissionState: Boolean? = null
-    )
-
     data class EditCodeNameDialogState(
         val isVisible: Boolean = false,
         val initialCodeName: String? = null

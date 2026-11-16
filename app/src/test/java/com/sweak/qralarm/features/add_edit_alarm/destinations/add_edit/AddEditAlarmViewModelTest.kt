@@ -71,7 +71,8 @@ class AddEditAlarmViewModelTest {
             deleteAlarm = mockk(),
             setAlarm = mockk(),
             alarmScheduleCalculator = alarmScheduleCalculator,
-            alarmDraftMapper = AlarmDraftMapper(alarmScheduleCalculator, clock)
+            alarmDraftMapper = AlarmDraftMapper(alarmScheduleCalculator, clock),
+            requiredPermissionsGate = mockk()
         )
     }
 

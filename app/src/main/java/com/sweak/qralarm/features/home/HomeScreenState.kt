@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.home
 
 import androidx.compose.material3.SnackbarHostState
+import com.sweak.qralarm.core.ui.model.PermissionsDialogState
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 
 data class HomeScreenState(
@@ -16,14 +17,6 @@ data class HomeScreenState(
     val upcomingAlarmMessage: UpcomingAlarmMessage? = null,
     val snackbarHostState: SnackbarHostState = SnackbarHostState()
 ) {
-    data class PermissionsDialogState(
-        val isVisible: Boolean = false,
-        val cameraPermissionState: Boolean? = null,
-        val notificationsPermissionState: Boolean? = null,
-        val alarmsPermissionState: Boolean? = null,
-        val fullScreenIntentPermissionState: Boolean? = null
-    )
-
     data class DeleteAlarmDialogState(
         val isVisible: Boolean = false,
         val alarmId: Long? = null

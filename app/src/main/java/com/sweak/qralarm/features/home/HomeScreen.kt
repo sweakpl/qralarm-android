@@ -1,8 +1,5 @@
 package com.sweak.qralarm.features.home
 
-import android.content.Intent
-import android.os.Build
-import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.BorderStroke
@@ -48,15 +45,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.PermissionStatus
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
@@ -69,11 +59,11 @@ import com.sweak.qralarm.core.ui.components.MissingPermissionsBottomSheet
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmInString
+import com.sweak.qralarm.core.ui.compose_util.rememberAlarmPermissionsRequester
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.features.home.components.AlarmCard
 import com.sweak.qralarm.features.home.components.model.AlarmWrapper
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
     onAddNewAlarm: () -> Unit,
@@ -86,19 +76,18 @@ fun HomeScreen(
     val homeViewModel = hiltViewModel<HomeViewModel>()
     val homeScreenState by homeViewModel.state.collectAsStateWithLifecycle()
 
-    val cameraPermissionState = rememberPermissionState(
-        permission = android.Manifest.permission.CAMERA
-    )
-    val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS)
-    } else {
-        object : PermissionState {
-            override val permission: String get() = "android.permission.POST_NOTIFICATIONS"
-            override val status: PermissionStatus get() = PermissionStatus.Granted
-            override fun launchPermissionRequest() { /* no-op */
-            }
+    val permissionsRequester = rememberAlarmPermissionsRequester(
+        onCameraRationaleRequired = {
+            homeViewModel.onEvent(
+                HomeScreenUserEvent.CameraPermissionDeniedDialogVisible(isVisible = true)
+            )
+        },
+        onNotificationsRationaleRequired = {
+            homeViewModel.onEvent(
+                HomeScreenUserEvent.NotificationsPermissionDeniedDialogVisible(isVisible = true)
+            )
         }
-    }
+    )
 
     val context = LocalContext.current
 
@@ -131,9 +120,9 @@ fun HomeScreen(
         if (homeScreenState.permissionsDialogState.isVisible) {
             homeViewModel.onEvent(
                 HomeScreenUserEvent.TryChangeAlarmEnabled(
-                    cameraPermissionStatus = cameraPermissionState.status.isGranted,
+                    cameraPermissionStatus = permissionsRequester.isCameraPermissionGranted,
                     notificationsPermissionStatus =
-                        notificationsPermissionState.status.isGranted
+                        permissionsRequester.isNotificationsPermissionGranted
                 )
             )
         }
@@ -150,57 +139,15 @@ fun HomeScreen(
                             alarmId = event.alarmId,
                             enabled = event.enabled,
                             ignoreCancelLock = event.fromSnackbar,
-                            cameraPermissionStatus = cameraPermissionState.status.isGranted,
+                            cameraPermissionStatus = permissionsRequester.isCameraPermissionGranted,
                             notificationsPermissionStatus =
-                                notificationsPermissionState.status.isGranted
+                                permissionsRequester.isNotificationsPermissionGranted
                         )
                     )
                 }
 
-                is HomeScreenUserEvent.RequestCameraPermission -> {
-                    if (cameraPermissionState.status.shouldShowRationale) {
-                        homeViewModel.onEvent(
-                            HomeScreenUserEvent.CameraPermissionDeniedDialogVisible(
-                                isVisible = true
-                            )
-                        )
-                    } else {
-                        cameraPermissionState.launchPermissionRequest()
-                    }
-                }
-
-                is HomeScreenUserEvent.RequestNotificationsPermission -> {
-                    if (notificationsPermissionState.status.shouldShowRationale) {
-                        homeViewModel.onEvent(
-                            HomeScreenUserEvent.NotificationsPermissionDeniedDialogVisible(
-                                isVisible = true
-                            )
-                        )
-                    } else {
-                        notificationsPermissionState.launchPermissionRequest()
-                    }
-                }
-
-                is HomeScreenUserEvent.RequestAlarmsPermission -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        context.startActivity(
-                            Intent().apply {
-                                action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-                                data = "package:${context.packageName}".toUri()
-                            }
-                        )
-                    }
-                }
-
-                is HomeScreenUserEvent.RequestFullScreenIntentPermission -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                        context.startActivity(
-                            Intent().apply {
-                                action = Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT
-                                data = "package:${context.packageName}".toUri()
-                            }
-                        )
-                    }
+                is HomeScreenUserEvent.RequestPermission -> {
+                    permissionsRequester.request(event.permission)
                 }
 
                 is HomeScreenUserEvent.GoToApplicationSettingsClicked -> {
@@ -214,11 +161,7 @@ fun HomeScreen(
                             isVisible = false
                         )
                     )
-                    context.startActivity(
-                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                            data = "package:${context.packageName}".toUri()
-                        }
-                    )
+                    permissionsRequester.openApplicationSettings()
                 }
 
                 is HomeScreenUserEvent.GoToOptimizationClicked -> {
@@ -548,23 +491,8 @@ private fun HomeScreenContent(
 
     if (state.permissionsDialogState.isVisible) {
         MissingPermissionsBottomSheet(
-            cameraPermissionState = state.permissionsDialogState.cameraPermissionState,
-            onCameraPermissionClick = {
-                onEvent(HomeScreenUserEvent.RequestCameraPermission)
-            },
-            alarmsPermissionState = state.permissionsDialogState.alarmsPermissionState,
-            onAlarmsPermissionClick = {
-                onEvent(HomeScreenUserEvent.RequestAlarmsPermission)
-            },
-            notificationsPermissionState = state.permissionsDialogState.notificationsPermissionState,
-            onNotificationsPermissionClick = {
-                onEvent(HomeScreenUserEvent.RequestNotificationsPermission)
-            },
-            fullScreenIntentPermissionState =
-                state.permissionsDialogState.fullScreenIntentPermissionState,
-            onFullScreenIntentPermissionClick = {
-                onEvent(HomeScreenUserEvent.RequestFullScreenIntentPermission)
-            },
+            permissionsDialogState = state.permissionsDialogState,
+            onPermissionClick = { onEvent(HomeScreenUserEvent.RequestPermission(it)) },
             onAllPermissionsGranted = { onEvent(HomeScreenUserEvent.AlarmEnabledChangeClicked()) },
             onDismissRequest = { onEvent(HomeScreenUserEvent.HideMissingPermissionsDialog) }
         )

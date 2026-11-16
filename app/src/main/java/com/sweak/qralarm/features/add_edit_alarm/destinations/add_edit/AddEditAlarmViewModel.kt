@@ -13,6 +13,8 @@ import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
 import com.sweak.qralarm.core.ui.getDaysHoursAndMinutesUntilAlarm
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.core.ui.model.Code
+import com.sweak.qralarm.core.ui.model.PermissionsDialogState
+import com.sweak.qralarm.core.ui.permissions.RequiredPermissionsGate
 import com.sweak.qralarm.features.add_edit_alarm.AlarmDraftHandle
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmDraft
 import com.sweak.qralarm.features.add_edit_alarm.util.AlarmDraftMapper
@@ -51,7 +53,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     private val deleteAlarm: DeleteAlarm,
     private val setAlarm: SetAlarm,
     private val alarmScheduleCalculator: AlarmScheduleCalculator,
-    private val alarmDraftMapper: AlarmDraftMapper
+    private val alarmDraftMapper: AlarmDraftMapper,
+    private val requiredPermissionsGate: RequiredPermissionsGate
 ) : ViewModel() {
 
     @AssistedFactory
@@ -181,88 +184,35 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 viewModelScope.launch {
                     nextAlarmTimeUpdateJob?.join()
 
-                    val currentUiState = uiState.value
+                    val decision = requiredPermissionsGate.evaluate(
+                        dialogState = uiState.value.permissionsDialogState,
+                        isCameraPermissionGranted = event.cameraPermissionStatus,
+                        isNotificationsPermissionGranted = event.notificationsPermissionStatus,
+                        isCameraPermissionRequired = currentDraft.isCodeEnabled
+                    )
 
-                    if (currentUiState.permissionsDialogState.isVisible) {
-                        with(currentUiState.permissionsDialogState) {
-                            if ((cameraPermissionState == null || cameraPermissionState) &&
-                                (alarmsPermissionState == null || alarmsPermissionState) &&
-                                (notificationsPermissionState == null || notificationsPermissionState) &&
-                                (fullScreenIntentPermissionState == null || fullScreenIntentPermissionState)
-                            ) {
-                                setAlarm(currentDraft)
-                                uiState.update {
-                                    it.copy(
-                                        permissionsDialogState =
-                                            AddEditAlarmUiState.PermissionsDialogState(isVisible = false)
-                                    )
-                                }
-                            } else {
-                                uiState.update {
-                                    it.copy(
-                                        permissionsDialogState =
-                                            currentUiState.permissionsDialogState.copy(
-                                                cameraPermissionState =
-                                                    currentUiState.permissionsDialogState.cameraPermissionState?.let {
-                                                        event.cameraPermissionStatus
-                                                    },
-                                                notificationsPermissionState =
-                                                    currentUiState.permissionsDialogState.notificationsPermissionState?.let {
-                                                        event.notificationsPermissionStatus
-                                                    },
-                                                alarmsPermissionState =
-                                                    currentUiState.permissionsDialogState.alarmsPermissionState?.let {
-                                                        qrAlarmManager.canScheduleExactAlarms()
-                                                    },
-                                                fullScreenIntentPermissionState =
-                                                    currentUiState.permissionsDialogState.fullScreenIntentPermissionState?.let {
-                                                        qrAlarmManager.canUseFullScreenIntent()
-                                                    }
-                                            )
-                                    )
-                                }
+                    when (decision) {
+                        is RequiredPermissionsGate.Decision.Proceed -> {
+                            setAlarm(currentDraft)
+                            uiState.update { currentUiState ->
+                                currentUiState.copy(
+                                    permissionsDialogState = PermissionsDialogState()
+                                )
                             }
                         }
-                        return@launch
-                    }
 
-                    if ((!event.cameraPermissionStatus && currentDraft.isCodeEnabled) ||
-                        !event.notificationsPermissionStatus ||
-                        !qrAlarmManager.canScheduleExactAlarms() ||
-                        !qrAlarmManager.canUseFullScreenIntent()
-                    ) {
-                        uiState.update {
-                            it.copy(
-                                permissionsDialogState =
-                                    AddEditAlarmUiState.PermissionsDialogState(
-                                        isVisible = true,
-                                        cameraPermissionState =
-                                            if (!event.cameraPermissionStatus &&
-                                                currentDraft.isCodeEnabled
-                                            ) false else null,
-                                        notificationsPermissionState =
-                                            if (!event.notificationsPermissionStatus) false else null,
-                                        alarmsPermissionState =
-                                            if (!qrAlarmManager.canScheduleExactAlarms()) false else null,
-                                        fullScreenIntentPermissionState =
-                                            if (!qrAlarmManager.canUseFullScreenIntent()) false else null
-                                    )
-                            )
+                        is RequiredPermissionsGate.Decision.ShowDialog -> {
+                            uiState.update { currentUiState ->
+                                currentUiState.copy(permissionsDialogState = decision.dialogState)
+                            }
                         }
-                        return@launch
                     }
-
-                    setAlarm(currentDraft)
                 }
             }
 
             is AddEditAlarmScreenUserEvent.HideMissingPermissionsDialog -> {
                 uiState.update { currentUiState ->
-                    currentUiState.copy(
-                        permissionsDialogState = AddEditAlarmUiState.PermissionsDialogState(
-                            isVisible = false
-                        )
-                    )
+                    currentUiState.copy(permissionsDialogState = PermissionsDialogState())
                 }
             }
 
@@ -574,10 +524,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
 
             is AddEditAlarmScreenUserEvent.ConfirmDiscardAlarmChanges,
             is AddEditAlarmScreenUserEvent.SaveAlarmClicked,
-            is AddEditAlarmScreenUserEvent.RequestCameraPermission,
-            is AddEditAlarmScreenUserEvent.RequestNotificationsPermission,
-            is AddEditAlarmScreenUserEvent.RequestAlarmsPermission,
-            is AddEditAlarmScreenUserEvent.RequestFullScreenIntentPermission,
+            is AddEditAlarmScreenUserEvent.RequestPermission,
             is AddEditAlarmScreenUserEvent.PickCustomRingtone,
             is AddEditAlarmScreenUserEvent.TryScanSpecificCode,
             is AddEditAlarmScreenUserEvent.GoToApplicationSettingsClicked,

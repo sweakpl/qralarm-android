@@ -23,39 +23,26 @@ import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.ui.model.AlarmPermission
+import com.sweak.qralarm.core.ui.model.PermissionsDialogState
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MissingPermissionsBottomSheet(
-    cameraPermissionState: Boolean? = null,
-    onCameraPermissionClick: (() -> Unit)? = null,
-    alarmsPermissionState: Boolean? = null,
-    onAlarmsPermissionClick: (() -> Unit)? = null,
-    notificationsPermissionState: Boolean? = null,
-    onNotificationsPermissionClick: (() -> Unit)? = null,
-    fullScreenIntentPermissionState: Boolean? = null,
-    onFullScreenIntentPermissionClick: (() -> Unit)? = null,
+    permissionsDialogState: PermissionsDialogState,
+    onPermissionClick: (AlarmPermission) -> Unit,
     onAllPermissionsGranted: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    LaunchedEffect(
-        cameraPermissionState,
-        alarmsPermissionState,
-        notificationsPermissionState,
-        fullScreenIntentPermissionState
-    ) {
-        if ((cameraPermissionState == null || cameraPermissionState) &&
-            (alarmsPermissionState == null || alarmsPermissionState) &&
-            (notificationsPermissionState == null || notificationsPermissionState) &&
-            (fullScreenIntentPermissionState == null || fullScreenIntentPermissionState)
-        ) {
+    LaunchedEffect(permissionsDialogState.areAllPermissionsGranted) {
+        if (permissionsDialogState.areAllPermissionsGranted) {
             launch {
                 modalBottomSheetState.hide()
-            }.invokeOnCompletion {
-                onAllPermissionsGranted()
+            }.invokeOnCompletion { cause ->
+                if (cause == null) onAllPermissionsGranted()
             }
         }
     }
@@ -83,12 +70,12 @@ fun MissingPermissionsBottomSheet(
                 color = LocalContentColor.current
             )
 
-            cameraPermissionState?.let {
+            permissionsDialogState.cameraPermissionState?.let { isGranted ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable(enabled = !cameraPermissionState) {
-                            onCameraPermissionClick?.invoke()
+                        .clickable(enabled = !isGranted) {
+                            onPermissionClick(AlarmPermission.CAMERA)
                         }
                 ) {
                     Icon(
@@ -117,9 +104,9 @@ fun MissingPermissionsBottomSheet(
 
                     Icon(
                         imageVector =
-                            if (cameraPermissionState) QRAlarmIcons.Done else QRAlarmIcons.ForwardArrow,
+                            if (isGranted) QRAlarmIcons.Done else QRAlarmIcons.ForwardArrow,
                         contentDescription = stringResource(
-                            if (cameraPermissionState) R.string.content_description_done_icon
+                            if (isGranted) R.string.content_description_done_icon
                             else R.string.content_description_forward_arrow_icon
                         )
                     )
@@ -131,12 +118,12 @@ fun MissingPermissionsBottomSheet(
                 )
             }
 
-            alarmsPermissionState?.let {
+            permissionsDialogState.alarmsPermissionState?.let { isGranted ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable(enabled = !alarmsPermissionState) {
-                            onAlarmsPermissionClick?.invoke()
+                        .clickable(enabled = !isGranted) {
+                            onPermissionClick(AlarmPermission.EXACT_ALARMS)
                         }
                 ) {
                     Icon(
@@ -163,9 +150,9 @@ fun MissingPermissionsBottomSheet(
 
                     Icon(
                         imageVector =
-                            if (alarmsPermissionState) QRAlarmIcons.Done else QRAlarmIcons.ForwardArrow,
+                            if (isGranted) QRAlarmIcons.Done else QRAlarmIcons.ForwardArrow,
                         contentDescription = stringResource(
-                            if (alarmsPermissionState) R.string.content_description_done_icon
+                            if (isGranted) R.string.content_description_done_icon
                             else R.string.content_description_forward_arrow_icon
                         )
                     )
@@ -177,12 +164,12 @@ fun MissingPermissionsBottomSheet(
                 )
             }
 
-            notificationsPermissionState?.let {
+            permissionsDialogState.notificationsPermissionState?.let { isGranted ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable(enabled = !notificationsPermissionState) {
-                            onNotificationsPermissionClick?.invoke()
+                        .clickable(enabled = !isGranted) {
+                            onPermissionClick(AlarmPermission.NOTIFICATIONS)
                         }
                 ) {
                     Icon(
@@ -210,10 +197,10 @@ fun MissingPermissionsBottomSheet(
 
                     Icon(
                         imageVector =
-                            if (notificationsPermissionState) QRAlarmIcons.Done
+                            if (isGranted) QRAlarmIcons.Done
                             else QRAlarmIcons.ForwardArrow,
                         contentDescription = stringResource(
-                            if (notificationsPermissionState) R.string.content_description_done_icon
+                            if (isGranted) R.string.content_description_done_icon
                             else R.string.content_description_forward_arrow_icon
                         )
                     )
@@ -225,12 +212,12 @@ fun MissingPermissionsBottomSheet(
                 )
             }
 
-            fullScreenIntentPermissionState?.let {
+            permissionsDialogState.fullScreenIntentPermissionState?.let { isGranted ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable(enabled = !fullScreenIntentPermissionState) {
-                            onFullScreenIntentPermissionClick?.invoke()
+                        .clickable(enabled = !isGranted) {
+                            onPermissionClick(AlarmPermission.FULL_SCREEN_INTENT)
                         }
                 ) {
                     Icon(
@@ -258,10 +245,10 @@ fun MissingPermissionsBottomSheet(
 
                     Icon(
                         imageVector =
-                            if (fullScreenIntentPermissionState) QRAlarmIcons.Done
+                            if (isGranted) QRAlarmIcons.Done
                             else QRAlarmIcons.ForwardArrow,
                         contentDescription = stringResource(
-                            if (fullScreenIntentPermissionState) R.string.content_description_done_icon
+                            if (isGranted) R.string.content_description_done_icon
                             else R.string.content_description_forward_arrow_icon
                         )
                     )
@@ -281,14 +268,14 @@ fun MissingPermissionsBottomSheet(
 private fun MissingPermissionsBottomSheetPreview() {
     QRAlarmTheme {
         MissingPermissionsBottomSheet(
-            cameraPermissionState = false,
-            onCameraPermissionClick = {},
-            alarmsPermissionState = true,
-            onAlarmsPermissionClick = {},
-            notificationsPermissionState = false,
-            onNotificationsPermissionClick = {},
-            fullScreenIntentPermissionState = false,
-            onFullScreenIntentPermissionClick = {},
+            permissionsDialogState = PermissionsDialogState(
+                isVisible = true,
+                cameraPermissionState = false,
+                notificationsPermissionState = false,
+                alarmsPermissionState = true,
+                fullScreenIntentPermissionState = false
+            ),
+            onPermissionClick = {},
             onAllPermissionsGranted = {},
             onDismissRequest = {}
         )

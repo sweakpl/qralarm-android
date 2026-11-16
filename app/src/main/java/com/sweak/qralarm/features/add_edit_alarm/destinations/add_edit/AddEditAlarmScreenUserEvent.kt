@@ -2,6 +2,7 @@ package com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit
 
 import android.net.Uri
 import com.sweak.qralarm.core.domain.alarm.Alarm.Ringtone
+import com.sweak.qralarm.core.ui.model.AlarmPermission
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper
 import com.sweak.qralarm.core.ui.model.Code
 
@@ -19,10 +20,10 @@ sealed class AddEditAlarmScreenUserEvent {
     ) : AddEditAlarmScreenUserEvent()
 
     data object HideMissingPermissionsDialog : AddEditAlarmScreenUserEvent()
-    data object RequestCameraPermission : AddEditAlarmScreenUserEvent()
-    data object RequestNotificationsPermission : AddEditAlarmScreenUserEvent()
-    data object RequestAlarmsPermission : AddEditAlarmScreenUserEvent()
-    data object RequestFullScreenIntentPermission : AddEditAlarmScreenUserEvent()
+    data class RequestPermission(
+        val permission: AlarmPermission
+    ) : AddEditAlarmScreenUserEvent()
+
     data class NotificationsPermissionDeniedDialogVisible(
         val isVisible: Boolean
     ) : AddEditAlarmScreenUserEvent()

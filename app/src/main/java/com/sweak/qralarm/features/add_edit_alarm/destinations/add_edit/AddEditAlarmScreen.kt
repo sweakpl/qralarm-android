@@ -1,13 +1,10 @@
 package com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit
 
-import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Build
-import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -62,14 +59,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.PermissionStatus
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.sweak.qralarm.R
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
@@ -86,6 +76,8 @@ import com.sweak.qralarm.core.ui.components.ToggleSetting
 import com.sweak.qralarm.core.ui.compose_util.ObserveAsEvents
 import com.sweak.qralarm.core.ui.compose_util.OnResume
 import com.sweak.qralarm.core.ui.compose_util.getAlarmRepeatingScheduleString
+import com.sweak.qralarm.core.ui.compose_util.rememberAlarmPermissionsRequester
+import com.sweak.qralarm.core.ui.model.AlarmPermission
 import com.sweak.qralarm.core.ui.model.AlarmRepeatingScheduleWrapper.AlarmRepeatingMode.ONLY_ONCE
 import com.sweak.qralarm.core.ui.toBidiIsolated
 import com.sweak.qralarm.features.add_edit_alarm.components.ChoiceSetting
@@ -107,7 +99,6 @@ import kotlinx.coroutines.withContext
 import java.io.FileOutputStream
 import java.io.IOException
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AddEditAlarmScreen(
     addEditAlarmViewModel: AddEditAlarmViewModel,
@@ -188,19 +179,20 @@ fun AddEditAlarmScreen(
     )
 
     var isInTheCameraPermissionFlowForCustomCodeScan by remember { mutableStateOf(false) }
-    val cameraPermissionState = rememberPermissionState(
-        permission = Manifest.permission.CAMERA
-    )
-    val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
-    } else {
-        object : PermissionState {
-            override val permission: String get() = "android.permission.POST_NOTIFICATIONS"
-            override val status: PermissionStatus get() = PermissionStatus.Granted
-            override fun launchPermissionRequest() { /* no-op */
-            }
+    val permissionsRequester = rememberAlarmPermissionsRequester(
+        onCameraRationaleRequired = {
+            addEditAlarmViewModel.onEvent(
+                AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(isVisible = true)
+            )
+        },
+        onNotificationsRationaleRequired = {
+            addEditAlarmViewModel.onEvent(
+                AddEditAlarmScreenUserEvent.NotificationsPermissionDeniedDialogVisible(
+                    isVisible = true
+                )
+            )
         }
-    }
+    )
 
     ObserveAsEvents(
         flow = addEditAlarmViewModel.backendEvents,
@@ -241,15 +233,15 @@ fun AddEditAlarmScreen(
         if (isInTheCameraPermissionFlowForCustomCodeScan) {
             isInTheCameraPermissionFlowForCustomCodeScan = false
 
-            if (cameraPermissionState.status is PermissionStatus.Granted) {
+            if (permissionsRequester.isCameraPermissionGranted) {
                 onScanCustomCodeClicked()
             }
         } else if (addEditAlarmScreenState.ui.permissionsDialogState.isVisible) {
             addEditAlarmViewModel.onEvent(
                 AddEditAlarmScreenUserEvent.TrySaveAlarm(
-                    cameraPermissionStatus = cameraPermissionState.status.isGranted,
+                    cameraPermissionStatus = permissionsRequester.isCameraPermissionGranted,
                     notificationsPermissionStatus =
-                        notificationsPermissionState.status.isGranted
+                        permissionsRequester.isNotificationsPermissionGranted
                 )
             )
         }
@@ -271,57 +263,15 @@ fun AddEditAlarmScreen(
                 is AddEditAlarmScreenUserEvent.SaveAlarmClicked -> {
                     addEditAlarmViewModel.onEvent(
                         AddEditAlarmScreenUserEvent.TrySaveAlarm(
-                            cameraPermissionStatus = cameraPermissionState.status.isGranted,
+                            cameraPermissionStatus = permissionsRequester.isCameraPermissionGranted,
                             notificationsPermissionStatus =
-                                notificationsPermissionState.status.isGranted
+                                permissionsRequester.isNotificationsPermissionGranted
                         )
                     )
                 }
 
-                is AddEditAlarmScreenUserEvent.RequestCameraPermission -> {
-                    if (cameraPermissionState.status.shouldShowRationale) {
-                        addEditAlarmViewModel.onEvent(
-                            AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(
-                                isVisible = true
-                            )
-                        )
-                    } else {
-                        cameraPermissionState.launchPermissionRequest()
-                    }
-                }
-
-                is AddEditAlarmScreenUserEvent.RequestNotificationsPermission -> {
-                    if (notificationsPermissionState.status.shouldShowRationale) {
-                        addEditAlarmViewModel.onEvent(
-                            AddEditAlarmScreenUserEvent.NotificationsPermissionDeniedDialogVisible(
-                                isVisible = true
-                            )
-                        )
-                    } else {
-                        notificationsPermissionState.launchPermissionRequest()
-                    }
-                }
-
-                is AddEditAlarmScreenUserEvent.RequestAlarmsPermission -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        context.startActivity(
-                            Intent().apply {
-                                action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-                                data = "package:${context.packageName}".toUri()
-                            }
-                        )
-                    }
-                }
-
-                is AddEditAlarmScreenUserEvent.RequestFullScreenIntentPermission -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                        context.startActivity(
-                            Intent().apply {
-                                action = Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT
-                                data = "package:${context.packageName}".toUri()
-                            }
-                        )
-                    }
+                is AddEditAlarmScreenUserEvent.RequestPermission -> {
+                    permissionsRequester.request(event.permission)
                 }
 
                 is AddEditAlarmScreenUserEvent.PickCustomRingtone -> {
@@ -341,18 +291,9 @@ fun AddEditAlarmScreen(
                         AddEditAlarmScreenUserEvent.AssignCodeDialogVisible(isVisible = false)
                     )
 
-                    if (!cameraPermissionState.status.isGranted) {
+                    if (!permissionsRequester.isCameraPermissionGranted) {
                         isInTheCameraPermissionFlowForCustomCodeScan = true
-
-                        if (cameraPermissionState.status.shouldShowRationale) {
-                            addEditAlarmViewModel.onEvent(
-                                AddEditAlarmScreenUserEvent.CameraPermissionDeniedDialogVisible(
-                                    isVisible = true
-                                )
-                            )
-                        } else {
-                            cameraPermissionState.launchPermissionRequest()
-                        }
+                        permissionsRequester.request(AlarmPermission.CAMERA)
                     } else {
                         onScanCustomCodeClicked()
                     }
@@ -369,11 +310,7 @@ fun AddEditAlarmScreen(
                             isVisible = false
                         )
                     )
-                    context.startActivity(
-                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                            data = "package:${context.packageName}".toUri()
-                        }
-                    )
+                    permissionsRequester.openApplicationSettings()
                 }
 
                 is AddEditAlarmScreenUserEvent.AdvancedSettingsClicked -> {
@@ -1290,24 +1227,8 @@ private fun AddEditAlarmScreenContent(
 
     if (state.ui.permissionsDialogState.isVisible) {
         MissingPermissionsBottomSheet(
-            cameraPermissionState = state.ui.permissionsDialogState.cameraPermissionState,
-            onCameraPermissionClick = {
-                onEvent(AddEditAlarmScreenUserEvent.RequestCameraPermission)
-            },
-            alarmsPermissionState = state.ui.permissionsDialogState.alarmsPermissionState,
-            onAlarmsPermissionClick = {
-                onEvent(AddEditAlarmScreenUserEvent.RequestAlarmsPermission)
-            },
-            notificationsPermissionState =
-                state.ui.permissionsDialogState.notificationsPermissionState,
-            onNotificationsPermissionClick = {
-                onEvent(AddEditAlarmScreenUserEvent.RequestNotificationsPermission)
-            },
-            fullScreenIntentPermissionState =
-                state.ui.permissionsDialogState.fullScreenIntentPermissionState,
-            onFullScreenIntentPermissionClick = {
-                onEvent(AddEditAlarmScreenUserEvent.RequestFullScreenIntentPermission)
-            },
+            permissionsDialogState = state.ui.permissionsDialogState,
+            onPermissionClick = { onEvent(AddEditAlarmScreenUserEvent.RequestPermission(it)) },
             onAllPermissionsGranted = { onEvent(AddEditAlarmScreenUserEvent.SaveAlarmClicked) },
             onDismissRequest = { onEvent(AddEditAlarmScreenUserEvent.HideMissingPermissionsDialog) }
         )

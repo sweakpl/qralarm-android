@@ -1,6 +1,7 @@
 package com.sweak.qralarm.features.alarm
 
 import com.sweak.qralarm.core.ui.compose_util.UiText
+import com.sweak.qralarm.core.ui.model.PermissionsDialogState
 
 data class AlarmScreenState(
     val alarmLabel: UiText? = null,
@@ -12,9 +13,4 @@ data class AlarmScreenState(
     val isEmergencyAvailable: Boolean = false,
     val permissionsDialogState: PermissionsDialogState = PermissionsDialogState(),
     val isCameraPermissionDeniedDialogVisible: Boolean = false
-) {
-    data class PermissionsDialogState(
-        val isVisible: Boolean = false,
-        val cameraPermissionState: Boolean? = null
-    )
-}
+)

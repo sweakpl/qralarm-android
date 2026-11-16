@@ -1,5 +1,7 @@
 package com.sweak.qralarm.features.home
 
+import com.sweak.qralarm.core.ui.model.AlarmPermission
+
 sealed class HomeScreenUserEvent {
     data object MenuClicked : HomeScreenUserEvent()
     data object AddNewAlarm : HomeScreenUserEvent()
@@ -19,10 +21,7 @@ sealed class HomeScreenUserEvent {
     ) : HomeScreenUserEvent()
 
     data object HideMissingPermissionsDialog : HomeScreenUserEvent()
-    data object RequestCameraPermission : HomeScreenUserEvent()
-    data object RequestNotificationsPermission : HomeScreenUserEvent()
-    data object RequestAlarmsPermission : HomeScreenUserEvent()
-    data object RequestFullScreenIntentPermission : HomeScreenUserEvent()
+    data class RequestPermission(val permission: AlarmPermission) : HomeScreenUserEvent()
     data class CameraPermissionDeniedDialogVisible(
         val isVisible: Boolean
     ) : HomeScreenUserEvent()
