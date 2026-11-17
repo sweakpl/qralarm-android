@@ -58,6 +58,8 @@ class AlarmService : Service() {
     lateinit var audioManager: AudioManager
     @Inject
     lateinit var userDataRepository: UserDataRepository
+    @Inject
+    lateinit var alarmDeliveryValidator: AlarmDeliveryValidator
 
     private lateinit var alarm: Alarm
 
@@ -150,21 +152,25 @@ class AlarmService : Service() {
                 return@launch
             }
 
-            alarmsRepository.getAlarm(alarmId = alarmId)?.let {
-                alarm = it
-                if (isAbnormalLaunch(alarm, isSnoozeAlarm)) {
+            val deliveredAlarm = alarmsRepository.getAlarm(alarmId = alarmId)
+            deliveredAlarm?.let { alarm = it }
+
+            val verdict = alarmDeliveryValidator.validate(
+                alarm = deliveredAlarm,
+                isSnoozeAlarm = isSnoozeAlarm
+            )
+
+            when (verdict) {
+                AlarmDeliveryValidator.Verdict.StopEarly -> {
                     handleEarlyServiceStop(alarmId)
                     return@launch
                 }
-            } ?: run {
-                handleEarlyServiceStop(alarmId)
-                return@launch
-            }
 
-            // An early delivery is waited out, so that the alarm rings on time and the
-            // rescheduling below does not schedule the very same occurrence again:
-            getLaunchDelayInMillis(alarm, isSnoozeAlarm)?.let { launchDelayInMillis ->
-                if (launchDelayInMillis < 0) delay((-launchDelayInMillis).milliseconds)
+                // An early delivery is waited out, so that the alarm rings on time and the
+                // rescheduling below does not schedule the very same occurrence again:
+                is AlarmDeliveryValidator.Verdict.Ring -> {
+                    if (verdict.waitMillis > 0) delay(verdict.waitMillis.milliseconds)
+                }
             }
 
             // The service is a singleton, so if a previous alarm is still ringing tear down first.
@@ -271,22 +277,6 @@ class AlarmService : Service() {
             }
             advanceAlarmToNextOccurrence(alarmId = alarmId)
         }
-    }
-
-    private fun isAbnormalLaunch(alarm: Alarm, isSnoozeAlarm: Boolean?): Boolean {
-        val launchDelayInMillis = getLaunchDelayInMillis(alarm, isSnoozeAlarm) ?: return false
-
-        return launchDelayInMillis !in -EARLY_LAUNCH_TOLERANCE_MS..ABNORMAL_LAUNCH_TOLERANCE_MS
-    }
-
-    private fun getLaunchDelayInMillis(alarm: Alarm, isSnoozeAlarm: Boolean?): Long? {
-        val scheduledTimeInMillis = when {
-            isSnoozeAlarm == true -> alarm.snoozeConfig.nextSnoozedAlarmTimeInMillis
-            else -> alarm.nextAlarmTimeInMillis
-        }
-        if (scheduledTimeInMillis == null) return null
-
-        return System.currentTimeMillis() - scheduledTimeInMillis
     }
 
     private suspend fun resetAvailableSnoozes() {
@@ -401,8 +391,5 @@ class AlarmService : Service() {
         const val EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS = 10
 
         var isRunning = false
-
-        private const val ABNORMAL_LAUNCH_TOLERANCE_MS = 10 * 60 * 1000L
-        private const val EARLY_LAUNCH_TOLERANCE_MS = 5 * 1000L
     }
 }
