@@ -25,7 +25,9 @@ class FakeAlarmsRepository : AlarmsRepository {
         alarms.computeIfPresent(alarmId) { _, alarm -> alarm.copy(isAlarmEnabled = enabled) }
     }
 
-    override suspend fun setAlarmRunning(alarmId: Long, running: Boolean) = TODO()
+    override suspend fun setAlarmRunning(alarmId: Long, running: Boolean) {
+        alarms.computeIfPresent(alarmId) { _, alarm -> alarm.copy(isAlarmRunning = running) }
+    }
 
     override suspend fun setAlarmSnoozed(alarmId: Long, snoozed: Boolean) {
         alarms.computeIfPresent(alarmId) { _, alarm ->
@@ -51,7 +53,12 @@ class FakeAlarmsRepository : AlarmsRepository {
         alarms.remove(alarmId)
     }
 
-    override suspend fun setAvailableSnoozes(alarmId: Long, availableSnoozes: Int) = TODO()
+    override suspend fun setAvailableSnoozes(alarmId: Long, availableSnoozes: Int) {
+        alarms.computeIfPresent(alarmId) { _, alarm ->
+            alarm.copy(snoozeConfig = alarm.snoozeConfig.copy(numberOfSnoozesLeft = availableSnoozes))
+        }
+    }
+
     override suspend fun setAlarmRingtoneUri(alarmId: Long, uri: String?) {
         alarms.computeIfPresent(alarmId) { _, alarm -> alarm.copy(customRingtoneUriString = uri) }
     }

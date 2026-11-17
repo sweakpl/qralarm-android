@@ -23,9 +23,10 @@ import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.activity.AlarmActivity
 import com.sweak.qralarm.alarm.util.setAlarmVolume
 import com.sweak.qralarm.core.designsystem.theme.Jacarta
-import com.sweak.qralarm.core.domain.alarm.AdvanceAlarmToNextOccurrence
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
+import com.sweak.qralarm.core.domain.alarm.HandleEarlyStoppedAlarm
+import com.sweak.qralarm.core.domain.alarm.StartAlarmRinging
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +52,9 @@ class AlarmService : Service() {
     @Inject
     lateinit var qrAlarmManager: QRAlarmManager
     @Inject
-    lateinit var advanceAlarmToNextOccurrence: AdvanceAlarmToNextOccurrence
+    lateinit var handleEarlyStoppedAlarm: HandleEarlyStoppedAlarm
+    @Inject
+    lateinit var startAlarmRinging: StartAlarmRinging
     @Inject
     lateinit var alarmRingtonePlayer: AlarmRingtonePlayer
     @Inject
@@ -148,7 +151,7 @@ class AlarmService : Service() {
 
             if (shouldStopService) {
                 userDataRepository.setAlarmMissedDetected(detected = true)
-                handleEarlyServiceStop(alarmId)
+                leaveForeground(alarmId)
                 return@launch
             }
 
@@ -162,7 +165,8 @@ class AlarmService : Service() {
 
             when (verdict) {
                 AlarmDeliveryValidator.Verdict.StopEarly -> {
-                    handleEarlyServiceStop(alarmId)
+                    leaveForeground(alarmId)
+                    handleEarlyStoppedAlarm(alarmId = alarmId)
                     return@launch
                 }
 
@@ -196,20 +200,7 @@ class AlarmService : Service() {
                 ContextCompat.RECEIVER_NOT_EXPORTED
             )
 
-            if (isSnoozeAlarm == false) {
-                resetAvailableSnoozes()
-            }
-
-            alarmsRepository.setAlarmRunning(
-                alarmId = alarmId,
-                running = true
-            )
-            alarmsRepository.setAlarmSnoozed(
-                alarmId = alarmId,
-                snoozed = false
-            )
-
-            advanceAlarmToNextOccurrence(alarmId = alarmId)
+            startAlarmRinging(alarmId = alarmId, isSnoozeAlarm = isSnoozeAlarm)
 
             adjustAlarmVolume()
 
@@ -262,28 +253,9 @@ class AlarmService : Service() {
         }
     }
 
-    private suspend fun handleEarlyServiceStop(alarmId: Long) {
+    private fun leaveForeground(alarmId: Long) {
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
-
-        // The delivery is already consumed and the regular rescheduling at ring start will not
-        // run, so the next occurrence has to be rescheduled here:
-        if (::alarm.isInitialized && alarm.alarmId == alarmId) {
-            if (alarm.snoozeConfig.isAlarmSnoozed) {
-                alarmsRepository.setAlarmSnoozed(
-                    alarmId = alarmId,
-                    snoozed = false
-                )
-            }
-            advanceAlarmToNextOccurrence(alarmId = alarmId)
-        }
-    }
-
-    private suspend fun resetAvailableSnoozes() {
-        alarmsRepository.setAvailableSnoozes(
-            alarmId = alarm.alarmId,
-            availableSnoozes = alarm.snoozeConfig.snoozeMode.numberOfSnoozes
-        )
     }
 
     private fun adjustAlarmVolume() {
