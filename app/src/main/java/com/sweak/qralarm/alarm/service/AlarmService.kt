@@ -1,9 +1,6 @@
 package com.sweak.qralarm.alarm.service
 
-import android.annotation.SuppressLint
 import android.app.ForegroundServiceStartNotAllowedException
-import android.app.Notification
-import android.app.PendingIntent
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -12,17 +9,12 @@ import android.content.IntentFilter
 import android.content.pm.ServiceInfo
 import android.media.AudioManager
 import android.os.Build
-import androidx.compose.ui.graphics.toArgb
-import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import com.sweak.qralarm.R
-import com.sweak.qralarm.alarm.ALARM_NOTIFICATION_CHANNEL_ID
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.activity.AlarmActivity
 import com.sweak.qralarm.alarm.util.setAlarmVolume
-import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.HandleEarlyStoppedAlarm
@@ -63,6 +55,8 @@ class AlarmService : Service() {
     lateinit var userDataRepository: UserDataRepository
     @Inject
     lateinit var alarmDeliveryValidator: AlarmDeliveryValidator
+    @Inject
+    lateinit var alarmNotificationFactory: AlarmNotificationFactory
 
     private lateinit var alarm: Alarm
 
@@ -131,7 +125,7 @@ class AlarmService : Service() {
             ServiceCompat.startForeground(
                 this,
                 alarmId.toInt(),
-                createAlarmNotification(alarmId = alarmId),
+                alarmNotificationFactory.create(alarmId = alarmId),
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
                 } else 0
@@ -210,47 +204,6 @@ class AlarmService : Service() {
         }
 
         return START_NOT_STICKY
-    }
-
-    @SuppressLint("FullScreenIntentPolicy")
-    private fun createAlarmNotification(alarmId: Long): Notification {
-        val alarmNotificationPendingIntent = PendingIntent.getActivity(
-            applicationContext,
-            alarmId.toInt(),
-            Intent(applicationContext, AlarmActivity::class.java).apply {
-                putExtra(AlarmActivity.EXTRA_ALARM_ID, alarmId)
-                putExtra(AlarmActivity.EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY, false)
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            },
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val alarmFullScreenPendingIntent = PendingIntent.getActivity(
-            applicationContext,
-            alarmId.toInt(),
-            Intent(applicationContext, AlarmActivity::class.java).apply {
-                putExtra(AlarmActivity.EXTRA_ALARM_ID, alarmId)
-                putExtra(AlarmActivity.EXTRA_LAUNCHED_FROM_MAIN_ACTIVITY, false)
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            },
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        NotificationCompat.Builder(
-            applicationContext,
-            ALARM_NOTIFICATION_CHANNEL_ID
-        ).apply {
-            color = Jacarta.toArgb()
-            priority = NotificationCompat.PRIORITY_MAX
-            setCategory(NotificationCompat.CATEGORY_ALARM)
-            setOngoing(true)
-            setColorized(true)
-            setContentTitle(getString(R.string.alarm_notification_title))
-            setSmallIcon(R.drawable.ic_qralarm)
-            setContentIntent(alarmNotificationPendingIntent)
-            setFullScreenIntent(alarmFullScreenPendingIntent, true)
-            return build()
-        }
     }
 
     private fun leaveForeground(alarmId: Long) {
