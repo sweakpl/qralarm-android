@@ -11,8 +11,11 @@
     <string name="custom_object_none_yet">No items yet.</string>
     <string name="custom_object_add_title">Add item</string>
     <string name="custom_object_retake_title">Retake photos</string>
-    <string name="custom_object_capture_instructions">Hold the item so its label fills the white square, then take a photo. Take 3 to 5 photos from slightly different angles. The background is ignored.</string>
+    <string name="custom_object_capture_instructions">Hold the item so its label fills the white square. Tap Record and slowly turn the item for 5 seconds, showing every side you might show when the alarm rings. You can also add single photos. The background is ignored.</string>
     <string name="custom_object_photo_count">Photos: %1$d (need %2$d–%3$d)</string>
+    <string name="custom_object_record">Record while turning (5 s)</string>
+    <string name="custom_object_recording">Recording… keep turning the item slowly.</string>
+    <string name="custom_object_clip_empty">No usable frames: keep the label inside the square, in good light, and move slowly.</string>
     <string name="custom_object_shot_blurry">That photo was blurry. Hold still and try again.</string>
     <string name="custom_object_shot_no_detail">Not enough printed detail. Turn the label towards the camera and fill the square.</string>
     <string name="custom_object_shots_inconsistent">%1$d photo(s) didn\'t look like the same item and were removed. Retake them showing the same label.</string>

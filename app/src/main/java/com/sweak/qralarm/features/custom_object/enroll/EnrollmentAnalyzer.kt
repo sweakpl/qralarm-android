@@ -24,13 +24,23 @@ import java.util.concurrent.atomic.AtomicBoolean
 class EnrollmentAnalyzer(
     private val context: Context,
     private val onShot: (Shot) -> Unit,
+    /** Sharp, usable frames picked from a recorded clip, at most one per time slice. */
+    private val onClip: (List<Shot>) -> Unit,
     private val onTestResult: (ObjectDetectionBox?, Float, Boolean) -> Unit,
     private val onError: (Exception) -> Unit
 ) : ImageAnalysis.Analyzer, AutoCloseable {
 
-    class Shot(val reference: CustomObjectReference, val issue: EnrollmentRules.ShotIssue?, val preview: Bitmap)
+    class Shot(
+        val reference: CustomObjectReference,
+        val issue: EnrollmentRules.ShotIssue?,
+        val preview: Bitmap,
+        val sharpness: Double = 0.0
+    )
 
     private val captureRequested = AtomicBoolean(false)
+    private val recordRequested = AtomicBoolean(false)
+    private var recordingStartMillis: Long? = null
+    private val clipSlices = HashMap<Int, Shot>()
     private class Test(val references: List<ReferenceFeatures>, val embeddingThreshold: Float)
     @Volatile private var test: Test? = null
     private var tester: CustomObjectAnalyzer? = null
@@ -38,6 +48,9 @@ class EnrollmentAnalyzer(
     private var embedder: ImageEmbedderEngine? = null
 
     fun requestCapture() = captureRequested.set(true)
+
+    /** Records for [CLIP_MILLIS] while the user turns the item; see [onClip]. */
+    fun requestClip() = recordRequested.set(true)
 
     /** Runs exactly what the alarm will run; null references stop testing. */
     fun startTest(references: List<ReferenceFeatures>?, embeddingThreshold: Float = 0f) {
@@ -58,10 +71,45 @@ class EnrollmentAnalyzer(
         }
         tester?.close()
         tester = null
+        if (recordRequested.compareAndSet(true, false)) {
+            clipSlices.values.forEach { it.preview.recycle() }
+            clipSlices.clear()
+            recordingStartMillis = image.imageInfo.timestamp / 1_000_000
+        }
+        val recordingStart = recordingStartMillis
+        if (recordingStart != null) {
+            val now = image.imageInfo.timestamp / 1_000_000
+            if (now - recordingStart >= CLIP_MILLIS) {
+                recordingStartMillis = null
+                image.close()
+                onClip(clipSlices.toSortedMap().values.toList())
+                clipSlices.clear()
+                return
+            }
+            val shot = buildShot(image) ?: return
+            if (shot.issue != null) {
+                shot.preview.recycle()
+                return
+            }
+            val slice = ((now - recordingStart) * CLIP_SLICES / CLIP_MILLIS).toInt()
+            val kept = clipSlices[slice]
+            if (kept == null || shot.sharpness > kept.sharpness) {
+                kept?.preview?.recycle()
+                clipSlices[slice] = shot
+            } else {
+                shot.preview.recycle()
+            }
+            return
+        }
         if (!captureRequested.compareAndSet(true, false)) {
             image.close()
             return
         }
+        buildShot(image)?.let(onShot)
+    }
+
+    /** Crops, describes and checks one frame. Always closes [image]. */
+    private fun buildShot(image: ImageProxy): Shot? {
         var source: Bitmap? = null
         var upright: Bitmap? = null
         try {
@@ -92,15 +140,15 @@ class EnrollmentAnalyzer(
                 crop.compress(Bitmap.CompressFormat.JPEG, 88, out)
                 out.toByteArray()
             }
-            onShot(
-                Shot(
-                    CustomObjectReference(jpeg, built.features),
-                    EnrollmentRules.checkShot(built.features, built.sharpness),
-                    crop
-                )
+            return Shot(
+                CustomObjectReference(jpeg, built.features),
+                EnrollmentRules.checkShot(built.features, built.sharpness),
+                crop,
+                built.sharpness
             )
         } catch (exception: Exception) {
             onError(exception)
+            return null
         } finally {
             if (upright !== source) upright?.recycle()
             source?.recycle()
@@ -108,7 +156,14 @@ class EnrollmentAnalyzer(
         }
     }
 
+    companion object {
+        const val CLIP_MILLIS = 5_000L
+        const val CLIP_SLICES = 8
+    }
+
     override fun close() {
+        clipSlices.values.forEach { it.preview.recycle() }
+        clipSlices.clear()
         tester?.close()
         tester = null
         embedder?.close()

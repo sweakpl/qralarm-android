@@ -91,6 +91,7 @@ fun EnrollObjectScreen(
         onClose = onClose,
         onNameChanged = viewModel::onNameChanged,
         onCapture = viewModel::onCaptureClicked,
+        onRecord = viewModel::onRecordClicked,
         onRemoveShot = viewModel::onRemoveShot,
         onContinue = { viewModel.onContinueClicked() },
         onBackToCapture = viewModel::onBackToCaptureClicked,
@@ -105,6 +106,7 @@ private fun EnrollObjectContent(
     onClose: () -> Unit,
     onNameChanged: (String) -> Unit,
     onCapture: () -> Unit,
+    onRecord: () -> Unit,
     onRemoveShot: (Int) -> Unit,
     onContinue: () -> Unit,
     onBackToCapture: () -> Unit,
@@ -210,11 +212,21 @@ private fun EnrollObjectContent(
                         }
                     }
                 }
+                if (state.isRecording) {
+                    Text(stringResource(R.string.custom_object_recording), color = MaterialTheme.colorScheme.primary)
+                }
+                if (state.clipFoundNothing) {
+                    Text(stringResource(R.string.custom_object_clip_empty), color = MaterialTheme.colorScheme.error)
+                }
+                val busy = state.isCapturing || state.isRecording
+                Button(onClick = onRecord, enabled = state.canCaptureMore && !busy, modifier = Modifier.fillMaxWidth()) {
+                    Text(stringResource(R.string.custom_object_record))
+                }
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Button(onClick = onCapture, enabled = state.canCaptureMore && !state.isCapturing) {
+                    OutlinedButton(onClick = onCapture, enabled = state.canCaptureMore && !busy) {
                         Text(stringResource(R.string.custom_object_take_photo))
                     }
-                    OutlinedButton(onClick = onContinue, enabled = state.canContinue && !state.isCapturing) {
+                    OutlinedButton(onClick = onContinue, enabled = state.canContinue && !busy) {
                         Text(stringResource(R.string.custom_object_continue))
                     }
                 }

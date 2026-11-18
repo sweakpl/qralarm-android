@@ -56,4 +56,23 @@ class ObjectConfirmationTest {
         gate.reset()
         assertFalse(gate.observe(0.8f, 1100))
     }
+
+    @Test fun windowedPolicyToleratesASingleMissedFrame() {
+        val policy = ConfirmationPolicy(0.5f, requiredMatches = 4, minSpanMillis = 0L, maxFrameGapMillis = 700L, windowFrames = 6)
+        val gate = ObjectConfirmation(policy)
+        assertFalse(gate.observe(1f, 0))
+        assertFalse(gate.observe(1f, 100))
+        assertFalse(gate.observe(null, 200))
+        assertFalse(gate.observe(1f, 300))
+        assertTrue(gate.observe(1f, 400))
+    }
+
+    @Test fun windowedPolicyForgetsOldMatches() {
+        val policy = ConfirmationPolicy(0.5f, requiredMatches = 4, minSpanMillis = 0L, maxFrameGapMillis = 700L, windowFrames = 6)
+        val gate = ObjectConfirmation(policy)
+        gate.observe(1f, 0); gate.observe(1f, 100); gate.observe(1f, 200)
+        repeat(6) { gate.observe(null, 300L + it * 100) }
+        assertFalse(gate.observe(1f, 900))
+        assertEquals(0.25f, gate.progress)
+    }
 }

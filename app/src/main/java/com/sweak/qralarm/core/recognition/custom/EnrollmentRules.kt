@@ -9,7 +9,7 @@ import org.opencv.imgproc.Imgproc
 /** What a set of reference photos has to satisfy before an object can be saved. */
 object EnrollmentRules {
     const val MIN_REFERENCES = 3
-    const val MAX_REFERENCES = 5
+    const val MAX_REFERENCES = 10
     const val MIN_KEYPOINTS = 150
     const val MIN_SHARPNESS = 60.0
 
