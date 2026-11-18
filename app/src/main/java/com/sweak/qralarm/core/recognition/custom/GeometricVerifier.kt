@@ -21,18 +21,24 @@ class GeometricVerifier(
     private val params: Params = Params()
 ) : AutoCloseable {
 
+    /**
+     * Defaults were chosen on real, labelled photos (eval/RESULTS.md): the strictest setting that
+     * still lets most true views through, with zero false dismissals on every test set measured.
+     */
     data class Params(
         val ratio: Double = 0.75,
         val reprojectionThreshold: Double = 5.0,
         val minGoodMatches: Int = 12,
-        val minInliers: Int = 18,
-        val minInlierRatio: Double = 0.30,
+        val minInliers: Int = 25,
+        val minInlierRatio: Double = 0.20,
         /** Inliers must cover this share of the reference's keypoint area, so one logo is not enough. */
         val minInlierSpread: Double = 0.12,
+        /** Inliers as a share of the reference's keypoints. */
+        val minCoverage: Double = 0.05,
         val minScale: Double = 0.03,
         val maxScale: Double = 30.0,
         /** Share of textured reference cells that must line up; see [PhotometricCheck]. */
-        val minPhotometricScore: Double = 0.5
+        val minPhotometricScore: Double = 0.4
     )
 
     data class Match(
@@ -147,6 +153,7 @@ class GeometricVerifier(
             val reference = references[index]
             val inlierSpread = spread(result.inlierRefPoints) / keypointArea(reference).coerceAtLeast(1.0)
             if (inlierSpread < params.minInlierSpread) return null
+            if (result.inliers.toDouble() / reference.keypointCount < params.minCoverage) return null
             val corners = projectCorners(result.matrix, reference.width, reference.height) ?: return null
             if (!isPlausible(corners, reference, frameWidth, frameHeight)) return null
             val photometric = frameGray?.let { PhotometricCheck.score(reference, result.matrix, it) }

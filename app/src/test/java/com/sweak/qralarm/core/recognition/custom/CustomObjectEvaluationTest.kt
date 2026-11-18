@@ -64,7 +64,7 @@ class CustomObjectEvaluationTest {
 
     /** Loose limits, so every plausible candidate is recorded for offline threshold analysis. */
     private val diagnosticParams = GeometricVerifier.Params(
-        minInliers = 8, minInlierRatio = 0.0, minInlierSpread = 0.0, minPhotometricScore = 0.0
+        minInliers = 8, minInlierRatio = 0.0, minInlierSpread = 0.0, minCoverage = 0.0, minPhotometricScore = 0.0
     )
     private val csv = StringBuilder("set,target,test,label,frame,inliers,good,ratio,spread,coverage,photometric\n")
 

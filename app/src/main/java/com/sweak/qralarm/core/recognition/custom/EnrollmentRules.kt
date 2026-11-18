@@ -22,7 +22,9 @@ object EnrollmentRules {
     const val GATE_MAX = 0.60f
 
     /** Consistency between two photos of the same item from different angles is a looser test. */
-    val CONSISTENCY_PARAMS = GeometricVerifier.Params(minInliers = 12, minInlierRatio = 0.2, minInlierSpread = 0.05)
+    val CONSISTENCY_PARAMS = GeometricVerifier.Params(
+        minInliers = 12, minInlierRatio = 0.2, minInlierSpread = 0.05, minCoverage = 0.0
+    )
 
     enum class ShotIssue { BLURRY, TOO_LITTLE_DETAIL }
 
