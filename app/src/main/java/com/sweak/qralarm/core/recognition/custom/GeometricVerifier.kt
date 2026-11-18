@@ -55,22 +55,30 @@ class GeometricVerifier(
         val coverage: Double = 0.0
     )
 
-    private val matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING)
     private val referenceDescriptors: List<Mat> = references.map {
-        OrbFeatures(it.keypoints, it.descriptors).descriptorMat()
+        KeypointFeatures(it.keypoints, it.descriptors).descriptorMat()
+    }
+
+    /** One trained index per reference, built once: frames are matched against it many times. */
+    private val matchers: List<DescriptorMatcher?> = referenceDescriptors.map { descriptors ->
+        if (descriptors.rows() < params.minGoodMatches) null
+        else DescriptorMatcher.create(DescriptorMatcher.FLANNBASED).apply {
+            add(listOf(descriptors))
+            train()
+        }
     }
 
     /**
      * The best passing reference, or null when none passes. [frameGray] enables the photometric
      * check; without it only the keypoint geometry is tested.
      */
-    fun verify(frame: OrbFeatures, frameWidth: Int, frameHeight: Int, frameGray: Mat? = null): Match? =
+    fun verify(frame: KeypointFeatures, frameWidth: Int, frameHeight: Int, frameGray: Mat? = null): Match? =
         candidates(frame, frameWidth, frameHeight, frameGray)
             .filter { (it.photometricScore ?: 1.0) >= params.minPhotometricScore }
             .maxByOrNull { it.inliers }
 
     /** Every reference that passes the geometric checks, with its photometric score, unfiltered. */
-    fun candidates(frame: OrbFeatures, frameWidth: Int, frameHeight: Int, frameGray: Mat?): List<Match> {
+    fun candidates(frame: KeypointFeatures, frameWidth: Int, frameHeight: Int, frameGray: Mat?): List<Match> {
         if (frame.count < params.minGoodMatches) return emptyList()
         val frameDescriptors = frame.descriptorMat()
         try {
@@ -82,7 +90,7 @@ class GeometricVerifier(
     }
 
     /** Diagnostic: inlier count of the best reference whether or not it passes. */
-    fun bestInliers(frame: OrbFeatures): Int {
+    fun bestInliers(frame: KeypointFeatures): Int {
         if (frame.count < params.minGoodMatches) return 0
         val frameDescriptors = frame.descriptorMat()
         try {
@@ -96,11 +104,12 @@ class GeometricVerifier(
 
     private class Homography(val matrix: Mat, val inliers: Int, val good: Int, val inlierRefPoints: List<Point>)
 
-    private fun homography(index: Int, frame: OrbFeatures, frameDescriptors: Mat): Homography? {
+    private fun homography(index: Int, frame: KeypointFeatures, frameDescriptors: Mat): Homography? {
         val reference = references[index]
         if (reference.keypointCount < params.minGoodMatches) return null
         val knn = mutableListOf<MatOfDMatch>()
-        matcher.knnMatch(frameDescriptors, referenceDescriptors[index], knn, 2)
+        val matcher = matchers[index] ?: return null
+        matcher.knnMatch(frameDescriptors, knn, 2)
         // Ratio test, then keep a single frame match per reference keypoint.
         val best = HashMap<Int, org.opencv.core.DMatch>()
         knn.forEach { pair ->
@@ -125,7 +134,7 @@ class GeometricVerifier(
         val mask = Mat()
         try {
             val matrix = Calib3d.findHomography(
-                source, destination, Calib3d.RANSAC, params.reprojectionThreshold, mask, 2000, 0.995
+                source, destination, Calib3d.USAC_MAGSAC, params.reprojectionThreshold, mask, 5000, 0.999
             )
             if (matrix.empty()) return null
             val inlierFlags = ByteArray(good.size).also { mask.get(0, 0, it) }
@@ -140,7 +149,7 @@ class GeometricVerifier(
 
     private fun verifyAgainst(
         index: Int,
-        frame: OrbFeatures,
+        frame: KeypointFeatures,
         frameDescriptors: Mat,
         frameWidth: Int,
         frameHeight: Int,
@@ -255,6 +264,7 @@ class GeometricVerifier(
     }
 
     override fun close() {
+        matchers.forEach { it?.clear() }
         referenceDescriptors.forEach { it.release() }
     }
 }

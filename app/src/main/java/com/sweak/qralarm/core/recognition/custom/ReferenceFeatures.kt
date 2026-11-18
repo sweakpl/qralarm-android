@@ -50,8 +50,9 @@ class ReferenceFeatures(
     }
 
     companion object {
-        const val DESCRIPTOR_BYTES = 32
-        const val FORMAT_VERSION = 1
+        const val DESCRIPTOR_BYTES = 128
+        /** 2: SIFT descriptors. Files of another version are rejected and need re-enrolling. */
+        const val FORMAT_VERSION = 2
         private const val MAGIC = 0x51524F46 // "QROF"
 
         /** Returns null for files written by another format version, which are then recomputed. */

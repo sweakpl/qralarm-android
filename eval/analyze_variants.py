@@ -38,6 +38,7 @@ def main():
     for variant, rows in sorted(data.items()):
         for r in rows:
             r["inliers"] = int(r["inliers"]); r["spread"] = float(r["spread"]); r["coverage"] = float(r["coverage"])
+            r["photometric"] = float(r.get("photometric") or 0.0)
         obj = [r for r in rows if not r["target"].startswith("grocery:")]
         gro = [r for r in rows if r["target"].startswith("grocery:")]
         seqs = collections.defaultdict(list)
@@ -46,9 +47,10 @@ def main():
         for v in seqs.values():
             v.sort(key=lambda r: int(r["frame"]))
         results = []
-        for mi, sp, cov, (req, win) in itertools.product(
-                [15, 20, 25, 30, 40, 50], [0.0, 0.12, 0.25], [0.0, 0.05], [(4, 4), (4, 6), (3, 5)]):
-            ok = lambda r: r["inliers"] >= mi and r["spread"] >= sp and r["coverage"] >= cov
+        photos = [0.0, 0.2, 0.3, 0.4, 0.5] if variant.endswith("HP") else [0.0]
+        for mi, sp, cov, ph, (req, win) in itertools.product(
+                [15, 20, 25, 30, 40], [0.0, 0.12, 0.25], [0.0, 0.05], photos, [(4, 4), (4, 6)]):
+            ok = lambda r: r["inliers"] >= mi and r["spread"] >= sp and r["coverage"] >= cov and r["photometric"] >= ph
             td = tdc = npos = nposc = fd = 0
             for (t, test, lab), v in seqs.items():
                 fired = confirms([ok(r) for r in v], req, win)
@@ -61,9 +63,14 @@ def main():
                     fd += 1
             ffa = sum(ok(r) for r in obj if r["label"] != "pos")
             g = lambda lab: sum(ok(r) for r in gro if r["label"] == lab) / max(1, sum(r["label"] == lab for r in gro))
-            results.append(((req, win), (mi, sp, cov), td / max(npos, 1), tdc / max(nposc, 1), ffa, fd, g("pos"), g("hard"), g("neg")))
+            results.append(((req, win), (mi, sp, cov, ph), td / max(npos, 1), tdc / max(nposc, 1), ffa, fd, g("pos"), g("hard"), g("neg")))
         safe = [x for x in results if x[4] == 0 and x[5] == 0]
-        for x in sorted(safe, key=lambda x: (-x[2], x[7]))[:5]:
+        print(f"-- {variant}: best recall, then best recall with same-brand <= 3% and <= 1%")
+        picks = sorted(safe, key=lambda x: (-x[2], x[7]))[:3]
+        for cap in (0.03, 0.01):
+            capped = [x for x in safe if x[7] <= cap]
+            picks += sorted(capped, key=lambda x: (-x[2], x[7]))[:2]
+        for x in picks:
             print(variant, x[0], x[1], f"{x[2]:.3f} / {x[3]:.3f}", x[4], x[5], f"{x[6]:.3f} / {x[7]:.4f} / {x[8]:.4f}")
 
 

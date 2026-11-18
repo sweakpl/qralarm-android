@@ -43,7 +43,7 @@ object ReferenceBuilder {
     class Built(val features: ReferenceFeatures, val sharpness: Double)
 
     /** [crop] is the already cropped single-channel reference image. */
-    fun build(crop: Mat, extractor: OrbExtractor, embedding: FloatArray?): Built {
+    fun build(crop: Mat, extractor: KeypointExtractor, embedding: FloatArray?): Built {
         val orb = extractor.extract(crop)
         val thumbnail = resizeToMaxSide(crop, PhotometricCheck.THUMBNAIL_MAX_SIDE)
         val thumbnailBytes = ByteArray(thumbnail.cols() * thumbnail.rows()).also { thumbnail.get(0, 0, it) }

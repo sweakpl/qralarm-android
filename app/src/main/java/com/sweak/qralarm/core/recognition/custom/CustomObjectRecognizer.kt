@@ -23,7 +23,7 @@ class CustomObjectRecognizer(
 
     /** [frameEmbeddings] are embeddings of the frame and of crops of it; null skips the gate. */
     fun evaluate(
-        frame: OrbFeatures,
+        frame: KeypointFeatures,
         frameWidth: Int,
         frameHeight: Int,
         frameGray: Mat? = null,

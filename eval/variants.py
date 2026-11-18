@@ -5,7 +5,7 @@ every variant, so thresholds and confirmation rules can be swept without recompu
 The winning variant is then ported to the app and confirmed with CustomObjectEvaluationTest.
 
 Usage: python -I eval/variants.py <eval_dir> <out_csv> <variant> [<variant> ...]
-Variants: orb-H, sift-H, sift-H10, sift-F (AKAZE is not in OpenCV 5 main)
+Variants: orb-H, sift-H, sift-HP (with photometric check), sift-H10, sift-F (AKAZE is not in OpenCV 5 main)
 """
 import csv
 import sys
@@ -77,13 +77,43 @@ def cached_frame(feat, det, path):
     return pts, des
 
 
-def evaluate(frame, refs, geometry):
-    """Best reference: (inliers, good, spread, coverage)."""
+THUMB, GRID, MIN_STD, CELL_NCC = 192, 6, 10.0, 0.45
+
+
+def photometric(ref_img, H, frame_img):
+    """Same as the app's PhotometricCheck: share of textured reference cells matching the warp."""
+    h, w = ref_img.shape
+    s = THUMB / max(h, w)
+    tw, th = round(w * s), round(h * s)
+    thumb = cv2.GaussianBlur(cv2.resize(ref_img, (tw, th), interpolation=cv2.INTER_AREA), (3, 3), 0)
+    S = np.diag([w / tw, h / th, 1.0])
+    M = H @ S
+    warped = cv2.warpPerspective(frame_img, M, (tw, th), flags=cv2.INTER_LINEAR | cv2.WARP_INVERSE_MAP)
+    valid = cv2.warpPerspective(np.full_like(frame_img, 255), M, (tw, th), flags=cv2.INTER_NEAREST | cv2.WARP_INVERSE_MAP)
+    warped = cv2.GaussianBlur(warped, (3, 3), 0)
+    cw, ch = tw // GRID, th // GRID
+    textured = matched = 0
+    for gy in range(GRID):
+        for gx in range(GRID):
+            rc = thumb[gy * ch:(gy + 1) * ch, gx * cw:(gx + 1) * cw]
+            if rc.std() < MIN_STD:
+                continue
+            textured += 1
+            if (valid[gy * ch:(gy + 1) * ch, gx * cw:(gx + 1) * cw] > 0).mean() < 0.9:
+                continue
+            fc = warped[gy * ch:(gy + 1) * ch, gx * cw:(gx + 1) * cw]
+            if cv2.matchTemplate(fc, rc, cv2.TM_CCOEFF_NORMED)[0, 0] >= CELL_NCC:
+                matched += 1
+    return matched / textured if textured else 0.0
+
+
+def evaluate(frame, refs, geometry, frame_img=None):
+    """Best reference: (inliers, good, spread, coverage, photometric)."""
     fpts, fdes = frame
-    best = (0, 0, 0.0, 0.0)
+    best = (0, 0, 0.0, 0.0, 0.0)
     if fdes is None or len(fdes) < 12:
         return best
-    for rpts, rdes, rarea, m in refs:
+    for rpts, rdes, rarea, m, rimg in refs:
         knn = m.knnMatch(fdes, k=2)
         good = {}
         for pair in knn:
@@ -99,7 +129,7 @@ def evaluate(frame, refs, geometry):
         if geometry == "F":
             M, mask = cv2.findFundamentalMat(src, dst, cv2.USAC_MAGSAC, 1.5, 0.999, 5000)
         else:
-            thr = 10.0 if geometry == "H10" else 5.0
+            thr = 10.0 if geometry == "H10" else 5.0  # "HP": homography + photometric
             M, mask = cv2.findHomography(src, dst, cv2.USAC_MAGSAC, thr, maxIters=5000, confidence=0.999)
         if M is None or mask is None:
             continue
@@ -107,7 +137,8 @@ def evaluate(frame, refs, geometry):
         if len(inl) < 3:
             continue
         spread = cv2.contourArea(cv2.convexHull(inl)) / max(rarea, 1.0)
-        res = (len(inl), len(g), spread, len(inl) / len(rpts))
+        photo = photometric(rimg, M, frame_img) if (geometry == "HP" and frame_img is not None and len(inl) >= 12) else 0.0
+        res = (len(inl), len(g), spread, len(inl) / len(rpts), photo)
         if res[0] > best[0]:
             best = res
     return best
@@ -120,7 +151,7 @@ def prepare_refs(det, files):
         pts, des = features(det, c)
         area = cv2.contourArea(cv2.convexHull(pts)) if len(pts) >= 3 else 1.0
         if len(pts) >= 150:  # enrollment detail rule
-            refs.append((pts, des, area, matcher(des)))
+            refs.append((pts, des, area, matcher(des), c))
     return refs
 
 
@@ -136,7 +167,8 @@ def job(args):
         return []
     rows = []
     for test_name, label, frame_idx, path in tests:
-        r = evaluate(cached_frame(feat, fdet, path), refs, geom)
+        img = load_gray(path, FRAME_MAX) if geom == "HP" else None
+        r = evaluate(cached_frame(feat, fdet, path), refs, geom, img)
         rows.append([variant, target, test_name, label, frame_idx, *r])
     return rows
 
@@ -193,7 +225,7 @@ def main():
         pool.map(_warm, [(f, p, root / "cache") for f in feats for p in frames], chunksize=64)
     with Pool(4) as pool, open(out, "w", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["variant", "target", "test", "label", "frame", "inliers", "good", "spread", "coverage"])
+        w.writerow(["variant", "target", "test", "label", "frame", "inliers", "good", "spread", "coverage", "photometric"])
         for i, rows in enumerate(pool.imap_unordered(job, jobs)):
             w.writerows(rows)
             f.flush()

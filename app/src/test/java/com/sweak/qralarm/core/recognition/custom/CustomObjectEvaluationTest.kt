@@ -25,8 +25,8 @@ class CustomObjectEvaluationTest {
     }
 
     /** Same rules the enrollment screen applies; null when enrollment would be refused. */
-    private fun enroll(photos: List<File>, extractor: OrbExtractor): List<ReferenceFeatures>? {
-        val shots = photos.mapNotNull { file ->
+    private fun enroll(photos: List<File>, extractor: KeypointExtractor): List<ReferenceFeatures>? {
+        val shots = photos.take(EnrollmentRules.MAX_REFERENCES).mapNotNull { file ->
             val full = gray(file, 1280)
             val crop = ReferenceBuilder.cropToGuideBox(full)
             val built = ReferenceBuilder.build(crop, extractor, null)
@@ -39,12 +39,12 @@ class CustomObjectEvaluationTest {
         return kept.takeIf { it.size >= EnrollmentRules.MIN_REFERENCES }
     }
 
-    private class Frame(val features: OrbFeatures, val gray: Mat) {
+    private class Frame(val features: KeypointFeatures, val gray: Mat) {
         val width get() = gray.cols()
         val height get() = gray.rows()
     }
 
-    private fun frameFeatures(file: File, extractor: OrbExtractor): Frame {
+    private fun frameFeatures(file: File, extractor: KeypointExtractor): Frame {
         val frame = gray(file, ReferenceBuilder.FRAME_MAX_SIDE)
         return Frame(extractor.extract(frame), frame)
     }
@@ -84,8 +84,8 @@ class CustomObjectEvaluationTest {
         val root = File(evalDir, "GroceryStoreDataset/dataset")
         assumeTrue(root.isDirectory)
         val classDirs = File(root, "train/Packages").listFiles()!!.flatMap { it.listFiles()!!.toList() }.sorted()
-        val frameExtractor = OrbExtractor(OrbExtractor.FRAME_FEATURES)
-        val referenceExtractor = OrbExtractor(OrbExtractor.REFERENCE_FEATURES)
+        val frameExtractor = KeypointExtractor(KeypointExtractor.FRAME_FEATURES)
+        val referenceExtractor = KeypointExtractor(KeypointExtractor.REFERENCE_FEATURES)
 
         val enrolled = classDirs.mapNotNull { dir ->
             val photos = dir.listFiles()!!.sorted().take(EnrollmentRules.MAX_REFERENCES)
@@ -133,21 +133,21 @@ class CustomObjectEvaluationTest {
     fun objectronInstances() {
         val root = File(evalDir, "objectron")
         assumeTrue(root.isDirectory)
-        val frameExtractor = OrbExtractor(OrbExtractor.FRAME_FEATURES)
-        val referenceExtractor = OrbExtractor(OrbExtractor.REFERENCE_FEATURES)
+        val frameExtractor = KeypointExtractor(KeypointExtractor.FRAME_FEATURES)
+        val referenceExtractor = KeypointExtractor(KeypointExtractor.REFERENCE_FEATURES)
         val instances = root.listFiles()!!.flatMap { it.listFiles()!!.toList() }.sorted()
             .map { dir -> dir to dir.listFiles()!!.filter { it.extension == "jpg" }.sorted() }
             .filter { it.second.size >= 20 }
 
         class Split(val name: String, val category: String, val references: List<ReferenceFeatures>?, val test: List<Frame>)
+        // Enrollment as the app does it: frames spread over a turn of the item. Test frames are
+        // the ones in between, at least two frames away from any enrollment frame.
         val splits = instances.map { (dir, frames) ->
-            val enrollPart = frames.take((frames.size * 0.4).toInt())
-            val photos = (0 until EnrollmentRules.MAX_REFERENCES).map {
-                enrollPart[it * (enrollPart.size - 1) / (EnrollmentRules.MAX_REFERENCES - 1)]
-            }
+            val enrollIndices = (0 until ENROLL_FRAMES).map { it * (frames.size - 1) / (ENROLL_FRAMES - 1) }
+            val excluded = enrollIndices.flatMap { (it - 2)..(it + 2) }.toSet()
             Split(
-                dir.name, dir.parentFile!!.name, enroll(photos, referenceExtractor),
-                frames.drop(enrollPart.size).map { frameFeatures(it, frameExtractor) }
+                dir.name, dir.parentFile!!.name, enroll(enrollIndices.map { frames[it] }, referenceExtractor),
+                frames.indices.filter { it !in excluded }.map { frameFeatures(frames[it], frameExtractor) }
             )
         }
         val enrolled = splits.filter { it.references != null }
@@ -202,8 +202,8 @@ class CustomObjectEvaluationTest {
         val root = File(evalDir, "user")
         val manifest = File(root, "manifest.csv")
         assumeTrue(manifest.isFile)
-        val frameExtractor = OrbExtractor(OrbExtractor.FRAME_FEATURES)
-        val referenceExtractor = OrbExtractor(OrbExtractor.REFERENCE_FEATURES)
+        val frameExtractor = KeypointExtractor(KeypointExtractor.FRAME_FEATURES)
+        val referenceExtractor = KeypointExtractor(KeypointExtractor.REFERENCE_FEATURES)
         val rows = manifest.readLines().drop(1).filter { it.isNotBlank() }.map { it.split(",") }
         val items = rows.map { it[1] }.distinct().associateWith { item ->
             enroll(File(root, "$item/enroll").listFiles().orEmpty().sorted(), referenceExtractor)
@@ -251,6 +251,7 @@ class CustomObjectEvaluationTest {
     companion object {
         /** Frames were extracted at 6 per second. */
         const val FRAME_INTERVAL_MS = 167L
+        const val ENROLL_FRAMES = 8
         val evalDir: File? = System.getenv("QRALARM_EVAL_DIR")?.let(::File)
 
         @BeforeClass @JvmStatic

@@ -7,7 +7,7 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.sweak.qralarm.core.domain.custom_object.CustomObjectReference
 import com.sweak.qralarm.core.recognition.custom.EnrollmentRules
-import com.sweak.qralarm.core.recognition.custom.OrbExtractor
+import com.sweak.qralarm.core.recognition.custom.KeypointExtractor
 import com.sweak.qralarm.core.recognition.custom.ReferenceBuilder
 import com.sweak.qralarm.core.recognition.custom.ReferenceFeatures
 import com.sweak.qralarm.core.ui.components.object_scanner.CustomObjectAnalyzer
@@ -44,7 +44,7 @@ class EnrollmentAnalyzer(
     private class Test(val references: List<ReferenceFeatures>, val embeddingThreshold: Float)
     @Volatile private var test: Test? = null
     private var tester: CustomObjectAnalyzer? = null
-    private var extractor: OrbExtractor? = null
+    private var extractor: KeypointExtractor? = null
     private var embedder: ImageEmbedderEngine? = null
 
     fun requestCapture() = captureRequested.set(true)
@@ -133,7 +133,7 @@ class EnrollmentAnalyzer(
             Imgproc.cvtColor(rgba, gray, Imgproc.COLOR_RGBA2GRAY)
             rgba.release()
             val built = ReferenceBuilder.build(
-                gray, extractor ?: OrbExtractor(OrbExtractor.REFERENCE_FEATURES).also { extractor = it }, embedding
+                gray, extractor ?: KeypointExtractor(KeypointExtractor.REFERENCE_FEATURES).also { extractor = it }, embedding
             )
             gray.release()
             val jpeg = ByteArrayOutputStream().use { out ->

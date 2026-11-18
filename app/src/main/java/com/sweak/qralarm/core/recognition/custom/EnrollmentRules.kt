@@ -58,7 +58,7 @@ object EnrollmentRules {
             val others = references.filterIndexed { i, _ -> i != index }
             GeometricVerifier(others, CONSISTENCY_PARAMS).use { verifier ->
                 val self = references[index]
-                verifier.verify(OrbFeatures(self.keypoints, self.descriptors), self.width, self.height) == null
+                verifier.verify(KeypointFeatures(self.keypoints, self.descriptors), self.width, self.height) == null
             }
         }
     }

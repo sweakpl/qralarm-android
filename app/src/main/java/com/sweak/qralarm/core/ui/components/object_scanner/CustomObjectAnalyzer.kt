@@ -7,7 +7,7 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.sweak.qralarm.core.domain.recognition.ObjectConfirmation
 import com.sweak.qralarm.core.recognition.custom.CustomObjectRecognizer
-import com.sweak.qralarm.core.recognition.custom.OrbExtractor
+import com.sweak.qralarm.core.recognition.custom.KeypointExtractor
 import com.sweak.qralarm.core.recognition.custom.ReferenceBuilder
 import com.sweak.qralarm.core.recognition.custom.ReferenceFeatures
 import org.opencv.android.Utils
@@ -37,7 +37,7 @@ class CustomObjectAnalyzer(
 
     private var live: List<Live>? = null
     private val confirmed = mutableSetOf<Long>()
-    private var extractor: OrbExtractor? = null
+    private var extractor: KeypointExtractor? = null
     private var embedder: ImageEmbedderEngine? = null
     private var failed = false
     private var rotation: Int? = null
@@ -57,7 +57,7 @@ class CustomObjectAnalyzer(
             val timestampMillis = image.imageInfo.timestamp / 1_000_000
             val engines = live ?: run {
                 ImageEmbedderEngine.ensureOpenCv()
-                extractor = OrbExtractor(OrbExtractor.FRAME_FEATURES)
+                extractor = KeypointExtractor(KeypointExtractor.FRAME_FEATURES)
                 if (targets.any { t -> t.references.any { it.embedding.isNotEmpty() } }) {
                     embedder = ImageEmbedderEngine(context)
                 }
