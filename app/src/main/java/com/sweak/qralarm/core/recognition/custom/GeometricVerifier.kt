@@ -42,7 +42,11 @@ class GeometricVerifier(
         /** Projected reference corners in frame pixels: x0, y0, ... x3, y3. */
         val corners: FloatArray,
         /** Null when no frame image or no reference thumbnail was available. */
-        val photometricScore: Double?
+        val photometricScore: Double?,
+        /** Area of the inliers' hull as a share of the reference keypoints' hull. */
+        val inlierSpread: Double = 0.0,
+        /** Inliers as a share of the reference's keypoints. */
+        val coverage: Double = 0.0
     )
 
     private val matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING)
@@ -141,11 +145,15 @@ class GeometricVerifier(
             if (result.inliers < params.minInliers) return null
             if (result.inliers.toDouble() / result.good < params.minInlierRatio) return null
             val reference = references[index]
-            if (spread(result.inlierRefPoints) < params.minInlierSpread * keypointArea(reference)) return null
+            val inlierSpread = spread(result.inlierRefPoints) / keypointArea(reference).coerceAtLeast(1.0)
+            if (inlierSpread < params.minInlierSpread) return null
             val corners = projectCorners(result.matrix, reference.width, reference.height) ?: return null
             if (!isPlausible(corners, reference, frameWidth, frameHeight)) return null
             val photometric = frameGray?.let { PhotometricCheck.score(reference, result.matrix, it) }
-            return Match(index, result.inliers, result.good, corners, photometric)
+            return Match(
+                index, result.inliers, result.good, corners, photometric,
+                inlierSpread, result.inliers.toDouble() / reference.keypointCount
+            )
         } finally {
             result.matrix.release()
         }

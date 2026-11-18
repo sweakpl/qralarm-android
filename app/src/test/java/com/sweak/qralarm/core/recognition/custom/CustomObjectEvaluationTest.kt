@@ -62,6 +62,20 @@ class CustomObjectEvaluationTest {
         }
     }
 
+    /** Loose limits, so every plausible candidate is recorded for offline threshold analysis. */
+    private val diagnosticParams = GeometricVerifier.Params(
+        minInliers = 8, minInlierRatio = 0.0, minInlierSpread = 0.0, minPhotometricScore = 0.0
+    )
+    private val csv = StringBuilder("set,target,test,label,frame,inliers,good,ratio,spread,coverage,photometric\n")
+
+    private fun record(set: String, target: String, test: String, label: String, frame: Int, verifier: GeometricVerifier, f: Frame) {
+        val m = verifier.candidates(f.features, f.width, f.height, f.gray).maxByOrNull { it.inliers }
+        csv.append("$set,$target,$test,$label,$frame,").append(
+            if (m == null) "0,0,0,0,0,0" else
+                "${m.inliers},${m.goodMatches},${"%.3f".format(m.inliers.toDouble() / m.goodMatches)},${"%.3f".format(m.inlierSpread)},${"%.3f".format(m.coverage)},${"%.3f".format(m.photometricScore ?: 1.0)}"
+        ).append('\n')
+    }
+
     private val report = StringBuilder()
     private fun log(line: String) { println(line); report.appendLine(line) }
 
@@ -88,6 +102,16 @@ class CustomObjectEvaluationTest {
         val hard = mutableListOf<Double?>()
         val falseAccepts = mutableListOf<String>()
         val threshold = GeometricVerifier.Params().minPhotometricScore
+        enrolled.forEach { target ->
+            GeometricVerifier(target.references, diagnosticParams).use { v ->
+                tests.forEachIndexed { i, (name, group, frame) ->
+                    val label = if (name == target.name) "pos" else if (group == target.group) "hard" else "neg"
+                    record("grocery", target.name, name, label, i, v, frame)
+                }
+            }
+        }
+        File("build/reports").mkdirs()
+        File("build/reports/candidates-grocery.csv").writeText(csv.toString())
         enrolled.forEach { target ->
             GeometricVerifier(target.references).use { verifier ->
                 tests.forEach { (name, group, frame) ->
@@ -129,6 +153,16 @@ class CustomObjectEvaluationTest {
         val enrolled = splits.filter { it.references != null }
         log("## Objectron: ${splits.size} instances, ${enrolled.size} enrollable")
 
+        enrolled.forEach { target ->
+            GeometricVerifier(target.references!!, diagnosticParams).use { v ->
+                splits.forEach { other ->
+                    val label = if (other === target) "pos" else if (other.category == target.category) "hard" else "neg"
+                    other.test.forEachIndexed { i, f -> record("objectron", target.name, other.name, label, i, v, f) }
+                }
+            }
+        }
+        File("build/reports").mkdirs()
+        File("build/reports/candidates-objectron.csv").writeText(csv.toString())
         var dismissed = 0; var dismissedWithin3s = 0
         var frameTp = 0; var framePos = 0; var frameFp = 0; var frameNeg = 0
         var falseDismissals = 0; var negativeSequences = 0
