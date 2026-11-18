@@ -19,3 +19,5 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# OpenCV's Java classes are called from its native library through JNI.
+-keep class org.opencv.** { *; }

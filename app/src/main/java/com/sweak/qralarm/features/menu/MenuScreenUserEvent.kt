@@ -11,4 +11,5 @@ sealed class MenuScreenUserEvent {
     data object GoToApplicationSettingsClicked : MenuScreenUserEvent()
     data object OnThemeClicked : MenuScreenUserEvent()
     data object OnBackupClicked : MenuScreenUserEvent()
+    data object OnMyObjectsClicked : MenuScreenUserEvent()
 }

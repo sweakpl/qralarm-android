@@ -21,7 +21,11 @@ class AlarmsRepositoryImpl @Inject constructor(
 ) : AlarmsRepository {
 
     override suspend fun addOrEditAlarm(alarm: Alarm): Long {
-        require(ObjectCategories.isValid(alarm.dismissalMethod.name, alarm.objectCategoryId))
+        require(
+            ObjectCategories.isValid(
+                alarm.dismissalMethod.name, alarm.objectCategoryId, alarm.customObjectId
+            )
+        )
         return alarmsDao.upsertAlarm(
             alarmEntity = AlarmEntity(
                 alarmId = alarm.alarmId,
@@ -48,6 +52,7 @@ class AlarmsRepositoryImpl @Inject constructor(
                 areVibrationsEnabled = alarm.areVibrationsEnabled,
                 dismissalMethod = alarm.dismissalMethod.name,
                 objectCategoryId = alarm.objectCategoryId,
+                customObjectId = alarm.customObjectId,
                 assignedCodeId = alarm.assignedCode?.codeId,
                 isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
                 cancelLockDurationInMinutes = alarm.cancelLockDurationInMinutes,
@@ -184,6 +189,7 @@ class AlarmsRepositoryImpl @Inject constructor(
             areVibrationsEnabled = alarmEntity.areVibrationsEnabled,
             dismissalMethod = DismissalMethod.valueOf(alarmEntity.dismissalMethod),
             objectCategoryId = alarmEntity.objectCategoryId,
+            customObjectId = alarmEntity.customObjectId,
             assignedCode = resolveCode(alarmEntity.assignedCodeId),
             isOpenCodeLinkEnabled = alarmEntity.isOpenCodeLinkEnabled,
             cancelLockDurationInMinutes = alarmEntity.cancelLockDurationInMinutes,

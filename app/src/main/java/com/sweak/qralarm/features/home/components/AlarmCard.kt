@@ -108,6 +108,15 @@ fun AlarmCard(
                     style = MaterialTheme.typography.bodyLarge
                 )
 
+                if (alarmWrapper.dismissalMethod == DismissalMethod.CUSTOM_OBJECT) {
+                    Text(
+                        text = stringResource(
+                            R.string.custom_object_alarm_summary, alarmWrapper.customObjectName.orEmpty()
+                        ),
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
+
                 if (alarmWrapper.dismissalMethod == DismissalMethod.OBJECT) {
                     Text(
                         text = stringResource(R.string.object_alarm_summary,

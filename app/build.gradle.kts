@@ -44,9 +44,20 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        // OpenCV ships large native libraries; only ARM phones are a real-world target.
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+        }
     }
 
     buildTypes {
+        debug {
+            // Emulators for local testing.
+            ndk {
+                abiFilters += listOf("x86_64")
+            }
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -82,6 +93,13 @@ android {
         noCompress += "tflite"
     }
     sourceSets.getByName("androidTest").assets.directories.add("$projectDir/schemas")
+    testOptions {
+        unitTests.all {
+            it.maxHeapSize = "2g"
+            // Ground-truth recognition data, see eval/README.md; the evaluation is skipped without it.
+            System.getenv("QRALARM_EVAL_DIR")?.let { dir -> it.environment("QRALARM_EVAL_DIR", dir) }
+        }
+    }
     dependenciesInfo {
         // Do not include binary representation of app dependencies:
         includeInApk = false
@@ -126,8 +144,10 @@ dependencies {
     implementation(libs.androidx.camera.compose)
     implementation(libs.zxing.core)
     implementation(libs.mediapipe.tasks.vision)
+    implementation(libs.opencv.android)
 
     testImplementation(libs.junit)
+    testImplementation(libs.opencv.desktop)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.room.testing)

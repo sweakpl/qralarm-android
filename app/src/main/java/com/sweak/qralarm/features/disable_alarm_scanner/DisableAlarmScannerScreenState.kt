@@ -9,6 +9,7 @@ data class DisableAlarmScannerScreenState(
     val codeName: String? = null,
     val shouldShowIncorrectCodeWarning: Boolean = false,
     val objectName: String? = null,
+    val isCustomObject: Boolean = false,
     val detectionBox: ObjectDetectionBox? = null,
     val confirmationProgress: Float = 0f,
     val recognitionError: Boolean = false

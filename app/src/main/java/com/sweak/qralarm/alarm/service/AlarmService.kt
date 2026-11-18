@@ -95,19 +95,32 @@ class AlarmService : Service() {
         }
     }
 
+    /**
+     * While the emergency screen is open it sends a hold every few seconds and the alarm stays
+     * silent. A release, or a missing hold (the app was closed or killed), makes it ring again.
+     * Runs on the main thread, like every receiver registered without a handler.
+     */
     private val emergencyTaskAlarmMuteReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            temporaryAlarmMuteJob?.cancel()
-            emergencyTaskAlarmMuteJob?.cancel()
+            when (intent?.action) {
+                ACTION_EMERGENCY_HOLD_MUTE -> {
+                    temporaryAlarmMuteJob?.cancel()
+                    val wasHolding = emergencyTaskAlarmMuteJob != null
+                    emergencyTaskAlarmMuteJob?.cancel()
+                    if (!wasHolding) alarmRingtonePlayer.stop()
+                    val watchdog = serviceScope.launch(Dispatchers.Main) {
+                        delay(EMERGENCY_HOLD_WATCHDOG_SECONDS.seconds)
+                        emergencyTaskAlarmMuteJob = null
+                        startAlarm()
+                    }
+                    emergencyTaskAlarmMuteJob = watchdog
+                }
 
-            serviceScope.launch(Dispatchers.Main) {
-                alarmRingtonePlayer.stop()
-
-                emergencyTaskAlarmMuteJob = serviceScope.launch(Dispatchers.Main) {
-                    delay(EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS.seconds)
+                ACTION_EMERGENCY_RELEASE_MUTE -> {
+                    val hold = emergencyTaskAlarmMuteJob ?: return
+                    hold.cancel()
+                    emergencyTaskAlarmMuteJob = null
                     startAlarm()
-                }.also {
-                    it.invokeOnCompletion { emergencyTaskAlarmMuteJob = null }
                 }
             }
         }
@@ -182,7 +195,10 @@ class AlarmService : Service() {
             ContextCompat.registerReceiver(
                 this@AlarmService,
                 emergencyTaskAlarmMuteReceiver,
-                IntentFilter(ACTION_EMERGENCY_TASK_ALARM_MUTE),
+                IntentFilter().apply {
+                    addAction(ACTION_EMERGENCY_HOLD_MUTE)
+                    addAction(ACTION_EMERGENCY_RELEASE_MUTE)
+                },
                 ContextCompat.RECEIVER_NOT_EXPORTED
             )
 
@@ -400,8 +416,10 @@ class AlarmService : Service() {
         const val EXTRA_TEMPORARY_MUTE_DURATION_SECONDS = "muteDurationSeconds"
         const val DEFAULT_TEMPORARY_MUTE_DURATION_SECONDS = 15
 
-        const val ACTION_EMERGENCY_TASK_ALARM_MUTE = "com.sweak.qralarm.EMERGENCY_TASK_ALARM_MUTE"
-        const val EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS = 10
+        const val ACTION_EMERGENCY_HOLD_MUTE = "com.sweak.qralarm.EMERGENCY_HOLD_MUTE"
+        const val ACTION_EMERGENCY_RELEASE_MUTE = "com.sweak.qralarm.EMERGENCY_RELEASE_MUTE"
+        /** The emergency screen repeats its hold well within this time. */
+        const val EMERGENCY_HOLD_WATCHDOG_SECONDS = 45
 
         var isRunning = false
 

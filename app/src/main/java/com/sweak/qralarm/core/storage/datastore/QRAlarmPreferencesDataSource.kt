@@ -165,6 +165,30 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun setEmergencyTaskType(type: String) {
+        dataStore.edit { preferences ->
+            preferences[EMERGENCY_TASK_TYPE] = type
+        }
+    }
+
+    fun getEmergencyTaskType(): Flow<String?> {
+        return dataStore.data.map { preferences ->
+            preferences[EMERGENCY_TASK_TYPE]
+        }
+    }
+
+    suspend fun setHasMigratedEmergencyDefaultMatches(migrated: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[HAS_MIGRATED_EMERGENCY_DEFAULT_MATCHES] = migrated
+        }
+    }
+
+    fun getHasMigratedEmergencyDefaultMatches(): Flow<Boolean?> {
+        return dataStore.data.map { preferences ->
+            preferences[HAS_MIGRATED_EMERGENCY_DEFAULT_MATCHES]
+        }
+    }
+
     private val json = Json {
         classDiscriminator = "type"
         ignoreUnknownKeys = true
@@ -214,6 +238,9 @@ class QRAlarmPreferencesDataSource @Inject constructor(
         val EMERGENCY_REQUIRED_MATCHES = intPreferencesKey("emergencyRequiredMatches")
         val EMERGENCY_DISABLE_REPEATING_ALARMS =
             booleanPreferencesKey("emergencyDisableRepeatingAlarms")
+        val EMERGENCY_TASK_TYPE = stringPreferencesKey("emergencyTaskType")
+        val HAS_MIGRATED_EMERGENCY_DEFAULT_MATCHES =
+            booleanPreferencesKey("hasMigratedEmergencyDefaultMatches")
         val THEME = stringPreferencesKey("theme")
         val WHATS_NEW_LAST_SHOWN_VERSION_CODE = intPreferencesKey("whatsNewLastShownVersionCode")
     }

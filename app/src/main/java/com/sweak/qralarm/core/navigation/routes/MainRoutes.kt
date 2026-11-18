@@ -47,3 +47,13 @@ data object CodesManagementRoute : NavKey
 
 @Serializable
 data object BackupRoute : NavKey
+
+@Serializable
+data object MyObjectsRoute : NavKey
+
+/** [objectIdToReplace] 0 adds a new item; otherwise its photos are retaken. */
+@Serializable
+data class EnrollObjectRoute(val objectIdToReplace: Long) : NavKey
+
+@Serializable
+data object EmergencyExplanationsRoute : NavKey

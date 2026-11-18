@@ -8,6 +8,7 @@ import com.sweak.qralarm.core.domain.alarm.CodesRepository
 import com.sweak.qralarm.core.domain.alarm.MigrateCustomRingtonesToDeviceProtectedStorage
 import com.sweak.qralarm.core.domain.alarm.RescheduleAlarms
 import com.sweak.qralarm.core.domain.user.EMERGENCY_DEFAULT_REQUIRED_MATCHES
+import com.sweak.qralarm.core.domain.user.EMERGENCY_PREVIOUS_DEFAULT_REQUIRED_MATCHES
 import com.sweak.qralarm.core.domain.user.ShouldShowWhatsNew
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.domain.user.WHATS_NEW_VERSION_CODE
@@ -70,6 +71,18 @@ class MainViewModel @Inject constructor(
             userDataRepository.setEmergencyRequiredMatches(
                 matches = EMERGENCY_DEFAULT_REQUIRED_MATCHES
             )
+        }
+
+        // The default was lowered from 50 to 20 matches; move users still on the old default.
+        if (!userDataRepository.hasMigratedEmergencyDefaultMatches.first()) {
+            if (userDataRepository.emergencyRequiredMatches.first() ==
+                EMERGENCY_PREVIOUS_DEFAULT_REQUIRED_MATCHES
+            ) {
+                userDataRepository.setEmergencyRequiredMatches(
+                    matches = EMERGENCY_DEFAULT_REQUIRED_MATCHES
+                )
+            }
+            userDataRepository.setHasMigratedEmergencyDefaultMatches(migrated = true)
         }
     }
 

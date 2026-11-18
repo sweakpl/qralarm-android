@@ -25,7 +25,10 @@ import com.sweak.qralarm.core.domain.alarm.SetAlarm
 import com.sweak.qralarm.core.domain.recognition.ObjectCategories
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeDetector
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
+import com.sweak.qralarm.core.domain.custom_object.CustomObjectsRepository
+import com.sweak.qralarm.core.ui.components.object_scanner.CustomObjectAnalyzer
 import com.sweak.qralarm.core.ui.components.object_scanner.ObjectAnalyzer
+import com.sweak.qralarm.core.ui.components.object_scanner.ObjectDetectionBox
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -53,7 +56,8 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
     @Assisted private val isDisablingBeforeAlarmFired: Boolean,
     private val alarmsRepository: AlarmsRepository,
     private val setAlarm: SetAlarm,
-    private val disableAlarm: DisableAlarm
+    private val disableAlarm: DisableAlarm,
+    private val customObjectsRepository: CustomObjectsRepository
 ) : ViewModel() {
 
     @AssistedFactory
@@ -98,12 +102,41 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
             shouldScan.set(true)
             _state.update { it.copy(
                 codeName = if (alarm.dismissalMethod == DismissalMethod.CODE) alarm.assignedCode?.name else null,
-                objectName = if (alarm.dismissalMethod == DismissalMethod.OBJECT)
-                    alarm.objectCategoryId?.let(ObjectCategories::displayName) else null,
+                objectName = when (alarm.dismissalMethod) {
+                    DismissalMethod.OBJECT -> alarm.objectCategoryId?.let(ObjectCategories::displayName)
+                    DismissalMethod.CUSTOM_OBJECT -> alarm.customObjectId
+                        ?.let { id -> customObjectsRepository.getObject(id)?.name } ?: ""
+                    else -> null
+                },
+                isCustomObject = alarm.dismissalMethod == DismissalMethod.CUSTOM_OBJECT,
                 detectionBox = null, confirmationProgress = 0f, recognitionError = false
             ) }
             check(alarm.dismissalMethod.requiresCamera)
-            analyzer = if (alarm.dismissalMethod == DismissalMethod.OBJECT) {
+            val onObjectResult: (ObjectDetectionBox?, Float, Boolean) -> Unit = { box, progress, completed ->
+                viewModelScope.launch {
+                    if (cameraSession.get() == session && shouldScan.get()) {
+                        _state.update { it.copy(detectionBox = box, confirmationProgress = progress) }
+                        if (completed && shouldScan.compareAndSet(true, false)) completeChallenge(null)
+                    }
+                }
+            }
+            analyzer = if (alarm.dismissalMethod == DismissalMethod.CUSTOM_OBJECT) {
+                val objectId = requireNotNull(alarm.customObjectId)
+                val customObject = requireNotNull(customObjectsRepository.getObject(objectId))
+                val references = requireNotNull(customObjectsRepository.loadReferenceFeatures(objectId))
+                CustomObjectAnalyzer(
+                    event.appContext, references, customObject.embeddingThreshold,
+                    onResult = onObjectResult,
+                    onError = { exception ->
+                        Log.e("CustomObjectAnalyzer", "Recognition failed", exception)
+                        viewModelScope.launch {
+                            if (cameraSession.get() == session) {
+                                _state.update { it.copy(recognitionError = true, detectionBox = null, confirmationProgress = 0f) }
+                            }
+                        }
+                    }
+                )
+            } else if (alarm.dismissalMethod == DismissalMethod.OBJECT) {
                 val target = requireNotNull(alarm.objectCategoryId)
                 require(target in ObjectCategories.ids)
                 ObjectAnalyzer(event.appContext, target, onResult = { box, progress, completed ->
@@ -140,7 +173,7 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
             throw cancelled
         } catch (exception: Exception) {
             Log.e("AlarmCamera", "Camera challenge failed", exception)
-            if (::alarm.isInitialized && alarm.dismissalMethod == DismissalMethod.OBJECT) {
+            if (::alarm.isInitialized && alarm.dismissalMethod.isObject) {
                 _state.update { it.copy(recognitionError = true) }
                 awaitCancellation()
             } else {
@@ -192,7 +225,7 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
 
     private fun getCameraPreviewUseCase() =
         Preview.Builder().apply {
-            if (alarm.dismissalMethod == DismissalMethod.OBJECT) {
+            if (alarm.dismissalMethod.isObject) {
                 setResolutionSelector(ResolutionSelector.Builder().setResolutionStrategy(
                     ResolutionStrategy(Size(640, 480), ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER)
                 ).build())
@@ -208,7 +241,7 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
     private fun getImageAnalysisUseCase() =
         ImageAnalysis.Builder().apply {
             setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-            if (alarm.dismissalMethod == DismissalMethod.OBJECT) {
+            if (alarm.dismissalMethod.isObject) {
                 setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                 setResolutionSelector(ResolutionSelector.Builder().setResolutionStrategy(
                     ResolutionStrategy(Size(640, 480), ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER)

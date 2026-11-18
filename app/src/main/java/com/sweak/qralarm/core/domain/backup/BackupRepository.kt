@@ -4,6 +4,7 @@ interface BackupRepository {
 
     suspend fun readAlarmsForBackup(): List<BackupAlarm>
     suspend fun readCodesForBackup(): List<BackupCode>
+    suspend fun readCustomObjectsForBackup(): List<BackupCustomObject>
 
     suspend fun getAllAlarmIds(): List<Long>
 
@@ -17,7 +18,11 @@ interface BackupRepository {
      * Returns the old-to-new id mappings, needed to place the restored ringtone files and to
      * remap the default alarm code.
      */
-    suspend fun replaceAll(codes: List<BackupCode>, alarms: List<BackupAlarm>): RestoreIdMappings
+    suspend fun replaceAll(
+        codes: List<BackupCode>,
+        alarms: List<BackupAlarm>,
+        customObjects: List<BackupCustomObject> = emptyList()
+    ): RestoreIdMappings
 }
 
 data class RestoreIdMappings(

@@ -16,6 +16,11 @@ import com.sweak.qralarm.core.domain.alarm.CodesRepository
 import com.sweak.qralarm.core.domain.alarm.DeleteAlarm
 import com.sweak.qralarm.core.domain.alarm.DismissalMethod
 import com.sweak.qralarm.core.domain.alarm.SetAlarm
+import com.sweak.qralarm.core.domain.custom_object.CustomObject
+import com.sweak.qralarm.core.domain.custom_object.CustomObjectsRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import com.sweak.qralarm.core.domain.recognition.ObjectCategories
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
@@ -63,8 +68,15 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     private val qrAlarmManager: QRAlarmManager,
     private val addOrEditAlarm: AddOrEditAlarm,
     private val deleteAlarm: DeleteAlarm,
-    private val setAlarm: SetAlarm
+    private val setAlarm: SetAlarm,
+    customObjectsRepository: CustomObjectsRepository
 ) : ViewModel() {
+
+    /** The user's own items, for the dismissal picker. Not part of the saved state. */
+    val customObjects: StateFlow<List<CustomObject>> = customObjectsRepository.getAllObjects()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    private var knownCustomObjectIds: Set<Long>? = null
 
     @AssistedFactory
     interface Factory {
@@ -82,6 +94,23 @@ class AddEditAlarmViewModel @AssistedInject constructor(
     private var nextAlarmTimeUpdateJob: Job? = null
 
     init {
+        // An item added from the picker is selected automatically when the user comes back.
+        viewModelScope.launch {
+            customObjects.collect { objects ->
+                val ids = objects.map { it.objectId }.toSet()
+                val known = knownCustomObjectIds
+                knownCustomObjectIds = ids
+                val added = if (known == null) null else (ids - known).maxOrNull()
+                if (added != null && state.value.dismissalMethod == DismissalMethod.CUSTOM_OBJECT) {
+                    hasUnsavedChanges = true
+                    _state.update { it.copy(customObjectId = added, showObjectSelectionError = false) }
+                }
+                // The selected item was deleted elsewhere.
+                if (known != null && state.value.customObjectId?.let { it !in ids } == true) {
+                    _state.update { it.copy(customObjectId = null) }
+                }
+            }
+        }
         var launchedFromSavedState = false
         var initialDefaultCodeUpdate = true
 
@@ -221,6 +250,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                             areVibrationsEnabled = alarm.areVibrationsEnabled,
                             dismissalMethod = alarm.dismissalMethod,
                             objectCategoryId = alarm.objectCategoryId,
+                            customObjectId = alarm.customObjectId,
                             previouslySavedCodes = allSavedAlarmCodes,
                             currentlyAssignedCode = alarm.assignedCode?.let {
                                 Code(id = it.codeId, value = it.value, name = it.name)
@@ -313,7 +343,12 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     nextAlarmTimeUpdateJob?.join()
 
                     val currentState = state.value
-                    if (!ObjectCategories.isValid(currentState.dismissalMethod.name, currentState.objectCategoryId)) {
+                    if (!ObjectCategories.isValid(
+                            currentState.dismissalMethod.name,
+                            currentState.objectCategoryId,
+                            currentState.customObjectId
+                        )
+                    ) {
                         _state.update { it.copy(showObjectSelectionError = true) }
                         return@launch
                     }
@@ -691,6 +726,13 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
             }
 
+            is AddEditAlarmScreenUserEvent.CustomObjectSelected -> {
+                if (customObjects.value.any { it.objectId == event.objectId }) {
+                    hasUnsavedChanges = true
+                    _state.update { it.copy(customObjectId = event.objectId, showObjectSelectionError = false) }
+                }
+            }
+
             is AddEditAlarmScreenUserEvent.AssignCodeDialogVisible -> {
                 _state.update { currentState ->
                     currentState.copy(isAssignCodeDialogVisible = event.isVisible)
@@ -984,6 +1026,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             areVibrationsEnabled = currentState.areVibrationsEnabled,
             dismissalMethod = currentState.dismissalMethod,
             objectCategoryId = currentState.objectCategoryId,
+            customObjectId = currentState.customObjectId
+                .takeIf { currentState.dismissalMethod == DismissalMethod.CUSTOM_OBJECT },
             assignedCode = (currentState.temporaryAssignedCode
                 ?: currentState.currentlyAssignedCode)?.let {
                 DomainCode(codeId = it.id, value = it.value, name = it.name)

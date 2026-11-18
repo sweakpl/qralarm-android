@@ -100,6 +100,7 @@ fun DisableAlarmScannerScreenContent(
             isFlashEnabled = state.isFlashEnabled,
             codeName = state.codeName,
             objectName = state.objectName,
+            isCustomObject = state.isCustomObject,
             detectionBox = state.detectionBox,
             confirmationProgress = state.confirmationProgress,
             recognitionError = state.recognitionError,

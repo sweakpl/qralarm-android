@@ -1,5 +1,6 @@
 package com.sweak.qralarm.core.domain.user
 
+import com.sweak.qralarm.core.domain.user.model.EmergencyTaskType
 import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
 import com.sweak.qralarm.core.domain.user.model.Theme
 import kotlinx.coroutines.flow.Flow
@@ -29,6 +30,12 @@ interface UserDataRepository {
 
     suspend fun setEmergencyDisableRepeatingAlarms(disable: Boolean)
     val isEmergencyDisableRepeatingAlarmsEnabled: Flow<Boolean>
+
+    suspend fun setEmergencyTaskType(type: EmergencyTaskType)
+    val emergencyTaskType: Flow<EmergencyTaskType>
+
+    suspend fun setHasMigratedEmergencyDefaultMatches(migrated: Boolean)
+    val hasMigratedEmergencyDefaultMatches: Flow<Boolean>
 
     suspend fun setTheme(theme: Theme)
     val theme: Flow<Theme>

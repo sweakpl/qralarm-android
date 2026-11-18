@@ -118,12 +118,14 @@ fun AddEditAlarmScreen(
     onCancelClicked: () -> Unit,
     onAlarmSaved: () -> Unit,
     onScanCustomCodeClicked: () -> Unit,
+    onAddCustomObjectClicked: () -> Unit,
     onAdvancedSettingsClicked: () -> Unit,
     onSpecialSettingsClicked: () -> Unit,
     onAlarmsChainSettingsClicked: () -> Unit,
     onAlarmDeleted: () -> Unit
 ) {
     val addEditAlarmScreenState by addEditAlarmViewModel.state.collectAsStateWithLifecycle()
+    val customObjects by addEditAlarmViewModel.customObjects.collectAsStateWithLifecycle()
 
     val audioPickerLauncher = rememberLauncherForActivityResult(
         contract = object : ActivityResultContracts.GetContent() {
@@ -269,9 +271,11 @@ fun AddEditAlarmScreen(
 
     AddEditAlarmScreenContent(
         state = addEditAlarmScreenState,
+        customObjects = customObjects.map { it.objectId to it.name },
         onEvent = { event ->
             when (event) {
                 is AddEditAlarmScreenUserEvent.ConfirmDiscardAlarmChanges -> onCancelClicked()
+                is AddEditAlarmScreenUserEvent.AddCustomObjectClicked -> onAddCustomObjectClicked()
                 is AddEditAlarmScreenUserEvent.SaveAlarmClicked -> {
                     addEditAlarmViewModel.onEvent(
                         AddEditAlarmScreenUserEvent.TrySaveAlarm(
@@ -418,7 +422,8 @@ fun AddEditAlarmScreen(
 @Composable
 private fun AddEditAlarmScreenContent(
     state: AddEditAlarmFlowState,
-    onEvent: (AddEditAlarmScreenUserEvent) -> Unit
+    onEvent: (AddEditAlarmScreenUserEvent) -> Unit,
+    customObjects: List<Pair<Long, String>> = emptyList()
 ) {
     Scaffold(
         topBar = {
@@ -645,7 +650,13 @@ private fun AddEditAlarmScreenContent(
                             categoryId = state.objectCategoryId,
                             showSelectionError = state.showObjectSelectionError,
                             onMethodSelected = { onEvent(AddEditAlarmScreenUserEvent.DismissalMethodSelected(it)) },
-                            onObjectSelected = { onEvent(AddEditAlarmScreenUserEvent.ObjectSelected(it)) }
+                            onObjectSelected = { onEvent(AddEditAlarmScreenUserEvent.ObjectSelected(it)) },
+                            customObjects = customObjects,
+                            customObjectId = state.customObjectId,
+                            onCustomObjectSelected = {
+                                onEvent(AddEditAlarmScreenUserEvent.CustomObjectSelected(it))
+                            },
+                            onAddCustomObject = { onEvent(AddEditAlarmScreenUserEvent.AddCustomObjectClicked) }
                         )
 
                         AnimatedVisibility(visible = state.dismissalMethod == DismissalMethod.CODE) {

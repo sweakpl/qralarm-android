@@ -168,7 +168,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                             },
                             title = stringResource(R.string.cancellation_lock),
                             description = stringResource(
-                                if (state.dismissalMethod == DismissalMethod.OBJECT)
+                                if (state.dismissalMethod.isObject)
                                     R.string.object_cancellation_lock_description
                                 else R.string.cancellation_lock_description
                             ),
@@ -193,7 +193,7 @@ private fun AdvancedAlarmSettingsScreenContent(
                             },
                             title = stringResource(R.string.emergency),
                             description = stringResource(
-                                if (state.dismissalMethod == DismissalMethod.OBJECT)
+                                if (state.dismissalMethod.isObject)
                                     R.string.object_emergency_task_description
                                 else R.string.emergency_task_setting_description
                             )

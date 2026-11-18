@@ -7,13 +7,22 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.sweak.qralarm.core.storage.database.dao.AlarmsDao
 import com.sweak.qralarm.core.storage.database.dao.CodesDao
+import com.sweak.qralarm.core.storage.database.dao.CustomObjectsDao
+import com.sweak.qralarm.core.storage.database.dao.EmergencyExplanationsDao
 import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 import com.sweak.qralarm.core.storage.database.model.CodeEntity
+import com.sweak.qralarm.core.storage.database.model.CustomObjectEntity
+import com.sweak.qralarm.core.storage.database.model.EmergencyExplanationEntity
 
-const val QRALARM_DATABASE_VERSION = 11
+const val QRALARM_DATABASE_VERSION = 12
 
 @Database(
-    entities = [AlarmEntity::class, CodeEntity::class],
+    entities = [
+        AlarmEntity::class,
+        CodeEntity::class,
+        CustomObjectEntity::class,
+        EmergencyExplanationEntity::class
+    ],
     version = QRALARM_DATABASE_VERSION,
     exportSchema = true,
     autoMigrations = [
@@ -27,8 +36,82 @@ const val QRALARM_DATABASE_VERSION = 11
 abstract class QRAlarmDatabase : RoomDatabase() {
     abstract fun alarmsDao(): AlarmsDao
     abstract fun codesDao(): CodesDao
+    abstract fun customObjectsDao(): CustomObjectsDao
+    abstract fun emergencyExplanationsDao(): EmergencyExplanationsDao
 
     companion object {
+        val MIGRATION_11_12 = object : Migration(11, 12) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `custom_object` (
+                        `objectId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `name` TEXT NOT NULL,
+                        `createdAtMillis` INTEGER NOT NULL,
+                        `referenceCount` INTEGER NOT NULL,
+                        `embeddingThreshold` REAL NOT NULL
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `emergency_explanation` (
+                        `explanationId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `alarmId` INTEGER,
+                        `alarmLabel` TEXT,
+                        `alarmHourOfDay` INTEGER,
+                        `alarmMinute` INTEGER,
+                        `dismissalSummary` TEXT,
+                        `createdAtMillis` INTEGER NOT NULL,
+                        `text` TEXT NOT NULL
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL(
+                    """
+                    CREATE TABLE `alarm_new` (
+                        `alarmId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        `alarmHourOfDay` INTEGER NOT NULL,
+                        `alarmMinute` INTEGER NOT NULL,
+                        `isAlarmEnabled` INTEGER NOT NULL,
+                        `isAlarmRunning` INTEGER NOT NULL,
+                        `nextAlarmTimeInMillis` INTEGER NOT NULL,
+                        `repeatingAlarmDays` TEXT,
+                        `numberOfSnoozes` INTEGER NOT NULL,
+                        `snoozeDurationInMinutes` INTEGER NOT NULL,
+                        `numberOfSnoozesLeft` INTEGER NOT NULL,
+                        `isAlarmSnoozed` INTEGER NOT NULL,
+                        `nextSnoozedAlarmTimeInMillis` INTEGER,
+                        `ringtone` TEXT NOT NULL,
+                        `customRingtoneUriString` TEXT,
+                        `alarmVolumePercentage` INTEGER NOT NULL DEFAULT 0,
+                        `areVibrationsEnabled` INTEGER NOT NULL,
+                        `dismissalMethod` TEXT NOT NULL,
+                        `objectCategoryId` TEXT,
+                        `customObjectId` INTEGER,
+                        `assignedCodeId` INTEGER,
+                        `isOpenCodeLinkEnabled` INTEGER NOT NULL DEFAULT FALSE,
+                        `cancelLockDurationInMinutes` INTEGER NOT NULL DEFAULT 60,
+                        `isEmergencyTaskEnabled` INTEGER NOT NULL DEFAULT TRUE,
+                        `alarmLabel` TEXT,
+                        `gentleWakeUpDurationInSeconds` INTEGER NOT NULL,
+                        `temporaryMuteDurationInSeconds` INTEGER NOT NULL,
+                        `skipAlarmUntilTimeInMillis` INTEGER,
+                        FOREIGN KEY(`assignedCodeId`) REFERENCES `code`(`codeId`) ON UPDATE NO ACTION ON DELETE SET NULL,
+                        FOREIGN KEY(`customObjectId`) REFERENCES `custom_object`(`objectId`) ON UPDATE NO ACTION ON DELETE SET NULL
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL(
+                    "INSERT INTO alarm_new (alarmId, alarmHourOfDay, alarmMinute, isAlarmEnabled, isAlarmRunning, nextAlarmTimeInMillis, repeatingAlarmDays, numberOfSnoozes, snoozeDurationInMinutes, numberOfSnoozesLeft, isAlarmSnoozed, nextSnoozedAlarmTimeInMillis, ringtone, customRingtoneUriString, alarmVolumePercentage, areVibrationsEnabled, dismissalMethod, objectCategoryId, assignedCodeId, isOpenCodeLinkEnabled, cancelLockDurationInMinutes, isEmergencyTaskEnabled, alarmLabel, gentleWakeUpDurationInSeconds, temporaryMuteDurationInSeconds, skipAlarmUntilTimeInMillis, customObjectId) SELECT alarmId, alarmHourOfDay, alarmMinute, isAlarmEnabled, isAlarmRunning, nextAlarmTimeInMillis, repeatingAlarmDays, numberOfSnoozes, snoozeDurationInMinutes, numberOfSnoozesLeft, isAlarmSnoozed, nextSnoozedAlarmTimeInMillis, ringtone, customRingtoneUriString, alarmVolumePercentage, areVibrationsEnabled, dismissalMethod, objectCategoryId, assignedCodeId, isOpenCodeLinkEnabled, cancelLockDurationInMinutes, isEmergencyTaskEnabled, alarmLabel, gentleWakeUpDurationInSeconds, temporaryMuteDurationInSeconds, skipAlarmUntilTimeInMillis, NULL FROM alarm"
+                )
+                db.execSQL("DROP TABLE alarm")
+                db.execSQL("ALTER TABLE alarm_new RENAME TO alarm")
+                db.execSQL("CREATE INDEX index_alarm_assignedCodeId ON alarm(assignedCodeId)")
+                db.execSQL("CREATE INDEX index_alarm_customObjectId ON alarm(customObjectId)")
+            }
+        }
+
         val MIGRATION_10_11 = object : Migration(10, 11) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL(

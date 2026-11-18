@@ -13,6 +13,7 @@ data class AlarmWrapper(
     val isAlarmEnabled: Boolean,
     val dismissalMethod: DismissalMethod,
     val objectCategoryId: String? = null,
+    val customObjectName: String? = null,
     val skipNextAlarmConfig: SkipNextAlarmConfig,
     val isEmergencyAvailable: Boolean
 ) {

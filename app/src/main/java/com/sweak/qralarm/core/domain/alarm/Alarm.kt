@@ -17,6 +17,7 @@ data class Alarm(
     val areVibrationsEnabled: Boolean,
     val dismissalMethod: DismissalMethod,
     val objectCategoryId: String?,
+    val customObjectId: Long? = null,
     val assignedCode: Code?,
     val isOpenCodeLinkEnabled: Boolean,
     val cancelLockDurationInMinutes: Int,

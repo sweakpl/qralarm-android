@@ -10,6 +10,10 @@ downloads = {
         "https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/int8/1/efficientdet_lite0.tflite",
         "0720bf247bd76e6594ea28fa9c6f7c5242be774818997dbbeffc4da460c723bb",
     ),
+    "mobilenet-v3-small-embedder.tflite": (
+        "https://storage.googleapis.com/mediapipe-models/image_embedder/mobilenet_v3_small/float32/1/mobilenet_v3_small.tflite",
+        "bbbb4c51a55a53905af1daec995ca1aae355046f8839bb8c9f5ce9271394bc40",
+    ),
     "object-labels.txt": (
         "https://storage.googleapis.com/mediapipe-tasks/object_detector/labelmap.txt",
         "f8803ef7900160c629d570848dfda4175e21667bf7b71f73f8ece4938c9f2bf2",

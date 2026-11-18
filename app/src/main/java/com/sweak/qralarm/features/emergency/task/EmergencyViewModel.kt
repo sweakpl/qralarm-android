@@ -1,19 +1,28 @@
 package com.sweak.qralarm.features.emergency.task
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.R
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.service.AlarmService
-import com.sweak.qralarm.alarm.service.AlarmService.Companion.EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.DisableAlarm
+import com.sweak.qralarm.core.domain.alarm.DismissalMethod
+import com.sweak.qralarm.core.domain.alarm.RingAgainLater
+import com.sweak.qralarm.core.domain.custom_object.CustomObjectsRepository
+import com.sweak.qralarm.core.domain.emergency.EmergencyExplanation
+import com.sweak.qralarm.core.domain.emergency.EmergencyExplanationsRepository
+import com.sweak.qralarm.core.domain.emergency.ExplanationValidator
+import com.sweak.qralarm.core.domain.recognition.ObjectCategories
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.domain.user.model.EmergencyTaskType
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,10 +39,14 @@ import kotlin.time.Duration.Companion.seconds
 @HiltViewModel(assistedFactory = EmergencyViewModel.Factory::class)
 class EmergencyViewModel @AssistedInject constructor(
     @Assisted private val idOfAlarmToCancel: Long,
+    @param:ApplicationContext private val context: Context,
     private val disableAlarm: DisableAlarm,
     private val alarmsRepository: AlarmsRepository,
     private val userDataRepository: UserDataRepository,
-    private val qrAlarmManager: QRAlarmManager
+    private val qrAlarmManager: QRAlarmManager,
+    private val explanationsRepository: EmergencyExplanationsRepository,
+    private val customObjectsRepository: CustomObjectsRepository,
+    private val ringAgainLater: RingAgainLater
 ) : ViewModel() {
 
     @AssistedFactory
@@ -41,33 +54,31 @@ class EmergencyViewModel @AssistedInject constructor(
         fun create(idOfAlarmToCancel: Long): EmergencyViewModel
     }
 
-    private lateinit var alarm: Alarm
+    private var alarm: Alarm? = null
 
-    private var _state = MutableStateFlow(EmergencyScreenState())
+    private val _state = MutableStateFlow(EmergencyScreenState())
     val state = _state.asStateFlow()
 
-    private val backendEventsChannel = Channel<EmergencyScreenBackendEvent>()
+    private val backendEventsChannel = Channel<EmergencyScreenBackendEvent>(Channel.BUFFERED)
     val backendEvents = backendEventsChannel.receiveAsFlow()
 
-    private var alarmMuteIndicationJob: Job? = null
+    private var isScreenVisible = false
+    private var lastInteractionMillis = System.currentTimeMillis()
+    private var lastKeystrokeMillis = 0L
+    private var lastHoldMillis = 0L
+    private var isFinished = false
 
     init {
         viewModelScope.launch {
-            alarmsRepository.getAlarm(alarmId = idOfAlarmToCancel)?.let {
-                alarm = it
-            }
-
+            alarm = alarmsRepository.getAlarm(alarmId = idOfAlarmToCancel)
+            val valueRange = userDataRepository.emergencySliderRange.first()
+            val targetValue = Random.nextInt(range = valueRange)
+            var currentValue = Random.nextInt(range = valueRange)
+            while (currentValue == targetValue) currentValue = Random.nextInt(range = valueRange)
+            val taskType = userDataRepository.emergencyTaskType.first()
             _state.update { currentState ->
-                val valueRange = userDataRepository.emergencySliderRange.first()
-                val targetValue = Random.nextInt(range = valueRange)
-                var currentValue = Random.nextInt(range = valueRange)
-
-                while (currentValue == targetValue) {
-                    // Ensure current value is not equal to target value
-                    currentValue = Random.nextInt(range = valueRange)
-                }
-
                 currentState.copy(
+                    taskType = taskType,
                     emergencyTaskConfig = currentState.emergencyTaskConfig.copy(
                         valueRange = valueRange,
                         targetValue = targetValue,
@@ -78,126 +89,210 @@ class EmergencyViewModel @AssistedInject constructor(
                 )
             }
         }
+        viewModelScope.launch { tick() }
+    }
+
+    /** Once a second: keeps the ringing alarm silent while the user is active, and counts typing time. */
+    private suspend fun tick() {
+        while (!isFinished) {
+            val now = System.currentTimeMillis()
+            val idleMillis = now - lastInteractionMillis
+            val isRinging = AlarmService.isRunning && idOfAlarmToCancel != 0L
+            val shouldHold = isRinging && isScreenVisible && idleMillis < IDLE_TIMEOUT_MILLIS
+            if (shouldHold && now - lastHoldMillis >= HOLD_INTERVAL_MILLIS) {
+                backendEventsChannel.send(EmergencyScreenBackendEvent.HoldAlarmSilent)
+                lastHoldMillis = now
+            } else if (!shouldHold && state.value.isAlarmHeldSilent) {
+                backendEventsChannel.send(EmergencyScreenBackendEvent.ReleaseAlarm)
+                lastHoldMillis = 0L
+            }
+            val typingActive = state.value.taskType == EmergencyTaskType.WRITTEN_EXPLANATION &&
+                state.value.isTaskStarted && now - lastKeystrokeMillis < TYPING_ACTIVITY_WINDOW_MILLIS
+            _state.update {
+                it.copy(
+                    isAlarmHeldSilent = shouldHold,
+                    idleSecondsRemaining = if (shouldHold && IDLE_TIMEOUT_MILLIS - idleMillis <= IDLE_WARNING_MILLIS) {
+                        ((IDLE_TIMEOUT_MILLIS - idleMillis) / 1000).toInt().coerceAtLeast(0)
+                    } else null,
+                    explanation = if (typingActive) it.explanation.copy(
+                        typingSecondsRemaining = (it.explanation.typingSecondsRemaining - 1).coerceAtLeast(0)
+                    ) else it.explanation
+                )
+            }
+            delay(1.seconds)
+        }
+    }
+
+    private fun onInteraction() {
+        val wasIdle = System.currentTimeMillis() - lastInteractionMillis >= IDLE_TIMEOUT_MILLIS
+        lastInteractionMillis = System.currentTimeMillis()
+        // Silence again at once rather than on the next tick.
+        if (wasIdle) lastHoldMillis = 0L
     }
 
     fun onEvent(event: EmergencyScreenUserEvent) {
+        if (event !is EmergencyScreenUserEvent.OnScreenVisibilityChanged) onInteraction()
         when (event) {
-            is EmergencyScreenUserEvent.OnTaskStarted -> {
-                _state.update { currentState ->
-                    currentState.copy(isTaskStarted = true)
+            is EmergencyScreenUserEvent.OnScreenVisibilityChanged -> {
+                isScreenVisible = event.isVisible
+                if (event.isVisible) {
+                    lastInteractionMillis = System.currentTimeMillis()
+                    lastHoldMillis = 0L
+                } else if (state.value.isAlarmHeldSilent && !isFinished) {
+                    _state.update { it.copy(isAlarmHeldSilent = false) }
+                    backendEventsChannel.trySend(EmergencyScreenBackendEvent.ReleaseAlarm)
                 }
             }
 
-            is EmergencyScreenUserEvent.OnTaskValueChanged -> {
-                _state.update { currentState ->
-                    currentState.copy(
-                        emergencyTaskConfig = currentState.emergencyTaskConfig.copy(
-                            currentValue = event.value
-                        )
-                    )
-                }
+            is EmergencyScreenUserEvent.OnTaskStarted -> _state.update { it.copy(isTaskStarted = true) }
+
+            is EmergencyScreenUserEvent.OnTaskValueChanged -> _state.update {
+                it.copy(emergencyTaskConfig = it.emergencyTaskConfig.copy(currentValue = event.value))
             }
 
-            is EmergencyScreenUserEvent.OnTaskValueSelected -> {
-                val selectedValue = state.value.emergencyTaskConfig.currentValue
-                val targetValue = state.value.emergencyTaskConfig.targetValue
+            is EmergencyScreenUserEvent.OnTaskValueSelected -> onSliderValueSelected()
 
-                if (selectedValue == targetValue) {
-                    val remainingMatches = state.value.emergencyTaskConfig.remainingMatches - 1
+            is EmergencyScreenUserEvent.OnExplanationChanged -> onExplanationChanged(event.text)
 
-                    if (remainingMatches > 0 && AlarmService.isRunning) {
-                        indicateAlarmMute()
-                    }
+            is EmergencyScreenUserEvent.OnSubmitExplanation -> submitExplanation()
 
-                    _state.update { currentState ->
-                        currentState.copy(
-                            emergencyTaskConfig =
-                                if (remainingMatches <= 0) {
-                                    viewModelScope.launch {
-                                        val isAlarmRepeating = ::alarm.isInitialized &&
-                                                alarm.repeatingMode is Alarm.RepeatingMode.Days
-                                        val shouldDisableRepeatingAlarms = userDataRepository
-                                            .isEmergencyDisableRepeatingAlarmsEnabled.first()
+            is EmergencyScreenUserEvent.OnRingAgainInMinutes ->
+                ringAgain(RingAgainLater.afterMinutes(event.minutes))
 
-                                        if (idOfAlarmToCancel != 0L &&
-                                            (!isAlarmRepeating || shouldDisableRepeatingAlarms)
-                                        ) {
-                                            disableAlarm(idOfAlarmToCancel)
-                                        }
+            is EmergencyScreenUserEvent.OnRingAgainAt ->
+                ringAgain(RingAgainLater.nextOccurrence(event.hourOfDay, event.minute))
 
-                                        delay(1500.milliseconds)
+            is EmergencyScreenUserEvent.OnRingAgainDeclined -> finish()
 
-                                        if (isAlarmRepeating && shouldDisableRepeatingAlarms) {
-                                            qrAlarmManager.notifyAboutEmergencyDisabledRepeatingAlarm()
-                                        }
-
-                                        backendEventsChannel.send(
-                                            EmergencyScreenBackendEvent.EmergencyTaskCompleted
-                                        )
-                                    }
-
-                                    currentState.emergencyTaskConfig.copy(
-                                        isCompleted = true,
-                                        remainingMatches = 0
-                                    )
-                                } else {
-                                    val currentValue = currentState.emergencyTaskConfig.currentValue
-                                    var targetValue = Random.nextInt(
-                                        range = currentState.emergencyTaskConfig.valueRange
-                                    )
-
-                                    while (targetValue == currentValue) {
-                                        // Ensure new target value is not equal to current value
-                                        targetValue = Random.nextInt(
-                                            range = currentState.emergencyTaskConfig.valueRange
-                                        )
-                                    }
-
-                                    currentState.emergencyTaskConfig.copy(
-                                        targetValue = targetValue,
-                                        currentValue = currentValue,
-                                        remainingMatches = remainingMatches
-                                    )
-                                }
-                        )
-                    }
-                }
-            }
-
-            else -> { /* no-op */
-            }
+            is EmergencyScreenUserEvent.OnCloseClicked -> { /* handled by the screen */ }
         }
     }
 
-    private fun indicateAlarmMute() {
-        alarmMuteIndicationJob?.cancel()
-        alarmMuteIndicationJob = viewModelScope.launch {
-            backendEventsChannel.send(
-                EmergencyScreenBackendEvent.TaskValueMatched
-            )
-
-            _state.update { currentState ->
-                currentState.copy(alarmMuteProgress = 1f)
-            }
-
-            repeat(EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS) {
-                delay(1.seconds)
-                _state.update { currentState ->
-                    currentState.copy(
-                        alarmMuteProgress =
-                            0.1f * (EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS - it - 1)
-                    )
-                }
-            }
-
-            delay(1.seconds)
-        }.also {
-            it.invokeOnCompletion {
-                alarmMuteIndicationJob = null
-                _state.update { currentState ->
-                    currentState.copy(alarmMuteProgress = null)
-                }
-            }
+    private fun onExplanationChanged(text: String) {
+        val current = state.value.explanation
+        if (current.isCompleted) return
+        // Typing, including keyboard suggestions and swipe typing, adds at most a word at a time.
+        if (text.length - current.text.length > MAX_INSERTION_CHARS) {
+            _state.update { it.copy(explanation = current.copy(pasteRejected = true)) }
+            return
         }
+        lastKeystrokeMillis = System.currentTimeMillis()
+        _state.update {
+            it.copy(
+                explanation = current.copy(
+                    text = text,
+                    wordCount = ExplanationValidator.countWords(text),
+                    pasteRejected = false,
+                    // Keep showing problems from a failed submit only until they are fixed.
+                    issues = if (current.issues.isEmpty()) emptyList()
+                    else ExplanationValidator.validate(text).issues
+                )
+            )
+        }
+    }
+
+    private fun submitExplanation() {
+        val current = state.value.explanation
+        if (!current.canSubmit) return
+        val result = ExplanationValidator.validate(current.text)
+        if (!result.isValid) {
+            // A failed attempt changes nothing else: the text stays and the alarm stays silent.
+            _state.update { it.copy(explanation = current.copy(issues = result.issues)) }
+            return
+        }
+        _state.update { it.copy(explanation = current.copy(issues = emptyList(), isCompleted = true)) }
+        viewModelScope.launch {
+            if (idOfAlarmToCancel != 0L) {
+                explanationsRepository.addExplanation(
+                    EmergencyExplanation(
+                        alarmId = idOfAlarmToCancel,
+                        alarmLabel = alarm?.alarmLabel,
+                        alarmHourOfDay = alarm?.alarmHourOfDay,
+                        alarmMinute = alarm?.alarmMinute,
+                        dismissalSummary = dismissalSummary(),
+                        createdAtMillis = System.currentTimeMillis(),
+                        text = current.text.trim()
+                    )
+                )
+            }
+            completeTask()
+        }
+    }
+
+    private fun onSliderValueSelected() {
+        val config = state.value.emergencyTaskConfig
+        if (config.isCompleted || config.currentValue != config.targetValue) return
+        val remainingMatches = config.remainingMatches - 1
+        if (remainingMatches <= 0) {
+            _state.update {
+                it.copy(emergencyTaskConfig = it.emergencyTaskConfig.copy(isCompleted = true, remainingMatches = 0))
+            }
+            viewModelScope.launch { completeTask() }
+            return
+        }
+        var targetValue = Random.nextInt(range = config.valueRange)
+        while (targetValue == config.currentValue) targetValue = Random.nextInt(range = config.valueRange)
+        _state.update {
+            it.copy(
+                emergencyTaskConfig = it.emergencyTaskConfig.copy(
+                    targetValue = targetValue,
+                    remainingMatches = remainingMatches
+                )
+            )
+        }
+    }
+
+    private suspend fun completeTask() {
+        val isAlarmRepeating = alarm?.repeatingMode is Alarm.RepeatingMode.Days
+        val shouldDisableRepeatingAlarms =
+            userDataRepository.isEmergencyDisableRepeatingAlarmsEnabled.first()
+        if (idOfAlarmToCancel != 0L && (!isAlarmRepeating || shouldDisableRepeatingAlarms)) {
+            disableAlarm(idOfAlarmToCancel)
+        }
+        delay(1500.milliseconds)
+        if (isAlarmRepeating && shouldDisableRepeatingAlarms) {
+            qrAlarmManager.notifyAboutEmergencyDisabledRepeatingAlarm()
+        }
+        if (idOfAlarmToCancel != 0L && alarm != null) {
+            _state.update { it.copy(showRingAgainChoice = true) }
+        } else {
+            finish()
+        }
+    }
+
+    private fun ringAgain(timeInMillis: Long) = viewModelScope.launch {
+        if (ringAgainLater(idOfAlarmToCancel, timeInMillis)) {
+            backendEventsChannel.send(EmergencyScreenBackendEvent.RingAgainScheduled)
+        }
+        finish()
+    }
+
+    private fun finish() {
+        if (isFinished) return
+        isFinished = true
+        _state.update { it.copy(showRingAgainChoice = false) }
+        backendEventsChannel.trySend(EmergencyScreenBackendEvent.EmergencyTaskCompleted)
+    }
+
+    private suspend fun dismissalSummary(): String? {
+        val alarm = alarm ?: return null
+        return when (alarm.dismissalMethod) {
+            DismissalMethod.CUSTOM_OBJECT -> alarm.customObjectId
+                ?.let { customObjectsRepository.getObject(it)?.name }
+                ?.let { context.getString(R.string.custom_object_alarm_summary, it) }
+            DismissalMethod.OBJECT -> alarm.objectCategoryId
+                ?.let { context.getString(R.string.object_alarm_summary, ObjectCategories.displayName(it)) }
+            DismissalMethod.CODE -> context.getString(R.string.emergency_history_code_summary)
+            DismissalMethod.NONE -> null
+        }
+    }
+
+    companion object {
+        const val IDLE_TIMEOUT_MILLIS = 90_000L
+        const val IDLE_WARNING_MILLIS = 20_000L
+        const val HOLD_INTERVAL_MILLIS = 15_000L
+        const val TYPING_ACTIVITY_WINDOW_MILLIS = 10_000L
+        /** Longer single insertions are treated as pasting. */
+        const val MAX_INSERTION_CHARS = 30
     }
 }

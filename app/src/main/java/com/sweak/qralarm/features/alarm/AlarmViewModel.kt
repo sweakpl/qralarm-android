@@ -1,5 +1,6 @@
 package com.sweak.qralarm.features.alarm
 
+import com.sweak.qralarm.core.domain.custom_object.CustomObjectsRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.R
@@ -29,7 +30,8 @@ class AlarmViewModel @AssistedInject constructor(
     private val alarmsRepository: AlarmsRepository,
     private val snoozeAlarm: SnoozeAlarm,
     private val setAlarm: SetAlarm,
-    private val disableAlarm: DisableAlarm
+    private val disableAlarm: DisableAlarm,
+    private val customObjectsRepository: CustomObjectsRepository
 ) : ViewModel() {
 
     private lateinit var alarm: Alarm
@@ -67,8 +69,12 @@ class AlarmViewModel @AssistedInject constructor(
                         UiText.StringResource(resId = R.string.alarm_snoozed_until)
                     } else null
                     val codeName = if (it.dismissalMethod.requiresCamera && (isAlarmRunning || isAlarmSnoozed)) {
-                        if (it.dismissalMethod == DismissalMethod.OBJECT) it.objectCategoryId?.let(ObjectCategories::displayName)
-                        else it.assignedCode?.name
+                        when (it.dismissalMethod) {
+                            DismissalMethod.OBJECT -> it.objectCategoryId?.let(ObjectCategories::displayName)
+                            DismissalMethod.CUSTOM_OBJECT ->
+                                it.customObjectId?.let { id -> customObjectsRepository.getObject(id)?.name }
+                            else -> it.assignedCode?.name
+                        }
                     } else null
                     val timeToShow =
                         if (isAlarmSnoozed && it.snoozeConfig.nextSnoozedAlarmTimeInMillis != null) {

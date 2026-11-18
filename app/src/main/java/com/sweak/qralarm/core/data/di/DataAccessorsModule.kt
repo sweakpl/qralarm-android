@@ -5,7 +5,11 @@ import com.sweak.qralarm.core.data.alarm.AlarmsRepositoryImpl
 import com.sweak.qralarm.core.data.alarm.CodesRepositoryImpl
 import com.sweak.qralarm.core.data.backup.BackupRepositoryImpl
 import com.sweak.qralarm.core.data.backup.ZipBackupCodec
+import com.sweak.qralarm.core.data.custom_object.CustomObjectsRepositoryImpl
+import com.sweak.qralarm.core.data.emergency.EmergencyExplanationsRepositoryImpl
 import com.sweak.qralarm.core.data.user.UserDataRepositoryImpl
+import com.sweak.qralarm.core.domain.custom_object.CustomObjectsRepository
+import com.sweak.qralarm.core.domain.emergency.EmergencyExplanationsRepository
 import com.sweak.qralarm.core.domain.alarm.AlarmRingtoneStorage
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CodesRepository
@@ -45,6 +49,16 @@ interface DataAccessorsModule {
     fun bindsBackupRepository(
         backupRepositoryImpl: BackupRepositoryImpl
     ): BackupRepository
+
+    @Binds
+    fun bindsEmergencyExplanationsRepository(
+        impl: EmergencyExplanationsRepositoryImpl
+    ): EmergencyExplanationsRepository
+
+    @Binds
+    fun bindsCustomObjectsRepository(
+        impl: CustomObjectsRepositoryImpl
+    ): CustomObjectsRepository
 
     @Binds
     fun bindsBackupCodec(

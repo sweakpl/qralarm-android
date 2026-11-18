@@ -41,7 +41,8 @@ class EmergencySettingsViewModel @Inject constructor(
                         } else it
                     },
                     isDisableRepeatingAlarmsEnabled =
-                        userDataRepository.isEmergencyDisableRepeatingAlarmsEnabled.first()
+                        userDataRepository.isEmergencyDisableRepeatingAlarmsEnabled.first(),
+                    taskType = userDataRepository.emergencyTaskType.first()
                 )
             }
         }
@@ -79,6 +80,11 @@ class EmergencySettingsViewModel @Inject constructor(
                         currentState.copy(isDisableRepeatingAlarmsEnabled = event.isEnabled)
                     }
                 }
+
+            is EmergencySettingsScreenUserEvent.TaskTypeSelected -> viewModelScope.launch {
+                userDataRepository.setEmergencyTaskType(event.type)
+                _state.update { it.copy(taskType = event.type) }
+            }
 
             else -> { /* no-op */
             }

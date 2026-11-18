@@ -3,6 +3,7 @@ package com.sweak.qralarm.core.data.user
 import com.sweak.qralarm.core.domain.user.EMERGENCY_DEFAULT_REQUIRED_MATCHES
 import com.sweak.qralarm.core.domain.user.EMERGENCY_DEFAULT_REQUIRED_MATCHES_RANGE
 import com.sweak.qralarm.core.domain.user.UserDataRepository
+import com.sweak.qralarm.core.domain.user.model.EmergencyTaskType
 import com.sweak.qralarm.core.domain.user.model.OptimizationGuideState
 import com.sweak.qralarm.core.domain.user.model.Theme
 import com.sweak.qralarm.core.storage.datastore.QRAlarmPreferencesDataSource
@@ -82,6 +83,25 @@ class UserDataRepositoryImpl @Inject constructor(
     override val isEmergencyDisableRepeatingAlarmsEnabled: Flow<Boolean>
         get() = qrAlarmPreferencesDataSource.getEmergencyDisableRepeatingAlarms().map {
             it ?: true
+        }
+
+    override suspend fun setEmergencyTaskType(type: EmergencyTaskType) {
+        qrAlarmPreferencesDataSource.setEmergencyTaskType(type = type.name)
+    }
+
+    override val emergencyTaskType: Flow<EmergencyTaskType>
+        get() = qrAlarmPreferencesDataSource.getEmergencyTaskType().map { stored ->
+            EmergencyTaskType.entries.firstOrNull { it.name == stored }
+                ?: EmergencyTaskType.WRITTEN_EXPLANATION
+        }
+
+    override suspend fun setHasMigratedEmergencyDefaultMatches(migrated: Boolean) {
+        qrAlarmPreferencesDataSource.setHasMigratedEmergencyDefaultMatches(migrated = migrated)
+    }
+
+    override val hasMigratedEmergencyDefaultMatches: Flow<Boolean>
+        get() = qrAlarmPreferencesDataSource.getHasMigratedEmergencyDefaultMatches().map {
+            it ?: false
         }
 
     override suspend fun setTheme(theme: Theme) {

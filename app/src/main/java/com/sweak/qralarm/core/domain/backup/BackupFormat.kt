@@ -8,7 +8,7 @@ import java.time.LocalDate
  * or no longer written is already handled, since a reader ignores what it does not know and falls
  * back on what is missing.
  */
-const val CURRENT_BACKUP_FORMAT_VERSION = 2
+const val CURRENT_BACKUP_FORMAT_VERSION = 3
 
 const val BACKUP_FILE_EXTENSION = "qralarmbackup"
 

@@ -19,6 +19,7 @@ class CreateBackup @Inject constructor(
         val bundle = BackupBundle(
             alarms = backupRepository.readAlarmsForBackup(),
             codes = backupRepository.readCodesForBackup(),
+            customObjects = backupRepository.readCustomObjectsForBackup(),
             preferences = BackupPreferences(
                 defaultAlarmCodeId = codesRepository.getDefaultAlarmCodeFlow().first()?.codeId,
                 emergencySliderRange = userDataRepository.emergencySliderRange.first(),

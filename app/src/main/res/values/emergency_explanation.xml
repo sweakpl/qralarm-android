@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="emergency_task_type">Emergency task</string>
+    <string name="emergency_task_type_slider">Match numbers on a slider</string>
+    <string name="emergency_task_type_explanation">Write an explanation (200–250 words)</string>
+    <string name="emergency_task_silence_description">The alarm goes quiet while you work on the emergency task, and rings again if you leave the task or stop for 90 seconds.</string>
+    <string name="emergency_explanation_history">Past explanations</string>
+    <string name="emergency_explanation_none">No explanations yet. When you write one to stop an alarm, it is saved here.</string>
+    <string name="emergency_explanation_delete_all">Delete all</string>
+    <string name="emergency_explanation_delete_all_confirm">Delete all saved explanations?</string>
+    <string name="emergency_history_code_summary">QR/bar code</string>
+    <string name="emergency_idle_warning">The alarm rings again in %1$d s unless you keep going.</string>
+    <string name="explanation_title">Why can\'t you stop the alarm the usual way?</string>
+    <string name="explanation_instructions">Write 200–250 words in your own words. Pasting is not allowed. Your explanation is saved so you can look back at it.</string>
+    <string name="explanation_word_count">%1$d words (%2$d–%3$d)</string>
+    <string name="explanation_typing_time">Keep writing: you can submit after %1$d more seconds of typing.</string>
+    <string name="explanation_paste_rejected">Pasted text isn\'t accepted. Type it yourself.</string>
+    <string name="explanation_submit">Submit</string>
+    <string name="explanation_accepted">Explanation accepted.</string>
+    <plurals name="explanation_too_short">
+        <item quantity="one">Write %1$d more word.</item>
+        <item quantity="other">Write %1$d more words.</item>
+    </plurals>
+    <plurals name="explanation_too_long">
+        <item quantity="one">Remove %1$d word.</item>
+        <item quantity="other">Remove %1$d words.</item>
+    </plurals>
+    <string name="explanation_issue_repetitive">Too many repeated words. Explain in more detail.</string>
+    <string name="explanation_issue_overused_word">The word \"%1$s\" is used too often.</string>
+    <string name="explanation_issue_repeated_phrases">Some phrases are repeated. Don\'t copy sentences.</string>
+    <string name="explanation_issue_sentences">Write full sentences.</string>
+    <string name="explanation_issue_unreadable">Some words don\'t look like real words.</string>
+    <string name="explanation_issue_not_prose">This reads like a list of words, not an explanation.</string>
+    <string name="explanation_issue_filler">Placeholder text isn\'t accepted.</string>
+    <string name="ring_again_title">Ring again later?</string>
+    <string name="ring_again_description">The alarm can ring once more, for example when you will have the item.</string>
+    <string name="ring_again_in_minutes">In %1$d minutes</string>
+    <string name="ring_again_pick_time">Pick a time</string>
+    <string name="ring_again_confirm">Set</string>
+    <string name="ring_again_no">No thanks</string>
+    <string name="ring_again_scheduled">The alarm will ring again.</string>
+</resources>

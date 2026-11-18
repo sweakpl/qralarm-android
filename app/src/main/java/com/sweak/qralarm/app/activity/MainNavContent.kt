@@ -19,7 +19,10 @@ import com.sweak.qralarm.core.navigation.routes.BackupRoute
 import com.sweak.qralarm.core.navigation.routes.CodesManagementRoute
 import com.sweak.qralarm.core.navigation.routes.CustomCodeScannerRoute
 import com.sweak.qralarm.core.navigation.routes.DisableAlarmScannerRoute
+import com.sweak.qralarm.core.navigation.routes.EmergencyExplanationsRoute
 import com.sweak.qralarm.core.navigation.routes.EmergencyRoute
+import com.sweak.qralarm.core.navigation.routes.EnrollObjectRoute
+import com.sweak.qralarm.core.navigation.routes.MyObjectsRoute
 import com.sweak.qralarm.core.navigation.routes.EmergencySettingsRoute
 import com.sweak.qralarm.core.navigation.routes.EmergencyTaskPreviewRoute
 import com.sweak.qralarm.core.navigation.routes.HomeRoute
@@ -39,6 +42,9 @@ import com.sweak.qralarm.features.backup.BackupScreen
 import com.sweak.qralarm.features.codes_management.CodesManagementScreen
 import com.sweak.qralarm.features.custom_code_scanner.CustomCodeScannerScreen
 import com.sweak.qralarm.features.disable_alarm_scanner.DisableAlarmScannerScreen
+import com.sweak.qralarm.features.custom_object.enroll.EnrollObjectScreen
+import com.sweak.qralarm.features.custom_object.list.MyObjectsScreen
+import com.sweak.qralarm.features.emergency.explanations.EmergencyExplanationsScreen
 import com.sweak.qralarm.features.emergency.settings.EmergencySettingsScreen
 import com.sweak.qralarm.features.emergency.task.EmergencyScreen
 import com.sweak.qralarm.features.home.HomeScreen
@@ -71,6 +77,9 @@ fun MainNavContent(
                 onAlarmSaved = { navigator.goBack() },
                 onScanCustomCodeClicked = {
                     navigator.navigate(CustomCodeScannerRoute(shouldScanForDefaultCode = false))
+                },
+                onAddCustomObjectClicked = {
+                    navigator.navigate(EnrollObjectRoute(objectIdToReplace = 0L))
                 },
                 onAdvancedSettingsClicked = {
                     navigator.navigate(AdvancedAlarmSettingsRoute(route.idOfAlarmToEdit))
@@ -178,9 +187,30 @@ fun MainNavContent(
                 onEmergencyTaskSettingsClicked = { navigator.navigate(EmergencySettingsRoute) },
                 onQRAlarmProClicked = { navigator.navigate(QRAlarmProRoute) },
                 onCodesManagementClicked = { navigator.navigate(CodesManagementRoute) },
+                onMyObjectsClicked = { navigator.navigate(MyObjectsRoute) },
                 onThemeClicked = { navigator.navigate(ThemeRoute) },
                 onBackupClicked = { navigator.navigate(BackupRoute) }
             )
+        }
+
+        entry<MyObjectsRoute> {
+            MyObjectsScreen(
+                onBackClicked = { navigator.goBack() },
+                onAddClicked = { navigator.navigate(EnrollObjectRoute(objectIdToReplace = 0L)) },
+                onRetakeClicked = { id -> navigator.navigate(EnrollObjectRoute(objectIdToReplace = id)) }
+            )
+        }
+
+        entry<EnrollObjectRoute> { route ->
+            EnrollObjectScreen(
+                objectIdToReplace = route.objectIdToReplace,
+                onClose = { navigator.goBack() },
+                onSaved = { navigator.goBack() }
+            )
+        }
+
+        entry<EmergencyExplanationsRoute> {
+            EmergencyExplanationsScreen(onBackClicked = { navigator.goBack() })
         }
 
         entry<BackupRoute> {
@@ -215,7 +245,8 @@ fun MainNavContent(
                 onBackClicked = { navigator.goBack() },
                 onPreviewEmergencyTaskClicked = {
                     navigator.navigate(EmergencyTaskPreviewRoute)
-                }
+                },
+                onExplanationHistoryClicked = { navigator.navigate(EmergencyExplanationsRoute) }
             )
         }
 

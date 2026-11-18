@@ -58,7 +58,8 @@ class RestoreBackup @Inject constructor(
 
             val restoreIdMappings = backupRepository.replaceAll(
                 codes = reader.bundle.codes,
-                alarms = reader.bundle.alarms
+                alarms = reader.bundle.alarms,
+                customObjects = reader.bundle.customObjects
             )
 
             restoreRingtones(

@@ -6,3 +6,12 @@ Trained on COCO 2017 (80 categories): https://cocodataset.org/
 Label map: https://storage.googleapis.com/mediapipe-tasks/object_detector/labelmap.txt
 SHA-256 model: 0720bf247bd76e6594ea28fa9c6f7c5242be774818997dbbeffc4da460c723bb
 SHA-256 labels: f8803ef7900160c629d570848dfda4175e21667bf7b71f73f8ece4938c9f2bf2
+
+MobileNetV3-small image embedder (float32, version 1), used to compare a camera frame with photos
+of a user's own item.
+Source: https://storage.googleapis.com/mediapipe-models/image_embedder/mobilenet_v3_small/float32/1/mobilenet_v3_small.tflite
+Copyright Google LLC. Apache License 2.0; see object-model-LICENSE.txt.
+SHA-256 model: bbbb4c51a55a53905af1daec995ca1aae355046f8839bb8c9f5ce9271394bc40
+
+generic-scene-embeddings.bin: embeddings (not images) of 300 COCO 2017 test images, used only to
+calibrate the appearance threshold. Produced by eval/embedding_gate.py. https://cocodataset.org/

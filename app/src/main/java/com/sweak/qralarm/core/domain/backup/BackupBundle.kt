@@ -10,7 +10,18 @@ import com.sweak.qralarm.core.domain.user.model.Theme
 data class BackupBundle(
     val alarms: List<BackupAlarm>,
     val codes: List<BackupCode>,
-    val preferences: BackupPreferences
+    val preferences: BackupPreferences,
+    val customObjects: List<BackupCustomObject> = emptyList()
+)
+
+/** A user's own item: its metadata and its stored files (reference photos and features). */
+class BackupCustomObject(
+    val objectId: Long,
+    val name: String,
+    val createdAtMillis: Long,
+    val embeddingThreshold: Float,
+    val referenceCount: Int,
+    val files: Map<String, ByteArray>
 )
 
 /**
@@ -54,6 +65,8 @@ data class BackupAlarm(
     val areVibrationsEnabled: Boolean,
     val dismissalMethod: String,
     val objectCategoryId: String?,
+    /** The id the custom object had when the backup was made. */
+    val customObjectId: Long? = null,
     val assignedCodeId: Long?,
     val isOpenCodeLinkEnabled: Boolean,
     val cancelLockDurationInMinutes: Int,

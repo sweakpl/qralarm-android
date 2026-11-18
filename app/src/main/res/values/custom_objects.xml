@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="dismissal_custom_object">Show my own item</string>
+    <string name="custom_object_description">Photograph a specific item, like your medication bottle. Only that item, with its label, stops the alarm.</string>
+    <string name="choose_custom_object">Choose item</string>
+    <string name="choose_custom_object_required">Choose or add an item before saving this alarm.</string>
+    <string name="custom_object_add_new">Add a new item</string>
+    <string name="custom_object_none_yet">No items yet.</string>
+    <string name="custom_object_add_title">Add item</string>
+    <string name="custom_object_retake_title">Retake photos</string>
+    <string name="custom_object_capture_instructions">Hold the item so its label fills the white square, then take a photo. Take 3 to 5 photos from slightly different angles. The background is ignored.</string>
+    <string name="custom_object_photo_count">Photos: %1$d (need %2$d–%3$d)</string>
+    <string name="custom_object_shot_blurry">That photo was blurry. Hold still and try again.</string>
+    <string name="custom_object_shot_no_detail">Not enough printed detail. Turn the label towards the camera and fill the square.</string>
+    <string name="custom_object_shots_inconsistent">%1$d photo(s) didn\'t look like the same item and were removed. Retake them showing the same label.</string>
+    <string name="custom_object_remove_photo">Remove photo</string>
+    <string name="custom_object_take_photo">Take photo</string>
+    <string name="custom_object_continue">Continue</string>
+    <string name="custom_object_test_instructions">Test it: show the item to the camera like you will when the alarm rings.</string>
+    <string name="custom_object_test_passed">Recognized. Name it and save.</string>
+    <string name="custom_object_name">Name</string>
+    <string name="custom_object_name_required">Enter a name.</string>
+    <string name="custom_object_retake">Retake photos</string>
+    <string name="custom_object_save">Save</string>
+    <string name="custom_object_save_failed">The item could not be saved.</string>
+    <string name="custom_object_camera_error">The camera could not start. Close this screen and try again.</string>
+    <string name="my_objects">My items</string>
+    <string name="my_objects_used_by">Used by %1$d alarm(s)</string>
+    <string name="my_objects_rename">Rename</string>
+    <string name="my_objects_delete_title">Delete %1$s?</string>
+    <string name="my_objects_delete_in_use">%1$d alarm(s) use this item. They will switch to the stop button.</string>
+    <string name="custom_object_alarm_summary">Item: %1$s</string>
+    <string name="recognition_target_custom">Show your %1$s</string>
+</resources>

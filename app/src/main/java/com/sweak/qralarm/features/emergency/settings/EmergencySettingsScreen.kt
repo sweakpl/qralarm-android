@@ -36,6 +36,7 @@ import com.sweak.qralarm.core.designsystem.theme.Jacarta
 import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
+import com.sweak.qralarm.core.domain.user.model.EmergencyTaskType
 import com.sweak.qralarm.core.ui.components.NavigationButton
 import com.sweak.qralarm.core.ui.components.ToggleSetting
 import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_REQUIRED_MATCHES
@@ -44,7 +45,8 @@ import com.sweak.qralarm.features.emergency.settings.util.EMERGENCY_AVAILABLE_SL
 @Composable
 fun EmergencySettingsScreen(
     onBackClicked: () -> Unit,
-    onPreviewEmergencyTaskClicked: () -> Unit
+    onPreviewEmergencyTaskClicked: () -> Unit,
+    onExplanationHistoryClicked: () -> Unit
 ) {
     val emergencySettingsViewModel = hiltViewModel<EmergencySettingsViewModel>()
     val emergencySettingsScreenState by
@@ -60,6 +62,10 @@ fun EmergencySettingsScreen(
 
                 is EmergencySettingsScreenUserEvent.PreviewEmergencyTaskClicked -> {
                     onPreviewEmergencyTaskClicked()
+                }
+
+                is EmergencySettingsScreenUserEvent.ExplanationHistoryClicked -> {
+                    onExplanationHistoryClicked()
                 }
 
                 else -> emergencySettingsViewModel.onEvent(event)
@@ -126,7 +132,71 @@ fun EmergencySettingsScreenContent(
                         )
                 )
 
-                Card(
+                val comboBoxContainerColor =
+                    if (MaterialTheme.isQRAlarmTheme) Color.White
+                    else MaterialTheme.colorScheme.surfaceContainerHigh
+
+                if (state.taskType != null) {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = MaterialTheme.space.medium,
+                                end = MaterialTheme.space.medium,
+                                bottom = MaterialTheme.space.mediumLarge
+                            )
+                    ) {
+                        Text(
+                            text = stringResource(R.string.emergency_task_type),
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(
+                                start = MaterialTheme.space.medium,
+                                top = MaterialTheme.space.medium,
+                                end = MaterialTheme.space.medium,
+                                bottom = MaterialTheme.space.small
+                            )
+                        )
+                        val types = EmergencyTaskType.entries
+                        QRAlarmComboBox(
+                            menuItems = types.map {
+                                stringResource(
+                                    when (it) {
+                                        EmergencyTaskType.SLIDER -> R.string.emergency_task_type_slider
+                                        EmergencyTaskType.WRITTEN_EXPLANATION ->
+                                            R.string.emergency_task_type_explanation
+                                    }
+                                )
+                            },
+                            selectedIndex = types.indexOf(state.taskType),
+                            onMenuItemClick = { index ->
+                                onEvent(EmergencySettingsScreenUserEvent.TaskTypeSelected(types[index]))
+                            },
+                            containerColor = comboBoxContainerColor,
+                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                        )
+                        Text(
+                            text = stringResource(R.string.emergency_task_silence_description),
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(all = MaterialTheme.space.medium)
+                        )
+                        NavigationButton(
+                            text = stringResource(R.string.preview_emergency_task),
+                            onClick = {
+                                onEvent(EmergencySettingsScreenUserEvent.PreviewEmergencyTaskClicked)
+                            },
+                            modifier = Modifier.padding(horizontal = MaterialTheme.space.medium)
+                        )
+                        NavigationButton(
+                            text = stringResource(R.string.emergency_explanation_history),
+                            onClick = {
+                                onEvent(EmergencySettingsScreenUserEvent.ExplanationHistoryClicked)
+                            },
+                            modifier = Modifier.padding(all = MaterialTheme.space.medium)
+                        )
+                    }
+                }
+
+                if (state.taskType == EmergencyTaskType.SLIDER) Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -146,10 +216,6 @@ fun EmergencySettingsScreenContent(
                                 bottom = MaterialTheme.space.small
                             )
                     )
-
-                    val comboBoxContainerColor =
-                        if (MaterialTheme.isQRAlarmTheme) Color.White
-                        else MaterialTheme.colorScheme.surfaceContainerHigh
 
                     if (state.selectedSliderRangeIndex != null) {
                         QRAlarmComboBox(
@@ -207,19 +273,6 @@ fun EmergencySettingsScreenContent(
                         )
                     }
 
-                    HorizontalDivider(
-                        thickness = 1.dp,
-                        color = LocalContentColor.current,
-                        modifier = Modifier.padding(horizontal = MaterialTheme.space.smallMedium)
-                    )
-
-                    NavigationButton(
-                        text = stringResource(R.string.preview_emergency_task),
-                        onClick = {
-                            onEvent(EmergencySettingsScreenUserEvent.PreviewEmergencyTaskClicked)
-                        },
-                        modifier = Modifier.padding(all = MaterialTheme.space.medium)
-                    )
                 }
 
                 if (state.isDisableRepeatingAlarmsEnabled != null) {

@@ -49,4 +49,22 @@ class DismissalBackupTest {
         assertTrue(ObjectCategories.isValid("NONE", null))
         assertTrue(ObjectCategories.isValid("CODE", null))
     }
+
+    @Test
+    fun customObjectAlarmsRoundTripAndFallBackWithoutTheirItem() {
+        val original = AlarmDto(dismissalMethod = "CUSTOM_OBJECT", customObjectId = 7)
+        val restored = AlarmsDto(listOf(original)).toValidatedBackupAlarms(3).single()
+        assertEquals("CUSTOM_OBJECT", restored.dismissalMethod)
+        assertEquals(7L, restored.customObjectId)
+        // The item came back under a new id.
+        assertEquals(42L, restored.toAlarmEntity(assignedCodeId = null, customObjectId = 42).customObjectId)
+        // The item's files were missing from the archive.
+        assertEquals("NONE", restored.toAlarmEntity(assignedCodeId = null, customObjectId = null).dismissalMethod)
+    }
+
+    @Test
+    fun customObjectWithoutIdIsStillReadable() {
+        val restored = AlarmsDto(listOf(AlarmDto(dismissalMethod = "CUSTOM_OBJECT"))).toValidatedBackupAlarms(3)
+        assertEquals("NONE", restored.single().toAlarmEntity(assignedCodeId = null).dismissalMethod)
+    }
 }

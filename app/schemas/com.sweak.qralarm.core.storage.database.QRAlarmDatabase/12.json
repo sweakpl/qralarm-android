@@ -1,0 +1,364 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 12,
+    "identityHash": "af16e51736ddaf1ec23a408220cfea68",
+    "entities": [
+      {
+        "tableName": "alarm",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alarmId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `alarmHourOfDay` INTEGER NOT NULL, `alarmMinute` INTEGER NOT NULL, `isAlarmEnabled` INTEGER NOT NULL, `isAlarmRunning` INTEGER NOT NULL, `nextAlarmTimeInMillis` INTEGER NOT NULL, `repeatingAlarmDays` TEXT, `numberOfSnoozes` INTEGER NOT NULL, `snoozeDurationInMinutes` INTEGER NOT NULL, `numberOfSnoozesLeft` INTEGER NOT NULL, `isAlarmSnoozed` INTEGER NOT NULL, `nextSnoozedAlarmTimeInMillis` INTEGER, `ringtone` TEXT NOT NULL, `customRingtoneUriString` TEXT, `alarmVolumePercentage` INTEGER NOT NULL DEFAULT 0, `areVibrationsEnabled` INTEGER NOT NULL, `dismissalMethod` TEXT NOT NULL, `objectCategoryId` TEXT, `customObjectId` INTEGER, `assignedCodeId` INTEGER, `isOpenCodeLinkEnabled` INTEGER NOT NULL DEFAULT FALSE, `cancelLockDurationInMinutes` INTEGER NOT NULL DEFAULT 60, `isEmergencyTaskEnabled` INTEGER NOT NULL DEFAULT TRUE, `alarmLabel` TEXT, `gentleWakeUpDurationInSeconds` INTEGER NOT NULL, `temporaryMuteDurationInSeconds` INTEGER NOT NULL, `skipAlarmUntilTimeInMillis` INTEGER, FOREIGN KEY(`assignedCodeId`) REFERENCES `code`(`codeId`) ON UPDATE NO ACTION ON DELETE SET NULL , FOREIGN KEY(`customObjectId`) REFERENCES `custom_object`(`objectId`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "fields": [
+          {
+            "fieldPath": "alarmId",
+            "columnName": "alarmId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alarmHourOfDay",
+            "columnName": "alarmHourOfDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alarmMinute",
+            "columnName": "alarmMinute",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAlarmEnabled",
+            "columnName": "isAlarmEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAlarmRunning",
+            "columnName": "isAlarmRunning",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nextAlarmTimeInMillis",
+            "columnName": "nextAlarmTimeInMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repeatingAlarmDays",
+            "columnName": "repeatingAlarmDays",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "numberOfSnoozes",
+            "columnName": "numberOfSnoozes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "snoozeDurationInMinutes",
+            "columnName": "snoozeDurationInMinutes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "numberOfSnoozesLeft",
+            "columnName": "numberOfSnoozesLeft",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isAlarmSnoozed",
+            "columnName": "isAlarmSnoozed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nextSnoozedAlarmTimeInMillis",
+            "columnName": "nextSnoozedAlarmTimeInMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "ringtone",
+            "columnName": "ringtone",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customRingtoneUriString",
+            "columnName": "customRingtoneUriString",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "alarmVolumePercentage",
+            "columnName": "alarmVolumePercentage",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "areVibrationsEnabled",
+            "columnName": "areVibrationsEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dismissalMethod",
+            "columnName": "dismissalMethod",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "objectCategoryId",
+            "columnName": "objectCategoryId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "customObjectId",
+            "columnName": "customObjectId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "assignedCodeId",
+            "columnName": "assignedCodeId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isOpenCodeLinkEnabled",
+            "columnName": "isOpenCodeLinkEnabled",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "FALSE"
+          },
+          {
+            "fieldPath": "cancelLockDurationInMinutes",
+            "columnName": "cancelLockDurationInMinutes",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "60"
+          },
+          {
+            "fieldPath": "isEmergencyTaskEnabled",
+            "columnName": "isEmergencyTaskEnabled",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "TRUE"
+          },
+          {
+            "fieldPath": "alarmLabel",
+            "columnName": "alarmLabel",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "gentleWakeUpDurationInSeconds",
+            "columnName": "gentleWakeUpDurationInSeconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "temporaryMuteDurationInSeconds",
+            "columnName": "temporaryMuteDurationInSeconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "skipAlarmUntilTimeInMillis",
+            "columnName": "skipAlarmUntilTimeInMillis",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "alarmId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_alarm_assignedCodeId",
+            "unique": false,
+            "columnNames": [
+              "assignedCodeId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_alarm_assignedCodeId` ON `${TABLE_NAME}` (`assignedCodeId`)"
+          },
+          {
+            "name": "index_alarm_customObjectId",
+            "unique": false,
+            "columnNames": [
+              "customObjectId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_alarm_customObjectId` ON `${TABLE_NAME}` (`customObjectId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "code",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "assignedCodeId"
+            ],
+            "referencedColumns": [
+              "codeId"
+            ]
+          },
+          {
+            "table": "custom_object",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "customObjectId"
+            ],
+            "referencedColumns": [
+              "objectId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "code",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`codeId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `value` TEXT NOT NULL, `name` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "codeId",
+            "columnName": "codeId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "codeId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_code_value",
+            "unique": true,
+            "columnNames": [
+              "value"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_code_value` ON `${TABLE_NAME}` (`value`)"
+          }
+        ]
+      },
+      {
+        "tableName": "custom_object",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`objectId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `createdAtMillis` INTEGER NOT NULL, `referenceCount` INTEGER NOT NULL, `embeddingThreshold` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "objectId",
+            "columnName": "objectId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAtMillis",
+            "columnName": "createdAtMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "referenceCount",
+            "columnName": "referenceCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "embeddingThreshold",
+            "columnName": "embeddingThreshold",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "objectId"
+          ]
+        }
+      },
+      {
+        "tableName": "emergency_explanation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`explanationId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `alarmId` INTEGER, `alarmLabel` TEXT, `alarmHourOfDay` INTEGER, `alarmMinute` INTEGER, `dismissalSummary` TEXT, `createdAtMillis` INTEGER NOT NULL, `text` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "explanationId",
+            "columnName": "explanationId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alarmId",
+            "columnName": "alarmId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "alarmLabel",
+            "columnName": "alarmLabel",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "alarmHourOfDay",
+            "columnName": "alarmHourOfDay",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "alarmMinute",
+            "columnName": "alarmMinute",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "dismissalSummary",
+            "columnName": "dismissalSummary",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAtMillis",
+            "columnName": "createdAtMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "explanationId"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'af16e51736ddaf1ec23a408220cfea68')"
+    ]
+  }
+}

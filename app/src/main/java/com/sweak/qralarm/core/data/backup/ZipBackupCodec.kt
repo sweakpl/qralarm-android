@@ -5,6 +5,7 @@ import androidx.core.net.toUri
 import com.sweak.qralarm.BuildConfig
 import com.sweak.qralarm.core.data.backup.dto.AlarmsDto
 import com.sweak.qralarm.core.data.backup.dto.CodesDto
+import com.sweak.qralarm.core.data.backup.dto.CustomObjectsDto
 import com.sweak.qralarm.core.data.backup.dto.ManifestDto
 import com.sweak.qralarm.core.data.backup.dto.PreferencesDto
 import com.sweak.qralarm.core.domain.backup.BackupBundle
@@ -67,6 +68,18 @@ class ZipBackupCodec @Inject constructor(
                 value = bundle.preferences.toPreferencesDto()
             )
 
+            zipOutputStream.writeJsonEntry(
+                entryName = CUSTOM_OBJECTS_ENTRY_NAME,
+                value = CustomObjectsDto(customObjects = bundle.customObjects.map { it.toCustomObjectDto() })
+            )
+            bundle.customObjects.forEach { customObject ->
+                customObject.files.forEach { (fileName, bytes) ->
+                    zipOutputStream.putNextEntry(ZipEntry(customObjectEntryName(customObject.objectId, fileName)))
+                    zipOutputStream.write(bytes)
+                    zipOutputStream.closeEntry()
+                }
+            }
+
             bundle.alarms.filter { it.hasCustomRingtoneFile }.forEach { backupAlarm ->
                 openRingtone(backupAlarm.alarmId)?.use { ringtoneStream ->
                     zipOutputStream.putNextEntry(
@@ -121,6 +134,18 @@ class ZipBackupCodec @Inject constructor(
                         ?: PreferencesDto()
 
                 val alarms = alarmsDto.toValidatedBackupAlarms(manifest.backupFormatVersion)
+                val customObjects = (zipFile.readJsonEntry<CustomObjectsDto>(entryName = CUSTOM_OBJECTS_ENTRY_NAME)
+                    ?: CustomObjectsDto()).customObjects.mapNotNull { dto ->
+                    val files = dto.fileNames
+                        // Only plain file names: an entry name must not reach outside the folder.
+                        .filter { it.matches(SAFE_FILE_NAME) }
+                        .mapNotNull { name ->
+                            zipFile.getEntry(customObjectEntryName(dto.objectId, name))
+                                ?.let { entry -> name to zipFile.getInputStream(entry).use { it.readBytes() } }
+                        }.toMap()
+                    // Without its feature files an item cannot be recognized; leave it out.
+                    dto.toBackupCustomObject(files).takeIf { files.keys.any { it.endsWith(".feat") } }
+                }
 
                 return ZipBackupReader(
                     zipFile = zipFile,
@@ -133,7 +158,8 @@ class ZipBackupCodec @Inject constructor(
                         codes = codesDto.codes
                             .filter { it.value.isNotBlank() }
                             .map { it.toBackupCode() },
-                        preferences = preferencesDto.toBackupPreferences()
+                        preferences = preferencesDto.toBackupPreferences(),
+                        customObjects = customObjects
                     )
                 )
             } catch (throwable: Throwable) {
@@ -202,6 +228,13 @@ private class ZipBackupReader(
 }
 
 private fun ringtoneEntryName(alarmId: Long): String = "$RINGTONES_ENTRY_NAME_PREFIX$alarmId"
+
+private fun customObjectEntryName(objectId: Long, fileName: String): String =
+    "$CUSTOM_OBJECTS_ENTRY_NAME_PREFIX$objectId/$fileName"
+
+private const val CUSTOM_OBJECTS_ENTRY_NAME = "custom_objects.json"
+private const val CUSTOM_OBJECTS_ENTRY_NAME_PREFIX = "custom_objects/"
+private val SAFE_FILE_NAME = Regex("[A-Za-z0-9_]+\\.(jpg|feat)")
 
 private const val MANIFEST_ENTRY_NAME = "manifest.json"
 private const val ALARMS_ENTRY_NAME = "alarms.json"
