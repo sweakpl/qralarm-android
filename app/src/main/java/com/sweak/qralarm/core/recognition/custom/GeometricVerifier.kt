@@ -29,12 +29,12 @@ class GeometricVerifier(
         val ratio: Double = 0.75,
         val reprojectionThreshold: Double = 5.0,
         val minGoodMatches: Int = 12,
-        val minInliers: Int = 25,
-        val minInlierRatio: Double = 0.20,
+        val minInliers: Int = 15,
+        val minInlierRatio: Double = 0.0,
         /** Inliers must cover this share of the reference's keypoint area, so one logo is not enough. */
-        val minInlierSpread: Double = 0.12,
+        val minInlierSpread: Double = 0.25,
         /** Inliers as a share of the reference's keypoints. */
-        val minCoverage: Double = 0.05,
+        val minCoverage: Double = 0.0,
         val minScale: Double = 0.03,
         val maxScale: Double = 30.0,
         /** Share of textured reference cells that must line up; see [PhotometricCheck]. */

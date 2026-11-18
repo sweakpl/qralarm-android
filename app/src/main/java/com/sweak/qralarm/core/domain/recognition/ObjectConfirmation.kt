@@ -68,9 +68,13 @@ class ObjectConfirmation(private val policy: ConfirmationPolicy = COCO_POLICY) {
             MIN_CONFIDENCE, REQUIRED_MATCHES, MIN_SPAN_MILLIS, MAX_FRAME_GAP_MILLIS
         )
 
-        /** Custom objects pass a per-frame geometric check, so confidence is 1 or absent. */
+        /**
+         * Custom objects pass a per-frame geometric check, so confidence is 1 or absent. One
+         * missed frame is tolerated: on the evaluation sets this added no false dismissals.
+         */
         val CUSTOM_OBJECT_POLICY = ConfirmationPolicy(
-            minConfidence = 0.5f, requiredMatches = 4, minSpanMillis = 400L, maxFrameGapMillis = 700L
+            minConfidence = 0.5f, requiredMatches = 4, minSpanMillis = 400L, maxFrameGapMillis = 700L,
+            windowFrames = 6
         )
     }
 }
