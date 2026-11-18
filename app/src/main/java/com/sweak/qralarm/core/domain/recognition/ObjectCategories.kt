@@ -17,8 +17,8 @@ object ObjectCategories {
 
     fun displayName(id: String): String = id.replaceFirstChar { it.uppercaseChar() }
 
-    fun isValid(method: String, categoryId: String?, customObjectId: Long? = null): Boolean =
+    fun isValid(method: String, categoryId: String?, customObjectCount: Int = 0): Boolean =
         method in setOf("NONE", "CODE", "OBJECT", "CUSTOM_OBJECT") &&
             (method != "OBJECT" || categoryId in ids) &&
-            (method != "CUSTOM_OBJECT" || customObjectId != null)
+            (method != "CUSTOM_OBJECT" || customObjectCount > 0)
 }

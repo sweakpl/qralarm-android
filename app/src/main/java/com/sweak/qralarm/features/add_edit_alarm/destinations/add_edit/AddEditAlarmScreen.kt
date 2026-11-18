@@ -652,9 +652,9 @@ private fun AddEditAlarmScreenContent(
                             onMethodSelected = { onEvent(AddEditAlarmScreenUserEvent.DismissalMethodSelected(it)) },
                             onObjectSelected = { onEvent(AddEditAlarmScreenUserEvent.ObjectSelected(it)) },
                             customObjects = customObjects,
-                            customObjectId = state.customObjectId,
-                            onCustomObjectSelected = {
-                                onEvent(AddEditAlarmScreenUserEvent.CustomObjectSelected(it))
+                            customObjectIds = state.customObjectIds,
+                            onCustomObjectToggled = {
+                                onEvent(AddEditAlarmScreenUserEvent.CustomObjectToggled(it))
                             },
                             onAddCustomObject = { onEvent(AddEditAlarmScreenUserEvent.AddCustomObjectClicked) }
                         )

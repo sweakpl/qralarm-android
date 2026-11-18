@@ -2,8 +2,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="dismissal_custom_object">Show my own item</string>
     <string name="custom_object_description">Photograph a specific item, like your medication bottle. Only that item, with its label, stops the alarm.</string>
-    <string name="choose_custom_object">Choose item</string>
-    <string name="choose_custom_object_required">Choose or add an item before saving this alarm.</string>
+    <string name="choose_custom_object">Choose items</string>
+    <string name="custom_object_done">Done</string>
+    <string name="custom_object_all_required">Show every one of these items, in any order, to stop the alarm.</string>
+    <string name="custom_object_progress">%1$d of %2$d shown</string>
+    <string name="choose_custom_object_required">Choose or add at least one item before saving this alarm.</string>
     <string name="custom_object_add_new">Add a new item</string>
     <string name="custom_object_none_yet">No items yet.</string>
     <string name="custom_object_add_title">Add item</string>
@@ -28,7 +31,7 @@
     <string name="my_objects_used_by">Used by %1$d alarm(s)</string>
     <string name="my_objects_rename">Rename</string>
     <string name="my_objects_delete_title">Delete %1$s?</string>
-    <string name="my_objects_delete_in_use">%1$d alarm(s) use this item. They will switch to the stop button.</string>
-    <string name="custom_object_alarm_summary">Item: %1$s</string>
+    <string name="my_objects_delete_in_use">%1$d alarm(s) use this item. It will be removed from them; an alarm left with no items will switch to the stop button.</string>
+    <string name="custom_object_alarm_summary">Items: %1$s</string>
     <string name="recognition_target_custom">Show your %1$s</string>
 </resources>

@@ -44,7 +44,7 @@ data class AlarmDto(
     val isUsingCode: Boolean = false,
     val dismissalMethod: String? = null,
     val objectCategoryId: String? = null,
-    val customObjectId: Long? = null,
+    val customObjectIds: List<Long> = emptyList(),
     val assignedCodeId: Long? = null,
     val isOpenCodeLinkEnabled: Boolean = false,
     val cancelLockDurationInMinutes: Int = DEFAULT_CANCEL_LOCK_DURATION_IN_MINUTES,

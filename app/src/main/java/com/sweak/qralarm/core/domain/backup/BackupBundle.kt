@@ -65,8 +65,8 @@ data class BackupAlarm(
     val areVibrationsEnabled: Boolean,
     val dismissalMethod: String,
     val objectCategoryId: String?,
-    /** The id the custom object had when the backup was made. */
-    val customObjectId: Long? = null,
+    /** Ids the alarm's custom objects had when the backup was made. */
+    val customObjectIds: List<Long> = emptyList(),
     val assignedCodeId: Long?,
     val isOpenCodeLinkEnabled: Boolean,
     val cancelLockDurationInMinutes: Int,

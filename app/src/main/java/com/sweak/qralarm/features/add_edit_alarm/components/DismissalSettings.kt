@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -35,8 +36,8 @@ fun DismissalSettings(
     onMethodSelected: (DismissalMethod) -> Unit,
     onObjectSelected: (String) -> Unit,
     customObjects: List<Pair<Long, String>> = emptyList(),
-    customObjectId: Long? = null,
-    onCustomObjectSelected: (Long) -> Unit = {},
+    customObjectIds: List<Long> = emptyList(),
+    onCustomObjectToggled: (Long) -> Unit = {},
     onAddCustomObject: () -> Unit = {}
 ) {
     var showPicker by rememberSaveable { mutableStateOf(false) }
@@ -48,7 +49,7 @@ fun DismissalSettings(
             query = ""
             showPicker = true
         }
-        if (option == DismissalMethod.CUSTOM_OBJECT && customObjectId == null) {
+        if (option == DismissalMethod.CUSTOM_OBJECT && customObjectIds.isEmpty()) {
             if (customObjects.isEmpty()) onAddCustomObject() else showCustomPicker = true
         }
     }
@@ -80,10 +81,14 @@ fun DismissalSettings(
         }
         if (method == DismissalMethod.CUSTOM_OBJECT) {
             TextButton(onClick = { showCustomPicker = true }) {
-                Text(customObjects.firstOrNull { it.first == customObjectId }?.second
-                    ?: stringResource(R.string.choose_custom_object))
+                Text(
+                    customObjectIds.mapNotNull { id -> customObjects.firstOrNull { it.first == id }?.second }
+                        .takeIf { it.isNotEmpty() }?.joinToString(", ")
+                        ?: stringResource(R.string.choose_custom_object)
+                )
             }
             Text(stringResource(R.string.custom_object_description))
+            if (customObjectIds.size > 1) Text(stringResource(R.string.custom_object_all_required))
             if (showSelectionError) {
                 Text(stringResource(R.string.choose_custom_object_required), color = MaterialTheme.colorScheme.error)
             }
@@ -97,17 +102,12 @@ fun DismissalSettings(
                 LazyColumn(Modifier.heightIn(max = 360.dp)) {
                     if (customObjects.isEmpty()) item { Text(stringResource(R.string.custom_object_none_yet)) }
                     items(customObjects, key = { it.first }) { (id, name) ->
+                        val checked = id in customObjectIds
                         Row(
-                            Modifier.fillMaxWidth().clickable {
-                                onCustomObjectSelected(id)
-                                showCustomPicker = false
-                            },
+                            Modifier.fillMaxWidth().clickable { onCustomObjectToggled(id) },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            RadioButton(selected = customObjectId == id, onClick = {
-                                onCustomObjectSelected(id)
-                                showCustomPicker = false
-                            })
+                            Checkbox(checked = checked, onCheckedChange = { onCustomObjectToggled(id) })
                             Text(name)
                         }
                     }
@@ -119,7 +119,7 @@ fun DismissalSettings(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showCustomPicker = false }) { Text(stringResource(R.string.cancel)) }
+                TextButton(onClick = { showCustomPicker = false }) { Text(stringResource(R.string.custom_object_done)) }
             }
         )
     }

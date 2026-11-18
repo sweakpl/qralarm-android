@@ -17,7 +17,8 @@ data class Alarm(
     val areVibrationsEnabled: Boolean,
     val dismissalMethod: DismissalMethod,
     val objectCategoryId: String?,
-    val customObjectId: Long? = null,
+    /** For [DismissalMethod.CUSTOM_OBJECT]: every one of these items has to be shown. */
+    val customObjectIds: List<Long> = emptyList(),
     val assignedCode: Code?,
     val isOpenCodeLinkEnabled: Boolean,
     val cancelLockDurationInMinutes: Int,

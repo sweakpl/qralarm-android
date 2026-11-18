@@ -71,8 +71,9 @@ class AlarmViewModel @AssistedInject constructor(
                     val codeName = if (it.dismissalMethod.requiresCamera && (isAlarmRunning || isAlarmSnoozed)) {
                         when (it.dismissalMethod) {
                             DismissalMethod.OBJECT -> it.objectCategoryId?.let(ObjectCategories::displayName)
-                            DismissalMethod.CUSTOM_OBJECT ->
-                                it.customObjectId?.let { id -> customObjectsRepository.getObject(id)?.name }
+                            DismissalMethod.CUSTOM_OBJECT -> it.customObjectIds
+                                .mapNotNull { id -> customObjectsRepository.getObject(id)?.name }
+                                .joinToString(", ")
                             else -> it.assignedCode?.name
                         }
                     } else null

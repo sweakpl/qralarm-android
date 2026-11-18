@@ -79,7 +79,7 @@ sealed class AddEditAlarmFlowUserEvent {
 
         data class VibrationsEnabledChanged(val areEnabled: Boolean) : AddEditAlarmScreenUserEvent()
         data class ObjectSelected(val categoryId: String) : AddEditAlarmScreenUserEvent()
-        data class CustomObjectSelected(val objectId: Long) : AddEditAlarmScreenUserEvent()
+        data class CustomObjectToggled(val objectId: Long) : AddEditAlarmScreenUserEvent()
         data object AddCustomObjectClicked : AddEditAlarmScreenUserEvent()
 
         data class DismissalMethodSelected(val method: DismissalMethod) : AddEditAlarmScreenUserEvent()

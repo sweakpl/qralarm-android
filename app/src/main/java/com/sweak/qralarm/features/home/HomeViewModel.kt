@@ -150,7 +150,9 @@ class HomeViewModel @Inject constructor(
                 isAlarmEnabled = alarm.isAlarmEnabled,
                 dismissalMethod = alarm.dismissalMethod,
                 objectCategoryId = alarm.objectCategoryId,
-                customObjectName = alarm.customObjectId?.let { customObjectsRepository.getObject(it)?.name },
+                customObjectName = alarm.customObjectIds
+                    .mapNotNull { customObjectsRepository.getObject(it)?.name }
+                    .joinToString(", "),
                 skipNextAlarmConfig = AlarmWrapper.SkipNextAlarmConfig(
                     isSkippingSupported =
                         alarmRepeatingScheduleWrapper.alarmRepeatingMode != ONLY_ONCE &&

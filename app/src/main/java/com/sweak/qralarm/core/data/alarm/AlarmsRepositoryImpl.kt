@@ -7,6 +7,7 @@ import com.sweak.qralarm.core.domain.alarm.DismissalMethod
 import com.sweak.qralarm.core.domain.recognition.ObjectCategories
 import com.sweak.qralarm.core.storage.database.dao.AlarmsDao
 import com.sweak.qralarm.core.storage.database.dao.CodesDao
+import com.sweak.qralarm.core.storage.database.dao.CustomObjectsDao
 import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 import java.time.DayOfWeek
 import javax.inject.Inject
@@ -17,16 +18,17 @@ import kotlinx.coroutines.flow.mapNotNull
 
 class AlarmsRepositoryImpl @Inject constructor(
     private val alarmsDao: AlarmsDao,
-    private val codesDao: CodesDao
+    private val codesDao: CodesDao,
+    private val customObjectsDao: CustomObjectsDao
 ) : AlarmsRepository {
 
     override suspend fun addOrEditAlarm(alarm: Alarm): Long {
         require(
             ObjectCategories.isValid(
-                alarm.dismissalMethod.name, alarm.objectCategoryId, alarm.customObjectId
+                alarm.dismissalMethod.name, alarm.objectCategoryId, alarm.customObjectIds.size
             )
         )
-        return alarmsDao.upsertAlarm(
+        val upserted = alarmsDao.upsertAlarm(
             alarmEntity = AlarmEntity(
                 alarmId = alarm.alarmId,
                 alarmHourOfDay = alarm.alarmHourOfDay,
@@ -52,7 +54,6 @@ class AlarmsRepositoryImpl @Inject constructor(
                 areVibrationsEnabled = alarm.areVibrationsEnabled,
                 dismissalMethod = alarm.dismissalMethod.name,
                 objectCategoryId = alarm.objectCategoryId,
-                customObjectId = alarm.customObjectId,
                 assignedCodeId = alarm.assignedCode?.codeId,
                 isOpenCodeLinkEnabled = alarm.isOpenCodeLinkEnabled,
                 cancelLockDurationInMinutes = alarm.cancelLockDurationInMinutes,
@@ -63,6 +64,13 @@ class AlarmsRepositoryImpl @Inject constructor(
                 skipAlarmUntilTimeInMillis = alarm.skipAlarmUntilTimeInMillis
             )
         )
+        // Upsert returns -1 when it updated an existing row.
+        val alarmId = if (upserted == -1L) alarm.alarmId else upserted
+        customObjectsDao.setObjectsForAlarm(
+            alarmId,
+            if (alarm.dismissalMethod == DismissalMethod.CUSTOM_OBJECT) alarm.customObjectIds else emptyList()
+        )
+        return alarmId
     }
 
     override suspend fun setAlarmEnabled(alarmId: Long, enabled: Boolean) {
@@ -189,7 +197,7 @@ class AlarmsRepositoryImpl @Inject constructor(
             areVibrationsEnabled = alarmEntity.areVibrationsEnabled,
             dismissalMethod = DismissalMethod.valueOf(alarmEntity.dismissalMethod),
             objectCategoryId = alarmEntity.objectCategoryId,
-            customObjectId = alarmEntity.customObjectId,
+            customObjectIds = customObjectsDao.getObjectIdsForAlarm(alarmEntity.alarmId),
             assignedCode = resolveCode(alarmEntity.assignedCodeId),
             isOpenCodeLinkEnabled = alarmEntity.isOpenCodeLinkEnabled,
             cancelLockDurationInMinutes = alarmEntity.cancelLockDurationInMinutes,

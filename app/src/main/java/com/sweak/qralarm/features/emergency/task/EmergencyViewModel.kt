@@ -277,9 +277,10 @@ class EmergencyViewModel @AssistedInject constructor(
     private suspend fun dismissalSummary(): String? {
         val alarm = alarm ?: return null
         return when (alarm.dismissalMethod) {
-            DismissalMethod.CUSTOM_OBJECT -> alarm.customObjectId
-                ?.let { customObjectsRepository.getObject(it)?.name }
-                ?.let { context.getString(R.string.custom_object_alarm_summary, it) }
+            DismissalMethod.CUSTOM_OBJECT -> alarm.customObjectIds
+                .mapNotNull { customObjectsRepository.getObject(it)?.name }
+                .joinToString(", ")
+                .let { context.getString(R.string.custom_object_alarm_summary, it) }
             DismissalMethod.OBJECT -> alarm.objectCategoryId
                 ?.let { context.getString(R.string.object_alarm_summary, ObjectCategories.displayName(it)) }
             DismissalMethod.CODE -> context.getString(R.string.emergency_history_code_summary)

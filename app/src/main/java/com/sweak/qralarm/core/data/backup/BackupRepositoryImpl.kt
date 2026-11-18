@@ -36,7 +36,9 @@ class BackupRepositoryImpl @Inject constructor(
         }
 
     override suspend fun readAlarmsForBackup(): List<BackupAlarm> =
-        alarmsDao.getAllAlarms().first().map { it.toBackupAlarm() }
+        alarmsDao.getAllAlarms().first().map {
+            it.toBackupAlarm(customObjectIds = customObjectsDao.getObjectIdsForAlarm(it.alarmId))
+        }
 
     override suspend fun readCodesForBackup(): List<BackupCode> =
         codesDao.getAllCodes().first().map { it.toBackupCode() }
@@ -81,12 +83,16 @@ class BackupRepositoryImpl @Inject constructor(
         val alarmIdMap = mutableMapOf<Long, Long>()
 
         alarms.forEach { backupAlarm ->
+            val restoredObjectIds = backupAlarm.customObjectIds.mapNotNull { customObjectIdMap[it] }
             val newAlarmId = alarmsDao.upsertAlarm(
                 alarmEntity = backupAlarm.toAlarmEntity(
                     assignedCodeId = backupAlarm.assignedCodeId?.let { codeIdMap[it] },
-                    customObjectId = backupAlarm.customObjectId?.let { customObjectIdMap[it] }
+                    restoredCustomObjectCount = restoredObjectIds.size
                 )
             )
+            if (backupAlarm.dismissalMethod == "CUSTOM_OBJECT") {
+                customObjectsDao.setObjectsForAlarm(newAlarmId, restoredObjectIds)
+            }
 
             alarmIdMap[backupAlarm.alarmId] = newAlarmId
         }

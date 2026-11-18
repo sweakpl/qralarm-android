@@ -52,14 +52,15 @@ class DismissalBackupTest {
 
     @Test
     fun customObjectAlarmsRoundTripAndFallBackWithoutTheirItem() {
-        val original = AlarmDto(dismissalMethod = "CUSTOM_OBJECT", customObjectId = 7)
+        val original = AlarmDto(dismissalMethod = "CUSTOM_OBJECT", customObjectIds = listOf(7, 9))
         val restored = AlarmsDto(listOf(original)).toValidatedBackupAlarms(3).single()
         assertEquals("CUSTOM_OBJECT", restored.dismissalMethod)
-        assertEquals(7L, restored.customObjectId)
-        // The item came back under a new id.
-        assertEquals(42L, restored.toAlarmEntity(assignedCodeId = null, customObjectId = 42).customObjectId)
-        // The item's files were missing from the archive.
-        assertEquals("NONE", restored.toAlarmEntity(assignedCodeId = null, customObjectId = null).dismissalMethod)
+        assertEquals(listOf(7L, 9L), restored.customObjectIds)
+        assertEquals(listOf(7L, 9L), restored.toAlarmDto().customObjectIds)
+        // At least one item came back.
+        assertEquals("CUSTOM_OBJECT", restored.toAlarmEntity(assignedCodeId = null, restoredCustomObjectCount = 1).dismissalMethod)
+        // None of the items' files were in the archive.
+        assertEquals("NONE", restored.toAlarmEntity(assignedCodeId = null, restoredCustomObjectCount = 0).dismissalMethod)
     }
 
     @Test

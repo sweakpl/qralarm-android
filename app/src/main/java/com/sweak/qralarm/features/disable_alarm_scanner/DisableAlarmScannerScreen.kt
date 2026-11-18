@@ -101,6 +101,8 @@ fun DisableAlarmScannerScreenContent(
             codeName = state.codeName,
             objectName = state.objectName,
             isCustomObject = state.isCustomObject,
+            customObjectsShown = state.customObjectsShown,
+            customObjectsTotal = state.customObjectsTotal,
             detectionBox = state.detectionBox,
             confirmationProgress = state.confirmationProgress,
             recognitionError = state.recognitionError,

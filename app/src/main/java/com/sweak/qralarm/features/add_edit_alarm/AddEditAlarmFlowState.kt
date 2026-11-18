@@ -44,7 +44,7 @@ data class AddEditAlarmFlowState(
     val areVibrationsEnabled: Boolean = true,
     val dismissalMethod: DismissalMethod = DismissalMethod.CODE,
     val objectCategoryId: String? = null,
-    val customObjectId: Long? = null,
+    val customObjectIds: List<Long> = emptyList(),
     val showObjectSelectionError: Boolean = false,
     val isAssignCodeDialogVisible: Boolean = false,
     val editCodeNameDialogState: EditCodeNameDialogState = EditCodeNameDialogState(),

@@ -14,15 +14,9 @@ import androidx.room.PrimaryKey
             parentColumns = ["codeId"],
             childColumns = ["assignedCodeId"],
             onDelete = ForeignKey.SET_NULL
-        ),
-        ForeignKey(
-            entity = CustomObjectEntity::class,
-            parentColumns = ["objectId"],
-            childColumns = ["customObjectId"],
-            onDelete = ForeignKey.SET_NULL
         )
     ],
-    indices = [Index("assignedCodeId"), Index("customObjectId")]
+    indices = [Index("assignedCodeId")]
 )
 data class AlarmEntity(
     @PrimaryKey(autoGenerate = true)
@@ -44,7 +38,6 @@ data class AlarmEntity(
     val areVibrationsEnabled: Boolean,
     val dismissalMethod: String,
     val objectCategoryId: String?,
-    val customObjectId: Long?,
     val assignedCodeId: Long?,
     @ColumnInfo(defaultValue = "FALSE") val isOpenCodeLinkEnabled: Boolean,
     @ColumnInfo(defaultValue = "60") val cancelLockDurationInMinutes: Int,

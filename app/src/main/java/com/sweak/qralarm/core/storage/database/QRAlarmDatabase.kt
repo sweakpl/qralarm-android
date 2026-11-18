@@ -9,6 +9,7 @@ import com.sweak.qralarm.core.storage.database.dao.AlarmsDao
 import com.sweak.qralarm.core.storage.database.dao.CodesDao
 import com.sweak.qralarm.core.storage.database.dao.CustomObjectsDao
 import com.sweak.qralarm.core.storage.database.dao.EmergencyExplanationsDao
+import com.sweak.qralarm.core.storage.database.model.AlarmCustomObjectEntity
 import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 import com.sweak.qralarm.core.storage.database.model.CodeEntity
 import com.sweak.qralarm.core.storage.database.model.CustomObjectEntity
@@ -21,6 +22,7 @@ const val QRALARM_DATABASE_VERSION = 12
         AlarmEntity::class,
         CodeEntity::class,
         CustomObjectEntity::class,
+        AlarmCustomObjectEntity::class,
         EmergencyExplanationEntity::class
     ],
     version = QRALARM_DATABASE_VERSION,
@@ -69,46 +71,19 @@ abstract class QRAlarmDatabase : RoomDatabase() {
                 )
                 db.execSQL(
                     """
-                    CREATE TABLE `alarm_new` (
-                        `alarmId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                        `alarmHourOfDay` INTEGER NOT NULL,
-                        `alarmMinute` INTEGER NOT NULL,
-                        `isAlarmEnabled` INTEGER NOT NULL,
-                        `isAlarmRunning` INTEGER NOT NULL,
-                        `nextAlarmTimeInMillis` INTEGER NOT NULL,
-                        `repeatingAlarmDays` TEXT,
-                        `numberOfSnoozes` INTEGER NOT NULL,
-                        `snoozeDurationInMinutes` INTEGER NOT NULL,
-                        `numberOfSnoozesLeft` INTEGER NOT NULL,
-                        `isAlarmSnoozed` INTEGER NOT NULL,
-                        `nextSnoozedAlarmTimeInMillis` INTEGER,
-                        `ringtone` TEXT NOT NULL,
-                        `customRingtoneUriString` TEXT,
-                        `alarmVolumePercentage` INTEGER NOT NULL DEFAULT 0,
-                        `areVibrationsEnabled` INTEGER NOT NULL,
-                        `dismissalMethod` TEXT NOT NULL,
-                        `objectCategoryId` TEXT,
-                        `customObjectId` INTEGER,
-                        `assignedCodeId` INTEGER,
-                        `isOpenCodeLinkEnabled` INTEGER NOT NULL DEFAULT FALSE,
-                        `cancelLockDurationInMinutes` INTEGER NOT NULL DEFAULT 60,
-                        `isEmergencyTaskEnabled` INTEGER NOT NULL DEFAULT TRUE,
-                        `alarmLabel` TEXT,
-                        `gentleWakeUpDurationInSeconds` INTEGER NOT NULL,
-                        `temporaryMuteDurationInSeconds` INTEGER NOT NULL,
-                        `skipAlarmUntilTimeInMillis` INTEGER,
-                        FOREIGN KEY(`assignedCodeId`) REFERENCES `code`(`codeId`) ON UPDATE NO ACTION ON DELETE SET NULL,
-                        FOREIGN KEY(`customObjectId`) REFERENCES `custom_object`(`objectId`) ON UPDATE NO ACTION ON DELETE SET NULL
+                    CREATE TABLE IF NOT EXISTS `alarm_custom_object` (
+                        `alarmId` INTEGER NOT NULL,
+                        `objectId` INTEGER NOT NULL,
+                        `position` INTEGER NOT NULL,
+                        PRIMARY KEY(`alarmId`, `objectId`),
+                        FOREIGN KEY(`alarmId`) REFERENCES `alarm`(`alarmId`) ON UPDATE NO ACTION ON DELETE CASCADE,
+                        FOREIGN KEY(`objectId`) REFERENCES `custom_object`(`objectId`) ON UPDATE NO ACTION ON DELETE CASCADE
                     )
                     """.trimIndent()
                 )
                 db.execSQL(
-                    "INSERT INTO alarm_new (alarmId, alarmHourOfDay, alarmMinute, isAlarmEnabled, isAlarmRunning, nextAlarmTimeInMillis, repeatingAlarmDays, numberOfSnoozes, snoozeDurationInMinutes, numberOfSnoozesLeft, isAlarmSnoozed, nextSnoozedAlarmTimeInMillis, ringtone, customRingtoneUriString, alarmVolumePercentage, areVibrationsEnabled, dismissalMethod, objectCategoryId, assignedCodeId, isOpenCodeLinkEnabled, cancelLockDurationInMinutes, isEmergencyTaskEnabled, alarmLabel, gentleWakeUpDurationInSeconds, temporaryMuteDurationInSeconds, skipAlarmUntilTimeInMillis, customObjectId) SELECT alarmId, alarmHourOfDay, alarmMinute, isAlarmEnabled, isAlarmRunning, nextAlarmTimeInMillis, repeatingAlarmDays, numberOfSnoozes, snoozeDurationInMinutes, numberOfSnoozesLeft, isAlarmSnoozed, nextSnoozedAlarmTimeInMillis, ringtone, customRingtoneUriString, alarmVolumePercentage, areVibrationsEnabled, dismissalMethod, objectCategoryId, assignedCodeId, isOpenCodeLinkEnabled, cancelLockDurationInMinutes, isEmergencyTaskEnabled, alarmLabel, gentleWakeUpDurationInSeconds, temporaryMuteDurationInSeconds, skipAlarmUntilTimeInMillis, NULL FROM alarm"
+                    "CREATE INDEX IF NOT EXISTS `index_alarm_custom_object_objectId` ON `alarm_custom_object` (`objectId`)"
                 )
-                db.execSQL("DROP TABLE alarm")
-                db.execSQL("ALTER TABLE alarm_new RENAME TO alarm")
-                db.execSQL("CREATE INDEX index_alarm_assignedCodeId ON alarm(assignedCodeId)")
-                db.execSQL("CREATE INDEX index_alarm_customObjectId ON alarm(customObjectId)")
             }
         }
 

@@ -22,7 +22,7 @@ import com.sweak.qralarm.core.storage.database.model.AlarmEntity
 import com.sweak.qralarm.core.storage.database.model.CodeEntity
 import java.time.DayOfWeek
 
-fun AlarmEntity.toBackupAlarm(): BackupAlarm = BackupAlarm(
+fun AlarmEntity.toBackupAlarm(customObjectIds: List<Long> = emptyList()): BackupAlarm = BackupAlarm(
     alarmId = alarmId,
     alarmHourOfDay = alarmHourOfDay,
     alarmMinute = alarmMinute,
@@ -36,7 +36,7 @@ fun AlarmEntity.toBackupAlarm(): BackupAlarm = BackupAlarm(
     areVibrationsEnabled = areVibrationsEnabled,
     dismissalMethod = dismissalMethod,
     objectCategoryId = objectCategoryId,
-    customObjectId = customObjectId,
+    customObjectIds = customObjectIds,
     assignedCodeId = assignedCodeId,
     isOpenCodeLinkEnabled = isOpenCodeLinkEnabled,
     cancelLockDurationInMinutes = cancelLockDurationInMinutes,
@@ -58,7 +58,7 @@ fun BackupCode.toCodeEntity(): CodeEntity = CodeEntity(
     name = name
 )
 
-fun BackupAlarm.toAlarmEntity(assignedCodeId: Long?, customObjectId: Long? = null): AlarmEntity = AlarmEntity(
+fun BackupAlarm.toAlarmEntity(assignedCodeId: Long?, restoredCustomObjectCount: Int = 0): AlarmEntity = AlarmEntity(
     alarmId = 0,
     alarmHourOfDay = alarmHourOfDay,
     alarmMinute = alarmMinute,
@@ -77,9 +77,8 @@ fun BackupAlarm.toAlarmEntity(assignedCodeId: Long?, customObjectId: Long? = nul
     alarmVolumePercentage = alarmVolumePercentage,
     areVibrationsEnabled = areVibrationsEnabled,
     // An item whose files did not come back with the backup cannot be shown: use the stop button.
-    dismissalMethod = if (dismissalMethod == "CUSTOM_OBJECT" && customObjectId == null) "NONE" else dismissalMethod,
+    dismissalMethod = if (dismissalMethod == "CUSTOM_OBJECT" && restoredCustomObjectCount == 0) "NONE" else dismissalMethod,
     objectCategoryId = objectCategoryId,
-    customObjectId = customObjectId,
     assignedCodeId = assignedCodeId,
     isOpenCodeLinkEnabled = isOpenCodeLinkEnabled,
     cancelLockDurationInMinutes = cancelLockDurationInMinutes,
@@ -128,7 +127,7 @@ fun BackupAlarm.toAlarmDto(): AlarmDto = AlarmDto(
     areVibrationsEnabled = areVibrationsEnabled,
     dismissalMethod = dismissalMethod,
     objectCategoryId = objectCategoryId,
-    customObjectId = customObjectId,
+    customObjectIds = customObjectIds,
     assignedCodeId = assignedCodeId,
     isOpenCodeLinkEnabled = isOpenCodeLinkEnabled,
     cancelLockDurationInMinutes = cancelLockDurationInMinutes,
@@ -158,7 +157,7 @@ fun AlarmDto.toBackupAlarm(): BackupAlarm = BackupAlarm(
     areVibrationsEnabled = areVibrationsEnabled,
     dismissalMethod = dismissalMethod ?: if (isUsingCode) "CODE" else "NONE",
     objectCategoryId = objectCategoryId,
-    customObjectId = customObjectId,
+    customObjectIds = customObjectIds,
     assignedCodeId = assignedCodeId,
     isOpenCodeLinkEnabled = isOpenCodeLinkEnabled,
     cancelLockDurationInMinutes = cancelLockDurationInMinutes,
@@ -202,8 +201,8 @@ fun PreferencesDto.toBackupPreferences(): BackupPreferences = BackupPreferences(
     }
 )
 
-/** Stands in for an object id that is absent; the alarm then restores with the stop button. */
-private const val MISSING_CUSTOM_OBJECT = -1L
+/** An alarm whose objects are absent is still readable; it then restores with the stop button. */
+private const val MISSING_CUSTOM_OBJECTS_TOLERATED = 1
 
 fun CustomObjectDto.toBackupCustomObject(files: Map<String, ByteArray>) = BackupCustomObject(
     objectId = objectId,
@@ -231,7 +230,7 @@ fun AlarmsDto.toValidatedBackupAlarms(formatVersion: Int): List<BackupAlarm> {
     val converted = alarms.map { it.toBackupAlarm() }
     // A custom object that is missing from the archive is tolerated: the alarm falls back to NONE.
     if (converted.any {
-            !ObjectCategories.isValid(it.dismissalMethod, it.objectCategoryId, it.customObjectId ?: MISSING_CUSTOM_OBJECT)
+            !ObjectCategories.isValid(it.dismissalMethod, it.objectCategoryId, it.customObjectIds.size.coerceAtLeast(MISSING_CUSTOM_OBJECTS_TOLERATED))
         } ||
         (formatVersion >= 2 && alarms.any { it.dismissalMethod == null })
     ) throw BackupFormatException.NotAQRAlarmBackup()

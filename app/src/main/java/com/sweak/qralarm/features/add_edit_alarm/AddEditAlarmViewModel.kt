@@ -101,13 +101,17 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 val known = knownCustomObjectIds
                 knownCustomObjectIds = ids
                 val added = if (known == null) null else (ids - known).maxOrNull()
-                if (added != null && state.value.dismissalMethod == DismissalMethod.CUSTOM_OBJECT) {
+                if (added != null && state.value.dismissalMethod == DismissalMethod.CUSTOM_OBJECT &&
+                    state.value.customObjectIds.size < MAX_CUSTOM_OBJECTS_PER_ALARM
+                ) {
                     hasUnsavedChanges = true
-                    _state.update { it.copy(customObjectId = added, showObjectSelectionError = false) }
+                    _state.update {
+                        it.copy(customObjectIds = it.customObjectIds + added, showObjectSelectionError = false)
+                    }
                 }
-                // The selected item was deleted elsewhere.
-                if (known != null && state.value.customObjectId?.let { it !in ids } == true) {
-                    _state.update { it.copy(customObjectId = null) }
+                // Items deleted elsewhere drop out of the selection.
+                if (known != null) {
+                    _state.update { it.copy(customObjectIds = it.customObjectIds.filter { id -> id in ids }) }
                 }
             }
         }
@@ -250,7 +254,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                             areVibrationsEnabled = alarm.areVibrationsEnabled,
                             dismissalMethod = alarm.dismissalMethod,
                             objectCategoryId = alarm.objectCategoryId,
-                            customObjectId = alarm.customObjectId,
+                            customObjectIds = alarm.customObjectIds,
                             previouslySavedCodes = allSavedAlarmCodes,
                             currentlyAssignedCode = alarm.assignedCode?.let {
                                 Code(id = it.codeId, value = it.value, name = it.name)
@@ -346,7 +350,7 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                     if (!ObjectCategories.isValid(
                             currentState.dismissalMethod.name,
                             currentState.objectCategoryId,
-                            currentState.customObjectId
+                            currentState.customObjectIds.size
                         )
                     ) {
                         _state.update { it.copy(showObjectSelectionError = true) }
@@ -726,10 +730,17 @@ class AddEditAlarmViewModel @AssistedInject constructor(
                 }
             }
 
-            is AddEditAlarmScreenUserEvent.CustomObjectSelected -> {
+            is AddEditAlarmScreenUserEvent.CustomObjectToggled -> {
                 if (customObjects.value.any { it.objectId == event.objectId }) {
                     hasUnsavedChanges = true
-                    _state.update { it.copy(customObjectId = event.objectId, showObjectSelectionError = false) }
+                    _state.update {
+                        val ids = when {
+                            event.objectId in it.customObjectIds -> it.customObjectIds - event.objectId
+                            it.customObjectIds.size >= MAX_CUSTOM_OBJECTS_PER_ALARM -> it.customObjectIds
+                            else -> it.customObjectIds + event.objectId
+                        }
+                        it.copy(customObjectIds = ids, showObjectSelectionError = false)
+                    }
                 }
             }
 
@@ -1026,8 +1037,8 @@ class AddEditAlarmViewModel @AssistedInject constructor(
             areVibrationsEnabled = currentState.areVibrationsEnabled,
             dismissalMethod = currentState.dismissalMethod,
             objectCategoryId = currentState.objectCategoryId,
-            customObjectId = currentState.customObjectId
-                .takeIf { currentState.dismissalMethod == DismissalMethod.CUSTOM_OBJECT },
+            customObjectIds = currentState.customObjectIds
+                .takeIf { currentState.dismissalMethod == DismissalMethod.CUSTOM_OBJECT }.orEmpty(),
             assignedCode = (currentState.temporaryAssignedCode
                 ?: currentState.currentlyAssignedCode)?.let {
                 DomainCode(codeId = it.id, value = it.value, name = it.name)
@@ -1151,3 +1162,6 @@ class AddEditAlarmViewModel @AssistedInject constructor(
         private const val ADD_EDIT_ALARM_FLOW_STATE_KEY = "addEditAlarmFlowState"
     }
 }
+
+/** Each extra item is checked on every camera frame, so the list is kept short. */
+const val MAX_CUSTOM_OBJECTS_PER_ALARM = 4

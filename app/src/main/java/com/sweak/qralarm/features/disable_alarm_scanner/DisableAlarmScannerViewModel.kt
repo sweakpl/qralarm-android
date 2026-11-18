@@ -27,6 +27,7 @@ import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.CodeDetector
 import com.sweak.qralarm.core.ui.components.code_scanner.analyzer.ZXingCodeAnalyzer
 import com.sweak.qralarm.core.domain.custom_object.CustomObjectsRepository
 import com.sweak.qralarm.core.ui.components.object_scanner.CustomObjectAnalyzer
+import com.sweak.qralarm.core.ui.components.object_scanner.CustomObjectTarget
 import com.sweak.qralarm.core.ui.components.object_scanner.ObjectAnalyzer
 import com.sweak.qralarm.core.ui.components.object_scanner.ObjectDetectionBox
 import dagger.assisted.Assisted
@@ -104,8 +105,9 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
                 codeName = if (alarm.dismissalMethod == DismissalMethod.CODE) alarm.assignedCode?.name else null,
                 objectName = when (alarm.dismissalMethod) {
                     DismissalMethod.OBJECT -> alarm.objectCategoryId?.let(ObjectCategories::displayName)
-                    DismissalMethod.CUSTOM_OBJECT -> alarm.customObjectId
-                        ?.let { id -> customObjectsRepository.getObject(id)?.name } ?: ""
+                    DismissalMethod.CUSTOM_OBJECT -> alarm.customObjectIds
+                        .mapNotNull { id -> customObjectsRepository.getObject(id)?.name }
+                        .joinToString(", ")
                     else -> null
                 },
                 isCustomObject = alarm.dismissalMethod == DismissalMethod.CUSTOM_OBJECT,
@@ -121,12 +123,37 @@ class DisableAlarmScannerViewModel @AssistedInject constructor(
                 }
             }
             analyzer = if (alarm.dismissalMethod == DismissalMethod.CUSTOM_OBJECT) {
-                val objectId = requireNotNull(alarm.customObjectId)
-                val customObject = requireNotNull(customObjectsRepository.getObject(objectId))
-                val references = requireNotNull(customObjectsRepository.loadReferenceFeatures(objectId))
+                require(alarm.customObjectIds.isNotEmpty())
+                val names = alarm.customObjectIds.associateWith { id ->
+                    customObjectsRepository.getObject(id)?.name.orEmpty()
+                }
+                val targets = alarm.customObjectIds.map { id ->
+                    val customObject = requireNotNull(customObjectsRepository.getObject(id))
+                    CustomObjectTarget(
+                        id,
+                        requireNotNull(customObjectsRepository.loadReferenceFeatures(id)),
+                        customObject.embeddingThreshold
+                    )
+                }
                 CustomObjectAnalyzer(
-                    event.appContext, references, customObject.embeddingThreshold,
-                    onResult = onObjectResult,
+                    event.appContext, targets,
+                    onResult = { box, progress, confirmedIds, allDone ->
+                        viewModelScope.launch {
+                            if (cameraSession.get() == session && shouldScan.get()) {
+                                _state.update {
+                                    it.copy(
+                                        // Only the items still to show are named.
+                                        objectName = alarm.customObjectIds.filter { id -> id !in confirmedIds }
+                                            .joinToString(", ") { id -> names[id].orEmpty() }
+                                            .ifEmpty { it.objectName },
+                                        customObjectsShown = confirmedIds.size,
+                                        customObjectsTotal = targets.size
+                                    )
+                                }
+                            }
+                        }
+                        onObjectResult(box, progress, allDone)
+                    },
                     onError = { exception ->
                         Log.e("CustomObjectAnalyzer", "Recognition failed", exception)
                         viewModelScope.launch {

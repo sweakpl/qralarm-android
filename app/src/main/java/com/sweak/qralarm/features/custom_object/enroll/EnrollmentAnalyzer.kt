@@ -11,6 +11,7 @@ import com.sweak.qralarm.core.recognition.custom.OrbExtractor
 import com.sweak.qralarm.core.recognition.custom.ReferenceBuilder
 import com.sweak.qralarm.core.recognition.custom.ReferenceFeatures
 import com.sweak.qralarm.core.ui.components.object_scanner.CustomObjectAnalyzer
+import com.sweak.qralarm.core.ui.components.object_scanner.CustomObjectTarget
 import com.sweak.qralarm.core.ui.components.object_scanner.ImageEmbedderEngine
 import com.sweak.qralarm.core.ui.components.object_scanner.ObjectDetectionBox
 import org.opencv.android.Utils
@@ -47,7 +48,10 @@ class EnrollmentAnalyzer(
         val currentTest = test
         if (currentTest != null) {
             val current = tester ?: CustomObjectAnalyzer(
-                context, currentTest.references, currentTest.embeddingThreshold, onTestResult, onError
+                context,
+                listOf(CustomObjectTarget(0L, currentTest.references, currentTest.embeddingThreshold)),
+                onResult = { box, progress, _, done -> onTestResult(box, progress, done) },
+                onError = onError
             ).also { tester = it }
             current.analyze(image) // closes the image
             return
