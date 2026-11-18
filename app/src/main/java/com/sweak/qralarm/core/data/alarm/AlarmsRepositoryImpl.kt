@@ -29,7 +29,9 @@ class AlarmsRepositoryImpl @Inject constructor(
                 nextAlarmTimeInMillis = alarm.nextAlarmTimeInMillis,
                 repeatingAlarmDays =
                     if (alarm.repeatingMode is Alarm.RepeatingMode.Days) {
-                        alarm.repeatingMode.repeatingDaysOfWeek.joinToString { it.name }
+                        alarm.repeatingMode.repeatingDaysOfWeek
+                            .takeIf { it.isNotEmpty() }
+                            ?.joinToString { it.name }
                     } else null,
                 numberOfSnoozes = alarm.snoozeConfig.snoozeMode.numberOfSnoozes,
                 snoozeDurationInMinutes = alarm.snoozeConfig.snoozeMode.snoozeDurationInMinutes,
@@ -146,12 +148,15 @@ class AlarmsRepositoryImpl @Inject constructor(
     }
 
     private suspend fun convertAlarmEntity(alarmEntity: AlarmEntity): Alarm {
-        val repeatingMode = if (alarmEntity.repeatingAlarmDays != null) {
-            Alarm.RepeatingMode.Days(
-                repeatingDaysOfWeek = alarmEntity.repeatingAlarmDays.split(", ").map {
-                    DayOfWeek.valueOf(it)
-                }
-            )
+        val repeatingMode = if (!alarmEntity.repeatingAlarmDays.isNullOrBlank()) {
+            val repeatingDays = alarmEntity.repeatingAlarmDays
+                .split(", ")
+                .mapNotNull { dayName -> DayOfWeek.entries.find { it.name == dayName } }
+            if (repeatingDays.isNotEmpty()) {
+                Alarm.RepeatingMode.Days(repeatingDaysOfWeek = repeatingDays)
+            } else {
+                Alarm.RepeatingMode.Once
+            }
         } else {
             Alarm.RepeatingMode.Once
         }
@@ -173,7 +178,8 @@ class AlarmsRepositoryImpl @Inject constructor(
                 isAlarmSnoozed = alarmEntity.isAlarmSnoozed,
                 nextSnoozedAlarmTimeInMillis = alarmEntity.nextSnoozedAlarmTimeInMillis
             ),
-            ringtone = Alarm.Ringtone.valueOf(alarmEntity.ringtone),
+            ringtone = Alarm.Ringtone.entries.find { it.name == alarmEntity.ringtone }
+                ?: Alarm.Ringtone.GENTLE_GUITAR,
             customRingtoneUriString = alarmEntity.customRingtoneUriString,
             alarmVolumeMode = alarmEntity.alarmVolumePercentage.run {
                 if (this < 10) Alarm.AlarmVolumeMode.System
