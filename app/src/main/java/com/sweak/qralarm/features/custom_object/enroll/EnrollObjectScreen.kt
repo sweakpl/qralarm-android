@@ -215,6 +215,9 @@ private fun EnrollObjectContent(
                 if (state.isRecording) {
                     Text(stringResource(R.string.custom_object_recording), color = MaterialTheme.colorScheme.primary)
                 }
+                if (state.clipSkippedPlainSides) {
+                    Text(stringResource(R.string.custom_object_clip_plain_sides))
+                }
                 if (state.clipFoundNothing) {
                     Text(stringResource(R.string.custom_object_clip_empty), color = MaterialTheme.colorScheme.error)
                 }

@@ -25,7 +25,7 @@ class EnrollmentAnalyzer(
     private val context: Context,
     private val onShot: (Shot) -> Unit,
     /** Sharp, usable frames picked from a recorded clip, at most one per time slice. */
-    private val onClip: (List<Shot>) -> Unit,
+    private val onClip: (shots: List<Shot>, lowDetailShare: Float) -> Unit,
     private val onTestResult: (ObjectDetectionBox?, Float, Boolean) -> Unit,
     private val onError: (Exception) -> Unit
 ) : ImageAnalysis.Analyzer, AutoCloseable {
@@ -41,6 +41,8 @@ class EnrollmentAnalyzer(
     private val recordRequested = AtomicBoolean(false)
     private var recordingStartMillis: Long? = null
     private val clipSlices = HashMap<Int, Shot>()
+    private var clipFrames = 0
+    private var clipLowDetailFrames = 0
     private class Test(val references: List<ReferenceFeatures>, val embeddingThreshold: Float)
     @Volatile private var test: Test? = null
     private var tester: CustomObjectAnalyzer? = null
@@ -74,6 +76,8 @@ class EnrollmentAnalyzer(
         if (recordRequested.compareAndSet(true, false)) {
             clipSlices.values.forEach { it.preview.recycle() }
             clipSlices.clear()
+            clipFrames = 0
+            clipLowDetailFrames = 0
             recordingStartMillis = image.imageInfo.timestamp / 1_000_000
         }
         val recordingStart = recordingStartMillis
@@ -82,11 +86,16 @@ class EnrollmentAnalyzer(
             if (now - recordingStart >= CLIP_MILLIS) {
                 recordingStartMillis = null
                 image.close()
-                onClip(clipSlices.toSortedMap().values.toList())
+                onClip(
+                    clipSlices.toSortedMap().values.toList(),
+                    if (clipFrames == 0) 0f else clipLowDetailFrames.toFloat() / clipFrames
+                )
                 clipSlices.clear()
                 return
             }
             val shot = buildShot(image) ?: return
+            clipFrames++
+            if (shot.issue == EnrollmentRules.ShotIssue.TOO_LITTLE_DETAIL) clipLowDetailFrames++
             if (shot.issue != null) {
                 shot.preview.recycle()
                 return

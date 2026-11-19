@@ -45,6 +45,8 @@ data class EnrollObjectScreenState(
     val isCapturing: Boolean = false,
     val isRecording: Boolean = false,
     val clipFoundNothing: Boolean = false,
+    /** Part of the recorded turn showed too little printed detail to be recognized. */
+    val clipSkippedPlainSides: Boolean = false,
     val shotIssue: EnrollmentRules.ShotIssue? = null,
     val inconsistentShotsRemoved: Int = 0,
     val step: Step = Step.CAPTURE,
@@ -100,7 +102,7 @@ class EnrollObjectViewModel @AssistedInject constructor(
         val enrollmentAnalyzer = EnrollmentAnalyzer(
             context,
             onShot = { shot -> viewModelScope.launch { onShot(shot) } },
-            onClip = { clip -> viewModelScope.launch { onClip(clip) } },
+            onClip = { clip, lowDetailShare -> viewModelScope.launch { onClip(clip, lowDetailShare) } },
             onTestResult = { box, progress, completed ->
                 viewModelScope.launch {
                     _state.update {
@@ -167,16 +169,25 @@ class EnrollObjectViewModel @AssistedInject constructor(
     fun onRecordClicked() {
         if (state.value.isCapturing || state.value.isRecording || !state.value.canCaptureMore) return
         _state.update {
-            it.copy(isRecording = true, shotIssue = null, inconsistentShotsRemoved = 0, clipFoundNothing = false)
+            it.copy(
+                isRecording = true, shotIssue = null, inconsistentShotsRemoved = 0,
+                clipFoundNothing = false, clipSkippedPlainSides = false
+            )
         }
         analyzer?.requestClip()
     }
 
-    private fun onClip(clip: List<EnrollmentAnalyzer.Shot>) {
+    private fun onClip(clip: List<EnrollmentAnalyzer.Shot>, lowDetailShare: Float) {
         val room = EnrollmentRules.MAX_REFERENCES - shots.size
         shots += clip.take(room.coerceAtLeast(0))
         clip.drop(room.coerceAtLeast(0)).forEach { it.preview.recycle() }
-        _state.update { it.copy(isRecording = false, clipFoundNothing = clip.isEmpty()) }
+        _state.update {
+            it.copy(
+                isRecording = false,
+                clipFoundNothing = clip.isEmpty(),
+                clipSkippedPlainSides = clip.isNotEmpty() && lowDetailShare >= PLAIN_SIDE_HINT_SHARE
+            )
+        }
         publishShots()
     }
 
@@ -247,3 +258,6 @@ class EnrollObjectViewModel @AssistedInject constructor(
         }
     }
 }
+
+/** Above this share of plain frames in a recorded turn, the user is told those sides won't work. */
+private const val PLAIN_SIDE_HINT_SHARE = 0.25f
