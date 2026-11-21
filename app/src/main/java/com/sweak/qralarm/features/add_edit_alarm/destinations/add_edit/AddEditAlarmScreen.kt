@@ -26,6 +26,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -43,11 +45,14 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -94,6 +99,7 @@ import com.sweak.qralarm.features.add_edit_alarm.destinations.add_edit.component
 import com.sweak.qralarm.features.add_edit_alarm.model.AlarmDraft
 import com.sweak.qralarm.features.alarm.components.TimeTickReceiver
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.FileOutputStream
@@ -913,21 +919,30 @@ private fun AddEditAlarmScreenContent(
                                     modifier = Modifier.size(size = MaterialTheme.space.mediumLarge)
                                 )
 
-                                BasicTextField(
-                                    value = state.draft.alarmLabel ?: "",
-                                    onValueChange = {
-                                        onEvent(
-                                            AddEditAlarmScreenUserEvent.AlarmLabelChanged(
-                                                newAlarmLabel = it
+                                val alarmLabelState =
+                                    rememberTextFieldState(state.draft.alarmLabel ?: "")
+                                val currentOnEvent by rememberUpdatedState(onEvent)
+
+                                LaunchedEffect(alarmLabelState) {
+                                    snapshotFlow { alarmLabelState.text.toString() }
+                                        .drop(1)
+                                        .collect { newAlarmLabel ->
+                                            currentOnEvent(
+                                                AddEditAlarmScreenUserEvent.AlarmLabelChanged(
+                                                    newAlarmLabel = newAlarmLabel
+                                                )
                                             )
-                                        )
-                                    },
+                                        }
+                                }
+
+                                BasicTextField(
+                                    state = alarmLabelState,
                                     textStyle = MaterialTheme.typography.titleMedium.copy(
                                         color = LocalContentColor.current
                                     ),
-                                    singleLine = true,
-                                    decorationBox = { innerTextField ->
-                                        if (state.draft.alarmLabel.isNullOrBlank()) {
+                                    lineLimits = TextFieldLineLimits.SingleLine,
+                                    decorator = { innerTextField ->
+                                        if (alarmLabelState.text.isEmpty()) {
                                             Text(
                                                 text =
                                                     stringResource(R.string.enter_your_alarm_label),

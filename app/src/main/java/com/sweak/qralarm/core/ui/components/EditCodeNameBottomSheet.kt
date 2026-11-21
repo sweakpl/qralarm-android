@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.InputTransformation
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.maxLengthReject
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -53,7 +57,7 @@ fun EditCodeNameBottomSheet(
         enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)
     )
 
-    var name by remember { mutableStateOf(initialCodeName ?: "") }
+    val nameState = rememberTextFieldState(initialCodeName ?: "")
 
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -100,15 +104,16 @@ fun EditCodeNameBottomSheet(
                     )
 
                     BasicTextField(
-                        value = name,
-                        onValueChange = { if (it.length <= MAX_CODE_NAME_LENGTH) name = it },
+                        state = nameState,
+                        inputTransformation =
+                            InputTransformation.maxLengthReject(MAX_CODE_NAME_LENGTH),
                         textStyle = MaterialTheme.typography.titleMedium.copy(
                             color = LocalContentColor.current
                         ),
-                        singleLine = true,
+                        lineLimits = TextFieldLineLimits.SingleLine,
                         cursorBrush = SolidColor(LocalContentColor.current),
-                        decorationBox = { innerTextField ->
-                            if (name.isEmpty()) {
+                        decorator = { innerTextField ->
+                            if (nameState.text.isEmpty()) {
                                 Text(
                                     text = stringResource(R.string.enter_code_name),
                                     style = MaterialTheme.typography.titleMedium.copy(
@@ -144,7 +149,9 @@ fun EditCodeNameBottomSheet(
                 Spacer(modifier = Modifier.width(MaterialTheme.space.medium))
 
                 Button(
-                    onClick = { onConfirmClicked(name.takeIf { it.isNotBlank() }) },
+                    onClick = {
+                        onConfirmClicked(nameState.text.toString().takeIf { it.isNotBlank() })
+                    },
                     colors = if (MaterialTheme.isQRAlarmTheme) {
                         ButtonDefaults.buttonColors(
                             containerColor = Jacarta,
