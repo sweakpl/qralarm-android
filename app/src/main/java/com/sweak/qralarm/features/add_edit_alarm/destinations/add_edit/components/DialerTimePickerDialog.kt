@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,7 +35,6 @@ import com.sweak.qralarm.core.designsystem.theme.QRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.isQRAlarmTheme
 import com.sweak.qralarm.core.designsystem.theme.space
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DialerTimePickerDialog(
     initialHourOfDay: Int,
@@ -68,16 +66,16 @@ fun DialerTimePickerDialog(
                 val timePickerColors = if (MaterialTheme.isQRAlarmTheme) {
                     TimePickerDefaults.colors(
                         clockDialColor = Color.White,
-                        clockDialUnselectedContentColor = Jacarta,
+                        clockDialContentColor = Jacarta,
                         selectorColor = Jacarta,
                         periodSelectorBorderColor = Jacarta,
                         periodSelectorSelectedContainerColor = Jacarta,
                         periodSelectorSelectedContentColor = Color.White,
-                        periodSelectorUnselectedContentColor = Color.White,
+                        periodSelectorContentColor = Color.White,
                         timeSelectorSelectedContainerColor = Jacarta,
                         timeSelectorSelectedContentColor = Color.White,
-                        timeSelectorUnselectedContainerColor = ButterflyBush,
-                        timeSelectorUnselectedContentColor = Color.White
+                        timeSelectorContainerColor = ButterflyBush,
+                        timeSelectorContentColor = Color.White
                     )
                 } else TimePickerDefaults.colors()
 

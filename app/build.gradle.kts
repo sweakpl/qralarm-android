@@ -21,6 +21,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.sweak.qralarm"
     compileSdk = 37
+    compileSdkMinor = 1
 
     signingConfigs {
         create("release") {
