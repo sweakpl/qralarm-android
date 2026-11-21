@@ -2,19 +2,12 @@ package com.sweak.qralarm.alarm.service
 
 import android.app.ForegroundServiceStartNotAllowedException
 import android.app.Service
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.ServiceInfo
-import android.media.AudioManager
 import android.os.Build
 import androidx.core.app.ServiceCompat
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.sweak.qralarm.alarm.QRAlarmManager
-import com.sweak.qralarm.alarm.activity.AlarmActivity
-import com.sweak.qralarm.alarm.util.setAlarmVolume
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.HandleEarlyStoppedAlarm
@@ -24,7 +17,6 @@ import com.sweak.qralarm.core.ui.sound.AlarmRingtonePlayer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -32,7 +24,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class AlarmService : Service() {
@@ -50,65 +41,17 @@ class AlarmService : Service() {
     @Inject
     lateinit var alarmRingtonePlayer: AlarmRingtonePlayer
     @Inject
-    lateinit var audioManager: AudioManager
-    @Inject
     lateinit var userDataRepository: UserDataRepository
     @Inject
     lateinit var alarmDeliveryValidator: AlarmDeliveryValidator
     @Inject
     lateinit var alarmNotificationFactory: AlarmNotificationFactory
+    @Inject
+    lateinit var alarmMuteController: AlarmMuteController
+    @Inject
+    lateinit var alarmVolumeController: AlarmVolumeController
 
     private lateinit var alarm: Alarm
-
-    private var temporaryAlarmMuteJob: Job? = null
-    private var emergencyTaskAlarmMuteJob: Job? = null
-    private var hasAlarmBeenAlreadyTemporarilyMuted = false
-    private var originalSystemAlarmVolume: Int? = null
-
-    private val temporaryAlarmMuteReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (hasAlarmBeenAlreadyTemporarilyMuted) {
-                return
-            } else {
-                hasAlarmBeenAlreadyTemporarilyMuted = true
-                emergencyTaskAlarmMuteJob?.cancel()
-            }
-
-            serviceScope.launch(Dispatchers.Main) {
-                alarmRingtonePlayer.stop()
-
-                val muteDurationSeconds = intent?.getIntExtra(
-                    EXTRA_TEMPORARY_MUTE_DURATION_SECONDS,
-                    DEFAULT_TEMPORARY_MUTE_DURATION_SECONDS
-                ) ?: DEFAULT_TEMPORARY_MUTE_DURATION_SECONDS
-
-                temporaryAlarmMuteJob = serviceScope.launch(Dispatchers.Main) {
-                    delay(muteDurationSeconds.seconds)
-                    startAlarm()
-                }.also {
-                    it.invokeOnCompletion { temporaryAlarmMuteJob = null }
-                }
-            }
-        }
-    }
-
-    private val emergencyTaskAlarmMuteReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            temporaryAlarmMuteJob?.cancel()
-            emergencyTaskAlarmMuteJob?.cancel()
-
-            serviceScope.launch(Dispatchers.Main) {
-                alarmRingtonePlayer.stop()
-
-                emergencyTaskAlarmMuteJob = serviceScope.launch(Dispatchers.Main) {
-                    delay(EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS.seconds)
-                    startAlarm()
-                }.also {
-                    it.invokeOnCompletion { emergencyTaskAlarmMuteJob = null }
-                }
-            }
-        }
-    }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         var shouldStopService = false
@@ -180,23 +123,14 @@ class AlarmService : Service() {
 
             isRunning = true
 
-            ContextCompat.registerReceiver(
-                this@AlarmService,
-                temporaryAlarmMuteReceiver,
-                IntentFilter(ACTION_TEMPORARY_ALARM_MUTE),
-                ContextCompat.RECEIVER_NOT_EXPORTED
-            )
-
-            ContextCompat.registerReceiver(
-                this@AlarmService,
-                emergencyTaskAlarmMuteReceiver,
-                IntentFilter(ACTION_EMERGENCY_TASK_ALARM_MUTE),
-                ContextCompat.RECEIVER_NOT_EXPORTED
+            alarmMuteController.start(
+                stopRinging = { alarmRingtonePlayer.stop() },
+                resumeRinging = { withContext(Dispatchers.Main) { startAlarm() } }
             )
 
             startAlarmRinging(alarmId = alarmId, isSnoozeAlarm = isSnoozeAlarm)
 
-            adjustAlarmVolume()
+            alarmVolumeController.start(alarm = alarm)
 
             withContext(Dispatchers.Main) {
                 startAlarm()
@@ -209,25 +143,6 @@ class AlarmService : Service() {
     private fun leaveForeground(alarmId: Long) {
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
-    }
-
-    private fun adjustAlarmVolume() {
-        val alarmVolumeMode = alarm.alarmVolumeMode
-
-        if (alarmVolumeMode is Alarm.AlarmVolumeMode.Custom) {
-            originalSystemAlarmVolume = audioManager.getStreamVolume(AudioManager.STREAM_ALARM)
-
-            val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
-            val minVolume = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                audioManager.getStreamMinVolume(AudioManager.STREAM_ALARM)
-            } else 0
-            val volumeRange = maxVolume - minVolume
-            val volumePercentage = alarmVolumeMode.volumePercentage
-            val volumeLevel = (minVolume + (volumeRange * (volumePercentage / 100.0))).toInt()
-                .coerceAtLeast(minVolume + 1)
-
-            audioManager.setAlarmVolume(volumeLevel)
-        }
     }
 
     private fun startAlarm() {
@@ -256,46 +171,22 @@ class AlarmService : Service() {
     }
 
     private fun cleanUpPreviousAlarmState() {
-        temporaryAlarmMuteJob?.cancel()
-        temporaryAlarmMuteJob = null
-        emergencyTaskAlarmMuteJob?.cancel()
-        emergencyTaskAlarmMuteJob = null
-        hasAlarmBeenAlreadyTemporarilyMuted = false
-
-        try {
-            unregisterReceiver(temporaryAlarmMuteReceiver)
-            unregisterReceiver(emergencyTaskAlarmMuteReceiver)
-        } catch (_: IllegalArgumentException) { /* no-op */
-        }
-
+        alarmMuteController.stop()
         alarmRingtonePlayer.stop()
-
-        originalSystemAlarmVolume?.let {
-            audioManager.setAlarmVolume(it)
-        }
-        originalSystemAlarmVolume = null
+        alarmVolumeController.stop()
     }
 
     override fun onDestroy() {
         isRunning = false
 
-        temporaryAlarmMuteJob?.cancel()
-        emergencyTaskAlarmMuteJob?.cancel()
-
-        try {
-            unregisterReceiver(temporaryAlarmMuteReceiver)
-            unregisterReceiver(emergencyTaskAlarmMuteReceiver)
-        } catch (_: IllegalArgumentException) { /* no-op */
-        }
+        alarmMuteController.stop()
 
         alarmRingtonePlayer.apply {
             stop()
             onDestroy()
         }
 
-        originalSystemAlarmVolume?.let {
-            audioManager.setAlarmVolume(it)
-        }
+        alarmVolumeController.stop()
 
         serviceScope.cancel()
 
@@ -307,13 +198,6 @@ class AlarmService : Service() {
     companion object {
         const val EXTRA_ALARM_ID = "alarmId"
         const val EXTRA_IS_SNOOZE_ALARM = "isSnoozeAlarm"
-
-        const val ACTION_TEMPORARY_ALARM_MUTE = "com.sweak.qralarm.TEMPORARY_ALARM_MUTE"
-        const val EXTRA_TEMPORARY_MUTE_DURATION_SECONDS = "muteDurationSeconds"
-        const val DEFAULT_TEMPORARY_MUTE_DURATION_SECONDS = 15
-
-        const val ACTION_EMERGENCY_TASK_ALARM_MUTE = "com.sweak.qralarm.EMERGENCY_TASK_ALARM_MUTE"
-        const val EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS = 10
 
         var isRunning = false
     }
