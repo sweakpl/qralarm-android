@@ -10,8 +10,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -35,7 +36,10 @@ fun MissingPermissionsBottomSheet(
     onAllPermissionsGranted: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
-    val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val modalBottomSheetState = rememberBottomSheetState(
+        initialValue = SheetValue.Hidden,
+        enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)
+    )
 
     LaunchedEffect(permissionsDialogState.areAllPermissionsGranted) {
         if (permissionsDialogState.areAllPermissionsGranted) {

@@ -16,9 +16,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,7 +48,10 @@ fun EditCodeNameBottomSheet(
     onConfirmClicked: (newCodeName: String?) -> Unit,
     onDismissRequest: () -> Unit
 ) {
-    val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val modalBottomSheetState = rememberBottomSheetState(
+        initialValue = SheetValue.Hidden,
+        enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)
+    )
 
     var name by remember { mutableStateOf(initialCodeName ?: "") }
 

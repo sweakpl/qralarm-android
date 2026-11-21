@@ -10,8 +10,9 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -34,7 +35,10 @@ fun ChooseCancelLockDurationBottomSheet(
     availableCancelLockDurationsInMinutes: List<Int>,
     onDismissRequest: (newCancelLockDurationInMinutes: Int) -> Unit
 ) {
-    val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val modalBottomSheetState = rememberBottomSheetState(
+        initialValue = SheetValue.Hidden,
+        enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)
+    )
 
     var selectedCancelLockDurationInMinutes by remember {
         mutableIntStateOf(initialCancelLockDurationInMinutes)

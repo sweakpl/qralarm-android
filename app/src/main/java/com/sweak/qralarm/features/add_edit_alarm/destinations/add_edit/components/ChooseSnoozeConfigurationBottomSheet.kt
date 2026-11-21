@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -30,7 +31,10 @@ fun ChooseSnoozeConfigurationBottomSheet(
     availableSnoozeDurationsInMinutes: List<Int>,
     onDismissRequest: (newSnoozeNumberToDurationPair: Pair<Int, Int>) -> Unit
 ) {
-    val modalBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val modalBottomSheetState = rememberBottomSheetState(
+        initialValue = SheetValue.Hidden,
+        enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)
+    )
 
     var selectedNumberOfSnoozes by remember {
         mutableIntStateOf(initialSnoozeNumberToDurationPair.first)
