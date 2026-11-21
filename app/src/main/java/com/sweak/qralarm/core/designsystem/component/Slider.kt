@@ -3,7 +3,9 @@ package com.sweak.qralarm.core.designsystem.component
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.SliderState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,11 +23,14 @@ fun QRAlarmSlider(
     steps: Int = 0,
     onValueChangeFinished: (() -> Unit)? = null
 ) {
+    val state = remember(steps, valueRange) {
+        SliderState(value = value, steps = steps, trackRange = valueRange)
+    }
+    state.value = value
+
     Slider(
+        state = state,
         enabled = enabled,
-        value = value,
-        valueRange = valueRange,
-        steps = steps,
         onValueChange = onValueChange,
         onValueChangeFinished = onValueChangeFinished,
         colors = SliderDefaults.colors(
