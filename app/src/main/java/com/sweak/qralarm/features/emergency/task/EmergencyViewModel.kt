@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sweak.qralarm.alarm.QRAlarmManager
 import com.sweak.qralarm.alarm.service.AlarmMuteController.Companion.EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS
-import com.sweak.qralarm.alarm.service.AlarmService
+import com.sweak.qralarm.core.domain.alarm.AlarmRingingState
 import com.sweak.qralarm.core.domain.alarm.DismissAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository
 import dagger.assisted.Assisted
@@ -29,6 +29,7 @@ import kotlin.time.Duration.Companion.seconds
 class EmergencyViewModel @AssistedInject constructor(
     @Assisted private val idOfAlarmToCancel: Long,
     private val dismissAlarm: DismissAlarm,
+    private val alarmRingingState: AlarmRingingState,
     private val userDataRepository: UserDataRepository,
     private val qrAlarmManager: QRAlarmManager
 ) : ViewModel() {
@@ -96,7 +97,7 @@ class EmergencyViewModel @AssistedInject constructor(
                 if (selectedValue == targetValue) {
                     val remainingMatches = state.value.emergencyTaskConfig.remainingMatches - 1
 
-                    if (remainingMatches > 0 && AlarmService.isRunning) {
+                    if (remainingMatches > 0 && alarmRingingState.isAnyAlarmRinging) {
                         indicateAlarmMute()
                     }
 

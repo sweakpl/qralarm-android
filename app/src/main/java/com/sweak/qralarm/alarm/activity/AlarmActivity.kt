@@ -295,9 +295,7 @@ class AlarmActivity : FragmentActivity() {
             alarmId = alarmId,
             running = false
         )
-        stopService(
-            Intent(this@AlarmActivity, AlarmService::class.java)
-        )
+        AlarmService.stopRinging(context = this@AlarmActivity)
     }
 
     override fun onNewIntent(intent: Intent) {

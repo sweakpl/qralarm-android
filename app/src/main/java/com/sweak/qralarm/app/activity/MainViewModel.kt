@@ -2,7 +2,7 @@ package com.sweak.qralarm.app.activity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sweak.qralarm.alarm.service.AlarmService
+import com.sweak.qralarm.core.domain.alarm.AlarmRingingState
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.CodesRepository
 import com.sweak.qralarm.core.domain.alarm.MigrateCustomRingtonesToDeviceProtectedStorage
@@ -27,6 +27,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val userDataRepository: UserDataRepository,
     private val alarmsRepository: AlarmsRepository,
+    private val alarmRingingState: AlarmRingingState,
     private val codesRepository: CodesRepository,
     private val rescheduleAlarms: RescheduleAlarms,
     private val shouldShowWhatsNew: ShouldShowWhatsNew,
@@ -81,7 +82,7 @@ class MainViewModel @Inject constructor(
             alarms.firstOrNull { alarm ->
                 alarm.isAlarmRunning || alarm.snoozeConfig.isAlarmSnoozed
             }?.let { activeAlarm ->
-                if (activeAlarm.isAlarmRunning && !AlarmService.isRunning) {
+                if (activeAlarm.isAlarmRunning && !alarmRingingState.isAnyAlarmRinging) {
                     alarmsRepository.setAlarmRunning(
                         alarmId = activeAlarm.alarmId,
                         running = false

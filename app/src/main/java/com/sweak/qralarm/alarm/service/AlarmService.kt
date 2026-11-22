@@ -2,6 +2,7 @@ package com.sweak.qralarm.alarm.service
 
 import android.app.ForegroundServiceStartNotAllowedException
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
@@ -44,12 +45,22 @@ class AlarmService : Service() {
     lateinit var alarmNotificationFactory: AlarmNotificationFactory
     @Inject
     lateinit var ringingSessionFactory: RingingSession.Factory
+    @Inject
+    lateinit var alarmServiceRingingState: AlarmServiceRingingState
 
     private var ringingSession: RingingSession? = null
     private var foregroundAlarmId: Long? = null
     private var pendingDeliveryCount = 0
+    private var lastStartId = 0
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        lastStartId = startId
+
+        if (intent.action == ACTION_STOP_RINGING) {
+            stopRinging()
+            return START_NOT_STICKY
+        }
+
         val alarmId = intent.extras?.getLong(EXTRA_ALARM_ID)
         var shouldStopService = alarmId == null
 
@@ -80,8 +91,7 @@ class AlarmService : Service() {
         shouldStopService: Boolean
     ) {
         if (shouldStopService) {
-            stopDeliveryEarly(alarmId = alarmId)
-            userDataRepository.setAlarmMissedDetected(detected = true)
+            stopDeliveryEarly(alarmId = alarmId, isAlarmMissed = true)
             return
         }
 
@@ -89,8 +99,7 @@ class AlarmService : Service() {
         val verdict = alarmDeliveryValidator.validate(alarm = alarm, isSnoozeAlarm = isSnoozeAlarm)
 
         if (alarm == null || verdict !is AlarmDeliveryValidator.Verdict.Ring) {
-            stopDeliveryEarly(alarmId = alarmId)
-            handleEarlyStoppedAlarm(alarmId = alarmId)
+            stopDeliveryEarly(alarmId = alarmId, isAlarmMissed = false)
             return
         }
 
@@ -103,20 +112,22 @@ class AlarmService : Service() {
         startAlarmRinging(alarmId = alarmId, isSnoozeAlarm = isSnoozeAlarm)
     }
 
-    private fun stopDeliveryEarly(alarmId: Long) {
-        pendingDeliveryCount--
+    private suspend fun stopDeliveryEarly(alarmId: Long, isAlarmMissed: Boolean) {
+        qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
 
-        if (ringingSession == null && pendingDeliveryCount == 0) {
-            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
-            foregroundAlarmId = null
+        if (isAlarmMissed) {
+            userDataRepository.setAlarmMissedDetected(detected = true)
+        } else {
+            handleEarlyStoppedAlarm(alarmId = alarmId)
         }
 
-        qrAlarmManager.cancelUpcomingAlarmNotification(alarmId = alarmId)
+        pendingDeliveryCount--
+        stopSelfIfIdle()
     }
 
     // The service is a singleton, so an alarm delivered while another one rings takes over from it.
-    // isRunning is set before StartAlarmRinging marks the alarm as running, otherwise
-    // MainViewModel would see a running alarm while the service isn't running and reset it:
+    // The ringing state is set before StartAlarmRinging marks the alarm as running, otherwise
+    // MainViewModel would see a running alarm that isn't ringing and reset it:
     private fun beginRingingSession(session: RingingSession) {
         pendingDeliveryCount--
 
@@ -127,9 +138,28 @@ class AlarmService : Service() {
         if (foregroundAlarmId != alarmId) enterForeground(alarmId = alarmId)
 
         ringingSession = session
-        isRunning = true
+        alarmServiceRingingState.onRingingStarted()
 
         session.start()
+    }
+
+    private fun stopRinging() {
+        ringingSession?.stop()
+        ringingSession = null
+        alarmServiceRingingState.onRingingStopped()
+
+        stopSelfIfIdle()
+    }
+
+    // A delivery still being handled, for example one waiting out an early delivery, keeps the
+    // service alive after the ringing alarm is dismissed:
+    private fun stopSelfIfIdle() {
+        if (ringingSession != null || pendingDeliveryCount > 0) return
+
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+        foregroundAlarmId = null
+
+        stopSelfResult(lastStartId)
     }
 
     private fun enterForeground(alarmId: Long): Boolean {
@@ -158,8 +188,7 @@ class AlarmService : Service() {
     override fun onDestroy() {
         ringingSession?.stop()
         ringingSession = null
-
-        isRunning = false
+        alarmServiceRingingState.onRingingStopped()
 
         serviceScope.cancel()
 
@@ -171,7 +200,16 @@ class AlarmService : Service() {
     companion object {
         const val EXTRA_ALARM_ID = "alarmId"
         const val EXTRA_IS_SNOOZE_ALARM = "isSnoozeAlarm"
+        private const val ACTION_STOP_RINGING = "com.sweak.qralarm.STOP_RINGING"
 
-        var isRunning = false
+        fun stopRinging(context: Context) {
+            try {
+                context.startService(
+                    Intent(context, AlarmService::class.java).setAction(ACTION_STOP_RINGING)
+                )
+            } catch (_: IllegalStateException) {
+                context.stopService(Intent(context, AlarmService::class.java))
+            }
+        }
     }
 }
