@@ -1,4 +1,4 @@
-package com.sweak.qralarm.alarm.util
+package com.sweak.qralarm.alarm.service.session
 
 import android.media.AudioManager
 

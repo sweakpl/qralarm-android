@@ -2,8 +2,8 @@ package com.sweak.qralarm.features.emergency.task
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sweak.qralarm.alarm.EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS
 import com.sweak.qralarm.alarm.QRAlarmManager
-import com.sweak.qralarm.alarm.service.AlarmMuteController.Companion.EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS
 import com.sweak.qralarm.core.domain.alarm.AlarmRingingState
 import com.sweak.qralarm.core.domain.alarm.DismissAlarm
 import com.sweak.qralarm.core.domain.user.UserDataRepository

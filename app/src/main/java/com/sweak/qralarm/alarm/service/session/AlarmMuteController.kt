@@ -1,4 +1,4 @@
-package com.sweak.qralarm.alarm.service
+package com.sweak.qralarm.alarm.service.session
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -6,6 +6,10 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
+import com.sweak.qralarm.alarm.ACTION_EMERGENCY_TASK_ALARM_MUTE
+import com.sweak.qralarm.alarm.ACTION_TEMPORARY_ALARM_MUTE
+import com.sweak.qralarm.alarm.EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS
+import com.sweak.qralarm.alarm.EXTRA_TEMPORARY_MUTE_DURATION_SECONDS
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -119,12 +123,7 @@ class AlarmMuteController @Inject constructor(
         var hasBeenTemporarilyMuted = false
     }
 
-    companion object {
-        const val ACTION_TEMPORARY_ALARM_MUTE = "com.sweak.qralarm.TEMPORARY_ALARM_MUTE"
-        const val EXTRA_TEMPORARY_MUTE_DURATION_SECONDS = "muteDurationSeconds"
+    private companion object {
         const val DEFAULT_TEMPORARY_MUTE_DURATION_SECONDS = 15
-
-        const val ACTION_EMERGENCY_TASK_ALARM_MUTE = "com.sweak.qralarm.EMERGENCY_TASK_ALARM_MUTE"
-        const val EMERGENCY_TASK_ALARM_MUTE_DURATION_SECONDS = 10
     }
 }

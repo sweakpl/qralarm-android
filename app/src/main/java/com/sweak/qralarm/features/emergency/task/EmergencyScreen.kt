@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
-import com.sweak.qralarm.alarm.service.AlarmMuteController.Companion.ACTION_EMERGENCY_TASK_ALARM_MUTE
+import com.sweak.qralarm.alarm.ACTION_EMERGENCY_TASK_ALARM_MUTE
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.BlueZodiac
 import com.sweak.qralarm.core.designsystem.theme.Jacarta

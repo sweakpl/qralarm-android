@@ -1,8 +1,8 @@
-package com.sweak.qralarm.alarm.service
+package com.sweak.qralarm.alarm.service.session
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.sweak.qralarm.alarm.service.AlarmMuteController.MuteRequest
+import com.sweak.qralarm.alarm.service.session.AlarmMuteController.MuteRequest
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher

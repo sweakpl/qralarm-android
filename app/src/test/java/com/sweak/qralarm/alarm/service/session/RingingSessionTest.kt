@@ -1,4 +1,4 @@
-package com.sweak.qralarm.alarm.service
+package com.sweak.qralarm.alarm.service.session
 
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import com.sweak.qralarm.core.domain.fixture.alarm

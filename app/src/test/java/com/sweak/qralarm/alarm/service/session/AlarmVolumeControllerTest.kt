@@ -1,4 +1,4 @@
-package com.sweak.qralarm.alarm.service
+package com.sweak.qralarm.alarm.service.session
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo

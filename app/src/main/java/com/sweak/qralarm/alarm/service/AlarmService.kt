@@ -8,6 +8,7 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import androidx.core.app.ServiceCompat
 import com.sweak.qralarm.alarm.QRAlarmManager
+import com.sweak.qralarm.alarm.service.session.RingingSession
 import com.sweak.qralarm.core.domain.alarm.AlarmsRepository
 import com.sweak.qralarm.core.domain.alarm.HandleEarlyStoppedAlarm
 import com.sweak.qralarm.core.domain.alarm.StartAlarmRinging

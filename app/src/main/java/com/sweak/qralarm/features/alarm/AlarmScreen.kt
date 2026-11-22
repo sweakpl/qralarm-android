@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sweak.qralarm.R
-import com.sweak.qralarm.alarm.service.AlarmMuteController.Companion.ACTION_TEMPORARY_ALARM_MUTE
-import com.sweak.qralarm.alarm.service.AlarmMuteController.Companion.EXTRA_TEMPORARY_MUTE_DURATION_SECONDS
+import com.sweak.qralarm.alarm.ACTION_TEMPORARY_ALARM_MUTE
+import com.sweak.qralarm.alarm.EXTRA_TEMPORARY_MUTE_DURATION_SECONDS
 import com.sweak.qralarm.core.designsystem.component.QRAlarmDialog
 import com.sweak.qralarm.core.designsystem.icon.QRAlarmIcons
 import com.sweak.qralarm.core.designsystem.theme.BlueZodiac

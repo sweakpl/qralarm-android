@@ -1,4 +1,4 @@
-package com.sweak.qralarm.alarm.service
+package com.sweak.qralarm.alarm.service.session
 
 import androidx.annotation.MainThread
 import androidx.core.net.toUri

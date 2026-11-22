@@ -1,9 +1,8 @@
-package com.sweak.qralarm.alarm.service
+package com.sweak.qralarm.alarm.service.session
 
 import android.media.AudioManager
 import android.os.Build
 import androidx.annotation.VisibleForTesting
-import com.sweak.qralarm.alarm.util.setAlarmVolume
 import com.sweak.qralarm.core.domain.alarm.Alarm
 import javax.inject.Inject
 
