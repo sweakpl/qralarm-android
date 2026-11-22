@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.sweak.qralarm.alarm.service.AlarmMuteController.MuteRequest
 import io.mockk.mockk
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
@@ -24,7 +23,7 @@ class AlarmMuteControllerTest {
     private var stopRingingCount = 0
     private var resumeRingingCount = 0
 
-    private fun startSession(resumeRinging: suspend () -> Unit = { resumeRingingCount++ }) {
+    private fun startSession(resumeRinging: () -> Unit = { resumeRingingCount++ }) {
         controller.startSession(
             stopRinging = { stopRingingCount++ },
             resumeRinging = resumeRinging,
@@ -148,29 +147,6 @@ class AlarmMuteControllerTest {
 
             // When
             controller.stopSession()
-
-            // Then
-            advanceTimeToMillis(60_000L)
-            assertThat(resumeRingingCount).isEqualTo(0)
-        }
-
-    @Test
-    fun `given a mute whose resume is still in progress, when the session stops, then the resume is cancelled`() =
-        runTest(dispatcher) {
-            // Given
-            val resumeGate = CompletableDeferred<Unit>()
-            startSession(
-                resumeRinging = {
-                    resumeGate.await()
-                    resumeRingingCount++
-                }
-            )
-            controller.mute(MuteRequest.Temporary(durationSeconds = 15))
-            advanceTimeToMillis(15_000L)
-
-            // When
-            controller.stopSession()
-            resumeGate.complete(Unit)
 
             // Then
             advanceTimeToMillis(60_000L)

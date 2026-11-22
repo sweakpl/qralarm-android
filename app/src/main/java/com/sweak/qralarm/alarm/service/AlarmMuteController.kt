@@ -44,7 +44,7 @@ class AlarmMuteController @Inject constructor(
 
     fun start(
         stopRinging: () -> Unit,
-        resumeRinging: suspend () -> Unit
+        resumeRinging: () -> Unit
     ) {
         startSession(stopRinging, resumeRinging)
 
@@ -69,8 +69,8 @@ class AlarmMuteController @Inject constructor(
     @VisibleForTesting
     internal fun startSession(
         stopRinging: () -> Unit,
-        resumeRinging: suspend () -> Unit,
-        dispatcher: CoroutineDispatcher = Dispatchers.Default
+        resumeRinging: () -> Unit,
+        dispatcher: CoroutineDispatcher = Dispatchers.Main
     ) {
         session = Session(
             scope = CoroutineScope(SupervisorJob() + dispatcher),
@@ -113,7 +113,7 @@ class AlarmMuteController @Inject constructor(
     private class Session(
         val scope: CoroutineScope,
         val stopRinging: () -> Unit,
-        val resumeRinging: suspend () -> Unit
+        val resumeRinging: () -> Unit
     ) {
         var resumeRingingJob: Job? = null
         var hasBeenTemporarilyMuted = false
